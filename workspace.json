@@ -1,7 +1,10 @@
 {
   "version": 2,
   "projects": {
+    "apisrv": "packages/apisrv",
     "frontapp": "packages/frontapp",
-    "frontapp-e2e": "packages/frontapp-e2e"
+    "frontapp-e2e": "packages/frontapp-e2e",
+    "mobile": "apps/mobile",
+    "mobile-e2e": "packages/mobile-e2e"
   }
 }
