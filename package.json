@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "dev:web": "nx serve",
+    "dev:mobile": "nx serve mobile",
+    "dev:mobile:android": "nx run-android mobile",
+    "dev:mobile:ios": "nx run-ios mobile",
     "relay": "relay-compiler"
   },
   "private": true,
