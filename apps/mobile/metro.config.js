@@ -19,7 +19,7 @@ module.exports = (async () => {
       },
       resolver: {
         assetExts: assetExts.filter((ext) => ext !== 'svg'),
-        sourceExts: [...sourceExts, 'svg'],
+        sourceExts: ['svg', 'jsx', 'js', 'ts', 'tsx', 'cjs'],
         resolverMainFields: ['sbmodern', 'browser', 'main'],
         blacklistRE: exclusionList([/\.\/dist\/.*/]),
       },
