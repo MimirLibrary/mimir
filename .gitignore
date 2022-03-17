@@ -93,6 +93,6 @@ buck-out/
 
 ## Nested node_modules
 
-/node_modules
+apps/mobile/node_modules
 
 packages/mobile-e2e/artifacts
