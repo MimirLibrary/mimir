@@ -25,10 +25,13 @@ import NxCloud from './icons/nx-cloud.svg';
 import GitHub from './icons/github.svg';
 import Terminal from './icons/terminal.svg';
 import Heart from './icons/heart.svg';
+import { Camera, CameraType } from 'react-native-camera-kit';
 
 export const App = () => {
   const [whatsNextYCoord, setWhatsNextYCoord] = useState<number>(0);
   const scrollViewRef = useRef<null | ScrollView>(null);
+
+  const cameraRef = useRef(null)
 
   return (
     <>
@@ -41,6 +44,13 @@ export const App = () => {
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollView}
         >
+          <View style={{width: '100%', height: 400}}>
+            <Camera
+              style={{width: '100%', height: '100%'}}
+              ref={cameraRef}
+              cameraType={CameraType.Back} // front/back(default)
+            />
+          </View>
           <View style={styles.section}>
             <Text style={styles.textLg}>Hello there,</Text>
             <Text style={[styles.textXL, styles.appTitleText]} testID="heading">
