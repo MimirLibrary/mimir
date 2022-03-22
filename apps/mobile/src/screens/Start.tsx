@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 const NO_BARCODE_STRING = 'There is no barcode detected';
 
 export const Start = (props) => {
-  const barCode = props.params?.barCode;
+  const barCode = props.route?.params?.barCode;
   const [barCodeString, setBarCodeString] = useState(null);
 
   const handleRouteChange = () => {
