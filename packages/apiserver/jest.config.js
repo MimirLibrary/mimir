@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'apisrv',
+  displayName: 'apiserver',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -11,5 +11,5 @@ module.exports = {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/packages/apisrv',
+  coverageDirectory: '../../coverage/packages/apiserver',
 };
