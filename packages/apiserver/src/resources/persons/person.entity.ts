@@ -16,5 +16,5 @@ export class PersonEntity {
   created_at!: Date;
 
   @OneToMany(() => StatusEntity, (status) => status.person)
-  status!: StatusEntity[];
+  status: StatusEntity[];
 }

@@ -1,7 +1,12 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  JoinColumn,
+} from 'typeorm';
 import { MaterialEntity } from '../materials/material.entity';
-import { PersonEntity } from '../person/person.entity';
-import { JoinColumn } from 'typeorm/browser';
+import { PersonEntity } from '../persons/person.entity';
 
 @Entity('status')
 export class StatusEntity {
