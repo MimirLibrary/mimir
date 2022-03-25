@@ -4,6 +4,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   JoinColumn,
+  CreateDateColumn
 } from 'typeorm';
 import { MaterialEntity } from '../materials/material.entity';
 import { PersonEntity } from '../persons/person.entity';
@@ -24,6 +25,6 @@ export class StatusEntity {
   @Column()
   status!: string;
 
-  @Column()
+  @CreateDateColumn()
   created_at!: Date;
 }

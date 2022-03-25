@@ -1,4 +1,10 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn
+} from 'typeorm';
 import { StatusEntity } from '../statuses/status.entity';
 
 @Entity('person')
@@ -12,7 +18,7 @@ export class PersonEntity {
   @Column()
   type!: string;
 
-  @Column()
+  @CreateDateColumn()
   created_at!: Date;
 
   @OneToMany(() => StatusEntity, (status) => status.person)

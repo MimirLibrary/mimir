@@ -1,4 +1,10 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity, OneToMany,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn
+} from 'typeorm';
 import { StatusEntity } from '../statuses/status.entity';
 
 @Entity('material')
@@ -15,10 +21,10 @@ export class MaterialEntity {
   @Column()
   type!: string;
 
-  @Column()
+  @CreateDateColumn()
   created_at!: Date;
 
-  @Column()
+  @UpdateDateColumn()
   updated_at!: Date;
 
   @OneToMany(() => StatusEntity, (status) => status.material)
