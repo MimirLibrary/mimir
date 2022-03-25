@@ -22,7 +22,6 @@ export default {
   logging: false,
   entities: [PersonEntity, MaterialEntity, StatusEntity],
   migrations: ['packages/apiserver/src/migrations/*.ts'],
-  // migrationsRun: true,
   cli: {
     migrationsDir: 'packages/apiserver/src/migrations',
   },

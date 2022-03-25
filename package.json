@@ -9,6 +9,7 @@
     "dev:mobile:ios": "nx run-ios mobile",
     "lint:mobile": "eslint --ext .ts,.tsx apps/mobile --fix",
     "migration:generate": "npm run typeorm:cli -- migration:generate -n migrationMy",
+    "migration:run": "npm run typeorm:cli -- migration:run",
     "relay": "relay-compiler",
     "typeorm:cli": "ts-node --project ./packages/apiserver/tsconfig.app.json ./node_modules/typeorm/cli --config ./packages/apiserver/src/ormconfig.ts"
   },
