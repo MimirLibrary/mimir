@@ -11,12 +11,17 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { AppResolver } from './app.resolver';
+import {PersonEntity} from "../resources/persons/person.entity";
+import {MaterialEntity} from "../resources/materials/material.entity";
+import {StatusEntity} from "../resources/statuses/status.entity";
 
 @Module({
   imports: [
       ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
       TypeOrmModule.forRoot({
         ...typeorm,
+        entities: [PersonEntity, MaterialEntity, StatusEntity],
+        migrations: [`${__dirname}/packages/apiserver/src/migrations/*.ts`],
       }),
       MaterialModule,
       StatusModule,
