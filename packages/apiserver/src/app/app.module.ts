@@ -11,6 +11,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { AppResolver } from './app.resolver';
+import {DateTimeResolver, DateTimeTypeDefinition} from "graphql-scalars";
 
 @Module({
   imports: [
@@ -24,6 +25,12 @@ import { AppResolver } from './app.resolver';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],
+      typeDefs: [
+        ...DateTimeTypeDefinition
+      ],
+      resolvers: {
+        DateTimeResolver
+      },
       definitions: {
         path: join(process.cwd(), './packages/apiserver/src/graphql.ts'),
       },

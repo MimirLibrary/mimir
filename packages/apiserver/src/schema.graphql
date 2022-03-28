@@ -1,3 +1,30 @@
+scalar Date
+
+type PersonEntity{
+  id: ID!
+  smg_id: String!
+  type: String!
+  created_at: Date!
+  status: [StatusEntity]!
+}
+
+type StatusEntity{
+  id: ID!
+  material: String!
+  person: PersonEntity
+  status: String!
+  created_at: Date!
+}
+type MaterialEntity{
+  id:ID!
+  identifier: String!
+  id_type: String!
+  type: String!
+  created_at: Date!
+  updated_at: Date!
+  status: [StatusEntity]!
+}
+
 type Query {
   welcome: String!
 }
