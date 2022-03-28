@@ -96,3 +96,6 @@ buck-out/
 apps/mobile/node_modules
 
 packages/mobile-e2e/artifacts
+
+## Postgres volume data
+data/

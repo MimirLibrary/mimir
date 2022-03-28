@@ -2,9 +2,9 @@ version: '3.9'
 services:
   db:
     image: postgres
+    env_file: .env
+    ports:
+    - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
       - ./data/db:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_NAME=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+

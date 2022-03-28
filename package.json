@@ -8,7 +8,10 @@
     "dev:mobile:android": "nx run-android mobile",
     "dev:mobile:ios": "nx run-ios mobile",
     "lint:mobile": "eslint --ext .ts,.tsx apps/mobile --fix",
-    "relay": "relay-compiler"
+    "migration:generate": "npm run typeorm:cli -- migration:generate -n migrationMy",
+    "migration:run": "npm run typeorm:cli -- migration:run",
+    "relay": "relay-compiler",
+    "typeorm:cli": "ts-node --project ./packages/apiserver/tsconfig.app.json ./node_modules/typeorm/cli --config ./packages/apiserver/src/ormconfig.ts"
   },
   "private": true,
   "devDependencies": {
@@ -71,6 +74,8 @@
     "react-test-renderer": "17.0.2",
     "relay-compiler": "^13.2.0",
     "ts-jest": "27.0.5",
+    "ts-node": "^10.7.0",
+    "tsconfig-paths": "^3.14.1",
     "ts-morph": "^13.0.3",
     "typescript": "~4.5.2"
   },
@@ -79,17 +84,21 @@
     "@emotion/styled": "11.8.1",
     "@nestjs/apollo": "^10.0.8",
     "@nestjs/common": "^8.0.0",
+    "@nestjs/config": "^2.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/graphql": "^10.0.8",
     "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/typeorm": "^8.0.3",
     "@react-navigation/bottom-tabs": "^6.2.0",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
     "@reduxjs/toolkit": "^1.8.0",
     "apollo-server-express": "^3.6.6",
     "core-js": "^3.6.5",
+    "dotenv": "^16.0.0",
     "graphql": "^16.3.0",
     "metro-config": "^0.69.1",
+    "pg": "^8.7.3",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-native": "0.67.3",
@@ -102,6 +111,7 @@
     "reflect-metadata": "^0.1.13",
     "regenerator-runtime": "0.13.7",
     "rxjs": "^7.0.0",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.0",
+    "typeorm": "^0.2.45"
   }
 }
