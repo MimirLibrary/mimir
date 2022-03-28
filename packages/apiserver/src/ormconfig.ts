@@ -1,10 +1,3 @@
-// import * as dotenv from 'dotenv';
-// import * as path from 'path';
-
-// dotenv.config({
-//   path: path.join(__dirname, '.env'),
-// });
-
 import { ConnectionOptions } from 'typeorm';
 import { PersonEntity } from './resources/persons/person.entity';
 import { MaterialEntity } from './resources/materials/material.entity';
