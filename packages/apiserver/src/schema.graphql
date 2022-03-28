@@ -27,4 +27,5 @@ type MaterialEntity{
 
 type Query {
   welcome: String!
+  findOne(id: ID!): PersonEntity
 }
