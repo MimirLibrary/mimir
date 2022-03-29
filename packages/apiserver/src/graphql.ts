@@ -11,35 +11,16 @@ export interface PersonEntity {
     id: string;
     smg_id: string;
     type: string;
-    created_at: Date;
-    status: Nullable<StatusEntity>[];
-}
-
-export interface StatusEntity {
-    id: string;
-    material: string;
-    person?: Nullable<PersonEntity>;
-    status: string;
-    created_at: Date;
-}
-
-export interface MaterialEntity {
-    id: string;
-    identifier: string;
-    id_type: string;
-    type: string;
-    created_at: Date;
-    updated_at: Date;
-    status: Nullable<StatusEntity>[];
+    created_at: DateTime;
 }
 
 export interface IQuery {
     welcome(): string | Promise<string>;
-    findOne(id: string): Nullable<PersonEntity> | Promise<Nullable<PersonEntity>>;
+    findAll(): Nullable<PersonEntity>[] | Promise<Nullable<PersonEntity>[]>;
 }
 
-export type Time = any;
 export type DateTime = any;
+export type Time = any;
 export type Timestamp = any;
 export type UtcOffset = any;
 export type Duration = any;

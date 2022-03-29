@@ -1,14 +1,16 @@
-import {Args, Query, Resolver} from '@nestjs/graphql';
+import { Query, Resolver } from '@nestjs/graphql';
 import {PersonService} from "./person.service";
+import {PersonEntity} from "./person.entity";
 
-@Resolver()
+@Resolver('Person')
 export class PersonResolver {
 
   constructor(private PersonService: PersonService) {
   }
 
-  @Query()
-  findOne(@Args('id') id: string){
-    return this.PersonService.findOne(id)
+  @Query(returns => [PersonEntity])
+  findAll(){
+    return this.PersonService.getAllPersons()
   }
+
 }
