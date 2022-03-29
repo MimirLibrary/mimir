@@ -11,26 +11,35 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { AppResolver } from './app.resolver';
-import {PersonEntity} from "../resources/persons/person.entity";
-import {MaterialEntity} from "../resources/materials/material.entity";
-import {StatusEntity} from "../resources/statuses/status.entity";
+import { Person } from '../resources/persons/person.entity';
+import { MaterialEntity } from '../resources/materials/material.entity';
+import { StatusEntity } from '../resources/statuses/status.entity';
+import {
+  typeDefs as scalarTypeDefs,
+  resolvers as scalarResolvers,
+} from 'graphql-scalars';
 
 @Module({
   imports: [
-      ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
-      TypeOrmModule.forRoot({
-        ...typeorm,
-        entities: [PersonEntity, MaterialEntity, StatusEntity],
-        migrations: [`${__dirname}/packages/apiserver/src/migrations/*.ts`],
-      }),
-      MaterialModule,
-      StatusModule,
-      PersonModule,
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
+    TypeOrmModule.forRoot({
+      ...typeorm,
+      entities: [Person, MaterialEntity, StatusEntity],
+      migrations: [`${__dirname}/packages/apiserver/src/migrations/*.ts`],
+    }),
+    MaterialModule,
+    StatusModule,
+    PersonModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],
+      typeDefs: [...scalarTypeDefs],
+      resolvers: [scalarResolvers],
       definitions: {
-        path: join(process.cwd(), './packages/apiserver/src/graphql.ts'),
+        path: join(
+          process.cwd(),
+          './packages/apiserver/src/__generated/graphql_types.ts'
+        ),
       },
     }),
   ],

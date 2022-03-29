@@ -8,6 +8,17 @@ This project was generated using [Nx](https://nx.dev).
 
 🔎 **Smart, Fast and Extensible Build System**
 
+## Development server for backend
+
+Run `docker-compose up` for to start the database
+
+Run migrations `npm runm igration:run`
+
+Run `nx serve apiserver` for to start the server on [http://localhost:3333/](http://localhost:3333/)
+
+Look Graphql playground on [http://localhost:3333/graphql](http://localhost:3333/graphql)
+
+
 ## Adding capabilities to your workspace
 
 Nx supports many plugins which add capabilities for developing different types of applications and different tools.

@@ -1,14 +1,15 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
   OneToMany,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { StatusEntity } from '../statuses/status.entity';
 
 @Entity('person')
-export class PersonEntity {
+export class Person extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 

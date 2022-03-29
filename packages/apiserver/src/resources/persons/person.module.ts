@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PersonEntity } from './person.entity';
+import { Person } from './person.entity';
+import { PersonResolver } from './person.resolver';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([PersonEntity])],
+  imports: [TypeOrmModule.forFeature([Person])],
+  providers: [PersonResolver],
 })
 export class PersonModule {}
