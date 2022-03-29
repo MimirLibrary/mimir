@@ -7,8 +7,8 @@ type PersonEntity{
   created_at: DateTime!
 }
 
-
 type Query {
   welcome: String!
-  findAll: [PersonEntity]!
+  getAllPersons: [PersonEntity]!
+  getPersonById(id: ID): PersonEntity
 }

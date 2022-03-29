@@ -1,4 +1,4 @@
-import { Query, Resolver } from '@nestjs/graphql';
+import {Args, Query, Resolver} from '@nestjs/graphql';
 import {PersonService} from "./person.service";
 import {PersonEntity} from "./person.entity";
 
@@ -9,8 +9,13 @@ export class PersonResolver {
   }
 
   @Query(returns => [PersonEntity])
-  findAll(){
+  getAllPersons(){
     return this.PersonService.getAllPersons()
+  }
+
+  @Query(returns => PersonEntity)
+  getPersonById(@Args('id') id: number){
+    return this.PersonService.getOnePerson(id)
   }
 
 }

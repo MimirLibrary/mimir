@@ -3,7 +3,6 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {PersonEntity} from "./person.entity";
 import {Repository} from "typeorm";
 
-
 @Injectable()
 export class PersonService {
 
@@ -13,5 +12,10 @@ export class PersonService {
   async getAllPersons() : Promise<PersonEntity[]>{
     const persons = await this.PersonEntityRepository.find()
     return persons
+  }
+
+  async getOnePerson(id: number) : Promise<PersonEntity>{
+    const person = await this.PersonEntityRepository.findOne({id})
+    return person
   }
 }
