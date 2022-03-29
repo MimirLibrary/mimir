@@ -5,9 +5,15 @@ import { MaterialEntity } from './material.entity';
 
 @Injectable()
 export class MaterialService {
-  constructor(@InjectRepository(MaterialEntity) private MaterialRepository: Repository<MaterialEntity>) {
+
+  constructor(@InjectRepository(MaterialEntity) private MaterialEntityRepository: Repository<MaterialEntity>) {
   }
-  getAllMaterials() {
-    return this.MaterialRepository.find()
+  async getAllMaterials(): Promise<MaterialEntity[]> {
+    return await this.MaterialEntityRepository.find()
+  }
+
+  async getMaterialById(id: number): Promise<MaterialEntity> {
+    const material = await this.MaterialEntityRepository.findOne({ id })
+    return material
   }
 }

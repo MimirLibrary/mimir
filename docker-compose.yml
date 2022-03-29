@@ -6,5 +6,7 @@ services:
     ports:
     - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - db:/var/lib/postgresql/data
+volumes:
+  db:
 

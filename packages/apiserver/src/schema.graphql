@@ -7,18 +7,19 @@ type PersonEntity{
   created_at: DateTime!
 }
 
+type MaterialEntity {
+  id: ID!
+  identifier: String!
+  id_type: String!
+  type: String!
+  created_at: DateTime! 
+  updated_at: DateTime!
+}
+
 type Query {
   welcome: String!
   getAllPersons: [PersonEntity]!
   getPersonById(id: ID): PersonEntity
-  getAllMaterials: [Material]
-}
-
-type Material {
-  id: Int!
-  identifier: String!
-  id_type: String!
-  type: String!
-  created_at: String! 
-  updated_at: String!
+  getAllMaterials: [MaterialEntity]!
+  getMaterialById(id: ID): MaterialEntity 
 }
