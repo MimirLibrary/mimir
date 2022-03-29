@@ -40,7 +40,7 @@ import {
         scalarResolvers,
       ],
       definitions: {
-        path: join(process.cwd(), './packages/apiserver/src/graphql.ts'),
+        path: join(process.cwd(), './packages/apiserver/src/__generated/graphql_types.ts'),
       },
     }),
   ],

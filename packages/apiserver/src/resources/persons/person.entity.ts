@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
@@ -8,7 +9,7 @@ import {
 import { StatusEntity } from '../statuses/status.entity';
 
 @Entity('person')
-export class PersonEntity {
+export class PersonEntity extends BaseEntity{
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -23,4 +24,12 @@ export class PersonEntity {
 
   @OneToMany(() => StatusEntity, (status) => status.person)
   status: StatusEntity[];
+
+  static async getAllPersons(): Promise<PersonEntity[]>{
+    return PersonEntity.find()
+  }
+
+  static async getOnePerson(id: number): Promise<PersonEntity>{
+    return PersonEntity.findOne({id})
+  }
 }
