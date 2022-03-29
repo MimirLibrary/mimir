@@ -4,12 +4,12 @@ import {
   CreateDateColumn,
   Entity,
   OneToMany,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { StatusEntity } from '../statuses/status.entity';
 
 @Entity('person')
-export class PersonEntity extends BaseEntity{
+export class Person extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -24,12 +24,4 @@ export class PersonEntity extends BaseEntity{
 
   @OneToMany(() => StatusEntity, (status) => status.person)
   status: StatusEntity[];
-
-  static async getAllPersons(): Promise<PersonEntity[]>{
-    return PersonEntity.find()
-  }
-
-  static async getOnePerson(id: number): Promise<PersonEntity>{
-    return PersonEntity.findOne({id})
-  }
 }

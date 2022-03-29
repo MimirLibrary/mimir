@@ -4,10 +4,10 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   JoinColumn,
-  CreateDateColumn
+  CreateDateColumn,
 } from 'typeorm';
 import { MaterialEntity } from '../materials/material.entity';
-import { PersonEntity } from '../persons/person.entity';
+import { Person } from '../persons/person.entity';
 
 @Entity('status')
 export class StatusEntity {
@@ -18,9 +18,9 @@ export class StatusEntity {
   @JoinColumn({ name: 'material_id' })
   material!: MaterialEntity;
 
-  @ManyToOne(() => PersonEntity, (person) => person.status)
+  @ManyToOne(() => Person, (person) => person.status)
   @JoinColumn({ name: 'person_id' })
-  person!: PersonEntity;
+  person!: Person;
 
   @Column()
   status!: string;

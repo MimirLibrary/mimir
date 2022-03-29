@@ -17,7 +17,6 @@ export interface PersonEntity {
 export interface IQuery {
     welcome(): string | Promise<string>;
     getAllPersons(): Nullable<PersonEntity>[] | Promise<Nullable<PersonEntity>[]>;
-    getPersonById(id?: Nullable<string>): Nullable<PersonEntity> | Promise<Nullable<PersonEntity>>;
 }
 
 export type DateTime = any;
