@@ -1,3 +1,13 @@
 type Query {
   welcome: String!
+  getAllMaterials: [Material]
+}
+
+type Material {
+  id: Int!
+  identifier: String!
+  id_type: String!
+  type: String!
+  created_at: String! 
+  updated_at: String!
 }
