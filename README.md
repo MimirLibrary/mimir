@@ -8,6 +8,15 @@ This project was generated using [Nx](https://nx.dev).
 
 🔎 **Smart, Fast and Extensible Build System**
 
+## Development server for backend
+
+Run `docker-compose up` for to start the database
+
+Run `nx serve apiserver` for to start the server on [http://localhost:3333/](http://localhost:3333/)
+
+Look Graphql playground on [http://localhost:3333/graphql](http://localhost:3333/graphql)
+
+
 ## Adding capabilities to your workspace
 
 Nx supports many plugins which add capabilities for developing different types of applications and different tools.
@@ -48,6 +57,8 @@ Run `nx g @nrwl/react:lib my-lib` to generate a library.
 Libraries are shareable across libraries and applications. They can be imported from `@mimir/mylib`.
 
 ## Development server
+
+Run docker-compose up for to start the database
 
 Run `nx serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
 

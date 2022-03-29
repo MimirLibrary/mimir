@@ -1,7 +1,4 @@
 import { ConnectionOptions } from 'typeorm';
-import { PersonEntity } from './resources/persons/person.entity';
-import { MaterialEntity } from './resources/materials/material.entity';
-import { StatusEntity } from './resources/statuses/status.entity';
 
 export default {
   type: 'postgres',
@@ -13,7 +10,6 @@ export default {
   database: process.env.POSTGRES_DB as string,
   synchronize: false,
   logging: false,
-  entities: [PersonEntity, MaterialEntity, StatusEntity],
   migrations: ['packages/apiserver/src/migrations/*.ts'],
   cli: {
     migrationsDir: 'packages/apiserver/src/migrations',
