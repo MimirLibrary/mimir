@@ -8,12 +8,12 @@ export class PersonResolver {
   constructor(private PersonService: PersonService) {
   }
 
-  @Query(returns => [PersonEntity])
+  @Query(() => [PersonEntity])
   getAllPersons(){
     return this.PersonService.getAllPersons()
   }
 
-  @Query(returns => PersonEntity)
+  @Query(() => PersonEntity)
   getPersonById(@Args('id') id: number){
     return this.PersonService.getOnePerson(id)
   }

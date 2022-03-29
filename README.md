@@ -12,6 +12,8 @@ This project was generated using [Nx](https://nx.dev).
 
 Run `docker-compose up` for to start the database
 
+Run migrations `npm runm igration:run`
+
 Run `nx serve apiserver` for to start the server on [http://localhost:3333/](http://localhost:3333/)
 
 Look Graphql playground on [http://localhost:3333/graphql](http://localhost:3333/graphql)
