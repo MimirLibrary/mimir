@@ -7,7 +7,7 @@
 
 /* tslint:disable */
 /* eslint-disable */
-export interface Person {
+export interface PersonEntity {
     id: string;
     smg_id: string;
     type: string;
@@ -16,8 +16,7 @@ export interface Person {
 
 export interface IQuery {
     welcome(): string | Promise<string>;
-    getAllPersons(): Nullable<Person>[] | Promise<Nullable<Person>[]>;
-    getOnePerson(id?: Nullable<string>): Nullable<Person> | Promise<Nullable<Person>>;
+    getAllPersons(): Nullable<PersonEntity>[] | Promise<Nullable<PersonEntity>[]>;
 }
 
 export type DateTime = any;

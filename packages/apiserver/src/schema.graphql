@@ -2,4 +2,5 @@ type Query {
   welcome: String!
   getAllPersons: [Person]!
   getOnePerson(id: ID): Person
+  getAllMaterials: [Material]!
 }

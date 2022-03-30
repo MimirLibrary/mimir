@@ -3,12 +3,13 @@ import {
   Entity, OneToMany,
   PrimaryGeneratedColumn,
   CreateDateColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
+  BaseEntity
 } from 'typeorm';
 import { StatusEntity } from '../statuses/status.entity';
 
 @Entity('material')
-export class MaterialEntity {
+export class Material extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
