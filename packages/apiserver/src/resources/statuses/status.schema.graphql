@@ -1,6 +1,6 @@
 scalar DateTime
 
-type StatusEntity {
+type Status {
   id: ID!
   material_id: ID!
   person_id: ID!

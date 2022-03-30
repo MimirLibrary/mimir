@@ -4,12 +4,12 @@ import { Status } from './status.entity';
 @Resolver('Status')
 export class StatusResolver {
   @Query(() => [Status])
-  getStatusesByPerson(@Args('person_id') id: string) {
-    return Status.find({ relations: ['person'], where: { status: id } });
+  async getStatusesByPerson(@Args('person_id') id: string) {
+    return Status.find({ where: { person_id: id } });
   }
 
   @Query(() => [Status])
-  getStatusesByMaterial(@Args('material_id') id: string) {
+  async getStatusesByMaterial(@Args('material_id') id: string) {
     return Status.find({ where: { material_id: id } });
   }
 }

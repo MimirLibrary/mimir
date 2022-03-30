@@ -1,7 +1,7 @@
 type Query {
   welcome: String!
-  getAllPersons: [PersonEntity]!
-  getAllMaterials: [MaterialEntity]!
-  getStatusesByPerson(person_id: ID!): [StatusEntity]!
-  getStatusesByMaterial(material_id: ID!): [StatusEntity]!
+  getAllPersons: [Person]!
+  getAllMaterials: [Material]!
+  getStatusesByPerson(person_id: ID!): [Status]!
+  getStatusesByMaterial(material_id: ID!): [Status]!
 }
