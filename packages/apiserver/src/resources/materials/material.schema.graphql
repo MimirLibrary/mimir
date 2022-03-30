@@ -1,0 +1,10 @@
+scalar DateTime
+
+type MaterialEntity{
+  id: ID!
+  identifier: String!
+  id_type: String!
+  type: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+}

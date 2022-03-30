@@ -12,7 +12,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { AppResolver } from './app.resolver';
 import { Person } from '../resources/persons/person.entity';
-import { MaterialEntity } from '../resources/materials/material.entity';
+import { Material } from '../resources/materials/material.entity';
 import { StatusEntity } from '../resources/statuses/status.entity';
 import {
   typeDefs as scalarTypeDefs,
@@ -24,7 +24,7 @@ import {
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     TypeOrmModule.forRoot({
       ...typeorm,
-      entities: [Person, MaterialEntity, StatusEntity],
+      entities: [Person, Material, StatusEntity],
       migrations: [`${__dirname}/packages/apiserver/src/migrations/*.ts`],
     }),
     MaterialModule,
@@ -46,4 +46,4 @@ import {
   controllers: [AppController],
   providers: [AppService, AppResolver],
 })
-export class AppModule {}
+export class AppModule { }
