@@ -6,7 +6,7 @@ import {
   JoinColumn,
   CreateDateColumn,
 } from 'typeorm';
-import { MaterialEntity } from '../materials/material.entity';
+import { Material } from '../materials/material.entity';
 import { Person } from '../persons/person.entity';
 
 @Entity('status')
@@ -14,9 +14,9 @@ export class StatusEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @ManyToOne(() => MaterialEntity, (material) => material.status)
+  @ManyToOne(() => Material, (material) => material.status)
   @JoinColumn({ name: 'material_id' })
-  material!: MaterialEntity;
+  material!: Material;
 
   @ManyToOne(() => Person, (person) => person.status)
   @JoinColumn({ name: 'person_id' })

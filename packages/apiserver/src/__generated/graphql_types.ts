@@ -7,6 +7,15 @@
 
 /* tslint:disable */
 /* eslint-disable */
+export interface MaterialEntity {
+    id: string;
+    identifier: string;
+    id_type: string;
+    type: string;
+    created_at: DateTime;
+    updated_at: DateTime;
+}
+
 export interface PersonEntity {
     id: string;
     smg_id: string;
@@ -17,6 +26,7 @@ export interface PersonEntity {
 export interface IQuery {
     welcome(): string | Promise<string>;
     getAllPersons(): Nullable<PersonEntity>[] | Promise<Nullable<PersonEntity>[]>;
+    getAllMaterials(): Nullable<MaterialEntity>[] | Promise<Nullable<MaterialEntity>[]>;
 }
 
 export type DateTime = any;

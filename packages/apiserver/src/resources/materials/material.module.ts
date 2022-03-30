@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { MaterialEntity } from './material.entity';
+import { Material } from './material.entity';
+import { MaterialResolver } from './material.resolver';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([MaterialEntity])],
+  imports: [TypeOrmModule.forFeature([Material])],
+  providers: [MaterialResolver],
 })
-export class MaterialModule {}
+export class MaterialModule { }

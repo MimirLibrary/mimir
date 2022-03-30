@@ -1,4 +1,5 @@
 type Query {
   welcome: String!
   getAllPersons: [PersonEntity]!
+  getAllMaterials: [MaterialEntity]!
 }
