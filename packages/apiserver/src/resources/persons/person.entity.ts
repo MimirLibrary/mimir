@@ -6,7 +6,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { StatusEntity } from '../statuses/status.entity';
+import { Status } from '../statuses/status.entity';
 
 @Entity('person')
 export class Person extends BaseEntity {
@@ -22,6 +22,6 @@ export class Person extends BaseEntity {
   @CreateDateColumn()
   created_at!: Date;
 
-  @OneToMany(() => StatusEntity, (status) => status.person)
-  status: StatusEntity[];
+  @OneToMany(() => Status, (status) => status.person)
+  status: Status[];
 }

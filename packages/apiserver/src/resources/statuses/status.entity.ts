@@ -5,12 +5,13 @@ import {
   PrimaryGeneratedColumn,
   JoinColumn,
   CreateDateColumn,
+  BaseEntity,
 } from 'typeorm';
 import { Material } from '../materials/material.entity';
 import { Person } from '../persons/person.entity';
 
 @Entity('status')
-export class StatusEntity {
+export class Status extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
