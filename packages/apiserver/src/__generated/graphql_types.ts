@@ -7,7 +7,7 @@
 
 /* tslint:disable */
 /* eslint-disable */
-export interface MaterialEntity {
+export interface Material {
     id: string;
     identifier: string;
     id_type: string;
@@ -26,7 +26,8 @@ export interface PersonEntity {
 export interface IQuery {
     welcome(): string | Promise<string>;
     getAllPersons(): Nullable<PersonEntity>[] | Promise<Nullable<PersonEntity>[]>;
-    getAllMaterials(): Nullable<MaterialEntity>[] | Promise<Nullable<MaterialEntity>[]>;
+    getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
+    getMaterialById(id: string): Nullable<Material> | Promise<Nullable<Material>>;
 }
 
 export type DateTime = any;

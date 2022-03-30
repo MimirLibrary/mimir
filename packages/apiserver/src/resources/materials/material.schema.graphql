@@ -1,6 +1,6 @@
 scalar DateTime
 
-type MaterialEntity{
+type Material{
   id: ID!
   identifier: String!
   id_type: String!

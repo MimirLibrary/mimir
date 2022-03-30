@@ -1,5 +1,6 @@
 type Query {
   welcome: String!
   getAllPersons: [PersonEntity]!
-  getAllMaterials: [MaterialEntity]!
+  getAllMaterials: [Material]!
+  getMaterialById(id: ID!): Material
 }
