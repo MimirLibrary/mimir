@@ -1,10 +1,4 @@
-import {
-  Parent,
-  Query,
-  ResolveField,
-  ResolveProperty,
-  Resolver,
-} from '@nestjs/graphql';
+import { Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { Person } from './person.entity';
 import { Status } from '../statuses/status.entity';
 
@@ -15,7 +9,7 @@ export class PersonResolver {
     return Person.find();
   }
 
-  @ResolveProperty()
+  @ResolveField(() => [Status])
   async statuses(@Parent() person: Person) {
     const { id } = person;
     return Status.find({ where: { person_id: id } });
