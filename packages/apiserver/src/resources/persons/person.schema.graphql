@@ -1,4 +1,4 @@
-type PersonEntity{
+type Person{
   id: ID!
   smg_id: String!
   type: String!

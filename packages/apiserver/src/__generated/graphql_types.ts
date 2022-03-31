@@ -36,10 +36,10 @@ export interface Status {
 export interface IQuery {
     welcome(): string | Promise<string>;
     getAllPersons(): Nullable<Person>[] | Promise<Nullable<Person>[]>;
-    getOnePerson(id?: Nullable<string>): Nullable<Person> | Promise<Nullable<Person>>;
     getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
     getStatusesByPerson(person_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getStatusesByMaterial(material_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
+    getOnePerson(id: string): Nullable<Person> | Promise<Nullable<Person>>;
 }
 
 export type DateTime = any;
