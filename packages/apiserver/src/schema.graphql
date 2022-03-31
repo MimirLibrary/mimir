@@ -3,4 +3,6 @@ type Query {
   getAllPersons: [PersonEntity]!
   getAllMaterials: [Material]!
   getMaterialById(id: ID!): Material
+  getStatusesByPerson(person_id: ID!): [Status]!
+  getStatusesByMaterial(material_id: ID!): [Status]!
 }

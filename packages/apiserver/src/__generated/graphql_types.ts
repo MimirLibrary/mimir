@@ -14,12 +14,22 @@ export interface Material {
     type: string;
     created_at: DateTime;
     updated_at: DateTime;
+    statuses: Nullable<Status>[];
 }
 
-export interface PersonEntity {
+export interface Person {
     id: string;
     smg_id: string;
     type: string;
+    created_at: DateTime;
+    statuses?: Nullable<Nullable<Status>[]>;
+}
+
+export interface Status {
+    id: string;
+    material_id: string;
+    person_id: string;
+    status: string;
     created_at: DateTime;
 }
 
@@ -28,6 +38,8 @@ export interface IQuery {
     getAllPersons(): Nullable<PersonEntity>[] | Promise<Nullable<PersonEntity>[]>;
     getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
     getMaterialById(id: string): Nullable<Material> | Promise<Nullable<Material>>;
+    getStatusesByPerson(person_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
+    getStatusesByMaterial(material_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
 }
 
 export type DateTime = any;
