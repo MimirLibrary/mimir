@@ -8,8 +8,8 @@ import {
 } from '@nestjs/graphql';
 import { Person } from './person.entity';
 import { Status } from '../statuses/status.entity';
-import { CreatePersonInput } from './dto/create-person.input';
 import { PersonService } from './person.service';
+import { CreatePersonInput } from '../../__generated/graphql_types';
 
 @Resolver('Person')
 export class PersonResolver {

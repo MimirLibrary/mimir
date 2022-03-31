@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { CreatePersonInput } from './dto/create-person.input';
 import { Person } from './person.entity';
+import { CreatePersonInput } from '../../__generated/graphql_types';
 
 @Injectable()
 export class PersonService {
