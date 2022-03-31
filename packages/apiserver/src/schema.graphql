@@ -2,7 +2,7 @@ scalar DateTime
 
 type Query {
   welcome: String!
-  getAllPersons: [PersonEntity]!
+  getAllPersons: [Person]!
   getAllMaterials: [Material]!
   getMaterialById(id: ID!): Material
   getStatusesByPerson(person_id: ID!): [Status]!
