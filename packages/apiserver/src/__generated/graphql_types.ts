@@ -35,8 +35,9 @@ export interface Status {
 
 export interface IQuery {
     welcome(): string | Promise<string>;
-    getAllPersons(): Nullable<Person>[] | Promise<Nullable<Person>[]>;
+    getAllPersons(): Nullable<PersonEntity>[] | Promise<Nullable<PersonEntity>[]>;
     getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
+    getMaterialById(id: string): Nullable<Material> | Promise<Nullable<Material>>;
     getStatusesByPerson(person_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getStatusesByMaterial(material_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
 }
