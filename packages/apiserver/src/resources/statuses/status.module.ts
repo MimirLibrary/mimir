@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { StatusEntity } from './status.entity';
+import { Status } from './status.entity';
+import { StatusResolver } from './status.resolver';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([StatusEntity])],
+  imports: [TypeOrmModule.forFeature([Status])],
+  providers: [StatusResolver],
 })
 export class StatusModule {}

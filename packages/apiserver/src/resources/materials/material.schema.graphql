@@ -5,4 +5,5 @@ type Material{
   type: String!
   created_at: DateTime!
   updated_at: DateTime!
+  statuses: [Status]!
 }

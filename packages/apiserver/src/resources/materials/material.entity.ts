@@ -1,12 +1,13 @@
 import {
   Column,
-  Entity, OneToMany,
+  Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  BaseEntity
+  BaseEntity,
 } from 'typeorm';
-import { StatusEntity } from '../statuses/status.entity';
+import { Status } from '../statuses/status.entity';
 
 @Entity('material')
 export class Material extends BaseEntity {
@@ -28,6 +29,6 @@ export class Material extends BaseEntity {
   @UpdateDateColumn()
   updated_at!: Date;
 
-  @OneToMany(() => StatusEntity, (status) => status.material)
-  status!: StatusEntity[];
+  @OneToMany(() => Status, (status) => status.material)
+  status!: Status[];
 }

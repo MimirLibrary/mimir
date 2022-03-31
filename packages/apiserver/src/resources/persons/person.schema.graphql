@@ -1,6 +1,7 @@
-type Person{
+type PersonEntity{
   id: ID!
   smg_id: String!
   type: String!
   created_at: DateTime!
+  statuses: [Status]
 }
