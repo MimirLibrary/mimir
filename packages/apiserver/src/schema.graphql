@@ -1,3 +1,5 @@
+scalar DateTime
+
 type Query {
   welcome: String!
   getAllPersons: [PersonEntity]!
@@ -5,4 +7,5 @@ type Query {
   getMaterialById(id: ID!): Material
   getStatusesByPerson(person_id: ID!): [Status]!
   getStatusesByMaterial(material_id: ID!): [Status]!
+  getOnePerson(id: ID!): Person
 }

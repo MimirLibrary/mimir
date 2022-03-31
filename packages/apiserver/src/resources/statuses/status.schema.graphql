@@ -1,5 +1,3 @@
-scalar DateTime
-
 type Status {
   id: ID!
   material_id: ID!

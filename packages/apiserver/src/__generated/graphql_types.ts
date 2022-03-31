@@ -40,6 +40,7 @@ export interface IQuery {
     getMaterialById(id: string): Nullable<Material> | Promise<Nullable<Material>>;
     getStatusesByPerson(person_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getStatusesByMaterial(material_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
+    getOnePerson(id: string): Nullable<Person> | Promise<Nullable<Person>>;
 }
 
 export type DateTime = any;

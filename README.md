@@ -12,7 +12,7 @@ This project was generated using [Nx](https://nx.dev).
 
 Run `docker-compose up` for to start the database
 
-Run migrations `npm runm igration:run`
+Run migrations `npm runm migration:run`
 
 Run `nx serve apiserver` for to start the server on [http://localhost:3333/](http://localhost:3333/)
 

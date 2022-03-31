@@ -1,5 +1,3 @@
-scalar DateTime
-
 type Material{
   id: ID!
   identifier: String!
