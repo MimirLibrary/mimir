@@ -8,13 +8,11 @@ import {
 } from '@nestjs/graphql';
 import { Person } from './person.entity';
 import { Status } from '../statuses/status.entity';
-import { PersonService } from './person.service';
 import { CreatePersonInput } from '../../__generated/graphql_types';
+import { UnauthorizedException } from '@nestjs/common';
 
 @Resolver('Person')
 export class PersonResolver {
-  constructor(private PersonService: PersonService) {}
-
   @Query(() => [Person])
   async getAllPersons() {
     return Person.find();
@@ -27,7 +25,16 @@ export class PersonResolver {
 
   @Mutation(() => Person)
   async createPerson(@Args('input') createPersonInput: CreatePersonInput) {
-    return this.PersonService.createPerson(createPersonInput);
+    try {
+      const { smg_id } = createPersonInput;
+      const personFind = await Person.findOne(smg_id);
+      if (personFind) {
+        throw UnauthorizedException.createBody('A person already exists');
+      }
+      return Person.createPerson(createPersonInput);
+    } catch (e) {
+      console.log(e.message);
+    }
   }
 
   @ResolveField(() => [Status])
