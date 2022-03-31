@@ -3,6 +3,6 @@ scalar DateTime
 type Query {
   welcome: String!
   getAllPersons: [Person]!
-  getOnePerson(id: ID): Person
+  getOnePerson(id: ID!): Person
   getAllMaterials: [Material]!
 }
