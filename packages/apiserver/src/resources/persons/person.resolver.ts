@@ -29,7 +29,7 @@ export class PersonResolver {
       const { smg_id } = createPersonInput;
       const personFind = await Person.findOne(smg_id);
       if (personFind) {
-        throw UnauthorizedException.createBody('A person already exists');
+        return new UnauthorizedException('A person already exists');
       }
       return Person.createPerson(createPersonInput);
     } catch (e) {
