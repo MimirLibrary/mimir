@@ -24,9 +24,20 @@ export class MaterialResolver {
 
   @Mutation(() => Material)
   async createMaterial(@Args('input') createMaterialInput: CreateMaterialInput) {
-    const material = await Material.create(createMaterialInput);
-    await Material.save(material);
-    return material;
+    try {
+      const identifier = createMaterialInput.identifier;
+      const getMaterial = await Material.findOne({ where: { identifier } });
+      console.log(getMaterial)
+      if (getMaterial) {
+        throw Error('a material already exists');
+      }
+      const material = await Material.create(createMaterialInput);
+      await Material.save(material);
+      return material;
+    }
+    catch (e) {
+      console.log(e.message);
+    }
   }
 
   @ResolveField(() => [Status])
