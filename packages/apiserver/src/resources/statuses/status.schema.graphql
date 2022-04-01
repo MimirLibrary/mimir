@@ -5,3 +5,9 @@ type Status {
   status: String!
   created_at: DateTime!
 }
+
+input CreateStatusInput {
+  material_id: ID!
+  person_id: ID!
+  status: String!
+}

@@ -9,6 +9,8 @@ import {
 } from 'typeorm';
 import { Material } from '../materials/material.entity';
 import { Person } from '../persons/person.entity';
+import { CreateStatusInput } from '../../__generated/graphql_types';
+import { BadRequestException } from '@nestjs/common';
 
 @Entity('status')
 export class Status extends BaseEntity {
@@ -16,14 +18,14 @@ export class Status extends BaseEntity {
   id!: number;
 
   @Column({ nullable: true })
-  material_id: number;
+  material_id: string | number;
 
   @ManyToOne(() => Material, (material) => material.status)
   @JoinColumn({ name: 'material_id' })
   material!: Material;
 
   @Column({ nullable: true })
-  person_id: number;
+  person_id: string | number;
 
   @ManyToOne(() => Person, (person) => person.status)
   @JoinColumn({ name: 'person_id' })
@@ -34,4 +36,14 @@ export class Status extends BaseEntity {
 
   @CreateDateColumn()
   created_at!: Date;
+
+  static async createStatus(createStatusInput: CreateStatusInput) {
+    const status = await Status.create(createStatusInput);
+    try {
+      await Status.save(status);
+    } catch (e) {
+      throw new BadRequestException();
+    }
+    return status;
+  }
 }

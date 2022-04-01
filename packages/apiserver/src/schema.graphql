@@ -9,3 +9,7 @@ type Query {
   getStatusesByMaterial(material_id: ID!): [Status]!
   getOnePerson(id: ID!): Person
 }
+
+type Mutation {
+  createStatus(input: CreateStatusInput!): Status
+}

@@ -7,6 +7,12 @@
 
 /* tslint:disable */
 /* eslint-disable */
+export interface CreateStatusInput {
+    material_id: string;
+    person_id: string;
+    status: string;
+}
+
 export interface Material {
     id: string;
     identifier: string;
@@ -41,6 +47,10 @@ export interface IQuery {
     getStatusesByPerson(person_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getStatusesByMaterial(material_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getOnePerson(id: string): Nullable<Person> | Promise<Nullable<Person>>;
+}
+
+export interface IMutation {
+    createStatus(input: CreateStatusInput): Nullable<Status> | Promise<Nullable<Status>>;
 }
 
 export type DateTime = any;
