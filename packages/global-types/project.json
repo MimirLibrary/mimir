@@ -1,0 +1,23 @@
+{
+  "root": "packages/global-types",
+  "sourceRoot": "packages/global-types/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/global-types/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/global-types"],
+      "options": {
+        "jestConfig": "packages/global-types/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  }
+}
