@@ -27,7 +27,6 @@ export class MaterialResolver {
     try {
       const identifier = createMaterialInput.identifier;
       const getMaterial = await Material.findOne({ where: { identifier } });
-      console.log(getMaterial)
       if (getMaterial) {
         throw Error('a material already exists');
       }
