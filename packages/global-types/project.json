@@ -1,14 +1,22 @@
 {
   "root": "packages/global-types",
   "sourceRoot": "packages/global-types/src",
-  "projectType": "library",
-  "tags": [],
   "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/global-types",
+        "main": "packages/global-types/src/index.ts",
+        "tsConfig": "packages/global-types/tsconfig.lib.json",
+        "assets": ["packages/global-types/*.md"]
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/global-types/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["packages/global-types/**/*.ts"]
       }
     },
     "test": {
@@ -19,5 +27,6 @@
         "passWithNoTests": true
       }
     }
-  }
+  },
+  "tags": []
 }
