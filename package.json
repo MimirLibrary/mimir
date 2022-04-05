@@ -12,7 +12,7 @@
     "migration:run": "npm run typeorm:cli -- migration:run",
     "relay": "relay-compiler",
     "typeorm:cli": "ts-node --project ./packages/apiserver/tsconfig.app.json ./node_modules/typeorm/cli --config ./packages/apiserver/src/ormconfig.ts",
-    "seed:run": "ts-node ./node_modules/typeorm-seeding/dist/cli.js -n ./packages/apiserver/src/ormconfig.ts seed"
+    "seed:run": "ts-node --project ./packages/apiserver/tsconfig.app.json  ./node_modules/typeorm-seeding/dist/cli.js --configName ./packages/apiserver/src/ormconfig.ts seed"
   },
   "private": true,
   "devDependencies": {
