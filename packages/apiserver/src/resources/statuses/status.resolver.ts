@@ -1,6 +1,7 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Status } from './status.entity';
 import { CreateStatusInput } from '../../__generated/graphql_types';
+import { BadRequestException } from '@nestjs/common';
 
 @Resolver('Status')
 export class StatusResolver {
@@ -16,6 +17,12 @@ export class StatusResolver {
 
   @Mutation(() => Status)
   async createStatus(@Args('input') createStatusInput: CreateStatusInput) {
-    return await Status.createStatus(createStatusInput);
+    let status: Status;
+    try {
+      status = await Status.createStatus(createStatusInput);
+    } catch (e) {
+      throw new BadRequestException();
+    }
+    return status;
   }
 }

@@ -18,14 +18,14 @@ export class Status extends BaseEntity {
   id!: number;
 
   @Column({ nullable: true })
-  material_id: string | number;
+  material_id: string;
 
   @ManyToOne(() => Material, (material) => material.status)
   @JoinColumn({ name: 'material_id' })
   material!: Material;
 
   @Column({ nullable: true })
-  person_id: string | number;
+  person_id: string;
 
   @ManyToOne(() => Person, (person) => person.status)
   @JoinColumn({ name: 'person_id' })
@@ -39,11 +39,7 @@ export class Status extends BaseEntity {
 
   static async createStatus(createStatusInput: CreateStatusInput) {
     const status = await Status.create(createStatusInput);
-    try {
-      await Status.save(status);
-    } catch (e) {
-      throw new BadRequestException();
-    }
+    await Status.save(status);
     return status;
   }
 }
