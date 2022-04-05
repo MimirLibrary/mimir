@@ -6,10 +6,10 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
+import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { Person } from './person.entity';
 import { Status } from '../statuses/status.entity';
 import { CreatePersonInput } from '../../__generated/graphql_types';
-import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 
 @Resolver('Person')
 export class PersonResolver {
