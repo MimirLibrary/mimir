@@ -9,6 +9,7 @@ import {
 import { Person } from './person.entity';
 import { Status } from '../statuses/status.entity';
 import { CreatePersonInput } from '../../__generated/graphql_types';
+import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 
 @Resolver('Person')
 export class PersonResolver {
@@ -24,7 +25,16 @@ export class PersonResolver {
 
   @Mutation(() => Person)
   async createPerson(@Args('input') createPersonInput: CreatePersonInput) {
-      return Person.createPerson(createPersonInput);
+    try {
+      const { smg_id } = createPersonInput;
+      const personFind = await Person.findOne(smg_id);
+      if (personFind) {
+        return new UnauthorizedException('A person already exists');
+      }
+      return Person.creation(createPersonInput);
+    } catch (e) {
+      return new BadRequestException();
+    }
   }
 
   @ResolveField(() => [Status])
