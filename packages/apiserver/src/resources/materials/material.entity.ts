@@ -33,10 +33,7 @@ export class Material extends BaseEntity {
   @OneToMany(() => Status, (status) => status.material)
   status!: Status[];
 
-  static async createMaterial(createMaterialInput: CreateMaterialInput) {
-    const identifier = createMaterialInput.identifier;
-    const existMaterial = await Material.findOne({ where: { identifier } });
-    if (existMaterial) return new Error('a material already exists');
+  static async addMaterial(createMaterialInput: CreateMaterialInput) {
     const material = await Material.create(createMaterialInput);
     await Material.save(material);
     return material;
