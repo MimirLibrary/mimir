@@ -31,7 +31,9 @@ export class PersonResolver {
       if (personFind) {
         return new UnauthorizedException('A person already exists');
       }
-      return Person.creation(createPersonInput);
+      const person = await Person.create(createPersonInput);
+      await Person.save(person);
+      return person;
     } catch (e) {
       return new BadRequestException();
     }
