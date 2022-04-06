@@ -31,7 +31,6 @@ export interface Person {
 
 export interface Status {
     id: string;
-    material?: Nullable<Material>;
     material_id: string;
     person_id: string;
     status: string;
@@ -49,7 +48,7 @@ export interface IQuery {
 }
 
 export interface IMutation {
-    claimBook(input?: Nullable<ClaimBookInput>): Nullable<Status> | Promise<Nullable<Status>>;
+    claimBook(person_id: string, input: ClaimBookInput): Material | Promise<Material>;
 }
 
 export type DateTime = any;

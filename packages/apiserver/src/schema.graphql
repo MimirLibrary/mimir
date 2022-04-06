@@ -11,5 +11,5 @@ type Query {
 }
 
 type Mutation{
-  claimBook(input: ClaimBookInput): Status
+  claimBook(person_id: ID!,input: ClaimBookInput!): Material!
 }

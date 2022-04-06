@@ -34,4 +34,10 @@ export class Status extends BaseEntity {
 
   @CreateDateColumn()
   created_at!: Date;
+
+  static async changeStatus(id: number) {
+    const status = await Status.update({ id }, { status: 'Busy' });
+    console.log('status', status);
+    return status;
+  }
 }
