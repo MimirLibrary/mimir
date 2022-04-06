@@ -1,4 +1,11 @@
-import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { Material } from './material.entity';
 import { Status } from '../statuses/status.entity';
 
@@ -13,6 +20,9 @@ export class MaterialResolver {
   async getMaterialById(@Args('id') id: number | string) {
     return Material.findOneOrFail(id);
   }
+
+  @Mutation(() => Status)
+  async claimBook(@Args('input') claimBookInput: any) {}
 
   @ResolveField(() => [Status])
   async statuses(@Parent() material: Material) {

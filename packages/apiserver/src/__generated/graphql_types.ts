@@ -7,6 +7,10 @@
 
 /* tslint:disable */
 /* eslint-disable */
+export interface ClaimBookInput {
+    identifier: string;
+}
+
 export interface Material {
     id: string;
     identifier: string;
@@ -27,6 +31,7 @@ export interface Person {
 
 export interface Status {
     id: string;
+    material?: Nullable<Material>;
     material_id: string;
     person_id: string;
     status: string;
@@ -41,6 +46,10 @@ export interface IQuery {
     getStatusesByPerson(person_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getStatusesByMaterial(material_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getOnePerson(id: string): Nullable<Person> | Promise<Nullable<Person>>;
+}
+
+export interface IMutation {
+    claimBook(input?: Nullable<ClaimBookInput>): Nullable<Status> | Promise<Nullable<Status>>;
 }
 
 export type DateTime = any;

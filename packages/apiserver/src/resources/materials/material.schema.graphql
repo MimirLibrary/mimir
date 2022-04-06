@@ -7,3 +7,7 @@ type Material{
   updated_at: DateTime!
   statuses: [Status]!
 }
+
+input ClaimBookInput{
+  identifier: String!
+}
