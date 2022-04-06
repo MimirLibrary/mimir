@@ -23,6 +23,9 @@ export class Material extends BaseEntity {
   @Column()
   type!: string;
 
+  @Column()
+  location!: string;
+
   @CreateDateColumn()
   created_at!: Date;
 

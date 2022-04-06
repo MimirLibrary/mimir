@@ -3,6 +3,7 @@ type Material{
   identifier: String!
   id_type: String!
   type: String!
+  location: String!
   created_at: DateTime!
   updated_at: DateTime!
   statuses: [Status]!
