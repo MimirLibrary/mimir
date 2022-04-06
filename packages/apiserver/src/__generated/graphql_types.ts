@@ -7,10 +7,6 @@
 
 /* tslint:disable */
 /* eslint-disable */
-export interface ClaimBookInput {
-    identifier: string;
-}
-
 export interface Material {
     id: string;
     identifier: string;
@@ -48,7 +44,7 @@ export interface IQuery {
 }
 
 export interface IMutation {
-    claimBook(person_id: string, input: ClaimBookInput): Material | Promise<Material>;
+    claimBook(person_id: string, identifier?: Nullable<string>): Status | Promise<Status>;
 }
 
 export type DateTime = any;

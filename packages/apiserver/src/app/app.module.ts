@@ -8,6 +8,7 @@ import { MaterialModule } from '../resources/materials/material.module';
 import { StatusModule } from '../resources/statuses/status.module';
 import { PersonModule } from '../resources/persons/person.module';
 import { GraphQLModule } from '@nestjs/graphql';
+import { BookModule } from '../resources/books/book.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { AppResolver } from './app.resolver';
@@ -30,6 +31,7 @@ import {
     MaterialModule,
     StatusModule,
     PersonModule,
+    BookModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],
