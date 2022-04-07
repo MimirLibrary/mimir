@@ -11,7 +11,8 @@
     "migration:generate": "npm run typeorm:cli -- migration:generate -n migrationMy",
     "migration:run": "npm run typeorm:cli -- migration:run",
     "relay": "relay-compiler",
-    "typeorm:cli": "ts-node --project ./packages/apiserver/tsconfig.app.json ./node_modules/typeorm/cli --config ./packages/apiserver/src/ormconfig.ts"
+    "typeorm:cli": "ts-node --project ./packages/apiserver/tsconfig.app.json ./node_modules/typeorm/cli --config ./packages/apiserver/src/ormconfig.ts",
+    "seed:run": "ts-node --project ./packages/apiserver/tsconfig.app.json  ./node_modules/typeorm-seeding/dist/cli.js --configName ./packages/apiserver/src/ormconfig.ts seed"
   },
   "private": true,
   "devDependencies": {
@@ -40,6 +41,7 @@
     "@testing-library/react": "12.1.4",
     "@testing-library/react-hooks": "7.0.2",
     "@testing-library/react-native": "9.0.0",
+    "@types/faker": "^6.6.9",
     "@types/jest": "27.0.2",
     "@types/node": "16.11.7",
     "@types/react": "17.0.40",
@@ -113,6 +115,7 @@
     "regenerator-runtime": "0.13.7",
     "rxjs": "^7.0.0",
     "tslib": "^2.0.0",
-    "typeorm": "^0.2.45"
+    "typeorm": "^0.2.45",
+    "typeorm-seeding": "^1.6.1"
   }
 }
