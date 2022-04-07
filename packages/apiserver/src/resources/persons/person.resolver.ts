@@ -9,7 +9,7 @@ import {
 import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { Person } from './person.entity';
 import { Status } from '../statuses/status.entity';
-import { CreatePersonInput } from '../../__generated/graphql_types';
+import { CreatePersonInput } from '@mimir/global-types';
 
 @Resolver('Person')
 export class PersonResolver {
