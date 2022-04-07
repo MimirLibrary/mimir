@@ -12,4 +12,5 @@ type Query {
 
 type Mutation {
   createMaterial(input: CreateMaterialInput!) : Material
+  createPerson(input: CreatePersonInput!) : Person
 }
