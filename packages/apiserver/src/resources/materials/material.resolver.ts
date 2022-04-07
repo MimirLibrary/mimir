@@ -4,11 +4,11 @@ import {
   Query,
   ResolveField,
   Resolver,
-  Mutation
+  Mutation,
 } from '@nestjs/graphql';
 import { Material } from './material.entity';
 import { Status } from '../statuses/status.entity';
-import { CreateMaterialInput } from '../../__generated/graphql_types';
+import { CreateMaterialInput } from '@mimir/global-types';
 
 @Resolver('Material')
 export class MaterialResolver {
@@ -23,7 +23,9 @@ export class MaterialResolver {
   }
 
   @Mutation(() => Material)
-  async createMaterial(@Args('input') createMaterialInput: CreateMaterialInput) {
+  async createMaterial(
+    @Args('input') createMaterialInput: CreateMaterialInput
+  ) {
     const identifier = createMaterialInput.identifier;
     const existMaterial = await Material.findOne({ where: { identifier } });
     if (existMaterial) return new Error('a material already exists');
@@ -37,4 +39,3 @@ export class MaterialResolver {
     return Status.find({ where: { material_id: id } });
   }
 }
-
