@@ -8,7 +8,6 @@ import {
   BaseEntity,
 } from 'typeorm';
 import { Status } from '../statuses/status.entity';
-import { CreateMaterialInput } from '../../__generated/graphql_types';
 
 @Entity('material')
 export class Material extends BaseEntity {
