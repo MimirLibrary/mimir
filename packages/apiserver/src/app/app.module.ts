@@ -40,7 +40,7 @@ import {
       definitions: {
         path: join(
           process.cwd(),
-          './packages/apiserver/src/__generated/graphql_types.ts'
+          './packages/global-types/src/lib/global-types.ts'
         ),
       },
     }),

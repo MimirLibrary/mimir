@@ -10,6 +10,8 @@ type Query {
   getOnePerson(id: ID!): Person
 }
 
-type Mutation{
+type Mutation {
+  createMaterial(input: CreateMaterialInput!) : Material
+  createPerson(input: CreatePersonInput!) : Person
   claimBook(person_id: ID!,identifier: String): Status!
 }

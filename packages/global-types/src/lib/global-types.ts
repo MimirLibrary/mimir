@@ -43,10 +43,6 @@ export interface IQuery {
     getOnePerson(id: string): Nullable<Person> | Promise<Nullable<Person>>;
 }
 
-export interface IMutation {
-    claimBook(person_id: string, identifier?: Nullable<string>): Status | Promise<Status>;
-}
-
 export type DateTime = any;
 export type Time = any;
 export type Timestamp = any;

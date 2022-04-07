@@ -7,3 +7,9 @@ type Material{
   updated_at: DateTime!
   statuses: [Status]!
 }
+
+input CreateMaterialInput {
+  identifier: String!
+  id_type: String!
+  type: String!
+}
