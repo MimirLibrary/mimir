@@ -9,8 +9,6 @@ import {
 } from 'typeorm';
 import { Material } from '../materials/material.entity';
 import { Person } from '../persons/person.entity';
-import { CreateStatusInput } from '../../__generated/graphql_types';
-import { BadRequestException } from '@nestjs/common';
 
 @Entity('status')
 export class Status extends BaseEntity {
@@ -36,10 +34,4 @@ export class Status extends BaseEntity {
 
   @CreateDateColumn()
   created_at!: Date;
-
-  static async createStatus(createStatusInput: CreateStatusInput) {
-    const status = await Status.create(createStatusInput);
-    await Status.save(status);
-    return status;
-  }
 }

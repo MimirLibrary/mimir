@@ -17,12 +17,12 @@ export class StatusResolver {
 
   @Mutation(() => Status)
   async createStatus(@Args('input') createStatusInput: CreateStatusInput) {
-    let status: Status;
     try {
-      status = await Status.createStatus(createStatusInput);
+      const status = await Status.create(createStatusInput);
+      await Status.save(status);
+      return status;
     } catch (e) {
       throw new BadRequestException();
     }
-    return status;
   }
 }
