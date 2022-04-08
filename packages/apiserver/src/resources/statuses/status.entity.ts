@@ -1,11 +1,11 @@
 import {
+  BaseEntity,
   Column,
+  CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-  JoinColumn,
-  CreateDateColumn,
-  BaseEntity,
 } from 'typeorm';
 import { Material } from '../materials/material.entity';
 import { Person } from '../persons/person.entity';
@@ -35,11 +35,15 @@ export class Status extends BaseEntity {
   @CreateDateColumn()
   created_at!: Date;
 
-  static async createNewStatus(currentStatus: Status, statusType: string) {
+  static async createNewStatus(
+    material_id: number,
+    person_id: number,
+    statusType: string
+  ) {
     const statusInput = {
       status: statusType,
-      material_id: currentStatus.material_id,
-      person_id: currentStatus.person_id,
+      material_id,
+      person_id,
     };
     const newStatus = await Status.create(statusInput);
     await Status.save(newStatus);

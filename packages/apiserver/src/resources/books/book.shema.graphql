@@ -1,0 +1,4 @@
+input ClaimBookInput{
+  identifier: String!
+  person_id: Int!
+}
