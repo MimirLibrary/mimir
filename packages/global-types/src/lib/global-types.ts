@@ -10,10 +10,18 @@
 export interface CreateMaterialInput {
     identifier: string;
     id_type: string;
+    type: string;
 }
+
 export interface CreatePersonInput {
     smg_id: string;
     type: string;
+}
+
+export interface CreateStatusInput {
+    material_id: string;
+    person_id: string;
+    status: string;
 }
 
 export interface Material {
@@ -55,6 +63,7 @@ export interface IQuery {
 export interface IMutation {
     createMaterial(input: CreateMaterialInput): Nullable<Material> | Promise<Nullable<Material>>;
     createPerson(input: CreatePersonInput): Nullable<Person> | Promise<Nullable<Person>>;
+    createStatus(input: CreateStatusInput): Nullable<Status> | Promise<Nullable<Status>>;
 }
 
 export type DateTime = any;
