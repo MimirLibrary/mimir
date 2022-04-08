@@ -8,7 +8,7 @@ import {
 } from '@nestjs/graphql';
 import { Material } from './material.entity';
 import { Status } from '../statuses/status.entity';
-import { CreateMaterialInput } from '../../__generated/graphql_types';
+import { CreateMaterialInput } from '@mimir/global-types';
 
 @Resolver('Material')
 export class MaterialResolver {
