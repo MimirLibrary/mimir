@@ -7,17 +7,10 @@
 
 /* tslint:disable */
 /* eslint-disable */
-export interface ClaimBookInput {
-    identifier: string;
-    person_id: number;
-}
-
 export interface CreateMaterialInput {
     identifier: string;
     id_type: string;
-    type: string;
 }
-
 export interface CreatePersonInput {
     smg_id: string;
     type: string;
@@ -49,10 +42,6 @@ export interface Status {
     created_at: DateTime;
 }
 
-export interface ErrorMessage {
-    message?: Nullable<string>;
-}
-
 export interface IQuery {
     welcome(): string | Promise<string>;
     getAllPersons(): Nullable<Person>[] | Promise<Nullable<Person>[]>;
@@ -66,7 +55,6 @@ export interface IQuery {
 export interface IMutation {
     createMaterial(input: CreateMaterialInput): Nullable<Material> | Promise<Nullable<Material>>;
     createPerson(input: CreatePersonInput): Nullable<Person> | Promise<Nullable<Person>>;
-    claimBook(input?: Nullable<ClaimBookInput>): StatusResult | Promise<StatusResult>;
 }
 
 export type DateTime = any;
@@ -125,5 +113,4 @@ export type CountryCode = any;
 export type Locale = any;
 export type RoutingNumber = any;
 export type AccountNumber = any;
-export type StatusResult = Status | ErrorMessage;
 type Nullable<T> = T | null;

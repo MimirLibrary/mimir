@@ -19,5 +19,6 @@ type Query {
 type Mutation {
   createMaterial(input: CreateMaterialInput!) : Material
   createPerson(input: CreatePersonInput!) : Person
+  createStatus(input: CreateStatusInput!): Status
   claimBook(input: ClaimBookInput): StatusResult!
 }

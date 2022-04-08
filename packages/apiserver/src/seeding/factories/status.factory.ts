@@ -1,10 +1,10 @@
-import { define } from "typeorm-seeding";
-import { Status } from "../../resources/statuses/status.entity";
+import { define } from 'typeorm-seeding';
+import { Status } from '../../resources/statuses/status.entity';
 
 define(Status, () => {
-  const ids = [1, 2, 3, 4, 5]
-  const getIdNumber = () => ids[Math.floor(Math.random() * ids.length)];
-  const statuses = ["Free", "Busy"]
+  const ids = [1, 2, 3, 4, 5];
+  const getIdNumber = () => String(ids[Math.floor(Math.random() * ids.length)]);
+  const statuses = ['Free', 'Busy'];
   const getStatus = () => String(statuses[Math.floor(Math.random() * 2)]);
 
   const status = new Status();
