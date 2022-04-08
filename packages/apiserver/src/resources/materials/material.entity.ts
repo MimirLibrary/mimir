@@ -1,14 +1,13 @@
 import {
+  BaseEntity,
   Column,
+  CreateDateColumn,
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
-  CreateDateColumn,
   UpdateDateColumn,
-  BaseEntity,
 } from 'typeorm';
 import { Status } from '../statuses/status.entity';
-import { find } from 'rxjs';
 
 @Entity('material')
 export class Material extends BaseEntity {
