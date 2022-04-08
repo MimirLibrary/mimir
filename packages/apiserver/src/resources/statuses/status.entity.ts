@@ -36,8 +36,8 @@ export class Status extends BaseEntity {
   created_at!: Date;
 
   static async createNewStatus(
-    material_id: number,
-    person_id: number,
+    material_id: string,
+    person_id: string,
     statusType: string
   ) {
     const statusInput = {

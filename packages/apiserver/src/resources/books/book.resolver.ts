@@ -1,8 +1,8 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { Material } from '../materials/material.entity';
 import { Status } from '../statuses/status.entity';
-import { ClaimBookInput } from '@mimir/global-types';
 import { TypeSpecifierForGQL } from '../../assets/TypeSpecifierForGQL';
+import { ClaimBookInput } from '@mimir/global-types';
 
 @Resolver('Book')
 export class BookResolver {
