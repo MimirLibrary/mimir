@@ -13,14 +13,15 @@ export class BookResolver {
       if (!identifier) {
         throw new Error('Received identifier not recognized, please try again');
       }
-      const material = await Material.findOne({ where: { identifier } });
+      const material = await Material.findOne(identifier);
       if (!material) {
         throw new Error('This book is not registered in the library');
       }
       const { id } = material;
       const statuses = await Status.find({
-        where: { material_id: id },
+        where: { material_id: id }, order: {created_at: 1}
       });
+      console.log(statuses)
       const lastStatus = statuses[statuses.length - 1];
       if (!lastStatus || lastStatus.status === 'Busy') {
         throw new Error(`This book is busy or doesn't exist. Ask the manager!`);
