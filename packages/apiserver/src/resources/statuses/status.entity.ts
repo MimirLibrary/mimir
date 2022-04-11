@@ -34,19 +34,4 @@ export class Status extends BaseEntity {
 
   @CreateDateColumn()
   created_at!: Date;
-
-  static async createNewStatus(
-    material_id: string,
-    person_id: string,
-    statusType: string
-  ) {
-    const statusInput = {
-      status: statusType,
-      material_id,
-      person_id,
-    };
-    const newStatus = await Status.create(statusInput);
-    await Status.save(newStatus);
-    return newStatus;
-  }
 }

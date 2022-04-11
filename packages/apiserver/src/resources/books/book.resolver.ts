@@ -1,45 +1,24 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { Material } from '../materials/material.entity';
-import { Status } from '../statuses/status.entity';
-import { TypeSpecifierForGQL } from '../../assets/TypeSpecifierForGQL';
-import { ClaimBookInput } from '@mimir/global-types';
+import {Args, Mutation, ResolveField, Resolver} from '@nestjs/graphql';
+import {ClaimBookInput, ErrorMessage, Status, StatusResult} from "@mimir/global-types";
+import {BookService} from "./book.service";
 
-@Resolver('Book')
+@Resolver('StatusResult')
 export class BookResolver {
-  @Mutation('claimBook')
-  async claimBook(@Args('input') claimBookInput: ClaimBookInput) {
-    try {
-      const { identifier, person_id } = claimBookInput;
-      if (!identifier) {
-        throw new Error('Received identifier not recognized, please try again');
-      }
-      const material = await Material.findOne(identifier);
-      if (!material) {
-        throw new Error('This book is not registered in the library');
-      }
-      const { id } = material;
-      const statuses = await Status.find({
-        where: { material_id: id }, order: {created_at: 1}
-      });
-      console.log(statuses)
-      const lastStatus = statuses[statuses.length - 1];
-      if (!lastStatus || lastStatus.status === 'Busy') {
-        throw new Error(`This book is busy or doesn't exist. Ask the manager!`);
-      }
-      const newStatus = await Status.createNewStatus(
-        lastStatus.material_id,
-        person_id,
-        'Busy'
-      );
-      return TypeSpecifierForGQL.createTypeNameAndValue<Status>(
-        'Status',
-        newStatus
-      );
-    } catch (e) {
-      return TypeSpecifierForGQL.createTypeNameAndErrorMessage(
-        'ErrorMessage',
-        e.message
-      );
+  constructor(private bookService: BookService) {
+  }
+  @ResolveField()
+  __resolveType(value) {
+    if (value.status) {
+      return 'Status';
     }
+    if (value.message) {
+      return 'ErrorMessage';
+    }
+    return null;
+  }
+
+  @Mutation('claimBook')
+  async claimBook(@Args('input') claimBookInput: ClaimBookInput): Promise<Status | ErrorMessage>  {
+    return this.bookService.claimBook(claimBookInput)
   }
 }

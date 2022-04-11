@@ -72,8 +72,8 @@ export interface IQuery {
 export interface IMutation {
     createMaterial(input: CreateMaterialInput): Nullable<Material> | Promise<Nullable<Material>>;
     createPerson(input: CreatePersonInput): Nullable<Person> | Promise<Nullable<Person>>;
-    createStatus(input: CreateStatusInput): Nullable<Status> | Promise<Nullable<Status>>;
     claimBook(input?: Nullable<ClaimBookInput>): StatusResult | Promise<StatusResult>;
+    createStatus(input: CreateStatusInput): Nullable<Status> | Promise<Nullable<Status>>;
 }
 
 export type DateTime = any;
