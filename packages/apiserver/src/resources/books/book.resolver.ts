@@ -1,6 +1,8 @@
 import {Args, Mutation, ResolveField, Resolver} from '@nestjs/graphql';
-import {ClaimBookInput, ErrorMessage, Status, StatusResult} from "@mimir/global-types";
+import {ClaimBookInput, Error, Status, StatusResult} from "@mimir/global-types";
+import {Status as StatusType} from '../statuses/status.entity'
 import {BookService} from "./book.service";
+import {ClaimError} from "../../errors";
 
 @Resolver('StatusResult')
 export class BookResolver {
@@ -8,17 +10,17 @@ export class BookResolver {
   }
   @ResolveField()
   __resolveType(value) {
-    if (value.status) {
+    if (value instanceof StatusType) {
       return 'Status';
     }
-    if (value.message) {
-      return 'ErrorMessage';
+    if (value instanceof ClaimError) {
+      return 'Error';
     }
     return null;
   }
 
-  @Mutation('claimBook')
-  async claimBook(@Args('input') claimBookInput: ClaimBookInput): Promise<Status | ErrorMessage>  {
-    return this.bookService.claimBook(claimBookInput)
+  @Mutation()
+  async claimBook(@Args('input') claimBookInput: ClaimBookInput): Promise<StatusResult>  {
+    return this.bookService.claim(claimBookInput)
   }
 }

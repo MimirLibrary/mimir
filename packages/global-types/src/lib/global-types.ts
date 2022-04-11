@@ -55,8 +55,9 @@ export interface Status {
     created_at: DateTime;
 }
 
-export interface ErrorMessage {
-    message?: Nullable<string>;
+export interface Error {
+    code: number;
+    message: string;
 }
 
 export interface IQuery {
@@ -132,5 +133,5 @@ export type CountryCode = any;
 export type Locale = any;
 export type RoutingNumber = any;
 export type AccountNumber = any;
-export type StatusResult = Status | ErrorMessage;
+export type StatusResult = Status | Error;
 type Nullable<T> = T | null;

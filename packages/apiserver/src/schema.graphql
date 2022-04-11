@@ -1,9 +1,10 @@
 scalar DateTime
 
-union StatusResult = Status | ErrorMessage
+union StatusResult = Status | Error
 
-type ErrorMessage{
-  message:String
+type Error {
+  code: Int!
+  message: String!
 }
 
 type Query {
