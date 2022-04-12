@@ -6,8 +6,7 @@ import {ClaimError} from "../../errors";
 
 @Resolver('StatusResult')
 export class BookResolver {
-  constructor(private bookService: BookService) {
-  }
+  constructor(private bookService: BookService) {}
   @ResolveField()
   __resolveType(value) {
     if (value instanceof StatusType) {
