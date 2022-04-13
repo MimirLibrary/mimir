@@ -3,7 +3,6 @@ scalar DateTime
 union StatusResult = Status | Error
 
 type Error {
-  code: Int!
   message: String!
 }
 
