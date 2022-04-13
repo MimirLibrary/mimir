@@ -11,7 +11,8 @@ export class ItemService {
 
   async claim(claimBookInput) {
     const queryRunner = this.connection.createQueryRunner();
-    const statusRepository = queryRunner.manager.getRepository<Status>('status')
+    const statusRepository = queryRunner.manager.getRepository<Status>('status');
+    const materialRepository = queryRunner.manager.getRepository<Material>('material')
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
@@ -19,7 +20,7 @@ export class ItemService {
       if (!identifier) {
         throw new ClaimError('Received identifier not recognized, please try again')
       }
-      const material = await Material.findOne({where: {identifier}});
+      const material = await materialRepository.findOne({ where: { identifier} });
       if (!material) {
         throw new ClaimError('This book is not registered in the library')
       }
@@ -31,7 +32,7 @@ export class ItemService {
         throw new ClaimError(`This book is busy or doesn't exist. Ask the manager!`);
       }
       const newStatus = await statusRepository.create({status: "Busy", material_id: status[0].material_id, person_id});
-      await queryRunner.manager.save<Status>(newStatus)
+      await statusRepository.save(newStatus);
       await queryRunner.commitTransaction();
       return newStatus
     } catch (e) {
