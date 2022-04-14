@@ -3,6 +3,7 @@ import TitleProject from '../TitleProject';
 import styled from '@emotion/styled';
 import NotificationIcon from '../NotificationIcon';
 import Avatar from '../Avatar';
+import UserInfo from '../UserInfo';
 
 const WrapperTitle = styled.div`
   display: flex;
@@ -15,20 +16,32 @@ const WrapperUserInfo = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  width: 10rem;
+`;
+
+const WrapperForCenter = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Header = () => {
   return (
-    <section>
+    <header style={{ width: '358px' }}>
       <WrapperTitle>
         <TitleProject title="Mimir" />
         <NotificationIcon active={false} />
       </WrapperTitle>
-      <WrapperUserInfo>
-        <Avatar src={''} />
-        {/*<UserInfo />*/}
-      </WrapperUserInfo>
-    </section>
+      <WrapperForCenter>
+        <WrapperUserInfo>
+          <Avatar src={''} />
+          <UserInfo
+            userName="Ivan Ivanovisky"
+            email="ivanivanov@itechart-group.com"
+          />
+        </WrapperUserInfo>
+      </WrapperForCenter>
+    </header>
   );
 };
 

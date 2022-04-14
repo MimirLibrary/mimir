@@ -1,9 +1,9 @@
-import Avatar from './components/Avatar';
+import Header from './components/Header';
 
 export function App() {
   return (
     <>
-      <Avatar src={''} />
+      <Header />
     </>
   );
 }
