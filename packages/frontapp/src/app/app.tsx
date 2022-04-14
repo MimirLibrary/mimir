@@ -1,5 +1,5 @@
 import React, {FC} from "react";
-import StartPage from "./components/StartPage";
+import StartPage from "./pages/StartPage";
 import {GlobalStyle} from "./GlobalStyle";
 
 const App: FC = () => {
