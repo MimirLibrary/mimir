@@ -3,22 +3,21 @@ import styled from "@emotion/styled";
 import {useAppDispatch} from "../../hooks/useTypedDispatch";
 import {setUser} from "../../redux/slices/userSlice";
 
-const StyledStartPage = styled.div`
+const StartPageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 168px;
 `;
 
-const StyledStartImage = styled.div`
+const Logo = styled.div`
   background-image: url("../../../assets/Mimir.svg");
   width: 200px;
   height: 275px
 `
 
-const StyledWelcomeHeader = styled.h1`
+const WelcomeHeader = styled.h1`
   font-family: 'Bitter';
-  font-style: normal;
   font-weight: 600;
   font-size: 35px;
   line-height: 42px;
@@ -27,10 +26,9 @@ const StyledWelcomeHeader = styled.h1`
   margin-bottom: 15px
 `
 
-const StyledStartPageParagraph = styled.p`
+const StartPageParagraph = styled.p`
   margin-top: 0;
   margin-bottom: 30px;
-  font-style: normal;
   font-weight: 300;
   font-size: 20px;
   line-height: 24px;
@@ -39,21 +37,17 @@ const StyledStartPageParagraph = styled.p`
 
 const WrapperForInputAndButton = styled.div`
   display: flex;
-  justify-content: center;
 `
 
-const StyledInput = styled.input`
+const Input = styled.input`
   margin-right: 10px;
   width: 350px;
   height: 50px;
   border: 1px solid #1A1ED6;
   box-sizing: border-box;
   border-radius: 30px;
-  order: 0;
-  flex-grow: 0;
 
   ::placeholder {
-    font-style: normal;
     font-weight: 400;
     font-size: 20px;
     line-height: 24px;
@@ -65,20 +59,17 @@ const StyledInput = styled.input`
     padding-left: 20px;
     color: #000000;
     outline: 0;
-    box-shadow: 0 0 0 0.1rem rgba(37, 76, 176, 0.99);
-    font-style: normal;
+    box-shadow: 0 0 0 0.1rem #1A1ED6;
     font-weight: 300;
     font-size: 20px;
     line-height: 24px;
   }
 `
 
-const StyledLoginButton = styled.button`
+const LoginButton = styled.button`
   display: flex;
-  flex-direction: row;
   justify-content: center;
   align-items: center;
-  position: static;
   width: 128px;
   height: 50px;
   background: #1A1ED6;
@@ -102,6 +93,7 @@ const StyledLoginButton = styled.button`
 const StartPage: FC = () => {
   const [username, setUsername] = useState<string>('')
   const dispatch = useAppDispatch()
+
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value)
   }
@@ -111,19 +103,19 @@ const StartPage: FC = () => {
   }
 
   return (
-    <StyledStartPage>
-      <StyledStartImage />
-      <StyledWelcomeHeader>
+    <StartPageWrapper>
+      <Logo/>
+      <WelcomeHeader>
         Welcome to the library MIMIR
-      </StyledWelcomeHeader>
-      <StyledStartPageParagraph>
+      </WelcomeHeader>
+      <StartPageParagraph>
         Simplify the process of claim
-      </StyledStartPageParagraph>
+      </StartPageParagraph>
       <WrapperForInputAndButton>
-        <StyledInput value={username} onChange={handleChangeInput} type="text" placeholder="Enter your username" />
-        <StyledLoginButton onClick={addUser}>Login</StyledLoginButton>
+        <Input value={username} onChange={handleChangeInput} type="text" placeholder="Enter your username"/>
+        <LoginButton onClick={addUser}>Login</LoginButton>
       </WrapperForInputAndButton>
-    </StyledStartPage>
+    </StartPageWrapper>
   );
 }
 
