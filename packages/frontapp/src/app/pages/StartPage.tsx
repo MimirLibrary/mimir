@@ -1,7 +1,7 @@
 import React, {FC, useState} from 'react';
 import styled from "@emotion/styled";
-import {useAppDispatch} from "../../hooks/useTypedDispatch";
-import {setUser} from "../../redux/slices/userSlice";
+import {useAppDispatch} from "../hooks/useTypedDispatch";
+import {setUser} from "../redux/slices/userSlice";
 
 const StartPageWrapper = styled.div`
   display: flex;
@@ -11,7 +11,7 @@ const StartPageWrapper = styled.div`
 `;
 
 const Logo = styled.div`
-  background-image: url("../../../assets/Mimir.svg");
+  background-image: url("../../assets/Mimir.svg");
   width: 200px;
   height: 275px
 `
