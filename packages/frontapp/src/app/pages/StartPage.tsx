@@ -2,6 +2,7 @@ import React, {FC, useState} from 'react';
 import styled from "@emotion/styled";
 import {useAppDispatch} from "../hooks/useTypedDispatch";
 import {setUser} from "../redux/slices/userSlice";
+import {useNavigate} from "react-router-dom";
 
 const StartPageWrapper = styled.div`
   display: flex;
@@ -91,6 +92,7 @@ const LoginButton = styled.button`
 `
 
 const StartPage: FC = () => {
+  const history = useNavigate()
   const [username, setUsername] = useState<string>('')
   const dispatch = useAppDispatch()
 
@@ -99,7 +101,13 @@ const StartPage: FC = () => {
   }
 
   const addUser = () => {
-    dispatch(setUser(username))
+    try {
+      dispatch(setUser(username))
+      history('/home')
+    } catch(e) {
+      console.log(e)
+    }
+
   }
 
   return (
