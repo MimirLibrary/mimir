@@ -5,4 +5,5 @@ export const colors = {
   main_red: '#FF372A',
   main_green: '#2AA816',
   bg_primary: '#F3F7FF',
+  bg_secondary: '#FFFFFF',
 };
