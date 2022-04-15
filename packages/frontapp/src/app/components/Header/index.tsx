@@ -16,21 +16,23 @@ const WrapperUserInfo = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  width: 10rem;
+  max-width: 10.02rem;
+  width: 100%;
 `;
 
 const WrapperForCenter = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 3.375rem;
 `;
 
 const Header = () => {
   return (
-    <header style={{ width: '358px' }}>
+    <header style={{ width: '264px' }}>
       <WrapperTitle>
         <TitleProject title="Mimir" />
-        <NotificationIcon active={false} />
+        <NotificationIcon active={true} />
       </WrapperTitle>
       <WrapperForCenter>
         <WrapperUserInfo>

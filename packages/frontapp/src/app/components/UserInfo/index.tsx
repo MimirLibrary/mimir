@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import styled from '@emotion/styled';
+import { colors, dimensions } from '@mimir/ui-kit';
 
 const WrapperUserInfo = styled.div`
   display: flex;
@@ -11,15 +12,16 @@ const WrapperUserInfo = styled.div`
 
 const UserNameText = styled.span`
   display: inline-block;
-  color: #333333;
+  color: ${colors.main_black};
   font-weight: 700;
-  font-size: 1.25rem;
-  line-height: 1.5rem;
+  font-size: ${dimensions.xl};
+  line-height: ${dimensions.xl_2};
+  text-align: center;
 `;
 
 const UserEmailText = styled.span`
   display: inline-block;
-  font-size: 0.875rem;
+  font-size: ${dimensions.sm};
   line-height: 1.0625rem;
   color: #828282;
   text-align: center;

@@ -1,11 +1,11 @@
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom';
 import { ThemeProvider } from '@emotion/react';
+import App from './app/app';
 import { BrowserRouter } from 'react-router-dom';
 import { theme } from '@mimir/ui-kit';
 import './normalize.css';
-
-import App from './app/app';
+import './index.css';
 
 ReactDOM.render(
   <StrictMode>
