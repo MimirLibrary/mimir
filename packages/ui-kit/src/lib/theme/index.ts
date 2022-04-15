@@ -3,7 +3,7 @@ import { colors } from '../colors';
 export const theme = {
   light: {
     colors: {
-      primary_blue: colors.main_blue,
+      primary_blue: colors.accent_color,
     },
     background: {
       primary_bg: colors.bg_primary,
@@ -11,7 +11,7 @@ export const theme = {
   },
   dark: {
     colors: {
-      primary_blue: colors.main_blue,
+      primary_blue: colors.accent_color,
     },
     background: {
       primary_bg: colors.bg_primary,
