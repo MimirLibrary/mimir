@@ -48,6 +48,7 @@ const Input = styled.input`
   border: 0.0625rem solid #1a1ed6;
   box-sizing: border-box;
   border-radius: ${dimensions.xl_3};
+  padding-top: 0.1875rem;
 
   ::placeholder {
     font-weight: 400;
