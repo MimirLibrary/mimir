@@ -1,10 +1,16 @@
 import React from 'react';
+import styled from '@emotion/styled';
+import Navbar from './Navbar';
+
+const StyledSidebar = styled.div`
+  width: 22.375rem;
+`;
 
 const Sidebar = () => {
   return (
-    <div>
-      sidebar
-    </div>
+    <StyledSidebar>
+      <Navbar />
+    </StyledSidebar>
   );
 };
 
