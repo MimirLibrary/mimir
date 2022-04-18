@@ -1,11 +1,7 @@
 import React from 'react';
 
 const HistoryOfClaimPage = () => {
-  return (
-    <div>
-
-    </div>
-  );
+  return <div>History of claim</div>;
 };
 
 export default HistoryOfClaimPage;

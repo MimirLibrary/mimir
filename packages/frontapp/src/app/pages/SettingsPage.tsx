@@ -1,11 +1,7 @@
 import React from 'react';
 
 const SettingsPage = () => {
-  return (
-    <div>
-
-    </div>
-  );
+  return <div>Setting Page</div>;
 };
 
 export default SettingsPage;

@@ -13,6 +13,7 @@ import styled from '@emotion/styled';
 const WrapperPage = styled.div`
   display: flex;
   justify-content: flex-start;
+  height: 100vh;
 `;
 
 const WrapperRoutes = styled.div`

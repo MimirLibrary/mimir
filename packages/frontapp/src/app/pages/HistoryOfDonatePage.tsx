@@ -1,11 +1,7 @@
 import React from 'react';
 
 const HistoryOfDonatePage = () => {
-  return (
-    <div>
-
-    </div>
-  );
+  return <div>History of donate</div>;
 };
 
 export default HistoryOfDonatePage;
