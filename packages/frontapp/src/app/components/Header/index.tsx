@@ -27,9 +27,14 @@ const WrapperForCenter = styled.div`
   margin-top: 3.375rem;
 `;
 
+const WrapperHeader = styled.header`
+  max-width: 16.5rem;
+  width: 100%;
+`;
+
 const Header = () => {
   return (
-    <header style={{ width: '264px' }}>
+    <WrapperHeader>
       <WrapperTitle>
         <TitleProject title="Mimir" />
         <NotificationIcon active={true} />
@@ -43,7 +48,7 @@ const Header = () => {
           />
         </WrapperUserInfo>
       </WrapperForCenter>
-    </header>
+    </WrapperHeader>
   );
 };
 
