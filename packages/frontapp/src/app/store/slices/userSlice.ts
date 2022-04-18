@@ -5,7 +5,7 @@ interface IUserState {
 }
 
 const initialState: IUserState = {
-  username: 'a',
+  username: '',
 };
 
 const userSlice = createSlice({

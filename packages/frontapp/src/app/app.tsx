@@ -9,6 +9,7 @@ import SettingsPage from './pages/SettingsPage';
 import SearchPage from './pages/SearchPage';
 import { useAuth } from './hooks/useAuth';
 import styled from '@emotion/styled';
+import { colors } from '@mimir/ui-kit';
 
 const WrapperPage = styled.div`
   display: flex;
@@ -17,8 +18,8 @@ const WrapperPage = styled.div`
 `;
 
 const WrapperRoutes = styled.div`
-  width: calc(100% - 358px);
-  background-color: #f9faff;
+  width: calc(100% - 22rem);
+  background-color: ${colors.bg_primary};
 `;
 
 const App: FC = () => {

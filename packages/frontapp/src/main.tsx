@@ -3,8 +3,8 @@ import * as ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 
 import App from './app/app';
-import {Provider} from "react-redux";
-import {store} from "./app/redux";
+import { Provider } from 'react-redux';
+import { store } from './app/store';
 
 ReactDOM.render(
   <StrictMode>

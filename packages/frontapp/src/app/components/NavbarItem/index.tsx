@@ -28,24 +28,24 @@ const StyledLink = styled(Link)<IStyle>`
   margin-bottom: 0.12rem;
 
   :hover {
-    background: #14168f;
-    color: #ffffff;
+    background: ${colors.hover_color};
+    color: ${colors.bg_secondary};
   }
 
   :hover svg {
-    fill: #ffffff;
+    fill: ${colors.bg_secondary};
   }
 
   :hover p {
-    color: #ffffff;
+    color: ${colors.bg_secondary};
   }
 
   :active {
-    background: #07097b;
+    background: ${colors.pressed_color};
   }
 
   :active p {
-    color: #ffffff;
+    color: ${colors.bg_secondary};
   }
 `;
 
@@ -53,24 +53,24 @@ const InsideButtonContainer = styled.div`
   display: flex;
   justify-content: start;
   align-items: center;
-  max-width: 200px;
+  max-width: 12.5rem;
   width: 100%;
-  color: #ffffff;
+  color: ${colors.bg_secondary};
 `;
 
 const StyledIcon = styled.svg<IStyle>`
-
   margin-right: 10px;
   width: 32px;
   height: 32px;
-  fill: ${(props) => (props.primary ? '#ffffff' : '#333333')};:
+  fill: ${(props) => (props.primary ? colors.bg_secondary : colors.main_black)};
 `;
 
 const TextInButton = styled.p<IStyle>`
   font-weight: 400;
-  font-size: 16px;
-  line-height: 20px;
-  color: ${(props) => (props.primary ? '#ffffff' : '#333333')};
+  font-size: ${dimensions.base};
+  line-height: ${dimensions.xl};
+  color: ${(props) =>
+    props.primary ? colors.bg_secondary : colors.main_black};
 `;
 
 const NavbarItem: FC<IProps> = ({

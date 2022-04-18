@@ -1,9 +1,10 @@
 import React, { FC, useState } from 'react';
 import styled from '@emotion/styled';
 import { useAppDispatch } from '../hooks/useTypedDispatch';
-import { setUser } from '../redux/slices/userSlice';
+import { setUser } from '../store/slices/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { colors, dimensions, fonts } from '@mimir/ui-kit';
+import Input from '../components/Input';
 
 const StartPageWrapper = styled.div`
   display: flex;
@@ -41,14 +42,18 @@ const WrapperForInputAndButton = styled.div`
   display: flex;
 `;
 
-const Input = styled.input`
+const InputStart = styled(Input)`
   margin-right: ${dimensions.xs};
+  padding-left: ${dimensions.xl};
   width: 20rem;
   height: 3.125rem;
-  border: 0.0625rem solid #1a1ed6;
+  border: 1px solid #1a1ed6;
   box-sizing: border-box;
   border-radius: ${dimensions.xl_3};
-  padding-top: 0.1875rem;
+  padding-top: 0.2rem;
+  font-weight: 300;
+  font-size: ${dimensions.xl};
+  line-height: ${dimensions.xl_2};
 
   ::placeholder {
     font-weight: 400;
@@ -60,13 +65,9 @@ const Input = styled.input`
   }
 
   :focus {
-    padding-left: ${dimensions.xl};
     color: ${colors.main_black};
     outline: 0;
     box-shadow: 0 0 0 0.1rem ${colors.accent_color};
-    font-weight: 300;
-    font-size: ${dimensions.xl};
-    line-height: ${dimensions.xl_2};
   }
 `;
 
@@ -75,7 +76,7 @@ const LoginButton = styled.button`
   justify-content: center;
   align-items: center;
   width: 8rem;
-  height: 3.125rem;
+  height: 3.1rem;
   background: ${colors.accent_color};
   border-radius: ${dimensions.xl_3};
   border: none;
@@ -86,11 +87,11 @@ const LoginButton = styled.button`
   cursor: pointer;
 
   :hover {
-    background: #14168f;
+    background: ${colors.hover_color};
   }
 
   :active {
-    background: #07097b;
+    background: ${colors.pressed_color};
   }
 `;
 
@@ -104,12 +105,8 @@ const StartPage: FC = () => {
   };
 
   const addUser = () => {
-    try {
-      dispatch(setUser(username));
-      history('/home');
-    } catch (e) {
-      console.log(e);
-    }
+    dispatch(setUser(username));
+    history('/home');
   };
 
   return (
@@ -118,7 +115,7 @@ const StartPage: FC = () => {
       <WelcomeHeader>Welcome to the library MIMIR</WelcomeHeader>
       <StartPageParagraph>Simplify the process of claim</StartPageParagraph>
       <WrapperForInputAndButton>
-        <Input
+        <InputStart
           value={username}
           onChange={handleChangeInput}
           type="text"
