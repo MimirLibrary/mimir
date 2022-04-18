@@ -16,7 +16,7 @@ const WrapperUserInfo = styled.div`
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  max-width: 10.02rem;
+  max-width: 10rem;
   width: 100%;
 `;
 
@@ -24,7 +24,7 @@ const WrapperForCenter = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 3.375rem;
+  margin-top: 3.4rem;
 `;
 
 const WrapperHeader = styled.header`

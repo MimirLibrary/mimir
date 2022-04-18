@@ -5,8 +5,8 @@ import { colors, fonts } from '@mimir/ui-kit';
 const Title = styled.h1`
   font-family: ${fonts.secondary}, sans-serif;
   color: ${colors.main_black};
-  line-height: 2.625rem;
-  font-size: 2.1875rem;
+  line-height: 2.6rem;
+  font-size: 2.2rem;
   font-weight: 500;
   text-transform: uppercase;
 `;

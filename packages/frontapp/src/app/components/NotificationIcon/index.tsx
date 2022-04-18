@@ -1,24 +1,24 @@
 import React, { FC } from 'react';
 import styled from '@emotion/styled';
-import { ReactComponent as NotificationIconCircle } from '../../../assets/NotificationWithCircle.svg';
-import { ReactComponent as NotificationIconWithoutCircle } from '../../../assets/NotificationWithoutCircle.svg';
+import { ReactComponent as Notification } from '../../../assets/Notification.svg';
+import { ReactComponent as NoNotification } from '../../../assets/NoNotification.svg';
 
 const WrapperIcon = styled.div`
   cursor: pointer;
 `;
 
-interface IPropsNotificationIcon {
+interface IProps {
   active: boolean;
 }
 
-const NotificationIcon: FC<IPropsNotificationIcon> = ({ active }) => {
+const NotificationIcon: FC<IProps> = ({ active }) => {
   const linkToNotification = () => {};
   return (
     <WrapperIcon>
       {active ? (
-        <NotificationIconCircle onClick={linkToNotification} />
+        <Notification onClick={linkToNotification} />
       ) : (
-        <NotificationIconWithoutCircle onClick={linkToNotification} />
+        <NoNotification onClick={linkToNotification} />
       )}
     </WrapperIcon>
   );
