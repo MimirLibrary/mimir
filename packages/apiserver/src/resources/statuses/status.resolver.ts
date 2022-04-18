@@ -1,7 +1,7 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Status } from './status.entity';
 import { BadRequestException } from '@nestjs/common';
-import { CreateStatusInput } from '@mimir/global-types';
+import {CreateStatusInput} from "@mimir/global-types";
 
 @Resolver('Status')
 export class StatusResolver {

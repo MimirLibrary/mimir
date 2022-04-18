@@ -1,11 +1,11 @@
 import {
+  BaseEntity,
   Column,
+  CreateDateColumn,
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
-  CreateDateColumn,
   UpdateDateColumn,
-  BaseEntity,
 } from 'typeorm';
 import { Status } from '../statuses/status.entity';
 
