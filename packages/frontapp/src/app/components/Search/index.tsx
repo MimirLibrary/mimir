@@ -26,7 +26,7 @@ const WrapperInput = styled.div`
   width: 100%;
   border: 0.03125rem solid #bdbdbd;
   border-radius: ${dimensions.xl_3};
-  padding: 0.8125rem 0 0.8125rem 0;
+  padding: 0.625rem 0 0.625rem 0;
 
   :hover {
     border: 0.03125rem solid ${colors.accent_color};

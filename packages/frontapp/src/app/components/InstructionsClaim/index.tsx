@@ -7,10 +7,10 @@ interface TitleArticleProps {
 }
 
 const WrapperInstructions = styled.section`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
+  //display: flex;
+  //justify-content: start;
+  //flex-direction: column;
+  //align-items: center;
 `;
 
 const TitleArticle = styled.h3<TitleArticleProps>`
