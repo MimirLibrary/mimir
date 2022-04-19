@@ -27,12 +27,12 @@ const UserEmailText = styled.span`
   text-align: center;
 `;
 
-interface IPropsUserInfo {
+interface IProps {
   userName: string;
   email: string;
 }
 
-const UserInfo: FC<IPropsUserInfo> = ({ userName, email }) => {
+const UserInfo: FC<IProps> = ({ userName, email }) => {
   return (
     <WrapperUserInfo>
       <UserNameText>{userName}</UserNameText>

@@ -11,11 +11,11 @@ const Title = styled.h1`
   text-transform: uppercase;
 `;
 
-interface IPropsTitleProject {
+interface IProps {
   title: string;
 }
 
-const TitleProject: FC<IPropsTitleProject> = ({ title }) => {
+const TitleProject: FC<IProps> = ({ title }) => {
   return <Title>{title}</Title>;
 };
 

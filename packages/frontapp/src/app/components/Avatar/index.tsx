@@ -10,11 +10,11 @@ const UserAvatar = styled.img`
   border-radius: 50%;
 `;
 
-interface IPropsAvatar {
+interface IProps {
   src: string;
 }
 
-const Avatar: FC<IPropsAvatar> = ({ src = '' }) => {
+const Avatar: FC<IProps> = ({ src = '' }) => {
   return (
     <div>
       <UserAvatar src={avatar} alt="avatar" />
