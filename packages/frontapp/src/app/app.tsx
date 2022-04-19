@@ -11,7 +11,7 @@ import { useAuth } from './hooks/useAuth';
 import styled from '@emotion/styled';
 import { colors } from '@mimir/ui-kit';
 
-const WrapperPage = styled.div`
+const WrapperPage = styled.main`
   display: flex;
   justify-content: flex-start;
   height: 100vh;

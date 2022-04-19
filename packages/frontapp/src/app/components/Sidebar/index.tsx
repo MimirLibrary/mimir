@@ -2,12 +2,11 @@ import React from 'react';
 import styled from '@emotion/styled';
 import Navbar from '../Navbar';
 
-const StyledSidebar = styled.div`
+const StyledSidebar = styled.aside`
   width: 22rem;
 `;
 
 const Sidebar = () => {
-  console.log('render');
   return (
     <StyledSidebar>
       <Navbar />

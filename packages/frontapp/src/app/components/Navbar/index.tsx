@@ -5,7 +5,7 @@ import { useAppDispatch } from '../../hooks/useTypedDispatch';
 import { setActiveTab } from '../../store/slices/tabsSlice';
 import { navbarItemsArray } from './Items';
 
-const NavbarWrapper = styled.div`
+const NavbarWrapper = styled.nav`
   display: flex;
   flex-direction: column;
   justify-content: center;
