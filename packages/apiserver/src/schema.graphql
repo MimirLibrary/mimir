@@ -1,5 +1,11 @@
 scalar DateTime
 
+union StatusResult = Status | Error
+
+type Error {
+  message: String!
+}
+
 type Query {
   welcome: String!
   getAllPersons: [Person]!
@@ -14,4 +20,5 @@ type Mutation {
   createMaterial(input: CreateMaterialInput!) : Material
   createPerson(input: CreatePersonInput!) : Person
   createStatus(input: CreateStatusInput!): Status
+  claimBook(input: ClaimBookInput): StatusResult!
 }
