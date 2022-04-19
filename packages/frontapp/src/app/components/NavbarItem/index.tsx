@@ -17,6 +17,9 @@ interface IStyle {
 }
 
 const StyledLink = styled(Link)<IStyle>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: ${(props) =>
     props.primary ? colors.accent_color : colors.bg_secondary};
   width: 16rem;
@@ -24,7 +27,6 @@ const StyledLink = styled(Link)<IStyle>`
   text-decoration: none;
   border-radius: 6.25rem;
   padding-left: ${dimensions.xl_2};
-  padding-top: 0.25rem;
   margin-bottom: 0.12rem;
 
   :hover {
