@@ -7,7 +7,7 @@ const InputSearch = styled.input`
   width: 80%;
   border: none;
   outline: none;
-  margin-left: 0.58125rem;
+  margin-left: 9px;
   color: ${colors.main_black};
   font-family: ${fonts.primary}, sans-serif;
 
@@ -22,14 +22,14 @@ const WrapperInput = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 21.5625rem;
+  max-width: 21.5rem;
   width: 100%;
-  border: 0.03125rem solid #bdbdbd;
+  border: 0.5px solid #bdbdbd;
   border-radius: ${dimensions.xl_3};
-  padding: 0.625rem 0 0.625rem 0;
+  padding: 10px 0;
 
   :hover {
-    border: 0.03125rem solid ${colors.accent_color};
+    border: 0.5 solid ${colors.accent_color};
   }
 `;
 
