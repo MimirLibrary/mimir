@@ -3,12 +3,7 @@ import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import BookStatus from '../BookStatus';
 import bookImage from '../../../assets/MOC-data/BookImage.png';
-
-interface IProps {
-  src: string;
-  title: string;
-  description: string;
-}
+import { IBookCard } from '@mimir/global-types';
 
 const BookCardWrapper = styled.div`
   height: 19.5rem;
@@ -48,7 +43,11 @@ const DescriptionBook = styled.p`
   margin: ${dimensions.xs_2} auto;
 `;
 
-const BookCard: FC<IProps> = ({ src = '', title = '', description = '' }) => {
+const BookCard: FC<IBookCard> = ({
+  src = '',
+  title = '',
+  description = '',
+}) => {
   return (
     <BookCardWrapper>
       <BookImage src={bookImage} />

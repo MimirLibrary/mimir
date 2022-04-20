@@ -6,8 +6,7 @@ import { TextBase } from '../globalUI/TextBase';
 import styled from '@emotion/styled';
 import ListItems from '../components/ListBooks';
 import EmptyListItems from '../components/EmptyListItems';
-
-const mockItems = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+import { mockItemsBooks } from '../models/mockData/listBooks';
 
 const Wrapper = styled.div`
   margin-top: 3rem;
@@ -19,13 +18,13 @@ const HomePage: FC = () => {
     <>
       <Search />
       <InstructionsClaim />
-      {mockItems.length ? (
+      {mockItemsBooks.length ? (
         <>
           <Wrapper>
             <TitleArticle>Don't forget to pass</TitleArticle>
             <TextBase>List of items you have taken and due dates</TextBase>
           </Wrapper>
-          <ListItems items={mockItems} />
+          <ListItems items={mockItemsBooks} />
         </>
       ) : (
         <EmptyListItems />

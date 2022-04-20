@@ -1,12 +1,8 @@
 import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
-
-const MockBox = styled.div`
-  height: 330px;
-  width: 195px;
-  background: red;
-`;
+import BookCard from '../BookCard';
+import { IBookCard } from '@mimir/global-types';
 
 const WrapperList = styled.section`
   display: grid;
@@ -31,14 +27,22 @@ const WrapperList = styled.section`
 `;
 
 interface IProps {
-  items: any[];
+  items: Array<IBookCard>;
 }
 
 const ListItems: FC<IProps> = ({ items }) => {
   return (
     <>
       <WrapperList>
-        {items && items.map((item, index) => <MockBox key={index} />)}
+        {items &&
+          items.map((item, index) => (
+            <BookCard
+              key={index}
+              src={''}
+              title={item.title}
+              description={item.description}
+            />
+          ))}
       </WrapperList>
     </>
   );
