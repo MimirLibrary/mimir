@@ -1,4 +1,6 @@
 export const dimensions = {
+  xs_2: '0.5rem', //8px;
+  xs_1: '0.625rem', //10px
   xs: '0.75rem', //12px
   sm: '0.875rem', //14px
   base: '1rem', //16px
