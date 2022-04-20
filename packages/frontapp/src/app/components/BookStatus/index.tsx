@@ -1,17 +1,21 @@
-import React, {FC, useEffect, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import {Status} from "@mimir/global-types";
 
-interface IProps {
+interface IbookStatusProps {
   status?: Status;
+}
+
+interface IStyledBookStatusProps {
+  status: string
 }
 
 function getDates(date: string) {
   const currentDate = new Date()
   const startDate = new Date(date)
-  const periodOfUsing = 30;
-  const returnDate = new Date(startDate.setDate(startDate.getDate() + periodOfUsing));
+  const periodOfKeeping = 30;
+  const returnDate = new Date(startDate.setDate(startDate.getDate() + periodOfKeeping));
   return {
     currentDate,
     startDate,
@@ -22,26 +26,36 @@ function getDates(date: string) {
 const isOverdue = (date: string) => getDates(date).currentDate <= getDates(date).returnDate
 
 function getStatus(status: string | undefined, date: string) {
-  if(status === "Free") {
-    return "Free";
-  }
-  if(isOverdue(date)) {
-    return "Busy"
-  }
-    return "Overdue"
+  if(status === "Free") return "Free";
+  if(isOverdue(date)) return "Busy"
+  return "Overdue"
 }
 
-const StyledBookStatus = styled.p`
+const StyledBookStatus = styled.p<IStyledBookStatusProps>`
   font-weight: 500;
   font-size: ${dimensions.sm};
   line-height: ${dimensions.base};
-  color: ${colors.accent_color};
+  color: ${(props) => {
+    switch(props.status) {
+      case "Free":
+        return colors.free_book;
+      case "Busy":
+        return colors.accent_color
+      case "Overdue":   
+        return colors.problem_red
+      default:
+        return ""
+    }
+  }
+}
 `;
 
-const BookStatus: FC<IProps> = ({ status }) => {
+const BookStatus: FC<IbookStatusProps> = ({ status }) => {
   const [statusText, setStatusText] = useState<String>('')
+  const currentStatus = getStatus(status?.status, status?.created_at)
+  
   useEffect(() => {
-    switch (getStatus(status?.status, status?.created_at)) {
+    switch (currentStatus) {
       case "Free":
         setStatusText("On the shelf")
         break
@@ -54,11 +68,11 @@ const BookStatus: FC<IProps> = ({ status }) => {
         setStatusText("Overdue")
         break
       default:
-        console.log('some text')
+        console.log('')
         break
     }
-  }, [status?.status, status?.created_at])
-  return <StyledBookStatus >{statusText}</StyledBookStatus>;
+  })
+  return <StyledBookStatus status={currentStatus}>{statusText}</StyledBookStatus>;
 };
 
 export default BookStatus;
