@@ -4,10 +4,9 @@ import { TitleArticle } from '../../globalUI/TextArticle';
 import { TextBase } from '../../globalUI/TextBase';
 
 const WrapperInstructions = styled.section`
-  //display: flex;
-  //justify-content: start;
-  //flex-direction: column;
-  //align-items: center;
+  margin-top: 3.5rem;
+  max-width: 611px;
+  width: 100%;
 `;
 
 const InstructionsClaim = () => {

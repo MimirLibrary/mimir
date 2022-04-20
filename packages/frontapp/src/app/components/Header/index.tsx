@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import NotificationIcon from '../NotificationIcon';
 import Avatar from '../Avatar';
 import UserInfo from '../UserInfo';
+import { useAppSelector } from '../../hooks/useTypedSelector';
 
 const WrapperTitle = styled.div`
   display: flex;
@@ -24,15 +25,17 @@ const WrapperForCenter = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 3.4rem;
+  margin-top: 3.2rem;
 `;
 
 const WrapperHeader = styled.header`
   max-width: 16.5rem;
   width: 100%;
+  margin-bottom: 3.5rem;
 `;
 
 const Header = () => {
+  const { username } = useAppSelector((state) => state.user);
   return (
     <WrapperHeader>
       <WrapperTitle>
@@ -42,10 +45,7 @@ const Header = () => {
       <WrapperForCenter>
         <WrapperUserInfo>
           <Avatar src={''} />
-          <UserInfo
-            userName="Ivan Ivanovisky"
-            email="ivanivanov@itechart-group.com"
-          />
+          <UserInfo userName={username} email="ivanivanov@itechart-group.com" />
         </WrapperUserInfo>
       </WrapperForCenter>
     </WrapperHeader>

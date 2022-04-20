@@ -8,4 +8,5 @@ export const dimensions = {
   xl_3: '1.875rem', //30px
   base_2: '2rem', //32px
   xl_4: '2.25rem', //36px
+  xl_6: '2.5rem', //40px
 };

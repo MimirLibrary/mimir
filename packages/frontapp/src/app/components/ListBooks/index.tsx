@@ -1,11 +1,6 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
-
-const mockListItems = [
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 11, 11, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-  1, 1, 1, 1,
-];
 
 const MockBox = styled.div`
   height: 330px;
@@ -19,8 +14,9 @@ const WrapperList = styled.section`
   row-gap: ${dimensions.base};
   column-gap: 35px;
   width: 100%;
-  height: 766px;
-  overflow-y: scroll;
+  max-height: 35rem;
+  height: 100%;
+  overflow-y: auto;
 
   ::-webkit-scrollbar {
     background: #e0e0e0;
@@ -34,13 +30,15 @@ const WrapperList = styled.section`
   }
 `;
 
-const ListItems = () => {
+interface IProps {
+  items: any[];
+}
+
+const ListItems: FC<IProps> = ({ items }) => {
   return (
     <>
-      {/*<TitleArticle>Don't forget to pass</TitleArticle>*/}
-      {/*<TextBase>List of items you have taken and due dates</TextBase>*/}
       <WrapperList>
-        {mockListItems && mockListItems.map((item) => <MockBox />)}
+        {items && items.map((item, index) => <MockBox key={index} />)}
       </WrapperList>
     </>
   );
