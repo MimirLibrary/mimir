@@ -8,6 +8,7 @@ import { theme } from '@mimir/ui-kit';
 import { store } from './app/store';
 import './normalize.css';
 import './index.css';
+import '@mimir/localization'
 
 ReactDOM.render(
   <StrictMode>

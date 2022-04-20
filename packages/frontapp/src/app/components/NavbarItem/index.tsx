@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import { colors, dimensions } from '@mimir/ui-kit';
+import {t} from "i18next";
 
 interface IProps {
   icon: ReactElement;
@@ -91,7 +92,7 @@ const NavbarItem: FC<IProps> = ({
     >
       <InsideButtonContainer>
         <StyledIcon primary={index === activeTab}>{icon}</StyledIcon>
-        <TextInButton primary={index === activeTab}>{name}</TextInButton>
+        <TextInButton primary={index === activeTab}>{t(`Navbar.${name}`)}</TextInButton>
       </InsideButtonContainer>
     </StyledLink>
   );
