@@ -8,16 +8,20 @@ import { theme } from '@mimir/ui-kit';
 import { store } from './app/store';
 import './normalize.css';
 import './index.css';
+import { ApolloProvider } from '@apollo/client';
+import { client } from '@mimir/apollo-client';
 
 ReactDOM.render(
   <StrictMode>
-    <Provider store={store}>
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ThemeProvider>
-    </Provider>
+    <ApolloProvider client={client}>
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </ThemeProvider>
+      </Provider>
+    </ApolloProvider>
   </StrictMode>,
   document.getElementById('root')
 );
