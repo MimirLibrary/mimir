@@ -5,9 +5,6 @@ export const GET_ALL_MATERIALS = gql`
     getAllMaterials {
       created_at
       identifier
-      statuses {
-        status
-      }
     }
   }
 `;
