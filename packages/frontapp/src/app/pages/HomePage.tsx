@@ -7,10 +7,11 @@ import styled from '@emotion/styled';
 import ListItems from '../components/ListBooks';
 import EmptyListItems from '../components/EmptyListItems';
 import { mockItemsBooks } from '../models/mockData/listBooks';
+import { dimensions } from '@mimir/ui-kit';
 
 const Wrapper = styled.div`
   margin-top: 3rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: ${dimensions.xl_2};
 `;
 
 const HomePage: FC = () => {

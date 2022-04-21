@@ -15,8 +15,8 @@ const Wrapper = styled.section`
   flex-direction: column;
   background: ${colors.bg_secondary};
   padding: 7.5rem 0;
-  border-radius: 0.625rem;
-  margin-top: 1.5rem;
+  border-radius: ${dimensions.xs_1};
+  margin-top: ${dimensions.xl_2};
 `;
 
 const WrapperText = styled.div`
@@ -32,11 +32,11 @@ const WrapperText = styled.div`
 
 const StyleTitle = styled(TitleArticle)`
   font-size: ${dimensions.xl};
-  margin-bottom: 8px;
+  margin-bottom: ${dimensions.xs_2};
 `;
 
 const StyleTextBase = styled(TextBase)`
-  margin-top: 0.5rem;
+  margin-top: ${dimensions.xs_2};
 `;
 
 const EmptyListItems = () => {
@@ -47,9 +47,9 @@ const EmptyListItems = () => {
       </div>
       <WrapperText>
         <StyleTitle>Shelf for your books and other items</StyleTitle>
-        <TextBase>
+        <StyleTextBase>
           Go to the search section and choose the one that suits you
-        </TextBase>
+        </StyleTextBase>
       </WrapperText>
     </Wrapper>
   );

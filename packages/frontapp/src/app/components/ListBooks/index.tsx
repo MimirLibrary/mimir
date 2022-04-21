@@ -8,7 +8,7 @@ const WrapperList = styled.section`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   row-gap: ${dimensions.base};
-  column-gap: 35px;
+  column-gap: ${dimensions.base_2};
   width: 100%;
   max-height: 35rem;
   height: 100%;
@@ -16,13 +16,13 @@ const WrapperList = styled.section`
 
   ::-webkit-scrollbar {
     background: #e0e0e0;
-    width: 8px;
+    width: ${dimensions.xs_2};
   }
 
   ::-webkit-scrollbar-thumb {
     background-color: ${colors.accent_color};
-    border-radius: 0.5rem;
-    height: 0.6rem;
+    border-radius: ${dimensions.xs_2};
+    height: ${dimensions.xs_2};
   }
 `;
 
