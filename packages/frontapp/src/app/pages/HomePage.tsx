@@ -3,7 +3,6 @@ import { useQuery } from '@apollo/client';
 import { GET_ALL_MATERIALS } from '@mimir/apollo-client';
 
 const HomePage: FC = () => {
-  console.log('render');
   const [allMaterials, setAllMaterials] = useState();
   const { data, error, loading } = useQuery(GET_ALL_MATERIALS);
   useEffect(() => {
