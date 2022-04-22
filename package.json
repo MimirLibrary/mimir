@@ -11,11 +11,18 @@
     "migration:generate": "npm run typeorm:cli -- migration:generate -n migrationMy",
     "migration:run": "npm run typeorm:cli -- migration:run",
     "typeorm:cli": "ts-node --project ./packages/apiserver/tsconfig.app.json ./node_modules/typeorm/cli --config ./packages/apiserver/src/ormconfig.ts",
-    "seed:run": "ts-node --project ./packages/apiserver/tsconfig.app.json  ./node_modules/typeorm-seeding/dist/cli.js --configName ./packages/apiserver/src/ormconfig.ts seed"
+    "seed:run": "ts-node --project ./packages/apiserver/tsconfig.app.json  ./node_modules/typeorm-seeding/dist/cli.js --configName ./packages/apiserver/src/ormconfig.ts seed",
+    "codegen": "graphql-codegen --config codegen.yml"
   },
   "private": true,
   "devDependencies": {
+    "@babel/preset-flow": "^7.16.7",
     "@emotion/babel-plugin": "11.7.2",
+    "@graphql-codegen/cli": "2.6.2",
+    "@graphql-codegen/introspection": "^2.1.1",
+    "@graphql-codegen/typescript": "2.4.8",
+    "@graphql-codegen/typescript-operations": "2.3.5",
+    "@graphql-codegen/typescript-react-apollo": "3.2.11",
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",
     "@nrwl/cypress": "13.9.5",
@@ -81,8 +88,13 @@
   },
   "dependencies": {
     "@apollo/client": "^3.5.10",
+    "@babel/preset-typescript": "^7.16.7",
     "@emotion/react": "11.8.2",
     "@emotion/styled": "11.8.1",
+    "@graphql-codegen/cli": "^2.6.2",
+    "@graphql-codegen/typescript": "^2.4.8",
+    "@graphql-codegen/typescript-operations": "^2.3.5",
+    "@graphql-codegen/typescript-react-apollo": "^3.2.11",
     "@nestjs/apollo": "^10.0.8",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^2.0.0",

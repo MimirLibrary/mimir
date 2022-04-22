@@ -1,19 +1,11 @@
-import React, { FC, useEffect, useState } from 'react';
-import { useQuery } from '@apollo/client';
-import { GET_ALL_MATERIALS } from '@mimir/apollo-client';
+import React, { FC } from 'react';
+
+import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
 
 const HomePage: FC = () => {
-  const [allMaterials, setAllMaterials] = useState();
-  const { data, error, loading } = useQuery(GET_ALL_MATERIALS);
-  useEffect(() => {
-    if (!loading) {
-      setAllMaterials(data.getAllMaterials);
-    }
-  }, [data]);
+  const { data, error, loading } = useGetAllMaterialsQuery();
 
-  console.log(error);
-  console.log(allMaterials);
-
+  console.log(data?.getAllMaterials);
   return <div>Home page</div>;
 };
 
