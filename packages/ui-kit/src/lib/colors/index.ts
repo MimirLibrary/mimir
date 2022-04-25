@@ -11,4 +11,5 @@ export const colors = {
   main_green: '#2AA816',
   bg_primary: '#F3F7FF',
   bg_secondary: '#FFFFFF',
+  free_book: '#2AA816',
 };
