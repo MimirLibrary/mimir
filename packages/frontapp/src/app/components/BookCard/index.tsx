@@ -61,7 +61,7 @@ const status: Status = {
   created_at: "2022-02-04 12:37:50.683849"
 }
 
-const BookCard: FC<IBookCard> = ({
+const BookCard: FC<IProps> = ({
   src = '',
   title = '',
   description = '',
