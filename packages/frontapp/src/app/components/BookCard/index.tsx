@@ -1,4 +1,5 @@
-import { FC } from 'react';
+
+import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import BookStatus from '../BookStatus';
@@ -60,7 +61,11 @@ const status: Status = {
   created_at: "2022-02-04 12:37:50.683849"
 }
 
-const BookCard: FC<IProps> = ({ src, title, description}) => {
+const BookCard: FC<IBookCard> = ({
+  src = '',
+  title = '',
+  description = '',
+}) => {
   return (
     <BookCardWrapper>
       <BookImage src={bookImage} />

@@ -12,7 +12,7 @@ const tabsSlice = createSlice({
   name: 'tabsSlice',
   initialState,
   reducers: {
-    setActiveTab: (state: IStateTabs, action: PayloadAction<number>) => {
+    setActiveTab: (state: IStateTabs, action: PayloadAction<number | null>) => {
       state.activeTab = action.payload;
     },
   },
