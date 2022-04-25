@@ -41,7 +41,7 @@ const StyledBookStatus = styled.p<IStyledBookStatusProps>`
         return colors.free_book;
       case "Busy":
         return colors.accent_color
-      case "Overdue":   
+      case "Overdue":
         return colors.problem_red
       default:
         return ""
@@ -53,14 +53,14 @@ const StyledBookStatus = styled.p<IStyledBookStatusProps>`
 const BookStatus: FC<IbookStatusProps> = ({ status }) => {
   const [statusText, setStatusText] = useState<String>('')
   const currentStatus = getStatus(status?.status, status?.created_at)
-  
+
   useEffect(() => {
     switch (currentStatus) {
       case "Free":
         setStatusText("On the shelf")
         break
       case "Busy":
-        const day = (`${getDates(status?.created_at).returnDate.getDay()}`).padStart(2, "0")
+        const day = (`${getDates(status?.created_at).returnDate.getDate()}`).padStart(2, "0")
         const month = (`${getDates(status?.created_at).returnDate.getMonth()}`).padStart(2, "0")
         setStatusText(`Return till ${day}.${month}`)
         break

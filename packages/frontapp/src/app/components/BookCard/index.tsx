@@ -58,7 +58,7 @@ const status: Status = {
   material_id: "2",
   person_id: "3",
   status: "Busy",
-  created_at: "2022-02-04 12:37:50.683849"
+  created_at: '2022-04-22T05:00:19.109Z',
 }
 
 const BookCard: FC<IProps> = ({
