@@ -5,7 +5,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import App from './app/app';
 import { theme } from '@mimir/ui-kit';
-import { store } from './app/store';
+import { store, persist } from './app/store';
+import { PersistGate } from 'redux-persist/integration/react';
 import './normalize.css';
 import './index.css';
 import { ApolloProvider } from '@apollo/client';
@@ -15,11 +16,13 @@ ReactDOM.render(
   <StrictMode>
     <ApolloProvider client={client}>
       <Provider store={store}>
+        <PersistGate loading={null} persistor={persist}>
         <ThemeProvider theme={theme}>
           <BrowserRouter>
             <App />
           </BrowserRouter>
         </ThemeProvider>
+        </PersistGate>
       </Provider>
     </ApolloProvider>
   </StrictMode>,
