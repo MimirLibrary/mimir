@@ -13,7 +13,7 @@ interface IProps {
 }
 
 interface IStyle {
-  primary?: boolean;
+  primary: string;
 }
 
 const StyledLink = styled(Link)<IStyle>`
@@ -21,7 +21,7 @@ const StyledLink = styled(Link)<IStyle>`
   justify-content: center;
   align-items: center;
   background: ${(props) =>
-    props.primary ? colors.accent_color : colors.bg_secondary};
+    JSON.parse(props.primary) ? colors.accent_color : colors.bg_secondary};
   width: 16rem;
   height: 4rem;
   text-decoration: none;
@@ -60,11 +60,14 @@ const InsideButtonContainer = styled.div`
   color: ${colors.bg_secondary};
 `;
 
-const StyledIcon = styled.svg<IStyle>`
-  margin-right: 10px;
-  width: 32px;
-  height: 32px;
-  fill: ${(props) => (props.primary ? colors.bg_secondary : colors.main_black)};
+const StyledIcon = styled.div<IStyle>`
+  & svg {
+    margin-right: 10px;
+    width: 32px;
+    height: 32px;
+    fill: ${(props) =>
+      JSON.parse(props.primary) ? colors.bg_secondary : colors.main_black};
+  }
 `;
 
 const TextInButton = styled.p<IStyle>`
@@ -72,7 +75,7 @@ const TextInButton = styled.p<IStyle>`
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
   color: ${(props) =>
-    props.primary ? colors.bg_secondary : colors.main_black};
+    JSON.parse(props.primary) ? colors.bg_secondary : colors.main_black};
 `;
 
 const NavbarItem: FC<IProps> = ({
@@ -85,13 +88,15 @@ const NavbarItem: FC<IProps> = ({
   const { activeTab } = useAppSelector((state) => state.tabs);
   return (
     <StyledLink
-      primary={index === activeTab}
+      primary={String(index === activeTab)}
       to={path}
       onClick={() => changeActiveTab(index)}
     >
       <InsideButtonContainer>
-        <StyledIcon primary={index === activeTab}>{icon}</StyledIcon>
-        <TextInButton primary={index === activeTab}>{name}</TextInButton>
+        <StyledIcon primary={String(index === activeTab)}>{icon}</StyledIcon>
+        <TextInButton primary={String(index === activeTab)}>
+          {name}
+        </TextInButton>
       </InsideButtonContainer>
     </StyledLink>
   );
