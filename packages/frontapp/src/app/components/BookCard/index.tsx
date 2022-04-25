@@ -1,3 +1,4 @@
+
 import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
@@ -5,9 +6,9 @@ import BookStatus from '../BookStatus';
 import bookImage from '../../../assets/MOC-data/BookImage.png';
 import { IStatusForMaterial } from '../ListBooks';
 
-interface IBookCard {
+interface IProps {
   src: string;
-  title: string | undefined;
+  title: string;
   description: string;
   status: IStatusForMaterial | null | undefined;
 }
@@ -52,7 +53,7 @@ const DescriptionBook = styled.p`
   margin: ${dimensions.xs_2} auto;
 `;
 
-const BookCard: FC<IBookCard> = ({
+const BookCard: FC<IProps> = ({
   src = '',
   title = '',
   description = '',
@@ -64,7 +65,7 @@ const BookCard: FC<IBookCard> = ({
       <DescriptionWrapper>
         <TitleBook>{title}</TitleBook>
         <DescriptionBook>{description}</DescriptionBook>
-        <BookStatus status={status} />
+        <BookStatus status={status}/>
       </DescriptionWrapper>
     </BookCardWrapper>
   );
