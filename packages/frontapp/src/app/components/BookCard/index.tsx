@@ -1,4 +1,3 @@
-
 import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
@@ -8,7 +7,7 @@ import { IStatusForMaterial } from '../ListBooks';
 
 interface IProps {
   src: string;
-  title: string;
+  title: string | undefined;
   description: string;
   status: IStatusForMaterial | null | undefined;
 }
@@ -65,7 +64,7 @@ const BookCard: FC<IProps> = ({
       <DescriptionWrapper>
         <TitleBook>{title}</TitleBook>
         <DescriptionBook>{description}</DescriptionBook>
-        <BookStatus status={status}/>
+        <BookStatus status={status} />
       </DescriptionWrapper>
     </BookCardWrapper>
   );

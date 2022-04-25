@@ -1,7 +1,7 @@
-import {FC, useEffect, useState} from 'react';
+import { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
-import {Status} from "@mimir/global-types";
+import { Status } from '@mimir/global-types';
 
 interface IbookStatusProps {
   status:
@@ -18,7 +18,9 @@ const getDates = (date: string) => {
   const currentDate = new Date();
   const startDate = new Date(date);
   const periodOfKeeping = 30;
-  const returnDate = new Date(startDate.setDate(startDate.getDate() + periodOfKeeping));
+  const returnDate = new Date(
+    startDate.setDate(startDate.getDate() + periodOfKeeping)
+  );
   return {
     currentDate,
     startDate,
@@ -27,7 +29,7 @@ const getDates = (date: string) => {
 };
 
 const isOverdue = (date: string) =>
-  getDates(date).currentDate <= getDates(date).returnDate;
+  getDates(date).currentDate >= getDates(date).returnDate;
 
 const getStatus = (status: string | undefined, date: string) => {
   if (!status) return null;
@@ -60,17 +62,21 @@ const BookStatus: FC<IbookStatusProps> = ({ status }) => {
 
   useEffect(() => {
     switch (currentStatus) {
-      case "Free":
-        setStatusText("On the shelf")
-        break
-      case "Busy":
-        const day = (`${getDates(status?.created_at).returnDate.getDate()}`).padStart(2, "0")
-        const month = (`${getDates(status?.created_at).returnDate.getMonth()}`).padStart(2, "0")
-        setStatusText(`Return till ${day}.${month}`)
-        break
-      case "Overdue":
-        setStatusText("Overdue")
-        break
+      case 'Free':
+        setStatusText('On the shelf');
+        break;
+      case 'Busy':
+        const day = `${getDates(
+          status?.created_at
+        ).returnDate.getDate()}`.padStart(2, '0');
+        const month = `${getDates(
+          status?.created_at
+        ).returnDate.getMonth()}`.padStart(2, '0');
+        setStatusText(`Return till ${day}.${month}`);
+        break;
+      case 'Overdue':
+        setStatusText('Overdue');
+        break;
       default:
         setStatusText('');
         break;
