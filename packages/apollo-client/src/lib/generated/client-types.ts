@@ -287,7 +287,7 @@ export type StatusResult = Error | Status;
 export type GetAllMaterialsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllMaterialsQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', identifier: string, id: string, type: string } | null> };
+export type GetAllMaterialsQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', identifier: string, id: string, type: string, statuses: Array<{ __typename?: 'Status', status: string, created_at: any } | null> } | null> };
 
 
 export const GetAllMaterialsDocument = gql`
@@ -296,6 +296,10 @@ export const GetAllMaterialsDocument = gql`
     identifier
     id
     type
+    statuses {
+      status
+      created_at
+    }
   }
 }
     `;

@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import BookCard from '../BookCard';
-import { IBookCard } from '@mimir/global-types';
 
 const WrapperList = styled.section`
   display: grid;
@@ -26,8 +25,22 @@ const WrapperList = styled.section`
   }
 `;
 
+export interface IStatusForMaterial {
+  __typename?: 'Status' | undefined;
+  status: string;
+  created_at: Date;
+}
+
+export interface IListMaterial {
+  __typename?: 'Material' | undefined;
+  identifier: string;
+  id: string;
+  type: string;
+  statuses: (IStatusForMaterial | null)[];
+}
+
 interface IProps {
-  items: Array<IBookCard>;
+  items: (IListMaterial | null)[] | undefined;
 }
 
 const ListItems: FC<IProps> = ({ items }) => {
@@ -35,12 +48,13 @@ const ListItems: FC<IProps> = ({ items }) => {
     <>
       <WrapperList>
         {items &&
-          items.map((item, index) => (
+          items.map((item) => (
             <BookCard
-              key={index}
+              key={item?.id}
               src={''}
-              title={item.title}
-              description={item.description}
+              title={item?.identifier}
+              description={''}
+              status={item?.statuses[item.statuses.length - 1]}
             />
           ))}
       </WrapperList>

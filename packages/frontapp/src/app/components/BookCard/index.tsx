@@ -1,15 +1,15 @@
-
 import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import BookStatus from '../BookStatus';
 import bookImage from '../../../assets/MOC-data/BookImage.png';
-import {Status} from "@mimir/global-types";
+import { IStatusForMaterial } from '../ListBooks';
 
-interface IProps {
+interface IBookCard {
   src: string;
-  title: string;
+  title: string | undefined;
   description: string;
+  status: IStatusForMaterial | null | undefined;
 }
 
 const BookCardWrapper = styled.div`
@@ -52,19 +52,11 @@ const DescriptionBook = styled.p`
   margin: ${dimensions.xs_2} auto;
 `;
 
-// Fake data
-const status: Status = {
-  id: "1",
-  material_id: "2",
-  person_id: "3",
-  status: "Busy",
-  created_at: "2022-02-04 12:37:50.683849"
-}
-
 const BookCard: FC<IBookCard> = ({
   src = '',
   title = '',
   description = '',
+  status,
 }) => {
   return (
     <BookCardWrapper>
@@ -72,7 +64,7 @@ const BookCard: FC<IBookCard> = ({
       <DescriptionWrapper>
         <TitleBook>{title}</TitleBook>
         <DescriptionBook>{description}</DescriptionBook>
-        <BookStatus status={status}/>
+        <BookStatus status={status} />
       </DescriptionWrapper>
     </BookCardWrapper>
   );

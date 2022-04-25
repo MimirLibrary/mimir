@@ -6,39 +6,35 @@ import { TextBase } from '../globalUI/TextBase';
 import styled from '@emotion/styled';
 import ListItems from '../components/ListBooks';
 import EmptyListItems from '../components/EmptyListItems';
-import { mockItemsBooks } from '../models/mockData/listBooks';
 import { dimensions } from '@mimir/ui-kit';
+import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
 
 const Wrapper = styled.div`
   margin-top: 3rem;
   margin-bottom: ${dimensions.xl_2};
 `;
 
-import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
-
 const HomePage: FC = () => {
-  const { data, error, loading } = useGetAllMaterialsQuery();
+  const { data, loading } = useGetAllMaterialsQuery();
+  if (loading) return <h1>Loading...</h1>;
 
-  console.log(data?.getAllMaterials);
-  return <div>Home page</div>;
   return (
     <>
       <Search />
       <InstructionsClaim />
-      {mockItemsBooks.length ? (
+      {data?.getAllMaterials.length || !data?.getAllMaterials ? (
         <>
           <Wrapper>
             <TitleArticle>Don't forget to pass</TitleArticle>
             <TextBase>List of items you have taken and due dates</TextBase>
           </Wrapper>
-          <ListItems items={mockItemsBooks} />
+          <ListItems items={data?.getAllMaterials} />
         </>
       ) : (
         <EmptyListItems />
       )}
     </>
   );
-
 };
 
 export default HomePage;

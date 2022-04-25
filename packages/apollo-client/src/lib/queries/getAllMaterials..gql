@@ -3,5 +3,9 @@ query GetAllMaterials{
     identifier
     id
     type
+    statuses {
+      status
+      created_at
+    }
   }
 }
