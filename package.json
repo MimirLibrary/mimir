@@ -13,16 +13,12 @@
     "relay": "relay-compiler",
     "typeorm:cli": "ts-node --project ./packages/apiserver/tsconfig.app.json ./node_modules/typeorm/cli --config ./packages/apiserver/src/ormconfig.ts",
     "seed:run": "ts-node --project ./packages/apiserver/tsconfig.app.json  ./node_modules/typeorm-seeding/dist/cli.js --configName ./packages/apiserver/src/ormconfig.ts seed",
-    "prettier": "prettier --write packages/**/*.{ts,tsx}"
+    "prettier": "./node_modules/.bin/prettier --write 'packages/**/*.{ts,tsx}'",
+    "precommit":  "lint-staged"
   },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "linters": {
-      "packages/**/*.{ts,tsx}": ["prettier --write", "git add"]
     }
   },
   "private": true,
@@ -131,5 +127,8 @@
     "tslib": "^2.0.0",
     "typeorm": "^0.2.45",
     "typeorm-seeding": "^1.6.1"
+  },
+  "lint-staged": {
+      "*.{ts,tsx}": ["./node_modules/.bin/prettier --write", "git add"]
   }
 }
