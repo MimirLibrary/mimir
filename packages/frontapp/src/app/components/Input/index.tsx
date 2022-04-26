@@ -16,7 +16,7 @@ const Input: FC<IProps> = ({
   className,
 }) => {
   return (
-         <input
+    <input
       className={className}
       value={value}
       onChange={onChange}
