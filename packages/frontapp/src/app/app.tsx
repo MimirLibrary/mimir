@@ -29,7 +29,7 @@ const App: FC = () => {
   const { isAuth } = useAuth();
   return (
     <>
-      {isAuth ? (
+             {isAuth ? (
         <>
           <WrapperPage>
             <Sidebar />
