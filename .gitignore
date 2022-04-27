@@ -99,3 +99,8 @@ packages/mobile-e2e/artifacts
 
 ## Postgres volume data
 data/
+## Nested node_modules
+
+node_modules/
+
+packages/mimir-e2e/artifacts
