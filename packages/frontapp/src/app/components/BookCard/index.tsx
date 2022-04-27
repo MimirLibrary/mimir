@@ -1,10 +1,9 @@
-
 import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import BookStatus from '../BookStatus';
 import bookImage from '../../../assets/MOC-data/BookImage.png';
-import {Status} from "@mimir/global-types";
+import { Status } from '@mimir/global-types';
 
 interface IProps {
   src: string;
@@ -54,25 +53,21 @@ const DescriptionBook = styled.p`
 
 // Fake data
 const status: Status = {
-  id: "1",
-  material_id: "2",
-  person_id: "3",
-  status: "Busy",
+  id: '1',
+  material_id: '2',
+  person_id: '3',
+  status: 'Busy',
   created_at: '2022-04-22T05:00:19.109Z',
-}
+};
 
-const BookCard: FC<IProps> = ({
-  src = '',
-  title = '',
-  description = '',
-}) => {
+const BookCard: FC<IProps> = ({ src = '', title = '', description = '' }) => {
   return (
     <BookCardWrapper>
       <BookImage src={bookImage} />
       <DescriptionWrapper>
         <TitleBook>{title}</TitleBook>
         <DescriptionBook>{description}</DescriptionBook>
-        <BookStatus status={status}/>
+        <BookStatus status={status} />
       </DescriptionWrapper>
     </BookCardWrapper>
   );

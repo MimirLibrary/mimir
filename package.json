@@ -130,8 +130,7 @@
   },
   "lint-staged": {
     "packages/**/*.{ts,tsx}": [
-      "npm run prettier",
-      "git add"
+      "nx format:write --uncommited"
     ]
   }
 }
