@@ -37,6 +37,7 @@ const App: FC = () => {
               <Routes>
                 <Route path="/home" element={<HomePage />} />
                 <Route path="/search" element={<SearchPage />} />
+
                 <Route
                   path="/history-of-claim"
                   element={<HistoryOfClaimPage />}
