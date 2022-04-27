@@ -12,7 +12,13 @@
     "migration:run": "npm run typeorm:cli -- migration:run",
     "typeorm:cli": "ts-node --project ./packages/apiserver/tsconfig.app.json ./node_modules/typeorm/cli --config ./packages/apiserver/src/ormconfig.ts",
     "seed:run": "ts-node --project ./packages/apiserver/tsconfig.app.json  ./node_modules/typeorm-seeding/dist/cli.js --configName ./packages/apiserver/src/ormconfig.ts seed",
-    "codegen": "graphql-codegen --config codegen.yml"
+    "codegen": "graphql-codegen --config codegen.yml",
+    "precommit": "lint-staged"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "private": true,
   "devDependencies": {
@@ -68,9 +74,11 @@
     "eslint-plugin-jsx-a11y": "6.5.1",
     "eslint-plugin-react": "7.29.3",
     "eslint-plugin-react-hooks": "4.3.0",
+    "husky": "^4.3.8",
     "jest": "27.2.3",
     "jest-circus": "27.2.3",
     "jest-react-native": "18.0.0",
+    "lint-staged": "^12.4.0",
     "metro": "0.69.0",
     "metro-react-native-babel-preset": "0.69.0",
     "metro-resolver": "0.69.0",
@@ -112,10 +120,14 @@
     "dotenv": "^16.0.0",
     "graphql": "^16.3.0",
     "graphql-scalars": "^1.16.0",
+    "i18next": "^21.6.16",
+    "i18next-browser-languagedetector": "^6.1.4",
+    "i18next-http-backend": "^1.4.0",
     "metro-config": "^0.69.1",
     "pg": "^8.7.3",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-i18next": "^11.16.7",
     "react-native": "0.67.3",
     "react-native-camera-kit": "^12.0.0",
     "react-native-safe-area-context": "^4.2.1",
@@ -129,5 +141,10 @@
     "tslib": "^2.0.0",
     "typeorm": "^0.2.45",
     "typeorm-seeding": "^1.6.1"
+  },
+  "lint-staged": {
+    "packages/**/*.{ts,tsx}": [
+      "nx format:write --uncommited"
+    ]
   }
 }

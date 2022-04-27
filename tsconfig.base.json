@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@mimir/localization": ["packages/localization/src/index.ts"],
       "@mimir/apollo-client": ["packages/apollo-client/src/index.ts"],
       "@mimir/global-types": ["packages/global-types/src/index.ts"],
       "@mimir/ui-kit": ["packages/ui-kit/src/index.ts"]
