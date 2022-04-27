@@ -9,6 +9,7 @@ import { store, persist } from './app/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import './normalize.css';
 import './index.css';
+import '@mimir/localization';
 
 ReactDOM.render(
   <StrictMode>

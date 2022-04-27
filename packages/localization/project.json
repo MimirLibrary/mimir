@@ -1,0 +1,32 @@
+{
+  "root": "packages/localization",
+  "sourceRoot": "packages/localization/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/localization",
+        "main": "packages/localization/src/index.ts",
+        "tsConfig": "packages/localization/tsconfig.lib.json",
+        "assets": ["packages/localization/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/localization/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/localization"],
+      "options": {
+        "jestConfig": "packages/localization/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

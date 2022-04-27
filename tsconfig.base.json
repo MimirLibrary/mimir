@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@mimir/global-types": ["packages/global-types/src/index.ts"],
+      "@mimir/localization": ["packages/localization/src/index.ts"],
       "@mimir/ui-kit": ["packages/ui-kit/src/index.ts"]
     }
   },
