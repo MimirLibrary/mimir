@@ -94,8 +94,8 @@ const NavbarItem: FC<IProps> = ({
       onClick={() => changeActiveTab(index)}
     >
       <InsideButtonContainer>
-        <StyledIcon primary={index === activeTab}>{icon}</StyledIcon>
-        <TextInButton primary={index === activeTab}>
+        <StyledIcon primary={String(index === activeTab)}>{icon}</StyledIcon>
+        <TextInButton primary={String(index === activeTab)}>
           {t(`Navbar.${name}`)}
         </TextInButton>
       </InsideButtonContainer>
