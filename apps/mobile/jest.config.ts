@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'mimir',
+  displayName: 'mobile',
   preset: 'react-native',
   testRunner: 'jest-jasmine2',
   resolver: '@nrwl/jest/plugins/resolver',

@@ -1,6 +1,6 @@
 {
-  "root": "apps/mimir",
-  "sourceRoot": "apps/mimir/src",
+  "root": "apps/mobile",
+  "sourceRoot": "apps/mobile/src",
   "projectType": "application",
   "targets": {
     "start": {
@@ -22,12 +22,12 @@
     "bundle-ios": {
       "executor": "@nrwl/react-native:bundle",
       "outputs": [
-        "apps/mimir/build"
+        "apps/mobile/build"
       ],
       "options": {
         "entryFile": "src/main.tsx",
         "platform": "ios",
-        "bundleOutput": "dist/apps/mimir/ios/main.jsbundle"
+        "bundleOutput": "dist/apps/mobile/ios/main.jsbundle"
       }
     },
     "run-android": {
@@ -37,8 +37,8 @@
     "build-android": {
       "executor": "@nrwl/react-native:build-android",
       "outputs": [
-        "apps/mimir/android/app/build/outputs/bundle",
-        "apps/mimir/android/app/build/outputs/apk"
+        "apps/mobile/android/app/build/outputs/bundle",
+        "apps/mobile/android/app/build/outputs/apk"
       ],
       "options": {}
     },
@@ -47,7 +47,7 @@
       "options": {
         "entryFile": "src/index.js",
         "platform": "android",
-        "bundleOutput": "dist/apps/mimir/android/main.jsbundle"
+        "bundleOutput": "dist/apps/mobile/android/main.jsbundle"
       }
     },
     "sync-deps": {
@@ -65,17 +65,17 @@
       ],
       "options": {
         "lintFilePatterns": [
-          "apps/mimir/**/*.{ts,tsx,js,jsx}"
+          "apps/mobile/**/*.{ts,tsx,js,jsx}"
         ]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": [
-        "coverage/apps/mimir"
+        "coverage/apps/mobile"
       ],
       "options": {
-        "jestConfig": "apps/mimir/jest.config.ts",
+        "jestConfig": "apps/mobile/jest.config.ts",
         "passWithNoTests": true
       }
     }

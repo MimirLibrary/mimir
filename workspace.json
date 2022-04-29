@@ -6,7 +6,7 @@
     "frontapp-e2e": "packages/frontapp-e2e",
     "global-types": "packages/global-types",
     "localization": "packages/localization",
-    "mimir": "apps/mimir",
+    "mobile": "apps/mobile",
     "mimir-e2e": "packages/mimir-e2e",
     "ui-kit": "packages/ui-kit"
   }
