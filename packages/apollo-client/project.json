@@ -1,0 +1,32 @@
+{
+  "root": "packages/apollo-client",
+  "sourceRoot": "packages/apollo-client/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/apollo-client",
+        "main": "packages/apollo-client/src/index.ts",
+        "tsConfig": "packages/apollo-client/tsconfig.lib.json",
+        "assets": ["packages/apollo-client/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/apollo-client/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/apollo-client"],
+      "options": {
+        "jestConfig": "packages/apollo-client/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
