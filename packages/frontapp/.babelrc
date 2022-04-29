@@ -8,5 +8,7 @@
       }
     ]
   ],
-  "plugins": ["@emotion/babel-plugin", "relay"]
+  "plugins": [
+    "@emotion/babel-plugin"
+  ]
 }
