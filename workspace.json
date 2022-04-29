@@ -8,8 +8,6 @@
     "localization": "packages/localization",
     "mimir": "apps/mimir",
     "mimir-e2e": "packages/mimir-e2e",
-    "mobile": "apps/mobile",
-    "mobile-e2e": "packages/mobile-e2e",
     "ui-kit": "packages/ui-kit"
   }
 }
