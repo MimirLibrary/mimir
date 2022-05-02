@@ -8,7 +8,7 @@
     "global-types": "packages/global-types",
     "localization": "packages/localization",
     "mobile": "apps/mobile",
-    "mimir-e2e": "packages/mimir-e2e",
+    "mobile-e2e": "packages/mobile-e2e",
     "ui-kit": "packages/ui-kit"
   }
 }
