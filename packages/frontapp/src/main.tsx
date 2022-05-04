@@ -9,18 +9,23 @@ import { store, persist } from './app/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import './normalize.css';
 import './index.css';
+import { ApolloProvider } from '@apollo/client';
+import { client } from '@mimir/apollo-client';
+import '@mimir/localization';
 
 ReactDOM.render(
   <StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persist}>
-        <ThemeProvider theme={theme}>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </ThemeProvider>
-      </PersistGate>
-    </Provider>
+    <ApolloProvider client={client}>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persist}>
+          <ThemeProvider theme={theme}>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </ThemeProvider>
+        </PersistGate>
+      </Provider>
+    </ApolloProvider>
   </StrictMode>,
   document.getElementById('root')
 );
