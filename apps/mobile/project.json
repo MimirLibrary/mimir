@@ -12,7 +12,7 @@
     "serve": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "command": "nx start mobile"
+        "command": "nx start mimir"
       }
     },
     "run-ios": {
@@ -21,9 +21,11 @@
     },
     "bundle-ios": {
       "executor": "@nrwl/react-native:bundle",
-      "outputs": ["apps/mobile/build"],
+      "outputs": [
+        "apps/mobile/build"
+      ],
       "options": {
-        "entryFile": "apps/mobile/src/main.tsx",
+        "entryFile": "src/main.tsx",
         "platform": "ios",
         "bundleOutput": "dist/apps/mobile/ios/main.jsbundle"
       }
@@ -43,7 +45,7 @@
     "bundle-android": {
       "executor": "@nrwl/react-native:bundle",
       "options": {
-        "entryFile": "apps/mobile/src/main.tsx",
+        "entryFile": "src/index.js",
         "platform": "android",
         "bundleOutput": "dist/apps/mobile/android/main.jsbundle"
       }
@@ -58,16 +60,22 @@
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["apps/mobile/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": [
+          "apps/mobile/**/*.{ts,tsx,js,jsx}"
+        ]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/mobile"],
+      "outputs": [
+        "coverage/apps/mobile"
+      ],
       "options": {
-        "jestConfig": "apps/mobile/jest.config.js",
+        "jestConfig": "apps/mobile/jest.config.ts",
         "passWithNoTests": true
       }
     }

@@ -1,10 +1,10 @@
-const { withNxMetro } = require('@nrwl/react-native');
-const { getDefaultConfig } = require('metro-config');
+const {withNxMetro} = require('@nrwl/react-native');
+const {getDefaultConfig} = require('metro-config');
 const exclusionList = require('metro-config/src/defaults/exclusionList');
 
 module.exports = (async () => {
   const {
-    resolver: { sourceExts, assetExts },
+    resolver: {sourceExts, assetExts},
   } = await getDefaultConfig();
   return withNxMetro(
     {
@@ -19,7 +19,7 @@ module.exports = (async () => {
       },
       resolver: {
         assetExts: assetExts.filter((ext) => ext !== 'svg'),
-        sourceExts: ['svg', 'jsx', 'js', 'ts', 'tsx', 'cjs'],
+        sourceExts: [...sourceExts, 'svg'],
         resolverMainFields: ['sbmodern', 'browser', 'main'],
         blacklistRE: exclusionList([/\.\/dist\/.*/]),
       },
@@ -28,8 +28,12 @@ module.exports = (async () => {
       // Change this to true to see debugging info.
       // Useful if you have issues resolving modules
       debug: false,
-      // all the file extensions used for imports other than 'ts', 'tsx', 'js', 'jsx'
+      // all the file extensions used for imports other than 'ts', 'tsx', 'js', 'jsx', 'json'
       extensions: [],
+      // the project root to start the metro server
+      projectRoot: __dirname,
+      // Specify folders to watch, in addition to Nx defaults (workspace libraries and node_modules)
+      watchFolders: [],
     }
   );
 })();
