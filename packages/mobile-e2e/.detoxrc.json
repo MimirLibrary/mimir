@@ -4,23 +4,23 @@
   "apps": {
     "ios.debug": {
       "type": "ios.app",
-      "build": "cd ../mobile/ios && xcodebuild -workspace Mobile.xcworkspace -scheme Mobile -configuration Debug -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 13' -derivedDataPath ./build -quiet",
-      "binaryPath": "../mobile/ios/build/Build/Products/Debug-iphonesimulator/Mobile.app"
+      "build": "cd ../mimir/ios && xcodebuild -workspace Mimir.xcworkspace -scheme Mimir -configuration Debug -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 13' -derivedDataPath ./build -quiet",
+      "binaryPath": "../mimir/ios/build/Build/Products/Debug-iphonesimulator/Mimir.app"
     },
     "ios.release": {
       "type": "ios.app",
-      "build": "cd ../mobile/ios && xcodebuild -workspace Mobile.xcworkspace -scheme Mobile -configuration Release -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 13' -derivedDataPath ./build -quiet",
-      "binaryPath": "../mobile/ios/build/Build/Products/Release-iphonesimulator/Mobile.app"
+      "build": "cd ../mimir/ios && xcodebuild -workspace Mimir.xcworkspace -scheme Mimir -configuration Release -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 13' -derivedDataPath ./build -quiet",
+      "binaryPath": "../mimir/ios/build/Build/Products/Release-iphonesimulator/Mimir.app"
     },
     "android.debug": {
       "type": "android.apk",
-      "build": "cd ../mobile/android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug",
-      "binaryPath": "../mobile/android/app/build/outputs/apk/debug/app-debug.apk"
+      "build": "cd ../mimir/android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug",
+      "binaryPath": "../mimir/android/app/build/outputs/apk/debug/app-debug.apk"
     },
     "android.release": {
       "type": "android.apk",
-      "build": "cd ../mobile/android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release",
-      "binaryPath": "../mobile/android/app/build/outputs/apk/release/app-release.apk"
+      "build": "cd ../mimir/android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release",
+      "binaryPath": "../mimir/android/app/build/outputs/apk/release/app-release.apk"
     }
   },
   "devices": {
