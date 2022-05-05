@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
-import React, {useRef, useState} from 'react';
+import React, { useRef, useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -30,7 +30,7 @@ export const App = () => {
 
   return (
     <>
-      <StatusBar barStyle="dark-content"/>
+      <StatusBar barStyle="dark-content" />
       <SafeAreaView>
         <ScrollView
           ref={(ref) => {
@@ -85,14 +85,14 @@ export const App = () => {
                   )
                 }
               >
-                <Book width={24} height={24} stroke="#000000"/>
+                <Book width={24} height={24} stroke="#000000" />
                 <View style={styles.listItemTextContainer}>
                   <Text style={[styles.textMd]}>Documentation</Text>
                   <Text style={[styles.text2XS, styles.textSubtle]}>
                     Everything is in there
                   </Text>
                 </View>
-                <ChevronRight width={18} height={18} stroke="#000000"/>
+                <ChevronRight width={18} height={18} stroke="#000000" />
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.listItem, styles.learning]}
@@ -100,14 +100,14 @@ export const App = () => {
                   Linking.openURL('https://blog.nrwl.io/?utm_source=nx-project')
                 }
               >
-                <Blog width={24} height={24} stroke="#000000"/>
+                <Blog width={24} height={24} stroke="#000000" />
                 <View style={styles.listItemTextContainer}>
                   <Text style={[styles.textMd]}>Blog</Text>
                   <Text style={[styles.text2XS, styles.textSubtle]}>
                     Changelog, features & events
                   </Text>
                 </View>
-                <ChevronRight width={18} height={18} stroke="#000000"/>
+                <ChevronRight width={18} height={18} stroke="#000000" />
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.listItem, styles.learning]}
@@ -117,14 +117,14 @@ export const App = () => {
                   )
                 }
               >
-                <YouTube width={24} height={24} fill="#000000"/>
+                <YouTube width={24} height={24} fill="#000000" />
                 <View style={styles.listItemTextContainer}>
                   <Text style={[styles.textMd]}>Youtube channel</Text>
                   <Text style={[styles.text2XS, styles.textSubtle]}>
                     Nx Show, talks & tutorials
                   </Text>
                 </View>
-                <ChevronRight width={18} height={18} stroke="#000000"/>
+                <ChevronRight width={18} height={18} stroke="#000000" />
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.listItem, styles.learning]}
@@ -134,14 +134,14 @@ export const App = () => {
                   )
                 }
               >
-                <Pointer width={24} height={24} stroke="#000000"/>
+                <Pointer width={24} height={24} stroke="#000000" />
                 <View style={styles.listItemTextContainer}>
                   <Text style={[styles.textMd]}>Interactive tutorials</Text>
                   <Text style={[styles.text2XS, styles.textSubtle]}>
                     Create an app, step by step
                   </Text>
                 </View>
-                <ChevronRight width={18} height={18} stroke="#000000"/>
+                <ChevronRight width={18} height={18} stroke="#000000" />
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.listItem, styles.learning]}
@@ -151,14 +151,14 @@ export const App = () => {
                   )
                 }
               >
-                <Courses width={24} height={24} stroke="#000000"/>
+                <Courses width={24} height={24} stroke="#000000" />
                 <View style={styles.listItemTextContainer}>
                   <Text style={[styles.textMd]}>Video courses</Text>
                   <Text style={[styles.text2XS, styles.textSubtle]}>
                     Nx custom courses
                   </Text>
                 </View>
-                <ChevronRight width={18} height={18} stroke="#000000"/>
+                <ChevronRight width={18} height={18} stroke="#000000" />
               </TouchableOpacity>
             </View>
           </View>
@@ -171,7 +171,7 @@ export const App = () => {
               }
             >
               <View style={[styles.listItem, styles.shadowBox]}>
-                <VSCode width={48} height={48} fill="rgba(0, 122, 204, 1)"/>
+                <VSCode width={48} height={48} fill="rgba(0, 122, 204, 1)" />
                 <View style={styles.listItemTextContainer}>
                   <Text
                     style={[
@@ -197,7 +197,7 @@ export const App = () => {
             >
               <View style={styles.shadowBox}>
                 <View style={[styles.listItem, styles.marginBottomMd]}>
-                  <NxCloud width={48} height={48}/>
+                  <NxCloud width={48} height={48} />
                   <View style={styles.listItemTextContainer}>
                     <Text
                       style={[
@@ -226,7 +226,7 @@ export const App = () => {
               }
             >
               <View style={[styles.listItem, styles.shadowBox]}>
-                <GitHub width={48} height={48} fill="#000000"/>
+                <GitHub width={48} height={48} fill="#000000" />
                 <View style={styles.listItemTextContainer}>
                   <Text
                     style={[
@@ -261,7 +261,7 @@ export const App = () => {
                 Here are some things you can do with Nx:
               </Text>
               <View style={styles.listItem}>
-                <Terminal width={24} height={24} stroke="#000000"/>
+                <Terminal width={24} height={24} stroke="#000000" />
                 <View style={styles.listItemTextContainer}>
                   <Text style={styles.textSm}>Add UI library</Text>
                 </View>
@@ -291,7 +291,7 @@ export const App = () => {
                 </Text>
               </View>
               <View style={styles.listItem}>
-                <Terminal width={24} height={24} stroke="#000000"/>
+                <Terminal width={24} height={24} stroke="#000000" />
                 <View style={styles.listItemTextContainer}>
                   <Text style={styles.textSm}>
                     View interactive project graph
@@ -302,7 +302,7 @@ export const App = () => {
                 <Text style={[styles.textXS, styles.monospace]}>nx graph</Text>
               </View>
               <View style={styles.listItem}>
-                <Terminal width={24} height={24} stroke="#000000"/>
+                <Terminal width={24} height={24} stroke="#000000" />
                 <View style={styles.listItemTextContainer}>
                   <Text style={styles.textSm}>Run affected commands</Text>
                 </View>
@@ -345,7 +345,7 @@ export const App = () => {
             </View>
             <View style={[styles.listItem, styles.love]}>
               <Text style={styles.textSubtle}>Carefully crafted with </Text>
-              <Heart width={24} height={24} fill="rgba(252, 165, 165, 1)"/>
+              <Heart width={24} height={24} fill="rgba(252, 165, 165, 1)" />
             </View>
           </View>
         </ScrollView>
