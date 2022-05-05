@@ -4,14 +4,7 @@
     "sourceMap": false,
     "outDir": "../../dist/out-tsc",
     "allowJs": true,
-    "types": [
-      "node",
-      "jest",
-      "detox"
-    ]
+    "types": ["node", "jest", "detox"]
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.js"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.js"]
 }
