@@ -1,10 +1,10 @@
-const {withNxMetro} = require('@nrwl/react-native');
-const {getDefaultConfig} = require('metro-config');
+const { withNxMetro } = require('@nrwl/react-native');
+const { getDefaultConfig } = require('metro-config');
 const exclusionList = require('metro-config/src/defaults/exclusionList');
 
 module.exports = (async () => {
   const {
-    resolver: {sourceExts, assetExts},
+    resolver: { sourceExts, assetExts },
   } = await getDefaultConfig();
   return withNxMetro(
     {
