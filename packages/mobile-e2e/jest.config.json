@@ -3,12 +3,8 @@
   "testEnvironment": "./environment",
   "testRunner": "jest-circus/runner",
   "testTimeout": 120000,
-  "reporters": [
-    "detox/runners/jest/streamlineReporter"
-  ],
-  "setupFilesAfterEnv": [
-    "<rootDir>/test-setup.ts"
-  ],
+  "reporters": ["detox/runners/jest/streamlineReporter"],
+  "setupFilesAfterEnv": ["<rootDir>/test-setup.ts"],
   "transform": {
     "^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "@nrwl/react/plugins/jest",
     "^.+\\.[tj]sx?$": "babel-jest"
