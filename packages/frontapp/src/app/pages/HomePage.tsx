@@ -22,7 +22,7 @@ const HomePage: FC = () => {
     <>
       <Search />
       <InstructionsClaim />
-      {data?.getAllMaterials.length || !data?.getAllMaterials ? (
+      {data?.getAllMaterials.length ? (
         <>
           <Wrapper>
             <TitleArticle>Don't forget to pass</TitleArticle>

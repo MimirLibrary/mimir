@@ -5,7 +5,7 @@ import BookStatus from '../BookStatus';
 import bookImage from '../../../assets/MOC-data/BookImage.png';
 import { IStatusForMaterial } from '../ListBooks';
 
-interface IProps {
+export interface IProps {
   src: string;
   title: string | undefined;
   description: string;
