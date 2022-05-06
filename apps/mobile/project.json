@@ -12,7 +12,7 @@
     "serve": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "command": "nx start mimir"
+        "command": "nx start mobile"
       }
     },
     "run-ios": {
@@ -43,7 +43,7 @@
     "bundle-android": {
       "executor": "@nrwl/react-native:bundle",
       "options": {
-        "entryFile": "src/index.js",
+        "entryFile": "src/main.tsx",
         "platform": "android",
         "bundleOutput": "dist/apps/mobile/android/main.jsbundle"
       }

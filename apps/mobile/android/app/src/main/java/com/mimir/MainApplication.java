@@ -1,5 +1,9 @@
 package com.mimir;
 
+import com.facebook.react.bridge.JSIModulePackage; // <- add
+import com.swmansion.reanimated.ReanimatedJSIModulePackage; // <- add
+
+
 import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
@@ -36,6 +40,11 @@ public class MainApplication extends Application implements ReactApplication {
         protected String getJSMainModuleName() {
           return "src/main.tsx";
         }
+
+         @Override
+              protected JSIModulePackage getJSIModulePackage() {
+                return new ReanimatedJSIModulePackage(); // <- add
+              }
       };
 
   private final ReactNativeHost mNewArchitectureNativeHost =

@@ -11,10 +11,15 @@
     "react-native-svg": "*",
     "@react-native-async-storage/async-storage": "*",
     "metro-config": "*",
-    "react-native-camera-kit": "*",
     "@react-navigation/native-stack": "*",
     "@react-navigation/native": "*",
     "react-native-safe-area-context": "*",
-    "react-native-screens": "*"
+    "react-native-screens": "*",
+    "@react-navigation/drawer": "*",
+    "@react-navigation/material-top-tabs": "*",
+    "react-native-gesture-handler": "*",
+    "react-native-pager-view": "*",
+    "react-native-reanimated": "*",
+    "react-native-tab-view": "*"
   }
 }
