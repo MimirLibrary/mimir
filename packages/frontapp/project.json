@@ -98,6 +98,15 @@
           "quiet": true
         }
       }
+    },
+    "serve-static": {
+        "executor": "@nrwl/web:file-server",
+        "options": {
+            "buildTarget": "frontapp:build:production",
+            "parallel": true,
+            "port": 8000,
+            "watch": false
+        }
     }
   },
   "tags": []

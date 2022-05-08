@@ -4,4 +4,4 @@ ENV PORT 4200
 
 EXPOSE $PORT
 
-CMD ["npx", "nx", "serve", "frontapp", "--host", "0.0.0.0"]
+CMD ["npx", "nx", "run", "serve-static", "frontapp", "--host", "0.0.0.0"]
