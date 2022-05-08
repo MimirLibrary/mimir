@@ -1,7 +1,5 @@
 node_modules
-.git
 Dockerfile
 .vscode
 README.md
-.gitignore
 .dockerignore
