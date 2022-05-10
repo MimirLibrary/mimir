@@ -9,8 +9,8 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./:/var/www
-      - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - ./dist/packages/frontapp/:/usr/share/nginx/html:ro
+      #- ./nginx/conf.d/:/etc/nginx/conf.d/
 
   postgres:
     image: postgres
