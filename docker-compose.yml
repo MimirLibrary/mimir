@@ -6,8 +6,8 @@ services:
     restart: unless-stopped
     tty: true
     ports:
-      - "80:80"
-      - "443:443"
+      - "8000:80"
+#      - "443:443"
     volumes:
       - ./dist/packages/frontapp/:/usr/share/nginx/html:ro
       #- ./nginx/conf.d/:/etc/nginx/conf.d/
