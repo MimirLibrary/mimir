@@ -2,7 +2,7 @@ FROM unrealsolver/library:base AS builder
 
 COPY . .
 
-CMD ["npx", "nx", "build", "frontapp"]
+RUN npx nx build frontapp
 
 FROM nginx:alpine
 
