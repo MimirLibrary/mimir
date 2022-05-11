@@ -19,6 +19,7 @@ services:
     - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
       - db:/var/lib/postgresql/data
+
   apiserver:
     build:
       context: .
@@ -28,6 +29,11 @@ services:
       - '3333:3333'
     depends_on:
       - postgres
+    command: sh -c "
+        npm run migration:run
+        && npx nx run apiserver:build:production
+        && node dist/packages/apiserver/main.js
+      "
 
   frontapp:
     build:
