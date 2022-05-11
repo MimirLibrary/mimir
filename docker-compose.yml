@@ -1,19 +1,5 @@
 version: '3.9'
 services:
-  nginx:
-    image: nginx:alpine
-    container_name: nginx
-    restart: unless-stopped
-    tty: true
-    ports:
-      - "8000:80"
-#      - "443:443"
-    volumes:
-      - ./dist/packages/frontapp/:/usr/share/nginx/html:ro
-      #- ./nginx/conf.d/:/etc/nginx/conf.d/
-    depends_on:
-      - frontapp
-
   postgres:
     image: postgres
     env_file: .env
@@ -42,7 +28,7 @@ services:
       context: .
       dockerfile: frontapp.Dockerfile
     ports:
-      - '4200:4200'
+      - '80:80'
 
 volumes:
   db:
