@@ -11,6 +11,8 @@ services:
     volumes:
       - ./dist/packages/frontapp/:/usr/share/nginx/html:ro
       #- ./nginx/conf.d/:/etc/nginx/conf.d/
+    depends_on:
+      - frontapp
 
   postgres:
     image: postgres
@@ -41,8 +43,6 @@ services:
       dockerfile: frontapp.Dockerfile
     ports:
       - '4200:4200'
-    depends_on:
-      - apiserver
 
 volumes:
   db:
