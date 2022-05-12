@@ -23,6 +23,9 @@ export class Material extends BaseEntity {
   @Column()
   type!: string;
 
+  @Column({ unique: true })
+  id_internal!: number;
+
   @CreateDateColumn()
   created_at!: Date;
 

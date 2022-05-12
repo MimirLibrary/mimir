@@ -3,12 +3,14 @@ import { Material } from '../materials/material.entity';
 import { Status } from '../statuses/status.entity';
 import { Connection } from 'typeorm';
 import { ClaimError } from '../../errors';
+import { StatusTypes } from '../../utils/statusTypes';
+import { ClaimBookInput } from '@mimir/global-types';
 
 @Injectable()
 export class ItemService {
   constructor(private connection: Connection) {}
 
-  async claim(claimBookInput) {
+  async claim(claimBookInput: ClaimBookInput) {
     const queryRunner = this.connection.createQueryRunner();
     const statusRepository =
       queryRunner.manager.getRepository<Status>('status');
@@ -17,17 +19,19 @@ export class ItemService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      const { identifier, person_id } = claimBookInput;
-      if (!identifier) {
-        throw new ClaimError(
-          'Received identifier not recognized, please try again'
-        );
+      let material;
+      const { identifier, person_id, id_internal } = claimBookInput;
+      if (identifier) {
+        material = await materialRepository.findOne({
+          where: { identifier },
+        });
+      } else {
+        material = await materialRepository.findOne({
+          where: { id_internal },
+        });
       }
-      const material = await materialRepository.findOne({
-        where: { identifier },
-      });
       if (!material) {
-        throw new ClaimError('This book is not registered in the library');
+        throw new ClaimError('This item is not registered in the library');
       }
       const { id } = material;
       const status = await statusRepository.find({
@@ -35,13 +39,14 @@ export class ItemService {
         order: { created_at: 'DESC' },
         take: 1,
       });
-      if (!status || status[0].status === 'Busy') {
+      console.log(status);
+      if (status.length === 0 || status[0].status === StatusTypes.BUSY) {
         throw new ClaimError(
           `This book is busy or doesn't exist. Ask the manager!`
         );
       }
       const newStatus = await statusRepository.create({
-        status: 'Busy',
+        status: StatusTypes.BUSY,
         material_id: status[0].material_id,
         person_id,
       });

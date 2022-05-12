@@ -10,7 +10,7 @@ import { ItemService } from './item.service';
 
 @Resolver('StatusResult')
 export class ItemResolver {
-  constructor(private bookService: ItemService) {}
+  constructor(private itemService: ItemService) {}
 
   @ResolveField()
   __resolveType(value) {
@@ -25,6 +25,6 @@ export class ItemResolver {
 
   @Mutation()
   async claimBook(@Args('input') claimBookInput: ClaimBookInput) {
-    return this.bookService.claim(claimBookInput);
+    return this.itemService.claim(claimBookInput);
   }
 }
