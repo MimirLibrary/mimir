@@ -24,7 +24,7 @@ const WrapperInput = styled.div`
   justify-content: center;
   align-items: center;
   max-width: 21.5rem;
-  width: 100%;
+  width: 100% - 100px;
   border: 0.5px solid #bdbdbd;
   border-radius: ${dimensions.xl_3};
   padding: 10px 0;

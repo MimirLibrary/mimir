@@ -12,6 +12,9 @@ const StyledSidebar = styled.aside`
   max-width: 22rem;
   width: 100%;
   padding-top: ${dimensions.xl_6};
+  @media (max-width: 420px) {
+    display: none;
+  }
 `;
 
 const Sidebar = () => {

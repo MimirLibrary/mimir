@@ -21,6 +21,9 @@ const WrapperRoutes = styled.div`
   width: calc(100% - 22rem);
   background-color: ${colors.bg_primary};
   padding: 2.5rem 2.5rem 2.5rem 2.3rem;
+  @media (max-width: 420px) {
+    width: 100%;
+  }
 `;
 
 const App: FC = () => {

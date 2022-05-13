@@ -17,6 +17,11 @@ const Wrapper = styled.section`
   padding: 7.5rem 0;
   border-radius: ${dimensions.xs_1};
   margin-top: ${dimensions.xl_2};
+  @media (max-width: 420px) {
+    & img {
+      display: none;
+    }
+  }
 `;
 
 const WrapperText = styled.div`
@@ -42,9 +47,7 @@ const StyleTextBase = styled(TextBase)`
 const EmptyListItems = () => {
   return (
     <Wrapper>
-      <div>
-        <img src={emptyList} alt="no items" />
-      </div>
+      <img src={emptyList} alt="no items" />
       <WrapperText>
         <StyleTitle>Shelf for your books and other items</StyleTitle>
         <StyleTextBase>
