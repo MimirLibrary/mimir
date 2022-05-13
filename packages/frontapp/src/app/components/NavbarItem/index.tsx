@@ -1,9 +1,10 @@
 import React, { FC, ReactElement } from 'react';
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
-import { useAppSelector } from '../../hooks/useTypedSelector';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { t } from 'i18next';
+import { useAppSelector } from '../../hooks/useTypedSelector';
+import { RolesTypes } from '../../../utils/rolesTypes';
 
 interface IProps {
   icon: ReactElement;
@@ -86,6 +87,7 @@ const NavbarItem: FC<IProps> = ({
   index,
   changeActiveTab,
 }) => {
+  const { userRole } = useAppSelector((state) => state.user);
   const { activeTab } = useAppSelector((state) => state.tabs);
   return (
     <StyledLink
@@ -96,7 +98,9 @@ const NavbarItem: FC<IProps> = ({
       <InsideButtonContainer>
         <StyledIcon primary={String(index === activeTab)}>{icon}</StyledIcon>
         <TextInButton primary={String(index === activeTab)}>
-          {t(`Navbar.${name}`)}
+          {userRole === RolesTypes.READER
+            ? t(`NavbarReader.${name}`)
+            : t(`NavbarManager.${name}`)}
         </TextInButton>
       </InsideButtonContainer>
     </StyledLink>
