@@ -1,17 +1,12 @@
-import React, {useCallback, useRef} from 'react';
+import React, {useRef} from 'react';
 import {
-  Pressable,
   StyleProp,
   StyleSheet,
-  Text,
   TextInput,
-  View,
   ViewStyle,
 } from 'react-native';
 import {Color} from '../../config/designTokens';
-import {Fonts} from '../../assets/fonts';
-import {TextVariant, textVariants} from '../../config/textVariants';
-// import ErrorText from './ErrorText';
+import {textVariantStyles} from '../../config/textVariants';
 
 export interface IFormInputProps {
   style?: StyleProp<ViewStyle>;
@@ -29,11 +24,8 @@ export interface IFormInputProps {
 
 export function FormTextInput({
   style,
-  error,
   placeholderTextColor = Color.ACCENT_BLACK_100,
   placeholder,
-  icon,
-  containerStyle,
   onChangeText,
   onBlur,
   value,
@@ -42,35 +34,25 @@ export function FormTextInput({
 }: IFormInputProps) {
   const ref = useRef<TextInput>(null);
 
-  const pressHandler = useCallback(() => {
-    ref.current?.focus();
-  }, []);
-
   return (
-    <Pressable
-      onPress={pressHandler}
-      style={[styles.container, containerStyle]}>
-      {icon && icon}
       <TextInput
         ref={ref}
         placeholderTextColor={placeholderTextColor}
         placeholder={placeholder}
-        style={[styles.input, style]}
+        style={[styles.container,styles.input, textVariantStyles.bodyL, style]}
         onChangeText={onChangeText}
         onBlur={onBlur}
         value={value}
         secureTextEntry={secureTextEntry}
         autoCapitalize={autoCapitalize}
       />
-
-      {/*{error && <ErrorText style={styles.error}>{error}</ErrorText>}*/}
-    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    flexGrow:2,
     paddingHorizontal: 24,
     paddingVertical: 16,
     backgroundColor: Color.WHITE,
@@ -85,8 +67,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   input: {
-    fontFamily: Fonts.MontserratLight,
-    ...textVariants.bodyL,
     color: Color.ACCENT_BLACK_100,
   },
   error: {

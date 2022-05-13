@@ -3,7 +3,6 @@ import {StyleSheet, TouchableOpacity, View, ViewStyle} from 'react-native';
 import {Color} from '../config/designTokens';
 import {AppText} from './AppText';
 import {TextVariant} from '../config/textVariants';
-import {Fonts} from '../assets/fonts';
 
 interface ButtonProps {
   text: string;
@@ -32,7 +31,6 @@ export const Button: FC<ButtonProps> = ({
           {icon && <View style={styles.iconWrapper}>{icon}</View>}
           <AppText
             variant={TextVariant.H3}
-            fontFamily={Fonts.MontserratBold}
             color={Color.WHITE}
             style={[styles.text, stylesMap[variant].text]}
             text={text}

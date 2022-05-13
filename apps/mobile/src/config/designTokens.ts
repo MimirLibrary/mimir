@@ -1,4 +1,4 @@
-import {ViewStyle} from 'react-native';
+import {StyleSheet, ViewStyle} from 'react-native';
 
 export enum Color {
   ACCENT_BLACK_100 = '#333333',
@@ -43,13 +43,15 @@ export const shadowVariants: {[key in ShadowVariant]: ViewStyle} = {
     elevation: 4,
   },
   [ShadowVariant.SHADOW_XL]: {
-    shadowColor: Color.ACCENT_BLACK_100,
+    shadowColor: Color.ACCENT_BLUE_100,
     shadowOffset: {
       width: 0,
-      height: 3,
+      height: 10,
     },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-    elevation: 6,
+    shadowOpacity:  0.23,
+    shadowRadius: 11.27,
+    elevation: 14
   },
 };
+
+const shadowStyles = StyleSheet.create(shadowVariants)
