@@ -39,11 +39,8 @@ export class ItemService {
         order: { created_at: 'DESC' },
         take: 1,
       });
-      console.log(status);
-      if (status.length === 0 || status[0].status === StatusTypes.BUSY) {
-        throw new ClaimError(
-          `This book is busy or doesn't exist. Ask the manager!`
-        );
+      if (status[0].status === StatusTypes.BUSY) {
+        throw new ClaimError(`This book is busy. Ask the manager!`);
       }
       const newStatus = await statusRepository.create({
         status: StatusTypes.BUSY,

@@ -1,5 +1,5 @@
 input ClaimBookInput{
   identifier: String
-  id_internal: Int
+  id_internal: String
   person_id: String!
 }

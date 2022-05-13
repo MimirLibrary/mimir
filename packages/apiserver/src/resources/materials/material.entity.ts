@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Generated,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -24,7 +25,8 @@ export class Material extends BaseEntity {
   type!: string;
 
   @Column({ unique: true })
-  id_internal!: number;
+  @Generated('uuid')
+  id_internal!: string;
 
   @CreateDateColumn()
   created_at!: Date;
