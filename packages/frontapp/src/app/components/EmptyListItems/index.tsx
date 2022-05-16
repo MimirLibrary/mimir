@@ -17,7 +17,7 @@ const Wrapper = styled.section`
   padding: 7.5rem 0;
   border-radius: ${dimensions.xs_1};
   margin-top: ${dimensions.xl_2};
-  @media (max-width: 420px) {
+  @media (max-width: 768px) {
     & img {
       display: none;
     }

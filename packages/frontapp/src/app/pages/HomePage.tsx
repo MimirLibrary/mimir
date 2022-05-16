@@ -8,10 +8,28 @@ import ListItems from '../components/ListBooks';
 import EmptyListItems from '../components/EmptyListItems';
 import { dimensions } from '@mimir/ui-kit';
 import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
+import Burger from '../components/Burger';
+import FiltersButton from '../components/FiltersButton';
+
+const WrapperHome = styled.div`
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+`;
 
 const Wrapper = styled.div`
   margin-top: 3rem;
   margin-bottom: ${dimensions.xl_2};
+`;
+
+const SearchWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 `;
 
 const HomePage: FC = () => {
@@ -19,8 +37,12 @@ const HomePage: FC = () => {
   if (loading) return <h1>Loading...</h1>;
 
   return (
-    <>
-      <Search />
+    <WrapperHome>
+      <SearchWrapper>
+        <Burger />
+        <Search />
+        <FiltersButton />
+      </SearchWrapper>
       <InstructionsClaim />
       {data?.getAllMaterials.length ? (
         <>
@@ -33,7 +55,7 @@ const HomePage: FC = () => {
       ) : (
         <EmptyListItems />
       )}
-    </>
+    </WrapperHome>
   );
 };
 

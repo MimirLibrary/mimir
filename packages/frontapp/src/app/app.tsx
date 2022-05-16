@@ -21,8 +21,9 @@ const WrapperRoutes = styled.div`
   width: calc(100% - 22rem);
   background-color: ${colors.bg_primary};
   padding: 2.5rem 2.5rem 2.5rem 2.3rem;
-  @media (max-width: 420px) {
+  @media (max-width: 768px) {
     width: 100%;
+    padding: 10px;
   }
 `;
 
@@ -30,6 +31,7 @@ const App: FC = () => {
   const { isAuth } = useAuth();
   const { userRole } = useAppSelector((state) => state.user);
   const routes = useRoutes(userRole);
+
   return (
     <>
       {isAuth ? (

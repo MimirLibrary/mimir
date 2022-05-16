@@ -5,6 +5,7 @@ import NotificationIcon from '../NotificationIcon';
 import Avatar from '../Avatar';
 import UserInfo from '../UserInfo';
 import { useAppSelector } from '../../hooks/useTypedSelector';
+import BurgerOff from '../BurgerOff';
 
 const WrapperTitle = styled.div`
   display: flex;
@@ -41,6 +42,7 @@ const Header = () => {
       <WrapperTitle>
         <TitleProject title="Mimir" />
         <NotificationIcon active={true} />
+        <BurgerOff />
       </WrapperTitle>
       <WrapperForCenter>
         <WrapperUserInfo>

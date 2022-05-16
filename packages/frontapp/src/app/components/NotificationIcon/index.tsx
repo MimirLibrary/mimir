@@ -8,6 +8,9 @@ import { setActiveTab } from '../../store/slices/tabsSlice';
 
 const WrapperIcon = styled.div`
   cursor: pointer;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 interface IProps {
