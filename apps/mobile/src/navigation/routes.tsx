@@ -12,21 +12,25 @@ import {DonateHeartIcon} from '../components/icons/DonateHeartIcon';
 import {StyleSheet} from 'react-native';
 import {DonateScreen} from '../screens/DonateScreen';
 import {SearchStack} from './SearchStack';
+import HomePage from "../../../../packages/frontapp/src/app/pages/HomePage";
+import {HomeStack} from "./Home";
 
 export const NavigationRouteNames = Object.freeze({
   Home: 'Home',
+  HomeStack:'HomeStack',
   Donate: 'Donate to the library',
   DonateHistory: 'History of Donate',
   Search: 'Search',
   ClaimHistory: 'History of claim',
   Settings: 'Settings',
   Notifications: 'Notification',
+  Camera:'Camera'
 });
 
-export const ROUTES = [
+export const DRAWER_ROUTES = [
   {
-    name: NavigationRouteNames.Home,
-    Component: HomeScreen,
+    name: NavigationRouteNames.HomeStack,
+    Component: HomeStack,
     icon: (color: Color) => <HomeIcon color={color} style={styles.icon} />,
     // options: ROUTE_DEFAULT_OPTION,
   },
@@ -61,7 +65,7 @@ export const ROUTES = [
   },
   {
     name: NavigationRouteNames.Notifications,
-    Component: HomeScreen,
+    Component: NotificationsScreen,
     icon: (color: Color) => (
       <NotificationIcon color={color} style={styles.icon} />
     ),

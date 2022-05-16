@@ -3,7 +3,7 @@ import {Dimensions} from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {NavigationContainer} from '@react-navigation/native';
 import {DrawerContent} from './components/DrawerContent';
-import {NavigationRouteNames, ROUTES} from './routes';
+import {NavigationRouteNames, DRAWER_ROUTES} from './routes';
 import {SearchScreen} from '../screens/SearchScreen/SearchScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 const {width} = Dimensions.get('screen');
@@ -23,7 +23,7 @@ export const Navigator = () => {
         headerShown: false,
       }}
       >
-        {ROUTES.map(({name, Component}) => (
+        {DRAWER_ROUTES.map(({name, Component}) => (
           <Drawer.Screen
             name={name}
             key={name}

@@ -54,4 +54,4 @@ export const shadowVariants: {[key in ShadowVariant]: ViewStyle} = {
   },
 };
 
-const shadowStyles = StyleSheet.create(shadowVariants)
+export const shadowStyles = StyleSheet.create(shadowVariants)

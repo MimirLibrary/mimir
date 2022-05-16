@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useEffect, useRef, useState} from 'react';
+import React, {FC, useCallback, useRef, useState} from 'react';
 import {Header} from '../../components/Header';
 import {DrawerNavigationHelpers} from '@react-navigation/drawer/lib/typescript/src/types';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -13,6 +13,7 @@ import Animated, {
   useAnimatedStyle
 } from "react-native-reanimated";
 import {FlatList} from "react-native-gesture-handler";
+import {EmptyList} from "../../components/EmptyList";
 
 interface HomeScreenProps {
   navigation: DrawerNavigationHelpers;
@@ -22,7 +23,7 @@ const ReanimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 
 export const HomeScreen: FC<HomeScreenProps> = ({navigation}) => {
-  const [data] = useState(new Array(10))
+  const [data] = useState(new Array(2))
   const [refresh, setRefresh] = useState(false)
 
   const translationY = useSharedValue(0);
@@ -49,10 +50,11 @@ export const HomeScreen: FC<HomeScreenProps> = ({navigation}) => {
           ref={flatListRef}
           initialScrollIndex={0}
           style={styles.contentBackground}
-          ListHeaderComponent={<ListHeaderComponent/>}
+          ListHeaderComponent={<ListHeaderComponent dataLength={data.length}/>}
           data={data}
           onScroll={scrollHandler}
           refreshing={refresh}
+          ListEmptyComponent={EmptyList}
           onRefresh={() => {
             setRefresh(!refresh)
           }}
