@@ -3,3 +3,7 @@ input ClaimBookInput{
   id_internal: String
   person_id: String!
 }
+
+type ReturnDate{
+  returnDate: DateTime!
+}

@@ -1,14 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { Material } from '../materials/material.entity';
+import { ClaimBookInput } from '@mimir/global-types';
 import { Status } from '../statuses/status.entity';
 import { Connection } from 'typeorm';
 import { ClaimError } from '../../errors';
 import { StatusTypes } from '../../utils/statusTypes';
-import { ClaimBookInput } from '@mimir/global-types';
 
 @Injectable()
 export class ItemService {
   constructor(private connection: Connection) {}
+
+  private getDateReturn(date: Date): Date {
+    const dateReturn = date.setMonth(date.getMonth() + 1);
+    return new Date(dateReturn);
+  }
 
   async claim(claimBookInput: ClaimBookInput) {
     const queryRunner = this.connection.createQueryRunner();
@@ -39,17 +44,21 @@ export class ItemService {
         order: { created_at: 'DESC' },
         take: 1,
       });
+      this.getDateReturn(status[0].created_at);
       if (status[0].status === StatusTypes.BUSY) {
         throw new ClaimError(`This book is busy. Ask the manager!`);
       }
-      const newStatus = await statusRepository.create({
+      const newStatusObj = await statusRepository.create({
         status: StatusTypes.BUSY,
         material_id: status[0].material_id,
         person_id,
       });
+      const newStatus = await statusRepository.save(newStatusObj);
       await statusRepository.save(newStatus);
       await queryRunner.commitTransaction();
-      return newStatus;
+      return {
+        returnDate: this.getDateReturn(newStatus.created_at),
+      };
     } catch (e) {
       await queryRunner.rollbackTransaction();
       return {
