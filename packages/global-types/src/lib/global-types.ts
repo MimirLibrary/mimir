@@ -40,6 +40,7 @@ export interface Material {
   type: string;
   created_at: DateTime;
   updated_at: DateTime;
+  id_internal: string;
   statuses: Nullable<Status>[];
 }
 
