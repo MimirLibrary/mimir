@@ -44,8 +44,12 @@ const WrapperInput = styled.div`
     border: 0.5px solid ${colors.accent_color};
   }
 
-  @media (max-width: 758px) {
+  @media (max-width: 768px) {
     width: 100%;
+  }
+
+  @media (max-width: 420px) {
+    width: 70%;
   }
 `;
 

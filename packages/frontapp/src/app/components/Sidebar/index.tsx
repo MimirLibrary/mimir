@@ -21,10 +21,12 @@ const StyledSidebar = styled.aside<IProps>`
   @media (max-width: 768px) {
     position: fixed;
     top: 0;
-    left: ${(props) => (props.isSidebarVisible ? '0' : '100%')};
+    left: ${(props) => (props.isSidebarVisible ? '0' : '-100%')};
     z-index: 50;
     background: white;
-    width: 65%;
+    width: 90%;
+    transition: all 0.8s;
+    height: 100%;
   }
 `;
 

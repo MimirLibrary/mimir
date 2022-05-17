@@ -17,9 +17,14 @@ const Wrapper = styled.section`
   padding: 7.5rem 0;
   border-radius: ${dimensions.xs_1};
   margin-top: ${dimensions.xl_2};
-  @media (max-width: 768px) {
+
+  & img {
+    width: 60%;
+  }
+
+  @media (max-width: 420px) {
     & img {
-      display: none;
+      width: 80%;
     }
   }
 `;
