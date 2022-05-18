@@ -57,4 +57,18 @@ export class ItemService {
       await queryRunner.release();
     }
   }
+
+  async getAllTakenItems(person_id: number) {
+    try {
+      const statuses = await Status.find({
+        where: { person_id, status: 'Busy' },
+        relations: ['material', 'person'],
+      });
+      return statuses;
+    } catch (e) {
+      return {
+        message: e.message,
+      };
+    }
+  }
 }

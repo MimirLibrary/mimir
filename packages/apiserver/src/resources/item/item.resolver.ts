@@ -1,4 +1,4 @@
-import { Args, Mutation, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import {
   ClaimBookInput,
   Error,
@@ -7,10 +7,11 @@ import {
 } from '@mimir/global-types';
 import { Status as StatusType } from '../statuses/status.entity';
 import { ItemService } from './item.service';
+import { Material } from '../materials/material.entity';
 
 @Resolver('StatusResult')
 export class ItemResolver {
-  constructor(private bookService: ItemService) {}
+  constructor(private itemService: ItemService) {}
 
   @ResolveField()
   __resolveType(value) {
@@ -25,6 +26,11 @@ export class ItemResolver {
 
   @Mutation()
   async claimBook(@Args('input') claimBookInput: ClaimBookInput) {
-    return this.bookService.claim(claimBookInput);
+    return this.itemService.claim(claimBookInput);
+  }
+
+  @Query(() => [StatusType])
+  async getAllTakenItems(@Args('person_id') person_id: number) {
+    return this.itemService.getAllTakenItems(person_id);
   }
 }
