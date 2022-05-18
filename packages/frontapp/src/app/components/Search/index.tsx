@@ -5,13 +5,13 @@ import { ReactComponent as SearchIcon } from '../../../assets/Navbar/Search.svg'
 import Input from '../Input';
 
 const InputSearch = styled(Input)`
-  width: 300px;
+  width: 19rem;
   border: none;
   outline: none;
-  margin-left: 9px;
+  margin-left: ${dimensions.xs_2};
   color: ${colors.main_black};
   font-family: ${fonts.primary}, sans-serif;
-  margin-right: 2px;
+  margin-right: 0.12rem;
 
   ::placeholder {
     color: #bdbdbd;
@@ -19,8 +19,8 @@ const InputSearch = styled(Input)`
     line-height: ${dimensions.xl};
   }
 
-  @media (max-width: 768px) {
-    margin-left: -20px;
+  @media (max-width: ${dimensions.tablet_width}) {
+    margin-left: -${dimensions.xl};
   }
 `;
 
@@ -33,8 +33,8 @@ const WrapperInput = styled.div`
   border: 0.5px solid #bdbdbd;
   border-radius: ${dimensions.xl_3};
   padding: 10px 0;
-  padding-left: 10px;
-  margin: 0 10px;
+  padding-left: ${dimensions.xs_1};
+  margin: 0 ${dimensions.xs_1};
   background: ${colors.bg_secondary};
 
   :hover {
@@ -44,11 +44,11 @@ const WrapperInput = styled.div`
     border: 0.5px solid ${colors.accent_color};
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: ${dimensions.tablet_width}) {
     width: 100%;
   }
 
-  @media (max-width: 420px) {
+  @media (max-width: ${dimensions.phone_width}) {
     width: 70%;
   }
 `;

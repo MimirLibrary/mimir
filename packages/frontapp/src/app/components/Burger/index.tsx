@@ -1,32 +1,33 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import styled from '@emotion/styled';
 import { useAppDispatch } from '../../hooks/useTypedDispatch';
 import { setSidebarStatus } from '../../store/slices/sidebarSlice';
+import { colors, dimensions } from '@mimir/ui-kit';
 
 const StyledBurger = styled.div`
   display: none;
-  margin-top: 25px;
+  margin-top: ${dimensions.xl_2};
 
-  @media (max-width: 768px) {
+  @media (max-width: ${dimensions.tablet_width}) {
     display: block;
     transform: translateY(-50%);
   }
 
   span {
     display: block;
-    height: 4px;
-    width: 30px;
+    height: 0.25rem;
+    width: ${dimensions.xl_3};
     border-radius: 5px;
-    background-color: blue;
+    background-color: ${colors.accent_color};
     margin-bottom: 5px;
   }
 
-  span:nth-child(1) {
-    width: 15px;
+  span:nth-of-type(1) {
+    width: ${dimensions.base};
   }
 
-  span:nth-child(3) {
-    width: 25px;
+  span:nth-of-type(3) {
+    width: ${dimensions.xl_2};
   }
 `;
 

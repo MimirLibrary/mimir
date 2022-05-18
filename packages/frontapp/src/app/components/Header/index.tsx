@@ -1,4 +1,3 @@
-import React from 'react';
 import TitleProject from '../TitleProject';
 import styled from '@emotion/styled';
 import NotificationIcon from '../NotificationIcon';

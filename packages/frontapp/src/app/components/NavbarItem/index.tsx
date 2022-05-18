@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from 'react';
+import { FC, ReactElement } from 'react';
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 import { colors, dimensions } from '@mimir/ui-kit';
@@ -64,9 +64,9 @@ const InsideButtonContainer = styled.div`
 
 const StyledIcon = styled.div<IStyle>`
   & svg {
-    margin-right: 10px;
-    width: 32px;
-    height: 32px;
+    margin-right: ${dimensions.xs_1};
+    width: ${dimensions.base_2};
+    height: ${dimensions.base_2};
     fill: ${(props) =>
       JSON.parse(props.primary) ? colors.bg_secondary : colors.main_black};
   }

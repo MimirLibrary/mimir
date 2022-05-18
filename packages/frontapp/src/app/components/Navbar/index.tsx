@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import NavbarItem from '../NavbarItem';
 import styled from '@emotion/styled';
 import { useAppDispatch } from '../../hooks/useTypedDispatch';

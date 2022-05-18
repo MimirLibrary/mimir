@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import styled from '@emotion/styled';
 import Navbar from '../Navbar';
 import Header from '../Header';
-import { dimensions } from '@mimir/ui-kit';
+import { colors, dimensions } from '@mimir/ui-kit';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 
 interface IProps {
@@ -16,14 +16,13 @@ const StyledSidebar = styled.aside<IProps>`
   flex-direction: column;
   max-width: 22rem;
   width: 100%;
-  z-index: 50;
+  z-index: 1;
   padding-top: ${dimensions.xl_6};
-  @media (max-width: 768px) {
+  @media (max-width: ${dimensions.tablet_width}) {
     position: fixed;
     top: 0;
     left: ${(props) => (props.isSidebarVisible ? '0' : '-100%')};
-    z-index: 50;
-    background: white;
+    background: ${colors.bg_secondary};
     width: 90%;
     transition: all 0.8s;
     height: 100%;
@@ -31,9 +30,9 @@ const StyledSidebar = styled.aside<IProps>`
 `;
 
 const Sidebar: FC = () => {
-  const { isSidebarVisible } = useAppSelector((state) => state.sidebar);
+  const { sidebarActive } = useAppSelector((state) => state.sidebar);
   return (
-    <StyledSidebar isSidebarVisible={isSidebarVisible}>
+    <StyledSidebar isSidebarVisible={sidebarActive}>
       <Header />
       <Navbar />
     </StyledSidebar>

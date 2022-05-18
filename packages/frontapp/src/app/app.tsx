@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import StartPage from './pages/StartPage';
 import Sidebar from './components/Sidebar';
 import { Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import { useAuth } from './hooks/useAuth';
 import styled from '@emotion/styled';
-import { colors } from '@mimir/ui-kit';
+import { colors, dimensions } from '@mimir/ui-kit';
 import { useRoutes } from './hooks/useRoutes';
 import { useAppSelector } from './hooks/useTypedSelector';
 import NotificationPage from './pages/NotificationPage';
@@ -21,9 +21,10 @@ const WrapperRoutes = styled.div`
   width: calc(100% - 22rem);
   background-color: ${colors.bg_primary};
   padding: 2.5rem 2.5rem 2.5rem 2.3rem;
-  @media (max-width: 768px) {
+
+  @media (max-width: ${dimensions.tablet_width}) {
     width: 100%;
-    padding: 10px;
+    padding: ${dimensions.xs_1};
   }
 `;
 

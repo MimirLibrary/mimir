@@ -12,7 +12,7 @@ import Burger from '../components/Burger';
 import FiltersButton from '../components/FiltersButton';
 
 const WrapperHome = styled.div`
-  @media (max-width: 768px) {
+  @media (max-width: ${dimensions.tablet_width}) {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -27,9 +27,13 @@ const Wrapper = styled.div`
 
 const SearchWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: start;
   align-items: center;
   width: 100%;
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    justify-content: space-between;
+  }
 `;
 
 const HomePage: FC = () => {

@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface IStateSidebar {
-  isSidebarVisible: boolean;
+  sidebarActive: boolean;
 }
 
 const initialState: IStateSidebar = {
-  isSidebarVisible: false,
+  sidebarActive: false,
 };
 
 const sidebarSlice = createSlice({
@@ -16,7 +16,7 @@ const sidebarSlice = createSlice({
       state: IStateSidebar,
       action: PayloadAction<boolean>
     ) => {
-      state.isSidebarVisible = action.payload;
+      state.sidebarActive = action.payload;
     },
   },
 });

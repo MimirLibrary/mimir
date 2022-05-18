@@ -2,28 +2,30 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { useAppDispatch } from '../../hooks/useTypedDispatch';
 import { setSidebarStatus } from '../../store/slices/sidebarSlice';
+import { colors, dimensions } from '@mimir/ui-kit';
 
 const StyledBurgerOff = styled.div`
   display: none;
-  @media (max-width: 768px) {
-    display: block;
-  }
 
   span {
     display: block;
-    height: 2px;
-    width: 30px;
+    height: 0.125rem;
+    width: ${dimensions.xl_3};
     border-radius: 5px;
-    background-color: blue;
+    background-color: ${colors.accent_color};
     margin-bottom: -2px;
   }
 
-  span:nth-child(1) {
+  span:nth-of-type(1) {
     transform: rotate(-45deg);
   }
 
-  span:nth-child(2) {
+  span:nth-of-type(2) {
     transform: rotate(45deg);
+  }
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    display: block;
   }
 `;
 

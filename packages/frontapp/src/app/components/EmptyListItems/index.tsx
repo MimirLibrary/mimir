@@ -1,4 +1,3 @@
-import React from 'react';
 import emptyList from '../../../assets/EmptyList.png';
 import styled from '@emotion/styled';
 import { TitleArticle } from '../../globalUI/TextArticle';
@@ -22,7 +21,7 @@ const Wrapper = styled.section`
     width: 60%;
   }
 
-  @media (max-width: 420px) {
+  @media (max-width: ${dimensions.phone_width}) {
     & img {
       width: 80%;
     }

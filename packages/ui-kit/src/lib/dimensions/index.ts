@@ -11,4 +11,6 @@ export const dimensions = {
   base_2: '2rem', //32px
   xl_4: '2.25rem', //36px
   xl_6: '2.5rem', //40px
+  tablet_width: '48rem', //768px
+  phone_width: '26.25rem', //420px
 };
