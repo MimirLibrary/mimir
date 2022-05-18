@@ -7,8 +7,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface ClaimBookInput {
-  identifier?: Nullable<string>;
-  id_internal?: Nullable<string>;
+  identifier: string;
   person_id: string;
 }
 

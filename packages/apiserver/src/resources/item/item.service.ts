@@ -24,17 +24,11 @@ export class ItemService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      let material;
-      const { identifier, person_id, id_internal } = claimBookInput;
-      if (identifier) {
-        material = await materialRepository.findOne({
-          where: { identifier },
-        });
-      } else {
-        material = await materialRepository.findOne({
-          where: { id_internal },
-        });
-      }
+      const { identifier, person_id } = claimBookInput;
+      const material = await materialRepository.findOne({
+        where: { identifier },
+      });
+
       if (!material) {
         throw new ClaimError('This item is not registered in the library');
       }
@@ -44,7 +38,6 @@ export class ItemService {
         order: { created_at: 'DESC' },
         take: 1,
       });
-      this.getDateReturn(status[0].created_at);
       if (status[0].status === StatusTypes.BUSY) {
         throw new ClaimError(`This book is busy. Ask the manager!`);
       }
