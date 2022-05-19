@@ -2,7 +2,7 @@ import { Dispatch, FC, SetStateAction } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 
-const StyledBurgerOff = styled.div`
+const StyledClosedButton = styled.div`
   display: none;
 
   span {
@@ -31,17 +31,17 @@ interface IProps {
   setSidebarActive: Dispatch<SetStateAction<boolean>>;
 }
 
-const BurgerOff: FC<IProps> = ({ setSidebarActive }) => {
+const ClosedButton: FC<IProps> = ({ setSidebarActive }) => {
   const hideSidebar = () => {
     setSidebarActive(false);
   };
 
   return (
-    <StyledBurgerOff onClick={hideSidebar}>
+    <StyledClosedButton onClick={hideSidebar}>
       <span></span>
       <span></span>
-    </StyledBurgerOff>
+    </StyledClosedButton>
   );
 };
 
-export default BurgerOff;
+export default ClosedButton;

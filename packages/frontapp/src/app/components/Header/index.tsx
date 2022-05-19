@@ -5,7 +5,7 @@ import NotificationIcon from '../NotificationIcon';
 import Avatar from '../Avatar';
 import UserInfo from '../UserInfo';
 import { useAppSelector } from '../../hooks/useTypedSelector';
-import BurgerOff from '../BurgerOff';
+import ClosedButton from '../ClosedButton';
 
 interface IProps {
   setSidebarActive: Dispatch<SetStateAction<boolean>>;
@@ -46,7 +46,7 @@ const Header: FC<IProps> = ({ setSidebarActive }) => {
       <WrapperTitle>
         <TitleProject title="Mimir" />
         <NotificationIcon active={true} />
-        <BurgerOff setSidebarActive={setSidebarActive} />
+        <ClosedButton setSidebarActive={setSidebarActive} />
       </WrapperTitle>
       <WrapperForCenter>
         <WrapperUserInfo>
