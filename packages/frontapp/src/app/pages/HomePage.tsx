@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import Search from '../components/Search';
 import InstructionsClaim from '../components/InstructionsClaim';
 import { TitleArticle } from '../globalUI/TextArticle';
 import { TextBase } from '../globalUI/TextBase';
@@ -8,8 +7,6 @@ import ListItems from '../components/ListBooks';
 import EmptyListItems from '../components/EmptyListItems';
 import { dimensions } from '@mimir/ui-kit';
 import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
-import Burger from '../components/Burger';
-import FiltersButton from '../components/FiltersButton';
 
 const WrapperHome = styled.div`
   @media (max-width: ${dimensions.tablet_width}) {
@@ -25,28 +22,12 @@ const Wrapper = styled.div`
   margin-bottom: ${dimensions.xl_2};
 `;
 
-const SearchWrapper = styled.div`
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  width: 100%;
-
-  @media (max-width: ${dimensions.tablet_width}) {
-    justify-content: space-between;
-  }
-`;
-
 const HomePage: FC = () => {
   const { data, loading } = useGetAllMaterialsQuery();
   if (loading) return <h1>Loading...</h1>;
 
   return (
     <WrapperHome>
-      <SearchWrapper>
-        <Burger />
-        <Search />
-        <FiltersButton />
-      </SearchWrapper>
       <InstructionsClaim />
       {data?.getAllMaterials.length ? (
         <>

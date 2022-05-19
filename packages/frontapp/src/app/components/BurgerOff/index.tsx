@@ -1,7 +1,5 @@
-import React from 'react';
+import { Dispatch, FC, SetStateAction } from 'react';
 import styled from '@emotion/styled';
-import { useAppDispatch } from '../../hooks/useTypedDispatch';
-import { setSidebarStatus } from '../../store/slices/sidebarSlice';
 import { colors, dimensions } from '@mimir/ui-kit';
 
 const StyledBurgerOff = styled.div`
@@ -11,9 +9,9 @@ const StyledBurgerOff = styled.div`
     display: block;
     height: 0.125rem;
     width: ${dimensions.xl_3};
-    border-radius: 5px;
+    border-radius: 0.3rem;
     background-color: ${colors.accent_color};
-    margin-bottom: -2px;
+    margin-bottom: -0.125rem;
   }
 
   span:nth-of-type(1) {
@@ -29,10 +27,13 @@ const StyledBurgerOff = styled.div`
   }
 `;
 
-const BurgerOff = () => {
-  const dispatch = useAppDispatch();
+interface IProps {
+  setSidebarActive: Dispatch<SetStateAction<boolean>>;
+}
+
+const BurgerOff: FC<IProps> = ({ setSidebarActive }) => {
   const hideSidebar = () => {
-    dispatch(setSidebarStatus(false));
+    setSidebarActive(false);
   };
 
   return (

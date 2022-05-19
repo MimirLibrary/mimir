@@ -1,15 +1,19 @@
-import { FC } from 'react';
+import { Dispatch, FC, SetStateAction } from 'react';
 import styled from '@emotion/styled';
 import Navbar from '../Navbar';
 import Header from '../Header';
 import { colors, dimensions } from '@mimir/ui-kit';
-import { useAppSelector } from '../../hooks/useTypedSelector';
 
 interface IProps {
-  isSidebarVisible: boolean;
+  isSidebarActive: boolean;
+  setSidebarActive: Dispatch<SetStateAction<boolean>>;
 }
 
-const StyledSidebar = styled.aside<IProps>`
+interface IStyledSidebarProps {
+  isSidebarActive: boolean;
+}
+
+const StyledSidebar = styled.aside<IStyledSidebarProps>`
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -21,7 +25,7 @@ const StyledSidebar = styled.aside<IProps>`
   @media (max-width: ${dimensions.tablet_width}) {
     position: fixed;
     top: 0;
-    left: ${(props) => (props.isSidebarVisible ? '0' : '-100%')};
+    left: ${(props) => (props.isSidebarActive ? '0' : '-100%')};
     background: ${colors.bg_secondary};
     width: 90%;
     transition: all 0.8s;
@@ -29,11 +33,10 @@ const StyledSidebar = styled.aside<IProps>`
   }
 `;
 
-const Sidebar: FC = () => {
-  const { sidebarActive } = useAppSelector((state) => state.sidebar);
+const Sidebar: FC<IProps> = ({ isSidebarActive, setSidebarActive }) => {
   return (
-    <StyledSidebar isSidebarVisible={sidebarActive}>
-      <Header />
+    <StyledSidebar isSidebarActive={isSidebarActive}>
+      <Header setSidebarActive={setSidebarActive} />
       <Navbar />
     </StyledSidebar>
   );

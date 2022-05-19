@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import StartPage from './pages/StartPage';
 import Sidebar from './components/Sidebar';
 import { Route, Routes } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { colors, dimensions } from '@mimir/ui-kit';
 import { useRoutes } from './hooks/useRoutes';
 import { useAppSelector } from './hooks/useTypedSelector';
 import NotificationPage from './pages/NotificationPage';
+import SearchWrapper from './components/SearchWrapper';
 
 const WrapperPage = styled.main`
   display: flex;
@@ -32,14 +33,19 @@ const App: FC = () => {
   const { isAuth } = useAuth();
   const { userRole } = useAppSelector((state) => state.user);
   const routes = useRoutes(userRole);
+  const [isSidebarActive, setSidebarActive] = useState(false);
 
   return (
-    <>
+    <div>
       {isAuth ? (
-        <>
+        <div>
           <WrapperPage>
-            <Sidebar />
+            <Sidebar
+              isSidebarActive={isSidebarActive}
+              setSidebarActive={setSidebarActive}
+            />
             <WrapperRoutes>
+              <SearchWrapper setSidebarActive={setSidebarActive} />
               <Routes>
                 {routes}
                 <Route path="/notifications" element={<NotificationPage />} />
@@ -47,14 +53,14 @@ const App: FC = () => {
               </Routes>
             </WrapperRoutes>
           </WrapperPage>
-        </>
+        </div>
       ) : (
         <Routes>
           <Route path="/login" element={<StartPage />} />
           <Route path="*" element={<StartPage />} />
         </Routes>
       )}
-    </>
+    </div>
   );
 };
 

@@ -5,10 +5,11 @@ import { ReactComponent as NoNotification } from '../../../assets/NoNotification
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setActiveTab } from '../../store/slices/tabsSlice';
+import { dimensions } from '@mimir/ui-kit';
 
 const WrapperIcon = styled.div`
   cursor: pointer;
-  @media (max-width: 768px) {
+  @media (max-width: ${dimensions.tablet_width}) {
     display: none;
   }
 `;

@@ -1,3 +1,4 @@
+import { FC, Dispatch, SetStateAction } from 'react';
 import TitleProject from '../TitleProject';
 import styled from '@emotion/styled';
 import NotificationIcon from '../NotificationIcon';
@@ -5,6 +6,10 @@ import Avatar from '../Avatar';
 import UserInfo from '../UserInfo';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import BurgerOff from '../BurgerOff';
+
+interface IProps {
+  setSidebarActive: Dispatch<SetStateAction<boolean>>;
+}
 
 const WrapperTitle = styled.div`
   display: flex;
@@ -34,14 +39,14 @@ const WrapperHeader = styled.header`
   margin-bottom: 3.5rem;
 `;
 
-const Header = () => {
+const Header: FC<IProps> = ({ setSidebarActive }) => {
   const { username } = useAppSelector((state) => state.user);
   return (
     <WrapperHeader>
       <WrapperTitle>
         <TitleProject title="Mimir" />
         <NotificationIcon active={true} />
-        <BurgerOff />
+        <BurgerOff setSidebarActive={setSidebarActive} />
       </WrapperTitle>
       <WrapperForCenter>
         <WrapperUserInfo>

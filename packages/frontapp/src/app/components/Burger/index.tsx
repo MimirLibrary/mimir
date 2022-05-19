@@ -1,8 +1,10 @@
-import { FC } from 'react';
+import { Dispatch, FC, SetStateAction } from 'react';
 import styled from '@emotion/styled';
-import { useAppDispatch } from '../../hooks/useTypedDispatch';
-import { setSidebarStatus } from '../../store/slices/sidebarSlice';
 import { colors, dimensions } from '@mimir/ui-kit';
+
+interface IProps {
+  setSidebarActive: Dispatch<SetStateAction<boolean>>;
+}
 
 const StyledBurger = styled.div`
   display: none;
@@ -31,10 +33,9 @@ const StyledBurger = styled.div`
   }
 `;
 
-const Burger: FC = () => {
-  const dispatch = useAppDispatch();
+const Burger: FC<IProps> = ({ setSidebarActive }) => {
   const showSidebar = () => {
-    dispatch(setSidebarStatus(true));
+    setSidebarActive(true);
   };
   return (
     <StyledBurger onClick={showSidebar}>
