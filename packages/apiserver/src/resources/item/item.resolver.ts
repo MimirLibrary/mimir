@@ -7,7 +7,6 @@ import {
 } from '@mimir/global-types';
 import { Status as StatusType } from '../statuses/status.entity';
 import { ItemService } from './item.service';
-import { Material } from '../materials/material.entity';
 
 @Resolver('StatusResult')
 export class ItemResolver {
