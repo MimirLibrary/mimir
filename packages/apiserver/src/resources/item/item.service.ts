@@ -10,11 +10,6 @@ import { StatusTypes } from '../../utils/statusTypes';
 export class ItemService {
   constructor(private connection: Connection) {}
 
-  private getDateReturn(date: Date): Date {
-    const dateReturn = date.setMonth(date.getMonth() + 1);
-    return new Date(dateReturn);
-  }
-
   async claim(claimBookInput: ClaimBookInput) {
     const queryRunner = this.connection.createQueryRunner();
     const statusRepository =
@@ -49,9 +44,7 @@ export class ItemService {
       const newStatus = await statusRepository.save(newStatusObj);
       await statusRepository.save(newStatus);
       await queryRunner.commitTransaction();
-      return {
-        returnDate: this.getDateReturn(newStatus.created_at),
-      };
+      return newStatus;
     } catch (e) {
       await queryRunner.rollbackTransaction();
       return {

@@ -149,5 +149,5 @@ export type CountryCode = any;
 export type Locale = any;
 export type RoutingNumber = any;
 export type AccountNumber = any;
-export type ClaimBookUnionResult = ReturnDate | Error;
+export type ClaimBookUnionResult = Status | Error;
 type Nullable<T> = T | null;
