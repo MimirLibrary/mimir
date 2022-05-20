@@ -29,7 +29,7 @@ const getDates = (date: string) => {
 };
 
 const isOverdue = (date: string) =>
-  getDates(date).currentDate >= getDates(date).returnDate;
+  getDates(date).currentDate <= getDates(date).returnDate;
 
 const getStatus = (status: string | undefined, date: string) => {
   if (!status) return null;
@@ -57,7 +57,7 @@ const StyledBookStatus = styled.p<IStyledBookStatusProps>`
 `;
 
 const BookStatus: FC<IbookStatusProps> = ({ status }) => {
-  const [statusText, setStatusText] = useState<String>('');
+  const [statusText, setStatusText] = useState<string>('');
   const currentStatus = getStatus(status?.status, status?.created_at);
 
   useEffect(() => {
@@ -65,15 +65,17 @@ const BookStatus: FC<IbookStatusProps> = ({ status }) => {
       case 'Free':
         setStatusText('On the shelf');
         break;
-      case 'Busy':
+      case 'Busy': {
         const day = `${getDates(
           status?.created_at
         ).returnDate.getDate()}`.padStart(2, '0');
-        const month = `${getDates(
-          status?.created_at
-        ).returnDate.getMonth()}`.padStart(2, '0');
+        const month = `${
+          getDates(status?.created_at).returnDate.getMonth() + 1
+        }`.padStart(2, '0');
         setStatusText(`Return till ${day}.${month}`);
         break;
+      }
+
       case 'Overdue':
         setStatusText('Overdue');
         break;

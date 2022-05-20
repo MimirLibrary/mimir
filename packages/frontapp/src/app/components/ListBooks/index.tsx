@@ -45,20 +45,18 @@ interface IProps {
 
 const ListItems: FC<IProps> = ({ items }) => {
   return (
-    <>
-      <WrapperList>
-        {items &&
-          items.map((item) => (
-            <BookCard
-              key={item?.id}
-              src={''}
-              title={item?.identifier}
-              description={''}
-              status={item?.statuses[item.statuses.length - 1]}
-            />
-          ))}
-      </WrapperList>
-    </>
+    <WrapperList>
+      {items &&
+        items.map((item) => (
+          <BookCard
+            key={item?.id}
+            src={''}
+            title={item?.identifier}
+            description={''}
+            status={item?.statuses[item.statuses.length - 1]}
+          />
+        ))}
+    </WrapperList>
   );
 };
 
