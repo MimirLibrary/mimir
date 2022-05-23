@@ -60,29 +60,16 @@ export class ItemService {
 
   async getAllTakenItems(person_id: number) {
     try {
-      const statuses = await Status.find({
-        where: { person_id, status: 'Busy' },
-        relations: ['material', 'person'],
-      });
-      // const arr = await Status.query(
-      //   `SELECT status.id, status.status
-      //           FROM (status left join material on material_id = material.id)
-      //                            FROM status Where person_id=${person_id} and status='Busy'
-      //                           GROUP BY material_id)`
-      // );
-      // // const arr = await Status.query(
-      // //   `SELECT *
-      // //           FROM (status left join material on material_id = material.id)
-      // //           WHERE created_at IN (SELECT  MAX(created_at)
-      // //           FROM status Where person_id=${person_id} and status='Busy'
-      // //           GROUP BY material_id)`
-      // // );
-      // const materials = await Status.createQueryBuilder('status')
-      //   .leftJoinAndSelect('status.material', 'material')
-      //   .where('status.person_id = :person_id', { person_id })
-      //   .andWhere('status.status = :status', { status: 'Busy' })
-      //   .getMany();
-      return statuses;
+      const materials = await Status.createQueryBuilder('status')
+        .leftJoinAndSelect('status.material', 'material')
+        .leftJoinAndSelect('status.person', 'person')
+        .distinctOn(['material_id'])
+        .orderBy('material_id', 'DESC')
+        .where('person_id = :person_id', { person_id })
+        .andWhere('status = :status', { status: 'Busy' })
+        .addOrderBy('status.created_at', 'DESC')
+        .getMany();
+      return materials;
     } catch (e) {
       return {
         message: e.message,
