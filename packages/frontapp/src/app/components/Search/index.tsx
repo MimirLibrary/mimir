@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { colors, dimensions, fonts } from '@mimir/ui-kit';
 import { ReactComponent as SearchIcon } from '../../../assets/Navbar/Search.svg';
 import Input from '../Input';
+import { t } from 'i18next';
 
 const InputSearch = styled(Input)`
   width: 19rem;
@@ -67,7 +68,7 @@ const Search = () => {
         type="text"
         value={search}
         onChange={handleChangeSearch}
-        placeholder="Search by book or author"
+        placeholder={t('Search.Placeholder')}
       />
     </WrapperInput>
   );

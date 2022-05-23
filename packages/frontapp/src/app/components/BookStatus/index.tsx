@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
-import { Status } from '@mimir/global-types';
 
 interface IbookStatusProps {
   status:
