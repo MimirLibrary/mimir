@@ -2,9 +2,15 @@ import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>;
+};
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>;
+};
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -149,6 +155,8 @@ export type Scalars = {
   SafeInt: any;
   /** A time string at UTC, such as 10:15:30Z, compliant with the `full-time` format outlined in section 5.6 of the RFC 3339profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
   Time: any;
+  /** A field whose value exists in the standard IANA Time Zone Database: https://www.iana.org/time-zones */
+  TimeZone: any;
   /** The javascript `Date` as integer. Type represents date and time as number of milliseconds from start of UNIX epoch. */
   Timestamp: any;
   /** A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt. */
@@ -169,7 +177,7 @@ export type Scalars = {
 
 export type ClaimBookInput = {
   identifier: Scalars['String'];
-  person_id: Scalars['String'];
+  person_id: Scalars['Int'];
 };
 
 export type CreateMaterialInput = {
@@ -184,8 +192,8 @@ export type CreatePersonInput = {
 };
 
 export type CreateStatusInput = {
-  material_id: Scalars['ID'];
-  person_id: Scalars['ID'];
+  material_id: Scalars['Int'];
+  person_id: Scalars['Int'];
   status: Scalars['String'];
 };
 
@@ -196,11 +204,15 @@ export type Error = {
 
 export type Material = {
   __typename?: 'Material';
+  author: Scalars['String'];
+  category: Scalars['String'];
   created_at: Scalars['DateTime'];
   id: Scalars['ID'];
   id_type: Scalars['String'];
   identifier: Scalars['String'];
+  picture?: Maybe<Scalars['String']>;
   statuses: Array<Maybe<Status>>;
+  title: Scalars['String'];
   type: Scalars['String'];
   updated_at: Scalars['DateTime'];
 };
@@ -213,21 +225,17 @@ export type Mutation = {
   createStatus?: Maybe<Status>;
 };
 
-
 export type MutationClaimBookArgs = {
   input?: InputMaybe<ClaimBookInput>;
 };
-
 
 export type MutationCreateMaterialArgs = {
   input: CreateMaterialInput;
 };
 
-
 export type MutationCreatePersonArgs = {
   input: CreatePersonInput;
 };
-
 
 export type MutationCreateStatusArgs = {
   input: CreateStatusInput;
@@ -246,28 +254,29 @@ export type Query = {
   __typename?: 'Query';
   getAllMaterials: Array<Maybe<Material>>;
   getAllPersons: Array<Maybe<Person>>;
+  getAllTakenItems: Array<Maybe<Status>>;
   getMaterialById?: Maybe<Material>;
-  getOnePerson?: Maybe<Person>;
+  getOnePerson: Person;
   getStatusesByMaterial: Array<Maybe<Status>>;
   getStatusesByPerson: Array<Maybe<Status>>;
   welcome: Scalars['String'];
 };
 
+export type QueryGetAllTakenItemsArgs = {
+  person_id: Scalars['Int'];
+};
 
 export type QueryGetMaterialByIdArgs = {
   id: Scalars['ID'];
 };
 
-
 export type QueryGetOnePersonArgs = {
   id: Scalars['ID'];
 };
 
-
 export type QueryGetStatusesByMaterialArgs = {
   material_id: Scalars['ID'];
 };
-
 
 export type QueryGetStatusesByPersonArgs = {
   person_id: Scalars['ID'];
@@ -277,56 +286,99 @@ export type Status = {
   __typename?: 'Status';
   created_at: Scalars['DateTime'];
   id: Scalars['ID'];
-  material_id: Scalars['ID'];
-  person_id: Scalars['ID'];
+  material: Material;
+  material_id: Scalars['Int'];
+  person: Person;
+  person_id: Scalars['Int'];
   status: Scalars['String'];
 };
 
 export type StatusResult = Error | Status;
 
-export type GetAllMaterialsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetAllTakenItemsQueryVariables = Exact<{
+  person_id: Scalars['Int'];
+}>;
 
+export type GetAllTakenItemsQuery = {
+  __typename?: 'Query';
+  getAllTakenItems: Array<{
+    __typename?: 'Status';
+    id: string;
+    created_at: any;
+    status: string;
+    material: {
+      __typename?: 'Material';
+      picture?: string | null;
+      title: string;
+      author: string;
+      category: string;
+    };
+  } | null>;
+};
 
-export type GetAllMaterialsQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', identifier: string, id: string, type: string, statuses: Array<{ __typename?: 'Status', status: string, created_at: any } | null> } | null> };
-
-
-export const GetAllMaterialsDocument = gql`
-    query GetAllMaterials {
-  getAllMaterials {
-    identifier
-    id
-    type
-    statuses {
-      status
+export const GetAllTakenItemsDocument = gql`
+  query GetAllTakenItems($person_id: Int!) {
+    getAllTakenItems(person_id: $person_id) {
+      id
       created_at
+      status
+      material {
+        picture
+        title
+        author
+        category
+      }
     }
   }
-}
-    `;
+`;
 
 /**
- * __useGetAllMaterialsQuery__
+ * __useGetAllTakenItemsQuery__
  *
- * To run a query within a React component, call `useGetAllMaterialsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAllMaterialsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetAllTakenItemsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllTakenItemsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetAllMaterialsQuery({
+ * const { data, loading, error } = useGetAllTakenItemsQuery({
  *   variables: {
+ *      person_id: // value for 'person_id'
  *   },
  * });
  */
-export function useGetAllMaterialsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>(GetAllMaterialsDocument, options);
-      }
-export function useGetAllMaterialsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>(GetAllMaterialsDocument, options);
-        }
-export type GetAllMaterialsQueryHookResult = ReturnType<typeof useGetAllMaterialsQuery>;
-export type GetAllMaterialsLazyQueryHookResult = ReturnType<typeof useGetAllMaterialsLazyQuery>;
-export type GetAllMaterialsQueryResult = Apollo.QueryResult<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>;
+export function useGetAllTakenItemsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetAllTakenItemsQuery,
+    GetAllTakenItemsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetAllTakenItemsQuery, GetAllTakenItemsQueryVariables>(
+    GetAllTakenItemsDocument,
+    options
+  );
+}
+export function useGetAllTakenItemsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetAllTakenItemsQuery,
+    GetAllTakenItemsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetAllTakenItemsQuery,
+    GetAllTakenItemsQueryVariables
+  >(GetAllTakenItemsDocument, options);
+}
+export type GetAllTakenItemsQueryHookResult = ReturnType<
+  typeof useGetAllTakenItemsQuery
+>;
+export type GetAllTakenItemsLazyQueryHookResult = ReturnType<
+  typeof useGetAllTakenItemsLazyQuery
+>;
+export type GetAllTakenItemsQueryResult = Apollo.QueryResult<
+  GetAllTakenItemsQuery,
+  GetAllTakenItemsQueryVariables
+>;

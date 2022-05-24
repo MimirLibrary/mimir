@@ -4,6 +4,7 @@ import { colors, dimensions } from '@mimir/ui-kit';
 
 const StyledClosedButton = styled.div`
   display: none;
+  cursor: pointer;
 
   span {
     display: block;

@@ -1,0 +1,13 @@
+query GetAllTakenItems($person_id: Int!){
+  getAllTakenItems(person_id: $person_id) {
+    id
+    created_at
+    status
+    material {
+      picture
+      title
+      author
+      category
+    }
+  }
+}

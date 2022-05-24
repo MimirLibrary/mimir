@@ -9,6 +9,7 @@ interface IProps {
 const StyledBurger = styled.div`
   display: none;
   margin-top: ${dimensions.xl_2};
+  cursor: pointer;
 
   @media (max-width: ${dimensions.tablet_width}) {
     display: block;

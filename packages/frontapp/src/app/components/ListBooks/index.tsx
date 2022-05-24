@@ -5,7 +5,7 @@ import BookCard from '../BookCard';
 
 const WrapperList = styled.section`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   row-gap: ${dimensions.base};
   column-gap: ${dimensions.base_2};
   width: 100%;
@@ -25,22 +25,24 @@ const WrapperList = styled.section`
   }
 `;
 
-export interface IStatusForMaterial {
-  __typename?: 'Status' | undefined;
-  status: string;
-  created_at: Date;
+export interface IMaterial {
+  __typename?: 'Material';
+  picture?: string | null | undefined;
+  category: string;
+  author: string;
+  title: string;
 }
 
-export interface IListMaterial {
-  __typename?: 'Material' | undefined;
-  identifier: string;
+export interface IListItems {
   id: string;
-  type: string;
-  statuses: (IStatusForMaterial | null)[];
+  __typename?: 'Status' | undefined;
+  status: string;
+  created_at: any;
+  material: IMaterial;
 }
 
 interface IProps {
-  items: (IListMaterial | null)[] | undefined;
+  items: Array<IListItems | null>;
 }
 
 const ListItems: FC<IProps> = ({ items }) => {
@@ -50,10 +52,12 @@ const ListItems: FC<IProps> = ({ items }) => {
         items.map((item) => (
           <BookCard
             key={item?.id}
-            src={''}
-            title={item?.identifier}
-            description={''}
-            status={item?.statuses[item.statuses.length - 1]}
+            src={item?.material?.picture}
+            title={item?.material.title}
+            author={item?.material.author}
+            category={item?.material.category}
+            date={item?.created_at}
+            status={item?.status}
           />
         ))}
     </WrapperList>
