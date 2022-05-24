@@ -8,7 +8,7 @@
 /* eslint-disable */
 export interface ClaimBookInput {
   identifier: string;
-  person_id: string;
+  person_id: number;
 }
 
 export interface CreateMaterialInput {
@@ -77,7 +77,7 @@ export interface IQuery {
   ): Nullable<Status>[] | Promise<Nullable<Status>[]>;
   getOnePerson(id: string): Person | Promise<Person>;
   getAllTakenItems(
-    person_id: string
+    person_id: number
   ): Nullable<Status>[] | Promise<Nullable<Status>[]>;
 }
 

@@ -14,7 +14,7 @@ type Query {
   getStatusesByPerson(person_id: ID!): [Status]!
   getStatusesByMaterial(material_id: ID!): [Status]!
   getOnePerson(id: ID!): Person!
-  getAllTakenItems(person_id: ID!): [Status]!
+  getAllTakenItems(person_id: Int!): [Status]!
 }
 
 type Mutation {

@@ -1,15 +1,16 @@
 import { FC } from 'react';
+import BookStatus from '../BookStatus';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
-import BookStatus from '../BookStatus';
 import bookImage from '../../../assets/MOC-data/BookImage.png';
-import { IStatusForMaterial } from '../ListBooks';
 
 export interface IProps {
-  src: string;
+  src: string | null | undefined;
   title: string | undefined;
-  description: string;
-  status: IStatusForMaterial | null | undefined;
+  date: any | undefined;
+  status: string | undefined;
+  author: string | undefined;
+  category: string | undefined;
 }
 
 const BookCardWrapper = styled.div`
@@ -67,16 +68,18 @@ const DescriptionBook = styled.p`
 const BookCard: FC<IProps> = ({
   src = '',
   title = '',
-  description = '',
+  author = '',
   status,
+  category,
+  date,
 }) => {
   return (
     <BookCardWrapper>
-      <BookImage src={bookImage} />
+      <BookImage src={src || bookImage} />
       <DescriptionWrapper>
         <TitleBook>{title}</TitleBook>
-        <DescriptionBook>{description}</DescriptionBook>
-        <BookStatus status={status} />
+        <DescriptionBook>{category + ' / ' + author}</DescriptionBook>
+        <BookStatus status={status} date={date} />
       </DescriptionWrapper>
     </BookCardWrapper>
   );

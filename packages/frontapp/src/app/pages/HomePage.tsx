@@ -6,7 +6,8 @@ import styled from '@emotion/styled';
 import ListItems from '../components/ListBooks';
 import EmptyListItems from '../components/EmptyListItems';
 import { dimensions } from '@mimir/ui-kit';
-import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
+import { useGetAllTakenItemsQuery } from '@mimir/apollo-client';
+import { useAppSelector } from '../hooks/useTypedSelector';
 
 const WrapperHome = styled.div`
   @media (max-width: ${dimensions.tablet_width}) {
@@ -22,19 +23,23 @@ const Wrapper = styled.div`
 `;
 
 const HomePage: FC = () => {
-  const { data, loading } = useGetAllMaterialsQuery();
+  const { id } = useAppSelector((state) => state.user);
+  const { data, loading } = useGetAllTakenItemsQuery({
+    variables: { person_id: id },
+  });
+
   if (loading) return <h1>Loading...</h1>;
 
   return (
     <WrapperHome>
       <InstructionsClaim />
-      {data?.getAllMaterials.length ? (
+      {data?.getAllTakenItems.length ? (
         <>
           <Wrapper>
             <TitleArticle>Don't forget to pass</TitleArticle>
             <TextBase>List of items you have taken and due dates</TextBase>
           </Wrapper>
-          <ListItems items={data?.getAllMaterials} />
+          <ListItems items={data?.getAllTakenItems} />
         </>
       ) : (
         <EmptyListItems />
