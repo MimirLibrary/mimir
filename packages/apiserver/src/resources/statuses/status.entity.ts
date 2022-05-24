@@ -16,14 +16,14 @@ export class Status extends BaseEntity {
   id!: number;
 
   @Column({ nullable: true })
-  material_id: string;
+  material_id: number;
 
   @ManyToOne(() => Material, (material) => material.status)
   @JoinColumn({ name: 'material_id' })
   material!: Material;
 
   @Column({ nullable: true })
-  person_id: string;
+  person_id: number;
 
   @ManyToOne(() => Person, (person) => person.status)
   @JoinColumn({ name: 'person_id' })

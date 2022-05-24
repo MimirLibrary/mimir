@@ -5,6 +5,10 @@ type Material{
   type: String!
   created_at: DateTime!
   updated_at: DateTime!
+  title: String!
+  picture: String
+  author: String!
+  category: String!
   statuses: [Status]!
 }
 
