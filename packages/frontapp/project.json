@@ -100,14 +100,14 @@
       }
     },
     "serve-static": {
-        "executor": "@nrwl/web:file-server",
-        "options": {
-            "buildTarget": "frontapp:build",
-            "parallel": true,
-            "port": 8000,
-            "host": "0.0.0.0",
-            "watch": false
-        }
+      "executor": "@nrwl/web:file-server",
+      "options": {
+        "buildTarget": "frontapp:build",
+        "parallel": true,
+        "port": 8000,
+        "host": "0.0.0.0",
+        "watch": false
+      }
     }
   },
   "tags": []

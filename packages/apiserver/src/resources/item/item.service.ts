@@ -42,7 +42,6 @@ export class ItemService {
         person_id,
       });
       const newStatus = await statusRepository.save(newStatusObj);
-      await statusRepository.save(newStatus);
       await queryRunner.commitTransaction();
       return newStatus;
     } catch (e) {
