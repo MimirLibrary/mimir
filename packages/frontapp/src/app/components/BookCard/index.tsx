@@ -1,15 +1,16 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
+import BookStatus from '../BookStatus';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
-import BookStatus from '../BookStatus';
 import bookImage from '../../../assets/MOC-data/BookImage.png';
-import { IStatusForMaterial } from '../ListBooks';
 
 export interface IProps {
-  src: string;
+  src: string | null | undefined;
   title: string | undefined;
-  description: string;
-  status: IStatusForMaterial | null | undefined;
+  date: any | undefined;
+  status: string | undefined;
+  author: string | undefined;
+  category: string | undefined;
 }
 
 const BookCardWrapper = styled.div`
@@ -21,6 +22,12 @@ const BookCardWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media (max-width: ${dimensions.phone_width}) {
+    flex-direction: row;
+    height: 100%;
+    width: 90%;
+  }
 `;
 
 const DescriptionWrapper = styled.div`
@@ -33,6 +40,12 @@ const BookImage = styled.img`
   width: 7rem;
   height: 12rem;
   margin-bottom: ${dimensions.xs_2};
+
+  @media (max-width: ${dimensions.phone_width}) {
+    width: 5rem;
+    height: 8rem;
+    margin-right: ${dimensions.base};
+  }
 `;
 
 const TitleBook = styled.h3`
@@ -55,16 +68,18 @@ const DescriptionBook = styled.p`
 const BookCard: FC<IProps> = ({
   src = '',
   title = '',
-  description = '',
+  author = '',
   status,
+  category,
+  date,
 }) => {
   return (
     <BookCardWrapper>
-      <BookImage src={bookImage} />
+      <BookImage src={src || bookImage} />
       <DescriptionWrapper>
         <TitleBook>{title}</TitleBook>
-        <DescriptionBook>{description}</DescriptionBook>
-        <BookStatus status={status} />
+        <DescriptionBook>{category + ' / ' + author}</DescriptionBook>
+        <BookStatus status={status} date={date} />
       </DescriptionWrapper>
     </BookCardWrapper>
   );

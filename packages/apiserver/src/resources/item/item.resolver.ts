@@ -21,5 +21,11 @@ export class ItemResolver {
   @Mutation(() => Status)
   async claimBook(@Args('input') claimBookInput: ClaimBookInput) {
     return this.itemService.claim(claimBookInput);
+    return this.itemService.claim(claimBookInput);
+  }
+
+  @Query(() => [StatusType])
+  async getAllTakenItems(@Args('person_id') person_id: number) {
+    return this.itemService.getAllTakenItems(person_id);
   }
 }

@@ -1,6 +1,6 @@
 input ClaimBookInput{
   identifier: String!
-  person_id: String!
+  person_id: Int!
 }
 
 type ReturnDate{

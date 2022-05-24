@@ -54,4 +54,23 @@ export class ItemService {
       await queryRunner.release();
     }
   }
+
+  async getAllTakenItems(person_id: number) {
+    try {
+      const materials = await Status.createQueryBuilder('status')
+        .leftJoinAndSelect('status.material', 'material')
+        .leftJoinAndSelect('status.person', 'person')
+        .distinctOn(['material_id'])
+        .orderBy('material_id', 'DESC')
+        .where('person_id = :person_id', { person_id })
+        .andWhere('status = :status', { status: 'Busy' })
+        .addOrderBy('status.created_at', 'DESC')
+        .getMany();
+      return materials;
+    } catch (e) {
+      return {
+        message: e.message,
+      };
+    }
+  }
 }

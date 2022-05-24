@@ -11,6 +11,11 @@ const StartPageWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 10.5rem;
+
+  @media (max-width: ${dimensions.phone_width}) {
+    margin-top: 5rem;
+    padding: 3rem;
+  }
 `;
 
 const Logo = styled.div`
@@ -27,6 +32,7 @@ const WelcomeHeader = styled.h1`
   color: ${colors.main_black};
   margin-top: ${dimensions.xs};
   margin-bottom: ${dimensions.base};
+  text-align: center;
 `;
 
 const StartPageParagraph = styled.p`
@@ -36,21 +42,32 @@ const StartPageParagraph = styled.p`
   font-size: ${dimensions.xl};
   line-height: ${dimensions.xl_2};
   color: ${colors.main_black};
+  text-align: center;
+
+  @media (max-width: ${dimensions.phone_width}) {
+    font-size: ${dimensions.lg};
+  }
 `;
 
 const WrapperForInputAndButton = styled.div`
   display: flex;
+
+  @media (max-width: ${dimensions.phone_width}) {
+    flex-direction: column;
+  }
 `;
 
 const InputStart = styled(Input)`
   margin-right: ${dimensions.xs};
+  margin-bottom: 0.7rem;
   padding-left: ${dimensions.xl};
+  padding-bottom: 0.4rem;
   width: 20rem;
   height: 3.125rem;
   border: 1px solid #1a1ed6;
   box-sizing: border-box;
   border-radius: ${dimensions.xl_3};
-  padding-top: 0.2rem;
+
   font-weight: 300;
   font-size: ${dimensions.xl};
   line-height: ${dimensions.xl_2};
@@ -68,6 +85,15 @@ const InputStart = styled(Input)`
     color: ${colors.main_black};
     outline: 0;
     box-shadow: 0 0 0 0.1rem ${colors.accent_color};
+  }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    width: 100%;
+
+    ::placeholder {
+      padding-left: ${dimensions.xs_2};
+      font-size: ${dimensions.base};
+    }
   }
 `;
 
@@ -92,6 +118,10 @@ const LoginButton = styled.button`
 
   :active {
     background: ${colors.pressed_color};
+  }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    width: 100%;
   }
 `;
 

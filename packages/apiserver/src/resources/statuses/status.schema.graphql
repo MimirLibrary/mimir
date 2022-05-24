@@ -1,13 +1,15 @@
 type Status {
   id: ID!
-  material_id: ID!
-  person_id: ID!
+  material_id: Int!
+  person_id: Int!
   status: String!
   created_at: DateTime!
+  material: Material!
+  person: Person!
 }
 
 input CreateStatusInput {
-  material_id: ID!
-  person_id: ID!
+  material_id: Int!
+  person_id: Int!
   status: String!
 }
