@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import BookCard from '../BookCard';
@@ -45,20 +45,18 @@ interface IProps {
 
 const ListItems: FC<IProps> = ({ items }) => {
   return (
-    <>
-      <WrapperList>
-        {items &&
-          items.map((item) => (
-            <BookCard
-              key={item?.id}
-              src={''}
-              title={item?.identifier}
-              description={''}
-              status={item?.statuses[item.statuses.length - 1]}
-            />
-          ))}
-      </WrapperList>
-    </>
+    <WrapperList>
+      {items &&
+        items.map((item) => (
+          <BookCard
+            key={item?.id}
+            src={''}
+            title={item?.identifier}
+            description={''}
+            status={item?.statuses[item.statuses.length - 1]}
+          />
+        ))}
+    </WrapperList>
   );
 };
 

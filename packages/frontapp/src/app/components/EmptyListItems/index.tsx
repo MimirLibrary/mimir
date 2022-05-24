@@ -1,9 +1,9 @@
-import React from 'react';
 import emptyList from '../../../assets/EmptyList.png';
 import styled from '@emotion/styled';
 import { TitleArticle } from '../../globalUI/TextArticle';
 import { TextBase } from '../../globalUI/TextBase';
 import { colors, dimensions } from '@mimir/ui-kit';
+import { t } from 'i18next';
 
 const Wrapper = styled.section`
   width: 100%;
@@ -17,6 +17,16 @@ const Wrapper = styled.section`
   padding: 7.5rem 0;
   border-radius: ${dimensions.xs_1};
   margin-top: ${dimensions.xl_2};
+
+  & img {
+    width: 60%;
+  }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    & img {
+      width: 80%;
+    }
+  }
 `;
 
 const WrapperText = styled.div`
@@ -42,14 +52,10 @@ const StyleTextBase = styled(TextBase)`
 const EmptyListItems = () => {
   return (
     <Wrapper>
-      <div>
-        <img src={emptyList} alt="no items" />
-      </div>
+      <img src={emptyList} alt="no items" />
       <WrapperText>
-        <StyleTitle>Shelf for your books and other items</StyleTitle>
-        <StyleTextBase>
-          Go to the search section and choose the one that suits you
-        </StyleTextBase>
+        <StyleTitle>{t(`EmptyListItems.Header`)}</StyleTitle>
+        <StyleTextBase>{t(`EmptyListItems.Description`)}</StyleTextBase>
       </WrapperText>
     </Wrapper>
   );

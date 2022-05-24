@@ -1,9 +1,10 @@
-import React, { FC, ReactElement } from 'react';
+import { FC, ReactElement } from 'react';
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
-import { useAppSelector } from '../../hooks/useTypedSelector';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { t } from 'i18next';
+import { useAppSelector } from '../../hooks/useTypedSelector';
+import { RolesTypes } from '../../../utils/rolesTypes';
 
 interface IProps {
   icon: ReactElement;
@@ -63,9 +64,9 @@ const InsideButtonContainer = styled.div`
 
 const StyledIcon = styled.div<IStyle>`
   & svg {
-    margin-right: 10px;
-    width: 32px;
-    height: 32px;
+    margin-right: ${dimensions.xs_1};
+    width: ${dimensions.base_2};
+    height: ${dimensions.base_2};
     fill: ${(props) =>
       JSON.parse(props.primary) ? colors.bg_secondary : colors.main_black};
   }
@@ -86,6 +87,7 @@ const NavbarItem: FC<IProps> = ({
   index,
   changeActiveTab,
 }) => {
+  const { userRole } = useAppSelector((state) => state.user);
   const { activeTab } = useAppSelector((state) => state.tabs);
   return (
     <StyledLink
@@ -96,7 +98,9 @@ const NavbarItem: FC<IProps> = ({
       <InsideButtonContainer>
         <StyledIcon primary={String(index === activeTab)}>{icon}</StyledIcon>
         <TextInButton primary={String(index === activeTab)}>
-          {t(`Navbar.${name}`)}
+          {userRole === RolesTypes.READER
+            ? t(`NavbarReader.${name}`)
+            : t(`NavbarManager.${name}`)}
         </TextInButton>
       </InsideButtonContainer>
     </StyledLink>

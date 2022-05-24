@@ -2,10 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface IUserState {
   username: string;
+  userRole: string;
 }
 
 const initialState: IUserState = {
   username: '',
+  userRole: 'reader',
 };
 
 const userSlice = createSlice({

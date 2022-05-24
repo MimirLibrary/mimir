@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import BookStatus from '../BookStatus';
@@ -21,6 +21,12 @@ const BookCardWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media (max-width: ${dimensions.phone_width}) {
+    flex-direction: row;
+    height: 100%;
+    width: 90%;
+  }
 `;
 
 const DescriptionWrapper = styled.div`
@@ -33,6 +39,12 @@ const BookImage = styled.img`
   width: 7rem;
   height: 12rem;
   margin-bottom: ${dimensions.xs_2};
+
+  @media (max-width: ${dimensions.phone_width}) {
+    width: 5rem;
+    height: 8rem;
+    margin-right: ${dimensions.base};
+  }
 `;
 
 const TitleBook = styled.h3`
