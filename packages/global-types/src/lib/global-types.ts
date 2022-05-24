@@ -23,8 +23,8 @@ export interface CreatePersonInput {
 }
 
 export interface CreateStatusInput {
-  material_id: string;
-  person_id: string;
+  material_id: number;
+  person_id: number;
   status: string;
 }
 
@@ -35,6 +35,10 @@ export interface Material {
   type: string;
   created_at: DateTime;
   updated_at: DateTime;
+  title: string;
+  picture?: Nullable<string>;
+  author: string;
+  category: string;
   statuses: Nullable<Status>[];
 }
 
@@ -48,10 +52,12 @@ export interface Person {
 
 export interface Status {
   id: string;
-  material_id: string;
-  person_id: string;
+  material_id: number;
+  person_id: number;
   status: string;
   created_at: DateTime;
+  material: Material;
+  person: Person;
 }
 
 export interface Error {
@@ -69,7 +75,10 @@ export interface IQuery {
   getStatusesByMaterial(
     material_id: string
   ): Nullable<Status>[] | Promise<Nullable<Status>[]>;
-  getOnePerson(id: string): Nullable<Person> | Promise<Nullable<Person>>;
+  getOnePerson(id: string): Person | Promise<Person>;
+  getAllTakenItems(
+    person_id: string
+  ): Nullable<Status>[] | Promise<Nullable<Status>[]>;
 }
 
 export interface IMutation {
