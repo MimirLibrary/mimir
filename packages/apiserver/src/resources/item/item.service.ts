@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { Material } from '../materials/material.entity';
+import { ClaimBookInput } from '@mimir/global-types';
 import { Status } from '../statuses/status.entity';
 import { Connection } from 'typeorm';
 import { ClaimError } from '../../errors';
+import { StatusTypes } from '../../utils/statusTypes';
 
 @Injectable()
 export class ItemService {
   constructor(private connection: Connection) {}
 
-  async claim(claimBookInput) {
+  async claim(claimBookInput: ClaimBookInput) {
     const queryRunner = this.connection.createQueryRunner();
     const statusRepository =
       queryRunner.manager.getRepository<Status>('status');
@@ -18,16 +20,12 @@ export class ItemService {
     await queryRunner.startTransaction();
     try {
       const { identifier, person_id } = claimBookInput;
-      if (!identifier) {
-        throw new ClaimError(
-          'Received identifier not recognized, please try again'
-        );
-      }
       const material = await materialRepository.findOne({
         where: { identifier },
       });
+
       if (!material) {
-        throw new ClaimError('This book is not registered in the library');
+        throw new ClaimError('This item is not registered in the library');
       }
       const { id } = material;
       const status = await statusRepository.find({
@@ -35,17 +33,15 @@ export class ItemService {
         order: { created_at: 'DESC' },
         take: 1,
       });
-      if (!status || status[0].status === 'Busy') {
-        throw new ClaimError(
-          `This book is busy or doesn't exist. Ask the manager!`
-        );
+      if (status[0].status === StatusTypes.BUSY) {
+        throw new ClaimError(`This book is busy. Ask the manager!`);
       }
-      const newStatus = await statusRepository.create({
-        status: 'Busy',
+      const newStatusObj = await statusRepository.create({
+        status: StatusTypes.BUSY,
         material_id: status[0].material_id,
         person_id,
       });
-      await statusRepository.save(newStatus);
+      const newStatus = await statusRepository.save(newStatusObj);
       await queryRunner.commitTransaction();
       return newStatus;
     } catch (e) {

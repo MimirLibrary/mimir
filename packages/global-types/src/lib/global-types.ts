@@ -28,6 +28,10 @@ export interface CreateStatusInput {
   status: string;
 }
 
+export interface ReturnDate {
+  returnDate: DateTime;
+}
+
 export interface Material {
   id: string;
   identifier: string;
@@ -93,7 +97,7 @@ export interface IMutation {
   ): Nullable<Status> | Promise<Nullable<Status>>;
   claimBook(
     input?: Nullable<ClaimBookInput>
-  ): StatusResult | Promise<StatusResult>;
+  ): ClaimBookUnionResult | Promise<ClaimBookUnionResult>;
 }
 
 export type DateTime = any;
@@ -153,5 +157,5 @@ export type CountryCode = any;
 export type Locale = any;
 export type RoutingNumber = any;
 export type AccountNumber = any;
-export type StatusResult = Status | Error;
+export type ClaimBookUnionResult = Status | Error;
 type Nullable<T> = T | null;

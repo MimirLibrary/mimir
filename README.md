@@ -1,5 +1,3 @@
-
-
 # Mimir
 
 This project was generated using [Nx](https://nx.dev).
@@ -17,7 +15,6 @@ Run migrations `npm run migration:run`
 Run `nx serve apiserver` for to start the server on [http://localhost:3333/](http://localhost:3333/)
 
 Look Graphql playground on [http://localhost:3333/graphql](http://localhost:3333/graphql)
-
 
 ## Adding capabilities to your workspace
 
@@ -89,8 +86,6 @@ Run `nx graph` to see a diagram of the dependencies of your projects.
 ## Further help
 
 Visit the [Nx Documentation](https://nx.dev) to learn more.
-
-
 
 ## ☁ Nx Cloud
 

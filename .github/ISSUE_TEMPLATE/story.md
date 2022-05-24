@@ -4,7 +4,6 @@ about: Story template
 title: ''
 labels: ''
 assignees: ''
-
 ---
 
 Task list:
@@ -13,6 +12,6 @@ Task list:
 - [ ] front
 - [ ] back
 
-*Acceptance criteria*
+_Acceptance criteria_
 
-*Figma design link*
+_Figma design link_

@@ -1,4 +1,4 @@
-type Person{
+type Person {
   id: ID!
   smg_id: String!
   type: String!
@@ -6,7 +6,7 @@ type Person{
   statuses: [Status]
 }
 
-input CreatePersonInput{
+input CreatePersonInput {
   smg_id: String!
   type: String!
 }

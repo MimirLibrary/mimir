@@ -1,4 +1,4 @@
-type Material{
+type Material {
   id: ID!
   identifier: String!
   id_type: String!
