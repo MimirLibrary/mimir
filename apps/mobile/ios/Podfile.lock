@@ -294,6 +294,35 @@ PODS:
     - RCTTypeSafety
     - React
     - ReactCommon/turbomodule/core
+  - react-native-skia (0.1.128):
+    - React
+    - React-callinvoker
+    - React-Core
+    - react-native-skia/Api (= 0.1.128)
+    - react-native-skia/Jsi (= 0.1.128)
+    - react-native-skia/RNSkia (= 0.1.128)
+    - react-native-skia/SkiaHeaders (= 0.1.128)
+    - react-native-skia/Utils (= 0.1.128)
+  - react-native-skia/Api (0.1.128):
+    - React
+    - React-callinvoker
+    - React-Core
+  - react-native-skia/Jsi (0.1.128):
+    - React
+    - React-callinvoker
+    - React-Core
+  - react-native-skia/RNSkia (0.1.128):
+    - React
+    - React-callinvoker
+    - React-Core
+  - react-native-skia/SkiaHeaders (0.1.128):
+    - React
+    - React-callinvoker
+    - React-Core
+  - react-native-skia/Utils (0.1.128):
+    - React
+    - React-callinvoker
+    - React-Core
   - React-perflogger (0.68.1)
   - React-RCTActionSheet (0.68.1):
     - React-Core/RCTActionSheetHeaders (= 0.68.1)
@@ -448,6 +477,7 @@ DEPENDENCIES:
   - react-native-config (from `../../../node_modules/react-native-config`)
   - react-native-pager-view (from `../../../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../../../node_modules/react-native-safe-area-context`)
+  - "react-native-skia (from `../../../node_modules/@shopify/react-native-skia`)"
   - React-perflogger (from `../../../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../../../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../../../node_modules/react-native/Libraries/NativeAnimation`)
@@ -529,6 +559,8 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/react-native-pager-view"
   react-native-safe-area-context:
     :path: "../../../node_modules/react-native-safe-area-context"
+  react-native-skia:
+    :path: "../../../node_modules/@shopify/react-native-skia"
   React-perflogger:
     :path: "../../../node_modules/react-native/ReactCommon/reactperflogger"
   React-RCTActionSheet:
@@ -603,6 +635,7 @@ SPEC CHECKSUMS:
   react-native-config: 6502b1879f97ed5ac570a029961fc35ea606cd14
   react-native-pager-view: b1914469643f40042e65d78cbf3d3dfebd6fb0d9
   react-native-safe-area-context: ebf8c413eb8b5f7c392a036a315eb7b46b96845f
+  react-native-skia: 3e6884bd50af0d06fa2972366edba75e39094536
   React-perflogger: 30ab8d6db10e175626069e742eead3ebe8f24fd5
   React-RCTActionSheet: 4b45da334a175b24dabe75f856b98fed3dfd6201
   React-RCTAnimation: d6237386cb04500889877845b3e9e9291146bc2e

@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@shopify/react-native-skia": "*",
     "@testing-library/jest-native": "*",
     "@testing-library/react-native": "*",
     "react": "*",
@@ -16,11 +17,26 @@
     "@react-navigation/native": "*",
     "react-native-safe-area-context": "*",
     "react-native-screens": "*",
+    "react-native-modal": "*",
     "@react-navigation/drawer": "*",
     "@react-navigation/material-top-tabs": "*",
     "react-native-gesture-handler": "*",
     "react-native-pager-view": "*",
     "react-native-reanimated": "*",
-    "react-native-tab-view": "*"
+    "react-native-tab-view": "*",
+    "react-router-dom": "*",
+    "@emotion/styled": "*",
+    "i18next": "*",
+    "react-redux": "*",
+    "@apollo/client": "*",
+    "@reduxjs/toolkit": "*",
+    "redux-persist": "*",
+    "react-dom": "*",
+    "@emotion/react": "*",
+    "i18next-http-backend": "*",
+    "i18next-browser-languagedetector": "*",
+    "react-i18next": "*",
+    "core-js": "*",
+    "regenerator-runtime": "*"
   }
 }

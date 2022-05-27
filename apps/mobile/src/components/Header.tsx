@@ -11,9 +11,10 @@ import {FilterIcon} from "./icons/FilterIcon";
 interface HeaderProps {
   navigation: DrawerNavigationHelpers;
   style?: StyleProp<ViewStyle>;
+  openModal:()=>void
 }
 
-export const Header: FC<HeaderProps> = ({navigation, style}) => {
+export const Header: FC<HeaderProps> = ({navigation, style,openModal}) => {
 
   return (
     <View style={[styles.container, style]}>
@@ -26,7 +27,7 @@ export const Header: FC<HeaderProps> = ({navigation, style}) => {
         placeholder={'Search'}
         style={styles.searchContainer}
       />
-      <ButtonIcon icon={<FilterIcon />} onPress={navigation.openDrawer} />
+      <ButtonIcon icon={<FilterIcon />} onPress={openModal} />
 
     </View>
   );

@@ -1,6 +1,5 @@
 {
   "name": "mimir",
-  "version": "0.0.0",
   "license": "MIT",
   "scripts": {
     "dev:web": "nx serve",
@@ -114,6 +113,7 @@
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
     "@reduxjs/toolkit": "^1.8.0",
+    "@shopify/react-native-skia": "^0.1.128",
     "apollo": "^2.33.10",
     "apollo-server-express": "^3.6.6",
     "core-js": "^3.6.5",
@@ -132,6 +132,7 @@
     "react-native": "0.68.1",
     "react-native-camera-kit": "^12.1.0",
     "react-native-gesture-handler": "^2.4.1",
+    "react-native-modal": "^13.0.1",
     "react-native-pager-view": "^5.4.15",
     "react-native-reanimated": "^2.8.0",
     "react-native-safe-area-context": "^4.2.1",

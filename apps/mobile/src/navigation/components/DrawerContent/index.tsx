@@ -1,4 +1,3 @@
-// @ts-ignore
 import React, {FC} from 'react';
 import {DrawerList} from './options';
 import {

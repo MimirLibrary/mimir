@@ -12,12 +12,11 @@ import {DonateHeartIcon} from '../components/icons/DonateHeartIcon';
 import {StyleSheet} from 'react-native';
 import {DonateScreen} from '../screens/DonateScreen';
 import {SearchStack} from './SearchStack';
-import HomePage from "../../../../packages/frontapp/src/app/pages/HomePage";
 import {HomeStack} from "./Home";
 
 export const NavigationRouteNames = Object.freeze({
-  Home: 'Home',
-  HomeStack:'HomeStack',
+  Home: 'HomeScreen',
+  HomeStack:'Home',
   Donate: 'Donate to the library',
   DonateHistory: 'History of Donate',
   Search: 'Search',

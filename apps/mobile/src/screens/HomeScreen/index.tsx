@@ -14,6 +14,7 @@ import Animated, {
 } from "react-native-reanimated";
 import {FlatList} from "react-native-gesture-handler";
 import {EmptyList} from "../../components/EmptyList";
+import {FilterModal} from "../../components/FilterModal";
 
 interface HomeScreenProps {
   navigation: DrawerNavigationHelpers;
@@ -23,7 +24,8 @@ const ReanimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 
 export const HomeScreen: FC<HomeScreenProps> = ({navigation}) => {
-  const [data] = useState(new Array(2))
+  const [data] = useState(new Array(20))
+  const [visible,setVisible] = useState(false)
   const [refresh, setRefresh] = useState(false)
 
   const translationY = useSharedValue(0);
@@ -42,10 +44,12 @@ export const HomeScreen: FC<HomeScreenProps> = ({navigation}) => {
     flatListRef.current.scrollToIndex({animated: true, index: 0})
   }, [flatListRef.current])
 
+  const openModal = () => setVisible(true)
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Header navigation={navigation}/>
+        <Header navigation={navigation} openModal={openModal}/>
         <ReanimatedFlatList
           ref={flatListRef}
           initialScrollIndex={0}
@@ -62,6 +66,7 @@ export const HomeScreen: FC<HomeScreenProps> = ({navigation}) => {
         />
         <FabButton onPress={fabButtonHandler} style={fabButtonStyle}/>
       </View>
+      <FilterModal visible={visible} onClose={()=>setVisible(false)}/>
     </SafeAreaView>
   );
 };

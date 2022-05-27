@@ -18,9 +18,9 @@ export const DrawerItem: ({
   active,
 }: DrawerItemProps) => JSX.Element = ({title, action, active, icon}) => (
   <View style={[styles.drawer, active && styles.activeDrawer]}>
-    {active && <View style={styles.drawerActiveIndicator} />}
+    {/*{active && <View style={styles.drawerActiveIndicator} />}*/}
     <TouchableOpacity style={styles.drawerContentContainer} onPress={action}>
-      {icon(active ? Color.ACCENT_BLUE_100 : Color.ACCENT_BLACK_100)}
+      {icon(active ? Color.WHITE : Color.ACCENT_BLACK_100)}
       <AppText
         text={title}
         variant={TextVariant.H3}
@@ -31,35 +31,30 @@ export const DrawerItem: ({
 );
 
 const styles = StyleSheet.create({
-  drawerActiveIndicator: {
-    position: 'absolute',
-    height: '100%',
-    width: 4,
-    backgroundColor: Color.ACCENT_BLUE_100,
-  },
   drawer: {
     flexDirection: 'row',
     backgroundColor: Color.WHITE,
     borderRadius: 0,
-    marginHorizontal: 0,
+    marginHorizontal: 16,
+  },
+  activeDrawer: {
+    backgroundColor: Color.ACCENT_BLUE_100,
+    borderRadius: 1000,
   },
   drawerLabel: {
     marginLeft: 16,
-    fontWeight: '400',
-  },
-  activeDrawer: {
-    backgroundColor: Color.ACCENT_BLUE_50,
+    fontFamily: Fonts.MontserratLight,
   },
   activeDrawerLabel: {
     marginLeft: 16,
     fontFamily: Fonts.MontserratSemiBold,
-    color: Color.ACCENT_BLUE_100,
+    color: Color.WHITE,
   },
   drawerContentContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
-    paddingVertical: 24,
-    paddingLeft: 16,
+    paddingVertical: 16,
+    paddingLeft: 32,
   },
 });
