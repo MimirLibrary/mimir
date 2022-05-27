@@ -1,4 +1,3 @@
-
 /*
  * -------------------------------------------------------
  * THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
@@ -8,77 +7,103 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface ClaimBookInput {
-    identifier: string;
-    person_id: string;
+  identifier: string;
+  person_id: number;
 }
 
 export interface CreateMaterialInput {
-    identifier: string;
-    id_type: string;
-    type: string;
+  identifier: string;
+  id_type: string;
+  type: string;
 }
 
 export interface CreatePersonInput {
-    smg_id: string;
-    type: string;
+  smg_id: string;
+  type: string;
 }
 
 export interface CreateStatusInput {
-    material_id: string;
-    person_id: string;
-    status: string;
+  material_id: number;
+  person_id: number;
+  status: string;
+}
+
+export interface ReturnDate {
+  returnDate: DateTime;
 }
 
 export interface Material {
-    id: string;
-    identifier: string;
-    id_type: string;
-    type: string;
-    created_at: DateTime;
-    updated_at: DateTime;
-    statuses: Nullable<Status>[];
+  id: string;
+  identifier: string;
+  id_type: string;
+  type: string;
+  created_at: DateTime;
+  updated_at: DateTime;
+  title: string;
+  picture?: Nullable<string>;
+  author: string;
+  category: string;
+  statuses: Nullable<Status>[];
 }
 
 export interface Person {
-    id: string;
-    smg_id: string;
-    type: string;
-    created_at: DateTime;
-    statuses?: Nullable<Nullable<Status>[]>;
+  id: string;
+  smg_id: string;
+  type: string;
+  created_at: DateTime;
+  statuses?: Nullable<Nullable<Status>[]>;
 }
 
 export interface Status {
-    id: string;
-    material_id: string;
-    person_id: string;
-    status: string;
-    created_at: DateTime;
+  id: string;
+  material_id: number;
+  person_id: number;
+  status: string;
+  created_at: DateTime;
+  material: Material;
+  person: Person;
 }
 
 export interface Error {
-    message: string;
+  message: string;
 }
 
 export interface IQuery {
-    welcome(): string | Promise<string>;
-    getAllPersons(): Nullable<Person>[] | Promise<Nullable<Person>[]>;
-    getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
-    getMaterialById(id: string): Nullable<Material> | Promise<Nullable<Material>>;
-    getStatusesByPerson(person_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
-    getStatusesByMaterial(material_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
-    getOnePerson(id: string): Nullable<Person> | Promise<Nullable<Person>>;
+  welcome(): string | Promise<string>;
+  getAllPersons(): Nullable<Person>[] | Promise<Nullable<Person>[]>;
+  getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
+  getMaterialById(id: string): Nullable<Material> | Promise<Nullable<Material>>;
+  getStatusesByPerson(
+    person_id: string
+  ): Nullable<Status>[] | Promise<Nullable<Status>[]>;
+  getStatusesByMaterial(
+    material_id: string
+  ): Nullable<Status>[] | Promise<Nullable<Status>[]>;
+  getOnePerson(id: string): Person | Promise<Person>;
+  getAllTakenItems(
+    person_id: number
+  ): Nullable<Status>[] | Promise<Nullable<Status>[]>;
 }
 
 export interface IMutation {
-    createMaterial(input: CreateMaterialInput): Nullable<Material> | Promise<Nullable<Material>>;
-    createPerson(input: CreatePersonInput): Nullable<Person> | Promise<Nullable<Person>>;
-    createStatus(input: CreateStatusInput): Nullable<Status> | Promise<Nullable<Status>>;
-    claimBook(input?: Nullable<ClaimBookInput>): StatusResult | Promise<StatusResult>;
+  createMaterial(
+    input: CreateMaterialInput
+  ): Nullable<Material> | Promise<Nullable<Material>>;
+  createPerson(
+    input: CreatePersonInput
+  ): Nullable<Person> | Promise<Nullable<Person>>;
+  createStatus(
+    input: CreateStatusInput
+  ): Nullable<Status> | Promise<Nullable<Status>>;
+  claimBook(
+    input?: Nullable<ClaimBookInput>
+  ): ClaimBookUnionResult | Promise<ClaimBookUnionResult>;
 }
 
 export type DateTime = any;
 export type Time = any;
 export type Timestamp = any;
+export type TimeZone = any;
 export type UtcOffset = any;
 export type Duration = any;
 export type ISO8601Duration = any;
@@ -132,5 +157,5 @@ export type CountryCode = any;
 export type Locale = any;
 export type RoutingNumber = any;
 export type AccountNumber = any;
-export type StatusResult = Status | Error;
+export type ClaimBookUnionResult = Status | Error;
 type Nullable<T> = T | null;

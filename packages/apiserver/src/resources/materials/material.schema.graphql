@@ -1,10 +1,14 @@
-type Material{
+type Material {
   id: ID!
   identifier: String!
   id_type: String!
   type: String!
   created_at: DateTime!
   updated_at: DateTime!
+  title: String!
+  picture: String
+  author: String!
+  category: String!
   statuses: [Status]!
 }
 

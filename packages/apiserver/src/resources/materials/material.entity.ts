@@ -29,6 +29,18 @@ export class Material extends BaseEntity {
   @UpdateDateColumn()
   updated_at!: Date;
 
+  @Column({ nullable: true })
+  picture: string;
+
+  @Column()
+  title!: string;
+
+  @Column()
+  category!: string;
+
+  @Column()
+  author!: string;
+
   @OneToMany(() => Status, (status) => status.material)
   status!: Status[];
 }

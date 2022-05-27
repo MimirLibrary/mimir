@@ -1,12 +1,12 @@
 overwrite: true
-schema: "http://localhost:3333/graphql"
-documents: "./packages/apollo-client/src/lib/**/*.{gql,graphql}"
+schema: 'http://localhost:3333/graphql'
+documents: './packages/apollo-client/src/lib/**/*.{gql,graphql}'
 generates:
   ./packages/apollo-client/src/lib/generated/client-types.ts:
     plugins:
-      - "typescript"
-      - "typescript-operations"
-      - "typescript-react-apollo"
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
   ./packages/apollo-client/src/graphql.schema.json:
     plugins:
-      - "introspection"
+      - 'introspection'

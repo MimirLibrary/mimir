@@ -1,15 +1,11 @@
-FROM node:16-alpine3.14
-
-WORKDIR /usr/src/app
-
-COPY ["package*.json", "nx.json", "./"]
-
-RUN npm install
+FROM unrealsolver/library:base AS builder
 
 COPY . .
 
-ENV PORT 4200
+RUN npx nx build frontapp
 
-EXPOSE $PORT
+FROM nginx:alpine
 
-CMD ["npx", "nx", "serve", "frontapp", "--host", "0.0.0.0"]
+EXPOSE 80
+
+COPY --from=builder /usr/src/app/dist/packages/frontapp /usr/share/nginx/html

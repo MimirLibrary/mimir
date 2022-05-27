@@ -67,6 +67,47 @@
         "jestConfig": "packages/frontapp/jest.config.js",
         "passWithNoTests": true
       }
+    },
+    "storybook": {
+      "executor": "@nrwl/storybook:storybook",
+      "options": {
+        "uiFramework": "@storybook/react",
+        "port": 4400,
+        "config": {
+          "configFolder": "packages/frontapp/.storybook"
+        }
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "build-storybook": {
+      "executor": "@nrwl/storybook:build",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "uiFramework": "@storybook/react",
+        "outputPath": "dist/storybook/frontapp",
+        "config": {
+          "configFolder": "packages/frontapp/.storybook"
+        }
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "serve-static": {
+      "executor": "@nrwl/web:file-server",
+      "options": {
+        "buildTarget": "frontapp:build",
+        "parallel": true,
+        "port": 8000,
+        "host": "0.0.0.0",
+        "watch": false
+      }
     }
   },
   "tags": []

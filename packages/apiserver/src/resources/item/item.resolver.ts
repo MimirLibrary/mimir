@@ -1,20 +1,15 @@
-import { Args, Mutation, ResolveField, Resolver } from '@nestjs/graphql';
-import {
-  ClaimBookInput,
-  Error,
-  Status,
-  StatusResult,
-} from '@mimir/global-types';
-import { Status as StatusType } from '../statuses/status.entity';
+import { Args, Mutation, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { ClaimBookInput, Error } from '@mimir/global-types';
 import { ItemService } from './item.service';
+import { Status } from '../statuses/status.entity';
 
-@Resolver('StatusResult')
+@Resolver('ClaimBookUnionResult')
 export class ItemResolver {
-  constructor(private bookService: ItemService) {}
+  constructor(private itemService: ItemService) {}
 
   @ResolveField()
   __resolveType(value) {
-    if (value instanceof StatusType) {
+    if (value.status) {
       return 'Status';
     }
     if (value.message) {
@@ -23,8 +18,13 @@ export class ItemResolver {
     return null;
   }
 
-  @Mutation()
+  @Mutation(() => Status)
   async claimBook(@Args('input') claimBookInput: ClaimBookInput) {
-    return this.bookService.claim(claimBookInput);
+    return this.itemService.claim(claimBookInput);
+  }
+
+  @Query(() => [Status])
+  async getAllTakenItems(@Args('person_id') person_id: number) {
+    return this.itemService.getAllTakenItems(person_id);
   }
 }

@@ -7,4 +7,4 @@ import { MaterialResolver } from './material.resolver';
   imports: [TypeOrmModule.forFeature([Material])],
   providers: [MaterialResolver],
 })
-export class MaterialModule { }
+export class MaterialModule {}

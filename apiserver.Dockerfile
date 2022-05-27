@@ -1,11 +1,5 @@
-FROM node:16-alpine3.14
-
-WORKDIR /usr/src/app
-
-COPY ["package*.json", "nx.json", "./"]
-
-RUN npm install
+FROM unrealsolver/library:base
 
 COPY . .
 
-CMD ["npx", "nx", "serve", "apiserver"]
+CMD ["npx", "nx", "build", "apiserver"]
