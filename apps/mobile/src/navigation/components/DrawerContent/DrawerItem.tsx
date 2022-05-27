@@ -1,9 +1,9 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Color} from '../../../config/designTokens';
-import {AppText} from '../../../components/AppText';
-import {TextVariant} from '../../../config/textVariants';
-import {Fonts} from '../../../assets/fonts';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Color } from '../../../config/designTokens';
+import { AppText } from '../../../components/AppText';
+import { TextVariant } from '../../../config/textVariants';
+import { Fonts } from '../../../assets/fonts';
 
 interface DrawerItemProps {
   title: string;
@@ -16,7 +16,7 @@ export const DrawerItem: ({
   title,
   action,
   active,
-}: DrawerItemProps) => JSX.Element = ({title, action, active, icon}) => (
+}: DrawerItemProps) => JSX.Element = ({ title, action, active, icon }) => (
   <View style={[styles.drawer, active && styles.activeDrawer]}>
     {/*{active && <View style={styles.drawerActiveIndicator} />}*/}
     <TouchableOpacity style={styles.drawerContentContainer} onPress={action}>

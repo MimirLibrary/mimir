@@ -1,12 +1,7 @@
-import React, {useRef} from 'react';
-import {
-  StyleProp,
-  StyleSheet,
-  TextInput,
-  ViewStyle,
-} from 'react-native';
-import {Color} from '../../config/designTokens';
-import {textVariantStyles} from '../../config/textVariants';
+import React, { useRef } from 'react';
+import { StyleProp, StyleSheet, TextInput, ViewStyle } from 'react-native';
+import { Color } from '../../config/designTokens';
+import { textVariantStyles } from '../../config/textVariants';
 
 export interface IFormInputProps {
   style?: StyleProp<ViewStyle>;
@@ -35,24 +30,24 @@ export function FormTextInput({
   const ref = useRef<TextInput>(null);
 
   return (
-      <TextInput
-        ref={ref}
-        placeholderTextColor={placeholderTextColor}
-        placeholder={placeholder}
-        style={[styles.container,styles.input, textVariantStyles.bodyL, style]}
-        onChangeText={onChangeText}
-        onBlur={onBlur}
-        value={value}
-        secureTextEntry={secureTextEntry}
-        autoCapitalize={autoCapitalize}
-      />
+    <TextInput
+      ref={ref}
+      placeholderTextColor={placeholderTextColor}
+      placeholder={placeholder}
+      style={[styles.container, styles.input, textVariantStyles.bodyL, style]}
+      onChangeText={onChangeText}
+      onBlur={onBlur}
+      value={value}
+      secureTextEntry={secureTextEntry}
+      autoCapitalize={autoCapitalize}
+    />
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    flexGrow:2,
+    flexGrow: 2,
     paddingHorizontal: 24,
     paddingVertical: 16,
     backgroundColor: Color.WHITE,

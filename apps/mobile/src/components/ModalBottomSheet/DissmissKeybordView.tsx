@@ -6,7 +6,11 @@ export const DismissKeyboardView: FC = (props) => {
   const { children } = props;
 
   return (
-    <Pressable style={styles.container} onPress={Keyboard.dismiss} accessible={false}>
+    <Pressable
+      style={styles.container}
+      onPress={Keyboard.dismiss}
+      accessible={false}
+    >
       {children}
     </Pressable>
   );

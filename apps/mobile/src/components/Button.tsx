@@ -1,8 +1,8 @@
-import React, {FC} from 'react';
-import {StyleSheet, TouchableOpacity, View, ViewStyle} from 'react-native';
-import {Color} from '../config/designTokens';
-import {AppText} from './AppText';
-import {TextVariant} from '../config/textVariants';
+import React, { FC } from 'react';
+import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Color } from '../config/designTokens';
+import { AppText } from './AppText';
+import { TextVariant } from '../config/textVariants';
 
 interface ButtonProps {
   text: string;
@@ -43,14 +43,14 @@ export const Button: FC<ButtonProps> = ({
 
 const stylesMap = {
   [ButtonVariant.BLUE]: {
-    text: {color: Color.WHITE},
+    text: { color: Color.WHITE },
     button: {
       backgroundColor: Color.ACCENT_BLUE_100,
       borderColor: Color.ACCENT_BLUE_100,
     },
   },
   [ButtonVariant.GRAY_INVERTED]: {
-    text: {color: Color.ACCENT_GRAY_50},
+    text: { color: Color.ACCENT_GRAY_50 },
     button: {
       backgroundColor: Color.TERRITARY,
       borderColor: Color.ACCENT_GRAY_50,
@@ -70,6 +70,6 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
   },
   text: {},
-  iconWrapper: {marginRight: 8},
-  content: {flexDirection: 'row', alignItems: 'center'},
+  iconWrapper: { marginRight: 8 },
+  content: { flexDirection: 'row', alignItems: 'center' },
 });

@@ -1,5 +1,10 @@
 import React from 'react';
-import {StyleProp, StyleSheet, TouchableOpacity, ViewStyle} from 'react-native';
+import {
+  StyleProp,
+  StyleSheet,
+  TouchableOpacity,
+  ViewStyle,
+} from 'react-native';
 
 export interface IButtonIconProps {
   icon: JSX.Element;
@@ -7,12 +12,13 @@ export interface IButtonIconProps {
   onPress: () => void;
 }
 
-export function ButtonIcon({icon, style, onPress}: IButtonIconProps) {
+export function ButtonIcon({ icon, style, onPress }: IButtonIconProps) {
   return (
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.65}
-      style={[styles.buttonIcon, style]}>
+      style={[styles.buttonIcon, style]}
+    >
       {icon}
     </TouchableOpacity>
   );

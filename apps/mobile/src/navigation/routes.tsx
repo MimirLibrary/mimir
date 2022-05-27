@@ -1,29 +1,29 @@
-import {HomeScreen} from '../screens/HomeScreen';
-import {NotificationsScreen} from '../screens/NotificationScreen';
-import {Color} from '../config/designTokens';
-import {HomeIcon} from '../components/icons/HomeIcon';
+import { HomeScreen } from '../screens/HomeScreen';
+import { NotificationsScreen } from '../screens/NotificationScreen';
+import { Color } from '../config/designTokens';
+import { HomeIcon } from '../components/icons/HomeIcon';
 import React from 'react';
-import {NotificationIcon} from '../components/icons/NotificationIcon';
-import {DonateIcon} from '../components/icons/DonateIcon';
-import {SettingsIcon} from '../components/icons/SettingsIcon';
-import {SearchIcon} from '../components/icons/SearchIcon';
-import {BookBookmarkIcon} from '../components/icons/BookBookmarkIcon';
-import {DonateHeartIcon} from '../components/icons/DonateHeartIcon';
-import {StyleSheet} from 'react-native';
-import {DonateScreen} from '../screens/DonateScreen';
-import {SearchStack} from './SearchStack';
-import {HomeStack} from "./Home";
+import { NotificationIcon } from '../components/icons/NotificationIcon';
+import { DonateIcon } from '../components/icons/DonateIcon';
+import { SettingsIcon } from '../components/icons/SettingsIcon';
+import { SearchIcon } from '../components/icons/SearchIcon';
+import { BookBookmarkIcon } from '../components/icons/BookBookmarkIcon';
+import { DonateHeartIcon } from '../components/icons/DonateHeartIcon';
+import { StyleSheet } from 'react-native';
+import { DonateScreen } from '../screens/DonateScreen';
+import { SearchStack } from './SearchStack';
+import { HomeStack } from './Home';
 
 export const NavigationRouteNames = Object.freeze({
   Home: 'HomeScreen',
-  HomeStack:'Home',
+  HomeStack: 'Home',
   Donate: 'Donate to the library',
   DonateHistory: 'History of Donate',
   Search: 'Search',
   ClaimHistory: 'History of claim',
   Settings: 'Settings',
   Notifications: 'Notification',
-  Camera:'Camera'
+  Camera: 'Camera',
 });
 
 export const DRAWER_ROUTES = [
@@ -72,5 +72,5 @@ export const DRAWER_ROUTES = [
 ];
 
 const styles = StyleSheet.create({
-  icon: {width: 24},
+  icon: { width: 24 },
 });

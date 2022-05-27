@@ -1,7 +1,7 @@
 import React from 'react';
-import Svg, {Path} from 'react-native-svg';
-import {Color} from '../../config/designTokens';
-import {SvgIconProps} from './types';
+import Svg, { Path } from 'react-native-svg';
+import { Color } from '../../config/designTokens';
+import { SvgIconProps } from './types';
 
 export const DonateIcon: React.FC<SvgIconProps> = ({
   style,
@@ -13,7 +13,8 @@ export const DonateIcon: React.FC<SvgIconProps> = ({
       width={style?.width || 24}
       height={style?.height || 24}
       viewBox={style?.viewBox || '0 0 24 24'}
-      fill={style?.fill || 'none'}>
+      fill={style?.fill || 'none'}
+    >
       <Path
         stroke={color}
         strokeLinejoin="round"

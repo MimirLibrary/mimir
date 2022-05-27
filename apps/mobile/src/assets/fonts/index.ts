@@ -1,4 +1,4 @@
-import {Platform} from "react-native";
+import { Platform } from 'react-native';
 
 enum FontsAndroid {
   MontserratBold = 'montserrat_bold',
@@ -8,12 +8,12 @@ enum FontsAndroid {
   MontserratRegular = 'montserrat_regular',
 }
 
- enum FontsIos {
+enum FontsIos {
   MontserratBold = 'Montserrat-Bold',
-MontserratSemiBold = 'Montserrat-SemiBold',
-MontserratLight = 'Montserrat-Light',
-MontserratMedium = 'Montserrat-Medium',
-MontserratRegular = 'Montserrat-Regular',
+  MontserratSemiBold = 'Montserrat-SemiBold',
+  MontserratLight = 'Montserrat-Light',
+  MontserratMedium = 'Montserrat-Medium',
+  MontserratRegular = 'Montserrat-Regular',
 }
 
-export const  Fonts = Platform.OS === "ios"? FontsIos:FontsAndroid
+export const Fonts = Platform.OS === 'ios' ? FontsIos : FontsAndroid;

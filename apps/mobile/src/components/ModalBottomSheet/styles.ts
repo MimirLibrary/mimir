@@ -1,12 +1,12 @@
 import { StyleSheet, ViewStyle } from 'react-native';
-import {Color} from "../../config/designTokens";
+import { Color } from '../../config/designTokens';
 
 const BORDER_RADIUS = 30;
 
 type modalStyles = {
   container: ViewStyle;
   modal: ViewStyle;
-  modalScreen:ViewStyle;
+  modalScreen: ViewStyle;
   scrollableModal: ViewStyle;
   header: ViewStyle;
   swiper: ViewStyle;
@@ -38,13 +38,13 @@ export const styles = StyleSheet.create<modalStyles>({
     borderTopEndRadius: BORDER_RADIUS,
   },
   swiper: {
-    flexDirection:'row',
-    width:'100%',
-    justifyContent:'space-between',
-    alignItems:'center',
-    paddingTop:38,
-    paddingLeft:132,
-    paddingRight:16
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: 38,
+    paddingLeft: 132,
+    paddingRight: 16,
   },
   modalBody: {
     flex: 1,

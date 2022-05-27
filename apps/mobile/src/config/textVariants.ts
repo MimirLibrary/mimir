@@ -1,5 +1,5 @@
-import {StyleSheet, TextStyle} from 'react-native';
-import {Fonts} from '../assets/fonts';
+import { StyleSheet, TextStyle } from 'react-native';
+import { Fonts } from '../assets/fonts';
 
 export enum TextVariant {
   H1 = 'h1',
@@ -11,7 +11,7 @@ export enum TextVariant {
   CAPTION_R = 'captionR',
 }
 
-export const textVariants: {[key in TextVariant]: TextStyle} = {
+export const textVariants: { [key in TextVariant]: TextStyle } = {
   [TextVariant.H1]: {
     // fontWeight: '700',
     fontSize: 20,
@@ -56,4 +56,4 @@ export const textVariants: {[key in TextVariant]: TextStyle} = {
   },
 };
 
-export const textVariantStyles = StyleSheet.create(textVariants)
+export const textVariantStyles = StyleSheet.create(textVariants);

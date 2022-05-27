@@ -1,7 +1,7 @@
 import React from 'react';
-import Svg, {Path} from 'react-native-svg';
-import {Color} from '../../config/designTokens';
-import {SvgIconProps} from './types';
+import Svg, { Path } from 'react-native-svg';
+import { Color } from '../../config/designTokens';
+import { SvgIconProps } from './types';
 
 export const MenuIcon: React.FC<SvgIconProps> = ({
   style,
@@ -13,7 +13,8 @@ export const MenuIcon: React.FC<SvgIconProps> = ({
       width={style?.width || 48}
       height={style?.height || 48}
       viewBox={style?.viewBox || '0 0 48 48'}
-      fill={style?.fill || 'none'}>
+      fill={style?.fill || 'none'}
+    >
       <Path
         stroke={color}
         strokeLinecap="round"

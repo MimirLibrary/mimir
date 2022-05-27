@@ -1,16 +1,16 @@
-import React, {useCallback, useMemo} from 'react';
-import {Animated, Dimensions, TouchableOpacity, View} from 'react-native';
+import React, { useCallback, useMemo } from 'react';
+import { Animated, Dimensions, TouchableOpacity, View } from 'react-native';
 import {
   createMaterialTopTabNavigator,
   MaterialTopTabBarProps,
 } from '@react-navigation/material-top-tabs';
-import {Header} from '../components/Header';
-import {SearchScreen} from '../screens/SearchScreen/SearchScreen';
-import {Color} from '../config/designTokens';
-import {textVariants} from '../config/textVariants';
-import {MaterialTopTabDescriptor} from '@react-navigation/material-top-tabs/lib/typescript/src/types';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {NavigationContainer} from '@react-navigation/native';
+import { Header } from '../components/Header';
+import { SearchScreen } from '../screens/SearchScreen/SearchScreen';
+import { Color } from '../config/designTokens';
+import { textVariants } from '../config/textVariants';
+import { MaterialTopTabDescriptor } from '@react-navigation/material-top-tabs/lib/typescript/src/types';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { NavigationContainer } from '@react-navigation/native';
 
 const WIDTH = Dimensions.get('screen').width;
 
@@ -40,7 +40,7 @@ const RouteTab = ({
 
     if (!isFocused && !event.defaultPrevented) {
       // The `merge: true` option makes sure that the params inside the tab screen are preserved
-      navigation.navigate<any>({name: route.name, merge: true});
+      navigation.navigate<any>({ name: route.name, merge: true });
     }
   }, [isFocused, navigation, route.key, route.name]);
 
@@ -54,20 +54,22 @@ const RouteTab = ({
   const inputRange = state.routes.map((_, i) => i);
   const opacity = position.interpolate({
     inputRange,
-    outputRange: inputRange.map(i => (i === index ? 1 : 0.4)),
+    outputRange: inputRange.map((i) => (i === index ? 1 : 0.4)),
   });
   return (
     <TouchableOpacity
       onPress={onPress}
       onLongPress={onLongPress}
-      style={{flex: 1, height: 33}}>
+      style={{ flex: 1, height: 33 }}
+    >
       <Animated.Text
         style={{
           opacity,
           textAlign: 'center',
           // color,
           ...textVariants.bodyL,
-        }}>
+        }}
+      >
         {label}
       </Animated.Text>
     </TouchableOpacity>
@@ -92,12 +94,12 @@ export const MyTabBar = ({
   const inputRange = state.routes.map((_, i) => i);
   const margin = position.interpolate({
     inputRange,
-    outputRange: inputRange.map(i => (i * WIDTH) / state.routes.length),
+    outputRange: inputRange.map((i) => (i * WIDTH) / state.routes.length),
   });
 
   return (
-    <View style={{height: 36, marginTop: 32}}>
-      <View style={{flexDirection: 'row'}}>
+    <View style={{ height: 36, marginTop: 32 }}>
+      <View style={{ flexDirection: 'row' }}>
         {state.routes.map((route, index) => (
           <RouteTab
             key={index.toString()}
@@ -116,7 +118,8 @@ export const MyTabBar = ({
           height: 3,
           backgroundColor: Color.ACCENT_GRAY_50,
           width: '100%',
-        }}>
+        }}
+      >
         <Animated.View
           style={[
             {
@@ -124,7 +127,7 @@ export const MyTabBar = ({
               backgroundColor: Color.ACCENT_BLUE_100,
               height: '100%',
             },
-            {transform: [{translateX: margin}]},
+            { transform: [{ translateX: margin }] },
           ]}
         />
       </View>
@@ -135,24 +138,25 @@ export const MyTabBar = ({
 // ...
 const Tab = createMaterialTopTabNavigator();
 
-export const SearchStack = ({navigation}) => {
+export const SearchStack = ({ navigation }) => {
   return (
-    <SafeAreaView style={{flex: 1, paddingTop: 50}}>
+    <SafeAreaView style={{ flex: 1, paddingTop: 50 }}>
       <Header navigation={navigation} />
-        <Tab.Navigator
-          screenOptions={
-            {
-              // tabBarItemStyle: {backgroundColor: 'red'},
-              // tabBarItemStyle: {borderColor: 'red', borderBottomWidth: 2},
-              // tabBarIndicatorStyle: {backgroundColor: 'gray'},
-            }
+      <Tab.Navigator
+        screenOptions={
+          {
+            // tabBarItemStyle: {backgroundColor: 'red'},
+            // tabBarItemStyle: {borderColor: 'red', borderBottomWidth: 2},
+            // tabBarIndicatorStyle: {backgroundColor: 'gray'},
           }
-          tabBar={MyTabBar}>
-          <Tab.Screen name="Home" component={SearchScreen} />
-          <Tab.Screen name="Settings" component={SearchScreen} />
-          <Tab.Screen name="Settings2" component={SearchScreen} />
-          <Tab.Screen name="Settings3" component={SearchScreen} />
-        </Tab.Navigator>
+        }
+        tabBar={MyTabBar}
+      >
+        <Tab.Screen name="Home" component={SearchScreen} />
+        <Tab.Screen name="Settings" component={SearchScreen} />
+        <Tab.Screen name="Settings2" component={SearchScreen} />
+        <Tab.Screen name="Settings3" component={SearchScreen} />
+      </Tab.Navigator>
     </SafeAreaView>
   );
 };

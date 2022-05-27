@@ -1,13 +1,13 @@
-import React, {useRef, useState} from 'react';
+import React, { useRef, useState } from 'react';
 import Modal from 'react-native-modal';
-import {StyleProp, View, ViewProps, ViewStyle} from 'react-native';
+import { StyleProp, View, ViewProps, ViewStyle } from 'react-native';
 
-import {DismissKeyboardView} from './DissmissKeybordView';
-import {styles} from './styles';
-import {AppText} from "../AppText";
-import {TextVariant} from "../../config/textVariants";
-import {ButtonIcon} from "../ButtonIcon";
-import {CloseIcon} from "../icons/CloseIcon";
+import { DismissKeyboardView } from './DissmissKeybordView';
+import { styles } from './styles';
+import { AppText } from '../AppText';
+import { TextVariant } from '../../config/textVariants';
+import { ButtonIcon } from '../ButtonIcon';
+import { CloseIcon } from '../icons/CloseIcon';
 
 export type ModalBottomSheetProps = {
   visible: boolean;
@@ -21,10 +21,12 @@ export type ModalBottomSheetProps = {
   modalPanel?: boolean;
 } & ViewProps;
 
-
 export const StyledModal: React.FC<ViewProps> = (props) => {
   return (
-    <View style={{ ...styles.modalScreen, ...(props.style as object) }} {...props}>
+    <View
+      style={{ ...styles.modalScreen, ...(props.style as object) }}
+      {...props}
+    >
       {props.children}
     </View>
   );
@@ -69,17 +71,21 @@ export const ModalBottomSheet: React.FC<ModalBottomSheetProps> = (props) => {
       avoidKeyboard={true}
       style={[styles.modal, style]}
     >
-        <StyledModal style={[styles.scrollableModal, modalContentStyle, { height }]}>
-          <View style={[styles.header, headerStyle]}>
-            {isSwiper && <View style={[styles.swiper, swiperStyle]} >
+      <StyledModal
+        style={[styles.scrollableModal, modalContentStyle, { height }]}
+      >
+        <View style={[styles.header, headerStyle]}>
+          {isSwiper && (
+            <View style={[styles.swiper, swiperStyle]}>
               <AppText variant={TextVariant.H1} text={'Filters'} />
-              <ButtonIcon icon={<CloseIcon/>} onPress={onClose}/>
-            </View>}
-          </View>
-          <DismissKeyboardView>
-            <View style={[styles.modalBody, bodyStyle]}>{children}</View>
-          </DismissKeyboardView>
-        </StyledModal>
+              <ButtonIcon icon={<CloseIcon />} onPress={onClose} />
+            </View>
+          )}
+        </View>
+        <DismissKeyboardView>
+          <View style={[styles.modalBody, bodyStyle]}>{children}</View>
+        </DismissKeyboardView>
+      </StyledModal>
     </Modal>
   );
 };

@@ -1,7 +1,7 @@
 import React from 'react';
-import Svg, {Path} from 'react-native-svg';
-import {Color} from '../../config/designTokens';
-import {SvgIconProps} from './types';
+import Svg, { Path } from 'react-native-svg';
+import { Color } from '../../config/designTokens';
+import { SvgIconProps } from './types';
 
 export const CalendarIcon: React.FC<SvgIconProps> = ({
   style,
@@ -13,7 +13,8 @@ export const CalendarIcon: React.FC<SvgIconProps> = ({
       width={style?.width || 16}
       height={style?.height || 16}
       viewBox={style?.viewBox || '0 0 16 16'}
-      fill={style?.fill || 'none'}>
+      fill={style?.fill || 'none'}
+    >
       <Path
         fill={color}
         fillRule="evenodd"

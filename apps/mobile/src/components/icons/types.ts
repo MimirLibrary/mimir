@@ -1,6 +1,5 @@
-import { SvgProps } from "react-native-svg";
-import { Color } from "../../config/designTokens";
-
+import { SvgProps } from 'react-native-svg';
+import { Color } from '../../config/designTokens';
 
 export interface SvgIconProps {
   style?: Partial<SvgProps>;

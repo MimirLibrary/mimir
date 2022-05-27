@@ -1,30 +1,32 @@
-import React, {FC} from 'react'
-import {UpArrowIcon} from "./icons/UpArrowIcon";
-import {Pressable, StyleProp, StyleSheet, View, ViewStyle} from "react-native";
-import {Color} from "../config/designTokens";
-import Animated from 'react-native-reanimated'
+import React, { FC } from 'react';
+import { UpArrowIcon } from './icons/UpArrowIcon';
+import {
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
+import { Color } from '../config/designTokens';
+import Animated from 'react-native-reanimated';
 
 interface IFabButton {
   onPress: () => void;
-  style?: StyleProp<ViewStyle>
+  style?: StyleProp<ViewStyle>;
 }
 
-export const FabButton: FC<IFabButton> = ({onPress, style}) => {
+export const FabButton: FC<IFabButton> = ({ onPress, style }) => {
   return (
-
-
     <Animated.View style={[styles.container, style]}>
       <Pressable style={styles.pressableContainer} onPress={onPress}>
-        <View style={styles.background}/>
+        <View style={styles.background} />
         <View style={styles.content}>
-          <UpArrowIcon/>
+          <UpArrowIcon />
         </View>
       </Pressable>
-
     </Animated.View>
-
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -42,10 +44,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   content: {
-    position: "absolute"
+    position: 'absolute',
   },
   pressableContainer: {
-    flex: 1, alignItems: 'center',
+    flex: 1,
+    alignItems: 'center',
     justifyContent: 'center',
-  }
+  },
 });

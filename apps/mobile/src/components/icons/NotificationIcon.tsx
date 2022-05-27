@@ -1,7 +1,7 @@
 import React from 'react';
-import Svg, {Path, G, Circle, Defs, ClipPath} from 'react-native-svg';
-import {Color} from '../../config/designTokens';
-import {SvgIconProps} from './types';
+import Svg, { Path, G, Circle, Defs, ClipPath } from 'react-native-svg';
+import { Color } from '../../config/designTokens';
+import { SvgIconProps } from './types';
 
 export const NotificationIcon: React.FC<SvgIconProps> = ({
   style,
@@ -13,7 +13,8 @@ export const NotificationIcon: React.FC<SvgIconProps> = ({
       width={style?.width || 32}
       height={style?.height || 32}
       viewBox={style?.viewBox || '0 0 32 32'}
-      fill={style?.fill || 'none'}>
+      fill={style?.fill || 'none'}
+    >
       <G clipPath="url(#clip0_331_1392)">
         <Path
           fill={color}

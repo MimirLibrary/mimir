@@ -1,6 +1,6 @@
 import React from 'react';
-import {Image, StyleSheet, View, ViewStyle} from 'react-native';
-import {Color} from '../config/designTokens';
+import { Image, StyleSheet, View, ViewStyle } from 'react-native';
+import { Color } from '../config/designTokens';
 
 export interface AvatarProps {
   avatar?: string | null;
@@ -20,7 +20,12 @@ export const Avatar: React.FC<AvatarProps> = ({
 
   return (
     <View
-      style={[styles.container, containerStyle, {borderRadius: _borderRadius}]}>
+      style={[
+        styles.container,
+        containerStyle,
+        { borderRadius: _borderRadius },
+      ]}
+    >
       {avatar ? (
         <Image
           style={styles.img}

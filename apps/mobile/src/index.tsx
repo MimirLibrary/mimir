@@ -1,8 +1,7 @@
 import React from 'react';
 
-import {Navigator} from './navigation';
+import { Navigator } from './navigation';
 
 export const App = () => {
-  return <Navigator />
+  return <Navigator />;
 };
-
