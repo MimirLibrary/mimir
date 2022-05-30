@@ -1,8 +1,4 @@
-input ClaimBookInput {
+input BookInput {
   identifier: String!
   person_id: Int!
-}
-
-type ReturnDate {
-  returnDate: DateTime!
 }

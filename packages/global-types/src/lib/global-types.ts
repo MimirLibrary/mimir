@@ -6,7 +6,7 @@
 
 /* tslint:disable */
 /* eslint-disable */
-export interface ClaimBookInput {
+export interface BookInput {
   identifier: string;
   person_id: number;
 }
@@ -26,10 +26,6 @@ export interface CreateStatusInput {
   material_id: number;
   person_id: number;
   status: string;
-}
-
-export interface ReturnDate {
-  returnDate: DateTime;
 }
 
 export interface Material {
@@ -95,9 +91,8 @@ export interface IMutation {
   createStatus(
     input: CreateStatusInput
   ): Nullable<Status> | Promise<Nullable<Status>>;
-  claimBook(
-    input?: Nullable<ClaimBookInput>
-  ): ClaimBookUnionResult | Promise<ClaimBookUnionResult>;
+  claimBook(input: BookInput): BookUnionResult | Promise<BookUnionResult>;
+  returnItem(input: BookInput): BookUnionResult | Promise<BookUnionResult>;
 }
 
 export type DateTime = any;
@@ -157,5 +152,5 @@ export type CountryCode = any;
 export type Locale = any;
 export type RoutingNumber = any;
 export type AccountNumber = any;
-export type ClaimBookUnionResult = Status | Error;
+export type BookUnionResult = Status | Error;
 type Nullable<T> = T | null;

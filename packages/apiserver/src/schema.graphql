@@ -1,6 +1,6 @@
 scalar DateTime
 
-union ClaimBookUnionResult = Status | Error
+union BookUnionResult = Status | Error
 
 type Error {
   message: String!
@@ -21,5 +21,6 @@ type Mutation {
   createMaterial(input: CreateMaterialInput!): Material
   createPerson(input: CreatePersonInput!): Person
   createStatus(input: CreateStatusInput!): Status
-  claimBook(input: ClaimBookInput): ClaimBookUnionResult!
+  claimBook(input: BookInput!): BookUnionResult!
+  returnItem(input: BookInput!): BookUnionResult!
 }
