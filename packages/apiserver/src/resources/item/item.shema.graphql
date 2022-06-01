@@ -3,6 +3,7 @@ input ClaimBookInput {
   person_id: Int!
 }
 
-type ReturnDate {
-  returnDate: DateTime!
+input ProlongTimeInput {
+  person_id: Int!
+  material_id: Int!
 }

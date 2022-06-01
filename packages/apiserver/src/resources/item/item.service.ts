@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Material } from '../materials/material.entity';
-import { ClaimBookInput } from '@mimir/global-types';
+import { ClaimBookInput, ProlongTimeInput } from '@mimir/global-types';
 import { Status } from '../statuses/status.entity';
 import { Connection } from 'typeorm';
-import { ClaimError } from '../../errors';
-import { StatusTypes } from '../../utils/statusTypes';
+import { ErrorBook } from '../../errors';
+import { StatusTypes } from '../../utils/types/statusTypes';
+import { setTimeToProlong } from '../../utils/helpersFunctions/setTimeToProlong';
+import { config } from '../../config';
 
 @Injectable()
 export class ItemService {
@@ -25,7 +27,7 @@ export class ItemService {
       });
 
       if (!material) {
-        throw new ClaimError('This item is not registered in the library');
+        throw new ErrorBook('This item is not registered in the library');
       }
       const { id } = material;
       const status = await statusRepository.find({
@@ -34,7 +36,7 @@ export class ItemService {
         take: 1,
       });
       if (status[0].status === StatusTypes.BUSY) {
-        throw new ClaimError(`This book is busy. Ask the manager!`);
+        throw new ErrorBook(`This book is busy. Ask the manager!`);
       }
       const newStatusObj = await statusRepository.create({
         status: StatusTypes.BUSY,
@@ -66,6 +68,37 @@ export class ItemService {
         .addOrderBy('status.created_at', 'DESC')
         .getMany();
       return materials;
+    } catch (e) {
+      return {
+        message: e.message,
+      };
+    }
+  }
+
+  async prolong(prolongTime: ProlongTimeInput) {
+    try {
+      const { person_id, material_id } = prolongTime;
+      const [currentStatus] = await Status.find({
+        where: { material_id, person_id },
+        order: { created_at: 'DESC' },
+        take: 1,
+      });
+      if (currentStatus.status === StatusTypes.PROLONG) {
+        throw new ErrorBook('This item has already been extended!');
+      }
+      if (currentStatus.status === StatusTypes.FREE) {
+        throw new ErrorBook('This book is free!');
+      }
+      const prolongStatus = await Status.create({
+        status: StatusTypes.PROLONG,
+        created_at: setTimeToProlong(
+          currentStatus.created_at,
+          config.shelfLife
+        ),
+        material_id: currentStatus.material_id,
+        person_id: currentStatus.person_id,
+      });
+      return Status.save(prolongStatus);
     } catch (e) {
       return {
         message: e.message,
