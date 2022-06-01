@@ -9,7 +9,7 @@ const WrapperList = styled.section`
   row-gap: ${dimensions.base};
   column-gap: ${dimensions.base_2};
   width: 100%;
-  max-height: 35rem;
+  max-height: 20rem;
   height: 100%;
   overflow-y: auto;
 
@@ -52,6 +52,7 @@ const ListItems: FC<IProps> = ({ items }) => {
         items.map((item) => (
           <BookCard
             key={item?.id}
+            item_id={item?.id}
             src={item?.material?.picture}
             title={item?.material.title}
             author={item?.material.author}

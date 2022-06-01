@@ -1,0 +1,11 @@
+query GetMaterialById($id: ID!) {
+  getMaterialById(id: $id) {
+    picture
+    title
+    author
+    category
+    statuses {
+      status
+    }
+  }
+}
