@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import bookImage from '../../../assets/MOC-data/BookImage.png';
 
-export interface IProps {
+export interface IBookCardProps {
   src: string | null | undefined;
   title: string | undefined;
   date: any | undefined;
@@ -65,7 +65,7 @@ const DescriptionBook = styled.p`
   margin: ${dimensions.xs_2} auto;
 `;
 
-const BookCard: FC<IProps> = ({
+const BookCard: FC<IBookCardProps> = ({
   src = '',
   title = '',
   author = '',
