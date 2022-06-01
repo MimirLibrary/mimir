@@ -3,14 +3,16 @@ import BookStatus from '../BookStatus';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import bookImage from '../../../assets/MOC-data/BookImage.png';
+import { Link } from 'react-router-dom';
 
-export interface IProps {
+interface IProps {
   src: string | null | undefined;
   title: string | undefined;
   date: any | undefined;
   status: string | undefined;
   author: string | undefined;
   category: string | undefined;
+  item_id: string | undefined;
 }
 
 const BookCardWrapper = styled.div`
@@ -72,12 +74,15 @@ const BookCard: FC<IProps> = ({
   status,
   category,
   date,
+  item_id,
 }) => {
   return (
     <BookCardWrapper>
       <BookImage src={src || bookImage} />
       <DescriptionWrapper>
-        <TitleBook>{title}</TitleBook>
+        <Link to={'/item/' + item_id}>
+          <TitleBook>{title}</TitleBook>
+        </Link>
         <DescriptionBook>{category + ' / ' + author}</DescriptionBook>
         <BookStatus status={status} date={date} />
       </DescriptionWrapper>
