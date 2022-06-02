@@ -47,11 +47,15 @@ const BookPreview = () => {
     variables: { id: item_id! },
   });
 
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   if (loading) return <h1>Loading...</h1>;
 
   return (
     <>
-      <ButtonWrapper onClick={() => navigate(-1)}>
+      <ButtonWrapper onClick={handleGoBack}>
         <ArrowBack />
         <GoBack>Back to all books</GoBack>
       </ButtonWrapper>
@@ -62,6 +66,7 @@ const BookPreview = () => {
           author={data?.getMaterialById.author}
           category={data?.getMaterialById.category}
           status={data?.getMaterialById?.statuses[0]?.status}
+          created_at={data?.getMaterialById.created_at}
           description=""
         />
       )}

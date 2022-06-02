@@ -92,6 +92,7 @@ interface IProps {
   status: string | null | undefined;
   author: string | undefined;
   category: string | string[] | undefined;
+  created_at: string | undefined;
 }
 
 const BookInfo: FC<IProps> = ({

@@ -334,6 +334,7 @@ export type GetMaterialByIdQuery = {
     title: string;
     author: string;
     category: string;
+    created_at: any;
     statuses: Array<{ __typename?: 'Status'; status: string } | null>;
   } | null;
 };
@@ -412,6 +413,7 @@ export const GetMaterialByIdDocument = gql`
       title
       author
       category
+      created_at
       statuses {
         status
       }

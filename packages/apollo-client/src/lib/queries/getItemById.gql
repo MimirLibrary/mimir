@@ -4,6 +4,7 @@ query GetMaterialById($id: ID!) {
     title
     author
     category
+    created_at
     statuses {
       status
     }
