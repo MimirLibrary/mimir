@@ -12,7 +12,7 @@ interface IProps {
   status: string | undefined;
   author: string | undefined;
   category: string | undefined;
-  item_id: string | undefined;
+  id: string | undefined;
 }
 
 const BookCardWrapper = styled.div`
@@ -74,13 +74,13 @@ const BookCard: FC<IProps> = ({
   status,
   category,
   date,
-  item_id,
+  id,
 }) => {
   return (
     <BookCardWrapper>
       <BookImage src={src || bookImage} />
       <DescriptionWrapper>
-        <Link to={'/item/' + item_id}>
+        <Link to={'/item/' + id}>
           <TitleBook>{title}</TitleBook>
         </Link>
         <DescriptionBook>{category + ' / ' + author}</DescriptionBook>

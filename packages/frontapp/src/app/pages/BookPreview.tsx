@@ -48,6 +48,7 @@ const BookPreview = () => {
   });
 
   if (loading) return <h1>Loading...</h1>;
+
   return (
     <>
       <ButtonWrapper onClick={() => navigate(-1)}>

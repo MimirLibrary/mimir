@@ -26,6 +26,7 @@ const WrapperList = styled.section`
 `;
 
 export interface IMaterial {
+  id: string;
   __typename?: 'Material';
   picture?: string | null | undefined;
   category: string;
@@ -52,7 +53,7 @@ const ListItems: FC<IProps> = ({ items }) => {
         items.map((item) => (
           <BookCard
             key={item?.id}
-            item_id={item?.id}
+            id={item?.material?.id}
             src={item?.material?.picture}
             title={item?.material.title}
             author={item?.material.author}

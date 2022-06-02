@@ -313,6 +313,7 @@ export type GetAllTakenItemsQuery = {
     status: string;
     material: {
       __typename?: 'Material';
+      id: string;
       picture?: string | null;
       title: string;
       author: string;
@@ -344,6 +345,7 @@ export const GetAllTakenItemsDocument = gql`
       created_at
       status
       material {
+        id
         picture
         title
         author
