@@ -71,7 +71,6 @@ const BookStatus: FC<IBookStatusProps> = ({ status, date }) => {
         setStatusText(`Return till ${day}.${month}`);
         break;
       }
-
       case 'Overdue':
         setStatusText('Overdue');
         break;

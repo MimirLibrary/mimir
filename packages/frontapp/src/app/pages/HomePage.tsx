@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import InstructionsClaim from '../components/InstructionsClaim';
 import { TitleArticle } from '../globalUI/TextArticle';
 import { TextBase } from '../globalUI/TextBase';
@@ -8,6 +8,8 @@ import EmptyListItems from '../components/EmptyListItems';
 import { dimensions } from '@mimir/ui-kit';
 import { useGetAllTakenItemsQuery } from '@mimir/apollo-client';
 import { useAppSelector } from '../hooks/useTypedSelector';
+import Modal from '../components/Modal';
+import ClaimOperation from '../components/ClaimOperation';
 
 const WrapperHome = styled.div`
   @media (max-width: ${dimensions.tablet_width}) {
@@ -23,6 +25,7 @@ const Wrapper = styled.div`
 `;
 
 const HomePage: FC = () => {
+  const [active, setActive] = useState(false);
   const { id } = useAppSelector((state) => state.user);
   const { data, loading } = useGetAllTakenItemsQuery({
     variables: { person_id: id },
@@ -44,6 +47,10 @@ const HomePage: FC = () => {
       ) : (
         <EmptyListItems />
       )}
+      <button onClick={() => setActive(true)}>open</button>
+      <Modal active={active} setActive={setActive}>
+        <ClaimOperation />
+      </Modal>
     </WrapperHome>
   );
 };
