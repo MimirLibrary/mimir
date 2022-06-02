@@ -64,7 +64,9 @@ export class ItemService {
         .distinctOn(['material_id'])
         .orderBy('material_id', 'DESC')
         .where('person_id = :person_id', { person_id })
-        .andWhere('status = :status', { status: 'Busy' })
+        .andWhere('status IN(:...status)', {
+          status: [StatusTypes.BUSY, StatusTypes.PROLONG],
+        })
         .addOrderBy('status.created_at', 'DESC')
         .getMany();
       return materials;
