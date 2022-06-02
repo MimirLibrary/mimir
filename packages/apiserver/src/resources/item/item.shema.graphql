@@ -1,3 +1,5 @@
+union ClaimBookUnionResult = Status | Error
+
 input ClaimBookInput {
   identifier: String!
   person_id: Int!
@@ -5,4 +7,13 @@ input ClaimBookInput {
 
 type ReturnDate {
   returnDate: DateTime!
+}
+
+extend type Query {
+  getAllTakenItems(person_id: Int!): [Status]!
+}
+
+
+extend type Mutation {
+  claimBook(input: ClaimBookInput): ClaimBookUnionResult!
 }
