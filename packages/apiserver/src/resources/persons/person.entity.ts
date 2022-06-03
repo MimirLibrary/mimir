@@ -6,6 +6,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Notification } from '../notifications/notification.entity';
 import { Status } from '../statuses/status.entity';
 
 @Entity('person')
@@ -24,4 +25,7 @@ export class Person extends BaseEntity {
 
   @OneToMany(() => Status, (status) => status.person)
   status: Status[];
+
+  @OneToMany(() => Notification, (notification) => notification.person)
+  notification: Notification[];
 }

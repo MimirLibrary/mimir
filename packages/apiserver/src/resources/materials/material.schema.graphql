@@ -10,6 +10,7 @@ type Material {
   author: String!
   category: String!
   statuses: [Status]!
+  notifications: [Notification]!
 }
 
 input CreateMaterialInput {

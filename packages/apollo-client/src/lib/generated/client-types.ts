@@ -180,10 +180,17 @@ export type ClaimBookInput = {
   person_id: Scalars['Int'];
 };
 
+export type ClaimBookUnionResult = Error | Status;
+
 export type CreateMaterialInput = {
   id_type: Scalars['String'];
   identifier: Scalars['String'];
   type: Scalars['String'];
+};
+
+export type CreateNotificationInput = {
+  material_id: Scalars['Int'];
+  person_id: Scalars['Int'];
 };
 
 export type CreatePersonInput = {
@@ -210,6 +217,7 @@ export type Material = {
   id: Scalars['ID'];
   id_type: Scalars['String'];
   identifier: Scalars['String'];
+  notifications: Array<Maybe<Notification>>;
   picture?: Maybe<Scalars['String']>;
   statuses: Array<Maybe<Status>>;
   title: Scalars['String'];
@@ -219,10 +227,12 @@ export type Material = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  claimBook: StatusResult;
+  claimBook: ClaimBookUnionResult;
   createMaterial?: Maybe<Material>;
+  createNotification?: Maybe<Notification>;
   createPerson?: Maybe<Person>;
   createStatus?: Maybe<Status>;
+  removeNotification?: Maybe<Notification>;
 };
 
 export type MutationClaimBookArgs = {
@@ -233,6 +243,10 @@ export type MutationCreateMaterialArgs = {
   input: CreateMaterialInput;
 };
 
+export type MutationCreateNotificationArgs = {
+  input: CreateNotificationInput;
+};
+
 export type MutationCreatePersonArgs = {
   input: CreatePersonInput;
 };
@@ -241,10 +255,25 @@ export type MutationCreateStatusArgs = {
   input: CreateStatusInput;
 };
 
+export type MutationRemoveNotificationArgs = {
+  input: RemoveNotificationInput;
+};
+
+export type Notification = {
+  __typename?: 'Notification';
+  created_at: Scalars['DateTime'];
+  id: Scalars['ID'];
+  material: Material;
+  material_id: Scalars['Int'];
+  person: Person;
+  person_id: Scalars['Int'];
+};
+
 export type Person = {
   __typename?: 'Person';
   created_at: Scalars['DateTime'];
   id: Scalars['ID'];
+  notifications?: Maybe<Array<Maybe<Notification>>>;
   smg_id: Scalars['String'];
   statuses?: Maybe<Array<Maybe<Status>>>;
   type: Scalars['String'];
@@ -256,6 +285,8 @@ export type Query = {
   getAllPersons: Array<Maybe<Person>>;
   getAllTakenItems: Array<Maybe<Status>>;
   getMaterialById?: Maybe<Material>;
+  getNotificationsByMaterial: Array<Maybe<Notification>>;
+  getNotificationsByPerson: Array<Maybe<Notification>>;
   getOnePerson: Person;
   getStatusesByMaterial: Array<Maybe<Status>>;
   getStatusesByPerson: Array<Maybe<Status>>;
@@ -270,6 +301,14 @@ export type QueryGetMaterialByIdArgs = {
   id: Scalars['ID'];
 };
 
+export type QueryGetNotificationsByMaterialArgs = {
+  material_id: Scalars['Int'];
+};
+
+export type QueryGetNotificationsByPersonArgs = {
+  person_id: Scalars['Int'];
+};
+
 export type QueryGetOnePersonArgs = {
   id: Scalars['ID'];
 };
@@ -282,6 +321,16 @@ export type QueryGetStatusesByPersonArgs = {
   person_id: Scalars['ID'];
 };
 
+export type RemoveNotificationInput = {
+  material_id: Scalars['Int'];
+  person_id: Scalars['Int'];
+};
+
+export type ReturnDate = {
+  __typename?: 'ReturnDate';
+  returnDate: Scalars['DateTime'];
+};
+
 export type Status = {
   __typename?: 'Status';
   created_at: Scalars['DateTime'];
@@ -292,8 +341,6 @@ export type Status = {
   person_id: Scalars['Int'];
   status: Scalars['String'];
 };
-
-export type StatusResult = Error | Status;
 
 export type GetAllTakenItemsQueryVariables = Exact<{
   person_id: Scalars['Int'];

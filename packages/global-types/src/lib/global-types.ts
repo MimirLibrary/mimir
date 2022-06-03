@@ -17,6 +17,16 @@ export interface CreateMaterialInput {
   type: string;
 }
 
+export interface CreateNotificationInput {
+  material_id: number;
+  person_id: number;
+}
+
+export interface RemoveNotificationInput {
+  material_id: number;
+  person_id: number;
+}
+
 export interface CreatePersonInput {
   smg_id: string;
   type: string;
@@ -44,31 +54,25 @@ export interface Material {
   author: string;
   category: string;
   statuses: Nullable<Status>[];
+  notifications: Nullable<Notification>[];
 }
 
-export interface Person {
-  id: string;
-  smg_id: string;
-  type: string;
-  created_at: DateTime;
-  statuses?: Nullable<Nullable<Status>[]>;
-}
-
-export interface Status {
+export interface Notification {
   id: string;
   material_id: number;
   person_id: number;
-  status: string;
   created_at: DateTime;
-  material: Material;
   person: Person;
-}
-
-export interface Error {
-  message: string;
+  material: Material;
 }
 
 export interface IQuery {
+  getNotificationsByPerson(
+    person_id: number
+  ): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
+  getNotificationsByMaterial(
+    material_id: number
+  ): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
   welcome(): string | Promise<string>;
   getAllPersons(): Nullable<Person>[] | Promise<Nullable<Person>[]>;
   getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
@@ -86,6 +90,12 @@ export interface IQuery {
 }
 
 export interface IMutation {
+  createNotification(
+    input: CreateNotificationInput
+  ): Nullable<Notification> | Promise<Nullable<Notification>>;
+  removeNotification(
+    input: RemoveNotificationInput
+  ): Nullable<Notification> | Promise<Nullable<Notification>>;
   createMaterial(
     input: CreateMaterialInput
   ): Nullable<Material> | Promise<Nullable<Material>>;
@@ -98,6 +108,29 @@ export interface IMutation {
   claimBook(
     input?: Nullable<ClaimBookInput>
   ): ClaimBookUnionResult | Promise<ClaimBookUnionResult>;
+}
+
+export interface Person {
+  id: string;
+  smg_id: string;
+  type: string;
+  created_at: DateTime;
+  statuses?: Nullable<Nullable<Status>[]>;
+  notifications?: Nullable<Nullable<Notification>[]>;
+}
+
+export interface Status {
+  id: string;
+  material_id: number;
+  person_id: number;
+  status: string;
+  created_at: DateTime;
+  material: Material;
+  person: Person;
+}
+
+export interface Error {
+  message: string;
 }
 
 export type DateTime = any;
