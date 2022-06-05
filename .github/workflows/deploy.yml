@@ -6,6 +6,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: Staging
     steps:
       - name: SSH Remote Commands
         uses: appleboy/ssh-action@master
