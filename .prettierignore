@@ -3,3 +3,4 @@
 /dist
 /coverage
 /packages/global-types/
+/packages/apollo-client/src/lib/generated/
