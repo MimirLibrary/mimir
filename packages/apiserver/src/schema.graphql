@@ -1,5 +1,7 @@
 scalar DateTime
 
+union BookUnionResult = Status | Error
+
 type Error {
   message: String!
 }
