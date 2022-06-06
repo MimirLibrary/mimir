@@ -1,3 +1,5 @@
+union ClaimBookUnionResult = Status | Error
+
 input ClaimBookInput {
   identifier: String!
   person_id: Int!
@@ -6,4 +8,13 @@ input ClaimBookInput {
 input ProlongTimeInput {
   person_id: Int!
   material_id: Int!
+}
+
+extend type Query {
+  getAllTakenItems(person_id: Int!): [Status]!
+}
+
+
+extend type Mutation {
+  claimBook(input: ClaimBookInput): ClaimBookUnionResult!
 }

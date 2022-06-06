@@ -3,14 +3,16 @@ import BookStatus from '../BookStatus';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import bookImage from '../../../assets/MOC-data/BookImage.png';
+import { useNavigate } from 'react-router-dom';
 
-export interface IProps {
+export interface IBookCardProps {
   src: string | null | undefined;
   title: string | undefined;
   date: any | undefined;
   status: string | undefined;
   author: string | undefined;
   category: string | undefined;
+  id: string | undefined;
 }
 
 const BookCardWrapper = styled.div`
@@ -22,6 +24,7 @@ const BookCardWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  cursor: pointer;
 
   @media (max-width: ${dimensions.phone_width}) {
     flex-direction: row;
@@ -65,16 +68,21 @@ const DescriptionBook = styled.p`
   margin: ${dimensions.xs_2} auto;
 `;
 
-const BookCard: FC<IProps> = ({
+const BookCard: FC<IBookCardProps> = ({
   src = '',
   title = '',
   author = '',
   status,
   category,
   date,
+  id,
 }) => {
+  const navigate = useNavigate();
+  const handleItemRedirect = () => {
+    navigate(`/item/${id}`);
+  };
   return (
-    <BookCardWrapper>
+    <BookCardWrapper onClick={handleItemRedirect}>
       <BookImage src={src || bookImage} />
       <DescriptionWrapper>
         <TitleBook>{title}</TitleBook>
