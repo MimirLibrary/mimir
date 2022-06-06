@@ -10,5 +10,6 @@ extend type Query {
 
 
 extend type Mutation {
-  claimBook(input: ClaimBookInput): ClaimBookUnionResult!
+  claimBook(input: BookInput): BookUnionResult!
+  returnItem(input: BookInput): BookUnionResult!
 }
