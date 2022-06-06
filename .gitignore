@@ -17,6 +17,9 @@
 .settings/
 *.sublime-workspace
 
+# env
+.env
+
 # IDE - VSCode
 .vscode/*
 !.vscode/settings.json
@@ -89,7 +92,7 @@ buck-out/
 
 ## CocoaPods
 **/ios/Pods/
-/
+
 
 ## Nested node_modules
 

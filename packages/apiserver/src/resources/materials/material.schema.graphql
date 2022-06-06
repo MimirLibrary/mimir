@@ -18,3 +18,12 @@ input CreateMaterialInput {
   id_type: String!
   type: String!
 }
+
+extend type Query {
+  getAllMaterials: [Material]!
+  getMaterialById(id: ID!): Material!
+}
+
+extend type Mutation {
+  createMaterial(input: CreateMaterialInput!): Material!
+}

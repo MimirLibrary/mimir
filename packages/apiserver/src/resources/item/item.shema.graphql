@@ -1,8 +1,13 @@
-input ClaimBookInput {
+input BookInput {
   identifier: String!
   person_id: Int!
 }
 
-type ReturnDate {
-  returnDate: DateTime!
+extend type Query {
+  getAllTakenItems(person_id: Int!): [Status]!
+}
+
+extend type Mutation {
+  claimBook(input: BookInput): BookUnionResult!
+  returnItem(input: BookInput): BookUnionResult!
 }

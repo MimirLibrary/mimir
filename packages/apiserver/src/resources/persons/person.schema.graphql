@@ -11,3 +11,12 @@ input CreatePersonInput {
   smg_id: String!
   type: String!
 }
+
+extend type Query {
+  getOnePerson(id: ID!): Person!
+  getAllPersons: [Person]!
+}
+
+extend type Mutation {
+  createPerson(input: CreatePersonInput!): Person!
+}

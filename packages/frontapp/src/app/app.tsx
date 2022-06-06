@@ -10,6 +10,7 @@ import { useRoutes } from './hooks/useRoutes';
 import { useAppSelector } from './hooks/useTypedSelector';
 import NotificationPage from './pages/NotificationPage';
 import SearchWrapper from './components/SearchWrapper';
+import BookPreview from './pages/BookPreview';
 
 const WrapperPage = styled.main`
   display: flex;
@@ -50,6 +51,7 @@ const App: FC = () => {
                 {routes}
                 <Route path="/notifications" element={<NotificationPage />} />
                 <Route path="*" element={<HomePage />} />
+                <Route path="item/:item_id" element={<BookPreview />} />
               </Routes>
             </WrapperRoutes>
           </WrapperPage>

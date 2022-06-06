@@ -42,6 +42,32 @@ export interface ReturnDate {
   returnDate: DateTime;
 }
 
+export interface IQuery {
+  getAllTakenItems(
+    person_id: number
+  ): Nullable<Status>[] | Promise<Nullable<Status>[]>;
+  getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
+  getMaterialById(id: string): Material | Promise<Material>;
+  getOnePerson(id: string): Person | Promise<Person>;
+  getAllPersons(): Nullable<Person>[] | Promise<Nullable<Person>[]>;
+  getStatusesByPerson(
+    person_id: string
+  ): Nullable<Status>[] | Promise<Nullable<Status>[]>;
+  getStatusesByMaterial(
+    material_id: string
+  ): Nullable<Status>[] | Promise<Nullable<Status>[]>;
+  welcome(): string | Promise<string>;
+}
+
+export interface IMutation {
+  claimBook(
+    input?: Nullable<ClaimBookInput>
+  ): ClaimBookUnionResult | Promise<ClaimBookUnionResult>;
+  createMaterial(input: CreateMaterialInput): Material | Promise<Material>;
+  createPerson(input: CreatePersonInput): Person | Promise<Person>;
+  createStatus(input: CreateStatusInput): Status | Promise<Status>;
+}
+
 export interface Material {
   id: string;
   identifier: string;
