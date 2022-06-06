@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Notification } from '../notifications/notification.entity';
 import { Status } from '../statuses/status.entity';
 
 @Entity('material')
@@ -43,4 +44,7 @@ export class Material extends BaseEntity {
 
   @OneToMany(() => Status, (status) => status.material)
   status!: Status[];
+
+  @OneToMany(() => Notification, (notification) => notification.material)
+  notification!: Notification[];
 }

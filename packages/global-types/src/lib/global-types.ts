@@ -17,6 +17,16 @@ export interface CreateMaterialInput {
   type: string;
 }
 
+export interface CreateNotificationInput {
+  material_id: number;
+  person_id: number;
+}
+
+export interface RemoveNotificationInput {
+  material_id: number;
+  person_id: number;
+}
+
 export interface CreatePersonInput {
   smg_id: string;
   type: string;
@@ -70,6 +80,60 @@ export interface Material {
   author: string;
   category: string;
   statuses: Nullable<Status>[];
+  notifications: Nullable<Notification>[];
+}
+
+export interface Notification {
+  id: string;
+  material_id: number;
+  person_id: number;
+  created_at: DateTime;
+  person: Person;
+  material: Material;
+}
+
+export interface IQuery {
+  getNotificationsByPerson(
+    person_id: number
+  ): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
+  getNotificationsByMaterial(
+    material_id: number
+  ): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
+  welcome(): string | Promise<string>;
+  getAllPersons(): Nullable<Person>[] | Promise<Nullable<Person>[]>;
+  getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
+  getMaterialById(id: string): Nullable<Material> | Promise<Nullable<Material>>;
+  getStatusesByPerson(
+    person_id: string
+  ): Nullable<Status>[] | Promise<Nullable<Status>[]>;
+  getStatusesByMaterial(
+    material_id: string
+  ): Nullable<Status>[] | Promise<Nullable<Status>[]>;
+  getOnePerson(id: string): Person | Promise<Person>;
+  getAllTakenItems(
+    person_id: number
+  ): Nullable<Status>[] | Promise<Nullable<Status>[]>;
+}
+
+export interface IMutation {
+  createNotification(
+    input: CreateNotificationInput
+  ): Nullable<Notification> | Promise<Nullable<Notification>>;
+  removeNotification(
+    input: RemoveNotificationInput
+  ): Nullable<Notification> | Promise<Nullable<Notification>>;
+  createMaterial(
+    input: CreateMaterialInput
+  ): Nullable<Material> | Promise<Nullable<Material>>;
+  createPerson(
+    input: CreatePersonInput
+  ): Nullable<Person> | Promise<Nullable<Person>>;
+  createStatus(
+    input: CreateStatusInput
+  ): Nullable<Status> | Promise<Nullable<Status>>;
+  claimBook(
+    input?: Nullable<ClaimBookInput>
+  ): ClaimBookUnionResult | Promise<ClaimBookUnionResult>;
 }
 
 export interface Person {
@@ -78,6 +142,7 @@ export interface Person {
   type: string;
   created_at: DateTime;
   statuses?: Nullable<Nullable<Status>[]>;
+  notifications?: Nullable<Nullable<Notification>[]>;
 }
 
 export interface Status {

@@ -7,6 +7,7 @@ import typeorm from '../ormconfig';
 import { MaterialModule } from '../resources/materials/material.module';
 import { StatusModule } from '../resources/statuses/status.module';
 import { PersonModule } from '../resources/persons/person.module';
+import { NotificationModule } from '../resources/notifications/notification.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ItemModule } from '../resources/item/item.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
@@ -15,6 +16,7 @@ import { AppResolver } from './app.resolver';
 import { Person } from '../resources/persons/person.entity';
 import { Material } from '../resources/materials/material.entity';
 import { Status } from '../resources/statuses/status.entity';
+import { Notification } from '../resources/notifications/notification.entity';
 import {
   typeDefs as scalarTypeDefs,
   resolvers as scalarResolvers,
@@ -25,13 +27,14 @@ import {
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     TypeOrmModule.forRoot({
       ...typeorm,
-      entities: [Person, Material, Status],
+      entities: [Person, Material, Status, Notification],
       migrations: [`${__dirname}/packages/apiserver/src/migrations/*.ts`],
     }),
     MaterialModule,
     StatusModule,
     PersonModule,
     ItemModule,
+    NotificationModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],

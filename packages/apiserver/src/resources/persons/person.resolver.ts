@@ -9,6 +9,7 @@ import {
 import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { Person } from './person.entity';
 import { Status } from '../statuses/status.entity';
+import { Notification } from '../notifications/notification.entity';
 import { CreatePersonInput } from '@mimir/global-types';
 
 @Resolver('Person')
@@ -43,5 +44,11 @@ export class PersonResolver {
   async statuses(@Parent() person: Person) {
     const { id } = person;
     return Status.find({ where: { person_id: id } });
+  }
+
+  @ResolveField(() => [Status])
+  async notifications(@Parent() person: Person) {
+    const { id } = person;
+    return Notification.find({ where: { person_id: id } });
   }
 }
