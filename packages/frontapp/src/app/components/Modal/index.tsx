@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 
@@ -23,11 +23,13 @@ const WrapperModal = styled.div<IStyleProps>`
 `;
 
 const ContentModal = styled.div<IStyleProps>`
-  padding: ${dimensions.xl};
+  padding: ${dimensions.base_2};
   background-color: ${colors.bg_secondary};
   border-radius: ${dimensions.xl_10};
   transform: ${(props) => (props.active ? 'scale(1)' : 'scale(0)')};
   transition: 0.4s all;
+  max-width: ${dimensions.tablet_width};
+  width: 100%;
 `;
 
 interface IPropsModal {
@@ -39,6 +41,11 @@ const Modal: FC<IPropsModal> = ({ active, setActive, children }) => {
   const closeModalDarkPlace = () => {
     setActive(false);
   };
+
+  useEffect(() => {
+    if (active) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = '';
+  }, [active]);
 
   return (
     <WrapperModal active={active} onClick={closeModalDarkPlace}>

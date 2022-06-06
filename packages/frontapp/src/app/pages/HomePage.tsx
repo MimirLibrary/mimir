@@ -10,6 +10,7 @@ import { useGetAllTakenItemsQuery } from '@mimir/apollo-client';
 import { useAppSelector } from '../hooks/useTypedSelector';
 import Modal from '../components/Modal';
 import ClaimOperation from '../components/ClaimOperation';
+import { SuccessClaim } from '../components/SuccesClaim';
 
 const WrapperHome = styled.div`
   @media (max-width: ${dimensions.tablet_width}) {
@@ -49,7 +50,10 @@ const HomePage: FC = () => {
       )}
       <button onClick={() => setActive(true)}>open</button>
       <Modal active={active} setActive={setActive}>
-        <ClaimOperation />
+        <ClaimOperation setActive={setActive} />
+      </Modal>
+      <Modal active={active} setActive={setActive}>
+        <SuccessClaim setActive={setActive} />
       </Modal>
     </WrapperHome>
   );

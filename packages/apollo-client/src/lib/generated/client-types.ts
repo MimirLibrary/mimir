@@ -180,6 +180,8 @@ export type ClaimBookInput = {
   person_id: Scalars['Int'];
 };
 
+export type ClaimBookUnionResult = Error | Status;
+
 export type CreateMaterialInput = {
   id_type: Scalars['String'];
   identifier: Scalars['String'];
@@ -219,7 +221,7 @@ export type Material = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  claimBook: StatusResult;
+  claimBook: ClaimBookUnionResult;
   createMaterial?: Maybe<Material>;
   createPerson?: Maybe<Person>;
   createStatus?: Maybe<Status>;
@@ -282,6 +284,11 @@ export type QueryGetStatusesByPersonArgs = {
   person_id: Scalars['ID'];
 };
 
+export type ReturnDate = {
+  __typename?: 'ReturnDate';
+  returnDate: Scalars['DateTime'];
+};
+
 export type Status = {
   __typename?: 'Status';
   created_at: Scalars['DateTime'];
@@ -293,7 +300,17 @@ export type Status = {
   status: Scalars['String'];
 };
 
-export type StatusResult = Error | Status;
+export type ClaimBookMutationVariables = Exact<{
+  identifier: Scalars['String'];
+  person_id: Scalars['Int'];
+}>;
+
+export type ClaimBookMutation = {
+  __typename?: 'Mutation';
+  claimBook:
+    | { __typename?: 'Error'; message: string }
+    | { __typename?: 'Status'; status: string };
+};
 
 export type GetAllTakenItemsQueryVariables = Exact<{
   person_id: Scalars['Int'];
@@ -316,6 +333,61 @@ export type GetAllTakenItemsQuery = {
   } | null>;
 };
 
+export const ClaimBookDocument = gql`
+  mutation ClaimBook($identifier: String!, $person_id: Int!) {
+    claimBook(input: { identifier: $identifier, person_id: $person_id }) {
+      ... on Status {
+        status
+      }
+      ... on Error {
+        message
+      }
+    }
+  }
+`;
+export type ClaimBookMutationFn = Apollo.MutationFunction<
+  ClaimBookMutation,
+  ClaimBookMutationVariables
+>;
+
+/**
+ * __useClaimBookMutation__
+ *
+ * To run a mutation, you first call `useClaimBookMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useClaimBookMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [claimBookMutation, { data, loading, error }] = useClaimBookMutation({
+ *   variables: {
+ *      identifier: // value for 'identifier'
+ *      person_id: // value for 'person_id'
+ *   },
+ * });
+ */
+export function useClaimBookMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    ClaimBookMutation,
+    ClaimBookMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<ClaimBookMutation, ClaimBookMutationVariables>(
+    ClaimBookDocument,
+    options
+  );
+}
+export type ClaimBookMutationHookResult = ReturnType<
+  typeof useClaimBookMutation
+>;
+export type ClaimBookMutationResult = Apollo.MutationResult<ClaimBookMutation>;
+export type ClaimBookMutationOptions = Apollo.BaseMutationOptions<
+  ClaimBookMutation,
+  ClaimBookMutationVariables
+>;
 export const GetAllTakenItemsDocument = gql`
   query GetAllTakenItems($person_id: Int!) {
     getAllTakenItems(person_id: $person_id) {
