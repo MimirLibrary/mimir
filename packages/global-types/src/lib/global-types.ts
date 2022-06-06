@@ -11,6 +11,11 @@ export interface ClaimBookInput {
   person_id: number;
 }
 
+export interface ProlongTimeInput {
+  person_id: number;
+  material_id: number;
+}
+
 export interface CreateMaterialInput {
   identifier: string;
   id_type: string;
@@ -26,10 +31,6 @@ export interface CreateStatusInput {
   material_id: number;
   person_id: number;
   status: string;
-}
-
-export interface ReturnDate {
-  returnDate: DateTime;
 }
 
 export interface IQuery {
@@ -52,7 +53,10 @@ export interface IQuery {
 export interface IMutation {
   claimBook(
     input?: Nullable<ClaimBookInput>
-  ): ClaimBookUnionResult | Promise<ClaimBookUnionResult>;
+  ): BookUnionResult | Promise<BookUnionResult>;
+  prolongClaimPeriod(
+    input?: Nullable<ProlongTimeInput>
+  ): BookUnionResult | Promise<BookUnionResult>;
   createMaterial(input: CreateMaterialInput): Material | Promise<Material>;
   createPerson(input: CreatePersonInput): Person | Promise<Person>;
   createStatus(input: CreateStatusInput): Status | Promise<Status>;
@@ -152,4 +156,5 @@ export type Locale = any;
 export type RoutingNumber = any;
 export type AccountNumber = any;
 export type ClaimBookUnionResult = Status | Error;
+export type BookUnionResult = Status | Error;
 type Nullable<T> = T | null;
