@@ -32,6 +32,32 @@ export interface ReturnDate {
   returnDate: DateTime;
 }
 
+export interface IQuery {
+  getAllTakenItems(
+    person_id: number
+  ): Nullable<Status>[] | Promise<Nullable<Status>[]>;
+  getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
+  getMaterialById(id: string): Material | Promise<Material>;
+  getOnePerson(id: string): Person | Promise<Person>;
+  getAllPersons(): Nullable<Person>[] | Promise<Nullable<Person>[]>;
+  getStatusesByPerson(
+    person_id: string
+  ): Nullable<Status>[] | Promise<Nullable<Status>[]>;
+  getStatusesByMaterial(
+    material_id: string
+  ): Nullable<Status>[] | Promise<Nullable<Status>[]>;
+  welcome(): string | Promise<string>;
+}
+
+export interface IMutation {
+  claimBook(
+    input?: Nullable<ClaimBookInput>
+  ): ClaimBookUnionResult | Promise<ClaimBookUnionResult>;
+  createMaterial(input: CreateMaterialInput): Material | Promise<Material>;
+  createPerson(input: CreatePersonInput): Person | Promise<Person>;
+  createStatus(input: CreateStatusInput): Status | Promise<Status>;
+}
+
 export interface Material {
   id: string;
   identifier: string;
@@ -66,38 +92,6 @@ export interface Status {
 
 export interface Error {
   message: string;
-}
-
-export interface IQuery {
-  welcome(): string | Promise<string>;
-  getAllPersons(): Nullable<Person>[] | Promise<Nullable<Person>[]>;
-  getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
-  getMaterialById(id: string): Nullable<Material> | Promise<Nullable<Material>>;
-  getStatusesByPerson(
-    person_id: string
-  ): Nullable<Status>[] | Promise<Nullable<Status>[]>;
-  getStatusesByMaterial(
-    material_id: string
-  ): Nullable<Status>[] | Promise<Nullable<Status>[]>;
-  getOnePerson(id: string): Person | Promise<Person>;
-  getAllTakenItems(
-    person_id: number
-  ): Nullable<Status>[] | Promise<Nullable<Status>[]>;
-}
-
-export interface IMutation {
-  createMaterial(
-    input: CreateMaterialInput
-  ): Nullable<Material> | Promise<Nullable<Material>>;
-  createPerson(
-    input: CreatePersonInput
-  ): Nullable<Person> | Promise<Nullable<Person>>;
-  createStatus(
-    input: CreateStatusInput
-  ): Nullable<Status> | Promise<Nullable<Status>>;
-  claimBook(
-    input?: Nullable<ClaimBookInput>
-  ): ClaimBookUnionResult | Promise<ClaimBookUnionResult>;
 }
 
 export type DateTime = any;
