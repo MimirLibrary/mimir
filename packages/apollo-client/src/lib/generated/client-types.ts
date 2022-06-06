@@ -180,6 +180,8 @@ export type ClaimBookInput = {
   person_id: Scalars['Int'];
 };
 
+export type ClaimBookUnionResult = Error | Status;
+
 export type CreateMaterialInput = {
   id_type: Scalars['String'];
   identifier: Scalars['String'];
@@ -219,7 +221,7 @@ export type Material = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  claimBook: StatusResult;
+  claimBook: ClaimBookUnionResult;
   createMaterial?: Maybe<Material>;
   createPerson?: Maybe<Person>;
   createStatus?: Maybe<Status>;
@@ -282,6 +284,11 @@ export type QueryGetStatusesByPersonArgs = {
   person_id: Scalars['ID'];
 };
 
+export type ReturnDate = {
+  __typename?: 'ReturnDate';
+  returnDate: Scalars['DateTime'];
+};
+
 export type Status = {
   __typename?: 'Status';
   created_at: Scalars['DateTime'];
@@ -292,8 +299,6 @@ export type Status = {
   person_id: Scalars['Int'];
   status: Scalars['String'];
 };
-
-export type StatusResult = Error | Status;
 
 export type GetAllTakenItemsQueryVariables = Exact<{
   person_id: Scalars['Int'];
@@ -308,12 +313,30 @@ export type GetAllTakenItemsQuery = {
     status: string;
     material: {
       __typename?: 'Material';
+      id: string;
       picture?: string | null;
       title: string;
       author: string;
       category: string;
     };
   } | null>;
+};
+
+export type GetMaterialByIdQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type GetMaterialByIdQuery = {
+  __typename?: 'Query';
+  getMaterialById?: {
+    __typename?: 'Material';
+    picture?: string | null;
+    title: string;
+    author: string;
+    category: string;
+    created_at: any;
+    statuses: Array<{ __typename?: 'Status'; status: string } | null>;
+  } | null;
 };
 
 export const GetAllTakenItemsDocument = gql`
@@ -323,6 +346,7 @@ export const GetAllTakenItemsDocument = gql`
       created_at
       status
       material {
+        id
         picture
         title
         author
@@ -381,4 +405,69 @@ export type GetAllTakenItemsLazyQueryHookResult = ReturnType<
 export type GetAllTakenItemsQueryResult = Apollo.QueryResult<
   GetAllTakenItemsQuery,
   GetAllTakenItemsQueryVariables
+>;
+export const GetMaterialByIdDocument = gql`
+  query GetMaterialById($id: ID!) {
+    getMaterialById(id: $id) {
+      picture
+      title
+      author
+      category
+      created_at
+      statuses {
+        status
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetMaterialByIdQuery__
+ *
+ * To run a query within a React component, call `useGetMaterialByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMaterialByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMaterialByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetMaterialByIdQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetMaterialByIdQuery,
+    GetMaterialByIdQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetMaterialByIdQuery, GetMaterialByIdQueryVariables>(
+    GetMaterialByIdDocument,
+    options
+  );
+}
+export function useGetMaterialByIdLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetMaterialByIdQuery,
+    GetMaterialByIdQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetMaterialByIdQuery,
+    GetMaterialByIdQueryVariables
+  >(GetMaterialByIdDocument, options);
+}
+export type GetMaterialByIdQueryHookResult = ReturnType<
+  typeof useGetMaterialByIdQuery
+>;
+export type GetMaterialByIdLazyQueryHookResult = ReturnType<
+  typeof useGetMaterialByIdLazyQuery
+>;
+export type GetMaterialByIdQueryResult = Apollo.QueryResult<
+  GetMaterialByIdQuery,
+  GetMaterialByIdQueryVariables
 >;

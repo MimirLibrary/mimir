@@ -13,3 +13,12 @@ input CreateStatusInput {
   person_id: Int!
   status: String!
 }
+
+extend type Query {
+  getStatusesByPerson(person_id: ID!): [Status]!
+  getStatusesByMaterial(material_id: ID!): [Status]!
+}
+
+extend type Mutation {
+  createStatus(input: CreateStatusInput!): Status!
+}
