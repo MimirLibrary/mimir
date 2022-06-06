@@ -44,6 +44,7 @@ jobs:
         with:
           node-version: '16'
       - run: npm install
+      - run: npm run codegen
       - run: npx nx-cloud start-ci-run
       - run: npx nx affected --target=build --parallel --max-parallel=3
       - run: npx nx affected --target=test --parallel --max-parallel=2
