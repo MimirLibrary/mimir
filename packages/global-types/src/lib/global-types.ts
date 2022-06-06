@@ -6,7 +6,7 @@
 
 /* tslint:disable */
 /* eslint-disable */
-export interface ClaimBookInput {
+export interface BookInput {
   identifier: string;
   person_id: number;
 }
@@ -28,10 +28,6 @@ export interface CreateStatusInput {
   status: string;
 }
 
-export interface ReturnDate {
-  returnDate: DateTime;
-}
-
 export interface IQuery {
   getAllTakenItems(
     person_id: number
@@ -51,8 +47,11 @@ export interface IQuery {
 
 export interface IMutation {
   claimBook(
-    input?: Nullable<ClaimBookInput>
-  ): ClaimBookUnionResult | Promise<ClaimBookUnionResult>;
+    input?: Nullable<BookInput>
+  ): BookUnionResult | Promise<BookUnionResult>;
+  returnItem(
+    input?: Nullable<BookInput>
+  ): BookUnionResult | Promise<BookUnionResult>;
   createMaterial(input: CreateMaterialInput): Material | Promise<Material>;
   createPerson(input: CreatePersonInput): Person | Promise<Person>;
   createStatus(input: CreateStatusInput): Status | Promise<Status>;
@@ -151,5 +150,5 @@ export type CountryCode = any;
 export type Locale = any;
 export type RoutingNumber = any;
 export type AccountNumber = any;
-export type ClaimBookUnionResult = Status | Error;
+export type BookUnionResult = Status | Error;
 type Nullable<T> = T | null;

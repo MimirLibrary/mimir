@@ -175,12 +175,12 @@ export type Scalars = {
   Void: any;
 };
 
-export type ClaimBookInput = {
+export type BookInput = {
   identifier: Scalars['String'];
   person_id: Scalars['Int'];
 };
 
-export type ClaimBookUnionResult = Error | Status;
+export type BookUnionResult = Error | Status;
 
 export type CreateMaterialInput = {
   id_type: Scalars['String'];
@@ -221,14 +221,15 @@ export type Material = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  claimBook: ClaimBookUnionResult;
-  createMaterial?: Maybe<Material>;
-  createPerson?: Maybe<Person>;
-  createStatus?: Maybe<Status>;
+  claimBook: BookUnionResult;
+  createMaterial: Material;
+  createPerson: Person;
+  createStatus: Status;
+  returnItem: BookUnionResult;
 };
 
 export type MutationClaimBookArgs = {
-  input?: InputMaybe<ClaimBookInput>;
+  input?: InputMaybe<BookInput>;
 };
 
 export type MutationCreateMaterialArgs = {
@@ -241,6 +242,10 @@ export type MutationCreatePersonArgs = {
 
 export type MutationCreateStatusArgs = {
   input: CreateStatusInput;
+};
+
+export type MutationReturnItemArgs = {
+  input?: InputMaybe<BookInput>;
 };
 
 export type Person = {
@@ -257,7 +262,7 @@ export type Query = {
   getAllMaterials: Array<Maybe<Material>>;
   getAllPersons: Array<Maybe<Person>>;
   getAllTakenItems: Array<Maybe<Status>>;
-  getMaterialById?: Maybe<Material>;
+  getMaterialById: Material;
   getOnePerson: Person;
   getStatusesByMaterial: Array<Maybe<Status>>;
   getStatusesByPerson: Array<Maybe<Status>>;
@@ -284,11 +289,6 @@ export type QueryGetStatusesByPersonArgs = {
   person_id: Scalars['ID'];
 };
 
-export type ReturnDate = {
-  __typename?: 'ReturnDate';
-  returnDate: Scalars['DateTime'];
-};
-
 export type Status = {
   __typename?: 'Status';
   created_at: Scalars['DateTime'];
@@ -298,6 +298,18 @@ export type Status = {
   person: Person;
   person_id: Scalars['Int'];
   status: Scalars['String'];
+};
+
+export type ClaimBookMutationVariables = Exact<{
+  identifier: Scalars['String'];
+  person_id: Scalars['Int'];
+}>;
+
+export type ClaimBookMutation = {
+  __typename?: 'Mutation';
+  claimBook:
+    | { __typename?: 'Error'; message: string }
+    | { __typename?: 'Status'; created_at: any; status: string };
 };
 
 export type GetAllTakenItemsQueryVariables = Exact<{
@@ -328,17 +340,77 @@ export type GetMaterialByIdQueryVariables = Exact<{
 
 export type GetMaterialByIdQuery = {
   __typename?: 'Query';
-  getMaterialById?: {
+  getMaterialById: {
     __typename?: 'Material';
     picture?: string | null;
     title: string;
     author: string;
     category: string;
     created_at: any;
-    statuses: Array<{ __typename?: 'Status'; status: string } | null>;
-  } | null;
+    statuses: Array<{
+      __typename?: 'Status';
+      status: string;
+      created_at: any;
+    } | null>;
+  };
 };
 
+export const ClaimBookDocument = gql`
+  mutation ClaimBook($identifier: String!, $person_id: Int!) {
+    claimBook(input: { identifier: $identifier, person_id: $person_id }) {
+      ... on Status {
+        created_at
+        status
+      }
+      ... on Error {
+        message
+      }
+    }
+  }
+`;
+export type ClaimBookMutationFn = Apollo.MutationFunction<
+  ClaimBookMutation,
+  ClaimBookMutationVariables
+>;
+
+/**
+ * __useClaimBookMutation__
+ *
+ * To run a mutation, you first call `useClaimBookMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useClaimBookMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [claimBookMutation, { data, loading, error }] = useClaimBookMutation({
+ *   variables: {
+ *      identifier: // value for 'identifier'
+ *      person_id: // value for 'person_id'
+ *   },
+ * });
+ */
+export function useClaimBookMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    ClaimBookMutation,
+    ClaimBookMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<ClaimBookMutation, ClaimBookMutationVariables>(
+    ClaimBookDocument,
+    options
+  );
+}
+export type ClaimBookMutationHookResult = ReturnType<
+  typeof useClaimBookMutation
+>;
+export type ClaimBookMutationResult = Apollo.MutationResult<ClaimBookMutation>;
+export type ClaimBookMutationOptions = Apollo.BaseMutationOptions<
+  ClaimBookMutation,
+  ClaimBookMutationVariables
+>;
 export const GetAllTakenItemsDocument = gql`
   query GetAllTakenItems($person_id: Int!) {
     getAllTakenItems(person_id: $person_id) {
@@ -416,6 +488,7 @@ export const GetMaterialByIdDocument = gql`
       created_at
       statuses {
         status
+        created_at
       }
     }
   }

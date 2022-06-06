@@ -12,12 +12,14 @@ const GoBack = styled.a`
   font-weight: 600;
   font-size: ${dimensions.base};
 `;
+
 const ButtonWrapper = styled.div`
   margin: 3rem 0 ${dimensions.xl_3} 0;
   display: flex;
   align-items: center;
   cursor: pointer;
 `;
+
 const ButtonGRoup = styled.div`
   display: flex;
   gap: ${dimensions.base};
@@ -47,6 +49,13 @@ const BookPreview = () => {
     variables: { id: item_id! },
   });
 
+  const lastStatus =
+    data?.getMaterialById?.statuses[data?.getMaterialById?.statuses.length - 1]
+      ?.status;
+  const currentDate =
+    data?.getMaterialById?.statuses[data?.getMaterialById?.statuses.length - 1]
+      ?.created_at;
+
   const handleGoBack = () => {
     navigate(-1);
   };
@@ -65,8 +74,8 @@ const BookPreview = () => {
           title={data?.getMaterialById.title}
           author={data?.getMaterialById.author}
           category={data?.getMaterialById.category}
-          status={data?.getMaterialById?.statuses[0]?.status}
-          created_at={data?.getMaterialById.created_at}
+          status={lastStatus}
+          created_at={currentDate}
           description=""
         />
       )}

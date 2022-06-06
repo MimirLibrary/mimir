@@ -4,6 +4,7 @@ import { ReactComponent as Cross } from '../../../assets/Close.svg';
 import { colors, dimensions } from '@mimir/ui-kit';
 import successImg from '../../../assets/Succes.png';
 import Button from '../Button';
+import { getDates, parseDate } from '../../models/helperFunctions/converTime';
 
 const Wrapper = styled.div`
   display: grid;
@@ -65,18 +66,25 @@ interface IPropsSuccessClaim {
   created_at: Date;
 }
 
-export const SuccessClaim: FC<IPropsSuccessClaim> = ({ setActive }) => {
+export const SuccessClaim: FC<IPropsSuccessClaim> = ({
+  setActive,
+  title,
+  created_at,
+}) => {
   const closeModal = () => {
     setActive(false);
   };
+
+  const { returnDate } = getDates(created_at);
+  const trueFormatReturnDate = parseDate(returnDate);
 
   return (
     <Wrapper>
       <WrapperSuccessClaim>
         <TitleOfClaim>You have successfully claim the book</TitleOfClaim>
         <Description>
-          Enjoy reading and don't forget to return this by{' '}
-          <span>04.30.2022!</span>
+          {title}
+          <span> {trueFormatReturnDate}</span>
         </Description>
         <WrapperImg>
           <img src={successImg} alt="success claim" />

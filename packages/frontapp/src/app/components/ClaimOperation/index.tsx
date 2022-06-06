@@ -1,10 +1,8 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import Button from '../Button';
 import { colors, dimensions, fonts } from '@mimir/ui-kit';
 import { ReactComponent as Cross } from '../../../assets/Close.svg';
-import { useAppSelector } from '../../hooks/useTypedSelector';
-import { useClaimBookMutation } from '@mimir/apollo-client';
 
 const Wrapper = styled.div`
   display: grid;
@@ -119,29 +117,23 @@ const WrapperInput = styled.div`
 
 interface IProps {
   setActive: React.Dispatch<React.SetStateAction<boolean>>;
+  value: string;
+  setValueInput: React.Dispatch<React.SetStateAction<string>>;
+  claimBook: () => void;
 }
 
-const ClaimOperation: FC<IProps> = ({ setActive }) => {
-  const [claimBook, { data, loading }] = useClaimBookMutation();
-  const { id } = useAppSelector((state) => state.user);
-  const [valueIsISBN, setValueIsISBN] = useState<string>('');
-
+const ClaimOperation: FC<IProps> = ({
+  setActive,
+  claimBook,
+  value,
+  setValueInput,
+}) => {
   const handleChangeISBNInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValueIsISBN(e.target.value);
+    setValueInput(e.target.value);
   };
 
   const closeModal = () => {
     setActive(false);
-  };
-
-  const handleClaimBook = () => {
-    claimBook({
-      variables: {
-        person_id: id,
-        identifier: valueIsISBN,
-      },
-    });
-    setValueIsISBN('');
   };
 
   return (
@@ -153,7 +145,7 @@ const ClaimOperation: FC<IProps> = ({ setActive }) => {
         </Description>
         <WrapperInput>
           <InputISBN
-            value={valueIsISBN}
+            value={value}
             type="number"
             onChange={handleChangeISBNInput}
             required
@@ -163,7 +155,7 @@ const ClaimOperation: FC<IProps> = ({ setActive }) => {
           />
         </WrapperInput>
         <WrapperButtons>
-          <StyledButton value="Claim a book" onClick={handleClaimBook} />
+          <StyledButton value="Claim a book" onClick={claimBook} />
           <StyledButton transparent value="Cancel" onClick={closeModal} />
         </WrapperButtons>
       </WrapperClaimOperation>
