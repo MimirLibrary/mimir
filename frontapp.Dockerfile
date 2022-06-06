@@ -2,7 +2,9 @@ FROM unrealsolver/library:base AS builder
 
 COPY . .
 
-RUN npx nx build frontapp
+RUN npm i env-cmd
+
+RUN npx env-cmd -f .staging.env npx nx build frontapp
 
 FROM nginx:alpine
 
