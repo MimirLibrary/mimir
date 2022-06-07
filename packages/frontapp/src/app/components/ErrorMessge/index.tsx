@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import Button from '../Button';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { ReactComponent as Cross } from '../../../assets/Close.svg';
-import claimPicture from '../../../assets/ClaimABook.png';
+import claimPicture from '../../../assets/ClaimABook.svg';
 
 const Wrapper = styled.div`
   display: grid;
@@ -17,7 +17,6 @@ const WrapperErrorClaim = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  //max-width: 346px;
   width: 100%;
 `;
 

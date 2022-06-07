@@ -102,27 +102,6 @@ const Description = styled.p`
   line-height: ${dimensions.xl};
 `;
 
-const StyledButton = styled(Button)`
-  cursor: pointer;
-  margin-bottom: ${dimensions.xs_2};
-  padding: 0 2rem;
-  :hover {
-    background-color: ${colors.hover_color};
-    color: ${colors.bg_primary};
-  }
-`;
-
-interface IProps {
-  src: string | null | undefined;
-  title: string | undefined;
-  description: string | undefined;
-  status: string | undefined;
-  author: string | undefined;
-  category: string | string[] | undefined;
-  identifier: string;
-  created_at: any;
-}
-
 const StyledStatus = styled(StyledBookStatus)`
   font-size: ${dimensions.base};
   margin-top: ${dimensions.base};
@@ -137,7 +116,18 @@ const WrapperButtons = styled.div`
   flex-direction: column;
 `;
 
-const BookInfo: FC<IProps> = ({
+interface IBookInfoProps {
+  src: string | null | undefined;
+  title: string | undefined;
+  description: string | undefined;
+  status: string | undefined;
+  author: string | undefined;
+  category: string | string[] | undefined;
+  identifier: string;
+  created_at: any;
+}
+
+const BookInfo: FC<IBookInfoProps> = ({
   src = '',
   title = '',
   author = '',
@@ -158,7 +148,6 @@ const BookInfo: FC<IProps> = ({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
 
-  console.log(infoReturnBook.data);
   const currentStatus = getStatus(status, created_at);
   const dateConditionOfClaiming =
     data?.claimBook.__typename === 'Status' ? data.claimBook.created_at : null;
@@ -242,11 +231,11 @@ const BookInfo: FC<IProps> = ({
           <WrapperButtons>
             {status !== 'Free' ? (
               <>
-                <StyledButton value="Return a book" onClick={retrieveBook} />
-                <StyledButton value="Extend claim period" transparent />
+                <Button value="Return a book" onClick={retrieveBook} />
+                <Button value="Extend claim period" transparent />
               </>
             ) : (
-              <StyledButton
+              <Button
                 value="Claim a book"
                 svgComponent={<Claim />}
                 onClick={showClaimModal}

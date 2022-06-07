@@ -1,6 +1,7 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
+import { createPortal } from 'react-dom';
 
 interface IStyleProps {
   active: boolean;
@@ -32,27 +33,43 @@ const ContentModal = styled.div<IStyleProps>`
   width: 100%;
 `;
 
+const modalRootElement = document.querySelector('#modal');
+
 interface IPropsModal {
   active: boolean;
   setActive: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Modal: FC<IPropsModal> = ({ active, setActive, children }) => {
+  const element = useMemo(() => document.createElement('div'), []);
+
   const closeModalDarkPlace = () => {
     setActive(false);
   };
+
+  useEffect(() => {
+    if (active) {
+      modalRootElement?.appendChild(element);
+
+      return () => {
+        modalRootElement?.removeChild(element);
+      };
+    }
+    return;
+  });
 
   useEffect(() => {
     if (active) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = '';
   }, [active]);
 
-  return (
+  return createPortal(
     <WrapperModal active={active} onClick={closeModalDarkPlace}>
       <ContentModal active={active} onClick={(e) => e.stopPropagation()}>
         {children}
       </ContentModal>
-    </WrapperModal>
+    </WrapperModal>,
+    element
   );
 };
 

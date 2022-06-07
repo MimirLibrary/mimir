@@ -21,12 +21,6 @@ const ButtonContainer = styled.div<IButtonProps>`
   border: 2px solid
     ${({ transparent }) => (transparent ? colors.accent_color : 'transparent')};
 
-  :hover {
-    span {
-      color: ${colors.bg_secondary};
-    }
-  }
-
   svg {
     fill: ${({ transparent }) =>
       transparent ? colors.accent_color : colors.bg_secondary};
@@ -40,10 +34,6 @@ const ButtonContainer = styled.div<IButtonProps>`
     line-height: ${dimensions.xl};
     color: ${({ transparent }) =>
       transparent ? colors.accent_color : colors.bg_secondary};
-
-    :hover {
-      color: ${colors.bg_secondary};
-    }
   }
 `;
 

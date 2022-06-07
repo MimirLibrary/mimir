@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import { ReactComponent as Cross } from '../../../assets/Close.svg';
 import { colors, dimensions } from '@mimir/ui-kit';
-import successImg from '../../../assets/Succes.png';
+import successImg from '../../../assets/Success.svg';
 import Button from '../Button';
 import { getDates, parseDate } from '../../models/helperFunctions/converTime';
 
