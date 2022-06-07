@@ -9,7 +9,12 @@ import Modal from '../Modal';
 import { getDates, getStatus } from '../../models/helperFunctions/converTime';
 import { StyledBookStatus } from '../../globalUI/Status';
 import { SuccessClaim } from '../SuccesClaim';
-import { useClaimBookMutation } from '@mimir/apollo-client';
+import {
+  GetAllTakenItemsDocument,
+  GetMaterialByIdDocument,
+  useClaimBookMutation,
+  useReturnBookMutation,
+} from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import ErrorMessage from '../ErrorMessge';
 
@@ -114,6 +119,7 @@ interface IProps {
   status: string | undefined;
   author: string | undefined;
   category: string | string[] | undefined;
+  identifier: string;
   created_at: any;
 }
 
@@ -138,6 +144,7 @@ const BookInfo: FC<IProps> = ({
   status,
   description = '',
   category,
+  identifier,
   created_at,
 }) => {
   const { id } = useAppSelector((state) => state.user);
@@ -147,11 +154,15 @@ const BookInfo: FC<IProps> = ({
   const [isShowErrorMessage, setIsShowErrorMessage] = useState<boolean>(false);
   const [valueIsISBN, setValueIsISBN] = useState<string>('');
   const [claimBook, { data }] = useClaimBookMutation();
+  const [returnBook, infoReturnBook] = useReturnBookMutation({
+    refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
+  });
 
+  console.log(infoReturnBook.data);
   const currentStatus = getStatus(status, created_at);
-  const dateCondition =
+  const dateConditionOfClaiming =
     data?.claimBook.__typename === 'Status' ? data.claimBook.created_at : null;
-  const errorCondition =
+  const errorConditionOfClaiming =
     data?.claimBook.__typename === 'Error' ? data.claimBook.message : null;
 
   const claim = async () => {
@@ -159,6 +170,15 @@ const BookInfo: FC<IProps> = ({
       variables: {
         person_id: id,
         identifier: valueIsISBN,
+      },
+    });
+  };
+
+  const retrieveBook = async () => {
+    await returnBook({
+      variables: {
+        person_id: id,
+        identifier: identifier,
       },
     });
   };
@@ -222,7 +242,7 @@ const BookInfo: FC<IProps> = ({
           <WrapperButtons>
             {status !== 'Free' ? (
               <>
-                <StyledButton value="Return a book" />
+                <StyledButton value="Return a book" onClick={retrieveBook} />
                 <StyledButton value="Extend claim period" transparent />
               </>
             ) : (
@@ -255,12 +275,12 @@ const BookInfo: FC<IProps> = ({
         <SuccessClaim
           setActive={setIsShowSuccessClaim}
           title="You have successfully claim the book"
-          created_at={dateCondition}
+          created_at={dateConditionOfClaiming}
         />
       </Modal>
       <Modal active={isShowErrorMessage} setActive={setIsShowErrorMessage}>
         <ErrorMessage
-          message={errorCondition}
+          message={errorConditionOfClaiming}
           setActive={setIsShowErrorMessage}
         />
       </Modal>

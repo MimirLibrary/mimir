@@ -70,6 +70,7 @@ const BookPreview = () => {
       </ButtonWrapper>
       {data?.getMaterialById && (
         <BookInfo
+          identifier={data.getMaterialById.identifier}
           src={data?.getMaterialById.picture}
           title={data?.getMaterialById.title}
           author={data?.getMaterialById.author}
