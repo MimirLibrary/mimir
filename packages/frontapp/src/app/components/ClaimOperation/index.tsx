@@ -75,12 +75,6 @@ const WrapperButtons = styled.div`
 `;
 
 const StyledButton = styled(Button)`
-  cursor: pointer;
-
-  :hover {
-    background-color: ${colors.hover_color};
-    color: ${colors.bg_primary};
-  }
   :first-of-type {
     margin-right: ${dimensions.base};
   }
@@ -134,6 +128,7 @@ const ClaimOperation: FC<IProps> = ({
 
   const closeModal = () => {
     setActive(false);
+    setValueInput('');
   };
 
   return (

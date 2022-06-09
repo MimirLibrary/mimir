@@ -10,7 +10,6 @@ import { getDates, getStatus } from '../../models/helperFunctions/converTime';
 import { StyledBookStatus } from '../../globalUI/Status';
 import SuccessMessage from '../SuccesMessage';
 import {
-  GetAllTakenItemsDocument,
   GetMaterialByIdDocument,
   useClaimBookMutation,
   useReturnBookMutation,
@@ -47,7 +46,7 @@ const ShortDescriptionWrapper = styled.div`
   gap: ${dimensions.xl_2};
 `;
 const ShortDescription = styled.div`
-  width: 23rem;
+  width: 100%;
   margin-left: ${dimensions.xl_2};
 `;
 
@@ -114,6 +113,15 @@ const WrapperInfo = styled.div`
 const WrapperButtons = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
+  max-width: 276px;
+  width: 100%;
+`;
+
+const StyledButton = styled(Button)`
+  max-width: 278px;
+  width: 100%;
+  margin-bottom: 8px;
 `;
 
 interface IBookInfoProps {
@@ -145,10 +153,10 @@ const BookInfo: FC<IBookInfoProps> = ({
   const [isShowSuccessReturn, setIsSuccessReturn] = useState<boolean>(false);
   const [valueIsISBN, setValueIsISBN] = useState<string>('');
   const [claimBook, { data }] = useClaimBookMutation({
-    refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
+    refetchQueries: [GetMaterialByIdDocument],
   });
   const [returnBook, infoReturnBook] = useReturnBookMutation({
-    refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
+    refetchQueries: [GetMaterialByIdDocument],
   });
 
   const currentStatus = getStatus(status, created_at);
@@ -164,6 +172,7 @@ const BookInfo: FC<IBookInfoProps> = ({
         identifier: valueIsISBN,
       },
     });
+    setValueIsISBN('');
   };
 
   const retrieveBook = async () => {
@@ -235,11 +244,11 @@ const BookInfo: FC<IBookInfoProps> = ({
           <WrapperButtons>
             {status !== 'Free' ? (
               <>
-                <Button value="Return a book" onClick={retrieveBook} />
-                <Button value="Extend claim period" transparent />
+                <StyledButton value="Return a book" onClick={retrieveBook} />
+                <StyledButton value="Extend claim period" transparent />
               </>
             ) : (
-              <Button
+              <StyledButton
                 value="Claim a book"
                 svgComponent={<Claim />}
                 onClick={showClaimModal}

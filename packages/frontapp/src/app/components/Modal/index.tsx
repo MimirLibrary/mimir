@@ -33,8 +33,6 @@ const ContentModal = styled.div<IStyleProps>`
   width: 100%;
 `;
 
-const modalRootElement = document.querySelector('#modal');
-
 interface IPropsModal {
   active: boolean;
   setActive: React.Dispatch<React.SetStateAction<boolean>>;
@@ -48,18 +46,17 @@ const Modal: FC<IPropsModal> = ({ active, setActive, children }) => {
   };
 
   useEffect(() => {
+    const modalRootElement = document.querySelector('#modal');
     if (active) {
+      document.body.style.overflow = 'hidden';
       modalRootElement?.appendChild(element);
       return () => {
         modalRootElement?.removeChild(element);
       };
+    } else {
+      document.body.style.overflow = '';
     }
     return;
-  }, [active]);
-
-  useEffect(() => {
-    if (active) document.body.style.overflow = 'hidden';
-    else document.body.style.overflow = '';
   }, [active]);
 
   return createPortal(

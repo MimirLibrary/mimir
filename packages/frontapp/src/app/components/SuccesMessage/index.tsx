@@ -48,14 +48,6 @@ const WrapperCross = styled.div`
   justify-self: flex-end;
 `;
 
-const StyledButton = styled(Button)`
-  cursor: pointer;
-  :hover {
-    background-color: ${colors.hover_color};
-    color: ${colors.bg_primary};
-  }
-`;
-
 const WrapperImg = styled.div`
   margin-bottom: ${dimensions.base_2};
 `;
@@ -93,7 +85,7 @@ const SuccessMessage: FC<IPropsSuccessClaim> = ({
         <WrapperImg>
           <img src={successImg} alt="success claim" />
         </WrapperImg>
-        <StyledButton value="Finish" onClick={closeModal} />
+        <Button value="Finish" onClick={closeModal} />
       </WrapperSuccessClaim>
       <WrapperCross>
         <Cross
