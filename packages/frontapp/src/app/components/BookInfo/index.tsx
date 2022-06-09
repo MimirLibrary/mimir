@@ -8,7 +8,7 @@ import ClaimOperation from '../ClaimOperation';
 import Modal from '../Modal';
 import { getDates, getStatus } from '../../models/helperFunctions/converTime';
 import { StyledBookStatus } from '../../globalUI/Status';
-import { SuccessClaim } from '../SuccesClaim';
+import SuccessMessage from '../SuccesMessage';
 import {
   GetAllTakenItemsDocument,
   GetMaterialByIdDocument,
@@ -142,6 +142,7 @@ const BookInfo: FC<IBookInfoProps> = ({
   const [isShowClaimModal, setIsShowClaimModal] = useState<boolean>(false);
   const [isShowSuccessClaim, setIsShowSuccessClaim] = useState<boolean>(false);
   const [isShowErrorMessage, setIsShowErrorMessage] = useState<boolean>(false);
+  const [isShowSuccessReturn, setIsSuccessReturn] = useState<boolean>(false);
   const [valueIsISBN, setValueIsISBN] = useState<string>('');
   const [claimBook, { data }] = useClaimBookMutation();
   const [returnBook, infoReturnBook] = useReturnBookMutation({
@@ -261,9 +262,10 @@ const BookInfo: FC<IBookInfoProps> = ({
         />
       </Modal>
       <Modal active={isShowSuccessClaim} setActive={setIsShowSuccessClaim}>
-        <SuccessClaim
+        <SuccessMessage
           setActive={setIsShowSuccessClaim}
           title="You have successfully claim the book"
+          description="Enjoy reading and don't forget to return this by"
           created_at={dateConditionOfClaiming}
         />
       </Modal>
@@ -271,6 +273,12 @@ const BookInfo: FC<IBookInfoProps> = ({
         <ErrorMessage
           message={errorConditionOfClaiming}
           setActive={setIsShowErrorMessage}
+        />
+      </Modal>
+      <Modal active={isShowSuccessReturn} setActive={setIsSuccessReturn}>
+        <SuccessMessage
+          setActive={setIsSuccessReturn}
+          title="You have successfully return the book"
         />
       </Modal>
     </>

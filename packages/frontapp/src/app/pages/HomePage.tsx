@@ -27,6 +27,7 @@ const HomePage: FC = () => {
   const { data, loading } = useGetAllTakenItemsQuery({
     variables: { person_id: id },
   });
+  console.log('Full data', data);
 
   if (loading) return <h1>Loading...</h1>;
 

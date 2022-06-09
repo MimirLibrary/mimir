@@ -63,29 +63,33 @@ const WrapperImg = styled.div`
 interface IPropsSuccessClaim {
   setActive: React.Dispatch<React.SetStateAction<boolean>>;
   title: string;
-  created_at: Date;
+  created_at?: Date;
+  description?: string;
 }
 
-export const SuccessClaim: FC<IPropsSuccessClaim> = ({
+const SuccessMessage: FC<IPropsSuccessClaim> = ({
   setActive,
   title,
   created_at,
+  description,
 }) => {
   const closeModal = () => {
     setActive(false);
   };
 
-  const { returnDate } = getDates(created_at);
+  const { returnDate } = getDates(created_at!);
   const trueFormatReturnDate = parseDate(returnDate);
 
   return (
     <Wrapper>
       <WrapperSuccessClaim>
-        <TitleOfClaim>You have successfully claim the book</TitleOfClaim>
-        <Description>
-          {title}
-          <span> {trueFormatReturnDate}</span>
-        </Description>
+        <TitleOfClaim>{title}</TitleOfClaim>
+        {description && (
+          <Description>
+            {description}
+            {created_at && <span>{trueFormatReturnDate}</span>}
+          </Description>
+        )}
         <WrapperImg>
           <img src={successImg} alt="success claim" />
         </WrapperImg>
@@ -102,3 +106,5 @@ export const SuccessClaim: FC<IPropsSuccessClaim> = ({
     </Wrapper>
   );
 };
+
+export default SuccessMessage;

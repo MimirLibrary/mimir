@@ -1,12 +1,14 @@
-import React from 'react';
-import styled from '@emotion/styled';
+import React, { useMemo } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../hooks/useTypedSelector';
 import BookInfo from '../components/BookInfo';
+import styled from '@emotion/styled';
+import { getLastStatus } from '../models/helperFunctions/getLastStatus';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { useGetMaterialByIdQuery } from '@mimir/apollo-client';
 import { ReactComponent as ScrollButtonRight } from '../../assets/ArrowButtonRight.svg';
 import { ReactComponent as ScrollButtonLeft } from '../../assets/ArrowButtonLeft.svg';
 import { ReactComponent as ArrowBack } from '../../assets/ArrowUp2.svg';
-import { useParams, useNavigate } from 'react-router-dom';
 
 const GoBack = styled.a`
   font-weight: 600;
@@ -43,18 +45,19 @@ const SuggestionText = styled.h3`
 `;
 
 const BookPreview = () => {
+  const { id } = useAppSelector((state) => state.user);
   const { item_id } = useParams();
   const navigate = useNavigate();
   const { data, loading } = useGetMaterialByIdQuery({
     variables: { id: item_id! },
   });
 
-  const lastStatus =
-    data?.getMaterialById?.statuses[data?.getMaterialById?.statuses.length - 1]
-      ?.status;
-  const currentDate =
-    data?.getMaterialById?.statuses[data?.getMaterialById?.statuses.length - 1]
-      ?.created_at;
+  const lastStatus = useMemo(
+    () => getLastStatus(data?.getMaterialById?.statuses as any[], id),
+    [id, data?.getMaterialById.statuses.length]
+  );
+
+  console.log(lastStatus);
 
   const handleGoBack = () => {
     navigate(-1);
@@ -75,8 +78,8 @@ const BookPreview = () => {
           title={data?.getMaterialById.title}
           author={data?.getMaterialById.author}
           category={data?.getMaterialById.category}
-          status={lastStatus}
-          created_at={currentDate}
+          status={lastStatus?.status}
+          created_at={lastStatus?.created_at}
           description=""
         />
       )}
