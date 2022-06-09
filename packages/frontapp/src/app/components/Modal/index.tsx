@@ -50,13 +50,12 @@ const Modal: FC<IPropsModal> = ({ active, setActive, children }) => {
   useEffect(() => {
     if (active) {
       modalRootElement?.appendChild(element);
-
       return () => {
         modalRootElement?.removeChild(element);
       };
     }
     return;
-  });
+  }, [active]);
 
   useEffect(() => {
     if (active) document.body.style.overflow = 'hidden';

@@ -87,7 +87,7 @@ const SuccessMessage: FC<IPropsSuccessClaim> = ({
         {description && (
           <Description>
             {description}
-            {created_at && <span>{trueFormatReturnDate}</span>}
+            {created_at && <span> {trueFormatReturnDate}!</span>}
           </Description>
         )}
         <WrapperImg>

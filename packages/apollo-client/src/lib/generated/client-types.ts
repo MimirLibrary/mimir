@@ -2,15 +2,9 @@ import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -188,6 +182,11 @@ export type CreateMaterialInput = {
   type: Scalars['String'];
 };
 
+export type CreateNotificationInput = {
+  material_id: Scalars['Int'];
+  person_id: Scalars['Int'];
+};
+
 export type CreatePersonInput = {
   smg_id: Scalars['String'];
   type: Scalars['String'];
@@ -212,6 +211,7 @@ export type Material = {
   id: Scalars['ID'];
   id_type: Scalars['String'];
   identifier: Scalars['String'];
+  notifications: Array<Maybe<Notification>>;
   picture?: Maybe<Scalars['String']>;
   statuses: Array<Maybe<Status>>;
   title: Scalars['String'];
@@ -223,35 +223,63 @@ export type Mutation = {
   __typename?: 'Mutation';
   claimBook: BookUnionResult;
   createMaterial: Material;
+  createNotification?: Maybe<Notification>;
   createPerson: Person;
   createStatus: Status;
+  removeNotification?: Maybe<Notification>;
   returnItem: BookUnionResult;
 };
+
 
 export type MutationClaimBookArgs = {
   input?: InputMaybe<BookInput>;
 };
 
+
 export type MutationCreateMaterialArgs = {
   input: CreateMaterialInput;
 };
+
+
+export type MutationCreateNotificationArgs = {
+  input: CreateNotificationInput;
+};
+
 
 export type MutationCreatePersonArgs = {
   input: CreatePersonInput;
 };
 
+
 export type MutationCreateStatusArgs = {
   input: CreateStatusInput;
 };
 
+
+export type MutationRemoveNotificationArgs = {
+  input: RemoveNotificationInput;
+};
+
+
 export type MutationReturnItemArgs = {
   input?: InputMaybe<BookInput>;
+};
+
+export type Notification = {
+  __typename?: 'Notification';
+  created_at: Scalars['DateTime'];
+  id: Scalars['ID'];
+  material: Material;
+  material_id: Scalars['Int'];
+  person: Person;
+  person_id: Scalars['Int'];
 };
 
 export type Person = {
   __typename?: 'Person';
   created_at: Scalars['DateTime'];
   id: Scalars['ID'];
+  notifications?: Maybe<Array<Maybe<Notification>>>;
   smg_id: Scalars['String'];
   statuses?: Maybe<Array<Maybe<Status>>>;
   type: Scalars['String'];
@@ -263,30 +291,52 @@ export type Query = {
   getAllPersons: Array<Maybe<Person>>;
   getAllTakenItems: Array<Maybe<Status>>;
   getMaterialById: Material;
+  getNotificationsByMaterial: Array<Maybe<Notification>>;
+  getNotificationsByPerson: Array<Maybe<Notification>>;
   getOnePerson: Person;
   getStatusesByMaterial: Array<Maybe<Status>>;
   getStatusesByPerson: Array<Maybe<Status>>;
   welcome: Scalars['String'];
 };
 
+
 export type QueryGetAllTakenItemsArgs = {
   person_id: Scalars['Int'];
 };
+
 
 export type QueryGetMaterialByIdArgs = {
   id: Scalars['ID'];
 };
 
+
+export type QueryGetNotificationsByMaterialArgs = {
+  material_id: Scalars['Int'];
+};
+
+
+export type QueryGetNotificationsByPersonArgs = {
+  person_id: Scalars['Int'];
+};
+
+
 export type QueryGetOnePersonArgs = {
   id: Scalars['ID'];
 };
+
 
 export type QueryGetStatusesByMaterialArgs = {
   material_id: Scalars['ID'];
 };
 
+
 export type QueryGetStatusesByPersonArgs = {
   person_id: Scalars['ID'];
+};
+
+export type RemoveNotificationInput = {
+  material_id: Scalars['Int'];
+  person_id: Scalars['Int'];
 };
 
 export type Status = {
@@ -305,86 +355,46 @@ export type ClaimBookMutationVariables = Exact<{
   person_id: Scalars['Int'];
 }>;
 
-export type ClaimBookMutation = {
-  __typename?: 'Mutation';
-  claimBook:
-    | { __typename?: 'Error'; message: string }
-    | { __typename?: 'Status'; created_at: any; status: string };
-};
+
+export type ClaimBookMutation = { __typename?: 'Mutation', claimBook: { __typename?: 'Error', message: string } | { __typename?: 'Status', created_at: any, status: string } };
 
 export type ReturnBookMutationVariables = Exact<{
   identifier: Scalars['String'];
   person_id: Scalars['Int'];
 }>;
 
-export type ReturnBookMutation = {
-  __typename?: 'Mutation';
-  returnItem:
-    | { __typename?: 'Error'; message: string }
-    | { __typename?: 'Status'; created_at: any; status: string };
-};
+
+export type ReturnBookMutation = { __typename?: 'Mutation', returnItem: { __typename?: 'Error', message: string } | { __typename?: 'Status', created_at: any, status: string } };
 
 export type GetAllTakenItemsQueryVariables = Exact<{
   person_id: Scalars['Int'];
 }>;
 
-export type GetAllTakenItemsQuery = {
-  __typename?: 'Query';
-  getAllTakenItems: Array<{
-    __typename?: 'Status';
-    id: string;
-    created_at: any;
-    status: string;
-    material: {
-      __typename?: 'Material';
-      id: string;
-      picture?: string | null;
-      title: string;
-      author: string;
-      category: string;
-    };
-  } | null>;
-};
+
+export type GetAllTakenItemsQuery = { __typename?: 'Query', getAllTakenItems: Array<{ __typename?: 'Status', id: string, created_at: any, status: string, material: { __typename?: 'Material', id: string, picture?: string | null, title: string, author: string, category: string } } | null> };
 
 export type GetMaterialByIdQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
-export type GetMaterialByIdQuery = {
-  __typename?: 'Query';
-  getMaterialById: {
-    __typename?: 'Material';
-    identifier: string;
-    picture?: string | null;
-    title: string;
-    author: string;
-    category: string;
-    created_at: any;
-    statuses: Array<{
-      __typename?: 'Status';
-      status: string;
-      created_at: any;
-    } | null>;
-  };
-};
+
+export type GetMaterialByIdQuery = { __typename?: 'Query', getMaterialById: { __typename?: 'Material', identifier: string, picture?: string | null, title: string, author: string, category: string, created_at: any, statuses: Array<{ __typename?: 'Status', id: string, person_id: number, status: string, created_at: any } | null> } };
+
 
 export const ClaimBookDocument = gql`
-  mutation ClaimBook($identifier: String!, $person_id: Int!) {
-    claimBook(input: { identifier: $identifier, person_id: $person_id }) {
-      ... on Status {
-        created_at
-        status
-      }
-      ... on Error {
-        message
-      }
+    mutation ClaimBook($identifier: String!, $person_id: Int!) {
+  claimBook(input: {identifier: $identifier, person_id: $person_id}) {
+    ... on Status {
+      created_at
+      status
+    }
+    ... on Error {
+      message
     }
   }
-`;
-export type ClaimBookMutationFn = Apollo.MutationFunction<
-  ClaimBookMutation,
-  ClaimBookMutationVariables
->;
+}
+    `;
+export type ClaimBookMutationFn = Apollo.MutationFunction<ClaimBookMutation, ClaimBookMutationVariables>;
 
 /**
  * __useClaimBookMutation__
@@ -404,43 +414,27 @@ export type ClaimBookMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useClaimBookMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    ClaimBookMutation,
-    ClaimBookMutationVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<ClaimBookMutation, ClaimBookMutationVariables>(
-    ClaimBookDocument,
-    options
-  );
-}
-export type ClaimBookMutationHookResult = ReturnType<
-  typeof useClaimBookMutation
->;
+export function useClaimBookMutation(baseOptions?: Apollo.MutationHookOptions<ClaimBookMutation, ClaimBookMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ClaimBookMutation, ClaimBookMutationVariables>(ClaimBookDocument, options);
+      }
+export type ClaimBookMutationHookResult = ReturnType<typeof useClaimBookMutation>;
 export type ClaimBookMutationResult = Apollo.MutationResult<ClaimBookMutation>;
-export type ClaimBookMutationOptions = Apollo.BaseMutationOptions<
-  ClaimBookMutation,
-  ClaimBookMutationVariables
->;
+export type ClaimBookMutationOptions = Apollo.BaseMutationOptions<ClaimBookMutation, ClaimBookMutationVariables>;
 export const ReturnBookDocument = gql`
-  mutation ReturnBook($identifier: String!, $person_id: Int!) {
-    returnItem(input: { identifier: $identifier, person_id: $person_id }) {
-      ... on Status {
-        created_at
-        status
-      }
-      ... on Error {
-        message
-      }
+    mutation ReturnBook($identifier: String!, $person_id: Int!) {
+  returnItem(input: {identifier: $identifier, person_id: $person_id}) {
+    ... on Status {
+      created_at
+      status
+    }
+    ... on Error {
+      message
     }
   }
-`;
-export type ReturnBookMutationFn = Apollo.MutationFunction<
-  ReturnBookMutation,
-  ReturnBookMutationVariables
->;
+}
+    `;
+export type ReturnBookMutationFn = Apollo.MutationFunction<ReturnBookMutation, ReturnBookMutationVariables>;
 
 /**
  * __useReturnBookMutation__
@@ -460,43 +454,29 @@ export type ReturnBookMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useReturnBookMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    ReturnBookMutation,
-    ReturnBookMutationVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<ReturnBookMutation, ReturnBookMutationVariables>(
-    ReturnBookDocument,
-    options
-  );
-}
-export type ReturnBookMutationHookResult = ReturnType<
-  typeof useReturnBookMutation
->;
-export type ReturnBookMutationResult =
-  Apollo.MutationResult<ReturnBookMutation>;
-export type ReturnBookMutationOptions = Apollo.BaseMutationOptions<
-  ReturnBookMutation,
-  ReturnBookMutationVariables
->;
-export const GetAllTakenItemsDocument = gql`
-  query GetAllTakenItems($person_id: Int!) {
-    getAllTakenItems(person_id: $person_id) {
-      id
-      created_at
-      status
-      material {
-        id
-        picture
-        title
-        author
-        category
+export function useReturnBookMutation(baseOptions?: Apollo.MutationHookOptions<ReturnBookMutation, ReturnBookMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ReturnBookMutation, ReturnBookMutationVariables>(ReturnBookDocument, options);
       }
+export type ReturnBookMutationHookResult = ReturnType<typeof useReturnBookMutation>;
+export type ReturnBookMutationResult = Apollo.MutationResult<ReturnBookMutation>;
+export type ReturnBookMutationOptions = Apollo.BaseMutationOptions<ReturnBookMutation, ReturnBookMutationVariables>;
+export const GetAllTakenItemsDocument = gql`
+    query GetAllTakenItems($person_id: Int!) {
+  getAllTakenItems(person_id: $person_id) {
+    id
+    created_at
+    status
+    material {
+      id
+      picture
+      title
+      author
+      category
     }
   }
-`;
+}
+    `;
 
 /**
  * __useGetAllTakenItemsQuery__
@@ -514,56 +494,35 @@ export const GetAllTakenItemsDocument = gql`
  *   },
  * });
  */
-export function useGetAllTakenItemsQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    GetAllTakenItemsQuery,
-    GetAllTakenItemsQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetAllTakenItemsQuery, GetAllTakenItemsQueryVariables>(
-    GetAllTakenItemsDocument,
-    options
-  );
-}
-export function useGetAllTakenItemsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetAllTakenItemsQuery,
-    GetAllTakenItemsQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    GetAllTakenItemsQuery,
-    GetAllTakenItemsQueryVariables
-  >(GetAllTakenItemsDocument, options);
-}
-export type GetAllTakenItemsQueryHookResult = ReturnType<
-  typeof useGetAllTakenItemsQuery
->;
-export type GetAllTakenItemsLazyQueryHookResult = ReturnType<
-  typeof useGetAllTakenItemsLazyQuery
->;
-export type GetAllTakenItemsQueryResult = Apollo.QueryResult<
-  GetAllTakenItemsQuery,
-  GetAllTakenItemsQueryVariables
->;
-export const GetMaterialByIdDocument = gql`
-  query GetMaterialById($id: ID!) {
-    getMaterialById(id: $id) {
-      identifier
-      picture
-      title
-      author
-      category
-      created_at
-      statuses {
-        status
-        created_at
+export function useGetAllTakenItemsQuery(baseOptions: Apollo.QueryHookOptions<GetAllTakenItemsQuery, GetAllTakenItemsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllTakenItemsQuery, GetAllTakenItemsQueryVariables>(GetAllTakenItemsDocument, options);
       }
+export function useGetAllTakenItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllTakenItemsQuery, GetAllTakenItemsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllTakenItemsQuery, GetAllTakenItemsQueryVariables>(GetAllTakenItemsDocument, options);
+        }
+export type GetAllTakenItemsQueryHookResult = ReturnType<typeof useGetAllTakenItemsQuery>;
+export type GetAllTakenItemsLazyQueryHookResult = ReturnType<typeof useGetAllTakenItemsLazyQuery>;
+export type GetAllTakenItemsQueryResult = Apollo.QueryResult<GetAllTakenItemsQuery, GetAllTakenItemsQueryVariables>;
+export const GetMaterialByIdDocument = gql`
+    query GetMaterialById($id: ID!) {
+  getMaterialById(id: $id) {
+    identifier
+    picture
+    title
+    author
+    category
+    created_at
+    statuses {
+      id
+      person_id
+      status
+      created_at
     }
   }
-`;
+}
+    `;
 
 /**
  * __useGetMaterialByIdQuery__
@@ -581,37 +540,14 @@ export const GetMaterialByIdDocument = gql`
  *   },
  * });
  */
-export function useGetMaterialByIdQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    GetMaterialByIdQuery,
-    GetMaterialByIdQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetMaterialByIdQuery, GetMaterialByIdQueryVariables>(
-    GetMaterialByIdDocument,
-    options
-  );
-}
-export function useGetMaterialByIdLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetMaterialByIdQuery,
-    GetMaterialByIdQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    GetMaterialByIdQuery,
-    GetMaterialByIdQueryVariables
-  >(GetMaterialByIdDocument, options);
-}
-export type GetMaterialByIdQueryHookResult = ReturnType<
-  typeof useGetMaterialByIdQuery
->;
-export type GetMaterialByIdLazyQueryHookResult = ReturnType<
-  typeof useGetMaterialByIdLazyQuery
->;
-export type GetMaterialByIdQueryResult = Apollo.QueryResult<
-  GetMaterialByIdQuery,
-  GetMaterialByIdQueryVariables
->;
+export function useGetMaterialByIdQuery(baseOptions: Apollo.QueryHookOptions<GetMaterialByIdQuery, GetMaterialByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMaterialByIdQuery, GetMaterialByIdQueryVariables>(GetMaterialByIdDocument, options);
+      }
+export function useGetMaterialByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMaterialByIdQuery, GetMaterialByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMaterialByIdQuery, GetMaterialByIdQueryVariables>(GetMaterialByIdDocument, options);
+        }
+export type GetMaterialByIdQueryHookResult = ReturnType<typeof useGetMaterialByIdQuery>;
+export type GetMaterialByIdLazyQueryHookResult = ReturnType<typeof useGetMaterialByIdLazyQuery>;
+export type GetMaterialByIdQueryResult = Apollo.QueryResult<GetMaterialByIdQuery, GetMaterialByIdQueryVariables>;

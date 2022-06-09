@@ -52,12 +52,9 @@ const BookPreview = () => {
     variables: { id: item_id! },
   });
 
-  const lastStatus = useMemo(
-    () => getLastStatus(data?.getMaterialById?.statuses as any[], id),
-    [id, data?.getMaterialById.statuses.length]
-  );
-
-  console.log(lastStatus);
+  const lastStatus = data?.getMaterialById.statuses
+    .filter((item) => item?.person_id === id)
+    .slice(-1)[0];
 
   const handleGoBack = () => {
     navigate(-1);

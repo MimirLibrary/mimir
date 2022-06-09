@@ -144,7 +144,9 @@ const BookInfo: FC<IBookInfoProps> = ({
   const [isShowErrorMessage, setIsShowErrorMessage] = useState<boolean>(false);
   const [isShowSuccessReturn, setIsSuccessReturn] = useState<boolean>(false);
   const [valueIsISBN, setValueIsISBN] = useState<string>('');
-  const [claimBook, { data }] = useClaimBookMutation();
+  const [claimBook, { data }] = useClaimBookMutation({
+    refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
+  });
   const [returnBook, infoReturnBook] = useReturnBookMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
@@ -171,6 +173,7 @@ const BookInfo: FC<IBookInfoProps> = ({
         identifier: identifier,
       },
     });
+    setIsSuccessReturn(true);
   };
 
   useEffect(() => {

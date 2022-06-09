@@ -1,3 +1,4 @@
+
 /*
  * -------------------------------------------------------
  * THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
@@ -7,90 +8,105 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface BookInput {
-  identifier: string;
-  person_id: number;
+    identifier: string;
+    person_id: number;
 }
 
 export interface CreateMaterialInput {
-  identifier: string;
-  id_type: string;
-  type: string;
+    identifier: string;
+    id_type: string;
+    type: string;
+}
+
+export interface CreateNotificationInput {
+    material_id: number;
+    person_id: number;
+}
+
+export interface RemoveNotificationInput {
+    material_id: number;
+    person_id: number;
 }
 
 export interface CreatePersonInput {
-  smg_id: string;
-  type: string;
+    smg_id: string;
+    type: string;
 }
 
 export interface CreateStatusInput {
-  material_id: number;
-  person_id: number;
-  status: string;
+    material_id: number;
+    person_id: number;
+    status: string;
 }
 
 export interface IQuery {
-  getAllTakenItems(
-    person_id: number
-  ): Nullable<Status>[] | Promise<Nullable<Status>[]>;
-  getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
-  getMaterialById(id: string): Material | Promise<Material>;
-  getOnePerson(id: string): Person | Promise<Person>;
-  getAllPersons(): Nullable<Person>[] | Promise<Nullable<Person>[]>;
-  getStatusesByPerson(
-    person_id: string
-  ): Nullable<Status>[] | Promise<Nullable<Status>[]>;
-  getStatusesByMaterial(
-    material_id: string
-  ): Nullable<Status>[] | Promise<Nullable<Status>[]>;
-  welcome(): string | Promise<string>;
+    getAllTakenItems(person_id: number): Nullable<Status>[] | Promise<Nullable<Status>[]>;
+    getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
+    getMaterialById(id: string): Material | Promise<Material>;
+    getNotificationsByPerson(person_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
+    getNotificationsByMaterial(material_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
+    getOnePerson(id: string): Person | Promise<Person>;
+    getAllPersons(): Nullable<Person>[] | Promise<Nullable<Person>[]>;
+    getStatusesByPerson(person_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
+    getStatusesByMaterial(material_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
+    welcome(): string | Promise<string>;
 }
 
 export interface IMutation {
-  claimBook(
-    input?: Nullable<BookInput>
-  ): BookUnionResult | Promise<BookUnionResult>;
-  returnItem(
-    input?: Nullable<BookInput>
-  ): BookUnionResult | Promise<BookUnionResult>;
-  createMaterial(input: CreateMaterialInput): Material | Promise<Material>;
-  createPerson(input: CreatePersonInput): Person | Promise<Person>;
-  createStatus(input: CreateStatusInput): Status | Promise<Status>;
+    claimBook(input?: Nullable<BookInput>): BookUnionResult | Promise<BookUnionResult>;
+    returnItem(input?: Nullable<BookInput>): BookUnionResult | Promise<BookUnionResult>;
+    createMaterial(input: CreateMaterialInput): Material | Promise<Material>;
+    createNotification(input: CreateNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
+    removeNotification(input: RemoveNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
+    createPerson(input: CreatePersonInput): Person | Promise<Person>;
+    createStatus(input: CreateStatusInput): Status | Promise<Status>;
 }
 
 export interface Material {
-  id: string;
-  identifier: string;
-  id_type: string;
-  type: string;
-  created_at: DateTime;
-  updated_at: DateTime;
-  title: string;
-  picture?: Nullable<string>;
-  author: string;
-  category: string;
-  statuses: Nullable<Status>[];
+    id: string;
+    identifier: string;
+    id_type: string;
+    type: string;
+    created_at: DateTime;
+    updated_at: DateTime;
+    title: string;
+    picture?: Nullable<string>;
+    author: string;
+    category: string;
+    statuses: Nullable<Status>[];
+    notifications: Nullable<Notification>[];
+}
+
+export interface Notification {
+    id: string;
+    material_id: number;
+    person_id: number;
+    created_at: DateTime;
+    person: Person;
+    material: Material;
 }
 
 export interface Person {
-  id: string;
-  smg_id: string;
-  type: string;
-  created_at: DateTime;
-  statuses?: Nullable<Nullable<Status>[]>;
+    id: string;
+    smg_id: string;
+    type: string;
+    created_at: DateTime;
+    statuses?: Nullable<Nullable<Status>[]>;
+    notifications?: Nullable<Nullable<Notification>[]>;
 }
 
 export interface Status {
-  id: string;
-  material_id: number;
-  person_id: number;
-  status: string;
-  created_at: DateTime;
-  material: Material;
-  person: Person;
+    id: string;
+    material_id: number;
+    person_id: number;
+    status: string;
+    created_at: DateTime;
+    material: Material;
+    person: Person;
 }
 
 export interface Error {
-  message: string;
+    message: string;
 }
 
 export type DateTime = any;
