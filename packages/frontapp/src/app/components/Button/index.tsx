@@ -10,6 +10,8 @@ export interface IButtonProps {
 }
 
 const ButtonContainer = styled.div<IButtonProps>`
+  user-select: none;
+  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,6 +22,41 @@ const ButtonContainer = styled.div<IButtonProps>`
   width: 100%;
   border: 2px solid
     ${({ transparent }) => (transparent ? colors.accent_color : 'transparent')};
+
+  &:hover {
+    background-color: ${({ transparent }) =>
+      transparent ? colors.bg_secondary : colors.hover_color};
+    border: 2px solid
+      ${({ transparent }) => (transparent ? colors.hover_color : 'transparent')};
+
+    svg {
+      fill: ${({ transparent }) =>
+        transparent ? colors.hover_color : colors.bg_secondary};
+    }
+
+    span {
+      color: ${({ transparent }) =>
+        transparent ? colors.hover_color : colors.bg_secondary};
+    }
+  }
+
+  &:active {
+    background-color: ${({ transparent }) =>
+      transparent ? colors.bg_secondary : colors.pressed_color};
+    border: 2px solid
+      ${({ transparent }) =>
+        transparent ? colors.pressed_color : 'transparent'};
+
+    svg {
+      fill: ${({ transparent }) =>
+        transparent ? colors.pressed_color : colors.bg_secondary};
+    }
+
+    span {
+      color: ${({ transparent }) =>
+        transparent ? colors.pressed_color : colors.bg_secondary};
+    }
+  }
 
   svg {
     fill: ${({ transparent }) =>
