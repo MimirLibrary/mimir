@@ -2,13 +2,12 @@ import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import Button from '../Button';
 import { colors, dimensions } from '@mimir/ui-kit';
-import { ReactComponent as Cross } from '../../../assets/Close.svg';
 import claimPicture from '../../../assets/ClaimABook.svg';
 
 const Wrapper = styled.div`
-  display: grid;
-  grid-template-columns: 15fr 1fr;
-  justify-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
 `;
 
@@ -39,12 +38,6 @@ const Description = styled.p`
   span {
     color: ${colors.accent_color};
   }
-`;
-
-const WrapperCross = styled.div`
-  margin-top: -7px;
-  cursor: pointer;
-  justify-self: flex-end;
 `;
 
 const StyledButton = styled(Button)`
@@ -98,14 +91,6 @@ const ErrorMessage: FC<IPropsErrorMessage> = ({ setActive, message }) => {
           <StyledButton value="Ask a manager" transparent />
         </WrapperButtons>
       </WrapperErrorClaim>
-      <WrapperCross>
-        <Cross
-          fill={`${colors.accent_color}`}
-          width={43}
-          height={43}
-          onClick={closeModal}
-        />
-      </WrapperCross>
     </Wrapper>
   );
 };

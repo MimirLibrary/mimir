@@ -2,6 +2,7 @@ import React, { FC, useEffect, useMemo } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { createPortal } from 'react-dom';
+import { ReactComponent as Cross } from '../../../assets/Close.svg';
 
 interface IStyleProps {
   active: boolean;
@@ -23,6 +24,12 @@ const WrapperModal = styled.div<IStyleProps>`
   transition: 0.3s;
 `;
 
+const StyledCross = styled(Cross)`
+  cursor: pointer;
+  position: absolute;
+  right: 4%;
+  top: 5%;
+`;
 const ContentModal = styled.div<IStyleProps>`
   padding: ${dimensions.base_2};
   background-color: ${colors.bg_secondary};
@@ -63,6 +70,12 @@ const Modal: FC<IPropsModal> = ({ active, setActive, children }) => {
     <WrapperModal active={active} onClick={closeModalDarkPlace}>
       <ContentModal active={active} onClick={(e) => e.stopPropagation()}>
         {children}
+        <StyledCross
+          fill={`${colors.accent_color}`}
+          width={43}
+          height={43}
+          onClick={() => setActive(false)}
+        />
       </ContentModal>
     </WrapperModal>,
     element

@@ -1,15 +1,14 @@
 import React, { FC } from 'react';
 import styled from '@emotion/styled';
-import { ReactComponent as Cross } from '../../../assets/Close.svg';
 import { colors, dimensions } from '@mimir/ui-kit';
 import successImg from '../../../assets/Success.svg';
 import Button from '../Button';
 import { getDates, parseDate } from '../../models/helperFunctions/converTime';
 
 const Wrapper = styled.div`
-  display: grid;
-  grid-template-columns: 14fr 1fr;
-  justify-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const WrapperSuccessClaim = styled.div`
@@ -40,12 +39,6 @@ const Description = styled.p`
   span {
     color: ${colors.accent_color};
   }
-`;
-
-const WrapperCross = styled.div`
-  margin-top: -7px;
-  cursor: pointer;
-  justify-self: flex-end;
 `;
 
 const WrapperImg = styled.div`
@@ -87,14 +80,6 @@ const SuccessMessage: FC<IPropsSuccessClaim> = ({
         </WrapperImg>
         <Button value="Finish" onClick={closeModal} />
       </WrapperSuccessClaim>
-      <WrapperCross>
-        <Cross
-          fill={`${colors.accent_color}`}
-          width={43}
-          height={43}
-          onClick={closeModal}
-        />
-      </WrapperCross>
     </Wrapper>
   );
 };

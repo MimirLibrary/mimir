@@ -2,12 +2,11 @@ import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import Button from '../Button';
 import { colors, dimensions, fonts } from '@mimir/ui-kit';
-import { ReactComponent as Cross } from '../../../assets/Close.svg';
 
 const Wrapper = styled.div`
-  display: grid;
-  grid-template-columns: 14fr 1fr;
-  justify-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const WrapperClaimOperation = styled.div`
@@ -58,12 +57,6 @@ const InputISBN = styled.input`
     -webkit-appearance: none;
     margin: 0;
   }
-`;
-
-const WrapperCross = styled.div`
-  margin-top: -7px;
-  cursor: pointer;
-  justify-self: flex-end;
 `;
 
 const WrapperButtons = styled.div`
@@ -154,14 +147,6 @@ const ClaimOperation: FC<IProps> = ({
           <StyledButton transparent value="Cancel" onClick={closeModal} />
         </WrapperButtons>
       </WrapperClaimOperation>
-      <WrapperCross>
-        <Cross
-          fill={`${colors.accent_color}`}
-          width={43}
-          height={43}
-          onClick={closeModal}
-        />
-      </WrapperCross>
     </Wrapper>
   );
 };
