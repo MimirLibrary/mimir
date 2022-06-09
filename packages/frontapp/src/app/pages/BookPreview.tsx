@@ -1,8 +1,12 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import BookInfo from '../components/BookInfo';
+import AllBooksList from '../components/AllBooksList';
 import { colors, dimensions } from '@mimir/ui-kit';
-import { useGetMaterialByIdQuery } from '@mimir/apollo-client';
+import {
+  useGetMaterialByIdQuery,
+  useGetAllMaterialsQuery,
+} from '@mimir/apollo-client';
 import { ReactComponent as ScrollButtonRight } from '../../assets/ArrowButtonRight.svg';
 import { ReactComponent as ScrollButtonLeft } from '../../assets/ArrowButtonLeft.svg';
 import { ReactComponent as ArrowBack } from '../../assets/ArrowUp2.svg';
@@ -18,7 +22,7 @@ const ButtonWrapper = styled.div`
   align-items: center;
   cursor: pointer;
 `;
-const ButtonGRoup = styled.div`
+export const ButtonGRoup = styled.div`
   display: flex;
   gap: ${dimensions.base};
   @media (max-width: ${dimensions.phone_width}) {
@@ -29,7 +33,6 @@ const ButtonGRoup = styled.div`
 const Suggestions = styled.div`
   margin: ${dimensions.base_2} 0;
   display: flex;
-  max-width: 62.5rem;
 `;
 
 const SuggestionText = styled.h3`
@@ -46,7 +49,7 @@ const BookPreview = () => {
   const { data, loading } = useGetMaterialByIdQuery({
     variables: { id: item_id! },
   });
-
+  const { data: getAllMaterials } = useGetAllMaterialsQuery();
   const handleGoBack = () => {
     navigate(-1);
   };
@@ -77,6 +80,10 @@ const BookPreview = () => {
           <ScrollButtonRight />
         </ButtonGRoup>
       </Suggestions>
+      <AllBooksList
+        sortingCategory={data?.getMaterialById.category}
+        items={getAllMaterials?.getAllMaterials}
+      />
     </>
   );
 };

@@ -175,12 +175,12 @@ export type Scalars = {
   Void: any;
 };
 
-export type ClaimBookInput = {
+export type BookInput = {
   identifier: Scalars['String'];
   person_id: Scalars['Int'];
 };
 
-export type ClaimBookUnionResult = Error | Status;
+export type BookUnionResult = Error | Status;
 
 export type CreateMaterialInput = {
   id_type: Scalars['String'];
@@ -227,16 +227,17 @@ export type Material = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  claimBook: ClaimBookUnionResult;
-  createMaterial?: Maybe<Material>;
+  claimBook: BookUnionResult;
+  createMaterial: Material;
   createNotification?: Maybe<Notification>;
-  createPerson?: Maybe<Person>;
-  createStatus?: Maybe<Status>;
+  createPerson: Person;
+  createStatus: Status;
   removeNotification?: Maybe<Notification>;
+  returnItem: BookUnionResult;
 };
 
 export type MutationClaimBookArgs = {
-  input?: InputMaybe<ClaimBookInput>;
+  input?: InputMaybe<BookInput>;
 };
 
 export type MutationCreateMaterialArgs = {
@@ -257,6 +258,10 @@ export type MutationCreateStatusArgs = {
 
 export type MutationRemoveNotificationArgs = {
   input: RemoveNotificationInput;
+};
+
+export type MutationReturnItemArgs = {
+  input?: InputMaybe<BookInput>;
 };
 
 export type Notification = {
@@ -284,7 +289,7 @@ export type Query = {
   getAllMaterials: Array<Maybe<Material>>;
   getAllPersons: Array<Maybe<Person>>;
   getAllTakenItems: Array<Maybe<Status>>;
-  getMaterialById?: Maybe<Material>;
+  getMaterialById: Material;
   getNotificationsByMaterial: Array<Maybe<Notification>>;
   getNotificationsByPerson: Array<Maybe<Notification>>;
   getOnePerson: Person;
@@ -326,11 +331,6 @@ export type RemoveNotificationInput = {
   person_id: Scalars['Int'];
 };
 
-export type ReturnDate = {
-  __typename?: 'ReturnDate';
-  returnDate: Scalars['DateTime'];
-};
-
 export type Status = {
   __typename?: 'Status';
   created_at: Scalars['DateTime'];
@@ -340,6 +340,21 @@ export type Status = {
   person: Person;
   person_id: Scalars['Int'];
   status: Scalars['String'];
+};
+
+export type GetAllMaterialsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetAllMaterialsQuery = {
+  __typename?: 'Query';
+  getAllMaterials: Array<{
+    __typename?: 'Material';
+    title: string;
+    author: string;
+    picture?: string | null;
+    id: string;
+    created_at: any;
+    category: string;
+  } | null>;
 };
 
 export type GetAllTakenItemsQueryVariables = Exact<{
@@ -370,7 +385,7 @@ export type GetMaterialByIdQueryVariables = Exact<{
 
 export type GetMaterialByIdQuery = {
   __typename?: 'Query';
-  getMaterialById?: {
+  getMaterialById: {
     __typename?: 'Material';
     picture?: string | null;
     title: string;
@@ -378,9 +393,71 @@ export type GetMaterialByIdQuery = {
     category: string;
     created_at: any;
     statuses: Array<{ __typename?: 'Status'; status: string } | null>;
-  } | null;
+  };
 };
 
+export const GetAllMaterialsDocument = gql`
+  query GetAllMaterials {
+    getAllMaterials {
+      title
+      author
+      picture
+      id
+      created_at
+      category
+    }
+  }
+`;
+
+/**
+ * __useGetAllMaterialsQuery__
+ *
+ * To run a query within a React component, call `useGetAllMaterialsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllMaterialsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllMaterialsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllMaterialsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetAllMaterialsQuery,
+    GetAllMaterialsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>(
+    GetAllMaterialsDocument,
+    options
+  );
+}
+export function useGetAllMaterialsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetAllMaterialsQuery,
+    GetAllMaterialsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetAllMaterialsQuery,
+    GetAllMaterialsQueryVariables
+  >(GetAllMaterialsDocument, options);
+}
+export type GetAllMaterialsQueryHookResult = ReturnType<
+  typeof useGetAllMaterialsQuery
+>;
+export type GetAllMaterialsLazyQueryHookResult = ReturnType<
+  typeof useGetAllMaterialsLazyQuery
+>;
+export type GetAllMaterialsQueryResult = Apollo.QueryResult<
+  GetAllMaterialsQuery,
+  GetAllMaterialsQueryVariables
+>;
 export const GetAllTakenItemsDocument = gql`
   query GetAllTakenItems($person_id: Int!) {
     getAllTakenItems(person_id: $person_id) {

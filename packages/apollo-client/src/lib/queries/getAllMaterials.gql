@@ -1,0 +1,10 @@
+query GetAllMaterials {
+  getAllMaterials {
+    title
+    author
+    picture
+    id
+    created_at
+    category
+  }
+}

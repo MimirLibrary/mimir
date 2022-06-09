@@ -4,7 +4,6 @@ import { FC } from 'react';
 import { colors, dimensions } from '@mimir/ui-kit';
 
 const BookHolder = styled.div`
-  max-width: 62.5rem;
   height: 41rem;
   top: 11.5rem;
   left: 24.5rem;

@@ -9,13 +9,14 @@ export interface IBookCardProps {
   src: string | null | undefined;
   title: string | undefined;
   date: any | undefined;
-  status: string | undefined;
+  status?: string | undefined;
   author: string | undefined;
   category: string | undefined;
   id: string | undefined;
 }
 
 const BookCardWrapper = styled.div`
+  flex-shrink: 0;
   height: 19.5rem;
   width: 12rem;
   background-color: ${colors.bg_secondary};
