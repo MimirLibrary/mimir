@@ -1,12 +1,16 @@
 query GetMaterialById($id: ID!) {
   getMaterialById(id: $id) {
+    identifier
     picture
     title
     author
     category
     created_at
     statuses {
+      id
+      person_id
       status
+      created_at
     }
   }
 }

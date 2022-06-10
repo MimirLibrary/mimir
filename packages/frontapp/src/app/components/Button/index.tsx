@@ -6,6 +6,7 @@ export interface IButtonProps {
   svgComponent?: JSX.Element;
   transparent?: boolean;
   value: string;
+  onClick?: () => void;
 }
 
 const ButtonContainer = styled.div<IButtonProps>`
@@ -75,7 +76,7 @@ const ButtonContainer = styled.div<IButtonProps>`
 
 const Button: FC<IButtonProps> = (props) => {
   return (
-    <ButtonContainer {...props}>
+    <ButtonContainer {...props} onClick={props.onClick}>
       {props.svgComponent}
       <span>{props.value}</span>
     </ButtonContainer>
