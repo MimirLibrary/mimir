@@ -68,15 +68,18 @@ export class ItemService {
 
   async getAllTakenItems(person_id: number) {
     try {
-      return Status.createQueryBuilder('status')
+      const listOfMaterials = await Status.createQueryBuilder('status')
         .leftJoinAndSelect('status.material', 'material')
         .leftJoinAndSelect('status.person', 'person')
         .distinctOn(['material_id'])
         .orderBy('material_id', 'DESC')
         .where('person_id = :person_id', { person_id })
-        .andWhere('status = :status', { status: StatusTypes.BUSY })
-        .addOrderBy('status.created_at', 'DESC')
+        .addOrderBy('status.id', 'DESC')
         .getMany();
+      const listOfTakenMaterials = listOfMaterials.filter(
+        (item) => item.status === StatusTypes.BUSY
+      );
+      return listOfTakenMaterials;
     } catch (e) {
       return {
         message: e.message,
