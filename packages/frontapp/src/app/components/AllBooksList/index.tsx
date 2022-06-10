@@ -21,11 +21,11 @@ export interface IMaterial {
   created_at: string;
 }
 
-interface IProps {
+interface IAllBooksListProps {
   items: Array<IMaterial | null> | undefined;
   sortingCategory: string | undefined;
 }
-const index: FC<IProps> = ({ items, sortingCategory }) => {
+const AllBooksList: FC<IAllBooksListProps> = ({ items, sortingCategory }) => {
   return (
     <WrapperList>
       {items &&
@@ -47,4 +47,4 @@ const index: FC<IProps> = ({ items, sortingCategory }) => {
   );
 };
 
-export default index;
+export default AllBooksList;

@@ -22,7 +22,7 @@ const ButtonWrapper = styled.div`
   align-items: center;
   cursor: pointer;
 `;
-export const ButtonGRoup = styled.div`
+export const ButtonGroup = styled.div`
   display: flex;
   gap: ${dimensions.base};
   @media (max-width: ${dimensions.phone_width}) {
@@ -75,10 +75,10 @@ const BookPreview = () => {
       )}
       <Suggestions>
         <SuggestionText>You may also like</SuggestionText>
-        <ButtonGRoup>
+        <ButtonGroup>
           <ScrollButtonLeft />
           <ScrollButtonRight />
-        </ButtonGRoup>
+        </ButtonGroup>
       </Suggestions>
       <AllBooksList
         sortingCategory={data?.getMaterialById.category}

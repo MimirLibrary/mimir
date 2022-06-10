@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 
@@ -6,7 +6,7 @@ interface IStyledContainerProps {
   flex: string | null;
 }
 
-interface IProps {
+interface ICategoriesListProps {
   allCategories: { [category: string]: number } | undefined;
 }
 const CategoriesWrapper = styled.div`
@@ -47,7 +47,7 @@ const Count = styled.p`
   color: ${colors.main_gray};
 `;
 
-const index = ({ allCategories }: IProps) => {
+const CategoriesList: FC<ICategoriesListProps> = ({ allCategories }) => {
   return (
     <CategoriesWrapper>
       <Categories flex="2">
@@ -71,4 +71,4 @@ const index = ({ allCategories }: IProps) => {
   );
 };
 
-export default index;
+export default CategoriesList;

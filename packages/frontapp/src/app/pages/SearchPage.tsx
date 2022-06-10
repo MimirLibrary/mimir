@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { dimensions } from '@mimir/ui-kit';
-import { ButtonGRoup } from './BookPreview';
+import { ButtonGroup } from './BookPreview';
 import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
 import { ReactComponent as ScrollButtonRight } from '../../assets/ArrowButtonRight.svg';
 import { ReactComponent as ScrollButtonLeft } from '../../assets/ArrowButtonLeft.svg';
@@ -53,10 +53,10 @@ const SearchPage = () => {
             <ContentWrapper key={category}>
               <TopicNameWrapper>
                 <Topics>{category}</Topics>
-                <ButtonGRoup>
+                <ButtonGroup>
                   <ScrollButtonLeft />
                   <ScrollButtonRight />
-                </ButtonGRoup>
+                </ButtonGroup>
               </TopicNameWrapper>
               <AllBooksList
                 sortingCategory={category}
