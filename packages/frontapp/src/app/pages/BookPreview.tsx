@@ -76,6 +76,7 @@ const BookPreview = () => {
           category={data?.getMaterialById.category}
           status={lastStatus?.status}
           created_at={lastStatus?.created_at}
+          material_id={data.getMaterialById.id}
           description=""
         />
       )}

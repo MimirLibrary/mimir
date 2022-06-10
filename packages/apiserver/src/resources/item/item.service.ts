@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Material } from '../materials/material.entity';
-import { BookInput } from '@mimir/global-types';
-import { ProlongTimeInput } from '@mimir/global-types';
+import { BookInput, ProlongTimeInput } from '@mimir/global-types';
 import { Status } from '../statuses/status.entity';
 import { Connection } from 'typeorm';
 import { ErrorBook } from '../../errors';
@@ -25,28 +24,30 @@ export class ItemService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      const { identifier, person_id } = claimBookInput;
+      const { identifier, person_id } = bookInput;
       const material = await materialRepository.findOne({
         where: { identifier },
       });
-
       if (!material) {
-        throw new ClaimError('This item is not registered in the library');
+        throw new ErrorBook('This item is not registered in the library');
       }
       const { id } = material;
-      const status = await statusRepository.find({
+      const [status] = await statusRepository.find({
         where: { material_id: id },
-        order: { id: 'DESC' },
+        order: { id: 'DESC', created_at: 'DESC' },
         take: 1,
       });
-      if (status[0].status === type) {
-        throw new ClaimError(
+      if (status.status === StatusTypes.PROLONG && type !== StatusTypes.FREE) {
+        throw new ErrorBook('This book has been extended');
+      }
+      if (status.status === type) {
+        throw new ErrorBook(
           `This book is ${type.toLocaleLowerCase()}. Ask the manager!`
         );
       }
       const newStatusObj = await statusRepository.create({
         status: type,
-        material_id: status[0].material_id,
+        material_id: status.material_id,
         person_id,
       });
       const newStatus = await statusRepository.save(newStatusObj);
@@ -54,6 +55,7 @@ export class ItemService {
       return newStatus;
     } catch (e) {
       await queryRunner.rollbackTransaction();
+      console.log(e.message);
       return {
         message: e.message,
       };
@@ -78,13 +80,13 @@ export class ItemService {
         .distinctOn(['material_id'])
         .orderBy('material_id', 'DESC')
         .where('person_id = :person_id', { person_id })
-        .andWhere('status IN(:...status)', {
-          status: [StatusTypes.BUSY, StatusTypes.PROLONG],
-        })
+        .addOrderBy('status.id', 'DESC')
         .addOrderBy('status.created_at', 'DESC')
         .getMany();
       const listOfTakenMaterials = listOfMaterials.filter(
-        (item) => item.status === StatusTypes.BUSY
+        (item) =>
+          item.status === StatusTypes.BUSY ||
+          item.status === StatusTypes.PROLONG
       );
       return listOfTakenMaterials;
     } catch (e) {
@@ -99,7 +101,7 @@ export class ItemService {
       const { person_id, material_id } = prolongTime;
       const [currentStatus] = await Status.find({
         where: { material_id, person_id },
-        order: { created_at: 'DESC' },
+        order: { id: 'DESC', created_at: 'DESC' },
         take: 1,
       });
       if (currentStatus.status === StatusTypes.PROLONG) {

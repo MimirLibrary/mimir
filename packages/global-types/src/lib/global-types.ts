@@ -12,6 +12,11 @@ export interface BookInput {
     person_id: number;
 }
 
+export interface ProlongTimeInput {
+    person_id: number;
+    material_id: number;
+}
+
 export interface CreateMaterialInput {
     identifier: string;
     id_type: string;
@@ -55,6 +60,7 @@ export interface IQuery {
 export interface IMutation {
     claimBook(input?: Nullable<BookInput>): BookUnionResult | Promise<BookUnionResult>;
     returnItem(input?: Nullable<BookInput>): BookUnionResult | Promise<BookUnionResult>;
+    prolongClaimPeriod(input?: Nullable<ProlongTimeInput>): BookUnionResult | Promise<BookUnionResult>;
     createMaterial(input: CreateMaterialInput): Material | Promise<Material>;
     createNotification(input: CreateNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
     removeNotification(input: RemoveNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;

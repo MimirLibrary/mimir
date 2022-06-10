@@ -1,0 +1,11 @@
+mutation ProlongTime($person_id: Int!, $material_id: Int!) {
+  prolongClaimPeriod(input: { material_id: $material_id, person_id: $person_id }) {
+    ... on Status {
+      created_at
+      status
+    }
+    ... on Error {
+      message
+    }
+  }
+}
