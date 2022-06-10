@@ -10,6 +10,7 @@ import { getDates, getStatus } from '../../models/helperFunctions/converTime';
 import { StyledBookStatus } from '../../globalUI/Status';
 import SuccessMessage from '../SuccesMessage';
 import {
+  GetAllTakenItemsDocument,
   GetMaterialByIdDocument,
   useClaimBookMutation,
   useReturnBookMutation,
@@ -153,10 +154,10 @@ const BookInfo: FC<IBookInfoProps> = ({
   const [isShowSuccessReturn, setIsSuccessReturn] = useState<boolean>(false);
   const [valueIsISBN, setValueIsISBN] = useState<string>('');
   const [claimBook, { data }] = useClaimBookMutation({
-    refetchQueries: [GetMaterialByIdDocument],
+    refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
   const [returnBook, infoReturnBook] = useReturnBookMutation({
-    refetchQueries: [GetMaterialByIdDocument],
+    refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
 
   const currentStatus = getStatus(status, created_at);

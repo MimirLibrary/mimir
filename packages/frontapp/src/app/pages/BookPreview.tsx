@@ -1,9 +1,8 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../hooks/useTypedSelector';
 import BookInfo from '../components/BookInfo';
 import styled from '@emotion/styled';
-import { getLastStatus } from '../models/helperFunctions/getLastStatus';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { useGetMaterialByIdQuery } from '@mimir/apollo-client';
 import { ReactComponent as ScrollButtonRight } from '../../assets/ArrowButtonRight.svg';

@@ -37,7 +37,10 @@ export class MaterialResolver {
   @ResolveField(() => [Status])
   async statuses(@Parent() material: Material) {
     const { id } = material;
-    return Status.find({ where: { material_id: id } });
+    return Status.find({
+      where: { material_id: id },
+      order: { id: 'ASC' },
+    });
   }
 
   @ResolveField(() => [Notification])
