@@ -1,10 +1,9 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../hooks/useTypedSelector';
 import BookInfo from '../components/BookInfo';
 import AllBooksList from '../components/AllBooksList';
 import styled from '@emotion/styled';
-import { getLastStatus } from '../models/helperFunctions/getLastStatus';
 
 import { colors, dimensions } from '@mimir/ui-kit';
 import {
