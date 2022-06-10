@@ -2,3 +2,6 @@
 
 /dist
 /coverage
+/packages/global-types/
+/packages/apollo-client/src/lib/generated/
+/packages/apollo-client/src/graphql.schema.json
