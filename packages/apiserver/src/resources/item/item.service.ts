@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Material } from '../materials/material.entity';
-import { ClaimBookInput, ProlongTimeInput } from '@mimir/global-types';
+import { BookInput } from '@mimir/global-types';
+import { ProlongTimeInput } from '@mimir/global-types';
 import { Status } from '../statuses/status.entity';
 import { Connection } from 'typeorm';
 import { ErrorBook } from '../../errors';
@@ -12,7 +13,10 @@ import { config } from '../../config';
 export class ItemService {
   constructor(private connection: Connection) {}
 
-  async claim(claimBookInput: ClaimBookInput) {
+  private async claimOrReturnOperations(
+    bookInput: BookInput,
+    type: StatusTypes
+  ) {
     const queryRunner = this.connection.createQueryRunner();
     const statusRepository =
       queryRunner.manager.getRepository<Status>('status');
@@ -27,19 +31,21 @@ export class ItemService {
       });
 
       if (!material) {
-        throw new ErrorBook('This item is not registered in the library');
+        throw new ClaimError('This item is not registered in the library');
       }
       const { id } = material;
       const status = await statusRepository.find({
         where: { material_id: id },
-        order: { created_at: 'DESC' },
+        order: { id: 'DESC' },
         take: 1,
       });
-      if (status[0].status === StatusTypes.BUSY) {
-        throw new ErrorBook(`This book is busy. Ask the manager!`);
+      if (status[0].status === type) {
+        throw new ClaimError(
+          `This book is ${type.toLocaleLowerCase()}. Ask the manager!`
+        );
       }
       const newStatusObj = await statusRepository.create({
-        status: StatusTypes.BUSY,
+        status: type,
         material_id: status[0].material_id,
         person_id,
       });
@@ -56,9 +62,17 @@ export class ItemService {
     }
   }
 
+  async claim(claimBookInput: BookInput) {
+    return this.claimOrReturnOperations(claimBookInput, StatusTypes.BUSY);
+  }
+
+  async return(returnBookInput: BookInput) {
+    return this.claimOrReturnOperations(returnBookInput, StatusTypes.FREE);
+  }
+
   async getAllTakenItems(person_id: number) {
     try {
-      const materials = await Status.createQueryBuilder('status')
+      const listOfMaterials = await Status.createQueryBuilder('status')
         .leftJoinAndSelect('status.material', 'material')
         .leftJoinAndSelect('status.person', 'person')
         .distinctOn(['material_id'])
@@ -69,7 +83,10 @@ export class ItemService {
         })
         .addOrderBy('status.created_at', 'DESC')
         .getMany();
-      return materials;
+      const listOfTakenMaterials = listOfMaterials.filter(
+        (item) => item.status === StatusTypes.BUSY
+      );
+      return listOfTakenMaterials;
     } catch (e) {
       return {
         message: e.message,

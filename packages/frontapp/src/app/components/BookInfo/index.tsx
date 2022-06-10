@@ -1,7 +1,22 @@
 import styled from '@emotion/styled';
 import bookImage from '../../../assets/MOC-data/BookImage.png';
-import { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { colors, dimensions } from '@mimir/ui-kit';
+import { ReactComponent as Claim } from '../../../assets/claim.svg';
+import Button from '../Button';
+import ClaimOperation from '../ClaimOperation';
+import Modal from '../Modal';
+import { getDates, getStatus } from '../../models/helperFunctions/converTime';
+import { StyledBookStatus } from '../../globalUI/Status';
+import SuccessMessage from '../SuccesMessage';
+import {
+  GetAllTakenItemsDocument,
+  GetMaterialByIdDocument,
+  useClaimBookMutation,
+  useReturnBookMutation,
+} from '@mimir/apollo-client';
+import { useAppSelector } from '../../hooks/useTypedSelector';
+import ErrorMessage from '../ErrorMessge';
 
 const BookHolder = styled.div`
   max-width: 62.5rem;
@@ -13,8 +28,9 @@ const BookHolder = styled.div`
   padding: ${dimensions.base_2};
   box-shadow: 0px 10px 70px rgba(26, 30, 214, 0.08);
 `;
+
 const BookImage = styled.img`
-  display: block-inline;
+  display: inline-block;
   width: 12rem;
   height: 19.5rem;
   @media (max-width: ${dimensions.phone_width}) {
@@ -26,12 +42,13 @@ const BookImage = styled.img`
 
 const ShortDescriptionWrapper = styled.div`
   display: flex;
-  justify-content: start;
+  justify-content: space-between;
   width: 100%;
   gap: ${dimensions.xl_2};
 `;
 const ShortDescription = styled.div`
-  width: 23rem;
+  width: 100%;
+  margin-left: ${dimensions.xl_2};
 `;
 
 const TitleBook = styled.h3`
@@ -41,6 +58,7 @@ const TitleBook = styled.h3`
   line-height: ${dimensions.xl_2};
   color: ${colors.main_black};
 `;
+
 const Topic = styled.p`
   margin: ${dimensions.xs_2} 0;
   font-weight: 500;
@@ -54,23 +72,20 @@ const TopicDescription = styled.p`
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
 `;
-const StatusInfo = styled.p`
-  margin: ${dimensions.base} 0 ${dimensions.xs_2};
-  color: ${colors.main_green};
-  font-weight: 500;
-  font-size: ${dimensions.base};
-  line-height: ${dimensions.xl};
-`;
+
 const StatusInfoDescription = styled.p`
   font-weight: 300;
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
   color: ${colors.description_gray};
+  margin-top: ${dimensions.xs_2};
 `;
+
 const LongDescription = styled.div`
   margin-top: ${dimensions.xl_2};
   grid-column: 1 / span 3;
 `;
+
 const OpenLink = styled.a`
   cursor: pointer;
   margin: ${dimensions.xs_2} 0;
@@ -80,55 +95,207 @@ const OpenLink = styled.a`
   line-height: ${dimensions.xl};
   text-decoration: underline;
 `;
+
 const Description = styled.p`
   font-weight: 300;
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
 `;
-interface IProps {
+
+const StyledStatus = styled(StyledBookStatus)`
+  font-size: ${dimensions.base};
+  margin-top: ${dimensions.base};
+`;
+
+const WrapperInfo = styled.div`
+  display: flex;
+`;
+
+const WrapperButtons = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  max-width: 276px;
+  width: 100%;
+`;
+
+const StyledButton = styled(Button)`
+  max-width: 278px;
+  width: 100%;
+  margin-bottom: 8px;
+`;
+
+interface IBookInfoProps {
   src: string | null | undefined;
   title: string | undefined;
   description: string | undefined;
-  status: string | null | undefined;
+  status: string | undefined;
   author: string | undefined;
   category: string | string[] | undefined;
-  created_at: string | undefined;
+  identifier: string;
+  created_at: any;
 }
 
-const BookInfo: FC<IProps> = ({
+const BookInfo: FC<IBookInfoProps> = ({
   src = '',
   title = '',
   author = '',
   status,
   description = '',
   category,
+  identifier,
+  created_at,
 }) => {
+  const { id } = useAppSelector((state) => state.user);
+  const [statusText, setStatusText] = useState<string>('');
+  const [isShowClaimModal, setIsShowClaimModal] = useState<boolean>(false);
+  const [isShowSuccessClaim, setIsShowSuccessClaim] = useState<boolean>(false);
+  const [isShowErrorMessage, setIsShowErrorMessage] = useState<boolean>(false);
+  const [isShowSuccessReturn, setIsSuccessReturn] = useState<boolean>(false);
+  const [valueIsISBN, setValueIsISBN] = useState<string>('');
+  const [claimBook, { data }] = useClaimBookMutation({
+    refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
+  });
+  const [returnBook, infoReturnBook] = useReturnBookMutation({
+    refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
+  });
+
+  const currentStatus = getStatus(status, created_at);
+  const dateConditionOfClaiming =
+    data?.claimBook.__typename === 'Status' ? data.claimBook.created_at : null;
+  const errorConditionOfClaiming =
+    data?.claimBook.__typename === 'Error' ? data.claimBook.message : null;
+
+  const claim = async () => {
+    await claimBook({
+      variables: {
+        person_id: id,
+        identifier: valueIsISBN,
+      },
+    });
+    setValueIsISBN('');
+  };
+
+  const retrieveBook = async () => {
+    await returnBook({
+      variables: {
+        person_id: id,
+        identifier: identifier,
+      },
+    });
+    setIsSuccessReturn(true);
+  };
+
+  useEffect(() => {
+    setIsShowClaimModal(false);
+    if (data?.claimBook.__typename === 'Status') {
+      setIsShowSuccessClaim(true);
+    } else if (data?.claimBook.__typename === 'Error') {
+      setIsShowErrorMessage(true);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    switch (currentStatus) {
+      case 'Free':
+        setStatusText('On the shelf');
+        break;
+      case 'Busy': {
+        const day = `${getDates(created_at).returnDate.getDate()}`.padStart(
+          2,
+          '0'
+        );
+        const month = `${
+          getDates(created_at).returnDate.getMonth() + 1
+        }`.padStart(2, '0');
+        setStatusText(`Return till: ${day}.${month}`);
+        break;
+      }
+      case 'Overdue':
+        setStatusText('Overdue');
+        break;
+      default:
+        setStatusText('');
+        break;
+    }
+  }, [currentStatus]);
+
+  const showClaimModal = () => {
+    setIsShowClaimModal(true);
+  };
+
   return (
-    <BookHolder>
-      <ShortDescriptionWrapper>
-        <BookImage src={src || bookImage} />
-        <ShortDescription>
-          <TitleBook>{title || 'Book Title'}</TitleBook>
-          <Topic>Genre: </Topic>
-          <OpenLink>{category || 'Genres of book'}</OpenLink>
-          <Topic>Author: </Topic>
-          <TopicDescription>{author || 'Author Name'}</TopicDescription>
-          <StatusInfo> {status || "Book's status"}</StatusInfo>
-          <StatusInfoDescription>
-            Use the mobile app to claim an item
-          </StatusInfoDescription>
-        </ShortDescription>
-      </ShortDescriptionWrapper>
-      <LongDescription>
-        <Topic>Description: </Topic>
-        <Description>
-          {description ||
-            ' Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi impedit aliquid alias consequuntur! Totam sequi expedita sunt dolor obcaecati, iusto ducimus? Beatae ea, commodi ab repellat, corporis atque quasi, tempore sunt modi similique soluta nemo hic necessitatibus esse accusantium omnis neque rerum. Placeat tempore, fugiat unde consequuntur dolor tempora ducimus.'}
-        </Description>
-        <OpenLink>see full description</OpenLink>
-      </LongDescription>
-    </BookHolder>
+    <>
+      <BookHolder>
+        <ShortDescriptionWrapper>
+          <WrapperInfo>
+            <BookImage src={src || bookImage} />
+            <ShortDescription>
+              <TitleBook>{title || 'Book Title'}</TitleBook>
+              <Topic>Genre: </Topic>
+              <OpenLink>{category || 'Genres of book'}</OpenLink>
+              <Topic>Author: </Topic>
+              <TopicDescription>{author || 'Author Name'}</TopicDescription>
+              <StyledStatus status={currentStatus}>{statusText}</StyledStatus>
+              <StatusInfoDescription>
+                Use the mobile app to claim an item
+              </StatusInfoDescription>
+            </ShortDescription>
+          </WrapperInfo>
+          <WrapperButtons>
+            {status !== 'Free' ? (
+              <>
+                <StyledButton value="Return a book" onClick={retrieveBook} />
+                <StyledButton value="Extend claim period" transparent />
+              </>
+            ) : (
+              <StyledButton
+                value="Claim a book"
+                svgComponent={<Claim />}
+                onClick={showClaimModal}
+              />
+            )}
+          </WrapperButtons>
+        </ShortDescriptionWrapper>
+        <LongDescription>
+          <Topic>Description: </Topic>
+          <Description>
+            {description ||
+              ' Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi impedit aliquid alias consequuntur! Totam sequi expedita sunt dolor obcaecati, iusto ducimus? Beatae ea, commodi ab repellat, corporis atque quasi, tempore sunt modi similique soluta nemo hic necessitatibus esse accusantium omnis neque rerum. Placeat tempore, fugiat unde consequuntur dolor tempora ducimus.'}
+          </Description>
+          <OpenLink>see full description</OpenLink>
+        </LongDescription>
+      </BookHolder>
+      <Modal active={isShowClaimModal} setActive={setIsShowClaimModal}>
+        <ClaimOperation
+          setActive={setIsShowClaimModal}
+          claimBook={claim}
+          value={valueIsISBN}
+          setValueInput={setValueIsISBN}
+        />
+      </Modal>
+      <Modal active={isShowSuccessClaim} setActive={setIsShowSuccessClaim}>
+        <SuccessMessage
+          setActive={setIsShowSuccessClaim}
+          title="You have successfully claim the book"
+          description="Enjoy reading and don't forget to return this by"
+          created_at={dateConditionOfClaiming}
+        />
+      </Modal>
+      <Modal active={isShowErrorMessage} setActive={setIsShowErrorMessage}>
+        <ErrorMessage
+          message={errorConditionOfClaiming}
+          setActive={setIsShowErrorMessage}
+        />
+      </Modal>
+      <Modal active={isShowSuccessReturn} setActive={setIsSuccessReturn}>
+        <SuccessMessage
+          setActive={setIsSuccessReturn}
+          title="You have successfully return the book"
+        />
+      </Modal>
+    </>
   );
 };
 
-export default BookInfo;
+export default React.memo(BookInfo);

@@ -1,0 +1,28 @@
+type Notification {
+  id: ID!
+  material_id: Int!
+  person_id: Int!
+  created_at: DateTime!
+  person: Person!
+  material: Material!
+}
+
+input CreateNotificationInput {
+  material_id: Int!
+  person_id: Int!
+}
+
+input RemoveNotificationInput {
+  material_id: Int!
+  person_id: Int!
+}
+
+extend type Query {
+  getNotificationsByPerson(person_id: Int!): [Notification]!
+  getNotificationsByMaterial(material_id: Int!): [Notification]!
+}
+
+extend type Mutation {
+  createNotification(input: CreateNotificationInput!): Notification
+  removeNotification(input: RemoveNotificationInput!): Notification
+}

@@ -9,6 +9,7 @@ import {
 import { Material } from './material.entity';
 import { Status } from '../statuses/status.entity';
 import { CreateMaterialInput } from '@mimir/global-types';
+import { Notification } from '../notifications/notification.entity';
 
 @Resolver('Material')
 export class MaterialResolver {
@@ -35,6 +36,15 @@ export class MaterialResolver {
 
   @ResolveField(() => [Status])
   async statuses(@Parent() material: Material) {
+    const { id } = material;
+    return Status.find({
+      where: { material_id: id },
+      order: { id: 'ASC' },
+    });
+  }
+
+  @ResolveField(() => [Notification])
+  async notifications(@Parent() material: Material) {
     const { id } = material;
     return Status.find({ where: { material_id: id } });
   }
