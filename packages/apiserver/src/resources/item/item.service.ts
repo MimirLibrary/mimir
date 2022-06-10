@@ -32,7 +32,7 @@ export class ItemService {
       const { id } = material;
       const status = await statusRepository.find({
         where: { material_id: id },
-        order: { created_at: 'DESC' },
+        order: { id: 'DESC' },
         take: 1,
       });
       if (status[0].status === type) {
