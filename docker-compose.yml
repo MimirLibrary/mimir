@@ -5,6 +5,8 @@ services:
     env_file: .${NODE_ENV}.env
     volumes:
       - db:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
 
   apiserver:
     build:
