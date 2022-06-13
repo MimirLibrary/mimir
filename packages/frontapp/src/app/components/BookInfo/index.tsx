@@ -15,6 +15,8 @@ import {
   useClaimBookMutation,
   useReturnBookMutation,
   useGetAllTakenItemsQuery,
+  useCreateNotificationMutation,
+  useRemoveNotificationMutation,
 } from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import ErrorMessage from '../ErrorMessge';
@@ -149,6 +151,10 @@ const BookInfo: FC<IBookInfoProps> = ({
   const [isShowSuccessReturn, setIsSuccessReturn] = useState<boolean>(false);
   const [isMaterialTakenByCurrentUser, setIsMaterialTakenByCurrentUser] =
     useState<boolean>(false);
+  const [
+    isNotificationEnabledByCurrentUser,
+    setIsNotificationEnabledByCurrentUser,
+  ] = useState<boolean>(false);
   const [valueIsISBN, setValueIsISBN] = useState<string>('');
   const [claimBook, { data }] = useClaimBookMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
@@ -164,13 +170,14 @@ const BookInfo: FC<IBookInfoProps> = ({
       person_id: id,
     },
   });
+  const [createNotification] = useCreateNotificationMutation();
+  const [removeNotification] = useRemoveNotificationMutation();
 
   const currentStatus = getStatus(status, created_at);
   const dateConditionOfClaiming =
     data?.claimBook.__typename === 'Status' ? data.claimBook.created_at : null;
   const errorConditionOfClaiming =
     data?.claimBook.__typename === 'Error' ? data.claimBook.message : null;
-
   const claim = async () => {
     await claimBook({
       variables: {
@@ -178,16 +185,19 @@ const BookInfo: FC<IBookInfoProps> = ({
         identifier: valueIsISBN,
       },
     });
+
     setValueIsISBN('');
+    setIsMaterialTakenByCurrentUser(true);
   };
 
   const retrieveBook = async () => {
     await returnBook({
       variables: {
         person_id: id,
-        identifier: identifier,
+        identifier,
       },
     });
+
     setIsSuccessReturn(true);
   };
 
@@ -226,18 +236,43 @@ const BookInfo: FC<IBookInfoProps> = ({
   }, [currentStatus]);
 
   useEffect(() => {
-    if (currentStatus !== 'Free' && allTakenItemsByCurrentUserLoading) {
+    if (!allTakenItemsByCurrentUserLoading) {
       setIsMaterialTakenByCurrentUser(
         !!allTakenItemsByCurrentUserData?.getAllTakenItems.find(
           (item) => item?.material.id === item_id
         )
       );
-      console.log(isMaterialTakenByCurrentUser);
     }
   }, [allTakenItemsByCurrentUserLoading]);
 
   const showClaimModal = () => {
     setIsShowClaimModal(true);
+  };
+
+  const handleCreateNotification = async () => {
+    await createNotification({
+      variables: {
+        input: {
+          material_id: parseInt(item_id!),
+          person_id: id,
+        },
+      },
+    });
+
+    setIsNotificationEnabledByCurrentUser(true);
+  };
+
+  const handleRemoveNotification = async () => {
+    await removeNotification({
+      variables: {
+        input: {
+          material_id: parseInt(item_id!),
+          person_id: id,
+        },
+      },
+    });
+
+    setIsNotificationEnabledByCurrentUser(false);
   };
 
   return (
@@ -256,14 +291,40 @@ const BookInfo: FC<IBookInfoProps> = ({
             </ShortDescription>
           </WrapperInfo>
           <WrapperButtons>
-            {status === 'Free' && (
+            {status === 'Free' && !allTakenItemsByCurrentUserLoading && (
               <StyledButton
                 value="Claim a book"
                 svgComponent={<Claim />}
                 onClick={showClaimModal}
               />
             )}
-            {status === 'Busy' && isMaterialTakenByCurrentUser}
+            {status !== 'Free' &&
+              isMaterialTakenByCurrentUser &&
+              !allTakenItemsByCurrentUserLoading && (
+                <>
+                  <StyledButton value="Return a book" onClick={retrieveBook} />
+                  <StyledButton value="Extend claim period" transparent />
+                </>
+              )}
+            {status === 'Busy' &&
+              !isMaterialTakenByCurrentUser &&
+              !allTakenItemsByCurrentUserLoading &&
+              !isNotificationEnabledByCurrentUser && (
+                <StyledButton
+                  value="Notify when available"
+                  onClick={handleCreateNotification}
+                />
+              )}
+            {status === 'Busy' &&
+              !isMaterialTakenByCurrentUser &&
+              !allTakenItemsByCurrentUserLoading &&
+              isNotificationEnabledByCurrentUser && (
+                <StyledButton
+                  value="Cancel"
+                  onClick={handleRemoveNotification}
+                  transparent
+                />
+              )}
           </WrapperButtons>
         </ShortDescriptionWrapper>
         <LongDescription>

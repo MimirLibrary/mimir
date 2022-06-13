@@ -358,6 +358,20 @@ export type ClaimBookMutationVariables = Exact<{
 
 export type ClaimBookMutation = { __typename?: 'Mutation', claimBook: { __typename?: 'Error', message: string } | { __typename?: 'Status', created_at: any, status: string } };
 
+export type CreateNotificationMutationVariables = Exact<{
+  input: CreateNotificationInput;
+}>;
+
+
+export type CreateNotificationMutation = { __typename?: 'Mutation', createNotification?: { __typename?: 'Notification', id: string } | null };
+
+export type RemoveNotificationMutationVariables = Exact<{
+  input: RemoveNotificationInput;
+}>;
+
+
+export type RemoveNotificationMutation = { __typename?: 'Mutation', removeNotification?: { __typename?: 'Notification', id: string } | null };
+
 export type ReturnBookMutationVariables = Exact<{
   identifier: Scalars['String'];
   person_id: Scalars['Int'];
@@ -421,6 +435,72 @@ export function useClaimBookMutation(baseOptions?: Apollo.MutationHookOptions<Cl
 export type ClaimBookMutationHookResult = ReturnType<typeof useClaimBookMutation>;
 export type ClaimBookMutationResult = Apollo.MutationResult<ClaimBookMutation>;
 export type ClaimBookMutationOptions = Apollo.BaseMutationOptions<ClaimBookMutation, ClaimBookMutationVariables>;
+export const CreateNotificationDocument = gql`
+    mutation CreateNotification($input: CreateNotificationInput!) {
+  createNotification(input: $input) {
+    id
+  }
+}
+    `;
+export type CreateNotificationMutationFn = Apollo.MutationFunction<CreateNotificationMutation, CreateNotificationMutationVariables>;
+
+/**
+ * __useCreateNotificationMutation__
+ *
+ * To run a mutation, you first call `useCreateNotificationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateNotificationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createNotificationMutation, { data, loading, error }] = useCreateNotificationMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateNotificationMutation(baseOptions?: Apollo.MutationHookOptions<CreateNotificationMutation, CreateNotificationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateNotificationMutation, CreateNotificationMutationVariables>(CreateNotificationDocument, options);
+      }
+export type CreateNotificationMutationHookResult = ReturnType<typeof useCreateNotificationMutation>;
+export type CreateNotificationMutationResult = Apollo.MutationResult<CreateNotificationMutation>;
+export type CreateNotificationMutationOptions = Apollo.BaseMutationOptions<CreateNotificationMutation, CreateNotificationMutationVariables>;
+export const RemoveNotificationDocument = gql`
+    mutation RemoveNotification($input: RemoveNotificationInput!) {
+  removeNotification(input: $input) {
+    id
+  }
+}
+    `;
+export type RemoveNotificationMutationFn = Apollo.MutationFunction<RemoveNotificationMutation, RemoveNotificationMutationVariables>;
+
+/**
+ * __useRemoveNotificationMutation__
+ *
+ * To run a mutation, you first call `useRemoveNotificationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveNotificationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeNotificationMutation, { data, loading, error }] = useRemoveNotificationMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRemoveNotificationMutation(baseOptions?: Apollo.MutationHookOptions<RemoveNotificationMutation, RemoveNotificationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveNotificationMutation, RemoveNotificationMutationVariables>(RemoveNotificationDocument, options);
+      }
+export type RemoveNotificationMutationHookResult = ReturnType<typeof useRemoveNotificationMutation>;
+export type RemoveNotificationMutationResult = Apollo.MutationResult<RemoveNotificationMutation>;
+export type RemoveNotificationMutationOptions = Apollo.BaseMutationOptions<RemoveNotificationMutation, RemoveNotificationMutationVariables>;
 export const ReturnBookDocument = gql`
     mutation ReturnBook($identifier: String!, $person_id: Int!) {
   returnItem(input: {identifier: $identifier, person_id: $person_id}) {
