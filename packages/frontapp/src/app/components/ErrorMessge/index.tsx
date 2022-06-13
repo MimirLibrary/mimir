@@ -78,7 +78,7 @@ const ErrorMessage: FC<IPropsErrorMessage> = ({ setActive, message }) => {
     <Wrapper>
       <WrapperErrorClaim>
         <WrapperInfo>
-          <TitleOfError>Something goes wrong with your claiming</TitleOfError>
+          <TitleOfError>Something wents wrong with your claiming</TitleOfError>
           <Description>
             {message || 'Take another book or try contacting the manager'}
           </Description>

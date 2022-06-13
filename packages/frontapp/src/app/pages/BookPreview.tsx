@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router';
 import { useAppSelector } from '../hooks/useTypedSelector';
 import BookInfo from '../components/BookInfo';
 import styled from '@emotion/styled';

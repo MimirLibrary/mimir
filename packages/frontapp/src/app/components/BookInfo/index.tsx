@@ -14,9 +14,11 @@ import {
   GetMaterialByIdDocument,
   useClaimBookMutation,
   useReturnBookMutation,
+  useGetAllTakenItemsQuery,
 } from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import ErrorMessage from '../ErrorMessge';
+import { useParams } from 'react-router';
 
 const BookHolder = styled.div`
   max-width: 62.5rem;
@@ -71,14 +73,6 @@ const TopicDescription = styled.p`
   font-weight: 300;
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
-`;
-
-const StatusInfoDescription = styled.p`
-  font-weight: 300;
-  font-size: ${dimensions.base};
-  line-height: ${dimensions.xl};
-  color: ${colors.description_gray};
-  margin-top: ${dimensions.xs_2};
 `;
 
 const LongDescription = styled.div`
@@ -147,17 +141,28 @@ const BookInfo: FC<IBookInfoProps> = ({
   created_at,
 }) => {
   const { id } = useAppSelector((state) => state.user);
+  const { item_id } = useParams();
   const [statusText, setStatusText] = useState<string>('');
   const [isShowClaimModal, setIsShowClaimModal] = useState<boolean>(false);
   const [isShowSuccessClaim, setIsShowSuccessClaim] = useState<boolean>(false);
   const [isShowErrorMessage, setIsShowErrorMessage] = useState<boolean>(false);
   const [isShowSuccessReturn, setIsSuccessReturn] = useState<boolean>(false);
+  const [isMaterialTakenByCurrentUser, setIsMaterialTakenByCurrentUser] =
+    useState<boolean>(false);
   const [valueIsISBN, setValueIsISBN] = useState<string>('');
   const [claimBook, { data }] = useClaimBookMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
   const [returnBook, infoReturnBook] = useReturnBookMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
+  });
+  const {
+    data: allTakenItemsByCurrentUserData,
+    loading: allTakenItemsByCurrentUserLoading,
+  } = useGetAllTakenItemsQuery({
+    variables: {
+      person_id: id,
+    },
   });
 
   const currentStatus = getStatus(status, created_at);
@@ -220,6 +225,17 @@ const BookInfo: FC<IBookInfoProps> = ({
     }
   }, [currentStatus]);
 
+  useEffect(() => {
+    if (currentStatus !== 'Free' && allTakenItemsByCurrentUserLoading) {
+      setIsMaterialTakenByCurrentUser(
+        !!allTakenItemsByCurrentUserData?.getAllTakenItems.find(
+          (item) => item?.material.id === item_id
+        )
+      );
+      console.log(isMaterialTakenByCurrentUser);
+    }
+  }, [allTakenItemsByCurrentUserLoading]);
+
   const showClaimModal = () => {
     setIsShowClaimModal(true);
   };
@@ -237,24 +253,17 @@ const BookInfo: FC<IBookInfoProps> = ({
               <Topic>Author: </Topic>
               <TopicDescription>{author || 'Author Name'}</TopicDescription>
               <StyledStatus status={currentStatus}>{statusText}</StyledStatus>
-              <StatusInfoDescription>
-                Use the mobile app to claim an item
-              </StatusInfoDescription>
             </ShortDescription>
           </WrapperInfo>
           <WrapperButtons>
-            {status !== 'Free' ? (
-              <>
-                <StyledButton value="Return a book" onClick={retrieveBook} />
-                <StyledButton value="Extend claim period" transparent />
-              </>
-            ) : (
+            {status === 'Free' && (
               <StyledButton
                 value="Claim a book"
                 svgComponent={<Claim />}
                 onClick={showClaimModal}
               />
             )}
+            {status === 'Busy' && isMaterialTakenByCurrentUser}
           </WrapperButtons>
         </ShortDescriptionWrapper>
         <LongDescription>
