@@ -1,28 +1,22 @@
 import React, { FC } from 'react';
 import BookCard from '../BookCard';
 import styled from '@emotion/styled';
-import { dimensions } from '@mimir/ui-kit';
+import { dimensions, colors } from '@mimir/ui-kit';
+import { Material } from '@mimir/apollo-client';
 const WrapperList = styled.section`
   display: flex;
   gap: ${dimensions.base_2};
   width: 100%;
   flex-wrap: nowrap;
   max-height: 22rem;
-  overflow-x: hidden;
+  overflow-x: auto;
+  ::-webkit-scrollbar {
+    height: 0;
+  }
 `;
 
-export interface IMaterial {
-  id: string;
-  __typename?: 'Material';
-  picture?: string | null | undefined;
-  category: string;
-  author: string;
-  title: string;
-  created_at: string;
-}
-
 interface IAllBooksListProps {
-  items: Array<IMaterial | null> | undefined;
+  items: Array<Partial<Material> | null> | undefined;
   sortingCategory: string | undefined;
 }
 const AllBooksList: FC<IAllBooksListProps> = ({ items, sortingCategory }) => {

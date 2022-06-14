@@ -54,14 +54,14 @@ const BookPreview = () => {
   const { data, loading } = useGetMaterialByIdQuery({
     variables: { id: item_id! },
   });
-    
+
   const { data: getAllMaterials } = useGetAllMaterialsQuery();
   const lastStatus = data?.getMaterialById.statuses
     .filter((item) => item?.person_id === id)
     .slice(-1)[0];
 
   const handleGoBack = () => {
-    navigate(-1);
+    navigate('/search');
   };
 
   if (loading) return <h1>Loading...</h1>;
