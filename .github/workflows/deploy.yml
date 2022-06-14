@@ -26,7 +26,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          script: bash mimir/scripts/deploy.sh
+          script: bash mimir/scripts/deploy_webapp.sh
 
       - name: SSH Git pull
         if: steps.cache-package-lock.outputs.cache-hit == 'true'
@@ -36,4 +36,4 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          script: bash mimir/scripts/deploy_pull_only.sh
+          script: bash mimir/scripts/deploy_webapp_pull_only.sh
