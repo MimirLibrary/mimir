@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import BookCard from '../BookCard';
 import styled from '@emotion/styled';
-import { dimensions, colors } from '@mimir/ui-kit';
+import { dimensions } from '@mimir/ui-kit';
 import { Material } from '@mimir/apollo-client';
 const WrapperList = styled.section`
   display: flex;
@@ -14,9 +14,13 @@ const WrapperList = styled.section`
     height: 0;
   }
 `;
+type IMaterial = Pick<
+  Material,
+  'id' | 'title' | 'author' | 'picture' | 'created_at' | 'category'
+>;
 
 interface IAllBooksListProps {
-  items: Array<Partial<Material> | null> | undefined;
+  items: Array<IMaterial | null> | undefined;
   sortingCategory: string | undefined;
 }
 const AllBooksList: FC<IAllBooksListProps> = ({ items, sortingCategory }) => {

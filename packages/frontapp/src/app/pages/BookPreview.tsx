@@ -52,6 +52,7 @@ const BookPreview = () => {
   const { data, loading } = useGetMaterialByIdQuery({
     variables: { id: item_id! },
   });
+  const { data: getAllMaterials } = useGetAllMaterialsQuery();
 
   const lastStatusAnotherPerson = data?.getMaterialById.statuses.slice(-1)[0];
 
