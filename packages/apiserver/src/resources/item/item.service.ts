@@ -55,7 +55,6 @@ export class ItemService {
       return newStatus;
     } catch (e) {
       await queryRunner.rollbackTransaction();
-      console.log(e.message);
       return {
         message: e.message,
       };
@@ -80,15 +79,14 @@ export class ItemService {
         .distinctOn(['material_id'])
         .orderBy('material_id', 'DESC')
         .where('person_id = :person_id', { person_id })
+        .andWhere('status IN(:...status)', {
+          status: [StatusTypes.BUSY, StatusTypes.PROLONG],
+        })
         .addOrderBy('status.id', 'DESC')
         .addOrderBy('status.created_at', 'DESC')
         .getMany();
-      const listOfTakenMaterials = listOfMaterials.filter(
-        (item) =>
-          item.status === StatusTypes.BUSY ||
-          item.status === StatusTypes.PROLONG
-      );
-      return listOfTakenMaterials;
+
+      return listOfMaterials;
     } catch (e) {
       return {
         message: e.message,

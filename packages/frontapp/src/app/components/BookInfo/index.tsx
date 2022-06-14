@@ -127,6 +127,7 @@ const StyledButton = styled(Button)`
 `;
 
 interface IBookInfoProps {
+  person_id: number | undefined;
   src: string | null | undefined;
   title: string | undefined;
   description: string | undefined;
@@ -148,6 +149,7 @@ const BookInfo: FC<IBookInfoProps> = ({
   identifier,
   created_at,
   material_id,
+  person_id,
 }) => {
   const { id } = useAppSelector((state) => state.user);
   const [statusText, setStatusText] = useState<string>('');
@@ -171,7 +173,6 @@ const BookInfo: FC<IBookInfoProps> = ({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
 
-  console.log('render');
   const currentStatus = getStatus(status, created_at);
   const dateConditionOfClaiming =
     data?.claimBook.__typename === 'Status' ? data.claimBook.created_at : null;
@@ -290,24 +291,27 @@ const BookInfo: FC<IBookInfoProps> = ({
               </StatusInfoDescription>
             </ShortDescription>
           </WrapperInfo>
-          <WrapperButtons>
-            {status !== 'Free' ? (
-              <>
-                <StyledButton value="Return a book" onClick={retrieveBook} />
-                <StyledButton
-                  value="Extend claim period"
-                  transparent
-                  onClick={prolongPeriod}
-                />
-              </>
-            ) : (
-              <StyledButton
-                value="Claim a book"
-                svgComponent={<Claim />}
-                onClick={showClaimModal}
-              />
-            )}
-          </WrapperButtons>
+          {person_id === id ? (
+            <WrapperButtons>
+              {status !== 'Free' ? (
+                <>
+                  <StyledButton value="Return a book" onClick={retrieveBook} />
+                  <StyledButton
+                    value="Extend claim period"
+                    transparent
+                    onClick={prolongPeriod}
+                  />
+                </>
+              ) : null}
+            </WrapperButtons>
+          ) : null}
+          {status === 'Free' ? (
+            <StyledButton
+              value="Claim a book"
+              svgComponent={<Claim />}
+              onClick={showClaimModal}
+            />
+          ) : null}
         </ShortDescriptionWrapper>
         <LongDescription>
           <Topic>Description: </Topic>
