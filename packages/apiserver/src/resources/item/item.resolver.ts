@@ -1,5 +1,6 @@
 import { Args, Mutation, Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { BookInput } from '@mimir/global-types';
+import { BookInput, ProlongTimeInput } from '@mimir/global-types';
+import { Error } from '@mimir/global-types';
 import { ItemService } from './item.service';
 import { Status } from '../statuses/status.entity';
 
@@ -26,6 +27,11 @@ export class ItemResolver {
   @Query(() => [Status])
   async getAllTakenItems(@Args('person_id') person_id: number) {
     return this.itemService.getAllTakenItems(person_id);
+  }
+
+  @Mutation(() => Status)
+  async prolongClaimPeriod(@Args('input') prolongInput: ProlongTimeInput) {
+    return this.itemService.prolong(prolongInput);
   }
 
   @Mutation(() => Status)

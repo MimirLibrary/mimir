@@ -18,6 +18,7 @@ export const isOverdue = (date: Date) =>
 export const getStatus = (status: string | undefined, date: any) => {
   if (!status) return null;
   if (status === 'Free') return 'Free';
+  if (status === 'Prolong') return 'Prolong';
   if (isOverdue(date)) return 'Busy';
   return 'Overdue';
 };

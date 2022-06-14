@@ -15,6 +15,8 @@ export const StyledBookStatus = styled.p<IStyledBookStatusProps>`
         return colors.free_book;
       case 'Busy':
         return colors.accent_color;
+      case 'Prolong':
+        return colors.accent_color;
       case 'Overdue':
         return colors.problem_red;
       default:
