@@ -12,6 +12,7 @@ export default {
   logging: false,
   seeds: ['packages/apiserver/src/seeding/seeds/**/*.ts'],
   factories: ['packages/apiserver/src/seeding/factories/**/*.ts'],
+  migrations: ['packages/apiserver/src/migrations/**/*.ts'],
   cli: {
     migrationsDir: 'packages/apiserver/src/migrations',
   },
