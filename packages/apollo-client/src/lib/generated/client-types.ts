@@ -226,6 +226,7 @@ export type Mutation = {
   createNotification?: Maybe<Notification>;
   createPerson: Person;
   createStatus: Status;
+  prolongClaimPeriod: BookUnionResult;
   removeNotification?: Maybe<Notification>;
   returnItem: BookUnionResult;
 };
@@ -256,6 +257,11 @@ export type MutationCreateStatusArgs = {
 };
 
 
+export type MutationProlongClaimPeriodArgs = {
+  input?: InputMaybe<ProlongTimeInput>;
+};
+
+
 export type MutationRemoveNotificationArgs = {
   input: RemoveNotificationInput;
 };
@@ -283,6 +289,11 @@ export type Person = {
   smg_id: Scalars['String'];
   statuses?: Maybe<Array<Maybe<Status>>>;
   type: Scalars['String'];
+};
+
+export type ProlongTimeInput = {
+  material_id: Scalars['Int'];
+  person_id: Scalars['Int'];
 };
 
 export type Query = {
@@ -358,6 +369,14 @@ export type ClaimBookMutationVariables = Exact<{
 
 export type ClaimBookMutation = { __typename?: 'Mutation', claimBook: { __typename?: 'Error', message: string } | { __typename?: 'Status', created_at: any, status: string } };
 
+export type ProlongTimeMutationVariables = Exact<{
+  person_id: Scalars['Int'];
+  material_id: Scalars['Int'];
+}>;
+
+
+export type ProlongTimeMutation = { __typename?: 'Mutation', prolongClaimPeriod: { __typename?: 'Error', message: string } | { __typename?: 'Status', created_at: any, status: string } };
+
 export type ReturnBookMutationVariables = Exact<{
   identifier: Scalars['String'];
   person_id: Scalars['Int'];
@@ -383,7 +402,7 @@ export type GetMaterialByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetMaterialByIdQuery = { __typename?: 'Query', getMaterialById: { __typename?: 'Material', identifier: string, picture?: string | null, title: string, author: string, category: string, created_at: any, statuses: Array<{ __typename?: 'Status', id: string, person_id: number, status: string, created_at: any } | null> } };
+export type GetMaterialByIdQuery = { __typename?: 'Query', getMaterialById: { __typename?: 'Material', id: string, identifier: string, picture?: string | null, title: string, author: string, category: string, created_at: any, statuses: Array<{ __typename?: 'Status', id: string, person_id: number, status: string, created_at: any } | null> } };
 
 
 export const ClaimBookDocument = gql`
@@ -426,6 +445,46 @@ export function useClaimBookMutation(baseOptions?: Apollo.MutationHookOptions<Cl
 export type ClaimBookMutationHookResult = ReturnType<typeof useClaimBookMutation>;
 export type ClaimBookMutationResult = Apollo.MutationResult<ClaimBookMutation>;
 export type ClaimBookMutationOptions = Apollo.BaseMutationOptions<ClaimBookMutation, ClaimBookMutationVariables>;
+export const ProlongTimeDocument = gql`
+    mutation ProlongTime($person_id: Int!, $material_id: Int!) {
+  prolongClaimPeriod(input: {material_id: $material_id, person_id: $person_id}) {
+    ... on Status {
+      created_at
+      status
+    }
+    ... on Error {
+      message
+    }
+  }
+}
+    `;
+export type ProlongTimeMutationFn = Apollo.MutationFunction<ProlongTimeMutation, ProlongTimeMutationVariables>;
+
+/**
+ * __useProlongTimeMutation__
+ *
+ * To run a mutation, you first call `useProlongTimeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useProlongTimeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [prolongTimeMutation, { data, loading, error }] = useProlongTimeMutation({
+ *   variables: {
+ *      person_id: // value for 'person_id'
+ *      material_id: // value for 'material_id'
+ *   },
+ * });
+ */
+export function useProlongTimeMutation(baseOptions?: Apollo.MutationHookOptions<ProlongTimeMutation, ProlongTimeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ProlongTimeMutation, ProlongTimeMutationVariables>(ProlongTimeDocument, options);
+      }
+export type ProlongTimeMutationHookResult = ReturnType<typeof useProlongTimeMutation>;
+export type ProlongTimeMutationResult = Apollo.MutationResult<ProlongTimeMutation>;
+export type ProlongTimeMutationOptions = Apollo.BaseMutationOptions<ProlongTimeMutation, ProlongTimeMutationVariables>;
 export const ReturnBookDocument = gql`
     mutation ReturnBook($identifier: String!, $person_id: Int!) {
   returnItem(input: {identifier: $identifier, person_id: $person_id}) {
@@ -564,6 +623,7 @@ export type GetAllTakenItemsQueryResult = Apollo.QueryResult<GetAllTakenItemsQue
 export const GetMaterialByIdDocument = gql`
     query GetMaterialById($id: ID!) {
   getMaterialById(id: $id) {
+    id
     identifier
     picture
     title

@@ -1,10 +1,10 @@
-mutation ReturnBook($identifier: String!, $person_id: Int!){
-  returnItem(input: {identifier: $identifier, person_id: $person_id}){
-    ... on Status{
+mutation ReturnBook($identifier: String!, $person_id: Int!) {
+  returnItem(input: { identifier: $identifier, person_id: $person_id }) {
+    ... on Status {
       created_at
       status
     }
-    ... on Error{
+    ... on Error {
       message
     }
   }

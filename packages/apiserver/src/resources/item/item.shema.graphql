@@ -3,6 +3,11 @@ input BookInput {
   person_id: Int!
 }
 
+input ProlongTimeInput {
+  person_id: Int!
+  material_id: Int!
+}
+
 extend type Query {
   getAllTakenItems(person_id: Int!): [Status]!
 }
@@ -10,4 +15,5 @@ extend type Query {
 extend type Mutation {
   claimBook(input: BookInput): BookUnionResult!
   returnItem(input: BookInput): BookUnionResult!
+  prolongClaimPeriod(input: ProlongTimeInput): BookUnionResult!
 }

@@ -25,6 +25,15 @@ const BookStatus: FC<IBookStatusProps> = ({ status, date }) => {
         setStatusText(`Return till ${day}.${month}`);
         break;
       }
+      case 'Prolong': {
+        const day = `${getDates(date).returnDate.getDate()}`.padStart(2, '0');
+        const month = `${getDates(date).returnDate.getMonth() + 1}`.padStart(
+          2,
+          '0'
+        );
+        setStatusText(`Return till: ${day}.${month}`);
+        break;
+      }
       case 'Overdue':
         setStatusText('Overdue');
         break;

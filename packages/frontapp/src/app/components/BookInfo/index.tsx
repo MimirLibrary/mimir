@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import bookImage from '../../../assets/MOC-data/BookImage.png';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { ReactComponent as Claim } from '../../../assets/claim.svg';
 import Button from '../Button';
@@ -13,6 +13,7 @@ import {
   GetAllTakenItemsDocument,
   GetMaterialByIdDocument,
   useClaimBookMutation,
+  useProlongTimeMutation,
   useReturnBookMutation,
 } from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
@@ -125,6 +126,7 @@ const StyledButton = styled(Button)`
 `;
 
 interface IBookInfoProps {
+  person_id: number | undefined;
   src: string | null | undefined;
   title: string | undefined;
   description: string | undefined;
@@ -132,6 +134,7 @@ interface IBookInfoProps {
   author: string | undefined;
   category: string | string[] | undefined;
   identifier: string;
+  material_id: string;
   created_at: any;
 }
 
@@ -144,26 +147,44 @@ const BookInfo: FC<IBookInfoProps> = ({
   category,
   identifier,
   created_at,
+  material_id,
+  person_id,
 }) => {
   const { id } = useAppSelector((state) => state.user);
   const [statusText, setStatusText] = useState<string>('');
   const [isShowClaimModal, setIsShowClaimModal] = useState<boolean>(false);
   const [isShowSuccessClaim, setIsShowSuccessClaim] = useState<boolean>(false);
-  const [isShowErrorMessage, setIsShowErrorMessage] = useState<boolean>(false);
+  const [isShowErrorMessageOfClaiming, setIsShowErrorMessageOfClaiming] =
+    useState<boolean>(false);
   const [isShowSuccessReturn, setIsSuccessReturn] = useState<boolean>(false);
+  const [isShowSuccessExtend, setIsSuccessExtend] = useState<boolean>(false);
+  const [isShowErrorMessageOfExtending, setIsShowErrorMessageOfExtending] =
+    useState<boolean>(false);
   const [valueIsISBN, setValueIsISBN] = useState<string>('');
+
   const [claimBook, { data }] = useClaimBookMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
   const [returnBook, infoReturnBook] = useReturnBookMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
+  const [prolongTime, { data: infoOfProlong }] = useProlongTimeMutation({
+    refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
+  });
 
   const currentStatus = getStatus(status, created_at);
   const dateConditionOfClaiming =
     data?.claimBook.__typename === 'Status' ? data.claimBook.created_at : null;
+  const dateConditionOfExtending =
+    infoOfProlong?.prolongClaimPeriod.__typename === 'Status'
+      ? infoOfProlong?.prolongClaimPeriod.created_at
+      : null;
   const errorConditionOfClaiming =
     data?.claimBook.__typename === 'Error' ? data.claimBook.message : null;
+  const errorConditionOfExtending =
+    infoOfProlong?.prolongClaimPeriod.__typename === 'Error'
+      ? infoOfProlong?.prolongClaimPeriod.message
+      : null;
 
   const claim = async () => {
     await claimBook({
@@ -185,12 +206,29 @@ const BookInfo: FC<IBookInfoProps> = ({
     setIsSuccessReturn(true);
   };
 
+  const prolongPeriod = async () => {
+    await prolongTime({
+      variables: {
+        person_id: id,
+        material_id: Number(material_id),
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (infoOfProlong?.prolongClaimPeriod.__typename === 'Status') {
+      setIsSuccessExtend(true);
+    } else if (infoOfProlong?.prolongClaimPeriod.__typename === 'Error') {
+      setIsShowErrorMessageOfExtending(true);
+    }
+  }, [infoOfProlong]);
+
   useEffect(() => {
     setIsShowClaimModal(false);
     if (data?.claimBook.__typename === 'Status') {
       setIsShowSuccessClaim(true);
     } else if (data?.claimBook.__typename === 'Error') {
-      setIsShowErrorMessage(true);
+      setIsShowErrorMessageOfClaiming(true);
     }
   }, [data]);
 
@@ -210,6 +248,17 @@ const BookInfo: FC<IBookInfoProps> = ({
         setStatusText(`Return till: ${day}.${month}`);
         break;
       }
+      case 'Prolong': {
+        const day = `${getDates(created_at).returnDate.getDate()}`.padStart(
+          2,
+          '0'
+        );
+        const month = `${
+          getDates(created_at).returnDate.getMonth() + 1
+        }`.padStart(2, '0');
+        setStatusText(`Return till: ${day}.${month}`);
+        break;
+      }
       case 'Overdue':
         setStatusText('Overdue');
         break;
@@ -219,9 +268,9 @@ const BookInfo: FC<IBookInfoProps> = ({
     }
   }, [currentStatus]);
 
-  const showClaimModal = () => {
+  const showClaimModal = useCallback(() => {
     setIsShowClaimModal(true);
-  };
+  }, [isShowSuccessClaim]);
 
   return (
     <>
@@ -241,20 +290,27 @@ const BookInfo: FC<IBookInfoProps> = ({
               </StatusInfoDescription>
             </ShortDescription>
           </WrapperInfo>
-          <WrapperButtons>
-            {status !== 'Free' ? (
-              <>
-                <StyledButton value="Return a book" onClick={retrieveBook} />
-                <StyledButton value="Extend claim period" transparent />
-              </>
-            ) : (
-              <StyledButton
-                value="Claim a book"
-                svgComponent={<Claim />}
-                onClick={showClaimModal}
-              />
-            )}
-          </WrapperButtons>
+          {person_id === id ? (
+            <WrapperButtons>
+              {status !== 'Free' ? (
+                <>
+                  <StyledButton value="Return a book" onClick={retrieveBook} />
+                  <StyledButton
+                    value="Extend claim period"
+                    transparent
+                    onClick={prolongPeriod}
+                  />
+                </>
+              ) : null}
+            </WrapperButtons>
+          ) : null}
+          {status === 'Free' ? (
+            <StyledButton
+              value="Claim a book"
+              svgComponent={<Claim />}
+              onClick={showClaimModal}
+            />
+          ) : null}
         </ShortDescriptionWrapper>
         <LongDescription>
           <Topic>Description: </Topic>
@@ -281,16 +337,38 @@ const BookInfo: FC<IBookInfoProps> = ({
           created_at={dateConditionOfClaiming}
         />
       </Modal>
-      <Modal active={isShowErrorMessage} setActive={setIsShowErrorMessage}>
+      <Modal
+        active={isShowErrorMessageOfClaiming}
+        setActive={setIsShowErrorMessageOfClaiming}
+      >
         <ErrorMessage
+          title="Something goes wrong with your claiming"
           message={errorConditionOfClaiming}
-          setActive={setIsShowErrorMessage}
+          setActive={setIsShowErrorMessageOfClaiming}
         />
       </Modal>
       <Modal active={isShowSuccessReturn} setActive={setIsSuccessReturn}>
         <SuccessMessage
           setActive={setIsSuccessReturn}
           title="You have successfully return the book"
+        />
+      </Modal>
+      <Modal active={isShowSuccessExtend} setActive={setIsSuccessExtend}>
+        <SuccessMessage
+          setActive={setIsSuccessExtend}
+          created_at={dateConditionOfExtending}
+          title="You have successfully extend claim period"
+          description="Enjoy reading and don't forget to return this by"
+        />
+      </Modal>
+      <Modal
+        active={isShowErrorMessageOfExtending}
+        setActive={setIsShowErrorMessageOfExtending}
+      >
+        <ErrorMessage
+          title="Something goes wrong with your extending"
+          message={errorConditionOfExtending}
+          setActive={setIsShowErrorMessageOfExtending}
         />
       </Modal>
     </>
