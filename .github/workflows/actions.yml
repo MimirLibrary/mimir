@@ -38,6 +38,7 @@ jobs:
           path: ./dist/frontapp/
           key: frontapp # FIXME Enable proper keying to utilize cache hits
   deploy-web:
+    environment: Staging
     needs: main
     runs-on: ubuntu-latest
     steps:
