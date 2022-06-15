@@ -18,6 +18,7 @@ import {
 } from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import ErrorMessage from '../ErrorMessge';
+import AskManagerForm from '../AskManagerForm';
 
 const BookHolder = styled.div`
   max-width: 62.5rem;
@@ -154,6 +155,7 @@ const BookInfo: FC<IBookInfoProps> = ({
   const { id } = useAppSelector((state) => state.user);
   const [statusText, setStatusText] = useState<string>('');
   const [isShowClaimModal, setIsShowClaimModal] = useState<boolean>(false);
+  const [isShowAskManger, setIsShowAskManager] = useState<boolean>(false);
   const [isShowSuccessClaim, setIsShowSuccessClaim] = useState<boolean>(false);
   const [isShowErrorMessageOfClaiming, setIsShowErrorMessageOfClaiming] =
     useState<boolean>(false);
@@ -269,6 +271,11 @@ const BookInfo: FC<IBookInfoProps> = ({
     }
   }, [currentStatus]);
 
+  const showAskManagerModal = () => {
+    setIsShowErrorMessageOfClaiming(false);
+    setIsShowAskManager(true);
+  };
+
   const showClaimModal = useCallback(() => {
     setIsShowClaimModal(true);
   }, [isShowSuccessClaim]);
@@ -346,6 +353,7 @@ const BookInfo: FC<IBookInfoProps> = ({
           title="Something goes wrong with your claiming"
           message={errorConditionOfClaiming}
           setActive={setIsShowErrorMessageOfClaiming}
+          onClick={showAskManagerModal}
         />
       </Modal>
       <Modal active={isShowSuccessReturn} setActive={setIsSuccessReturn}>
@@ -371,6 +379,9 @@ const BookInfo: FC<IBookInfoProps> = ({
           message={errorConditionOfExtending}
           setActive={setIsShowErrorMessageOfExtending}
         />
+      </Modal>
+      <Modal active={isShowAskManger} setActive={setIsShowAskManager}>
+        <AskManagerForm setActive={setIsShowAskManager} />
       </Modal>
     </>
   );

@@ -68,12 +68,14 @@ interface IPropsErrorMessage {
   setActive: React.Dispatch<React.SetStateAction<boolean>>;
   message: string | null;
   title: string;
+  onClick?: () => void;
 }
 
 const ErrorMessage: FC<IPropsErrorMessage> = ({
   setActive,
   message,
   title,
+  onClick,
 }) => {
   const closeModal = () => {
     setActive(false);
@@ -93,7 +95,7 @@ const ErrorMessage: FC<IPropsErrorMessage> = ({
         </WrapperInfo>
         <WrapperButtons>
           <StyledButton value="Ok" onClick={closeModal} />
-          <StyledButton value="Ask a manager" transparent />
+          <StyledButton value="Ask a manager" transparent onClick={onClick} />
         </WrapperButtons>
       </WrapperErrorClaim>
     </Wrapper>

@@ -1,0 +1,22 @@
+type Message {
+  id: ID!
+  material_id: Int!
+  person_id: Int!
+  created_at: DateTime!
+  person: Person!
+  material: Material!
+  title: String!
+  message: String!
+}
+
+input CreateMessageInput{
+  title: String!
+  message: String!
+  material_id: Int!
+  person_id: Int!
+}
+
+
+extend type Mutation {
+  createMessageForManage(input: CreateMessageInput!): MessageUnionResult!
+}
