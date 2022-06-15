@@ -54,14 +54,12 @@ const CategoriesList: FC<ICategoriesListProps> = ({ allCategories }) => {
         <Header>Books</Header>
         <List>
           {allCategories &&
-            Object.keys(allCategories).map(function (category) {
-              return (
-                <Category key={category}>
-                  {category}
-                  <Count> {allCategories[category]}</Count>
-                </Category>
-              );
-            })}
+            Object.keys(allCategories).map((category) => (
+              <Category key={category}>
+                {category}
+                <Count> {allCategories[category]}</Count>
+              </Category>
+            ))}
         </List>
       </Categories>
       <Categories flex="1">
