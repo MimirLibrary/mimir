@@ -1,10 +1,5 @@
 set -xe
 cd ~/mimir
-git pull
-screen -r
-PID=$!
-sleep 2
-kill -INT -$PID
-npx nx run-many --target build --projects apisever,frontapp
-docker-compose up -d
-npx nx serve apiserver
+git pull # pull main
+npx nx affected --target build --projects apisever,frontapp --base=main~1 --head=main # rn build only on affected projects
+docker-compose restart
