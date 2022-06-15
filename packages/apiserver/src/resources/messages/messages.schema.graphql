@@ -9,14 +9,13 @@ type Message {
   message: String!
 }
 
-input CreateMessageInput{
+input CreateMessageInput {
   title: String!
   message: String!
   material_id: Int!
   person_id: Int!
 }
 
-
 extend type Mutation {
-  createMessageForManage(input: CreateMessageInput!): MessageUnionResult!
+  createMessageForManager(input: CreateMessageInput!): MessageUnionResult!
 }
