@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
-
+import { useNavigate } from 'react-router-dom';
 interface IStyledContainerProps {
   flex: string | null;
 }
@@ -40,6 +40,7 @@ const Category = styled.h3`
   color: ${colors.accent_color};
   display: flex;
   gap: ${dimensions.base};
+  cursor: pointer;
 `;
 const Count = styled.p`
   font-size: 16px;
@@ -48,6 +49,10 @@ const Count = styled.p`
 `;
 
 const CategoriesList: FC<ICategoriesListProps> = ({ allCategories }) => {
+  const navigate = useNavigate();
+  const handleItemRedirect = (category: string) => {
+    navigate(`/category/${category}`);
+  };
   return (
     <CategoriesWrapper>
       <Categories flex="2">
@@ -55,7 +60,10 @@ const CategoriesList: FC<ICategoriesListProps> = ({ allCategories }) => {
         <List>
           {allCategories &&
             Object.keys(allCategories).map((category) => (
-              <Category key={category}>
+              <Category
+                key={category}
+                onClick={() => handleItemRedirect(category)}
+              >
                 {category}
                 <Count> {allCategories[category]}</Count>
               </Category>
