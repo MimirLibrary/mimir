@@ -9,7 +9,7 @@ interface IUserState {
 const initialState: IUserState = {
   id: 5,
   username: '',
-  userRole: 'reader',
+  userRole: 'manager',
 };
 
 const userSlice = createSlice({
@@ -18,6 +18,7 @@ const userSlice = createSlice({
   reducers: {
     setUser: (state: IUserState, action: PayloadAction<string>) => {
       state.username = action.payload;
+      state.userRole = 'manager';
     },
   },
 });
