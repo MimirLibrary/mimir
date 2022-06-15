@@ -18,7 +18,6 @@ const userSlice = createSlice({
   reducers: {
     setUser: (state: IUserState, action: PayloadAction<string>) => {
       state.username = action.payload;
-      state.userRole = 'manager';
     },
   },
 });

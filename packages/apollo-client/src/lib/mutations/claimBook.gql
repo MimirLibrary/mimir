@@ -1,10 +1,10 @@
-mutation ClaimBook($identifier: String!, $person_id: Int!){
-  claimBook(input: {identifier: $identifier, person_id: $person_id}){
-    ... on Status{
+mutation ClaimBook($identifier: String!, $person_id: Int!) {
+  claimBook(input: { identifier: $identifier, person_id: $person_id }) {
+    ... on Status {
       created_at
       status
     }
-    ... on Error{
+    ... on Error {
       message
     }
   }

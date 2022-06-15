@@ -38,6 +38,7 @@ const StyledLink = styled(Link)<IStyle>`
 
   :hover svg {
     fill: ${colors.bg_secondary};
+    stroke: ${colors.bg_secondary};
   }
 
   :hover p {
