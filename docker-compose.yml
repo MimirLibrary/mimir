@@ -2,7 +2,7 @@ version: '3.9'
 services:
   postgres:
     image: postgres
-    env_file: .staging.env
+    env_file: .${NODE_ENV}.env
     volumes:
       - db:/var/lib/postgresql/data
     ports:
@@ -12,7 +12,7 @@ services:
     build:
       context: .
       dockerfile: apiserver.Dockerfile
-    env_file: .local.env
+    env_file: .${NODE_ENV}.env
     ports:
       - '3333:3333'
     depends_on:
