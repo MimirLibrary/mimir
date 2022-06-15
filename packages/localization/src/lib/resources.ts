@@ -21,7 +21,7 @@ export const resources = {
       NavbarManager: {
         Home: 'Home',
         Readers: 'Readers',
-        'Books/stuff': 'Books/stuff',
+        Library: 'Library',
         'Donates from user': 'Donates from user',
         'Add item to library': 'Add item to library',
         Settings: 'Settings',

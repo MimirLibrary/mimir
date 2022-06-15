@@ -5,7 +5,7 @@ export enum NavbarItems {
   HISTORY_OF_DONATE = 'History of donate',
   SETTINGS = 'Settings',
   READERS = 'Readers',
-  BOOKS_STUFF = 'Books/stuff',
+  BOOKS_STUFF = 'Library',
   DONATES_FROM_USER = 'Donates from user',
   CREATE_NEW_ITEM = 'Add item to library',
 }
