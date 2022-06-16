@@ -53,7 +53,7 @@ jobs:
       - name: rsync deployments
         uses: burnett01/rsync-deployments@5.2
         with:
-          switches: -avzr --delete
+          switches: -avzr --delete --chown=www-data:www-data
           path: dist/packages/frontapp/
           remote_path: /srv/www
           remote_host: ${{ secrets.SSH_HOST }}
