@@ -31,6 +31,9 @@ jobs:
       - run: npx env-cmd -f .staging.env npx nx affected --target=build --parallel --max-parallel=3
       - run: npx env-cmd -f .staging.env npx nx affected --target=test --parallel --max-parallel=2
       - run: npx nx-cloud stop-all-agents
+      - run: |
+          pwd
+          ls
       - name: Cache Web App
         id: web-app
         uses: actions/cache@v3
