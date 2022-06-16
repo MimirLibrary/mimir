@@ -163,6 +163,8 @@ const BookInfo: FC<IBookInfoProps> = ({
   const [isShowSuccessExtend, setIsSuccessExtend] = useState<boolean>(false);
   const [isShowErrorMessageOfExtending, setIsShowErrorMessageOfExtending] =
     useState<boolean>(false);
+  const [isShowWindowReportedToManager, setIsShowWindowReportedToManager] =
+    useState<boolean>(false);
   const [valueIsISBN, setValueIsISBN] = useState<string>('');
 
   const [claimBook, { data }] = useClaimBookMutation({
@@ -276,9 +278,13 @@ const BookInfo: FC<IBookInfoProps> = ({
     setIsShowAskManager(true);
   };
 
+  const closeReportedManager = useCallback(() => {
+    setIsShowWindowReportedToManager(false);
+  }, []);
+
   const showClaimModal = useCallback(() => {
     setIsShowClaimModal(true);
-  }, [isShowSuccessClaim]);
+  }, []);
 
   return (
     <>
@@ -352,6 +358,7 @@ const BookInfo: FC<IBookInfoProps> = ({
         <ErrorMessage
           title="Something goes wrong with your claiming"
           message={errorConditionOfClaiming}
+          titleCancel="Ask a manager"
           setActive={setIsShowErrorMessageOfClaiming}
           onClick={showAskManagerModal}
         />
@@ -378,10 +385,27 @@ const BookInfo: FC<IBookInfoProps> = ({
           title="Something goes wrong with your extending"
           message={errorConditionOfExtending}
           setActive={setIsShowErrorMessageOfExtending}
+          titleCancel="Close"
         />
       </Modal>
       <Modal active={isShowAskManger} setActive={setIsShowAskManager}>
-        <AskManagerForm setActive={setIsShowAskManager} />
+        <AskManagerForm
+          setActive={setIsShowAskManager}
+          setSuccessModal={setIsShowWindowReportedToManager}
+          material_id={material_id}
+        />
+      </Modal>
+      <Modal
+        active={isShowWindowReportedToManager}
+        setActive={setIsShowWindowReportedToManager}
+      >
+        <ErrorMessage
+          title="We reported the problem to the manager"
+          message="The problem will be solved soon"
+          setActive={setIsShowWindowReportedToManager}
+          titleCancel="Close"
+          onClick={closeReportedManager}
+        />
       </Modal>
     </>
   );

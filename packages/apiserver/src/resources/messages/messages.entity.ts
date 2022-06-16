@@ -10,7 +10,7 @@ import {
 import { Material } from '../materials/material.entity';
 import { Person } from '../persons/person.entity';
 
-@Entity('messages')
+@Entity('message')
 export class Message extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
@@ -27,11 +27,11 @@ export class Message extends BaseEntity {
   @Column()
   message!: string;
 
-  @ManyToOne(() => Material, (material) => material.notification)
+  @ManyToOne(() => Material, (material) => material.message)
   @JoinColumn({ name: 'material_id' })
   material!: Material;
 
-  @ManyToOne(() => Person, (person) => person.notification)
+  @ManyToOne(() => Person, (person) => person.message)
   @JoinColumn({ name: 'person_id' })
   person!: Person;
 

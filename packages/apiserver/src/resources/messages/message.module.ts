@@ -7,4 +7,4 @@ import { MessageResolver } from './messages.resolver';
   imports: [TypeOrmModule.forFeature([Message])],
   providers: [MessageResolver],
 })
-export class NotificationModule {}
+export class MessageModule {}

@@ -4,7 +4,8 @@ type Person {
   type: String!
   created_at: DateTime!
   statuses: [Status]
-  notifications: [Notification]
+  notifications: [Notification]!
+  messages: [Message]!
 }
 
 input CreatePersonInput {

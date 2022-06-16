@@ -11,6 +11,7 @@ type Material {
   category: String!
   statuses: [Status]!
   notifications: [Notification]!
+  messages: [Message]!
 }
 
 input CreateMaterialInput {

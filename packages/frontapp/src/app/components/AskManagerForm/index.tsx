@@ -1,8 +1,9 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import Button from '../Button';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { useAppSelector } from '../../hooks/useTypedSelector';
+import { useCreateMessageForManagerMutation } from '@mimir/apollo-client';
 
 const Wrapper = styled.div`
   display: flex;
@@ -92,12 +93,27 @@ const WrapperButtons = styled.div`
 
 interface IPropsAskManagerForm {
   setActive: React.Dispatch<React.SetStateAction<boolean>>;
+  setSuccessModal: React.Dispatch<React.SetStateAction<boolean>>;
+  material_id: string;
 }
 
-const AskManagerForm: FC<IPropsAskManagerForm> = ({ setActive }) => {
+const AskManagerForm: FC<IPropsAskManagerForm> = ({
+  setActive,
+  material_id,
+  setSuccessModal,
+}) => {
   const { id } = useAppSelector((state) => state.user);
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
+  const [createMessage, { data }] = useCreateMessageForManagerMutation();
+
+  useEffect(() => {
+    if (data?.createMessageForManager.__typename === 'Message') {
+      setActive(false);
+      setSuccessModal(true);
+    }
+    setActive(false);
+  }, [data]);
 
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -113,12 +129,16 @@ const AskManagerForm: FC<IPropsAskManagerForm> = ({ setActive }) => {
     setActive(false);
   };
 
-  const onSubmit = (e: React.SyntheticEvent) => {
+  const onSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    const obj = {
-      title,
-      description,
-    };
+    await createMessage({
+      variables: {
+        title,
+        message: description,
+        person_id: id,
+        material_id: Number(material_id),
+      },
+    });
     setDescription('');
     setTitle('');
   };

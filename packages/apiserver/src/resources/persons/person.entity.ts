@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { Notification } from '../notifications/notification.entity';
 import { Status } from '../statuses/status.entity';
+import { Message } from '../messages/messages.entity';
 
 @Entity('person')
 export class Person extends BaseEntity {
@@ -28,4 +29,7 @@ export class Person extends BaseEntity {
 
   @OneToMany(() => Notification, (notification) => notification.person)
   notification: Notification[];
+
+  @OneToMany(() => Message, (message) => message.person)
+  message: Message[];
 }

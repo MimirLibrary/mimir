@@ -90,7 +90,6 @@ const NavbarItem: FC<IProps> = ({
   const { userRole } = useAppSelector((state) => state.user);
   const { activeTab } = useAppSelector((state) => state.tabs);
 
-  console.log(t(`NavbarReader.${name}`));
   return (
     <StyledLink
       primary={String(index === activeTab)}

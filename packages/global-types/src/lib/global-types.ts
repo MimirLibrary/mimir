@@ -69,7 +69,7 @@ export interface IMutation {
     returnItem(input?: Nullable<BookInput>): BookUnionResult | Promise<BookUnionResult>;
     prolongClaimPeriod(input?: Nullable<ProlongTimeInput>): BookUnionResult | Promise<BookUnionResult>;
     createMaterial(input: CreateMaterialInput): Material | Promise<Material>;
-    createMessageForManage(input: CreateMessageInput): MessageUnionResult | Promise<MessageUnionResult>;
+    createMessageForManager(input: CreateMessageInput): MessageUnionResult | Promise<MessageUnionResult>;
     createNotification(input: CreateNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
     removeNotification(input: RemoveNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
     createPerson(input: CreatePersonInput): Person | Promise<Person>;
@@ -89,6 +89,7 @@ export interface Material {
     category: string;
     statuses: Nullable<Status>[];
     notifications: Nullable<Notification>[];
+    messages: Nullable<Message>[];
 }
 
 export interface Message {
@@ -117,7 +118,8 @@ export interface Person {
     type: string;
     created_at: DateTime;
     statuses?: Nullable<Nullable<Status>[]>;
-    notifications?: Nullable<Nullable<Notification>[]>;
+    notifications: Nullable<Notification>[];
+    messages: Nullable<Message>[];
 }
 
 export interface Status {

@@ -21,13 +21,15 @@ import {
   typeDefs as scalarTypeDefs,
   resolvers as scalarResolvers,
 } from 'graphql-scalars';
+import { MessageModule } from '../resources/messages/message.module';
+import { Message } from '../resources/messages/messages.entity';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     TypeOrmModule.forRoot({
       ...typeorm,
-      entities: [Person, Material, Status, Notification],
+      entities: [Person, Material, Status, Notification, Message],
       migrations: [`${__dirname}/packages/apiserver/src/migrations/*.ts`],
     }),
     MaterialModule,
@@ -35,6 +37,7 @@ import {
     PersonModule,
     ItemModule,
     NotificationModule,
+    MessageModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],
