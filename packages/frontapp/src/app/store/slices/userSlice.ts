@@ -9,7 +9,7 @@ interface IUserState {
 const initialState: IUserState = {
   id: 5,
   username: '',
-  userRole: 'reader',
+  userRole: 'manager',
 };
 
 const userSlice = createSlice({
