@@ -10,9 +10,12 @@ import { Material } from './material.entity';
 import { Status } from '../statuses/status.entity';
 import { CreateMaterialInput } from '@mimir/global-types';
 import { Notification } from '../notifications/notification.entity';
+import { MaterialService } from './material.service';
 
 @Resolver('Material')
 export class MaterialResolver {
+  constructor(private materialService: MaterialService) {}
+
   @Query(() => [Material])
   async getAllMaterials() {
     return Material.find();
@@ -21,6 +24,11 @@ export class MaterialResolver {
   @Query(() => Material)
   async getMaterialById(@Args('id') id: number | string) {
     return Material.findOneOrFail(id);
+  }
+
+  @Query(() => [Material])
+  async searchOfMaterials(@Args('search') search: string) {
+    return this.materialService.search(search);
   }
 
   @Mutation(() => Material)

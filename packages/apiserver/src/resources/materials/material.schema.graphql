@@ -22,6 +22,7 @@ input CreateMaterialInput {
 extend type Query {
   getAllMaterials: [Material]!
   getMaterialById(id: ID!): Material!
+  searchOfMaterials(search: String!): [Material]
 }
 
 extend type Mutation {

@@ -1,0 +1,15 @@
+query SearchOfMaterials($search: String!){
+  searchOfMaterials(search:$search){
+    title
+    created_at
+    picture
+    author
+    category
+    id
+    statuses {
+      id
+      created_at
+      status
+    }
+  }
+}

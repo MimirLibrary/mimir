@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import BookCard from '../BookCard';
 
-const WrapperList = styled.section`
+export const WrapperList = styled.section`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   row-gap: ${dimensions.base};
