@@ -1,4 +1,4 @@
-export class ClaimError extends Error {
+export class ErrorBook extends Error {
   constructor(message) {
     super(message);
   }

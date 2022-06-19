@@ -21,15 +21,45 @@ jobs:
           fetch-depth: 0
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         uses: nrwl/nx-set-shas@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
           node-version: '16'
+          cache: 'npm'
       - run: npm install
       - run: npm i env-cmd
       - run: npx nx-cloud start-ci-run
       - run: npx env-cmd -f .staging.env npx nx affected --target=build --parallel --max-parallel=3
       - run: npx env-cmd -f .staging.env npx nx affected --target=test --parallel --max-parallel=2
+      - name: Re-Build Web App # FIXME This should be a separate Workflow / Job
+        run: npx env-cmd -f .staging.env npx nx run frontapp:build:production
       - run: npx nx-cloud stop-all-agents
+      - name: Cache Web App
+        id: web-app
+        uses: actions/cache@v3
+        with:
+          path: dist/packages/frontapp/
+          key: frontapp # FIXME Enable proper keying to utilize cache hits
+  deploy-web:
+    environment: Staging
+    needs: main
+    runs-on: ubuntu-latest
+    steps:
+      - name: Restore cache
+        id: web-app
+        uses: actions/cache@v3
+        with:
+          path: dist/packages/frontapp/
+          key: frontapp # FIXME Enable proper keying to utilize cache hits
+      - name: rsync deployments
+        uses: burnett01/rsync-deployments@5.2
+        with:
+          switches: -avzr --delete --chown=www-data:www-data
+          path: dist/packages/frontapp/
+          remote_path: /srv/www
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_user: ${{ secrets.SSH_USER }}
+          remote_key: ${{ secrets.SSH_KEY }}
+          remote_key_pass: ${{ secrets.SSH_PASSPHRASE }}
   pr:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}
@@ -43,6 +73,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '16'
+          cache: 'npm'
       - run: npm install
       - run: npx nx-cloud start-ci-run
       - run: npx nx affected --target=build --parallel --max-parallel=3
