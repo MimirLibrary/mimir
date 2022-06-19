@@ -18,6 +18,7 @@ import {
 } from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import ErrorMessage from '../ErrorMessge';
+//import {RolesTypes} from "../../../utils/rolesTypes";
 
 const BookHolder = styled.div`
   max-width: 62.5rem;
@@ -151,7 +152,7 @@ const BookInfo: FC<IBookInfoProps> = ({
   material_id,
   person_id,
 }) => {
-  const { id } = useAppSelector((state) => state.user);
+  const { id, userRole } = useAppSelector((state) => state.user);
   const [statusText, setStatusText] = useState<string>('');
   const [isShowClaimModal, setIsShowClaimModal] = useState<boolean>(false);
   const [isShowSuccessClaim, setIsShowSuccessClaim] = useState<boolean>(false);
@@ -162,7 +163,6 @@ const BookInfo: FC<IBookInfoProps> = ({
   const [isShowErrorMessageOfExtending, setIsShowErrorMessageOfExtending] =
     useState<boolean>(false);
   const [valueIsISBN, setValueIsISBN] = useState<string>('');
-
   const [claimBook, { data }] = useClaimBookMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
