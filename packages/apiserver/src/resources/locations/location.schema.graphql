@@ -1,0 +1,23 @@
+type Location {
+  id: ID!
+  location: String!
+  persons: [Person]
+  materials: [Material]
+}
+
+input CreateLocationInput {
+  location: String!
+}
+
+input RemoveLocationInput {
+  location_id: Int!
+}
+
+extend type Query {
+  getAllLocations: [Location]!
+}
+
+extend type Mutation {
+  createLocation(input: CreateLocationInput!): Location
+  removeLocation(input: RemoveLocationInput!): Location
+}
