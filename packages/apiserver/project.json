@@ -16,6 +16,7 @@
         "production": {
           "optimization": true,
           "extractLicenses": true,
+          "generatePackageJson": true,
           "inspect": false,
           "fileReplacements": [
             {
