@@ -72,8 +72,7 @@ const DropdownContainer = styled.div`
 
 const OptionListWrapper = styled.div`
   cursor: auto;
-  box-sizing: border-box;
-  padding: ${dimensions.lg} ${dimensions.base};
+  overflow: hidden;
   background-color: ${colors.bg_secondary};
   top: calc(100% + ${dimensions.xs_2});
   width: 100%;
@@ -92,31 +91,30 @@ const OptionList = styled.div`
     cursor: pointer;
     display: inline-block;
     width: 100%;
-    padding: ${dimensions.xs_2} 0;
+    padding: ${dimensions.xs_1} 0 ${dimensions.xs_1} ${dimensions.base};
     line-height: ${dimensions.xl};
     color: ${colors.main_black};
 
-    &:first-child {
-      padding-top: 0;
-    }
-
-    &:last-child {
-      padding-bottom: 0;
+    &:hover {
+      background-color: #ededff;
     }
   }
 
   &::-webkit-scrollbar {
-    width: 4px;
-    position: absolute;
+    width: ${dimensions.xl_4};
 
     &-track {
       background-color: #dfdfdf;
-      border-radius: 2px;
+      border-radius: 999px;
+      border: ${dimensions.base} solid transparent;
+      background-clip: padding-box;
     }
 
     &-thumb {
+      border-radius: 999px;
       background-color: ${colors.accent_color};
-      border-radius: 2px;
+      border: ${dimensions.base} solid transparent;
+      background-clip: padding-box;
     }
   }
 `;
