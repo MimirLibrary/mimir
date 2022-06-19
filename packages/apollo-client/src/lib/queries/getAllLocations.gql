@@ -1,6 +1,6 @@
 query GetAllLocations {
   getAllLocations {
-    id,
+    id
     location
   }
 }
