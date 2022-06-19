@@ -8,13 +8,12 @@ services:
     ports:
       - '5432:5432'
 
-  frontapp:
-    build:
-      context: .
-      dockerfile: frontapp.Dockerfile
-    env_file: .${NODE_ENV}.env
+  web-srv:
+    image: nginx
     ports:
       - '80:80'
+    volumes:
+      - /srv/www:/usr/share/nginx/html:ro
 
 volumes:
   db:
