@@ -48,7 +48,7 @@ jobs:
       - run: npx env-cmd -f .staging.env npx nx affected --target=build --parallel --max-parallel=3
       - run: npx env-cmd -f .staging.env npx nx affected --target=test --parallel --max-parallel=2
         # Deploy part:
-      - run: npx env-cmd -f .staging.env npx nx build frontapp:build:production --parallel --max-parallel=3
+      - run: npx env-cmd -f .staging.env npx nx build frontapp:build:production
       - run: npx env-cmd -f .staging.env npx nx build apiserver:build:production --parallel --max-parallel=3
       - run: npx nx-cloud stop-all-agents
       - name: Rsync copy web
