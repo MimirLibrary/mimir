@@ -4,15 +4,13 @@ import { colors, dimensions, fonts } from '@mimir/ui-kit';
 import { ReactComponent as SearchIcon } from '../../../assets/Navbar/Search.svg';
 import Input from '../Input';
 import { t } from 'i18next';
-import {
-  useSearchOfMaterialsLazyQuery,
-  useSearchOfMaterialsQuery,
-} from '@mimir/apollo-client';
+import { useSearchOfMaterialsQuery } from '@mimir/apollo-client';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/useTypedDispatch';
 import { setActiveTab } from '../../store/slices/tabsSlice';
 import { setSearchMaterials } from '../../store/slices/materialsSlice';
 import { useDebounce } from '../../hooks/useDebounce';
+import { RoutesTypes } from '../../../utils/routes';
 
 const InputSearch = styled(Input)`
   width: 19rem;
@@ -91,14 +89,14 @@ const Search = () => {
 
   const redirectToSearchByKey = (e: React.KeyboardEvent<HTMLImageElement>) => {
     if (e.key === 'Enter') {
-      navigate('/search');
+      navigate(`${RoutesTypes.SEARCH}_by_${search}`);
       dispatch(setActiveTab(1));
     }
   };
 
   const redirectToSearchByClick = () => {
     if (search) {
-      navigate('/search');
+      navigate(`${RoutesTypes.SEARCH}_by_${search}`);
       dispatch(setActiveTab(1));
     }
   };

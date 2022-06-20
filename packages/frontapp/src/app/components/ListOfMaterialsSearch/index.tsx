@@ -1,7 +1,6 @@
-import React, { FC } from 'react';
+import React from 'react';
 import BookCard from '../BookCard';
 import { WrapperList } from '../ListBooks';
-import { IMaterialState } from '../../types/materilsTypes';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 
 const ListOfMaterialsSearch = () => {

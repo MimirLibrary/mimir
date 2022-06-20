@@ -9,7 +9,7 @@ export const WrapperList = styled.section`
   row-gap: ${dimensions.base};
   column-gap: ${dimensions.base_2};
   width: 100%;
-  max-height: 20rem;
+  max-height: 42.25rem;
   height: 100%;
   overflow-y: auto;
 
