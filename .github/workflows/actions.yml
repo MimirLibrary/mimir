@@ -79,9 +79,9 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            source /root/.bashrc
-            cd /srv/apiserver/
+            source ~/.nvm/nvm.sh
             nvm use 16
+            cd /srv/apiserver/
             npm i --force
             export POSTGRES_USER=${{ secrets.DB_USER }}
             export POSTGRES_PASSWORD=${{ secrets.DB_PASSWORD }}
