@@ -81,6 +81,9 @@ jobs:
           script: |
             cd /srv/apiserver/
             npm i --force
+            export POSTGRES_USER=${{ secrets.DB_USER }}
+            export POSTGRES_PASSWORD=${{ secrets.DB_PASSWORD }}
+            pm2 restart apisrv
   pr:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}

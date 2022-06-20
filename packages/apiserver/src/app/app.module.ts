@@ -21,7 +21,6 @@ import {
   typeDefs as scalarTypeDefs,
   resolvers as scalarResolvers,
 } from 'graphql-scalars';
-import pg from 'pg'; // Required for correct package.json generation
 
 @Module({
   imports: [
