@@ -79,6 +79,7 @@
     "babel-loader": "8.1.0",
     "cypress": "^9.1.0",
     "detox": "19.6.5",
+    "env-cmd": "^10.1.0",
     "eslint": "~8.7.0",
     "eslint-config-prettier": "8.1.0",
     "eslint-plugin-cypress": "^2.10.3",
