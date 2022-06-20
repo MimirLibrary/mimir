@@ -80,7 +80,7 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             cd /srv/apiserver/
-            npm ci
+            npm i --force
   pr:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}

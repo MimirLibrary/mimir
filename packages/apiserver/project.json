@@ -2,6 +2,7 @@
   "root": "packages/apiserver",
   "sourceRoot": "packages/apiserver/src",
   "projectType": "application",
+  "implicitDependencies": ["pg"],
   "targets": {
     "build": {
       "executor": "@nrwl/node:webpack",
@@ -10,7 +11,14 @@
         "outputPath": "dist/packages/apiserver",
         "main": "packages/apiserver/src/main.ts",
         "tsConfig": "packages/apiserver/tsconfig.app.json",
-        "assets": ["packages/apiserver/src/assets"]
+        "assets": [
+            "packages/apiserver/src/assets",
+            {
+              "glob": "**/*.graphql",
+              "input": "packages/apiserver",
+              "output": "gql"
+            }
+        ]
       },
       "configurations": {
         "production": {
