@@ -2,7 +2,6 @@
   "root": "packages/apiserver",
   "sourceRoot": "packages/apiserver/src",
   "projectType": "application",
-  "implicitDependencies": ["pg"],
   "targets": {
     "build": {
       "executor": "@nrwl/node:webpack",
