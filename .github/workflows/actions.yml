@@ -79,6 +79,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
+            source /root/.bashrc
             cd /srv/apiserver/
             nvm use 16
             npm i --force
