@@ -24,8 +24,8 @@ export class LocationResolver {
   ) {
     try {
       const { location } = createLocationInput;
-      const isLocationExists = await Location.findOne(location);
-      if (isLocationExists) {
+      const foundLocation = await Location.findOne(location);
+      if (foundLocation) {
         return new UnauthorizedException('Location already exists');
       }
       const locationPiece = Location.create(createLocationInput);
@@ -42,13 +42,14 @@ export class LocationResolver {
   ) {
     try {
       const { location_id } = removeLocationInput;
-      const isLocationExists = await Location.findOne({
+      const foundLocation = await Location.findOne({
         where: { id: location_id },
       });
-      if (!isLocationExists) {
+      if (!foundLocation) {
         return new UnauthorizedException("Location didn't exists");
       }
-      await Location.delete(isLocationExists);
+      await Location.delete(foundLocation);
+      return foundLocation;
     } catch (e) {
       return new BadRequestException();
     }
