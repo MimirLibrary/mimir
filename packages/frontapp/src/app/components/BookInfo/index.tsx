@@ -11,7 +11,7 @@ import Modal from '../Modal';
 import {
   getDates,
   getStatus,
-  parseDate,
+  periodOfKeeping,
 } from '../../models/helperFunctions/converTime';
 import { StyledBookStatus } from '../../globalUI/Status';
 import SuccessMessage from '../SuccesMessage';
@@ -25,7 +25,6 @@ import {
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import ErrorMessage from '../ErrorMessge';
 import { RolesTypes } from '../../../utils/rolesTypes';
-//import {RolesTypes} from "../../../utils/rolesTypes";
 
 const BookHolder = styled.div`
   height: 41rem;
@@ -230,7 +229,14 @@ const BookInfo: FC<IBookInfoProps> = ({
       },
     });
   };
-  //console.log(new Date());
+
+  const editInformation = async () => {
+    console.log('Edit information');
+  };
+
+  const deleteItem = async () => {
+    console.log('Delete item');
+  };
 
   useEffect(() => {
     if (infoOfProlong?.prolongClaimPeriod.__typename === 'Status') {
@@ -250,69 +256,41 @@ const BookInfo: FC<IBookInfoProps> = ({
   }, [data]);
 
   useEffect(() => {
-    if (userRole === RolesTypes.READER)
-      switch (currentStatus) {
-        case 'Free':
-          setStatusText('On the shelf');
-          break;
-        case 'Busy': {
-          const day = `${getDates(created_at).returnDate.getDate()}`.padStart(
-            2,
-            '0'
-          );
-          const month = `${
-            getDates(created_at).returnDate.getMonth() + 1
-          }`.padStart(2, '0');
-          setStatusText(`Return till: ${day}.${month}`);
-          break;
-        }
-        case 'Prolong': {
-          const day = `${getDates(created_at).returnDate.getDate()}`.padStart(
-            2,
-            '0'
-          );
-          const month = `${
-            getDates(created_at).returnDate.getMonth() + 1
-          }`.padStart(2, '0');
-          setStatusText(`Return till: ${day}.${month}`);
-          break;
-        }
-        case 'Overdue':
-          setStatusText('Overdue');
-          break;
-        default:
-          setStatusText('');
-          break;
+    switch (currentStatus) {
+      case 'Free':
+        setStatusText('On the shelf');
+        break;
+      case 'Busy': {
+        const day = `${getDates(created_at).returnDate.getDate()}`.padStart(
+          2,
+          '0'
+        );
+        const month = `${
+          getDates(created_at).returnDate.getMonth() + 1
+        }`.padStart(2, '0');
+        setStatusText(`Return till: ${day}.${month}`);
+        break;
       }
-    else
-      switch (currentStatus) {
-        case 'Busy': {
-          //const retriveDate = getDates(created_at).returnDate
-          //  console.log(currentStatus + " " + retriveDate + " " + new Date())
-          setStatusText(
-            `${diffDates(getDates(created_at).returnDate, new Date())}`
-          );
-          break;
-        }
-        case 'Prolong': {
-          //const retriveDate = getDates(created_at).returnDate
-          //console.log(currentStatus + " " + retriveDate + " " + new Date())
-          setStatusText(
-            `${diffDates(getDates(created_at).returnDate, new Date())}`
-          );
-          break;
-        }
-        case 'Overdue':
-          setStatusText('Overdue');
-          break;
-        default:
-          setStatusText('');
-          break;
+      case 'Prolong': {
+        const day = `${getDates(created_at).returnDate.getDate()}`.padStart(
+          2,
+          '0'
+        );
+        const month = `${
+          getDates(created_at).returnDate.getMonth() + 1
+        }`.padStart(2, '0');
+        setStatusText(`Return till: ${day}.${month}`);
+        break;
       }
+      case 'Overdue':
+        setStatusText('Overdue');
+        break;
+      default:
+        setStatusText('');
+        break;
+    }
   }, [currentStatus]);
-  const { returnDate } = getDates(created_at!);
 
-  console.log(parseDate(returnDate));
   const showClaimModal = useCallback(() => {
     setIsShowClaimModal(true);
   }, [isShowSuccessClaim]);
@@ -348,7 +326,7 @@ const BookInfo: FC<IBookInfoProps> = ({
                 <>
                   <Topic>Deadline: </Topic>
                   <TopicDescription>
-                    {diffDates(new Date(), new Date(created_at))}
+                    {periodOfKeeping + ' days'}
                   </TopicDescription>
                 </>
               )}
@@ -387,14 +365,14 @@ const BookInfo: FC<IBookInfoProps> = ({
                 value="Edit information"
                 transparent
                 svgComponent={<Edit />}
-                onClick={retrieveBook}
+                onClick={editInformation}
               />
               <StyledButton
                 value="Delete item"
                 transparent
                 secondary
                 svgComponent={<Remove />}
-                onClick={prolongPeriod}
+                onClick={deleteItem}
               />
             </WrapperButtons>
           )}
