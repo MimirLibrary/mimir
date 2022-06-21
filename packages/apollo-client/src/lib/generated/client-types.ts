@@ -420,6 +420,10 @@ export type ReturnBookMutationVariables = Exact<{
 
 export type ReturnBookMutation = { __typename?: 'Mutation', returnItem: { __typename?: 'Error', message: string } | { __typename?: 'Status', created_at: any, status: string } };
 
+export type GetAllMaterialsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllMaterialsQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', author: string, category: string, created_at: any, id: string, id_type: string, identifier: string, picture?: string | null, title: string, type: string, updated_at: any, notifications: Array<{ __typename?: 'Notification', material_id: number, person_id: number } | null>, statuses: Array<{ __typename?: 'Status', status: string, person_id: number } | null> } | null> };
 export type GetAllLocationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -560,6 +564,27 @@ export function useReturnBookMutation(baseOptions?: Apollo.MutationHookOptions<R
 export type ReturnBookMutationHookResult = ReturnType<typeof useReturnBookMutation>;
 export type ReturnBookMutationResult = Apollo.MutationResult<ReturnBookMutation>;
 export type ReturnBookMutationOptions = Apollo.BaseMutationOptions<ReturnBookMutation, ReturnBookMutationVariables>;
+export const GetAllMaterialsDocument = gql`
+    query GetAllMaterials {
+  getAllMaterials {
+    author
+    category
+    created_at
+    id
+    id_type
+    identifier
+    notifications {
+      material_id
+      person_id
+    }
+    picture
+    statuses {
+      status
+      person_id
+    }
+    title
+    type
+    updated_at`
 export const GetAllLocationsDocument = gql`
     query GetAllLocations {
   getAllLocations {
@@ -570,6 +595,10 @@ export const GetAllLocationsDocument = gql`
     `;
 
 /**
+ * __useGetAllMaterialsQuery__
+ *
+ * To run a query within a React component, call `useGetAllMaterialsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllMaterialsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * __useGetAllLocationsQuery__
  *
  * To run a query within a React component, call `useGetAllLocationsQuery` and pass it any options that fit your needs.
@@ -579,11 +608,23 @@ export const GetAllLocationsDocument = gql`
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
+ * const { data, loading, error } = useGetAllMaterialsQuery({
  * const { data, loading, error } = useGetAllLocationsQuery({
  *   variables: {
  *   },
  * });
  */
+export function useGetAllMaterialsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>(GetAllMaterialsDocument, options);
+      }
+export function useGetAllMaterialsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>(GetAllMaterialsDocument, options);
+        }
+export type GetAllMaterialsQueryHookResult = ReturnType<typeof useGetAllMaterialsQuery>;
+export type GetAllMaterialsLazyQueryHookResult = ReturnType<typeof useGetAllMaterialsLazyQuery>;
+export type GetAllMaterialsQueryResult = Apollo.QueryResult<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>;
 export function useGetAllLocationsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllLocationsQuery, GetAllLocationsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetAllLocationsQuery, GetAllLocationsQueryVariables>(GetAllLocationsDocument, options);
