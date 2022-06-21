@@ -17,9 +17,18 @@ export interface ProlongTimeInput {
     material_id: number;
 }
 
+export interface CreateLocationInput {
+    location: string;
+}
+
+export interface RemoveLocationInput {
+    location_id: number;
+}
+
 export interface CreateMaterialInput {
     identifier: string;
     id_type: string;
+    location_id: number;
     type: string;
 }
 
@@ -35,6 +44,7 @@ export interface RemoveNotificationInput {
 
 export interface CreatePersonInput {
     smg_id: string;
+    location_id: number;
     type: string;
 }
 
@@ -46,6 +56,7 @@ export interface CreateStatusInput {
 
 export interface IQuery {
     getAllTakenItems(person_id: number): Nullable<Status>[] | Promise<Nullable<Status>[]>;
+    getAllLocations(): Nullable<Location>[] | Promise<Nullable<Location>[]>;
     getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
     getMaterialById(id: string): Material | Promise<Material>;
     searchOfMaterials(search: string): Nullable<Nullable<Material>[]> | Promise<Nullable<Nullable<Material>[]>>;
@@ -62,6 +73,8 @@ export interface IMutation {
     claimBook(input?: Nullable<BookInput>): BookUnionResult | Promise<BookUnionResult>;
     returnItem(input?: Nullable<BookInput>): BookUnionResult | Promise<BookUnionResult>;
     prolongClaimPeriod(input?: Nullable<ProlongTimeInput>): BookUnionResult | Promise<BookUnionResult>;
+    createLocation(input: CreateLocationInput): Nullable<Location> | Promise<Nullable<Location>>;
+    removeLocation(input: RemoveLocationInput): Nullable<Location> | Promise<Nullable<Location>>;
     createMaterial(input: CreateMaterialInput): Material | Promise<Material>;
     createNotification(input: CreateNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
     removeNotification(input: RemoveNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
@@ -69,17 +82,26 @@ export interface IMutation {
     createStatus(input: CreateStatusInput): Status | Promise<Status>;
 }
 
+export interface Location {
+    id: string;
+    location: string;
+    persons?: Nullable<Nullable<Person>[]>;
+    materials?: Nullable<Nullable<Material>[]>;
+}
+
 export interface Material {
     id: string;
     identifier: string;
     id_type: string;
     type: string;
+    location_id: number;
     created_at: DateTime;
     updated_at: DateTime;
     title: string;
     picture?: Nullable<string>;
     author: string;
     category: string;
+    location: Location;
     statuses: Nullable<Status>[];
     notifications: Nullable<Notification>[];
 }
@@ -97,9 +119,11 @@ export interface Person {
     id: string;
     smg_id: string;
     type: string;
+    location_id: number;
     created_at: DateTime;
     statuses?: Nullable<Nullable<Status>[]>;
     notifications?: Nullable<Nullable<Notification>[]>;
+    location: Location;
 }
 
 export interface Status {

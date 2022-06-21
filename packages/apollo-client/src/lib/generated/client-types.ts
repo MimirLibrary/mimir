@@ -176,9 +176,14 @@ export type BookInput = {
 
 export type BookUnionResult = Error | Status;
 
+export type CreateLocationInput = {
+  location: Scalars['String'];
+};
+
 export type CreateMaterialInput = {
   id_type: Scalars['String'];
   identifier: Scalars['String'];
+  location_id: Scalars['Int'];
   type: Scalars['String'];
 };
 
@@ -188,6 +193,7 @@ export type CreateNotificationInput = {
 };
 
 export type CreatePersonInput = {
+  location_id: Scalars['Int'];
   smg_id: Scalars['String'];
   type: Scalars['String'];
 };
@@ -203,6 +209,14 @@ export type Error = {
   message: Scalars['String'];
 };
 
+export type Location = {
+  __typename?: 'Location';
+  id: Scalars['ID'];
+  location: Scalars['String'];
+  materials?: Maybe<Array<Maybe<Material>>>;
+  persons?: Maybe<Array<Maybe<Person>>>;
+};
+
 export type Material = {
   __typename?: 'Material';
   author: Scalars['String'];
@@ -211,6 +225,8 @@ export type Material = {
   id: Scalars['ID'];
   id_type: Scalars['String'];
   identifier: Scalars['String'];
+  location: Location;
+  location_id: Scalars['Int'];
   notifications: Array<Maybe<Notification>>;
   picture?: Maybe<Scalars['String']>;
   statuses: Array<Maybe<Status>>;
@@ -222,11 +238,13 @@ export type Material = {
 export type Mutation = {
   __typename?: 'Mutation';
   claimBook: BookUnionResult;
+  createLocation?: Maybe<Location>;
   createMaterial: Material;
   createNotification?: Maybe<Notification>;
   createPerson: Person;
   createStatus: Status;
   prolongClaimPeriod: BookUnionResult;
+  removeLocation?: Maybe<Location>;
   removeNotification?: Maybe<Notification>;
   returnItem: BookUnionResult;
 };
@@ -234,6 +252,11 @@ export type Mutation = {
 
 export type MutationClaimBookArgs = {
   input?: InputMaybe<BookInput>;
+};
+
+
+export type MutationCreateLocationArgs = {
+  input: CreateLocationInput;
 };
 
 
@@ -262,6 +285,11 @@ export type MutationProlongClaimPeriodArgs = {
 };
 
 
+export type MutationRemoveLocationArgs = {
+  input: RemoveLocationInput;
+};
+
+
 export type MutationRemoveNotificationArgs = {
   input: RemoveNotificationInput;
 };
@@ -285,6 +313,8 @@ export type Person = {
   __typename?: 'Person';
   created_at: Scalars['DateTime'];
   id: Scalars['ID'];
+  location: Location;
+  location_id: Scalars['Int'];
   notifications?: Maybe<Array<Maybe<Notification>>>;
   smg_id: Scalars['String'];
   statuses?: Maybe<Array<Maybe<Status>>>;
@@ -298,6 +328,7 @@ export type ProlongTimeInput = {
 
 export type Query = {
   __typename?: 'Query';
+  getAllLocations: Array<Maybe<Location>>;
   getAllMaterials: Array<Maybe<Material>>;
   getAllPersons: Array<Maybe<Person>>;
   getAllTakenItems: Array<Maybe<Status>>;
@@ -307,7 +338,6 @@ export type Query = {
   getOnePerson: Person;
   getStatusesByMaterial: Array<Maybe<Status>>;
   getStatusesByPerson: Array<Maybe<Status>>;
-  searchOfMaterials?: Maybe<Array<Maybe<Material>>>;
   welcome: Scalars['String'];
 };
 
@@ -346,9 +376,8 @@ export type QueryGetStatusesByPersonArgs = {
   person_id: Scalars['ID'];
 };
 
-
-export type QuerySearchOfMaterialsArgs = {
-  search: Scalars['String'];
+export type RemoveLocationInput = {
+  location_id: Scalars['Int'];
 };
 
 export type RemoveNotificationInput = {
@@ -391,6 +420,11 @@ export type ReturnBookMutationVariables = Exact<{
 
 export type ReturnBookMutation = { __typename?: 'Mutation', returnItem: { __typename?: 'Error', message: string } | { __typename?: 'Status', created_at: any, status: string } };
 
+export type GetAllLocationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllLocationsQuery = { __typename?: 'Query', getAllLocations: Array<{ __typename?: 'Location', id: string, location: string } | null> };
+
 export type GetAllTakenItemsQueryVariables = Exact<{
   person_id: Scalars['Int'];
 }>;
@@ -404,13 +438,6 @@ export type GetMaterialByIdQueryVariables = Exact<{
 
 
 export type GetMaterialByIdQuery = { __typename?: 'Query', getMaterialById: { __typename?: 'Material', id: string, identifier: string, picture?: string | null, title: string, author: string, category: string, created_at: any, statuses: Array<{ __typename?: 'Status', id: string, person_id: number, status: string, created_at: any } | null> } };
-
-export type SearchOfMaterialsQueryVariables = Exact<{
-  search: Scalars['String'];
-}>;
-
-
-export type SearchOfMaterialsQuery = { __typename?: 'Query', searchOfMaterials?: Array<{ __typename?: 'Material', title: string, created_at: any, picture?: string | null, author: string, category: string, id: string, statuses: Array<{ __typename?: 'Status', id: string, created_at: any, status: string } | null> } | null> | null };
 
 
 export const ClaimBookDocument = gql`
@@ -533,6 +560,41 @@ export function useReturnBookMutation(baseOptions?: Apollo.MutationHookOptions<R
 export type ReturnBookMutationHookResult = ReturnType<typeof useReturnBookMutation>;
 export type ReturnBookMutationResult = Apollo.MutationResult<ReturnBookMutation>;
 export type ReturnBookMutationOptions = Apollo.BaseMutationOptions<ReturnBookMutation, ReturnBookMutationVariables>;
+export const GetAllLocationsDocument = gql`
+    query GetAllLocations {
+  getAllLocations {
+    id
+    location
+  }
+}
+    `;
+
+/**
+ * __useGetAllLocationsQuery__
+ *
+ * To run a query within a React component, call `useGetAllLocationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllLocationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllLocationsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllLocationsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllLocationsQuery, GetAllLocationsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllLocationsQuery, GetAllLocationsQueryVariables>(GetAllLocationsDocument, options);
+      }
+export function useGetAllLocationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllLocationsQuery, GetAllLocationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllLocationsQuery, GetAllLocationsQueryVariables>(GetAllLocationsDocument, options);
+        }
+export type GetAllLocationsQueryHookResult = ReturnType<typeof useGetAllLocationsQuery>;
+export type GetAllLocationsLazyQueryHookResult = ReturnType<typeof useGetAllLocationsLazyQuery>;
+export type GetAllLocationsQueryResult = Apollo.QueryResult<GetAllLocationsQuery, GetAllLocationsQueryVariables>;
 export const GetAllTakenItemsDocument = gql`
     query GetAllTakenItems($person_id: Int!) {
   getAllTakenItems(person_id: $person_id) {
@@ -624,48 +686,3 @@ export function useGetMaterialByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetMaterialByIdQueryHookResult = ReturnType<typeof useGetMaterialByIdQuery>;
 export type GetMaterialByIdLazyQueryHookResult = ReturnType<typeof useGetMaterialByIdLazyQuery>;
 export type GetMaterialByIdQueryResult = Apollo.QueryResult<GetMaterialByIdQuery, GetMaterialByIdQueryVariables>;
-export const SearchOfMaterialsDocument = gql`
-    query SearchOfMaterials($search: String!) {
-  searchOfMaterials(search: $search) {
-    title
-    created_at
-    picture
-    author
-    category
-    id
-    statuses {
-      id
-      created_at
-      status
-    }
-  }
-}
-    `;
-
-/**
- * __useSearchOfMaterialsQuery__
- *
- * To run a query within a React component, call `useSearchOfMaterialsQuery` and pass it any options that fit your needs.
- * When your component renders, `useSearchOfMaterialsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useSearchOfMaterialsQuery({
- *   variables: {
- *      search: // value for 'search'
- *   },
- * });
- */
-export function useSearchOfMaterialsQuery(baseOptions: Apollo.QueryHookOptions<SearchOfMaterialsQuery, SearchOfMaterialsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<SearchOfMaterialsQuery, SearchOfMaterialsQueryVariables>(SearchOfMaterialsDocument, options);
-      }
-export function useSearchOfMaterialsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchOfMaterialsQuery, SearchOfMaterialsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<SearchOfMaterialsQuery, SearchOfMaterialsQueryVariables>(SearchOfMaterialsDocument, options);
-        }
-export type SearchOfMaterialsQueryHookResult = ReturnType<typeof useSearchOfMaterialsQuery>;
-export type SearchOfMaterialsLazyQueryHookResult = ReturnType<typeof useSearchOfMaterialsLazyQuery>;
-export type SearchOfMaterialsQueryResult = Apollo.QueryResult<SearchOfMaterialsQuery, SearchOfMaterialsQueryVariables>;

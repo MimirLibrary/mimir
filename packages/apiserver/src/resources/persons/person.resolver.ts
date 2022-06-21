@@ -10,6 +10,7 @@ import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { Person } from './person.entity';
 import { Status } from '../statuses/status.entity';
 import { Notification } from '../notifications/notification.entity';
+import { Location } from '../locations/location.entity';
 import { CreatePersonInput } from '@mimir/global-types';
 
 @Resolver('Person')
@@ -32,7 +33,7 @@ export class PersonResolver {
       if (personFind) {
         return new UnauthorizedException('A person already exists');
       }
-      const person = await Person.create(createPersonInput);
+      const person = Person.create(createPersonInput);
       await Person.save(person);
       return person;
     } catch (e) {
@@ -46,9 +47,15 @@ export class PersonResolver {
     return Status.find({ where: { person_id: id } });
   }
 
-  @ResolveField(() => [Status])
+  @ResolveField(() => [Notification])
   async notifications(@Parent() person: Person) {
     const { id } = person;
     return Notification.find({ where: { person_id: id } });
+  }
+
+  @ResolveField(() => [Location])
+  async location(@Parent() person: Person) {
+    const { location_id } = person;
+    return Location.findOne({ where: { id: location_id } });
   }
 }

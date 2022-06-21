@@ -28,6 +28,14 @@ export const resources = {
       Search: {
         Placeholder: 'Search by book or author',
       },
+      Start: {
+        ChooseLocation: 'Your current location',
+      },
+      Settings: {
+        Location: 'Location',
+        Language: 'Language',
+        Notification: 'Notification',
+      },
     },
   },
   ru: {
@@ -58,6 +66,14 @@ export const resources = {
       },
       Search: {
         Placeholder: 'Поиск по книге или автору',
+      },
+      Start: {
+        ChooseLocation: 'Ваше текущее местоположение',
+      },
+      Settings: {
+        Location: 'Местоположение',
+        Language: 'Язык',
+        Notification: 'Уведомления',
       },
     },
   },

@@ -5,7 +5,6 @@ import SearchPage from '../pages/SearchPage';
 import HistoryOfClaimPage from '../pages/HistoryOfClaimPage';
 import HistoryOfDonatePage from '../pages/HistoryOfDonatePage';
 import SettingsPage from '../pages/SettingsPage';
-import React from 'react';
 import { RoutesTypes } from '../../utils/routes';
 import Readers from '../pages/Readers';
 import BooksStuff from '../pages/BooksStuff';

@@ -1,10 +1,13 @@
 import React, { FC, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from '@emotion/styled';
 import { useAppDispatch } from '../hooks/useTypedDispatch';
-import { setUser } from '../store/slices/userSlice';
+import { setUser, TUserLocation } from '../store/slices/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { colors, dimensions, fonts } from '@mimir/ui-kit';
 import Input from '../components/Input';
+import Dropdown from '../components/Dropdown';
+import { useGetAllLocationsQuery } from '@mimir/apollo-client';
 
 const StartPageWrapper = styled.div`
   display: flex;
@@ -125,17 +128,33 @@ const LoginButton = styled.button`
   }
 `;
 
+const RestyledDropdown = styled(Dropdown)`
+  border: 2px solid ${colors.accent_color};
+  max-width: 350px;
+  width: 100%;
+  height: ${dimensions.xl_10};
+`;
+
 const StartPage: FC = () => {
+  const { t } = useTranslation();
   const history = useNavigate();
   const [username, setUsername] = useState<string>('');
+  const [location, setLocation] = useState<TUserLocation>();
   const dispatch = useAppDispatch();
+  const { data: GetAllLocationsData, loading: GetAllLocationsLoading } =
+    useGetAllLocationsQuery();
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
   };
 
+  const handleChangeDropdown = (location: TUserLocation) => {
+    setLocation(location);
+  };
+
   const addUser = () => {
-    dispatch(setUser(username));
+    if (!location || !username) return;
+    dispatch(setUser({ username, location }));
     history('/home');
   };
 
@@ -144,6 +163,16 @@ const StartPage: FC = () => {
       <Logo />
       <WelcomeHeader>Welcome to the library MIMIR</WelcomeHeader>
       <StartPageParagraph>Simplify the process of claim</StartPageParagraph>
+      {!GetAllLocationsLoading && !!GetAllLocationsData && (
+        <RestyledDropdown
+          placeholder={t('Start.ChooseLocation')}
+          options={GetAllLocationsData.getAllLocations.map((loc) => ({
+            id: loc!.id,
+            value: loc!.location,
+          }))}
+          onChange={(option) => handleChangeDropdown(option as TUserLocation)}
+        />
+      )}
       <WrapperForInputAndButton>
         <InputStart
           value={username}

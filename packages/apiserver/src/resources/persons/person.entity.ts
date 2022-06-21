@@ -5,9 +5,12 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { Notification } from '../notifications/notification.entity';
 import { Status } from '../statuses/status.entity';
+import { Location } from '../locations/location.entity';
 
 @Entity('person')
 export class Person extends BaseEntity {
@@ -20,6 +23,9 @@ export class Person extends BaseEntity {
   @Column()
   type!: string;
 
+  @Column({ nullable: true })
+  location_id: number;
+
   @CreateDateColumn()
   created_at!: Date;
 
@@ -28,4 +34,8 @@ export class Person extends BaseEntity {
 
   @OneToMany(() => Notification, (notification) => notification.person)
   notification: Notification[];
+
+  @ManyToOne(() => Location, (location) => location.person)
+  @JoinColumn({ name: 'location_id' })
+  location: Location;
 }

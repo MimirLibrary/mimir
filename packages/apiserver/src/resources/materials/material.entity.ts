@@ -3,10 +3,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Location } from '../locations/location.entity';
 import { Notification } from '../notifications/notification.entity';
 import { Status } from '../statuses/status.entity';
 
@@ -42,9 +45,16 @@ export class Material extends BaseEntity {
   @Column()
   author!: string;
 
+  @Column({ nullable: true })
+  location_id: number;
+
   @OneToMany(() => Status, (status) => status.material)
   status!: Status[];
 
   @OneToMany(() => Notification, (notification) => notification.material)
   notification!: Notification[];
+
+  @ManyToOne(() => Location, (location) => location.material)
+  @JoinColumn({ name: 'location_id' })
+  location: Location;
 }
