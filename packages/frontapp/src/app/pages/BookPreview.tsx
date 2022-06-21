@@ -20,7 +20,7 @@ const ButtonWrapper = styled.div`
   cursor: pointer;
 `;
 
-const ButtonGRoup = styled.div`
+const ButtonGroup = styled.div`
   display: flex;
   gap: ${dimensions.base};
   @media (max-width: ${dimensions.phone_width}) {
@@ -61,7 +61,7 @@ const BookPreview = () => {
     <>
       <ButtonWrapper onClick={handleGoBack}>
         <ArrowBack />
-        <GoBack>Back to all books</GoBack>
+        <GoBack>Back</GoBack>
       </ButtonWrapper>
       {data?.getMaterialById && (
         <BookInfo
@@ -79,10 +79,10 @@ const BookPreview = () => {
       )}
       <Suggestions>
         <SuggestionText>You may also like</SuggestionText>
-        <ButtonGRoup>
+        <ButtonGroup>
           <ScrollButtonLeft />
           <ScrollButtonRight />
-        </ButtonGRoup>
+        </ButtonGroup>
       </Suggestions>
     </>
   );

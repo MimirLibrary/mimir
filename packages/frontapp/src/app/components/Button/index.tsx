@@ -5,6 +5,7 @@ import { colors, dimensions } from '@mimir/ui-kit';
 export interface IButtonProps {
   svgComponent?: JSX.Element;
   transparent?: boolean;
+  secondary?: boolean;
   value: string;
   onClick?: () => void;
 }
@@ -21,22 +22,40 @@ const ButtonContainer = styled.div<IButtonProps>`
   height: 3.125rem;
   width: 100%;
   border: 2px solid
-    ${({ transparent }) => (transparent ? colors.accent_color : 'transparent')};
+    ${({ transparent, secondary }) =>
+      transparent
+        ? secondary
+          ? colors.second_gray
+          : colors.accent_color
+        : colors.bg_secondary};
 
   &:hover {
     background-color: ${({ transparent }) =>
       transparent ? colors.bg_secondary : colors.hover_color};
     border: 2px solid
-      ${({ transparent }) => (transparent ? colors.hover_color : 'transparent')};
+      ${({ transparent, secondary }) =>
+        transparent
+          ? secondary
+            ? colors.main_gray
+            : colors.hover_color
+          : colors.bg_secondary};
 
     svg {
-      fill: ${({ transparent }) =>
-        transparent ? colors.hover_color : colors.bg_secondary};
+      fill: ${({ transparent, secondary }) =>
+        transparent
+          ? secondary
+            ? colors.main_gray
+            : colors.hover_color
+          : colors.bg_secondary};
     }
 
     span {
-      color: ${({ transparent }) =>
-        transparent ? colors.hover_color : colors.bg_secondary};
+      color: ${({ transparent, secondary }) =>
+        transparent
+          ? secondary
+            ? colors.main_gray
+            : colors.hover_color
+          : colors.bg_secondary};
     }
   }
 
@@ -44,23 +63,39 @@ const ButtonContainer = styled.div<IButtonProps>`
     background-color: ${({ transparent }) =>
       transparent ? colors.bg_secondary : colors.pressed_color};
     border: 2px solid
-      ${({ transparent }) =>
-        transparent ? colors.pressed_color : 'transparent'};
+      ${({ transparent, secondary }) =>
+        transparent
+          ? secondary
+            ? colors.main_gray
+            : colors.hover_color
+          : colors.bg_secondary};
 
     svg {
-      fill: ${({ transparent }) =>
-        transparent ? colors.pressed_color : colors.bg_secondary};
+      fill: ${({ transparent, secondary }) =>
+        transparent
+          ? secondary
+            ? colors.main_gray
+            : colors.hover_color
+          : colors.bg_secondary};
     }
 
     span {
-      color: ${({ transparent }) =>
-        transparent ? colors.pressed_color : colors.bg_secondary};
+      color: ${({ transparent, secondary }) =>
+        transparent
+          ? secondary
+            ? colors.main_gray
+            : colors.hover_color
+          : colors.bg_secondary};
     }
   }
 
   svg {
-    fill: ${({ transparent }) =>
-      transparent ? colors.accent_color : colors.bg_secondary};
+    fill: ${({ transparent, secondary }) =>
+      transparent
+        ? secondary
+          ? colors.second_gray
+          : colors.hover_color
+        : colors.bg_secondary};
     height: auto;
     max-width: 18.5px;
     margin-right: ${dimensions.xs_1};
@@ -69,8 +104,12 @@ const ButtonContainer = styled.div<IButtonProps>`
   span {
     font-weight: 700;
     line-height: ${dimensions.xl};
-    color: ${({ transparent }) =>
-      transparent ? colors.accent_color : colors.bg_secondary};
+    color: ${({ transparent, secondary }) =>
+      transparent
+        ? secondary
+          ? colors.second_gray
+          : colors.hover_color
+        : colors.bg_secondary};
   }
 `;
 

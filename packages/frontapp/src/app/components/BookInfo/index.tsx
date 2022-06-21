@@ -3,10 +3,16 @@ import bookImage from '../../../assets/MOC-data/BookImage.png';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { ReactComponent as Claim } from '../../../assets/claim.svg';
+import { ReactComponent as Edit } from '../../../assets/Edit.svg';
+import { ReactComponent as Remove } from '../../../assets/Remove.svg';
 import Button from '../Button';
 import ClaimOperation from '../ClaimOperation';
 import Modal from '../Modal';
-import { getDates, getStatus } from '../../models/helperFunctions/converTime';
+import {
+  getDates,
+  getStatus,
+  parseDate,
+} from '../../models/helperFunctions/converTime';
 import { StyledBookStatus } from '../../globalUI/Status';
 import SuccessMessage from '../SuccesMessage';
 import {
@@ -18,6 +24,7 @@ import {
 } from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import ErrorMessage from '../ErrorMessge';
+import { RolesTypes } from '../../../utils/rolesTypes';
 //import {RolesTypes} from "../../../utils/rolesTypes";
 
 const BookHolder = styled.div`
@@ -35,6 +42,7 @@ const BookImage = styled.img`
   display: inline-block;
   width: 12rem;
   height: 19.5rem;
+  border-radius: 10px;
   @media (max-width: ${dimensions.phone_width}) {
     width: 5rem;
     height: 8rem;
@@ -91,7 +99,7 @@ const LongDescription = styled.div`
 const OpenLink = styled.a`
   cursor: pointer;
   margin: ${dimensions.xs_2} 0;
-  font-weight: 500;
+  font-weight: 300;
   color: ${colors.accent_color};
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
@@ -138,6 +146,14 @@ interface IBookInfoProps {
   identifier: string;
   material_id: string;
   created_at: any;
+}
+
+function diffDates(date1: Date, date2: Date) {
+  date2.setMonth(date2.getMonth() + 1);
+  console.log(date1 + ' ' + date2);
+  return Math.round(
+    (date2.getTime() - date1.getTime()) / (24 * 60 * 60 * 1000)
+  );
 }
 
 const BookInfo: FC<IBookInfoProps> = ({
@@ -215,6 +231,7 @@ const BookInfo: FC<IBookInfoProps> = ({
       },
     });
   };
+  //console.log(new Date());
 
   useEffect(() => {
     if (infoOfProlong?.prolongClaimPeriod.__typename === 'Status') {
@@ -234,41 +251,69 @@ const BookInfo: FC<IBookInfoProps> = ({
   }, [data]);
 
   useEffect(() => {
-    switch (currentStatus) {
-      case 'Free':
-        setStatusText('On the shelf');
-        break;
-      case 'Busy': {
-        const day = `${getDates(created_at).returnDate.getDate()}`.padStart(
-          2,
-          '0'
-        );
-        const month = `${
-          getDates(created_at).returnDate.getMonth() + 1
-        }`.padStart(2, '0');
-        setStatusText(`Return till: ${day}.${month}`);
-        break;
+    if (userRole === RolesTypes.READER)
+      switch (currentStatus) {
+        case 'Free':
+          setStatusText('On the shelf');
+          break;
+        case 'Busy': {
+          const day = `${getDates(created_at).returnDate.getDate()}`.padStart(
+            2,
+            '0'
+          );
+          const month = `${
+            getDates(created_at).returnDate.getMonth() + 1
+          }`.padStart(2, '0');
+          setStatusText(`Return till: ${day}.${month}`);
+          break;
+        }
+        case 'Prolong': {
+          const day = `${getDates(created_at).returnDate.getDate()}`.padStart(
+            2,
+            '0'
+          );
+          const month = `${
+            getDates(created_at).returnDate.getMonth() + 1
+          }`.padStart(2, '0');
+          setStatusText(`Return till: ${day}.${month}`);
+          break;
+        }
+        case 'Overdue':
+          setStatusText('Overdue');
+          break;
+        default:
+          setStatusText('');
+          break;
       }
-      case 'Prolong': {
-        const day = `${getDates(created_at).returnDate.getDate()}`.padStart(
-          2,
-          '0'
-        );
-        const month = `${
-          getDates(created_at).returnDate.getMonth() + 1
-        }`.padStart(2, '0');
-        setStatusText(`Return till: ${day}.${month}`);
-        break;
+    else
+      switch (currentStatus) {
+        case 'Busy': {
+          //const retriveDate = getDates(created_at).returnDate
+          //  console.log(currentStatus + " " + retriveDate + " " + new Date())
+          setStatusText(
+            `${diffDates(getDates(created_at).returnDate, new Date())}`
+          );
+          break;
+        }
+        case 'Prolong': {
+          //const retriveDate = getDates(created_at).returnDate
+          //console.log(currentStatus + " " + retriveDate + " " + new Date())
+          setStatusText(
+            `${diffDates(getDates(created_at).returnDate, new Date())}`
+          );
+          break;
+        }
+        case 'Overdue':
+          setStatusText('Overdue');
+          break;
+        default:
+          setStatusText('');
+          break;
       }
-      case 'Overdue':
-        setStatusText('Overdue');
-        break;
-      default:
-        setStatusText('');
-        break;
-    }
   }, [currentStatus]);
+  const { returnDate } = getDates(created_at!);
 
+  console.log(parseDate(returnDate));
   const showClaimModal = useCallback(() => {
     setIsShowClaimModal(true);
   }, [isShowSuccessClaim]);
@@ -282,36 +327,78 @@ const BookInfo: FC<IBookInfoProps> = ({
             <ShortDescription>
               <TitleBook>{title || 'Book Title'}</TitleBook>
               <Topic>Genre: </Topic>
-              <OpenLink>{category || 'Genres of book'}</OpenLink>
+              {userRole === RolesTypes.READER ? (
+                <OpenLink>{category || 'Genres of book'}</OpenLink>
+              ) : (
+                <TopicDescription>
+                  {category || 'Genres of book'}
+                </TopicDescription>
+              )}
               <Topic>Author: </Topic>
               <TopicDescription>{author || 'Author Name'}</TopicDescription>
-              <StyledStatus status={currentStatus}>{statusText}</StyledStatus>
-              <StatusInfoDescription>
-                Use the mobile app to claim an item
-              </StatusInfoDescription>
+              {userRole === RolesTypes.READER ? (
+                <>
+                  <StyledStatus status={currentStatus}>
+                    {statusText}
+                  </StyledStatus>
+                  <StatusInfoDescription>
+                    Use the mobile app to claim an item
+                  </StatusInfoDescription>
+                </>
+              ) : (
+                <>
+                  <Topic>Deadline: </Topic>
+                  <TopicDescription>
+                    {diffDates(new Date(), new Date(created_at))}
+                  </TopicDescription>
+                </>
+              )}
             </ShortDescription>
           </WrapperInfo>
-          {person_id === id ? (
-            <WrapperButtons>
-              {status !== 'Free' ? (
-                <>
-                  <StyledButton value="Return a book" onClick={retrieveBook} />
-                  <StyledButton
-                    value="Extend claim period"
-                    transparent
-                    onClick={prolongPeriod}
-                  />
-                </>
+          {userRole === RolesTypes.READER ? (
+            <>
+              {person_id === id ? (
+                <WrapperButtons>
+                  {status !== 'Free' ? (
+                    <>
+                      <StyledButton
+                        value="Return a book"
+                        onClick={retrieveBook}
+                      />
+                      <StyledButton
+                        value="Extend claim period"
+                        transparent
+                        onClick={prolongPeriod}
+                      />
+                    </>
+                  ) : null}
+                </WrapperButtons>
               ) : null}
+              {status === 'Free' ? (
+                <StyledButton
+                  value="Claim a book"
+                  svgComponent={<Claim />}
+                  onClick={showClaimModal}
+                />
+              ) : null}
+            </>
+          ) : (
+            <WrapperButtons>
+              <StyledButton
+                value="Edit information"
+                transparent
+                svgComponent={<Edit />}
+                onClick={retrieveBook}
+              />
+              <StyledButton
+                value="Delete item"
+                transparent
+                secondary
+                svgComponent={<Remove />}
+                onClick={prolongPeriod}
+              />
             </WrapperButtons>
-          ) : null}
-          {status === 'Free' ? (
-            <StyledButton
-              value="Claim a book"
-              svgComponent={<Claim />}
-              onClick={showClaimModal}
-            />
-          ) : null}
+          )}
         </ShortDescriptionWrapper>
         <LongDescription>
           <Topic>Description: </Topic>

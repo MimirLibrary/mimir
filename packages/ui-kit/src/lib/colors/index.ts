@@ -4,6 +4,7 @@ export const colors = {
   pressed_color: '#07097B',
   gray_additional: '#E0E0E0',
   main_gray: '#828282',
+  second_gray: '#BDBDBD',
   description_gray: '#4F4F4F',
   main_black: '#333333',
   warning_yellow: '#FF910F',
