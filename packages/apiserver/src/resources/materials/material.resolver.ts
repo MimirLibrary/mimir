@@ -8,7 +8,7 @@ import {
 } from '@nestjs/graphql';
 import { Material } from './material.entity';
 import { Status } from '../statuses/status.entity';
-import { CreateMaterialInput } from '@mimir/global-types';
+import { CreateMaterialInput, SearchInput } from '@mimir/global-types';
 import { Notification } from '../notifications/notification.entity';
 import { MaterialService } from './material.service';
 
@@ -27,8 +27,8 @@ export class MaterialResolver {
   }
 
   @Query(() => [Material])
-  async searchOfMaterials(@Args('search') search: string) {
-    return this.materialService.search(search);
+  async searchOfMaterials(@Args('input') searchInput: SearchInput) {
+    return this.materialService.search(searchInput);
   }
 
   @Mutation(() => Material)

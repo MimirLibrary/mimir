@@ -338,6 +338,7 @@ export type Query = {
   getOnePerson: Person;
   getStatusesByMaterial: Array<Maybe<Status>>;
   getStatusesByPerson: Array<Maybe<Status>>;
+  searchOfMaterials?: Maybe<Array<Maybe<Material>>>;
   welcome: Scalars['String'];
 };
 
@@ -376,6 +377,11 @@ export type QueryGetStatusesByPersonArgs = {
   person_id: Scalars['ID'];
 };
 
+
+export type QuerySearchOfMaterialsArgs = {
+  input: SearchInput;
+};
+
 export type RemoveLocationInput = {
   location_id: Scalars['Int'];
 };
@@ -383,6 +389,11 @@ export type RemoveLocationInput = {
 export type RemoveNotificationInput = {
   material_id: Scalars['Int'];
   person_id: Scalars['Int'];
+};
+
+export type SearchInput = {
+  location: Scalars['String'];
+  search: Scalars['String'];
 };
 
 export type Status = {
@@ -438,6 +449,14 @@ export type GetMaterialByIdQueryVariables = Exact<{
 
 
 export type GetMaterialByIdQuery = { __typename?: 'Query', getMaterialById: { __typename?: 'Material', id: string, identifier: string, picture?: string | null, title: string, author: string, category: string, created_at: any, statuses: Array<{ __typename?: 'Status', id: string, person_id: number, status: string, created_at: any } | null> } };
+
+export type SearchOfMaterialsQueryVariables = Exact<{
+  search: Scalars['String'];
+  location: Scalars['String'];
+}>;
+
+
+export type SearchOfMaterialsQuery = { __typename?: 'Query', searchOfMaterials?: Array<{ __typename?: 'Material', title: string, created_at: any, picture?: string | null, author: string, category: string, id: string, statuses: Array<{ __typename?: 'Status', id: string, created_at: any, status: string } | null> } | null> | null };
 
 
 export const ClaimBookDocument = gql`
@@ -686,3 +705,49 @@ export function useGetMaterialByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetMaterialByIdQueryHookResult = ReturnType<typeof useGetMaterialByIdQuery>;
 export type GetMaterialByIdLazyQueryHookResult = ReturnType<typeof useGetMaterialByIdLazyQuery>;
 export type GetMaterialByIdQueryResult = Apollo.QueryResult<GetMaterialByIdQuery, GetMaterialByIdQueryVariables>;
+export const SearchOfMaterialsDocument = gql`
+    query SearchOfMaterials($search: String!, $location: String!) {
+  searchOfMaterials(input: {search: $search, location: $location}) {
+    title
+    created_at
+    picture
+    author
+    category
+    id
+    statuses {
+      id
+      created_at
+      status
+    }
+  }
+}
+    `;
+
+/**
+ * __useSearchOfMaterialsQuery__
+ *
+ * To run a query within a React component, call `useSearchOfMaterialsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchOfMaterialsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchOfMaterialsQuery({
+ *   variables: {
+ *      search: // value for 'search'
+ *      location: // value for 'location'
+ *   },
+ * });
+ */
+export function useSearchOfMaterialsQuery(baseOptions: Apollo.QueryHookOptions<SearchOfMaterialsQuery, SearchOfMaterialsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchOfMaterialsQuery, SearchOfMaterialsQueryVariables>(SearchOfMaterialsDocument, options);
+      }
+export function useSearchOfMaterialsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchOfMaterialsQuery, SearchOfMaterialsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchOfMaterialsQuery, SearchOfMaterialsQueryVariables>(SearchOfMaterialsDocument, options);
+        }
+export type SearchOfMaterialsQueryHookResult = ReturnType<typeof useSearchOfMaterialsQuery>;
+export type SearchOfMaterialsLazyQueryHookResult = ReturnType<typeof useSearchOfMaterialsLazyQuery>;
+export type SearchOfMaterialsQueryResult = Apollo.QueryResult<SearchOfMaterialsQuery, SearchOfMaterialsQueryVariables>;

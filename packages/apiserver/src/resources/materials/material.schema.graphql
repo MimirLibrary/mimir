@@ -22,10 +22,15 @@ input CreateMaterialInput {
   type: String!
 }
 
+input SearchInput{
+  search: String!
+  location: String!
+}
+
 extend type Query {
   getAllMaterials: [Material]!
   getMaterialById(id: ID!): Material!
-  searchOfMaterials(search: String!): [Material]
+  searchOfMaterials(input: SearchInput!): [Material]
 }
 
 extend type Mutation {

@@ -11,6 +11,7 @@ import { setActiveTab } from '../../store/slices/tabsSlice';
 import { setSearchMaterials } from '../../store/slices/materialsSlice';
 import { useDebounce } from '../../hooks/useDebounce';
 import { RoutesTypes } from '../../../utils/routes';
+import { useAppSelector } from '../../hooks/useTypedSelector';
 
 const InputSearch = styled(Input)`
   width: 19rem;
@@ -69,11 +70,12 @@ const WrapperInput = styled.div`
 
 const Search = () => {
   const [search, setSearch] = useState<string>('');
+  const { location } = useAppSelector((state) => state.user);
   const debounceSearch = useDebounce<string>(search, 600);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { data } = useSearchOfMaterialsQuery({
-    variables: { search: debounceSearch },
+    variables: { search: debounceSearch, location: location.value },
     skip: !search,
   });
 
