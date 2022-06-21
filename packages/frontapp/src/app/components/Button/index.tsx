@@ -18,7 +18,7 @@ const ButtonContainer = styled.div<IButtonProps>`
   background-color: ${({ transparent }) =>
     transparent ? colors.bg_secondary : colors.accent_color};
   border-radius: ${dimensions.xl_3};
-  height: 3.125rem;
+  height: ${dimensions.xl_10};
   width: 100%;
   border: 2px solid
     ${({ transparent }) => (transparent ? colors.accent_color : 'transparent')};
