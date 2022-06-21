@@ -28,7 +28,6 @@ import { RolesTypes } from '../../../utils/rolesTypes';
 //import {RolesTypes} from "../../../utils/rolesTypes";
 
 const BookHolder = styled.div`
-  max-width: 62.5rem;
   height: 41rem;
   top: 11.5rem;
   left: 24.5rem;

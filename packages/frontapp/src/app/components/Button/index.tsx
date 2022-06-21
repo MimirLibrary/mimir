@@ -19,13 +19,13 @@ const ButtonContainer = styled.div<IButtonProps>`
   background-color: ${({ transparent }) =>
     transparent ? colors.bg_secondary : colors.accent_color};
   border-radius: ${dimensions.xl_3};
-  height: 3.125rem;
+  height: ${dimensions.xl_10};
   width: 100%;
   border: 2px solid
     ${({ transparent, secondary }) =>
       transparent
         ? secondary
-          ? colors.second_gray
+          ? colors.dropdown_gray
           : colors.accent_color
         : colors.bg_secondary};
 
@@ -93,7 +93,7 @@ const ButtonContainer = styled.div<IButtonProps>`
     fill: ${({ transparent, secondary }) =>
       transparent
         ? secondary
-          ? colors.second_gray
+          ? colors.dropdown_gray
           : colors.hover_color
         : colors.bg_secondary};
     height: auto;
@@ -107,7 +107,7 @@ const ButtonContainer = styled.div<IButtonProps>`
     color: ${({ transparent, secondary }) =>
       transparent
         ? secondary
-          ? colors.second_gray
+          ? colors.dropdown_gray
           : colors.hover_color
         : colors.bg_secondary};
   }
