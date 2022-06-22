@@ -27,7 +27,6 @@ import ErrorMessage from '../ErrorMessge';
 import { RolesTypes } from '../../../utils/rolesTypes';
 
 const BookHolder = styled.div`
-  height: 41rem;
   top: 11.5rem;
   left: 24.5rem;
   border-radius: ${dimensions.xs_1};
@@ -79,6 +78,7 @@ const TopicDescription = styled.p`
   font-weight: 300;
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
+  color: ${colors.main_black};
 `;
 
 const StatusInfoDescription = styled.p`
@@ -108,6 +108,7 @@ const Description = styled.p`
   font-weight: 300;
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
+  color: ${colors.main_black};
 `;
 
 const StyledStatus = styled(StyledBookStatus)`
@@ -144,14 +145,6 @@ interface IBookInfoProps {
   identifier: string;
   material_id: string;
   created_at: any;
-}
-
-function diffDates(date1: Date, date2: Date) {
-  date2.setMonth(date2.getMonth() + 1);
-  console.log(date1 + ' ' + date2);
-  return Math.round(
-    (date2.getTime() - date1.getTime()) / (24 * 60 * 60 * 1000)
-  );
 }
 
 const BookInfo: FC<IBookInfoProps> = ({
@@ -383,7 +376,9 @@ const BookInfo: FC<IBookInfoProps> = ({
             {description ||
               ' Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi impedit aliquid alias consequuntur! Totam sequi expedita sunt dolor obcaecati, iusto ducimus? Beatae ea, commodi ab repellat, corporis atque quasi, tempore sunt modi similique soluta nemo hic necessitatibus esse accusantium omnis neque rerum. Placeat tempore, fugiat unde consequuntur dolor tempora ducimus.'}
           </Description>
-          <OpenLink>see full description</OpenLink>
+          {userRole === RolesTypes.READER ? (
+            <OpenLink>see full description</OpenLink>
+          ) : null}
         </LongDescription>
       </BookHolder>
       <Modal active={isShowClaimModal} setActive={setIsShowClaimModal}>
