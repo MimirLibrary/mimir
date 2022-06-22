@@ -8,6 +8,7 @@ export interface IButtonProps {
   value: string;
   onClick?: () => void;
   type?: 'button' | 'submit' | 'reset' | undefined;
+  disabled?: boolean;
 }
 
 const ButtonContainer = styled.button<IButtonProps>`
@@ -82,6 +83,7 @@ const Button: FC<IButtonProps> = (props) => {
       {...props}
       onClick={props.onClick}
       type={props.type || 'button'}
+      disabled={props.disabled}
     >
       {props.svgComponent}
       <span>{props.value}</span>

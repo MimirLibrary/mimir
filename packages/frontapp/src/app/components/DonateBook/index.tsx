@@ -136,6 +136,10 @@ const StyledButton = styled(Button)`
   :first-of-type {
     margin-bottom: ${dimensions.xs_2};
   }
+  :disabled {
+    cursor: auto;
+    background-color: ${colors.dropdown_gray};
+  }
 `;
 
 const WrapperUploadFile = styled.div`
@@ -185,7 +189,7 @@ const DonateBook: FC = () => {
   });
 
   const isInvalid =
-    !dataOfBook.author && !dataOfBook.title && !dataOfBook.genre;
+    !dataOfBook.author || !dataOfBook.title || !dataOfBook.genre;
 
   const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files;
@@ -203,16 +207,20 @@ const DonateBook: FC = () => {
     setDescription(e.target.value);
   };
 
+  const handleSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    const formData = new FormData();
+  };
+
   return (
     <WrapperDonate>
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <WrapperMainInfo>
           <WrapperWithoutButtons>
             <div>
               <WrapperUploadFile onClick={() => ref?.current?.click()}>
                 <input
                   type="file"
-                  // value={file}
                   onChange={handleChangeFile}
                   accept="image/*"
                   style={{ display: 'none' }}
@@ -270,7 +278,11 @@ const DonateBook: FC = () => {
             </WrapperBlockInput>
           </WrapperWithoutButtons>
           <WrapperButtons>
-            <StyledButton value="Donate item to the library" />
+            <StyledButton
+              value="Donate item to the library"
+              disabled={isInvalid}
+              type="submit"
+            />
             <StyledButton value="Ask a manger" transparent />
           </WrapperButtons>
         </WrapperMainInfo>
