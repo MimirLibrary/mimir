@@ -1,10 +1,4 @@
 import { ConnectionOptions } from 'typeorm';
-import { Location } from './resources/locations/location.entity';
-import { Material } from './resources/materials/material.entity';
-import { Person } from './resources/persons/person.entity';
-import { Message } from './resources/messages/messages.entity';
-import { Notification } from './resources/notifications/notification.entity';
-import { Status } from './resources/statuses/status.entity';
 
 export default {
   type: 'postgres',
@@ -16,7 +10,7 @@ export default {
   database: process.env.POSTGRES_DB as string,
   synchronize: false,
   logging: false,
-  entities: [Material, Status, Person, Notification, Location, Message],
+  entities: ['packages/apiserver/src/**/*.entity.ts'],
   seeds: ['packages/apiserver/src/seeding/seeds/**/*.ts'],
   factories: ['packages/apiserver/src/seeding/factories/**/*.ts'],
   migrations: ['packages/apiserver/src/migrations/**/*.ts'],
