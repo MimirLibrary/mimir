@@ -12,6 +12,7 @@
         "tsConfig": "packages/apiserver/tsconfig.app.json",
         "assets": [
           "packages/apiserver/src/assets",
+          "packages/apiserver/src/migrations",
           {
             "glob": "**/*.graphql",
             "input": "packages/apiserver",
