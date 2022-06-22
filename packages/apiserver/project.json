@@ -10,12 +10,20 @@
         "outputPath": "dist/packages/apiserver",
         "main": "packages/apiserver/src/main.ts",
         "tsConfig": "packages/apiserver/tsconfig.app.json",
-        "assets": ["packages/apiserver/src/assets"]
+        "assets": [
+          "packages/apiserver/src/assets",
+          {
+            "glob": "**/*.graphql",
+            "input": "packages/apiserver",
+            "output": "gql"
+          }
+        ]
       },
       "configurations": {
         "production": {
           "optimization": true,
           "extractLicenses": true,
+          "generatePackageJson": true,
           "inspect": false,
           "fileReplacements": [
             {

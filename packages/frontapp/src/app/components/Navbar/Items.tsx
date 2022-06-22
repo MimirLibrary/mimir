@@ -50,4 +50,9 @@ export const navManagerItemsArray = [
     name: NavbarItems.CREATE_NEW_ITEM,
     path: RoutesTypes.CREATE_NEW_ITEM,
   },
+  {
+    icon: <Settings />,
+    name: NavbarItems.SETTINGS,
+    path: RoutesTypes.SETTINGS,
+  },
 ];

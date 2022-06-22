@@ -3,12 +3,14 @@ type Material {
   identifier: String!
   id_type: String!
   type: String!
+  location_id: Int!
   created_at: DateTime!
   updated_at: DateTime!
   title: String!
   picture: String
   author: String!
   category: String!
+  location: Location!
   statuses: [Status]!
   notifications: [Notification]!
   messages: [Message]!
@@ -17,6 +19,7 @@ type Material {
 input CreateMaterialInput {
   identifier: String!
   id_type: String!
+  location_id: Int!
   type: String!
 }
 
