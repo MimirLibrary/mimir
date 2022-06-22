@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { Notification } from '../notifications/notification.entity';
 import { Status } from '../statuses/status.entity';
+import { Message } from '../messages/messages.entity';
 import { Location } from '../locations/location.entity';
 
 @Entity('person')
@@ -34,6 +35,9 @@ export class Person extends BaseEntity {
 
   @OneToMany(() => Notification, (notification) => notification.person)
   notification: Notification[];
+
+  @OneToMany(() => Message, (message) => message.person)
+  message: Message[];
 
   @ManyToOne(() => Location, (location) => location.person)
   @JoinColumn({ name: 'location_id' })

@@ -25,6 +25,7 @@ import {
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import ErrorMessage from '../ErrorMessge';
 import { RolesTypes } from '../../../utils/rolesTypes';
+import AskManagerForm from '../AskManagerForm';
 
 const BookHolder = styled.div`
   top: 11.5rem;
@@ -162,12 +163,15 @@ const BookInfo: FC<IBookInfoProps> = ({
   const { id, userRole } = useAppSelector((state) => state.user);
   const [statusText, setStatusText] = useState<string>('');
   const [isShowClaimModal, setIsShowClaimModal] = useState<boolean>(false);
+  const [isShowAskManger, setIsShowAskManager] = useState<boolean>(false);
   const [isShowSuccessClaim, setIsShowSuccessClaim] = useState<boolean>(false);
   const [isShowErrorMessageOfClaiming, setIsShowErrorMessageOfClaiming] =
     useState<boolean>(false);
   const [isShowSuccessReturn, setIsSuccessReturn] = useState<boolean>(false);
   const [isShowSuccessExtend, setIsSuccessExtend] = useState<boolean>(false);
   const [isShowErrorMessageOfExtending, setIsShowErrorMessageOfExtending] =
+    useState<boolean>(false);
+  const [isShowWindowReportedToManager, setIsShowWindowReportedToManager] =
     useState<boolean>(false);
   const [valueIsISBN, setValueIsISBN] = useState<string>('');
   const [claimBook, { data }] = useClaimBookMutation({
@@ -284,9 +288,18 @@ const BookInfo: FC<IBookInfoProps> = ({
     }
   }, [currentStatus]);
 
+  const showAskManagerModal = () => {
+    setIsShowErrorMessageOfClaiming(false);
+    setIsShowAskManager(true);
+  };
+
+  const closeReportedManager = useCallback(() => {
+    setIsShowWindowReportedToManager(false);
+  }, []);
+
   const showClaimModal = useCallback(() => {
     setIsShowClaimModal(true);
-  }, [isShowSuccessClaim]);
+  }, []);
 
   return (
     <>
@@ -404,7 +417,9 @@ const BookInfo: FC<IBookInfoProps> = ({
         <ErrorMessage
           title="Something goes wrong with your claiming"
           message={errorConditionOfClaiming}
+          titleCancel="Ask a manager"
           setActive={setIsShowErrorMessageOfClaiming}
+          onClick={showAskManagerModal}
         />
       </Modal>
       <Modal active={isShowSuccessReturn} setActive={setIsSuccessReturn}>
@@ -429,6 +444,26 @@ const BookInfo: FC<IBookInfoProps> = ({
           title="Something goes wrong with your extending"
           message={errorConditionOfExtending}
           setActive={setIsShowErrorMessageOfExtending}
+          titleCancel="Close"
+        />
+      </Modal>
+      <Modal active={isShowAskManger} setActive={setIsShowAskManager}>
+        <AskManagerForm
+          setActive={setIsShowAskManager}
+          setSuccessModal={setIsShowWindowReportedToManager}
+          material_id={material_id}
+        />
+      </Modal>
+      <Modal
+        active={isShowWindowReportedToManager}
+        setActive={setIsShowWindowReportedToManager}
+      >
+        <ErrorMessage
+          title="We reported the problem to the manager"
+          message="The problem will be solved soon"
+          setActive={setIsShowWindowReportedToManager}
+          titleCancel="Close"
+          onClick={closeReportedManager}
         />
       </Modal>
     </>
