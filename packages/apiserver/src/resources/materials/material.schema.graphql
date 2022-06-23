@@ -22,6 +22,20 @@ input CreateMaterialInput {
   type: String!
 }
 
+input RemoveMaterialInput {
+  identifier: String!
+  id_type: String!
+  location_id: Int!
+  type: String!
+}
+
+input UpdateMaterialInput {
+  identifier: String!
+  id_type: String!
+  location_id: Int!
+  type: String!
+}
+
 extend type Query {
   getAllMaterials: [Material]!
   getMaterialById(id: ID!): Material!
@@ -29,4 +43,6 @@ extend type Query {
 
 extend type Mutation {
   createMaterial(input: CreateMaterialInput!): Material!
+  removeMaterial(input: RemoveMaterialInput!): Material!
+  updateMaterial(input: UpdateMaterialInput!): Material!
 }

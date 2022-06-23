@@ -32,6 +32,20 @@ export interface CreateMaterialInput {
     type: string;
 }
 
+export interface RemoveMaterialInput {
+    identifier: string;
+    id_type: string;
+    location_id: number;
+    type: string;
+}
+
+export interface UpdateMaterialInput {
+    identifier: string;
+    id_type: string;
+    location_id: number;
+    type: string;
+}
+
 export interface CreateNotificationInput {
     material_id: number;
     person_id: number;
@@ -75,6 +89,8 @@ export interface IMutation {
     createLocation(input: CreateLocationInput): Nullable<Location> | Promise<Nullable<Location>>;
     removeLocation(input: RemoveLocationInput): Nullable<Location> | Promise<Nullable<Location>>;
     createMaterial(input: CreateMaterialInput): Material | Promise<Material>;
+    removeMaterial(input: RemoveMaterialInput): Material | Promise<Material>;
+    updateMaterial(input: UpdateMaterialInput): Material | Promise<Material>;
     createNotification(input: CreateNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
     removeNotification(input: RemoveNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
     createPerson(input: CreatePersonInput): Person | Promise<Person>;

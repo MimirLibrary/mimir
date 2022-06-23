@@ -51,6 +51,13 @@ export type CreateStatusInput = {
   status: Scalars['String'];
 };
 
+export type EditMaterialInput = {
+  id_type: Scalars['String'];
+  identifier: Scalars['String'];
+  location_id: Scalars['Int'];
+  type: Scalars['String'];
+};
+
 export type Error = {
   __typename?: 'Error';
   message: Scalars['String'];
@@ -90,8 +97,10 @@ export type Mutation = {
   createNotification?: Maybe<Notification>;
   createPerson: Person;
   createStatus: Status;
+  editMaterial: Material;
   prolongClaimPeriod: BookUnionResult;
   removeLocation?: Maybe<Location>;
+  removeMaterial: Material;
   removeNotification?: Maybe<Notification>;
   returnItem: BookUnionResult;
 };
@@ -127,6 +136,11 @@ export type MutationCreateStatusArgs = {
 };
 
 
+export type MutationEditMaterialArgs = {
+  input: EditMaterialInput;
+};
+
+
 export type MutationProlongClaimPeriodArgs = {
   input?: InputMaybe<ProlongTimeInput>;
 };
@@ -134,6 +148,11 @@ export type MutationProlongClaimPeriodArgs = {
 
 export type MutationRemoveLocationArgs = {
   input: RemoveLocationInput;
+};
+
+
+export type MutationRemoveMaterialArgs = {
+  input: RemoveMaterialInput;
 };
 
 
@@ -225,6 +244,13 @@ export type QueryGetStatusesByPersonArgs = {
 
 export type RemoveLocationInput = {
   location_id: Scalars['Int'];
+};
+
+export type RemoveMaterialInput = {
+  id_type: Scalars['String'];
+  identifier: Scalars['String'];
+  location_id: Scalars['Int'];
+  type: Scalars['String'];
 };
 
 export type RemoveNotificationInput = {
