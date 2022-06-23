@@ -2,6 +2,8 @@ scalar DateTime
 
 union BookUnionResult = Status | Error
 
+union MessageUnionResult = Message | Error
+
 type Error {
   message: String!
 }

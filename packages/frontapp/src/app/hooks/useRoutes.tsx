@@ -40,6 +40,7 @@ export const useRoutes = (role: string) => {
         <Route path={RoutesTypes.HOME} element={<HomePage />} />
         <Route path={RoutesTypes.READERS} element={<Readers />} />
         <Route path={RoutesTypes.BOOKS_STUFF} element={<BooksStuff />} />
+        <Route path={RoutesTypes.SETTINGS} element={<SettingsPage />} />
         <Route
           path={RoutesTypes.DONATES_FROM_USER}
           element={<DonatesFromUser />}

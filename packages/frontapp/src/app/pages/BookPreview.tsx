@@ -1,9 +1,14 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import BookInfo from '../components/BookInfo';
+import AllBooksList from '../components/AllBooksList';
 import styled from '@emotion/styled';
+
 import { colors, dimensions } from '@mimir/ui-kit';
-import { useGetMaterialByIdQuery } from '@mimir/apollo-client';
+import {
+  useGetMaterialByIdQuery,
+  useGetAllMaterialsQuery,
+} from '@mimir/apollo-client';
 import { ReactComponent as ScrollButtonRight } from '../../assets/ArrowButtonRight.svg';
 import { ReactComponent as ScrollButtonLeft } from '../../assets/ArrowButtonLeft.svg';
 import { ReactComponent as ArrowBack } from '../../assets/ArrowUp2.svg';
@@ -20,7 +25,7 @@ const ButtonWrapper = styled.div`
   cursor: pointer;
 `;
 
-const ButtonGRoup = styled.div`
+export const ButtonGroup = styled.div`
   display: flex;
   gap: ${dimensions.base};
   @media (max-width: ${dimensions.phone_width}) {
@@ -31,7 +36,6 @@ const ButtonGRoup = styled.div`
 const Suggestions = styled.div`
   margin: ${dimensions.base_2} 0;
   display: flex;
-  max-width: 62.5rem;
 `;
 
 const SuggestionText = styled.h3`
@@ -48,11 +52,12 @@ const BookPreview = () => {
   const { data, loading } = useGetMaterialByIdQuery({
     variables: { id: item_id! },
   });
+  const { data: getAllMaterials } = useGetAllMaterialsQuery();
 
   const lastStatusAnotherPerson = data?.getMaterialById.statuses.slice(-1)[0];
 
   const handleGoBack = () => {
-    navigate(-1);
+    navigate('/search');
   };
 
   if (loading) return <h1>Loading...</h1>;
@@ -79,11 +84,15 @@ const BookPreview = () => {
       )}
       <Suggestions>
         <SuggestionText>You may also like</SuggestionText>
-        <ButtonGRoup>
+        <ButtonGroup>
           <ScrollButtonLeft />
           <ScrollButtonRight />
-        </ButtonGRoup>
+        </ButtonGroup>
       </Suggestions>
+      <AllBooksList
+        sortingCategory={data?.getMaterialById.category}
+        items={getAllMaterials?.getAllMaterials}
+      />
     </>
   );
 };

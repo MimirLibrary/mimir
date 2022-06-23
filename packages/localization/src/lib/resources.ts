@@ -21,9 +21,10 @@ export const resources = {
       NavbarManager: {
         Home: 'Home',
         Readers: 'Readers',
-        'Books/stuff': 'Books/stuff',
+        Library: 'Library',
         'Donates from user': 'Donates from user',
-        'Create new item': 'Create new item',
+        'Add item to library': 'Add item to library',
+        Settings: 'Settings',
       },
       Search: {
         Placeholder: 'Search by book or author',

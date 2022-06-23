@@ -43,14 +43,16 @@ jobs:
         if: steps.cache-nodemodules.outputs.cache-hit != 'true'
         run: npm install
 
-      - run: npm i env-cmd
       - run: npx nx-cloud start-ci-run
       - run: npx env-cmd -f .staging.env npx nx affected --target=build --parallel --max-parallel=3
       - run: npx env-cmd -f .staging.env npx nx affected --target=test --parallel --max-parallel=2
+
         # Deploy part:
       - run: npx env-cmd -f .staging.env npx nx build frontapp:build:production
       - run: npx env-cmd -f .staging.env npx nx build apiserver:build:production --parallel --max-parallel=3
+
       - run: npx nx-cloud stop-all-agents
+
       - name: Rsync copy web
         uses: burnett01/rsync-deployments@5.2
         with:
@@ -61,6 +63,7 @@ jobs:
           remote_user: ${{ secrets.SSH_USER }}
           remote_key: ${{ secrets.SSH_KEY }}
           remote_key_pass: ${{ secrets.SSH_PASSPHRASE }}
+
       - name: Rsync copy apiserver
         uses: burnett01/rsync-deployments@5.2
         with:
@@ -71,7 +74,8 @@ jobs:
           remote_user: ${{ secrets.SSH_USER }}
           remote_key: ${{ secrets.SSH_KEY }}
           remote_key_pass: ${{ secrets.SSH_PASSPHRASE }}
-      - name: Install deps on remote
+
+      - name: Run scripts on remote
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -86,6 +90,7 @@ jobs:
             export POSTGRES_USER=${{ secrets.DB_USER }}
             export POSTGRES_PASSWORD=${{ secrets.DB_PASSWORD }}
             pm2 restart apisrv
+
   pr:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}

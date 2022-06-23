@@ -7,9 +7,6 @@ import { Location } from '../../resources/locations/location.entity';
 
 export default class SeedDB implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<void> {
-    await factory(Material)().createMany(10);
-    await factory(Person)().createMany(10);
-    await factory(Status)().createMany(10);
     await connection
       .createQueryBuilder()
       .insert()
@@ -20,5 +17,8 @@ export default class SeedDB implements Seeder {
         { location: 'Tashkent' },
       ])
       .execute();
+    await factory(Material)().createMany(10);
+    await factory(Person)().createMany(10);
+    await factory(Status)().createMany(10);
   }
 }

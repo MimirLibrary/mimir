@@ -12,6 +12,7 @@ import { Status } from '../statuses/status.entity';
 import { Notification } from '../notifications/notification.entity';
 import { Location } from '../locations/location.entity';
 import { CreatePersonInput } from '@mimir/global-types';
+import { Message } from '../messages/messages.entity';
 
 @Resolver('Person')
 export class PersonResolver {
@@ -51,6 +52,12 @@ export class PersonResolver {
   async notifications(@Parent() person: Person) {
     const { id } = person;
     return Notification.find({ where: { person_id: id } });
+  }
+
+  @ResolveField(() => [Message])
+  async messages(@Parent() person: Person) {
+    const { id } = person;
+    return Message.find({ where: { person_id: id } });
   }
 
   @ResolveField(() => [Location])

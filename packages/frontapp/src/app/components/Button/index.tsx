@@ -7,9 +7,10 @@ export interface IButtonProps {
   transparent?: boolean;
   value: string;
   onClick?: () => void;
+  type?: 'button' | 'submit' | 'reset' | undefined;
 }
 
-const ButtonContainer = styled.div<IButtonProps>`
+const ButtonContainer = styled.button<IButtonProps>`
   user-select: none;
   cursor: pointer;
   display: flex;
@@ -67,6 +68,7 @@ const ButtonContainer = styled.div<IButtonProps>`
   }
 
   span {
+    font-size: ${dimensions.base};
     font-weight: 700;
     line-height: ${dimensions.xl};
     color: ${({ transparent }) =>
@@ -76,7 +78,11 @@ const ButtonContainer = styled.div<IButtonProps>`
 
 const Button: FC<IButtonProps> = (props) => {
   return (
-    <ButtonContainer {...props} onClick={props.onClick}>
+    <ButtonContainer
+      {...props}
+      onClick={props.onClick}
+      type={props.type || 'button'}
+    >
       {props.svgComponent}
       <span>{props.value}</span>
     </ButtonContainer>
