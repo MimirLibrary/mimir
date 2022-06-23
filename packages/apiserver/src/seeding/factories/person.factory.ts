@@ -3,12 +3,9 @@ import { define } from 'typeorm-seeding';
 import { Person } from '../../resources/persons/person.entity';
 
 define(Person, () => {
-  const typeOfUsers = ['Manager', 'Reader'];
-  const getTypeOfUser = () =>
-    String(typeOfUsers[Math.floor(Math.random() * 2)]);
-
   const person = new Person();
   person.smg_id = faker.datatype.uuid();
-  person.type = getTypeOfUser();
+  person.location_id = 2;
+  person.type = 'Reader';
   return person;
 });
