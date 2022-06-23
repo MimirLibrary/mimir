@@ -23,6 +23,7 @@ define(Material, () => {
   material.category = getType(listOfCategory, 3);
   material.title = getType(listOfTitle, 3);
   material.type = getType(type, 3);
+  material.location_id = 2;
   material.picture = '';
   return material;
 });
