@@ -29,7 +29,7 @@ export const useRoutes = (role: string) => {
         />
         <Route path={RoutesTypes.SETTINGS} element={<SettingsPage />} />
         <Route
-          path={`${RoutesTypes.SEARCH}_by_:search`}
+          path={`${RoutesTypes.SEARCH}_by_name_or_author`}
           element={<SearchByNameOrAuthorPage />}
         />
       </>

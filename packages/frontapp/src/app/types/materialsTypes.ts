@@ -5,7 +5,7 @@ export interface IStatus {
   status: string;
 }
 
-export interface IMaterialState {
+export interface IMaterial {
   __typename?: 'Material';
   title: string;
   created_at: any;
@@ -16,6 +16,6 @@ export interface IMaterialState {
   statuses: Array<IStatus | null>;
 }
 
-export interface IStateMaterials {
-  searchMaterials: Array<IMaterialState | null> | null | undefined;
+export interface IMaterialsState {
+  searchMaterials: Array<IMaterial | null> | null | undefined;
 }

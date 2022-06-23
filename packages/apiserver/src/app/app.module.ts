@@ -43,7 +43,7 @@ import { Message } from '../resources/messages/messages.entity';
     LocationsModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      typePaths: ['./**/*.graphql'],
+      typePaths: ['./packages/apiserver/**/*.graphql'],
       typeDefs: [...scalarTypeDefs],
       resolvers: [scalarResolvers],
       definitions: {

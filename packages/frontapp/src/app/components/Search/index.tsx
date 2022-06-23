@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions, fonts } from '@mimir/ui-kit';
 import { ReactComponent as SearchIcon } from '../../../assets/Navbar/Search.svg';
@@ -91,14 +91,14 @@ const Search = () => {
 
   const redirectToSearchByKey = (e: React.KeyboardEvent<HTMLImageElement>) => {
     if (e.key === 'Enter') {
-      navigate(`${RoutesTypes.SEARCH}_by_${search}`);
+      navigate(`${RoutesTypes.SEARCH}_by_name_or_author`);
       dispatch(setActiveTab(1));
     }
   };
 
   const redirectToSearchByClick = () => {
     if (search) {
-      navigate(`${RoutesTypes.SEARCH}_by_${search}`);
+      navigate(`${RoutesTypes.SEARCH}_by_name_or_author`);
       dispatch(setActiveTab(1));
     }
   };

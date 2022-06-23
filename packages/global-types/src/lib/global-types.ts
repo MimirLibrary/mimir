@@ -71,6 +71,7 @@ export interface IQuery {
     getAllLocations(): Nullable<Location>[] | Promise<Nullable<Location>[]>;
     getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
     getMaterialById(id: string): Material | Promise<Material>;
+    searchOfMaterials(input: SearchInput): Nullable<Nullable<Material>[]> | Promise<Nullable<Nullable<Material>[]>>;
     getNotificationsByPerson(person_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
     getNotificationsByMaterial(material_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
     getOnePerson(id: string): Person | Promise<Person>;
@@ -87,6 +88,7 @@ export interface IMutation {
     createLocation(input: CreateLocationInput): Nullable<Location> | Promise<Nullable<Location>>;
     removeLocation(input: RemoveLocationInput): Nullable<Location> | Promise<Nullable<Location>>;
     createMaterial(input: CreateMaterialInput): Material | Promise<Material>;
+    createMessageForManager(input: CreateMessageInput): MessageUnionResult | Promise<MessageUnionResult>;
     createNotification(input: CreateNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
     removeNotification(input: RemoveNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
     createPerson(input: CreatePersonInput): Person | Promise<Person>;
@@ -115,6 +117,18 @@ export interface Material {
     location: Location;
     statuses: Nullable<Status>[];
     notifications: Nullable<Notification>[];
+    messages: Nullable<Message>[];
+}
+
+export interface Message {
+    id: string;
+    material_id: number;
+    person_id: number;
+    created_at: DateTime;
+    person: Person;
+    material: Material;
+    title: string;
+    message: string;
 }
 
 export interface Notification {
@@ -135,6 +149,7 @@ export interface Person {
     statuses?: Nullable<Nullable<Status>[]>;
     notifications?: Nullable<Nullable<Notification>[]>;
     location: Location;
+    messages: Nullable<Message>[];
 }
 
 export interface Status {
@@ -209,4 +224,5 @@ export type Locale = any;
 export type RoutingNumber = any;
 export type AccountNumber = any;
 export type BookUnionResult = Status | Error;
+export type MessageUnionResult = Message | Error;
 type Nullable<T> = T | null;

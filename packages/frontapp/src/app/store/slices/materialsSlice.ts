@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IMaterialState, IStateMaterials } from '../../types';
+import { IMaterial, IMaterialsState } from '../../types';
 
-const initialState: IStateMaterials = {
+const initialState: IMaterialsState = {
   searchMaterials: [],
 };
 
@@ -10,8 +10,8 @@ const materialSlice = createSlice({
   initialState,
   reducers: {
     setSearchMaterials: (
-      state: IStateMaterials,
-      { payload }: PayloadAction<(IMaterialState | null)[] | null | undefined>
+      state: IMaterialsState,
+      { payload }: PayloadAction<(IMaterial | null)[] | null | undefined>
     ) => {
       state.searchMaterials = payload;
     },
