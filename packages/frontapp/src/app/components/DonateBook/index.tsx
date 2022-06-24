@@ -3,13 +3,11 @@ import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { ReactComponent as PhotoIcon } from '../../../assets/Photo.svg';
 import Button from '../Button';
-import { use } from 'i18next';
 import axios from 'axios';
-import { log } from 'util';
 
 const WrapperDonate = styled.section`
   background-color: ${colors.bg_secondary};
-  box-shadow: 0px 10px 70px rgba(26, 30, 214, 0.08);
+  box-shadow: 0 10px 70px rgba(26, 30, 214, 0.08);
   border-radius: ${dimensions.xs_1};
   padding: ${dimensions.base_2};
   margin-top: ${dimensions.xl_2};
@@ -198,8 +196,9 @@ const DonateBook: FC = () => {
   const deleteFile = async (fileName: string) => {
     try {
       const response = await axios.delete(
-        `${process.env['NX_API_ROOT_URL']}/api/file/delete/${picture}`
+        `${process.env['NX_API_ROOT_URL']}/api/file/delete/${fileName}`
       );
+      return response.data;
     } catch (e) {
       console.error(e);
     }
@@ -218,17 +217,20 @@ const DonateBook: FC = () => {
   };
 
   useEffect(() => {
-    const formData = new FormData();
-    if (file && !formData.has('file')) {
-      formData.append('file', file);
-      getFile(formData);
-    }
-    if (picture) {
-      formData.delete('file');
-      formData.append('file', picture);
-      deleteFile(picture);
-      getFile(formData);
-    }
+    const operationWithFiles = async () => {
+      const formData = new FormData();
+      if (file && !picture) {
+        formData.append('file', file);
+        await getFile(formData);
+      }
+      if (picture) {
+        formData.append('file', file!);
+        await deleteFile(picture);
+        await getFile(formData);
+        formData.delete('file');
+      }
+    };
+    operationWithFiles();
   }, [file]);
 
   const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -236,6 +238,7 @@ const DonateBook: FC = () => {
     if (!fileList) return;
     setFile(fileList[0]);
   };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setDataOfBook({ ...dataOfBook, [name]: value });
@@ -249,7 +252,6 @@ const DonateBook: FC = () => {
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    const formData = new FormData();
   };
 
   return (

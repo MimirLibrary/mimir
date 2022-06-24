@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
+@Injectable()
 export class FileService {
   createFileForTmp(file) {
     try {
@@ -21,7 +22,8 @@ export class FileService {
 
   async removeFile(fileName: string) {
     try {
-      fs.unlinkSync(path.resolve(`./packages/apiserver/static/${fileName}`));
+      fs.unlinkSync(path.resolve(`./packages/apiserver/tmp/${fileName}`));
+      return 'File was deleted';
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
