@@ -15,6 +15,7 @@ import {
 } from '@mimir/global-types';
 import { Notification } from '../notifications/notification.entity';
 import { BadRequestException } from '@nestjs/common';
+import { Message } from '../messages/messages.entity';
 
 @Resolver('Material')
 export class MaterialResolver {
@@ -83,6 +84,12 @@ export class MaterialResolver {
   @ResolveField(() => [Notification])
   async notifications(@Parent() material: Material) {
     const { id } = material;
-    return Status.find({ where: { material_id: id } });
+    return Notification.find({ where: { material_id: id } });
+  }
+
+  @ResolveField(() => [Message])
+  async messages(@Parent() material: Material) {
+    const { id } = material;
+    return Message.find({ where: { material_id: id } });
   }
 }

@@ -3,10 +3,16 @@ import bookImage from '../../../assets/MOC-data/BookImage.png';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { ReactComponent as Claim } from '../../../assets/claim.svg';
+import { ReactComponent as Edit } from '../../../assets/Edit.svg';
+import { ReactComponent as Remove } from '../../../assets/Remove.svg';
 import Button from '../Button';
 import ClaimOperation from '../ClaimOperation';
 import Modal from '../Modal';
-import { getDates, getStatus } from '../../models/helperFunctions/converTime';
+import {
+  getDates,
+  getStatus,
+  periodOfKeeping,
+} from '../../models/helperFunctions/converTime';
 import { StyledBookStatus } from '../../globalUI/Status';
 import SuccessMessage from '../SuccesMessage';
 import {
@@ -18,9 +24,10 @@ import {
 } from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import ErrorMessage from '../ErrorMessge';
+import { RolesTypes } from '../../../utils/rolesTypes';
+import AskManagerForm from '../AskManagerForm';
 
 const BookHolder = styled.div`
-  height: 41rem;
   top: 11.5rem;
   left: 24.5rem;
   border-radius: ${dimensions.xs_1};
@@ -33,6 +40,7 @@ const BookImage = styled.img`
   display: inline-block;
   width: 12rem;
   height: 19.5rem;
+  border-radius: 10px;
   @media (max-width: ${dimensions.phone_width}) {
     width: 5rem;
     height: 8rem;
@@ -71,6 +79,7 @@ const TopicDescription = styled.p`
   font-weight: 300;
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
+  color: ${colors.main_black};
 `;
 
 const StatusInfoDescription = styled.p`
@@ -89,7 +98,7 @@ const LongDescription = styled.div`
 const OpenLink = styled.a`
   cursor: pointer;
   margin: ${dimensions.xs_2} 0;
-  font-weight: 500;
+  font-weight: 300;
   color: ${colors.accent_color};
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
@@ -100,6 +109,7 @@ const Description = styled.p`
   font-weight: 300;
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
+  color: ${colors.main_black};
 `;
 
 const StyledStatus = styled(StyledBookStatus)`
@@ -150,9 +160,10 @@ const BookInfo: FC<IBookInfoProps> = ({
   material_id,
   person_id,
 }) => {
-  const { id } = useAppSelector((state) => state.user);
+  const { id, userRole } = useAppSelector((state) => state.user);
   const [statusText, setStatusText] = useState<string>('');
   const [isShowClaimModal, setIsShowClaimModal] = useState<boolean>(false);
+  const [isShowAskManger, setIsShowAskManager] = useState<boolean>(false);
   const [isShowSuccessClaim, setIsShowSuccessClaim] = useState<boolean>(false);
   const [isShowErrorMessageOfClaiming, setIsShowErrorMessageOfClaiming] =
     useState<boolean>(false);
@@ -160,8 +171,9 @@ const BookInfo: FC<IBookInfoProps> = ({
   const [isShowSuccessExtend, setIsSuccessExtend] = useState<boolean>(false);
   const [isShowErrorMessageOfExtending, setIsShowErrorMessageOfExtending] =
     useState<boolean>(false);
+  const [isShowWindowReportedToManager, setIsShowWindowReportedToManager] =
+    useState<boolean>(false);
   const [valueIsISBN, setValueIsISBN] = useState<string>('');
-
   const [claimBook, { data }] = useClaimBookMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
@@ -213,6 +225,14 @@ const BookInfo: FC<IBookInfoProps> = ({
         material_id: Number(material_id),
       },
     });
+  };
+
+  const editInformation = async () => {
+    console.log('Edit information');
+  };
+
+  const deleteItem = async () => {
+    console.log('Delete item');
   };
 
   useEffect(() => {
@@ -268,9 +288,18 @@ const BookInfo: FC<IBookInfoProps> = ({
     }
   }, [currentStatus]);
 
+  const showAskManagerModal = () => {
+    setIsShowErrorMessageOfClaiming(false);
+    setIsShowAskManager(true);
+  };
+
+  const closeReportedManager = useCallback(() => {
+    setIsShowWindowReportedToManager(false);
+  }, []);
+
   const showClaimModal = useCallback(() => {
     setIsShowClaimModal(true);
-  }, [isShowSuccessClaim]);
+  }, []);
 
   return (
     <>
@@ -281,36 +310,78 @@ const BookInfo: FC<IBookInfoProps> = ({
             <ShortDescription>
               <TitleBook>{title || 'Book Title'}</TitleBook>
               <Topic>Genre: </Topic>
-              <OpenLink>{category || 'Genres of book'}</OpenLink>
+              {userRole === RolesTypes.READER ? (
+                <OpenLink>{category || 'Genres of book'}</OpenLink>
+              ) : (
+                <TopicDescription>
+                  {category || 'Genres of book'}
+                </TopicDescription>
+              )}
               <Topic>Author: </Topic>
               <TopicDescription>{author || 'Author Name'}</TopicDescription>
-              <StyledStatus status={currentStatus}>{statusText}</StyledStatus>
-              <StatusInfoDescription>
-                Use the mobile app to claim an item
-              </StatusInfoDescription>
+              {userRole === RolesTypes.READER ? (
+                <>
+                  <StyledStatus status={currentStatus}>
+                    {statusText}
+                  </StyledStatus>
+                  <StatusInfoDescription>
+                    Use the mobile app to claim an item
+                  </StatusInfoDescription>
+                </>
+              ) : (
+                <>
+                  <Topic>Deadline: </Topic>
+                  <TopicDescription>
+                    {periodOfKeeping + ' days'}
+                  </TopicDescription>
+                </>
+              )}
             </ShortDescription>
           </WrapperInfo>
-          {person_id === id ? (
-            <WrapperButtons>
-              {status !== 'Free' ? (
-                <>
-                  <StyledButton value="Return a book" onClick={retrieveBook} />
-                  <StyledButton
-                    value="Extend claim period"
-                    transparent
-                    onClick={prolongPeriod}
-                  />
-                </>
+          {userRole === RolesTypes.READER ? (
+            <>
+              {person_id === id ? (
+                <WrapperButtons>
+                  {status !== 'Free' ? (
+                    <>
+                      <StyledButton
+                        value="Return a book"
+                        onClick={retrieveBook}
+                      />
+                      <StyledButton
+                        value="Extend claim period"
+                        transparent
+                        onClick={prolongPeriod}
+                      />
+                    </>
+                  ) : null}
+                </WrapperButtons>
               ) : null}
+              {status === 'Free' ? (
+                <StyledButton
+                  value="Claim a book"
+                  svgComponent={<Claim />}
+                  onClick={showClaimModal}
+                />
+              ) : null}
+            </>
+          ) : (
+            <WrapperButtons>
+              <StyledButton
+                value="Edit information"
+                transparent
+                svgComponent={<Edit />}
+                onClick={editInformation}
+              />
+              <StyledButton
+                value="Delete item"
+                transparent
+                secondary
+                svgComponent={<Remove />}
+                onClick={deleteItem}
+              />
             </WrapperButtons>
-          ) : null}
-          {status === 'Free' ? (
-            <StyledButton
-              value="Claim a book"
-              svgComponent={<Claim />}
-              onClick={showClaimModal}
-            />
-          ) : null}
+          )}
         </ShortDescriptionWrapper>
         <LongDescription>
           <Topic>Description: </Topic>
@@ -318,7 +389,9 @@ const BookInfo: FC<IBookInfoProps> = ({
             {description ||
               ' Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi impedit aliquid alias consequuntur! Totam sequi expedita sunt dolor obcaecati, iusto ducimus? Beatae ea, commodi ab repellat, corporis atque quasi, tempore sunt modi similique soluta nemo hic necessitatibus esse accusantium omnis neque rerum. Placeat tempore, fugiat unde consequuntur dolor tempora ducimus.'}
           </Description>
-          <OpenLink>see full description</OpenLink>
+          {userRole === RolesTypes.READER ? (
+            <OpenLink>see full description</OpenLink>
+          ) : null}
         </LongDescription>
       </BookHolder>
       <Modal active={isShowClaimModal} setActive={setIsShowClaimModal}>
@@ -344,7 +417,9 @@ const BookInfo: FC<IBookInfoProps> = ({
         <ErrorMessage
           title="Something goes wrong with your claiming"
           message={errorConditionOfClaiming}
+          titleCancel="Ask a manager"
           setActive={setIsShowErrorMessageOfClaiming}
+          onClick={showAskManagerModal}
         />
       </Modal>
       <Modal active={isShowSuccessReturn} setActive={setIsSuccessReturn}>
@@ -369,6 +444,26 @@ const BookInfo: FC<IBookInfoProps> = ({
           title="Something goes wrong with your extending"
           message={errorConditionOfExtending}
           setActive={setIsShowErrorMessageOfExtending}
+          titleCancel="Close"
+        />
+      </Modal>
+      <Modal active={isShowAskManger} setActive={setIsShowAskManager}>
+        <AskManagerForm
+          setActive={setIsShowAskManager}
+          setSuccessModal={setIsShowWindowReportedToManager}
+          material_id={material_id}
+        />
+      </Modal>
+      <Modal
+        active={isShowWindowReportedToManager}
+        setActive={setIsShowWindowReportedToManager}
+      >
+        <ErrorMessage
+          title="We reported the problem to the manager"
+          message="The problem will be solved soon"
+          setActive={setIsShowWindowReportedToManager}
+          titleCancel="Close"
+          onClick={closeReportedManager}
         />
       </Modal>
     </>

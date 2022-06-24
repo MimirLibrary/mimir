@@ -54,6 +54,13 @@ export interface UpdateMaterialInput {
     category?: Nullable<string>;
 }
 
+export interface CreateMessageInput {
+    title: string;
+    message: string;
+    material_id: number;
+    person_id: number;
+}
+
 export interface CreateNotificationInput {
     material_id: number;
     person_id: number;
@@ -99,6 +106,7 @@ export interface IMutation {
     createMaterial(input: CreateMaterialInput): Material | Promise<Material>;
     removeMaterial(input: RemoveMaterialInput): Material | Promise<Material>;
     updateMaterial(input: UpdateMaterialInput): Material | Promise<Material>;
+    createMessageForManager(input: CreateMessageInput): MessageUnionResult | Promise<MessageUnionResult>;
     createNotification(input: CreateNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
     removeNotification(input: RemoveNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
     createPerson(input: CreatePersonInput): Person | Promise<Person>;
@@ -127,6 +135,18 @@ export interface Material {
     location: Location;
     statuses: Nullable<Status>[];
     notifications: Nullable<Notification>[];
+    messages: Nullable<Message>[];
+}
+
+export interface Message {
+    id: string;
+    material_id: number;
+    person_id: number;
+    created_at: DateTime;
+    person: Person;
+    material: Material;
+    title: string;
+    message: string;
 }
 
 export interface Notification {
@@ -147,6 +167,7 @@ export interface Person {
     statuses?: Nullable<Nullable<Status>[]>;
     notifications?: Nullable<Nullable<Notification>[]>;
     location: Location;
+    messages: Nullable<Message>[];
 }
 
 export interface Status {
@@ -221,4 +242,5 @@ export type Locale = any;
 export type RoutingNumber = any;
 export type AccountNumber = any;
 export type BookUnionResult = Status | Error;
+export type MessageUnionResult = Message | Error;
 type Nullable<T> = T | null;

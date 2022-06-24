@@ -38,6 +38,13 @@ export type CreateMaterialInput = {
   type: Scalars['String'];
 };
 
+export type CreateMessageInput = {
+  material_id: Scalars['Int'];
+  message: Scalars['String'];
+  person_id: Scalars['Int'];
+  title: Scalars['String'];
+};
+
 export type CreateNotificationInput = {
   material_id: Scalars['Int'];
   person_id: Scalars['Int'];
@@ -78,6 +85,7 @@ export type Material = {
   identifier: Scalars['String'];
   location: Location;
   location_id: Scalars['Int'];
+  messages: Array<Maybe<Message>>;
   notifications: Array<Maybe<Notification>>;
   picture?: Maybe<Scalars['String']>;
   statuses: Array<Maybe<Status>>;
@@ -86,11 +94,26 @@ export type Material = {
   updated_at: Scalars['DateTime'];
 };
 
+export type Message = {
+  __typename?: 'Message';
+  created_at: Scalars['DateTime'];
+  id: Scalars['ID'];
+  material: Material;
+  material_id: Scalars['Int'];
+  message: Scalars['String'];
+  person: Person;
+  person_id: Scalars['Int'];
+  title: Scalars['String'];
+};
+
+export type MessageUnionResult = Error | Message;
+
 export type Mutation = {
   __typename?: 'Mutation';
   claimBook: BookUnionResult;
   createLocation?: Maybe<Location>;
   createMaterial: Material;
+  createMessageForManager: MessageUnionResult;
   createNotification?: Maybe<Notification>;
   createPerson: Person;
   createStatus: Status;
@@ -115,6 +138,11 @@ export type MutationCreateLocationArgs = {
 
 export type MutationCreateMaterialArgs = {
   input: CreateMaterialInput;
+};
+
+
+export type MutationCreateMessageForManagerArgs = {
+  input: CreateMessageInput;
 };
 
 
@@ -178,6 +206,7 @@ export type Person = {
   id: Scalars['ID'];
   location: Location;
   location_id: Scalars['Int'];
+  messages: Array<Maybe<Message>>;
   notifications?: Maybe<Array<Maybe<Notification>>>;
   smg_id: Scalars['String'];
   statuses?: Maybe<Array<Maybe<Status>>>;
@@ -285,6 +314,16 @@ export type ClaimBookMutationVariables = Exact<{
 
 export type ClaimBookMutation = { __typename?: 'Mutation', claimBook: { __typename?: 'Error', message: string } | { __typename?: 'Status', created_at: any, status: string } };
 
+export type CreateMessageForManagerMutationVariables = Exact<{
+  person_id: Scalars['Int'];
+  material_id: Scalars['Int'];
+  title: Scalars['String'];
+  message: Scalars['String'];
+}>;
+
+
+export type CreateMessageForManagerMutation = { __typename?: 'Mutation', createMessageForManager: { __typename?: 'Error', message: string } | { __typename?: 'Message', message: string, title: string } };
+
 export type ProlongTimeMutationVariables = Exact<{
   person_id: Scalars['Int'];
   material_id: Scalars['Int'];
@@ -366,6 +405,50 @@ export function useClaimBookMutation(baseOptions?: Apollo.MutationHookOptions<Cl
 export type ClaimBookMutationHookResult = ReturnType<typeof useClaimBookMutation>;
 export type ClaimBookMutationResult = Apollo.MutationResult<ClaimBookMutation>;
 export type ClaimBookMutationOptions = Apollo.BaseMutationOptions<ClaimBookMutation, ClaimBookMutationVariables>;
+export const CreateMessageForManagerDocument = gql`
+    mutation CreateMessageForManager($person_id: Int!, $material_id: Int!, $title: String!, $message: String!) {
+  createMessageForManager(
+    input: {person_id: $person_id, material_id: $material_id, title: $title, message: $message}
+  ) {
+    ... on Message {
+      message
+      title
+    }
+    ... on Error {
+      message
+    }
+  }
+}
+    `;
+export type CreateMessageForManagerMutationFn = Apollo.MutationFunction<CreateMessageForManagerMutation, CreateMessageForManagerMutationVariables>;
+
+/**
+ * __useCreateMessageForManagerMutation__
+ *
+ * To run a mutation, you first call `useCreateMessageForManagerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateMessageForManagerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createMessageForManagerMutation, { data, loading, error }] = useCreateMessageForManagerMutation({
+ *   variables: {
+ *      person_id: // value for 'person_id'
+ *      material_id: // value for 'material_id'
+ *      title: // value for 'title'
+ *      message: // value for 'message'
+ *   },
+ * });
+ */
+export function useCreateMessageForManagerMutation(baseOptions?: Apollo.MutationHookOptions<CreateMessageForManagerMutation, CreateMessageForManagerMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateMessageForManagerMutation, CreateMessageForManagerMutationVariables>(CreateMessageForManagerDocument, options);
+      }
+export type CreateMessageForManagerMutationHookResult = ReturnType<typeof useCreateMessageForManagerMutation>;
+export type CreateMessageForManagerMutationResult = Apollo.MutationResult<CreateMessageForManagerMutation>;
+export type CreateMessageForManagerMutationOptions = Apollo.BaseMutationOptions<CreateMessageForManagerMutation, CreateMessageForManagerMutationVariables>;
 export const ProlongTimeDocument = gql`
     mutation ProlongTime($person_id: Int!, $material_id: Int!) {
   prolongClaimPeriod(input: {material_id: $material_id, person_id: $person_id}) {

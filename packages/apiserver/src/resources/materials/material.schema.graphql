@@ -13,6 +13,7 @@ type Material {
   location: Location!
   statuses: [Status]!
   notifications: [Notification]!
+  messages: [Message]!
 }
 
 input CreateMaterialInput {
