@@ -28,9 +28,13 @@ export type CreateLocationInput = {
 };
 
 export type CreateMaterialInput = {
+  author: Scalars['String'];
+  category: Scalars['String'];
   id_type: Scalars['String'];
   identifier: Scalars['String'];
   location_id: Scalars['Int'];
+  picture?: InputMaybe<Scalars['String']>;
+  title: Scalars['String'];
   type: Scalars['String'];
 };
 
@@ -49,13 +53,6 @@ export type CreateStatusInput = {
   material_id: Scalars['Int'];
   person_id: Scalars['Int'];
   status: Scalars['String'];
-};
-
-export type EditMaterialInput = {
-  id_type: Scalars['String'];
-  identifier: Scalars['String'];
-  location_id: Scalars['Int'];
-  type: Scalars['String'];
 };
 
 export type Error = {
@@ -97,12 +94,12 @@ export type Mutation = {
   createNotification?: Maybe<Notification>;
   createPerson: Person;
   createStatus: Status;
-  editMaterial: Material;
   prolongClaimPeriod: BookUnionResult;
   removeLocation?: Maybe<Location>;
   removeMaterial: Material;
   removeNotification?: Maybe<Notification>;
   returnItem: BookUnionResult;
+  updateMaterial: Material;
 };
 
 
@@ -136,11 +133,6 @@ export type MutationCreateStatusArgs = {
 };
 
 
-export type MutationEditMaterialArgs = {
-  input: EditMaterialInput;
-};
-
-
 export type MutationProlongClaimPeriodArgs = {
   input?: InputMaybe<ProlongTimeInput>;
 };
@@ -163,6 +155,11 @@ export type MutationRemoveNotificationArgs = {
 
 export type MutationReturnItemArgs = {
   input?: InputMaybe<BookInput>;
+};
+
+
+export type MutationUpdateMaterialArgs = {
+  input: UpdateMaterialInput;
 };
 
 export type Notification = {
@@ -267,6 +264,17 @@ export type Status = {
   person: Person;
   person_id: Scalars['Int'];
   status: Scalars['String'];
+};
+
+export type UpdateMaterialInput = {
+  author?: InputMaybe<Scalars['String']>;
+  category?: InputMaybe<Scalars['String']>;
+  id_type?: InputMaybe<Scalars['String']>;
+  identifier: Scalars['String'];
+  location_id?: InputMaybe<Scalars['Int']>;
+  picture?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Scalars['String']>;
 };
 
 export type ClaimBookMutationVariables = Exact<{

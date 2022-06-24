@@ -8,7 +8,11 @@ import {
 } from '@nestjs/graphql';
 import { Material } from './material.entity';
 import { Status } from '../statuses/status.entity';
-import { CreateMaterialInput } from '@mimir/global-types';
+import {
+  CreateMaterialInput,
+  UpdateMaterialInput,
+  RemoveMaterialInput,
+} from '@mimir/global-types';
 import { Notification } from '../notifications/notification.entity';
 import { BadRequestException } from '@nestjs/common';
 
@@ -37,7 +41,7 @@ export class MaterialResolver {
 
   @Mutation(() => Material)
   async removeMaterial(
-    @Args('input') removeMaterialInput: CreateMaterialInput
+    @Args('input') removeMaterialInput: RemoveMaterialInput
   ) {
     try {
       const identifier = removeMaterialInput.identifier;
@@ -48,26 +52,23 @@ export class MaterialResolver {
       await Material.remove({ ...material } as Material);
       return material;
     } catch (e) {
-      console.log(e);
       throw new BadRequestException();
     }
   }
   @Mutation(() => Material)
   async updateMaterial(
-    @Args('input') updateMaterialInput: CreateMaterialInput
+    @Args('input') updateMaterialInput: UpdateMaterialInput
   ) {
     try {
       const identifier = updateMaterialInput.identifier;
       const material = await Material.findOne({
         where: { identifier },
       });
-      const editMaterial = await Material.update(
-        { ...material } as Material,
-        updateMaterialInput
-      );
-      return editMaterial;
+      await Material.update(material.id, {
+        ...updateMaterialInput,
+      });
+      return material;
     } catch (e) {
-      console.log(e);
       throw new BadRequestException();
     }
   }

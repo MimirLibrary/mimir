@@ -30,6 +30,10 @@ export interface CreateMaterialInput {
     id_type: string;
     location_id: number;
     type: string;
+    title: string;
+    picture?: Nullable<string>;
+    author: string;
+    category: string;
 }
 
 export interface RemoveMaterialInput {
@@ -40,10 +44,14 @@ export interface RemoveMaterialInput {
 }
 
 export interface UpdateMaterialInput {
-    identifier: string;
-    id_type: string;
-    location_id: number;
-    type: string;
+    identifier?: Nullable<string>;
+    id_type?: Nullable<string>;
+    location_id?: Nullable<number>;
+    type?: Nullable<string>;
+    title?: Nullable<string>;
+    picture?: Nullable<string>;
+    author?: Nullable<string>;
+    category?: Nullable<string>;
 }
 
 export interface CreateNotificationInput {

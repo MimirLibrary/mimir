@@ -20,6 +20,10 @@ input CreateMaterialInput {
   id_type: String!
   location_id: Int!
   type: String!
+  title: String!
+  picture: String
+  author: String!
+  category: String!
 }
 
 input RemoveMaterialInput {
@@ -30,10 +34,14 @@ input RemoveMaterialInput {
 }
 
 input UpdateMaterialInput {
-  identifier: String!
-  id_type: String!
-  location_id: Int!
-  type: String!
+  identifier: String
+  id_type: String
+  location_id: Int
+  type: String
+  title: String
+  picture: String
+  author: String
+  category: String
 }
 
 extend type Query {
