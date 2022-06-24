@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { useNavigate } from 'react-router-dom';
+
 interface IStyledContainerProps {
   flex: string | null;
 }

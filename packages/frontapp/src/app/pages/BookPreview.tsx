@@ -66,7 +66,7 @@ const BookPreview = () => {
     <>
       <ButtonWrapper onClick={handleGoBack}>
         <ArrowBack />
-        <GoBack>Back to all books</GoBack>
+        <GoBack>Back</GoBack>
       </ButtonWrapper>
       {data?.getMaterialById && (
         <BookInfo
