@@ -1,8 +1,11 @@
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { ReactComponent as PhotoIcon } from '../../../assets/Photo.svg';
 import Button from '../Button';
+import { use } from 'i18next';
+import axios from 'axios';
+import { log } from 'util';
 
 const WrapperDonate = styled.section`
   background-color: ${colors.bg_secondary};
@@ -181,6 +184,7 @@ interface IDataOfBook {
 const DonateBook: FC = () => {
   const ref = useRef<HTMLInputElement | null>(null);
   const [file, setFile] = useState<File>();
+  const [picture, setPicture] = useState('');
   const [description, setDescription] = useState<string>('');
   const [dataOfBook, setDataOfBook] = useState<IDataOfBook>({
     author: '',
@@ -190,6 +194,42 @@ const DonateBook: FC = () => {
 
   const isInvalid =
     !dataOfBook.author || !dataOfBook.title || !dataOfBook.genre;
+
+  const deleteFile = async (fileName: string) => {
+    try {
+      const response = await axios.delete(
+        `${process.env['NX_API_ROOT_URL']}/api/file/delete/${picture}`
+      );
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const getFile = async (formData: any) => {
+    try {
+      const response = await axios.post(
+        `${process.env['NX_API_ROOT_URL']}/api/file/create`,
+        formData
+      );
+      setPicture(response.data);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    const formData = new FormData();
+    if (file && !formData.has('file')) {
+      formData.append('file', file);
+      getFile(formData);
+    }
+    if (picture) {
+      formData.delete('file');
+      formData.append('file', picture);
+      deleteFile(picture);
+      getFile(formData);
+    }
+  }, [file]);
 
   const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files;
@@ -218,19 +258,41 @@ const DonateBook: FC = () => {
         <WrapperMainInfo>
           <WrapperWithoutButtons>
             <div>
-              <WrapperUploadFile onClick={() => ref?.current?.click()}>
-                <input
-                  type="file"
-                  onChange={handleChangeFile}
-                  accept="image/*"
-                  style={{ display: 'none' }}
-                  ref={ref}
-                />
-                <PhotoIcon />
-              </WrapperUploadFile>
-              <StyledUploadFile onClick={() => ref?.current?.click()}>
-                {file ? 'Upload new' : 'Upload File'}
-              </StyledUploadFile>
+              {picture ? (
+                <div>
+                  <img
+                    src={process.env['NX_API_ROOT_URL'] + '/' + picture}
+                    alt=""
+                    style={{ height: '328px', width: '195px' }}
+                  />
+                  <input
+                    type="file"
+                    onChange={handleChangeFile}
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    ref={ref}
+                  />
+                  <StyledUploadFile onClick={() => ref?.current?.click()}>
+                    {file ? 'Upload new' : 'Upload File'}
+                  </StyledUploadFile>
+                </div>
+              ) : (
+                <>
+                  <WrapperUploadFile onClick={() => ref?.current?.click()}>
+                    <input
+                      type="file"
+                      onChange={handleChangeFile}
+                      accept="image/*"
+                      style={{ display: 'none' }}
+                      ref={ref}
+                    />
+                    <PhotoIcon />
+                  </WrapperUploadFile>
+                  <StyledUploadFile onClick={() => ref?.current?.click()}>
+                    {file ? 'Upload new' : 'Upload File'}
+                  </StyledUploadFile>
+                </>
+              )}
             </div>
             <WrapperBlockInput>
               <WrapperStyledInput>
