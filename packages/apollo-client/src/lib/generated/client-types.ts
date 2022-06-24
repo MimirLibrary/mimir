@@ -176,6 +176,10 @@ export type BookInput = {
 
 export type BookUnionResult = Error | Status;
 
+export type CreateLocationInput = {
+  location: Scalars['String'];
+};
+
 export type CreateMaterialInput = {
   id_type: Scalars['String'];
   identifier: Scalars['String'];
@@ -203,6 +207,14 @@ export type Error = {
   message: Scalars['String'];
 };
 
+export type Location = {
+  __typename?: 'Location';
+  id: Scalars['ID'];
+  location: Scalars['String'];
+  materials?: Maybe<Array<Maybe<Material>>>;
+  persons?: Maybe<Array<Maybe<Person>>>;
+};
+
 export type Material = {
   __typename?: 'Material';
   author: Scalars['String'];
@@ -222,11 +234,13 @@ export type Material = {
 export type Mutation = {
   __typename?: 'Mutation';
   claimBook: BookUnionResult;
+  createLocation?: Maybe<Location>;
   createMaterial: Material;
   createNotification?: Maybe<Notification>;
   createPerson: Person;
   createStatus: Status;
   prolongClaimPeriod: BookUnionResult;
+  removeLocation?: Maybe<Location>;
   removeNotification?: Maybe<Notification>;
   returnItem: BookUnionResult;
 };
@@ -234,6 +248,11 @@ export type Mutation = {
 
 export type MutationClaimBookArgs = {
   input?: InputMaybe<BookInput>;
+};
+
+
+export type MutationCreateLocationArgs = {
+  input: CreateLocationInput;
 };
 
 
@@ -259,6 +278,11 @@ export type MutationCreateStatusArgs = {
 
 export type MutationProlongClaimPeriodArgs = {
   input?: InputMaybe<ProlongTimeInput>;
+};
+
+
+export type MutationRemoveLocationArgs = {
+  input: RemoveLocationInput;
 };
 
 
@@ -298,6 +322,7 @@ export type ProlongTimeInput = {
 
 export type Query = {
   __typename?: 'Query';
+  getAllLocations: Array<Maybe<Location>>;
   getAllMaterials: Array<Maybe<Material>>;
   getAllPersons: Array<Maybe<Person>>;
   getAllTakenItems: Array<Maybe<Status>>;
@@ -343,6 +368,10 @@ export type QueryGetStatusesByMaterialArgs = {
 
 export type QueryGetStatusesByPersonArgs = {
   person_id: Scalars['ID'];
+};
+
+export type RemoveLocationInput = {
+  location_id: Scalars['Int'];
 };
 
 export type RemoveNotificationInput = {
