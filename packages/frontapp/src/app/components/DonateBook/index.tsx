@@ -4,6 +4,8 @@ import { colors, dimensions } from '@mimir/ui-kit';
 import { ReactComponent as PhotoIcon } from '../../../assets/Photo.svg';
 import Button from '../Button';
 import axios from 'axios';
+import { useDonateBookMutation } from '@mimir/apollo-client';
+import { useAppSelector } from '../../hooks/useTypedSelector';
 
 const WrapperDonate = styled.section`
   background-color: ${colors.bg_secondary};
@@ -181,6 +183,7 @@ interface IDataOfBook {
 
 const DonateBook: FC = () => {
   const ref = useRef<HTMLInputElement | null>(null);
+  const { id, location } = useAppSelector((state) => state.user);
   const [file, setFile] = useState<File>();
   const [picture, setPicture] = useState('');
   const [description, setDescription] = useState<string>('');
@@ -190,6 +193,9 @@ const DonateBook: FC = () => {
     title: '',
   });
 
+  const [donateBook, { data: donateData }] = useDonateBookMutation();
+
+  console.log('data', donateData);
   const isInvalid =
     !dataOfBook.author || !dataOfBook.title || !dataOfBook.genre;
 
@@ -252,6 +258,21 @@ const DonateBook: FC = () => {
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
+    const { author, title, genre } = dataOfBook;
+    donateBook({
+      variables: {
+        person_id: id,
+        picture,
+        title,
+        author,
+        identifier: '1412412412',
+        type: 'Book',
+        description,
+        category: genre,
+        location_id: Number(location.id),
+        id_type: 'ISBN',
+      },
+    });
   };
 
   return (

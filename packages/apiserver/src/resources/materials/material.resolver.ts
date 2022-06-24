@@ -8,7 +8,7 @@ import {
 } from '@nestjs/graphql';
 import { Material } from './material.entity';
 import { Status } from '../statuses/status.entity';
-import { CreateMaterialInput } from '@mimir/global-types';
+import { CreateMaterialInput, DonateBookInput } from '@mimir/global-types';
 import { Notification } from '../notifications/notification.entity';
 import { Message } from '../messages/messages.entity';
 import { MaterialService } from './material.service';
@@ -27,10 +27,10 @@ export class MaterialResolver {
     return Material.findOneOrFail(id);
   }
 
-  // @Mutation(() => Material)
-  // async donateBook(){
-  //   return this.materialService.donate()
-  // }
+  @Mutation(() => Material)
+  async donateBook(@Args('input') donateBookInput: DonateBookInput) {
+    return this.materialService.donate(donateBookInput);
+  }
 
   @Mutation(() => Material)
   async createMaterial(

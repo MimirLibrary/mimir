@@ -22,8 +22,30 @@ export class FileService {
 
   async removeFile(fileName: string) {
     try {
-      fs.unlinkSync(path.resolve(`./packages/apiserver/tmp/${fileName}`));
+      fs.unlinkSync(path.resolve('./packages', 'apiserver', 'tmp', fileName));
       return 'File was deleted';
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  moveFileInMainStorage(fileName: string, identifier: string) {
+    console.log(process.cwd());
+    try {
+      const filePathToStorage = path.resolve(process.cwd(), 'storage');
+      const fileExtension = fileName.split('.').pop();
+      if (!fs.existsSync(filePathToStorage)) {
+        fs.mkdirSync(filePathToStorage, { recursive: true });
+      }
+      fs.copyFileSync(
+        path.resolve('./packages', 'apiserver', 'tmp', fileName),
+        path.resolve(process.cwd(), 'storage', fileName)
+      );
+      fs.renameSync(
+        path.resolve(process.cwd(), 'storage', fileName),
+        path.resolve(process.cwd(), 'storage', `${identifier}.${fileExtension}`)
+      );
+      return `${identifier}.${fileExtension}`;
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }

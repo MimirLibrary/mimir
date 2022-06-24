@@ -24,6 +24,7 @@ define(Material, () => {
   material.title = getType(listOfTitle, 3);
   material.type = getType(type, 3);
   material.location_id = 2;
+  material.description = '';
   material.picture = '';
   return material;
 });

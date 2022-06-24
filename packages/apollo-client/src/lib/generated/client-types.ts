@@ -58,6 +58,19 @@ export type CreateStatusInput = {
   status: Scalars['String'];
 };
 
+export type DonateBookInput = {
+  author: Scalars['String'];
+  category: Scalars['String'];
+  description?: InputMaybe<Scalars['String']>;
+  id_type: Scalars['String'];
+  identifier: Scalars['String'];
+  location_id: Scalars['Int'];
+  person_id: Scalars['Int'];
+  picture?: InputMaybe<Scalars['String']>;
+  title: Scalars['String'];
+  type: Scalars['String'];
+};
+
 export type Error = {
   __typename?: 'Error';
   message: Scalars['String'];
@@ -113,6 +126,7 @@ export type Mutation = {
   createNotification?: Maybe<Notification>;
   createPerson: Person;
   createStatus: Status;
+  donateBook: Material;
   prolongClaimPeriod: BookUnionResult;
   removeLocation?: Maybe<Location>;
   removeNotification?: Maybe<Notification>;
@@ -152,6 +166,11 @@ export type MutationCreatePersonArgs = {
 
 export type MutationCreateStatusArgs = {
   input: CreateStatusInput;
+};
+
+
+export type MutationDonateBookArgs = {
+  input: DonateBookInput;
 };
 
 
@@ -290,6 +309,22 @@ export type CreateMessageForManagerMutationVariables = Exact<{
 
 export type CreateMessageForManagerMutation = { __typename?: 'Mutation', createMessageForManager: { __typename?: 'Error', message: string } | { __typename?: 'Message', message: string, title: string } };
 
+export type DonateBookMutationVariables = Exact<{
+  person_id: Scalars['Int'];
+  location_id: Scalars['Int'];
+  identifier: Scalars['String'];
+  id_type: Scalars['String'];
+  type: Scalars['String'];
+  title: Scalars['String'];
+  author: Scalars['String'];
+  category: Scalars['String'];
+  description?: InputMaybe<Scalars['String']>;
+  picture?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type DonateBookMutation = { __typename?: 'Mutation', donateBook: { __typename?: 'Material', identifier: string, picture?: string | null } };
+
 export type ProlongTimeMutationVariables = Exact<{
   person_id: Scalars['Int'];
   material_id: Scalars['Int'];
@@ -415,6 +450,51 @@ export function useCreateMessageForManagerMutation(baseOptions?: Apollo.Mutation
 export type CreateMessageForManagerMutationHookResult = ReturnType<typeof useCreateMessageForManagerMutation>;
 export type CreateMessageForManagerMutationResult = Apollo.MutationResult<CreateMessageForManagerMutation>;
 export type CreateMessageForManagerMutationOptions = Apollo.BaseMutationOptions<CreateMessageForManagerMutation, CreateMessageForManagerMutationVariables>;
+export const DonateBookDocument = gql`
+    mutation DonateBook($person_id: Int!, $location_id: Int!, $identifier: String!, $id_type: String!, $type: String!, $title: String!, $author: String!, $category: String!, $description: String, $picture: String) {
+  donateBook(
+    input: {person_id: $person_id, location_id: $location_id, identifier: $identifier, type: $type, author: $author, category: $category, description: $description, id_type: $id_type, picture: $picture, title: $title}
+  ) {
+    identifier
+    picture
+  }
+}
+    `;
+export type DonateBookMutationFn = Apollo.MutationFunction<DonateBookMutation, DonateBookMutationVariables>;
+
+/**
+ * __useDonateBookMutation__
+ *
+ * To run a mutation, you first call `useDonateBookMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDonateBookMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [donateBookMutation, { data, loading, error }] = useDonateBookMutation({
+ *   variables: {
+ *      person_id: // value for 'person_id'
+ *      location_id: // value for 'location_id'
+ *      identifier: // value for 'identifier'
+ *      id_type: // value for 'id_type'
+ *      type: // value for 'type'
+ *      title: // value for 'title'
+ *      author: // value for 'author'
+ *      category: // value for 'category'
+ *      description: // value for 'description'
+ *      picture: // value for 'picture'
+ *   },
+ * });
+ */
+export function useDonateBookMutation(baseOptions?: Apollo.MutationHookOptions<DonateBookMutation, DonateBookMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DonateBookMutation, DonateBookMutationVariables>(DonateBookDocument, options);
+      }
+export type DonateBookMutationHookResult = ReturnType<typeof useDonateBookMutation>;
+export type DonateBookMutationResult = Apollo.MutationResult<DonateBookMutation>;
+export type DonateBookMutationOptions = Apollo.BaseMutationOptions<DonateBookMutation, DonateBookMutationVariables>;
 export const ProlongTimeDocument = gql`
     mutation ProlongTime($person_id: Int!, $material_id: Int!) {
   prolongClaimPeriod(input: {material_id: $material_id, person_id: $person_id}) {
