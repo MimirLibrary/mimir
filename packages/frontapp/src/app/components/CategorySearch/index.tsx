@@ -49,7 +49,13 @@ const StyledCheckBox = styled.input`
   height: ${dimensions.lg};
 `;
 
-const CategorySearch = () => {
+export const checkedFilters: string[] = [];
+
+const CategorySearch = ({ setActive }: any) => {
+  const handleClick = (filters: string[]) => {
+    checkedFilters.push(...filters);
+  };
+  const [filters, setFilters] = React.useState<string[]>([]);
   return (
     <>
       <Filters>Filters</Filters>
@@ -60,7 +66,18 @@ const CategorySearch = () => {
             {item.attributes.slice(0, 7).map((attribute) => (
               <OneCategory>
                 {attribute}
-                <StyledCheckBox type={item.inputType} />
+                <StyledCheckBox
+                  type={item.inputType}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setFilters(() => [...filters, attribute]);
+                    } else {
+                      setFilters(() =>
+                        filters.filter((item) => item !== attribute)
+                      );
+                    }
+                  }}
+                />
               </OneCategory>
             ))}
             {item.attributes.length > 7 && (
@@ -70,8 +87,18 @@ const CategorySearch = () => {
         </>
       ))}
       <ButtonWrapper>
-        <Button value="Apply filters" />
-        <Button transparent value="Reset all filters" />
+        <Button
+          value="Apply filters"
+          onClick={() => {
+            handleClick(filters);
+            setActive(false);
+          }}
+        />
+        <Button
+          transparent
+          value="Reset all filters"
+          onClick={() => setActive(false)}
+        />
       </ButtonWrapper>
     </>
   );

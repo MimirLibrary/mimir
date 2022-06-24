@@ -25,7 +25,7 @@ const FiltersButton: FC = () => {
         <Filter />
       </StyledButton>
       <Modal active={active} setActive={setActive}>
-        <CategorySearch />
+        <CategorySearch setActive={setActive} />
       </Modal>
     </>
   );
