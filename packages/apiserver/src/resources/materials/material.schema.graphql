@@ -23,7 +23,7 @@ input CreateMaterialInput {
   type: String!
 }
 
-input DonateBookInput{
+input DonateBookInput {
   identifier: String!
   id_type: String!
   location_id: Int!
