@@ -299,11 +299,12 @@ export type UpdateMaterialInput = {
   author?: InputMaybe<Scalars['String']>;
   category?: InputMaybe<Scalars['String']>;
   id_type?: InputMaybe<Scalars['String']>;
-  identifier: Scalars['String'];
+  identifier?: InputMaybe<Scalars['String']>;
   location_id?: InputMaybe<Scalars['Int']>;
   picture?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<Scalars['String']>;
+  updated_at: Scalars['DateTime'];
 };
 
 export type ClaimBookMutationVariables = Exact<{

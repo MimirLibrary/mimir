@@ -43,6 +43,8 @@ input UpdateMaterialInput {
   picture: String
   author: String
   category: String
+  updated_at: DateTime!
+
 }
 
 extend type Query {

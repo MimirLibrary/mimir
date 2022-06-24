@@ -52,6 +52,7 @@ export interface UpdateMaterialInput {
     picture?: Nullable<string>;
     author?: Nullable<string>;
     category?: Nullable<string>;
+    updated_at: DateTime;
 }
 
 export interface CreateMessageInput {
