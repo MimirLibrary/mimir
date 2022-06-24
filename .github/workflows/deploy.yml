@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-            fetch-depth: 0
+          fetch-depth: 0
       - name: Cache package-lock.json
         id: cache-package-lock
         uses: actions/cache@v3

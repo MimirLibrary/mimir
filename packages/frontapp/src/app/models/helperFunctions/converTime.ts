@@ -1,7 +1,8 @@
+export const periodOfKeeping = 30;
+
 export const getDates = (date: Date) => {
   const currentDate = new Date();
   const startDate = new Date(date);
-  const periodOfKeeping = 30;
   const returnDate = new Date(
     startDate.setDate(startDate.getDate() + periodOfKeeping)
   );
