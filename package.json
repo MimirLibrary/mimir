@@ -130,6 +130,7 @@
     "dotenv": "^16.0.0",
     "graphql": "16.4.0",
     "graphql-scalars": "^1.16.0",
+    "html5-qrcode": "github:iTechLibrary/html5-qrcode#builded",
     "i18next": "^21.6.16",
     "i18next-browser-languagedetector": "^6.1.4",
     "i18next-http-backend": "^1.4.0",

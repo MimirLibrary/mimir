@@ -3,3 +3,17 @@
   box-sizing: border-box;
   font-family: 'Montserrat', sans-serif;
 }
+
+#scanner-root {
+  display: none;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+#scanner {
+  /* height: 100%; */
+}

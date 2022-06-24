@@ -17,6 +17,14 @@ export interface ProlongTimeInput {
     material_id: number;
 }
 
+export interface CreateLocationInput {
+    location: string;
+}
+
+export interface RemoveLocationInput {
+    location_id: number;
+}
+
 export interface CreateMaterialInput {
     identifier: string;
     id_type: string;
@@ -46,6 +54,7 @@ export interface CreateStatusInput {
 
 export interface IQuery {
     getAllTakenItems(person_id: number): Nullable<Status>[] | Promise<Nullable<Status>[]>;
+    getAllLocations(): Nullable<Location>[] | Promise<Nullable<Location>[]>;
     getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
     getMaterialById(id: string): Material | Promise<Material>;
     getNotificationsByPerson(person_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
@@ -61,11 +70,20 @@ export interface IMutation {
     claimBook(input?: Nullable<BookInput>): BookUnionResult | Promise<BookUnionResult>;
     returnItem(input?: Nullable<BookInput>): BookUnionResult | Promise<BookUnionResult>;
     prolongClaimPeriod(input?: Nullable<ProlongTimeInput>): BookUnionResult | Promise<BookUnionResult>;
+    createLocation(input: CreateLocationInput): Nullable<Location> | Promise<Nullable<Location>>;
+    removeLocation(input: RemoveLocationInput): Nullable<Location> | Promise<Nullable<Location>>;
     createMaterial(input: CreateMaterialInput): Material | Promise<Material>;
     createNotification(input: CreateNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
     removeNotification(input: RemoveNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
     createPerson(input: CreatePersonInput): Person | Promise<Person>;
     createStatus(input: CreateStatusInput): Status | Promise<Status>;
+}
+
+export interface Location {
+    id: string;
+    location: string;
+    persons?: Nullable<Nullable<Person>[]>;
+    materials?: Nullable<Nullable<Material>[]>;
 }
 
 export interface Material {

@@ -5,7 +5,7 @@ import SearchPage from '../pages/SearchPage';
 import HistoryOfClaimPage from '../pages/HistoryOfClaimPage';
 import HistoryOfDonatePage from '../pages/HistoryOfDonatePage';
 import SettingsPage from '../pages/SettingsPage';
-import React from 'react';
+import ScannerPage from '../pages/ScannerPage';
 import { RoutesTypes } from '../../utils/routes';
 import Readers from '../pages/Readers';
 import BooksStuff from '../pages/BooksStuff';
@@ -19,6 +19,7 @@ export const useRoutes = (role: string) => {
         {}
         <Route path={RoutesTypes.HOME} element={<HomePage />} />
         <Route path={RoutesTypes.SEARCH} element={<SearchPage />} />
+        <Route path={RoutesTypes.SCANNER} element={<ScannerPage />} />
         <Route
           path={RoutesTypes.HISTORY_OF_CLAIM}
           element={<HistoryOfClaimPage />}
