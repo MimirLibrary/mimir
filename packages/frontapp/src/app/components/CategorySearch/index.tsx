@@ -20,7 +20,7 @@ const AttributeWrapper = styled.div`
   column-gap: 5rem;
   width: 100%;
   height: 100%;
-  margin-bottom: ${dimensions.xl_4};
+  margin-bottom: ${dimensions.xl_2};
 `;
 
 const OneCategory = styled.div`
@@ -55,15 +55,15 @@ const CategorySearch = () => {
       <Filters>Filters</Filters>
       {AttributesList.map((item) => (
         <>
-          <Title>{item.Title}</Title>
-          <AttributeWrapper key={item.Title}>
-            {item.Attributes.slice(0, 7).map((attribute) => (
+          <Title>{item.title}</Title>
+          <AttributeWrapper key={item.title}>
+            {item.attributes.slice(0, 7).map((attribute) => (
               <OneCategory>
                 {attribute}
-                <StyledCheckBox type={item.InputType} />
+                <StyledCheckBox type={item.inputType} />
               </OneCategory>
             ))}
-            {item.Attributes.length > 7 && (
+            {item.attributes.length > 7 && (
               <SeeMoreButton>SEE MORE</SeeMoreButton>
             )}
           </AttributeWrapper>

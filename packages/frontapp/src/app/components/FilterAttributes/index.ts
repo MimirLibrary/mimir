@@ -1,22 +1,22 @@
 export const AttributesList = [
   {
-    Title: 'Availability',
-    Attributes: [
+    title: 'Availability',
+    attributes: [
       'On the Shelf',
       ' Will be available this week',
       'Will be available in 2 days',
       'All',
     ],
-    InputType: 'checkbox',
+    inputType: 'checkbox',
   },
   {
-    Title: 'Items',
-    Attributes: ['Board games', 'Books'],
-    InputType: 'radio',
+    title: 'Items',
+    attributes: ['Board games', 'Books'],
+    inputType: 'radio',
   },
   {
-    Title: 'Categories',
-    Attributes: [
+    title: 'Categories',
+    attributes: [
       'Biographies and Memoirs',
       'Health',
       'Classic detectives',
@@ -26,11 +26,11 @@ export const AttributesList = [
       'Nature and Animals',
       'Continuation',
     ],
-    InputType: 'checkbox',
+    inputType: 'checkbox',
   },
   {
-    Title: 'Authors',
-    Attributes: [
+    title: 'Authors',
+    attributes: [
       'Akunin Boris',
       'Matveev Sergey',
       'Anton Chekhov',
@@ -40,11 +40,11 @@ export const AttributesList = [
       'Leo Tolstoy',
       'Continuation',
     ],
-    InputType: 'checkbox',
+    inputType: 'checkbox',
   },
   {
-    Title: 'Sort by',
-    Attributes: ['By date added', 'By date of writing'],
-    InputType: 'radio',
+    title: 'Sort by',
+    attributes: ['By date added', 'By date of writing'],
+    inputType: 'radio',
   },
 ];
