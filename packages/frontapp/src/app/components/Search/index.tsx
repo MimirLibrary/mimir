@@ -25,11 +25,11 @@ const InputSearch = styled(Input)`
   }
 `;
 
-const WrapperInput = styled.div`
+export const WrapperInput = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 21.5rem;
+  // max-width: 21.5rem;
   width: 100% - 100px;
   border: 0.5px solid #bdbdbd;
   border-radius: ${dimensions.xl_3};

@@ -29,7 +29,6 @@ input CreateMaterialInput {
 
 input RemoveMaterialInput {
   identifier: String!
-  id_type: String!
   location_id: Int!
   type: String!
 }

@@ -38,7 +38,6 @@ export interface CreateMaterialInput {
 
 export interface RemoveMaterialInput {
     identifier: string;
-    id_type: string;
     location_id: number;
     type: string;
 }
