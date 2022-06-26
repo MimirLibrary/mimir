@@ -9,12 +9,12 @@ export class FileService {
     try {
       const fileExtension = file.originalname.split('.').pop();
       const fileName = uuidv4() + '.' + fileExtension;
-      const filePath = path.resolve('./packages', 'apiserver', 'tmp');
+      const filePath = path.resolve('storage', 'tmp');
       if (!fs.existsSync(filePath)) {
         fs.mkdirSync(filePath, { recursive: true });
       }
       fs.writeFileSync(path.resolve(filePath, fileName), file.buffer);
-      return fileName;
+      return `tmp/${fileName}`;
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -22,7 +22,7 @@ export class FileService {
 
   async removeFile(fileName: string) {
     try {
-      fs.unlinkSync(path.resolve('./packages', 'apiserver', 'tmp', fileName));
+      fs.unlinkSync(path.resolve(process.cwd(), 'storage', 'tmp', fileName));
       return 'File was deleted';
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -30,22 +30,31 @@ export class FileService {
   }
 
   moveFileInMainStorage(fileName: string, identifier: string) {
-    console.log(process.cwd());
     try {
-      const filePathToStorage = path.resolve(process.cwd(), 'storage');
+      const onlyFileName = fileName.split('/').pop();
+      const filePathToStorage = path.resolve(
+        process.cwd(),
+        'storage',
+        'mainData'
+      );
       const fileExtension = fileName.split('.').pop();
       if (!fs.existsSync(filePathToStorage)) {
         fs.mkdirSync(filePathToStorage, { recursive: true });
       }
       fs.copyFileSync(
-        path.resolve('./packages', 'apiserver', 'tmp', fileName),
-        path.resolve(process.cwd(), 'storage', fileName)
+        path.resolve(process.cwd(), 'storage', 'tmp', onlyFileName),
+        path.resolve(process.cwd(), 'storage', 'mainData', onlyFileName)
       );
       fs.renameSync(
-        path.resolve(process.cwd(), 'storage', fileName),
-        path.resolve(process.cwd(), 'storage', `${identifier}.${fileExtension}`)
+        path.resolve(process.cwd(), 'storage', 'mainData', onlyFileName),
+        path.resolve(
+          process.cwd(),
+          'storage',
+          'mainData',
+          `${identifier}.${fileExtension}`
+        )
       );
-      return `${identifier}.${fileExtension}`;
+      return `mainData/${identifier}.${fileExtension}`;
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }

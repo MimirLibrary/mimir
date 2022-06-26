@@ -24,7 +24,8 @@ mutation DonateBook(
       title: $title
     }
   ) {
-    identifier
+    title
     picture
+    identifier
   }
 }

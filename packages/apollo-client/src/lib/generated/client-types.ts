@@ -323,7 +323,7 @@ export type DonateBookMutationVariables = Exact<{
 }>;
 
 
-export type DonateBookMutation = { __typename?: 'Mutation', donateBook: { __typename?: 'Material', identifier: string, picture?: string | null } };
+export type DonateBookMutation = { __typename?: 'Mutation', donateBook: { __typename?: 'Material', title: string, picture?: string | null, identifier: string } };
 
 export type ProlongTimeMutationVariables = Exact<{
   person_id: Scalars['Int'];
@@ -455,8 +455,9 @@ export const DonateBookDocument = gql`
   donateBook(
     input: {person_id: $person_id, location_id: $location_id, identifier: $identifier, type: $type, author: $author, category: $category, description: $description, id_type: $id_type, picture: $picture, title: $title}
   ) {
-    identifier
+    title
     picture
+    identifier
   }
 }
     `;

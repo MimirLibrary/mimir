@@ -6,6 +6,7 @@ import { Material } from './material.entity';
 import { Connection } from 'typeorm';
 import { ErrorBook } from '../../errors';
 import { StatusTypes } from '../../utils/types/statusTypes';
+import { GraphQLError } from 'graphql';
 
 @Injectable()
 export class MaterialService {
@@ -24,9 +25,9 @@ export class MaterialService {
     await queryRunner.startTransaction();
     try {
       const { person_id, ...newMaterialObj } = donateBookInput;
-      const isExistMaterial = await materialRepository.findOne(
-        donateBookInput.identifier
-      );
+      const isExistMaterial = await materialRepository.findOne({
+        where: { identifier: donateBookInput.identifier },
+      });
       if (isExistMaterial) {
         throw new ErrorBook('This material is already exist');
       }
@@ -34,8 +35,6 @@ export class MaterialService {
         donateBookInput.picture,
         donateBookInput.identifier
       );
-      console.log(pictureWithIdentifier);
-
       const newMaterial = await materialRepository.create({
         ...newMaterialObj,
         picture: pictureWithIdentifier,
@@ -49,11 +48,10 @@ export class MaterialService {
       await queryRunner.commitTransaction();
       return savedMaterial;
     } catch (e) {
-      console.log(e.message);
       await queryRunner.rollbackTransaction();
+      throw new GraphQLError(e.message);
     } finally {
       await queryRunner.release();
     }
-    return;
   }
 }

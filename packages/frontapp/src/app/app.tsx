@@ -11,6 +11,8 @@ import { useAppSelector } from './hooks/useTypedSelector';
 import NotificationPage from './pages/NotificationPage';
 import SearchWrapper from './components/SearchWrapper';
 import BookPreview from './pages/BookPreview';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const WrapperPage = styled.main`
   display: flex;
@@ -37,32 +39,35 @@ const App: FC = () => {
   const [isSidebarActive, setSidebarActive] = useState(false);
 
   return (
-    <div>
-      {isAuth ? (
-        <div>
-          <WrapperPage>
-            <Sidebar
-              isSidebarActive={isSidebarActive}
-              setSidebarActive={setSidebarActive}
-            />
-            <WrapperRoutes>
-              <SearchWrapper setSidebarActive={setSidebarActive} />
-              <Routes>
-                {routes}
-                <Route path="/notifications" element={<NotificationPage />} />
-                <Route path="*" element={<HomePage />} />
-                <Route path="item/:item_id" element={<BookPreview />} />
-              </Routes>
-            </WrapperRoutes>
-          </WrapperPage>
-        </div>
-      ) : (
-        <Routes>
-          <Route path="/login" element={<StartPage />} />
-          <Route path="*" element={<StartPage />} />
-        </Routes>
-      )}
-    </div>
+    <>
+      <div>
+        {isAuth ? (
+          <div>
+            <WrapperPage>
+              <Sidebar
+                isSidebarActive={isSidebarActive}
+                setSidebarActive={setSidebarActive}
+              />
+              <WrapperRoutes>
+                <SearchWrapper setSidebarActive={setSidebarActive} />
+                <Routes>
+                  {routes}
+                  <Route path="/notifications" element={<NotificationPage />} />
+                  <Route path="*" element={<HomePage />} />
+                  <Route path="item/:item_id" element={<BookPreview />} />
+                </Routes>
+              </WrapperRoutes>
+            </WrapperPage>
+          </div>
+        ) : (
+          <Routes>
+            <Route path="/login" element={<StartPage />} />
+            <Route path="*" element={<StartPage />} />
+          </Routes>
+        )}
+        <ToastContainer position="bottom-right" />
+      </div>
+    </>
   );
 };
 

@@ -57,7 +57,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
       },
     }),
     ServeStaticModule.forRoot({
-      rootPath: resolve('./packages', 'apiserver', 'tmp'),
+      rootPath: resolve(process.cwd(), 'storage'),
     }),
   ],
   controllers: [AppController],

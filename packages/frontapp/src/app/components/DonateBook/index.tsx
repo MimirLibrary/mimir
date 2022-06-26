@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { ReactComponent as PhotoIcon } from '../../../assets/Photo.svg';
@@ -6,6 +6,9 @@ import Button from '../Button';
 import axios from 'axios';
 import { useDonateBookMutation } from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
+import Modal from '../Modal';
+import SuccessMessage from '../SuccesMessage';
+import { toast } from 'react-toastify';
 
 const WrapperDonate = styled.section`
   background-color: ${colors.bg_secondary};
@@ -175,6 +178,13 @@ const StyledUploadFile = styled.span`
   cursor: pointer;
 `;
 
+const StyledImg = styled.img`
+  height: 20.5rem;
+  width: 12.3rem;
+  border-radius: ${dimensions.xs_1};
+  cursor: pointer;
+`;
+
 interface IDataOfBook {
   title: string;
   author: string;
@@ -184,8 +194,9 @@ interface IDataOfBook {
 const DonateBook: FC = () => {
   const ref = useRef<HTMLInputElement | null>(null);
   const { id, location } = useAppSelector((state) => state.user);
-  const [file, setFile] = useState<File>();
+  const [file, setFile] = useState<File | null>(null);
   const [picture, setPicture] = useState('');
+  const [isSuccess, setSuccess] = useState<boolean>(false);
   const [description, setDescription] = useState<string>('');
   const [dataOfBook, setDataOfBook] = useState<IDataOfBook>({
     author: '',
@@ -193,16 +204,16 @@ const DonateBook: FC = () => {
     title: '',
   });
 
-  const [donateBook, { data: donateData }] = useDonateBookMutation();
+  const [donateBook, { data: donateData, error }] = useDonateBookMutation();
 
-  console.log('data', donateData);
   const isInvalid =
     !dataOfBook.author || !dataOfBook.title || !dataOfBook.genre;
 
   const deleteFile = async (fileName: string) => {
+    const onlyFileName = fileName.split('/').pop();
     try {
       const response = await axios.delete(
-        `${process.env['NX_API_ROOT_URL']}/api/file/delete/${fileName}`
+        `${process.env['NX_API_ROOT_URL']}/api/file/delete/${onlyFileName}`
       );
       return response.data;
     } catch (e) {
@@ -239,11 +250,14 @@ const DonateBook: FC = () => {
     operationWithFiles();
   }, [file]);
 
-  const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const fileList = e.target.files;
-    if (!fileList) return;
-    setFile(fileList[0]);
-  };
+  const handleChangeFile = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const fileList = e.target.files;
+      if (!fileList) return;
+      setFile(fileList[0]);
+    },
+    [file]
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -256,52 +270,51 @@ const DonateBook: FC = () => {
     setDescription(e.target.value);
   };
 
-  const handleSubmit = (e: React.SyntheticEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    const { author, title, genre } = dataOfBook;
-    donateBook({
-      variables: {
-        person_id: id,
-        picture,
-        title,
-        author,
-        identifier: '1412412412',
-        type: 'Book',
-        description,
-        category: genre,
-        location_id: Number(location.id),
-        id_type: 'ISBN',
-      },
-    });
+    try {
+      const { author, title, genre } = dataOfBook;
+      await donateBook({
+        variables: {
+          person_id: id,
+          picture,
+          title,
+          author,
+          identifier: '141241244',
+          type: 'Book',
+          description,
+          category: genre,
+          location_id: Number(location.id),
+          id_type: 'ISBN',
+        },
+      });
+      setSuccess(true);
+    } catch (e) {
+      toast.error(error?.message, {
+        style: { backgroundColor: '#FFF5F5' },
+      });
+    } finally {
+      setPicture('');
+      setFile(null);
+      setDescription('');
+      setDataOfBook({ genre: '', title: '', author: '' });
+    }
   };
 
   return (
-    <WrapperDonate>
-      <Form onSubmit={handleSubmit}>
-        <WrapperMainInfo>
-          <WrapperWithoutButtons>
-            <div>
-              {picture ? (
-                <div>
-                  <img
-                    src={process.env['NX_API_ROOT_URL'] + '/' + picture}
-                    alt=""
-                    style={{ height: '328px', width: '195px' }}
-                  />
-                  <input
-                    type="file"
-                    onChange={handleChangeFile}
-                    accept="image/*"
-                    style={{ display: 'none' }}
-                    ref={ref}
-                  />
-                  <StyledUploadFile onClick={() => ref?.current?.click()}>
-                    {file ? 'Upload new' : 'Upload File'}
-                  </StyledUploadFile>
-                </div>
-              ) : (
-                <>
-                  <WrapperUploadFile onClick={() => ref?.current?.click()}>
+    <>
+      <WrapperDonate>
+        <Form onSubmit={handleSubmit}>
+          <WrapperMainInfo>
+            <WrapperWithoutButtons>
+              <div>
+                {picture ? (
+                  <div>
+                    <StyledImg
+                      onClick={() => ref?.current?.click()}
+                      src={process.env['NX_API_ROOT_URL'] + '/' + picture}
+                      alt="material picture"
+                    />
                     <input
                       type="file"
                       onChange={handleChangeFile}
@@ -309,81 +322,103 @@ const DonateBook: FC = () => {
                       style={{ display: 'none' }}
                       ref={ref}
                     />
-                    <PhotoIcon />
-                  </WrapperUploadFile>
-                  <StyledUploadFile onClick={() => ref?.current?.click()}>
-                    {file ? 'Upload new' : 'Upload File'}
-                  </StyledUploadFile>
-                </>
-              )}
-            </div>
-            <WrapperBlockInput>
-              <WrapperStyledInput>
-                <Label htmlFor="title">Title*</Label>
-                <WrapperInput>
-                  <StyledInput
-                    type="text"
-                    id="title"
-                    name="title"
-                    value={dataOfBook.title}
-                    onChange={handleChange}
-                    autoComplete="off"
-                    required
-                  />
-                </WrapperInput>
-              </WrapperStyledInput>
-              <WrapperStyledInput>
-                <Label htmlFor="author">Author*</Label>
-                <WrapperInput>
-                  <StyledInput
-                    type="text"
-                    id="author"
-                    name="author"
-                    value={dataOfBook.author}
-                    onChange={handleChange}
-                    autoComplete="off"
-                    required
-                  />
-                </WrapperInput>
-              </WrapperStyledInput>
-              <WrapperStyledInput>
-                <Label htmlFor="genre">Genre*</Label>
-                <WrapperInput>
-                  <StyledInput
-                    type="text"
-                    id="genre"
-                    name="genre"
-                    value={dataOfBook.genre}
-                    onChange={handleChange}
-                    autoComplete="off"
-                    required
-                  />
-                </WrapperInput>
-              </WrapperStyledInput>
-            </WrapperBlockInput>
-          </WrapperWithoutButtons>
-          <WrapperButtons>
-            <StyledButton
-              value="Donate item to the library"
-              disabled={isInvalid}
-              type="submit"
+                    <StyledUploadFile onClick={() => ref?.current?.click()}>
+                      {file ? 'Upload new' : 'Upload File'}
+                    </StyledUploadFile>
+                  </div>
+                ) : (
+                  <>
+                    <WrapperUploadFile onClick={() => ref?.current?.click()}>
+                      <input
+                        type="file"
+                        onChange={handleChangeFile}
+                        accept="image/*"
+                        style={{ display: 'none' }}
+                        ref={ref}
+                      />
+                      <PhotoIcon />
+                    </WrapperUploadFile>
+                    <StyledUploadFile onClick={() => ref?.current?.click()}>
+                      {file ? 'Upload new' : 'Upload File'}
+                    </StyledUploadFile>
+                  </>
+                )}
+              </div>
+              <WrapperBlockInput>
+                <WrapperStyledInput>
+                  <Label htmlFor="title">Title*</Label>
+                  <WrapperInput>
+                    <StyledInput
+                      type="text"
+                      id="title"
+                      name="title"
+                      value={dataOfBook.title}
+                      onChange={handleChange}
+                      autoComplete="off"
+                      required
+                    />
+                  </WrapperInput>
+                </WrapperStyledInput>
+                <WrapperStyledInput>
+                  <Label htmlFor="author">Author*</Label>
+                  <WrapperInput>
+                    <StyledInput
+                      type="text"
+                      id="author"
+                      name="author"
+                      value={dataOfBook.author}
+                      onChange={handleChange}
+                      autoComplete="off"
+                      required
+                    />
+                  </WrapperInput>
+                </WrapperStyledInput>
+                <WrapperStyledInput>
+                  <Label htmlFor="genre">Genre*</Label>
+                  <WrapperInput>
+                    <StyledInput
+                      type="text"
+                      id="genre"
+                      name="genre"
+                      value={dataOfBook.genre}
+                      onChange={handleChange}
+                      autoComplete="off"
+                      required
+                    />
+                  </WrapperInput>
+                </WrapperStyledInput>
+              </WrapperBlockInput>
+            </WrapperWithoutButtons>
+            <WrapperButtons>
+              <StyledButton
+                value="Donate item to the library"
+                disabled={isInvalid}
+                type="submit"
+              />
+              <StyledButton value="Ask a manger" transparent />
+            </WrapperButtons>
+          </WrapperMainInfo>
+          <WrapperDescription>
+            <StyledDescription htmlFor="description">
+              Description
+            </StyledDescription>
+            <StyledTextArea
+              id="description"
+              value={description}
+              onChange={handleChangeDescription}
+              placeholder="Enter your text"
             />
-            <StyledButton value="Ask a manger" transparent />
-          </WrapperButtons>
-        </WrapperMainInfo>
-        <WrapperDescription>
-          <StyledDescription htmlFor="description">
-            Description
-          </StyledDescription>
-          <StyledTextArea
-            id="description"
-            value={description}
-            onChange={handleChangeDescription}
-            placeholder="Enter your text"
-          />
-        </WrapperDescription>
-      </Form>
-    </WrapperDonate>
+          </WrapperDescription>
+        </Form>
+      </WrapperDonate>
+      <Modal setActive={setSuccess} active={isSuccess}>
+        <SuccessMessage
+          setActive={setSuccess}
+          title="You have successfully donated to the library"
+          description="Put the book on the nearest free space on the shelf. In case of any problems, our manager will contact you"
+        />
+      </Modal>
+    </>
   );
 };
 
