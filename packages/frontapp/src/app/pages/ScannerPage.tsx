@@ -17,6 +17,7 @@ const ScannerPage = () => {
           setIsScannerActive(false);
           console.log(code);
         }}
+        onClose={() => setIsScannerActive(false)}
       />
     </div>
   );
