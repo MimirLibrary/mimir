@@ -1,14 +1,14 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { ReactComponent as PhotoIcon } from '../../../assets/Photo.svg';
-import Button from '../Button';
-import axios from 'axios';
 import { useDonateBookMutation } from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
+import Button from '../Button';
 import Modal from '../Modal';
 import SuccessMessage from '../SuccesMessage';
-import { toast } from 'react-toastify';
 
 const WrapperDonate = styled.section`
   background-color: ${colors.bg_secondary};
@@ -280,7 +280,7 @@ const DonateBook: FC = () => {
           picture,
           title,
           author,
-          identifier: '141241244',
+          identifier: String(Math.floor(Math.random() * 1e11)),
           type: 'Book',
           description,
           category: genre,
@@ -321,6 +321,7 @@ const DonateBook: FC = () => {
                       accept="image/*"
                       style={{ display: 'none' }}
                       ref={ref}
+                      required
                     />
                     <StyledUploadFile onClick={() => ref?.current?.click()}>
                       {file ? 'Upload new' : 'Upload File'}
@@ -335,6 +336,7 @@ const DonateBook: FC = () => {
                         accept="image/*"
                         style={{ display: 'none' }}
                         ref={ref}
+                        required
                       />
                       <PhotoIcon />
                     </WrapperUploadFile>
@@ -407,6 +409,7 @@ const DonateBook: FC = () => {
               value={description}
               onChange={handleChangeDescription}
               placeholder="Enter your text"
+              required
             />
           </WrapperDescription>
         </Form>
