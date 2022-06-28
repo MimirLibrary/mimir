@@ -157,10 +157,10 @@ const Scanner: FC<IScannerProps> = ({ active, onDetected, onClose }) => {
         canvasElement.getContext('2d')!.drawImage(
           videoElement,
           // source x, y, w, h:
-          (videoElement.videoWidth - frameSize.width * 0.5) / 2,
-          (videoElement.videoHeight - frameSize.height * 0.5) / 2,
-          frameSize.width * 0.5,
-          frameSize.height * 0.5,
+          (videoElement.videoWidth - frameSize.width) / 2,
+          (videoElement.videoHeight - frameSize.height) / 2,
+          frameSize.width,
+          frameSize.height,
           // dest x, y, w, h:
           0,
           0,
