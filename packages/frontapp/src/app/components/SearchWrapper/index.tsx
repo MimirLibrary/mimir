@@ -21,6 +21,7 @@ const StyledSearch = styled.div`
 `;
 
 const SearchWrapper: FC<IProps> = ({ setSidebarActive }) => {
+  console.log();
   return (
     <StyledSearch>
       <Burger setSidebarActive={setSidebarActive} />

@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import StartPage from './pages/StartPage';
 import Sidebar from './components/Sidebar';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import { useAuth } from './hooks/useAuth';
 import styled from '@emotion/styled';
@@ -11,6 +11,8 @@ import { useAppSelector } from './hooks/useTypedSelector';
 import NotificationPage from './pages/NotificationPage';
 import SearchWrapper from './components/SearchWrapper';
 import BookPreview from './pages/BookPreview';
+import { RolesTypes } from '../utils/rolesTypes';
+import Button from './components/Button';
 
 const WrapperPage = styled.main`
   display: flex;
@@ -19,6 +21,17 @@ const WrapperPage = styled.main`
   height: 100%;
 `;
 
+const WrapperSearchString = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+const WrapperButtons = styled.div`
+  display: flex;
+  align-items: flex-end;
+  justify-content: right;
+  max-width: 276px;
+  width: 100%;
+`;
 const WrapperRoutes = styled.div`
   width: calc(100% - 22rem);
   background-color: ${colors.bg_primary};
@@ -35,7 +48,7 @@ const App: FC = () => {
   const { userRole } = useAppSelector((state) => state.user);
   const routes = useRoutes(userRole);
   const [isSidebarActive, setSidebarActive] = useState(false);
-
+  const location = useLocation();
   return (
     <div>
       {isAuth ? (
@@ -46,7 +59,18 @@ const App: FC = () => {
               setSidebarActive={setSidebarActive}
             />
             <WrapperRoutes>
-              <SearchWrapper setSidebarActive={setSidebarActive} />
+              <WrapperSearchString>
+                <SearchWrapper setSidebarActive={setSidebarActive} />
+                {userRole === RolesTypes.MANAGER ? (
+                  <>
+                    {location.pathname === '/home' ? (
+                      <WrapperButtons>
+                        <Button value={'Open library statistics'} />
+                      </WrapperButtons>
+                    ) : null}
+                  </>
+                ) : null}
+              </WrapperSearchString>
               <Routes>
                 {routes}
                 <Route path="/notifications" element={<NotificationPage />} />

@@ -8,6 +8,9 @@ import EmptyListItems from '../components/EmptyListItems';
 import { dimensions } from '@mimir/ui-kit';
 import { useGetAllTakenItemsQuery } from '@mimir/apollo-client';
 import { useAppSelector } from '../hooks/useTypedSelector';
+import { RolesTypes } from '../../utils/rolesTypes';
+import ManagerInfoCard from '../components/ManagerInfoCard';
+import { ManagerCardTypes } from '../../utils/managerCardTypes';
 
 const WrapperHome = styled.div`
   @media (max-width: ${dimensions.tablet_width}) {
@@ -22,8 +25,21 @@ const Wrapper = styled.div`
   margin-bottom: ${dimensions.xl_2};
 `;
 
+const CardsWrapper = styled.div`
+  padding-top: 58px;
+  display: grid;
+  width: auto;
+  grid-template-areas:
+    '${ManagerCardTypes.OVERDUE} ${ManagerCardTypes.DONATES}'
+    '${ManagerCardTypes.NOTIFICATIONS} ${ManagerCardTypes.NOTIFICATIONS}';
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 467px 587px;
+  grid-column-gap: 18px;
+  grid-row-gap: 30px;
+`;
+
 const HomePage: FC = () => {
-  const { id } = useAppSelector((state) => state.user);
+  const { id, userRole } = useAppSelector((state) => state.user);
   const { data, loading } = useGetAllTakenItemsQuery({
     variables: { person_id: id },
   });
@@ -32,17 +48,27 @@ const HomePage: FC = () => {
 
   return (
     <WrapperHome>
-      <InstructionsClaim />
-      {data?.getAllTakenItems.length ? (
+      {userRole === RolesTypes.READER ? (
         <>
-          <Wrapper>
-            <TitleArticle>Don't forget to pass</TitleArticle>
-            <TextBase>List of items you have taken and due dates</TextBase>
-          </Wrapper>
-          <ListItems items={data?.getAllTakenItems} />
+          <InstructionsClaim />
+          {data?.getAllTakenItems.length ? (
+            <>
+              <Wrapper>
+                <TitleArticle>Don't forget to pass</TitleArticle>
+                <TextBase>List of items you have taken and due dates</TextBase>
+              </Wrapper>
+              <ListItems items={data?.getAllTakenItems} />
+            </>
+          ) : (
+            <EmptyListItems />
+          )}
         </>
       ) : (
-        <EmptyListItems />
+        <CardsWrapper>
+          <ManagerInfoCard type={ManagerCardTypes.OVERDUE} fields={[]} />
+          <ManagerInfoCard type={ManagerCardTypes.DONATES} fields={[]} />
+          <ManagerInfoCard type={ManagerCardTypes.NOTIFICATIONS} fields={[]} />
+        </CardsWrapper>
       )}
     </WrapperHome>
   );
