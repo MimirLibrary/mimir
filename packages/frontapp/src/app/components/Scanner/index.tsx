@@ -3,7 +3,6 @@ import { BrowserMultiFormatReader } from '@zxing/browser';
 import styled from '@emotion/styled';
 import { createPortal } from 'react-dom';
 import { colors, dimensions } from '@mimir/ui-kit';
-import { ReactComponent as FlashlightSvg } from '../../../assets/flashlight.svg';
 import { ReactComponent as CloseSvg } from '../../../assets/Close.svg';
 import { Result } from '@zxing/library';
 
@@ -32,17 +31,6 @@ const Input = styled.input`
   background-color: rgba(29, 29, 29, 0.5);
   color: ${colors.bg_secondary};
   outline: none;
-`;
-
-const FlashlightContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(29, 29, 29, 0.5);
-  height: 48px;
-  width: 48px;
-  border-radius: 50%;
-  margin-left: ${dimensions.base};
 `;
 
 const VideoContainer = styled.div`
@@ -212,7 +200,6 @@ const Scanner: FC<IScannerProps> = ({ active, onDetected, onClose }) => {
 
   function releaseMemory(imageElement: HTMLImageElement) {
     URL.revokeObjectURL(imageElement.src); // release image blob memory
-    // imageElement.src = '';
   }
 
   function closeScanner() {
@@ -242,9 +229,6 @@ const Scanner: FC<IScannerProps> = ({ active, onDetected, onClose }) => {
       <ScannerImage id="scanner-image" />
       <ScannerControls>
         <Input value="_ _ _-_-_ _ _-_ _ _ _ _-_" readOnly />
-        <FlashlightContainer>
-          <FlashlightSvg />
-        </FlashlightContainer>
         <CloseButton onClick={closeScanner}>
           <CloseSvg />
         </CloseButton>
