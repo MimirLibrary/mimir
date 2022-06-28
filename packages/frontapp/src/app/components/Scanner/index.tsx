@@ -157,10 +157,10 @@ const Scanner: FC<IScannerProps> = ({ active, onDetected, onClose }) => {
         canvasElement.getContext('2d')!.drawImage(
           videoElement,
           // source x, y, w, h:
-          (videoElement.videoWidth - frameSize.width) / 2,
-          (videoElement.videoHeight - frameSize.height) / 2,
-          frameSize.width,
-          frameSize.height,
+          (videoElement.videoWidth - frameSize.width * 0.5) / 2,
+          (videoElement.videoHeight - frameSize.height * 0.5) / 2,
+          frameSize.width * 0.5,
+          frameSize.height * 0.5,
           // dest x, y, w, h:
           0,
           0,
@@ -169,9 +169,8 @@ const Scanner: FC<IScannerProps> = ({ active, onDetected, onClose }) => {
         );
         // convert the canvas image to an image blob and stick it in an image element
         canvasElement.toBlob((blob) => {
-          // const url = URL.createObjectURL(blob!);
-          // when the image is loaded, feed it to the barcode reader
           const url = URL.createObjectURL(blob!);
+          // when the image is loaded, feed it to the barcode reader
           imageElement.onload = async () => {
             barcodeReader
               .decodeFromImageUrl(url)
@@ -213,7 +212,7 @@ const Scanner: FC<IScannerProps> = ({ active, onDetected, onClose }) => {
 
   function releaseMemory(imageElement: HTMLImageElement) {
     URL.revokeObjectURL(imageElement.src); // release image blob memory
-    imageElement.src = '';
+    // imageElement.src = '';
   }
 
   function closeScanner() {
