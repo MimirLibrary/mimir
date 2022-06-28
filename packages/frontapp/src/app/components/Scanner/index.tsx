@@ -46,10 +46,52 @@ const VideoContainer = styled.div`
 `;
 
 const ScannerFrame = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
   margin: auto;
-  box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.5);
-  border: 2px solid orange;
+  box-shadow: 0 0 0 1000px rgba(120, 120, 120, 0.6),
+    inset 0 0 0 ${dimensions.xs} rgba(120, 120, 120, 0.6);
+  border-radius: ${dimensions.xl};
+
+  .corner {
+    position: absolute;
+    height: ${dimensions.xl_6};
+    width: ${dimensions.xl_6};
+
+    &.tl {
+      top: 0;
+      left: 0;
+      border-top: 3px solid ${colors.bg_secondary};
+      border-left: 3px solid ${colors.bg_secondary};
+      border-top-left-radius: ${dimensions.xl};
+    }
+
+    &.tr {
+      top: 0;
+      right: 0;
+      border-top: 3px solid ${colors.bg_secondary};
+      border-right: 3px solid ${colors.bg_secondary};
+      border-top-right-radius: ${dimensions.xl};
+    }
+
+    &.bl {
+      bottom: 0;
+      left: 0;
+      border-bottom: 3px solid ${colors.bg_secondary};
+      border-left: 3px solid ${colors.bg_secondary};
+      border-bottom-left-radius: ${dimensions.xl};
+    }
+
+    &.br {
+      bottom: 0;
+      right: 0;
+      border-bottom: 3px solid ${colors.bg_secondary};
+      border-right: 3px solid ${colors.bg_secondary};
+      border-bottom-right-radius: ${dimensions.xl};
+    }
+  }
 `;
 
 const ScannerCanvas = styled.canvas`
@@ -84,12 +126,8 @@ const CloseButton = styled.div`
 `;
 
 const Scanner: FC<IScannerProps> = ({ active, onDetected, onClose }) => {
-  const [handleSwitchTorch, setHandleSwitchTorch] =
-    useState<(onOff: boolean) => Promise<void>>();
-
-  const scannerElement = useMemo(() => document.querySelector('#scanner')!, []);
-
   let videoStream: MediaStream | null;
+  const scannerElement = useMemo(() => document.querySelector('#scanner')!, []);
   const barcodeReader = new BrowserMultiFormatReader();
   const timeout = 1000; // time between frames
 
@@ -223,7 +261,13 @@ const Scanner: FC<IScannerProps> = ({ active, onDetected, onClose }) => {
     <>
       <VideoContainer id="scanner-video">
         <video playsInline autoPlay></video>
-        <ScannerFrame id="scanner-frame" />
+        <ScannerFrame id="scanner-frame">
+          <div className="corner tl" />
+          <div className="corner tr" />
+          <div className="corner bl" />
+          <div className="corner br" />
+          <img src="../../../assets/isbn.png" alt="ISBN Example" />
+        </ScannerFrame>
       </VideoContainer>
       <ScannerCanvas id="scanner-canvas" />
       <ScannerImage id="scanner-image" />
