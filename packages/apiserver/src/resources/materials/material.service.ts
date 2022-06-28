@@ -24,12 +24,15 @@ export class MaterialService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
+      if (!donateBookInput.picture) {
+        throw new ErrorBook('Picture is required!');
+      }
       const { person_id, ...newMaterialObj } = donateBookInput;
       const isExistMaterial = await materialRepository.findOne({
         where: { identifier: donateBookInput.identifier },
       });
       if (isExistMaterial) {
-        throw new ErrorBook('This material is already exist');
+        throw new ErrorBook('This material is already exist!');
       }
       const pictureWithIdentifier = this.fileService.moveFileInMainStorage(
         donateBookInput.picture,

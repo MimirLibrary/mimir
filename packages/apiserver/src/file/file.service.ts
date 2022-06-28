@@ -54,6 +54,9 @@ export class FileService {
           `${identifier}.${fileExtension}`
         )
       );
+      fs.unlinkSync(
+        path.resolve(process.cwd(), 'storage', 'tmp', onlyFileName)
+      );
       return `mainData/${identifier}.${fileExtension}`;
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);

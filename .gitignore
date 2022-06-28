@@ -41,7 +41,7 @@ testem.log
 .DS_Store
 Thumbs.db
 
-storage
+/storage
 
 # React Native
 

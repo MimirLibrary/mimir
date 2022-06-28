@@ -76,6 +76,11 @@ const StyledInput = styled.input`
     font-size: ${dimensions.base};
     line-height: ${dimensions.xl};
   }
+
+  ::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 `;
 
 const WrapperMainInfo = styled.div`
@@ -189,6 +194,7 @@ interface IDataOfBook {
   title: string;
   author: string;
   genre: string;
+  identifier: string;
 }
 
 const DonateBook: FC = () => {
@@ -202,12 +208,17 @@ const DonateBook: FC = () => {
     author: '',
     genre: '',
     title: '',
+    identifier: '',
   });
 
   const [donateBook, { data: donateData, error }] = useDonateBookMutation();
 
   const isInvalid =
-    !dataOfBook.author || !dataOfBook.title || !dataOfBook.genre;
+    !dataOfBook.author ||
+    !dataOfBook.title ||
+    !dataOfBook.genre ||
+    !dataOfBook.identifier ||
+    !description;
 
   const deleteFile = async (fileName: string) => {
     const onlyFileName = fileName.split('/').pop();
@@ -217,7 +228,9 @@ const DonateBook: FC = () => {
       );
       return response.data;
     } catch (e) {
-      console.error(e);
+      if (e instanceof Error) {
+        toast.error(e.message);
+      }
     }
   };
 
@@ -229,9 +242,19 @@ const DonateBook: FC = () => {
       );
       setPicture(response.data);
     } catch (e) {
-      console.error(e);
+      if (e instanceof Error) {
+        toast.error(e.message);
+      }
     }
   };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message, {
+        style: { backgroundColor: '#FFF5F5' },
+      });
+    }
+  }, [error]);
 
   useEffect(() => {
     const operationWithFiles = async () => {
@@ -273,14 +296,14 @@ const DonateBook: FC = () => {
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      const { author, title, genre } = dataOfBook;
+      const { author, title, genre, identifier } = dataOfBook;
       await donateBook({
         variables: {
           person_id: id,
           picture,
           title,
           author,
-          identifier: String(Math.floor(Math.random() * 1e11)),
+          identifier,
           type: 'Book',
           description,
           category: genre,
@@ -290,14 +313,11 @@ const DonateBook: FC = () => {
       });
       setSuccess(true);
     } catch (e) {
-      toast.error(error?.message, {
-        style: { backgroundColor: '#FFF5F5' },
-      });
     } finally {
       setPicture('');
       setFile(null);
       setDescription('');
-      setDataOfBook({ genre: '', title: '', author: '' });
+      setDataOfBook({ genre: '', title: '', author: '', identifier: '' });
     }
   };
 
@@ -321,7 +341,6 @@ const DonateBook: FC = () => {
                       accept="image/*"
                       style={{ display: 'none' }}
                       ref={ref}
-                      required
                     />
                     <StyledUploadFile onClick={() => ref?.current?.click()}>
                       {file ? 'Upload new' : 'Upload File'}
@@ -336,7 +355,6 @@ const DonateBook: FC = () => {
                         accept="image/*"
                         style={{ display: 'none' }}
                         ref={ref}
-                        required
                       />
                       <PhotoIcon />
                     </WrapperUploadFile>
@@ -357,7 +375,6 @@ const DonateBook: FC = () => {
                       value={dataOfBook.title}
                       onChange={handleChange}
                       autoComplete="off"
-                      required
                     />
                   </WrapperInput>
                 </WrapperStyledInput>
@@ -383,6 +400,20 @@ const DonateBook: FC = () => {
                       id="genre"
                       name="genre"
                       value={dataOfBook.genre}
+                      onChange={handleChange}
+                      autoComplete="off"
+                      required
+                    />
+                  </WrapperInput>
+                </WrapperStyledInput>
+                <WrapperStyledInput>
+                  <Label htmlFor="identifier">ISBN*</Label>
+                  <WrapperInput>
+                    <StyledInput
+                      type="number"
+                      id="identifier"
+                      name="identifier"
+                      value={dataOfBook.identifier}
                       onChange={handleChange}
                       autoComplete="off"
                       required
