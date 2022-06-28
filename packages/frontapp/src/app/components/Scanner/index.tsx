@@ -1,13 +1,13 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useMemo } from 'react';
 import { BrowserMultiFormatReader } from '@zxing/browser';
 import styled from '@emotion/styled';
 import { createPortal } from 'react-dom';
 import { colors, dimensions } from '@mimir/ui-kit';
+import InputMask from 'react-input-mask';
 import { ReactComponent as CloseSvg } from '../../../assets/Close.svg';
 import { Result } from '@zxing/library';
 
-interface IScannerProps {
-  active: boolean;
+export interface IScannerProps {
   onDetected: (code: string) => void;
   onClose: () => void;
 }
@@ -29,8 +29,14 @@ const Input = styled.input`
   border-radius: 100px;
   border: 0;
   background-color: rgba(29, 29, 29, 0.5);
+  font-size: ${dimensions.base};
+  line-height: 100%;
   color: ${colors.bg_secondary};
   outline: none;
+
+  &::placeholder {
+    color: ${colors.bg_secondary};
+  }
 `;
 
 const VideoContainer = styled.div`
@@ -54,6 +60,10 @@ const ScannerFrame = styled.div`
   box-shadow: 0 0 0 1000px rgba(120, 120, 120, 0.6),
     inset 0 0 0 ${dimensions.xs} rgba(120, 120, 120, 0.6);
   border-radius: ${dimensions.xl};
+
+  img {
+    opacity: 0.6;
+  }
 
   .corner {
     position: absolute;
@@ -125,15 +135,13 @@ const CloseButton = styled.div`
   }
 `;
 
-const Scanner: FC<IScannerProps> = ({ active, onDetected, onClose }) => {
+const Scanner: FC<IScannerProps> = ({ onDetected, onClose }) => {
   let videoStream: MediaStream | null;
   const scannerElement = useMemo(() => document.querySelector('#scanner')!, []);
   const barcodeReader = new BrowserMultiFormatReader();
   const timeout = 1000; // time between frames
 
   useEffect(() => {
-    if (!active) return;
-
     showScanner();
 
     const videoElement = document.querySelector<HTMLVideoElement>(
@@ -200,7 +208,7 @@ const Scanner: FC<IScannerProps> = ({ active, onDetected, onClose }) => {
           imageElement.onload = async () => {
             barcodeReader
               .decodeFromImageUrl(url)
-              .then(found) // calls onFoundBarcode with the barcode string
+              .then(found) // calls onDetected with the barcode string
               .catch(notfound)
               .finally(() => releaseMemory(imageElement));
             imageElement.onload = null;
@@ -223,7 +231,7 @@ const Scanner: FC<IScannerProps> = ({ active, onDetected, onClose }) => {
         height: size,
       };
     }
-  }, [active]);
+  });
 
   function found(result: Result) {
     onDetected(result.getText());
@@ -244,9 +252,9 @@ const Scanner: FC<IScannerProps> = ({ active, onDetected, onClose }) => {
     if (videoStream) {
       videoStream.getTracks().forEach((track) => track.stop()); // stop webcam feed
       videoStream = null;
+      onClose();
+      hideScanner();
     }
-    onClose();
-    hideScanner();
   }
 
   function showScanner() {
@@ -255,6 +263,14 @@ const Scanner: FC<IScannerProps> = ({ active, onDetected, onClose }) => {
 
   function hideScanner() {
     scannerElement.setAttribute('style', 'display: none');
+  }
+
+  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
+    const value = event.target.value;
+    if (!value.includes('_') && value.length) {
+      closeScanner();
+      onDetected(value.replace(/-/g, ''));
+    }
   }
 
   return createPortal(
@@ -272,7 +288,13 @@ const Scanner: FC<IScannerProps> = ({ active, onDetected, onClose }) => {
       <ScannerCanvas id="scanner-canvas" />
       <ScannerImage id="scanner-image" />
       <ScannerControls>
-        <Input value="_ _ _-_-_ _ _-_ _ _ _ _-_" readOnly />
+        <InputMask
+          placeholder="Enter ISBN"
+          mask="999-9-999-99999-9"
+          onChange={handleInputChange}
+        >
+          <Input />
+        </InputMask>
         <CloseButton onClick={closeScanner}>
           <CloseSvg />
         </CloseButton>

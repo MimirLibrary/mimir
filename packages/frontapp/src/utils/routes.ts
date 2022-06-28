@@ -8,5 +8,4 @@ export enum RoutesTypes {
   BOOKS_STUFF = '/books-stuff',
   DONATES_FROM_USER = '/donates-from-user',
   CREATE_NEW_ITEM = '/create-new-item',
-  SCANNER = '/scanner',
 }
