@@ -1,0 +1,32 @@
+mutation UpdateMaterial(
+  $identifier: String!  
+  $id_type: String
+  $type: String
+  $location_id: Int
+  $title: String
+  $author: String
+  $category: String
+  $updated_at: DateTime!
+) {
+  updateMaterial(
+    input: {
+      identifier: $identifier
+      id_type: $id_type
+      type: $type
+      location_id: $location_id
+      title: $title
+      author: $author
+      category: $category
+      updated_at: $updated_at
+    }
+  ) {
+    identifier
+    id_type
+    type
+    location_id
+    title
+    author
+    category
+    updated_at
+  }
+}
