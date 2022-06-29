@@ -14,6 +14,7 @@ export const resources = {
       NavbarReader: {
         Home: 'Home',
         Search: 'Search',
+        'Donate to the library': 'Donate to the library',
         'History of claim': 'History of claim',
         'History of donate': 'History of donate',
         Settings: 'Settings',
@@ -54,6 +55,7 @@ export const resources = {
       NavbarReader: {
         Home: 'Домой',
         Search: 'Поиск',
+        'Donate to the library': 'Пожертвовать библиотеке',
         'History of claim': 'История клеймов',
         'History of donate': 'История донатов',
         Settings: 'Настройки',
