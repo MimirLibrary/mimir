@@ -99,7 +99,7 @@ const ButtonContainer = styled.button<IButtonProps>`
           : colors.hover_color
         : colors.bg_secondary};
     height: auto;
-    max-width: 18.5px;
+    max-width: ${dimensions.xl_2};
     margin-right: ${dimensions.xs_1};
   }
 

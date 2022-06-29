@@ -1,0 +1,7 @@
+query GetNotificationsByPerson($person_id: Int!) {
+  getNotificationsByPerson(person_id: $person_id) {
+    id
+    material_id
+    person_id
+  }
+}

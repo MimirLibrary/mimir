@@ -5,6 +5,8 @@ import { colors, dimensions } from '@mimir/ui-kit';
 import { ReactComponent as Claim } from '../../../assets/claim.svg';
 import { ReactComponent as Edit } from '../../../assets/Edit.svg';
 import { ReactComponent as Remove } from '../../../assets/Remove.svg';
+import { ReactComponent as EnableNotifySvg } from '../../../assets/NoNotification.svg';
+import { ReactComponent as CancelNotifySvg } from '../../../assets/CancelNotification.svg';
 import Button from '../Button';
 import ClaimOperation from '../ClaimOperation';
 import Modal from '../Modal';
@@ -18,12 +20,16 @@ import SuccessMessage from '../SuccesMessage';
 import {
   GetAllTakenItemsDocument,
   GetMaterialByIdDocument,
+  GetNotificationsByPersonDocument,
   useClaimBookMutation,
   useProlongTimeMutation,
   useReturnBookMutation,
   useRemoveMaterialMutation,
   useUpdateMaterialMutation,
   useGetAllMaterialsQuery,
+  useGetNotificationsByPersonQuery,
+  useCreateNotificationMutation,
+  useRemoveNotificationMutation,
 } from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import ErrorMessage from '../ErrorMessge';
@@ -224,6 +230,18 @@ const BookInfo: FC<IBookInfoProps> = ({
 }) => {
   const { id, userRole } = useAppSelector((state) => state.user);
   const { data: allMaterials } = useGetAllMaterialsQuery();
+  const { data: getNotificationsByPersonData } =
+    useGetNotificationsByPersonQuery({
+      variables: {
+        person_id: id,
+      },
+    });
+  const [createNotificationMutation] = useCreateNotificationMutation({
+    refetchQueries: [GetNotificationsByPersonDocument],
+  });
+  const [removeNotificationMutation] = useRemoveNotificationMutation({
+    refetchQueries: [GetNotificationsByPersonDocument],
+  });
   const navigate = useNavigate();
   const [statusText, setStatusText] = useState<string>('');
   const [isShowClaimModal, setIsShowClaimModal] = useState<boolean>(false);
@@ -435,6 +453,17 @@ const BookInfo: FC<IBookInfoProps> = ({
     }
   }, [currentStatus]);
 
+  useEffect(() => {
+    if (!getNotificationsByPersonData) return;
+
+    if (
+      getNotificationsByPersonData.getNotificationsByPerson.find(
+        (notification) => notification?.person_id === id
+      )
+    )
+      return setIsMaterialTakenByCurrentUser(true);
+  }, [getNotificationsByPersonData]);
+
   const showAskManagerModal = () => {
     setIsShowErrorMessageOfClaiming(false);
     setIsShowAskManager(true);
@@ -447,6 +476,30 @@ const BookInfo: FC<IBookInfoProps> = ({
   const showClaimModal = useCallback(() => {
     setIsShowClaimModal(true);
   }, []);
+
+  const handleEnableNotifyButton = async () => {
+    await createNotificationMutation({
+      variables: {
+        input: {
+          material_id: parseInt(material_id),
+          person_id: id,
+        },
+      },
+    });
+    setIsMaterialTakenByCurrentUser(true);
+  };
+
+  const handleCancelNotifyButton = async () => {
+    await removeNotificationMutation({
+      variables: {
+        input: {
+          material_id: parseInt(material_id),
+          person_id: id,
+        },
+      },
+    });
+    setIsMaterialTakenByCurrentUser(false);
+  };
 
   return (
     <>
@@ -560,7 +613,25 @@ const BookInfo: FC<IBookInfoProps> = ({
                     </>
                   ) : null}
                 </WrapperButtons>
-              ) : null}
+              ) : (
+                <WrapperButtons>
+                  {status !== 'Free' &&
+                    (!isMaterialTakenByCurrentUser ? (
+                      <StyledButton
+                        value="Notify when available"
+                        svgComponent={<EnableNotifySvg />}
+                        onClick={handleEnableNotifyButton}
+                      />
+                    ) : (
+                      <StyledButton
+                        value="Cancel"
+                        svgComponent={<CancelNotifySvg />}
+                        transparent
+                        onClick={handleCancelNotifyButton}
+                      />
+                    ))}
+                </WrapperButtons>
+              )}
               {status === 'Free' ? (
                 <StyledButton
                   value="Claim a book"

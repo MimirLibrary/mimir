@@ -436,6 +436,13 @@ export type GetMaterialByIdQueryVariables = Exact<{
 
 export type GetMaterialByIdQuery = { __typename?: 'Query', getMaterialById: { __typename?: 'Material', id: string, identifier: string, picture?: string | null, title: string, author: string, category: string, created_at: any, updated_at: any, location_id: number, type: string, statuses: Array<{ __typename?: 'Status', id: string, person_id: number, status: string, created_at: any } | null> } };
 
+export type GetNotificationsByPersonQueryVariables = Exact<{
+  person_id: Scalars['Int'];
+}>;
+
+
+export type GetNotificationsByPersonQuery = { __typename?: 'Query', getNotificationsByPerson: Array<{ __typename?: 'Notification', id: string, material_id: number, person_id: number } | null> };
+
 
 export const ClaimBookDocument = gql`
     mutation ClaimBook($identifier: String!, $person_id: Int!) {
@@ -985,3 +992,40 @@ export function useGetMaterialByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetMaterialByIdQueryHookResult = ReturnType<typeof useGetMaterialByIdQuery>;
 export type GetMaterialByIdLazyQueryHookResult = ReturnType<typeof useGetMaterialByIdLazyQuery>;
 export type GetMaterialByIdQueryResult = Apollo.QueryResult<GetMaterialByIdQuery, GetMaterialByIdQueryVariables>;
+export const GetNotificationsByPersonDocument = gql`
+    query GetNotificationsByPerson($person_id: Int!) {
+  getNotificationsByPerson(person_id: $person_id) {
+    id
+    material_id
+    person_id
+  }
+}
+    `;
+
+/**
+ * __useGetNotificationsByPersonQuery__
+ *
+ * To run a query within a React component, call `useGetNotificationsByPersonQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetNotificationsByPersonQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetNotificationsByPersonQuery({
+ *   variables: {
+ *      person_id: // value for 'person_id'
+ *   },
+ * });
+ */
+export function useGetNotificationsByPersonQuery(baseOptions: Apollo.QueryHookOptions<GetNotificationsByPersonQuery, GetNotificationsByPersonQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetNotificationsByPersonQuery, GetNotificationsByPersonQueryVariables>(GetNotificationsByPersonDocument, options);
+      }
+export function useGetNotificationsByPersonLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetNotificationsByPersonQuery, GetNotificationsByPersonQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetNotificationsByPersonQuery, GetNotificationsByPersonQueryVariables>(GetNotificationsByPersonDocument, options);
+        }
+export type GetNotificationsByPersonQueryHookResult = ReturnType<typeof useGetNotificationsByPersonQuery>;
+export type GetNotificationsByPersonLazyQueryHookResult = ReturnType<typeof useGetNotificationsByPersonLazyQuery>;
+export type GetNotificationsByPersonQueryResult = Apollo.QueryResult<GetNotificationsByPersonQuery, GetNotificationsByPersonQueryVariables>;
