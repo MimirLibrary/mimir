@@ -23,6 +23,19 @@ input CreateMaterialInput {
   type: String!
 }
 
+input DonateBookInput {
+  identifier: String!
+  id_type: String!
+  location_id: Int!
+  type: String!
+  title: String!
+  author: String!
+  category: String!
+  description: String
+  picture: String
+  person_id: Int!
+}
+
 extend type Query {
   getAllMaterials: [Material]!
   getMaterialById(id: ID!): Material!
@@ -30,4 +43,5 @@ extend type Query {
 
 extend type Mutation {
   createMaterial(input: CreateMaterialInput!): Material!
+  donateBook(input: DonateBookInput!): Material!
 }

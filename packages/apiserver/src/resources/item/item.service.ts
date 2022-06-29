@@ -72,26 +72,26 @@ export class ItemService {
   }
 
   async getAllTakenItems(person_id: number) {
-    try {
-      const listOfMaterials = await Status.createQueryBuilder('status')
-        .leftJoinAndSelect('status.material', 'material')
-        .leftJoinAndSelect('status.person', 'person')
-        .distinctOn(['material_id'])
-        .orderBy('material_id', 'DESC')
-        .where('person_id = :person_id', { person_id })
-        .andWhere('status IN(:...status)', {
-          status: [StatusTypes.BUSY, StatusTypes.PROLONG],
-        })
-        .addOrderBy('status.id', 'DESC')
-        .addOrderBy('status.created_at', 'DESC')
-        .getMany();
+    const statusesQb = Status.createQueryBuilder('status')
+      .select('status.id')
+      .distinctOn(['material_id'])
+      .orderBy('material_id', 'DESC')
+      .where('person_id = :person_id', { person_id })
+      .addOrderBy('status.created_at', 'DESC');
 
-      return listOfMaterials;
-    } catch (e) {
-      return {
-        message: e.message,
-      };
-    }
+    const ids = (await statusesQb.getRawMany()).map((d) => d.status_id);
+
+    // Despite TypeORM supports subqueries, there are no possibility
+    // to map FROM (SELECT ...) to a Status entity type
+    // The only way is to split it onto 2 sequential queries
+    return await Status.createQueryBuilder('status')
+      .leftJoinAndSelect('status.material', 'material')
+      .leftJoinAndSelect('status.person', 'person')
+      .where('status.id IN (:...ids)', { ids })
+      .andWhere('status.status IN(:...statuses)', {
+        statuses: [StatusTypes.BUSY, StatusTypes.PROLONG],
+      })
+      .getMany();
   }
 
   async prolong(prolongTime: ProlongTimeInput) {

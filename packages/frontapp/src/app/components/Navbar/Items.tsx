@@ -7,6 +7,7 @@ import { ReactComponent as Readers } from '../../../assets/Navbar/Readers.svg';
 import { ReactComponent as Books } from '../../../assets/Navbar/Books.svg';
 import { ReactComponent as DonateFromUser } from '../../../assets/Navbar/DonateFromUser.svg';
 import { ReactComponent as Create } from '../../../assets/Navbar/Create.svg';
+import { ReactComponent as DonateToLibrary } from '../../../assets/Navbar/DonateToLibrary.svg';
 
 import React from 'react';
 import { RoutesTypes } from '../../../utils/routes';
@@ -15,6 +16,11 @@ import { NavbarItems } from '../../../utils/NavbarItems';
 export const navReaderItemsArray = [
   { icon: <Home />, name: NavbarItems.HOME, path: RoutesTypes.HOME },
   { icon: <Search />, name: NavbarItems.SEARCH, path: RoutesTypes.SEARCH },
+  {
+    icon: <DonateToLibrary />,
+    name: NavbarItems.DONATE_TO_LIBRARY,
+    path: RoutesTypes.DONATE_TO_LIBRARY,
+  },
   {
     icon: <Book />,
     name: NavbarItems.HISTORY_OF_CLAIM,

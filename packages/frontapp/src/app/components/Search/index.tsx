@@ -5,7 +5,7 @@ import { ReactComponent as SearchIcon } from '../../../assets/Navbar/Search.svg'
 import Input from '../Input';
 import { t } from 'i18next';
 
-const InputSearch = styled(Input)`
+export const InputSearch = styled(Input)`
   width: 19rem;
   border: none;
   outline: none;

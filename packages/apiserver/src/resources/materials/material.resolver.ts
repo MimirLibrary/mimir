@@ -8,12 +8,15 @@ import {
 } from '@nestjs/graphql';
 import { Material } from './material.entity';
 import { Status } from '../statuses/status.entity';
-import { CreateMaterialInput } from '@mimir/global-types';
+import { CreateMaterialInput, DonateBookInput } from '@mimir/global-types';
 import { Notification } from '../notifications/notification.entity';
 import { Message } from '../messages/messages.entity';
+import { MaterialService } from './material.service';
 
 @Resolver('Material')
 export class MaterialResolver {
+  constructor(private materialService: MaterialService) {}
+
   @Query(() => [Material])
   async getAllMaterials() {
     return Material.find();
@@ -22,6 +25,11 @@ export class MaterialResolver {
   @Query(() => Material)
   async getMaterialById(@Args('id') id: number | string) {
     return Material.findOneOrFail(id);
+  }
+
+  @Mutation(() => Material)
+  async donateBook(@Args('input') donateBookInput: DonateBookInput) {
+    return this.materialService.donate(donateBookInput);
   }
 
   @Mutation(() => Material)

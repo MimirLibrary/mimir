@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import StartPage from './pages/StartPage';
 import Sidebar from './components/Sidebar';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import { useAuth } from './hooks/useAuth';
 import styled from '@emotion/styled';
@@ -11,8 +11,8 @@ import { useAppSelector } from './hooks/useTypedSelector';
 import NotificationPage from './pages/NotificationPage';
 import SearchWrapper from './components/SearchWrapper';
 import BookPreview from './pages/BookPreview';
-import { RolesTypes } from '../utils/rolesTypes';
-import Button from './components/Button';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const WrapperPage = styled.main`
   display: flex;
@@ -37,7 +37,6 @@ const App: FC = () => {
   const { userRole } = useAppSelector((state) => state.user);
   const routes = useRoutes(userRole);
   const [isSidebarActive, setSidebarActive] = useState(false);
-  const location = useLocation();
   return (
     <div>
       {isAuth ? (
@@ -64,6 +63,7 @@ const App: FC = () => {
           <Route path="*" element={<StartPage />} />
         </Routes>
       )}
+      <ToastContainer position="bottom-right" />
     </div>
   );
 };

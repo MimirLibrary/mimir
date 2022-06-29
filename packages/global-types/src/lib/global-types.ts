@@ -32,6 +32,19 @@ export interface CreateMaterialInput {
     type: string;
 }
 
+export interface DonateBookInput {
+    identifier: string;
+    id_type: string;
+    location_id: number;
+    type: string;
+    title: string;
+    author: string;
+    category: string;
+    description?: Nullable<string>;
+    picture?: Nullable<string>;
+    person_id: number;
+}
+
 export interface CreateMessageInput {
     title: string;
     message: string;
@@ -82,6 +95,7 @@ export interface IMutation {
     createLocation(input: CreateLocationInput): Nullable<Location> | Promise<Nullable<Location>>;
     removeLocation(input: RemoveLocationInput): Nullable<Location> | Promise<Nullable<Location>>;
     createMaterial(input: CreateMaterialInput): Material | Promise<Material>;
+    donateBook(input: DonateBookInput): Material | Promise<Material>;
     createMessageForManager(input: CreateMessageInput): MessageUnionResult | Promise<MessageUnionResult>;
     createNotification(input: CreateNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
     removeNotification(input: RemoveNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
