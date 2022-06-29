@@ -13,12 +13,12 @@ import { ReactComponent as ScrollButtonRight } from '../../assets/ArrowButtonRig
 import { ReactComponent as ScrollButtonLeft } from '../../assets/ArrowButtonLeft.svg';
 import { ReactComponent as ArrowBack } from '../../assets/ArrowUp2.svg';
 
-const GoBack = styled.a`
+export const GoBack = styled.a`
   font-weight: 600;
   font-size: ${dimensions.base};
 `;
 
-const ButtonWrapper = styled.div`
+export const ButtonWrapper = styled.div`
   margin: 3rem 0 ${dimensions.xl_3} 0;
   display: flex;
   align-items: center;
@@ -57,7 +57,7 @@ const BookPreview = () => {
   const lastStatusAnotherPerson = data?.getMaterialById.statuses.slice(-1)[0];
 
   const handleGoBack = () => {
-    navigate('/search');
+    navigate(-1);
   };
 
   if (loading) return <h1>Loading...</h1>;
