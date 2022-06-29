@@ -35,7 +35,7 @@ const WrapperInput = styled.div`
   border-radius: ${dimensions.xl_3};
   padding: 10px 0;
   padding-left: ${dimensions.xs_1};
-  margin: 0 ${dimensions.xs_1};
+  margin-right: ${dimensions.xs_1};
   background: ${colors.bg_secondary};
 
   :hover {

@@ -28,6 +28,7 @@ export interface RemoveLocationInput {
 export interface CreateMaterialInput {
     identifier: string;
     id_type: string;
+    location_id: number;
     type: string;
 }
 
@@ -43,6 +44,7 @@ export interface RemoveNotificationInput {
 
 export interface CreatePersonInput {
     smg_id: string;
+    location_id: number;
     type: string;
 }
 
@@ -91,12 +93,14 @@ export interface Material {
     identifier: string;
     id_type: string;
     type: string;
+    location_id: number;
     created_at: DateTime;
     updated_at: DateTime;
     title: string;
     picture?: Nullable<string>;
     author: string;
     category: string;
+    location: Location;
     statuses: Nullable<Status>[];
     notifications: Nullable<Notification>[];
 }
@@ -114,9 +118,11 @@ export interface Person {
     id: string;
     smg_id: string;
     type: string;
+    location_id: number;
     created_at: DateTime;
     statuses?: Nullable<Nullable<Status>[]>;
     notifications?: Nullable<Nullable<Notification>[]>;
+    location: Location;
 }
 
 export interface Status {
