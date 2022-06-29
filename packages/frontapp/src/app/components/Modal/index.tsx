@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { createPortal } from 'react-dom';
@@ -15,7 +15,7 @@ const WrapperModal = styled.div<IStyleProps>`
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 1;
   display: flex;
   justify-content: center;
   align-items: center;
