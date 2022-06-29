@@ -39,35 +39,33 @@ const App: FC = () => {
   const [isSidebarActive, setSidebarActive] = useState(false);
 
   return (
-    <>
-      <div>
-        {isAuth ? (
-          <div>
-            <WrapperPage>
-              <Sidebar
-                isSidebarActive={isSidebarActive}
-                setSidebarActive={setSidebarActive}
-              />
-              <WrapperRoutes>
-                <SearchWrapper setSidebarActive={setSidebarActive} />
-                <Routes>
-                  {routes}
-                  <Route path="/notifications" element={<NotificationPage />} />
-                  <Route path="*" element={<HomePage />} />
-                  <Route path="item/:item_id" element={<BookPreview />} />
-                </Routes>
-              </WrapperRoutes>
-            </WrapperPage>
-          </div>
-        ) : (
-          <Routes>
-            <Route path="/login" element={<StartPage />} />
-            <Route path="*" element={<StartPage />} />
-          </Routes>
-        )}
-        <ToastContainer position="bottom-right" />
-      </div>
-    </>
+    <div>
+      {isAuth ? (
+        <div>
+          <WrapperPage>
+            <Sidebar
+              isSidebarActive={isSidebarActive}
+              setSidebarActive={setSidebarActive}
+            />
+            <WrapperRoutes>
+              <SearchWrapper setSidebarActive={setSidebarActive} />
+              <Routes>
+                {routes}
+                <Route path="/notifications" element={<NotificationPage />} />
+                <Route path="*" element={<HomePage />} />
+                <Route path="item/:item_id" element={<BookPreview />} />
+              </Routes>
+            </WrapperRoutes>
+          </WrapperPage>
+        </div>
+      ) : (
+        <Routes>
+          <Route path="/login" element={<StartPage />} />
+          <Route path="*" element={<StartPage />} />
+        </Routes>
+      )}
+      <ToastContainer position="bottom-right" />
+    </div>
   );
 };
 
