@@ -30,6 +30,7 @@ import ErrorMessage from '../ErrorMessge';
 import { RolesTypes } from '../../../utils/rolesTypes';
 import AskManagerForm from '../AskManagerForm';
 import { WrapperInput } from '../Search';
+import { useNavigate } from 'react-router-dom';
 const BookHolder = styled.div`
   top: 11.5rem;
   left: 24.5rem;
@@ -231,6 +232,7 @@ const BookInfo: FC<IBookInfoProps> = ({
 }) => {
   const { id, userRole } = useAppSelector((state) => state.user);
   const { data: allMaterials } = useGetAllMaterialsQuery();
+  const navigate = useNavigate();
   const [statusText, setStatusText] = useState<string>('');
   const [isShowClaimModal, setIsShowClaimModal] = useState<boolean>(false);
   const [isShowAskManger, setIsShowAskManager] = useState<boolean>(false);
@@ -254,7 +256,24 @@ const BookInfo: FC<IBookInfoProps> = ({
       : ' Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi impedit aliquid alias consequuntur! Totam sequi expedita sunt dolor obcaecati, iusto ducimus? Beatae ea, commodi ab repellat, corporis atque quasi, tempore sunt modi similique soluta nemo hic necessitatibus esse accusantium omnis neque rerum. Placeat tempore, fugiat unde consequuntur dolor tempora ducimus.'
   );
   const [newDeadline, setNewDeadline] = useState(periodOfKeeping);
+  const [deleteWarning, setDeleteWarning] = useState(false);
+  const [authorsDropDown, setAuthorsDropDown] = useState<
+    (string | undefined)[] | undefined
+  >();
+  const [categoriesDropDown, setCategoriesDropDown] = useState<
+    (string | undefined)[] | undefined
+  >();
 
+  useEffect(() => {
+    const authors = allMaterials?.getAllMaterials?.map((item) => {
+      return item?.author;
+    });
+    const categories = allMaterials?.getAllMaterials?.map((item) => {
+      return item?.category;
+    });
+    setAuthorsDropDown([...new Set(authors)]);
+    setCategoriesDropDown([...new Set(categories)]);
+  }, []);
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewTitle(e.target.value);
   };
@@ -341,7 +360,6 @@ const BookInfo: FC<IBookInfoProps> = ({
   };
 
   const deleteItem = async () => {
-    console.log('deleted');
     await removeMaterial({
       variables: {
         identifier: identifier,
@@ -349,7 +367,11 @@ const BookInfo: FC<IBookInfoProps> = ({
         location_id: location_id,
       },
     });
+    navigate('/search');
+    window.location.reload();
   };
+  const handleEditBtn = () => setEditing(true);
+  const handleDeleteBtn = () => setDeleteWarning(true);
 
   const discardChanges = () => {
     setNewTitle(title);
@@ -464,9 +486,11 @@ const BookInfo: FC<IBookInfoProps> = ({
                         setNewCategory(e.target.value);
                       }}
                     >
-                      {allMaterials?.getAllMaterials.map((item: any) => (
-                        <option value={item.category}>{item.category}</option>
-                      ))}
+                      {categoriesDropDown?.map(
+                        (category: string | undefined) => (
+                          <option value={category}>{category}</option>
+                        )
+                      )}
                     </StyledSelect>
                   </WrapperInput>
                 </>
@@ -486,8 +510,8 @@ const BookInfo: FC<IBookInfoProps> = ({
                         setNewAuthor(e.target.value);
                       }}
                     >
-                      {allMaterials?.getAllMaterials.map((item: any) => (
-                        <option value={item.author}>{item.author}</option>
+                      {authorsDropDown?.map((author: string | undefined) => (
+                        <option value={author}>{author}</option>
                       ))}
                     </StyledSelect>
                   </WrapperInput>
@@ -523,9 +547,7 @@ const BookInfo: FC<IBookInfoProps> = ({
               ) : (
                 <>
                   <Topic>Deadline: </Topic>
-                  <TopicDescription>
-                    {periodOfKeeping + ' days'}
-                  </TopicDescription>
+                  <TopicDescription>{newDeadline + ' days'}</TopicDescription>
                 </>
               )}
             </ShortDescription>
@@ -572,14 +594,14 @@ const BookInfo: FC<IBookInfoProps> = ({
                 value="Edit information"
                 transparent
                 svgComponent={<Edit />}
-                onClick={() => setEditing(true)}
+                onClick={handleEditBtn}
               />
               <StyledButton
                 value="Delete item"
                 transparent
                 secondary
                 svgComponent={<Remove />}
-                onClick={deleteItem}
+                onClick={handleDeleteBtn}
               />
             </WrapperButtons>
           )}
@@ -679,6 +701,24 @@ const BookInfo: FC<IBookInfoProps> = ({
           titleCancel="Close"
           onClick={closeReportedManager}
         />
+      </Modal>
+      <Modal active={deleteWarning} setActive={setDeleteWarning}>
+        <TitleBook>Are you sure you want to delete this item?</TitleBook>
+        <WrapperInfo>
+          <StyledButton
+            value="Cancel"
+            transparent
+            onClick={() => setDeleteWarning(false)}
+          />
+          <hr />
+          <StyledButton
+            value="Delete item"
+            transparent
+            secondary
+            svgComponent={<Remove />}
+            onClick={deleteItem}
+          />
+        </WrapperInfo>
       </Modal>
     </>
   );
