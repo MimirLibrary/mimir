@@ -43,7 +43,6 @@ input UpdateMaterialInput {
   author: String
   category: String
   updated_at: DateTime!
-
 }
 
 input DonateBookInput {
