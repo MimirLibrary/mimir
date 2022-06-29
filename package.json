@@ -119,6 +119,8 @@
     "@nestjs/config": "^2.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/graphql": "^10.0.8",
+    "@nestjs/mapped-types": "*",
+    "@nestjs/microservices": "^8.4.7",
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/typeorm": "^8.0.3",
     "@react-navigation/bottom-tabs": "^6.2.0",
