@@ -9,8 +9,10 @@ export const colors = {
   main_black: '#333333',
   warning_yellow: '#FF910F',
   problem_red: '#FF372A',
+  red_main: '#FF372A',
   main_green: '#2AA816',
   bg_primary: '#F3F7FF',
   bg_secondary: '#FFFFFF',
+  bg_fields: '#EFF4FF',
   free_book: '#2AA816',
 };

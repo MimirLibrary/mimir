@@ -11,6 +11,7 @@ import { useAppSelector } from '../hooks/useTypedSelector';
 import { RolesTypes } from '../../utils/rolesTypes';
 import ManagerInfoCard from '../components/ManagerInfoCard';
 import { ManagerCardTypes } from '../../utils/managerCardTypes';
+import Button from '../components/Button';
 
 const WrapperHome = styled.div`
   @media (max-width: ${dimensions.tablet_width}) {
@@ -18,6 +19,18 @@ const WrapperHome = styled.div`
     flex-direction: column;
     justify-content: center;
   }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  position: absolute;
+  width: 234px;
+  height: 52px;
+  right: 46px;
+  top: 40px;
 `;
 
 const Wrapper = styled.div`
@@ -64,11 +77,25 @@ const HomePage: FC = () => {
           )}
         </>
       ) : (
-        <CardsWrapper>
-          <ManagerInfoCard type={ManagerCardTypes.OVERDUE} fields={[]} />
-          <ManagerInfoCard type={ManagerCardTypes.DONATES} fields={[]} />
-          <ManagerInfoCard type={ManagerCardTypes.NOTIFICATIONS} fields={[]} />
-        </CardsWrapper>
+        <>
+          <ButtonWrapper>
+            <Button value={'Open library statistics'} />
+          </ButtonWrapper>
+          <CardsWrapper>
+            <ManagerInfoCard
+              type={ManagerCardTypes.OVERDUE}
+              fields={['haha', ',a,a,', 'ijewf']}
+            />
+            <ManagerInfoCard
+              type={ManagerCardTypes.DONATES}
+              fields={['haha', ',a,a,', 'ijewf']}
+            />
+            <ManagerInfoCard
+              type={ManagerCardTypes.NOTIFICATIONS}
+              fields={['haha', ',a,a,', 'ijewf']}
+            />
+          </CardsWrapper>
+        </>
       )}
     </WrapperHome>
   );

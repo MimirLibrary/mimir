@@ -21,17 +21,6 @@ const WrapperPage = styled.main`
   height: 100%;
 `;
 
-const WrapperSearchString = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-const WrapperButtons = styled.div`
-  display: flex;
-  align-items: flex-end;
-  justify-content: right;
-  max-width: 276px;
-  width: 100%;
-`;
 const WrapperRoutes = styled.div`
   width: calc(100% - 22rem);
   background-color: ${colors.bg_primary};
@@ -59,18 +48,7 @@ const App: FC = () => {
               setSidebarActive={setSidebarActive}
             />
             <WrapperRoutes>
-              <WrapperSearchString>
-                <SearchWrapper setSidebarActive={setSidebarActive} />
-                {userRole === RolesTypes.MANAGER ? (
-                  <>
-                    {location.pathname === '/home' ? (
-                      <WrapperButtons>
-                        <Button value={'Open library statistics'} />
-                      </WrapperButtons>
-                    ) : null}
-                  </>
-                ) : null}
-              </WrapperSearchString>
+              <SearchWrapper setSidebarActive={setSidebarActive} />
               <Routes>
                 {routes}
                 <Route path="/notifications" element={<NotificationPage />} />
