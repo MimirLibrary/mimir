@@ -8,8 +8,14 @@ import {
 } from '@nestjs/graphql';
 import { Material } from './material.entity';
 import { Status } from '../statuses/status.entity';
-import { CreateMaterialInput, DonateBookInput } from '@mimir/global-types';
+import {
+  CreateMaterialInput,
+  UpdateMaterialInput,
+  RemoveMaterialInput,
+  DonateBookInput,
+} from '@mimir/global-types';
 import { Notification } from '../notifications/notification.entity';
+import { BadRequestException } from '@nestjs/common';
 import { Message } from '../messages/messages.entity';
 import { MaterialService } from './material.service';
 
@@ -43,6 +49,39 @@ export class MaterialResolver {
     return await Material.save(material);
   }
 
+  @Mutation(() => Material)
+  async removeMaterial(
+    @Args('input') removeMaterialInput: RemoveMaterialInput
+  ) {
+    try {
+      const identifier = removeMaterialInput.identifier;
+      const material = await Material.findOne({
+        where: { identifier },
+      });
+      await Status.delete({ material_id: material.id });
+      await Material.remove({ ...material } as Material);
+      return material;
+    } catch (e) {
+      throw new BadRequestException();
+    }
+  }
+  @Mutation(() => Material)
+  async updateMaterial(
+    @Args('input') updateMaterialInput: UpdateMaterialInput
+  ) {
+    try {
+      const identifier = updateMaterialInput.identifier;
+      const material = await Material.findOne({
+        where: { identifier },
+      });
+      await Material.update(material.id, {
+        ...updateMaterialInput,
+      });
+      return material;
+    } catch (e) {
+      throw new BadRequestException();
+    }
+  }
   @ResolveField(() => [Status])
   async statuses(@Parent() material: Material) {
     const { id } = material;
@@ -51,7 +90,6 @@ export class MaterialResolver {
       order: { id: 'ASC' },
     });
   }
-
   @ResolveField(() => [Notification])
   async notifications(@Parent() material: Material) {
     const { id } = material;

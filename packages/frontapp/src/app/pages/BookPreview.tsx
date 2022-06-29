@@ -80,6 +80,9 @@ const BookPreview = () => {
           created_at={lastStatusAnotherPerson?.created_at}
           material_id={data.getMaterialById.id}
           description=""
+          updated_at={data?.getMaterialById?.updated_at}
+          type={data?.getMaterialById?.type}
+          location_id={data?.getMaterialById?.location_id}
         />
       )}
       <Suggestions>
