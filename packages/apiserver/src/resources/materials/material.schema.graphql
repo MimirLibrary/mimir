@@ -21,6 +21,29 @@ input CreateMaterialInput {
   id_type: String!
   location_id: Int!
   type: String!
+  title: String!
+  picture: String
+  author: String!
+  category: String!
+}
+
+input RemoveMaterialInput {
+  identifier: String!
+  location_id: Int!
+  type: String!
+}
+
+input UpdateMaterialInput {
+  identifier: String
+  id_type: String
+  location_id: Int
+  type: String
+  title: String
+  picture: String
+  author: String
+  category: String
+  updated_at: DateTime!
+
 }
 
 input DonateBookInput {
@@ -43,5 +66,7 @@ extend type Query {
 
 extend type Mutation {
   createMaterial(input: CreateMaterialInput!): Material!
+  removeMaterial(input: RemoveMaterialInput!): Material!
+  updateMaterial(input: UpdateMaterialInput!): Material!
   donateBook(input: DonateBookInput!): Material!
 }
