@@ -1,8 +1,8 @@
 ---
 name: Bug Report
 about: Bug Report template
-title: ''
-labels: bug
+title: '🐞 '
+labels: BUG
 assignees: ''
 ---
 * Environment: 
