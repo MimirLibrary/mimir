@@ -46,6 +46,9 @@ export class Material extends BaseEntity {
   @Column()
   author!: string;
 
+  @Column()
+  description: string;
+
   @Column({ nullable: true })
   location_id: number;
 

@@ -54,6 +54,19 @@ export interface UpdateMaterialInput {
     updated_at: DateTime;
 }
 
+export interface DonateBookInput {
+    identifier: string;
+    id_type: string;
+    location_id: number;
+    type: string;
+    title: string;
+    author: string;
+    category: string;
+    description?: Nullable<string>;
+    picture?: Nullable<string>;
+    person_id: number;
+}
+
 export interface CreateMessageInput {
     title: string;
     message: string;
@@ -106,6 +119,7 @@ export interface IMutation {
     createMaterial(input: CreateMaterialInput): Material | Promise<Material>;
     removeMaterial(input: RemoveMaterialInput): Material | Promise<Material>;
     updateMaterial(input: UpdateMaterialInput): Material | Promise<Material>;
+    donateBook(input: DonateBookInput): Material | Promise<Material>;
     createMessageForManager(input: CreateMessageInput): MessageUnionResult | Promise<MessageUnionResult>;
     createNotification(input: CreateNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
     removeNotification(input: RemoveNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
