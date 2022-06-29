@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Material } from '../materials/material.entity';
-import { BookInput } from '@mimir/global-types';
+import { BookInput, ProlongTimeInput } from '@mimir/global-types';
 import { Status } from '../statuses/status.entity';
 import { Connection } from 'typeorm';
-import { ClaimError } from '../../errors';
-import { StatusTypes } from '../../utils/statusTypes';
+import { ErrorBook } from '../../errors';
+import { StatusTypes } from '../../utils/types/statusTypes';
+import { setTimeToProlong } from '../../utils/helpersFunctions/setTimeToProlong';
+import { config } from '../../config';
 
 @Injectable()
 export class ItemService {
@@ -27,22 +29,25 @@ export class ItemService {
         where: { identifier },
       });
       if (!material) {
-        throw new ClaimError('This item is not registered in the library');
+        throw new ErrorBook('This item is not registered in the library');
       }
       const { id } = material;
-      const status = await statusRepository.find({
+      const [status] = await statusRepository.find({
         where: { material_id: id },
-        order: { id: 'DESC' },
+        order: { id: 'DESC', created_at: 'DESC' },
         take: 1,
       });
-      if (status[0].status === type) {
-        throw new ClaimError(
+      if (status.status === StatusTypes.PROLONG && type !== StatusTypes.FREE) {
+        throw new ErrorBook('This book has been extended');
+      }
+      if (status.status === type) {
+        throw new ErrorBook(
           `This book is ${type.toLocaleLowerCase()}. Ask the manager!`
         );
       }
       const newStatusObj = await statusRepository.create({
         status: type,
-        material_id: status[0].material_id,
+        material_id: status.material_id,
         person_id,
       });
       const newStatus = await statusRepository.save(newStatusObj);
@@ -67,19 +72,52 @@ export class ItemService {
   }
 
   async getAllTakenItems(person_id: number) {
+    const statusesQb = Status.createQueryBuilder('status')
+      .select('status.id')
+      .distinctOn(['material_id'])
+      .orderBy('material_id', 'DESC')
+      .where('person_id = :person_id', { person_id })
+      .addOrderBy('status.created_at', 'DESC');
+
+    const ids = (await statusesQb.getRawMany()).map((d) => d.status_id);
+
+    // Despite TypeORM supports subqueries, there are no possibility
+    // to map FROM (SELECT ...) to a Status entity type
+    // The only way is to split it onto 2 sequential queries
+    return await Status.createQueryBuilder('status')
+      .leftJoinAndSelect('status.material', 'material')
+      .leftJoinAndSelect('status.person', 'person')
+      .where('status.id IN (:...ids)', { ids })
+      .andWhere('status.status IN(:...statuses)', {
+        statuses: [StatusTypes.BUSY, StatusTypes.PROLONG],
+      })
+      .getMany();
+  }
+
+  async prolong(prolongTime: ProlongTimeInput) {
     try {
-      const listOfMaterials = await Status.createQueryBuilder('status')
-        .leftJoinAndSelect('status.material', 'material')
-        .leftJoinAndSelect('status.person', 'person')
-        .distinctOn(['material_id'])
-        .orderBy('material_id', 'DESC')
-        .where('person_id = :person_id', { person_id })
-        .addOrderBy('status.id', 'DESC')
-        .getMany();
-      const listOfTakenMaterials = listOfMaterials.filter(
-        (item) => item.status === StatusTypes.BUSY
-      );
-      return listOfTakenMaterials;
+      const { person_id, material_id } = prolongTime;
+      const [currentStatus] = await Status.find({
+        where: { material_id, person_id },
+        order: { id: 'DESC', created_at: 'DESC' },
+        take: 1,
+      });
+      if (currentStatus.status === StatusTypes.PROLONG) {
+        throw new ErrorBook('This item has already been extended!');
+      }
+      if (currentStatus.status === StatusTypes.FREE) {
+        throw new ErrorBook('This book is free!');
+      }
+      const prolongStatus = await Status.create({
+        status: StatusTypes.PROLONG,
+        created_at: setTimeToProlong(
+          currentStatus.created_at,
+          config.shelfLife
+        ),
+        material_id: currentStatus.material_id,
+        person_id: currentStatus.person_id,
+      });
+      return Status.save(prolongStatus);
     } catch (e) {
       return {
         message: e.message,

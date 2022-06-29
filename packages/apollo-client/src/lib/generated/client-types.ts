@@ -13,160 +13,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** Banking account number is a string of 5 to 17 alphanumeric values for representing an generic account number */
-  AccountNumber: any;
-  /** The `BigInt` scalar type represents non-fractional signed whole numeric values. */
-  BigInt: any;
-  /** The `Byte` scalar type represents byte value as a Buffer */
-  Byte: any;
-  /** A country code as defined by ISO 3166-1 alpha-2 */
-  CountryCode: any;
-  /** A field whose value is a Currency: https://en.wikipedia.org/wiki/ISO_4217. */
-  Currency: any;
-  /** A field whose value conforms to the standard DID format as specified in did-core: https://www.w3.org/TR/did-core/. */
-  DID: any;
-  /** A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
-  Date: any;
-  /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
   DateTime: any;
-  /**
-   *
-   *     A string representing a duration conforming to the ISO8601 standard,
-   *     such as: P1W1DT13H23M34S
-   *     P is the duration designator (for period) placed at the start of the duration representation.
-   *     Y is the year designator that follows the value for the number of years.
-   *     M is the month designator that follows the value for the number of months.
-   *     W is the week designator that follows the value for the number of weeks.
-   *     D is the day designator that follows the value for the number of days.
-   *     T is the time designator that precedes the time components of the representation.
-   *     H is the hour designator that follows the value for the number of hours.
-   *     M is the minute designator that follows the value for the number of minutes.
-   *     S is the second designator that follows the value for the number of seconds.
-   *
-   *     Note the time designator, T, that precedes the time value.
-   *
-   *     Matches moment.js, Luxon and DateFns implementations
-   *     ,/. is valid for decimal places and +/- is a valid prefix
-   *
-   */
-  Duration: any;
-  /** A field whose value conforms to the standard internet email address format as specified in RFC822: https://www.w3.org/Protocols/rfc822/. */
-  EmailAddress: any;
-  /** A field whose value is a generic Universally Unique Identifier: https://en.wikipedia.org/wiki/Universally_unique_identifier. */
-  GUID: any;
-  /** A field whose value is a CSS HSL color: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#hsl()_and_hsla(). */
-  HSL: any;
-  /** A field whose value is a CSS HSLA color: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#hsl()_and_hsla(). */
-  HSLA: any;
-  /** A field whose value is a hex color code: https://en.wikipedia.org/wiki/Web_colors. */
-  HexColorCode: any;
-  /** A field whose value is a hexadecimal: https://en.wikipedia.org/wiki/Hexadecimal. */
-  Hexadecimal: any;
-  /** A field whose value is an International Bank Account Number (IBAN): https://en.wikipedia.org/wiki/International_Bank_Account_Number. */
-  IBAN: any;
-  /** A field whose value is a IPv4 address: https://en.wikipedia.org/wiki/IPv4. */
-  IPv4: any;
-  /** A field whose value is a IPv6 address: https://en.wikipedia.org/wiki/IPv6. */
-  IPv6: any;
-  /** A field whose value is a ISBN-10 or ISBN-13 number: https://en.wikipedia.org/wiki/International_Standard_Book_Number. */
-  ISBN: any;
-  /**
-   *
-   *     A string representing a duration conforming to the ISO8601 standard,
-   *     such as: P1W1DT13H23M34S
-   *     P is the duration designator (for period) placed at the start of the duration representation.
-   *     Y is the year designator that follows the value for the number of years.
-   *     M is the month designator that follows the value for the number of months.
-   *     W is the week designator that follows the value for the number of weeks.
-   *     D is the day designator that follows the value for the number of days.
-   *     T is the time designator that precedes the time components of the representation.
-   *     H is the hour designator that follows the value for the number of hours.
-   *     M is the minute designator that follows the value for the number of minutes.
-   *     S is the second designator that follows the value for the number of seconds.
-   *
-   *     Note the time designator, T, that precedes the time value.
-   *
-   *     Matches moment.js, Luxon and DateFns implementations
-   *     ,/. is valid for decimal places and +/- is a valid prefix
-   *
-   */
-  ISO8601Duration: any;
-  /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
-  JSON: any;
-  /** The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
-  JSONObject: any;
-  /** A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction. */
-  JWT: any;
-  /** A field whose value is a valid decimal degrees latitude number (53.471): https://en.wikipedia.org/wiki/Latitude */
-  Latitude: any;
-  /** A local date string (i.e., with no associated timezone) in `YYYY-MM-DD` format, e.g. `2020-01-01`. */
-  LocalDate: any;
-  /** A local time string (i.e., with no associated timezone) in 24-hr `HH:mm[:ss[.SSS]]` format, e.g. `14:25` or `14:25:06` or `14:25:06.123`.  This scalar is very similar to the `LocalTime`, with the only difference being that `LocalEndTime` also allows `24:00` as a valid value to indicate midnight of the following day.  This is useful when using the scalar to represent the exclusive upper bound of a time block. */
-  LocalEndTime: any;
-  /** A local time string (i.e., with no associated timezone) in 24-hr `HH:mm[:ss[.SSS]]` format, e.g. `14:25` or `14:25:06` or `14:25:06.123`. */
-  LocalTime: any;
-  /** The locale in the format of a BCP 47 (RFC 5646) standard string */
-  Locale: any;
-  /** The `BigInt` scalar type represents non-fractional signed whole numeric values. */
-  Long: any;
-  /** A field whose value is a valid decimal degrees longitude number (53.471): https://en.wikipedia.org/wiki/Longitude */
-  Longitude: any;
-  /** A field whose value is a IEEE 802 48-bit MAC address: https://en.wikipedia.org/wiki/MAC_address. */
-  MAC: any;
-  /** Floats that will have a value less than 0. */
-  NegativeFloat: any;
-  /** Integers that will have a value less than 0. */
-  NegativeInt: any;
-  /** A string that cannot be passed as an empty value */
-  NonEmptyString: any;
-  /** Floats that will have a value of 0 or more. */
-  NonNegativeFloat: any;
-  /** Integers that will have a value of 0 or more. */
-  NonNegativeInt: any;
-  /** Floats that will have a value of 0 or less. */
-  NonPositiveFloat: any;
-  /** Integers that will have a value of 0 or less. */
-  NonPositiveInt: any;
-  /** A field whose value conforms with the standard mongodb object ID as described here: https://docs.mongodb.com/manual/reference/method/ObjectId/#ObjectId. Example: 5e5677d71bdc2ae76344968c */
-  ObjectID: any;
-  /** A field whose value conforms to the standard E.164 format as specified in: https://en.wikipedia.org/wiki/E.164. Basically this is +17895551234. */
-  PhoneNumber: any;
-  /** A field whose value is a valid TCP port within the range of 0 to 65535: https://en.wikipedia.org/wiki/Transmission_Control_Protocol#TCP_ports */
-  Port: any;
-  /** Floats that will have a value greater than 0. */
-  PositiveFloat: any;
-  /** Integers that will have a value greater than 0. */
-  PositiveInt: any;
-  /** A field whose value conforms to the standard postal code formats for United States, United Kingdom, Germany, Canada, France, Italy, Australia, Netherlands, Spain, Denmark, Sweden, Belgium, India, Austria, Portugal, Switzerland or Luxembourg. */
-  PostalCode: any;
-  /** A field whose value is a CSS RGB color: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#rgb()_and_rgba(). */
-  RGB: any;
-  /** A field whose value is a CSS RGBA color: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#rgb()_and_rgba(). */
-  RGBA: any;
-  /** In the US, an ABA routing transit number (`ABA RTN`) is a nine-digit code to identify the financial institution. */
-  RoutingNumber: any;
-  /** The `SafeInt` scalar type represents non-fractional signed whole numeric values that are considered safe as defined by the ECMAScript specification. */
-  SafeInt: any;
-  /** A time string at UTC, such as 10:15:30Z, compliant with the `full-time` format outlined in section 5.6 of the RFC 3339profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
-  Time: any;
-  /** A field whose value exists in the standard IANA Time Zone Database: https://www.iana.org/time-zones */
-  TimeZone: any;
-  /** The javascript `Date` as integer. Type represents date and time as number of milliseconds from start of UNIX epoch. */
-  Timestamp: any;
-  /** A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt. */
-  URL: any;
-  /** A currency string, such as $21.25 */
-  USCurrency: any;
-  /** A field whose value is a generic Universally Unique Identifier: https://en.wikipedia.org/wiki/Universally_unique_identifier. */
-  UUID: any;
-  /** Floats that will have a value of 0 or more. */
-  UnsignedFloat: any;
-  /** Integers that will have a value of 0 or more. */
-  UnsignedInt: any;
-  /** A field whose value is a UTC Offset: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones */
-  UtcOffset: any;
-  /** Represents NULL values */
-  Void: any;
 };
 
 export type BookInput = {
@@ -176,10 +23,26 @@ export type BookInput = {
 
 export type BookUnionResult = Error | Status;
 
+export type CreateLocationInput = {
+  location: Scalars['String'];
+};
+
 export type CreateMaterialInput = {
+  author: Scalars['String'];
+  category: Scalars['String'];
   id_type: Scalars['String'];
   identifier: Scalars['String'];
+  location_id: Scalars['Int'];
+  picture?: InputMaybe<Scalars['String']>;
+  title: Scalars['String'];
   type: Scalars['String'];
+};
+
+export type CreateMessageInput = {
+  material_id: Scalars['Int'];
+  message: Scalars['String'];
+  person_id: Scalars['Int'];
+  title: Scalars['String'];
 };
 
 export type CreateNotificationInput = {
@@ -188,6 +51,7 @@ export type CreateNotificationInput = {
 };
 
 export type CreatePersonInput = {
+  location_id: Scalars['Int'];
   smg_id: Scalars['String'];
   type: Scalars['String'];
 };
@@ -198,9 +62,30 @@ export type CreateStatusInput = {
   status: Scalars['String'];
 };
 
+export type DonateBookInput = {
+  author: Scalars['String'];
+  category: Scalars['String'];
+  description?: InputMaybe<Scalars['String']>;
+  id_type: Scalars['String'];
+  identifier: Scalars['String'];
+  location_id: Scalars['Int'];
+  person_id: Scalars['Int'];
+  picture?: InputMaybe<Scalars['String']>;
+  title: Scalars['String'];
+  type: Scalars['String'];
+};
+
 export type Error = {
   __typename?: 'Error';
   message: Scalars['String'];
+};
+
+export type Location = {
+  __typename?: 'Location';
+  id: Scalars['ID'];
+  location: Scalars['String'];
+  materials?: Maybe<Array<Maybe<Material>>>;
+  persons?: Maybe<Array<Maybe<Person>>>;
 };
 
 export type Material = {
@@ -211,6 +96,9 @@ export type Material = {
   id: Scalars['ID'];
   id_type: Scalars['String'];
   identifier: Scalars['String'];
+  location: Location;
+  location_id: Scalars['Int'];
+  messages: Array<Maybe<Message>>;
   notifications: Array<Maybe<Notification>>;
   picture?: Maybe<Scalars['String']>;
   statuses: Array<Maybe<Status>>;
@@ -219,15 +107,36 @@ export type Material = {
   updated_at: Scalars['DateTime'];
 };
 
+export type Message = {
+  __typename?: 'Message';
+  created_at: Scalars['DateTime'];
+  id: Scalars['ID'];
+  material: Material;
+  material_id: Scalars['Int'];
+  message: Scalars['String'];
+  person: Person;
+  person_id: Scalars['Int'];
+  title: Scalars['String'];
+};
+
+export type MessageUnionResult = Error | Message;
+
 export type Mutation = {
   __typename?: 'Mutation';
   claimBook: BookUnionResult;
+  createLocation?: Maybe<Location>;
   createMaterial: Material;
+  createMessageForManager: MessageUnionResult;
   createNotification?: Maybe<Notification>;
   createPerson: Person;
   createStatus: Status;
+  donateBook: Material;
+  prolongClaimPeriod: BookUnionResult;
+  removeLocation?: Maybe<Location>;
+  removeMaterial: Material;
   removeNotification?: Maybe<Notification>;
   returnItem: BookUnionResult;
+  updateMaterial: Material;
 };
 
 
@@ -236,8 +145,18 @@ export type MutationClaimBookArgs = {
 };
 
 
+export type MutationCreateLocationArgs = {
+  input: CreateLocationInput;
+};
+
+
 export type MutationCreateMaterialArgs = {
   input: CreateMaterialInput;
+};
+
+
+export type MutationCreateMessageForManagerArgs = {
+  input: CreateMessageInput;
 };
 
 
@@ -256,6 +175,26 @@ export type MutationCreateStatusArgs = {
 };
 
 
+export type MutationDonateBookArgs = {
+  input: DonateBookInput;
+};
+
+
+export type MutationProlongClaimPeriodArgs = {
+  input?: InputMaybe<ProlongTimeInput>;
+};
+
+
+export type MutationRemoveLocationArgs = {
+  input: RemoveLocationInput;
+};
+
+
+export type MutationRemoveMaterialArgs = {
+  input: RemoveMaterialInput;
+};
+
+
 export type MutationRemoveNotificationArgs = {
   input: RemoveNotificationInput;
 };
@@ -263,6 +202,11 @@ export type MutationRemoveNotificationArgs = {
 
 export type MutationReturnItemArgs = {
   input?: InputMaybe<BookInput>;
+};
+
+
+export type MutationUpdateMaterialArgs = {
+  input: UpdateMaterialInput;
 };
 
 export type Notification = {
@@ -279,14 +223,23 @@ export type Person = {
   __typename?: 'Person';
   created_at: Scalars['DateTime'];
   id: Scalars['ID'];
+  location: Location;
+  location_id: Scalars['Int'];
+  messages: Array<Maybe<Message>>;
   notifications?: Maybe<Array<Maybe<Notification>>>;
   smg_id: Scalars['String'];
   statuses?: Maybe<Array<Maybe<Status>>>;
   type: Scalars['String'];
 };
 
+export type ProlongTimeInput = {
+  material_id: Scalars['Int'];
+  person_id: Scalars['Int'];
+};
+
 export type Query = {
   __typename?: 'Query';
+  getAllLocations: Array<Maybe<Location>>;
   getAllMaterials: Array<Maybe<Material>>;
   getAllPersons: Array<Maybe<Person>>;
   getAllTakenItems: Array<Maybe<Status>>;
@@ -334,6 +287,16 @@ export type QueryGetStatusesByPersonArgs = {
   person_id: Scalars['ID'];
 };
 
+export type RemoveLocationInput = {
+  location_id: Scalars['Int'];
+};
+
+export type RemoveMaterialInput = {
+  identifier: Scalars['String'];
+  location_id: Scalars['Int'];
+  type: Scalars['String'];
+};
+
 export type RemoveNotificationInput = {
   material_id: Scalars['Int'];
   person_id: Scalars['Int'];
@@ -350,6 +313,18 @@ export type Status = {
   status: Scalars['String'];
 };
 
+export type UpdateMaterialInput = {
+  author?: InputMaybe<Scalars['String']>;
+  category?: InputMaybe<Scalars['String']>;
+  id_type?: InputMaybe<Scalars['String']>;
+  identifier?: InputMaybe<Scalars['String']>;
+  location_id?: InputMaybe<Scalars['Int']>;
+  picture?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Scalars['String']>;
+  updated_at: Scalars['DateTime'];
+};
+
 export type ClaimBookMutationVariables = Exact<{
   identifier: Scalars['String'];
   person_id: Scalars['Int'];
@@ -358,12 +333,55 @@ export type ClaimBookMutationVariables = Exact<{
 
 export type ClaimBookMutation = { __typename?: 'Mutation', claimBook: { __typename?: 'Error', message: string } | { __typename?: 'Status', created_at: any, status: string } };
 
+export type CreateMessageForManagerMutationVariables = Exact<{
+  person_id: Scalars['Int'];
+  material_id: Scalars['Int'];
+  title: Scalars['String'];
+  message: Scalars['String'];
+}>;
+
+
+export type CreateMessageForManagerMutation = { __typename?: 'Mutation', createMessageForManager: { __typename?: 'Error', message: string } | { __typename?: 'Message', message: string, title: string } };
+
 export type CreateNotificationMutationVariables = Exact<{
   input: CreateNotificationInput;
 }>;
 
 
 export type CreateNotificationMutation = { __typename?: 'Mutation', createNotification?: { __typename?: 'Notification', id: string } | null };
+
+export type DonateBookMutationVariables = Exact<{
+  person_id: Scalars['Int'];
+  location_id: Scalars['Int'];
+  identifier: Scalars['String'];
+  id_type: Scalars['String'];
+  type: Scalars['String'];
+  title: Scalars['String'];
+  author: Scalars['String'];
+  category: Scalars['String'];
+  description?: InputMaybe<Scalars['String']>;
+  picture?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type DonateBookMutation = { __typename?: 'Mutation', donateBook: { __typename?: 'Material', title: string, picture?: string | null, identifier: string } };
+
+export type ProlongTimeMutationVariables = Exact<{
+  person_id: Scalars['Int'];
+  material_id: Scalars['Int'];
+}>;
+
+
+export type ProlongTimeMutation = { __typename?: 'Mutation', prolongClaimPeriod: { __typename?: 'Error', message: string } | { __typename?: 'Status', created_at: any, status: string } };
+
+export type RemoveMaterialMutationVariables = Exact<{
+  identifier: Scalars['String'];
+  type: Scalars['String'];
+  location_id: Scalars['Int'];
+}>;
+
+
+export type RemoveMaterialMutation = { __typename?: 'Mutation', removeMaterial: { __typename?: 'Material', identifier: string, id_type: string, type: string, location_id: number, title: string, author: string, category: string } };
 
 export type RemoveNotificationMutationVariables = Exact<{
   input: RemoveNotificationInput;
@@ -380,6 +398,30 @@ export type ReturnBookMutationVariables = Exact<{
 
 export type ReturnBookMutation = { __typename?: 'Mutation', returnItem: { __typename?: 'Error', message: string } | { __typename?: 'Status', created_at: any, status: string } };
 
+export type UpdateMaterialMutationVariables = Exact<{
+  identifier: Scalars['String'];
+  id_type?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Scalars['String']>;
+  location_id?: InputMaybe<Scalars['Int']>;
+  title?: InputMaybe<Scalars['String']>;
+  author?: InputMaybe<Scalars['String']>;
+  category?: InputMaybe<Scalars['String']>;
+  updated_at: Scalars['DateTime'];
+}>;
+
+
+export type UpdateMaterialMutation = { __typename?: 'Mutation', updateMaterial: { __typename?: 'Material', identifier: string, id_type: string, type: string, location_id: number, title: string, author: string, category: string, updated_at: any } };
+
+export type GetAllLocationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllLocationsQuery = { __typename?: 'Query', getAllLocations: Array<{ __typename?: 'Location', id: string, location: string } | null> };
+
+export type GetAllMaterialsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllMaterialsQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', author: string, category: string, created_at: any, id: string, id_type: string, identifier: string, picture?: string | null, title: string, type: string, updated_at: any, notifications: Array<{ __typename?: 'Notification', material_id: number, person_id: number } | null>, statuses: Array<{ __typename?: 'Status', status: string, person_id: number } | null> } | null> };
+
 export type GetAllTakenItemsQueryVariables = Exact<{
   person_id: Scalars['Int'];
 }>;
@@ -392,7 +434,7 @@ export type GetMaterialByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetMaterialByIdQuery = { __typename?: 'Query', getMaterialById: { __typename?: 'Material', identifier: string, picture?: string | null, title: string, author: string, category: string, created_at: any, statuses: Array<{ __typename?: 'Status', id: string, person_id: number, status: string, created_at: any } | null> } };
+export type GetMaterialByIdQuery = { __typename?: 'Query', getMaterialById: { __typename?: 'Material', id: string, identifier: string, picture?: string | null, title: string, author: string, category: string, created_at: any, updated_at: any, location_id: number, type: string, statuses: Array<{ __typename?: 'Status', id: string, person_id: number, status: string, created_at: any } | null> } };
 
 
 export const ClaimBookDocument = gql`
@@ -435,6 +477,50 @@ export function useClaimBookMutation(baseOptions?: Apollo.MutationHookOptions<Cl
 export type ClaimBookMutationHookResult = ReturnType<typeof useClaimBookMutation>;
 export type ClaimBookMutationResult = Apollo.MutationResult<ClaimBookMutation>;
 export type ClaimBookMutationOptions = Apollo.BaseMutationOptions<ClaimBookMutation, ClaimBookMutationVariables>;
+export const CreateMessageForManagerDocument = gql`
+    mutation CreateMessageForManager($person_id: Int!, $material_id: Int!, $title: String!, $message: String!) {
+  createMessageForManager(
+    input: {person_id: $person_id, material_id: $material_id, title: $title, message: $message}
+  ) {
+    ... on Message {
+      message
+      title
+    }
+    ... on Error {
+      message
+    }
+  }
+}
+    `;
+export type CreateMessageForManagerMutationFn = Apollo.MutationFunction<CreateMessageForManagerMutation, CreateMessageForManagerMutationVariables>;
+
+/**
+ * __useCreateMessageForManagerMutation__
+ *
+ * To run a mutation, you first call `useCreateMessageForManagerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateMessageForManagerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createMessageForManagerMutation, { data, loading, error }] = useCreateMessageForManagerMutation({
+ *   variables: {
+ *      person_id: // value for 'person_id'
+ *      material_id: // value for 'material_id'
+ *      title: // value for 'title'
+ *      message: // value for 'message'
+ *   },
+ * });
+ */
+export function useCreateMessageForManagerMutation(baseOptions?: Apollo.MutationHookOptions<CreateMessageForManagerMutation, CreateMessageForManagerMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateMessageForManagerMutation, CreateMessageForManagerMutationVariables>(CreateMessageForManagerDocument, options);
+      }
+export type CreateMessageForManagerMutationHookResult = ReturnType<typeof useCreateMessageForManagerMutation>;
+export type CreateMessageForManagerMutationResult = Apollo.MutationResult<CreateMessageForManagerMutation>;
+export type CreateMessageForManagerMutationOptions = Apollo.BaseMutationOptions<CreateMessageForManagerMutation, CreateMessageForManagerMutationVariables>;
 export const CreateNotificationDocument = gql`
     mutation CreateNotification($input: CreateNotificationInput!) {
   createNotification(input: $input) {
@@ -468,6 +554,135 @@ export function useCreateNotificationMutation(baseOptions?: Apollo.MutationHookO
 export type CreateNotificationMutationHookResult = ReturnType<typeof useCreateNotificationMutation>;
 export type CreateNotificationMutationResult = Apollo.MutationResult<CreateNotificationMutation>;
 export type CreateNotificationMutationOptions = Apollo.BaseMutationOptions<CreateNotificationMutation, CreateNotificationMutationVariables>;
+export const DonateBookDocument = gql`
+    mutation DonateBook($person_id: Int!, $location_id: Int!, $identifier: String!, $id_type: String!, $type: String!, $title: String!, $author: String!, $category: String!, $description: String, $picture: String) {
+  donateBook(
+    input: {person_id: $person_id, location_id: $location_id, identifier: $identifier, type: $type, author: $author, category: $category, description: $description, id_type: $id_type, picture: $picture, title: $title}
+  ) {
+    title
+    picture
+    identifier
+  }
+}
+    `;
+export type DonateBookMutationFn = Apollo.MutationFunction<DonateBookMutation, DonateBookMutationVariables>;
+
+/**
+ * __useDonateBookMutation__
+ *
+ * To run a mutation, you first call `useDonateBookMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDonateBookMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [donateBookMutation, { data, loading, error }] = useDonateBookMutation({
+ *   variables: {
+ *      person_id: // value for 'person_id'
+ *      location_id: // value for 'location_id'
+ *      identifier: // value for 'identifier'
+ *      id_type: // value for 'id_type'
+ *      type: // value for 'type'
+ *      title: // value for 'title'
+ *      author: // value for 'author'
+ *      category: // value for 'category'
+ *      description: // value for 'description'
+ *      picture: // value for 'picture'
+ *   },
+ * });
+ */
+export function useDonateBookMutation(baseOptions?: Apollo.MutationHookOptions<DonateBookMutation, DonateBookMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DonateBookMutation, DonateBookMutationVariables>(DonateBookDocument, options);
+      }
+export type DonateBookMutationHookResult = ReturnType<typeof useDonateBookMutation>;
+export type DonateBookMutationResult = Apollo.MutationResult<DonateBookMutation>;
+export type DonateBookMutationOptions = Apollo.BaseMutationOptions<DonateBookMutation, DonateBookMutationVariables>;
+export const ProlongTimeDocument = gql`
+    mutation ProlongTime($person_id: Int!, $material_id: Int!) {
+  prolongClaimPeriod(input: {material_id: $material_id, person_id: $person_id}) {
+    ... on Status {
+      created_at
+      status
+    }
+    ... on Error {
+      message
+    }
+  }
+}
+    `;
+export type ProlongTimeMutationFn = Apollo.MutationFunction<ProlongTimeMutation, ProlongTimeMutationVariables>;
+
+/**
+ * __useProlongTimeMutation__
+ *
+ * To run a mutation, you first call `useProlongTimeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useProlongTimeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [prolongTimeMutation, { data, loading, error }] = useProlongTimeMutation({
+ *   variables: {
+ *      person_id: // value for 'person_id'
+ *      material_id: // value for 'material_id'
+ *   },
+ * });
+ */
+export function useProlongTimeMutation(baseOptions?: Apollo.MutationHookOptions<ProlongTimeMutation, ProlongTimeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ProlongTimeMutation, ProlongTimeMutationVariables>(ProlongTimeDocument, options);
+      }
+export type ProlongTimeMutationHookResult = ReturnType<typeof useProlongTimeMutation>;
+export type ProlongTimeMutationResult = Apollo.MutationResult<ProlongTimeMutation>;
+export type ProlongTimeMutationOptions = Apollo.BaseMutationOptions<ProlongTimeMutation, ProlongTimeMutationVariables>;
+export const RemoveMaterialDocument = gql`
+    mutation RemoveMaterial($identifier: String!, $type: String!, $location_id: Int!) {
+  removeMaterial(
+    input: {identifier: $identifier, type: $type, location_id: $location_id}
+  ) {
+    identifier
+    id_type
+    type
+    location_id
+    title
+    author
+    category
+  }
+}
+    `;
+export type RemoveMaterialMutationFn = Apollo.MutationFunction<RemoveMaterialMutation, RemoveMaterialMutationVariables>;
+
+/**
+ * __useRemoveMaterialMutation__
+ *
+ * To run a mutation, you first call `useRemoveMaterialMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveMaterialMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeMaterialMutation, { data, loading, error }] = useRemoveMaterialMutation({
+ *   variables: {
+ *      identifier: // value for 'identifier'
+ *      type: // value for 'type'
+ *      location_id: // value for 'location_id'
+ *   },
+ * });
+ */
+export function useRemoveMaterialMutation(baseOptions?: Apollo.MutationHookOptions<RemoveMaterialMutation, RemoveMaterialMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveMaterialMutation, RemoveMaterialMutationVariables>(RemoveMaterialDocument, options);
+      }
+export type RemoveMaterialMutationHookResult = ReturnType<typeof useRemoveMaterialMutation>;
+export type RemoveMaterialMutationResult = Apollo.MutationResult<RemoveMaterialMutation>;
+export type RemoveMaterialMutationOptions = Apollo.BaseMutationOptions<RemoveMaterialMutation, RemoveMaterialMutationVariables>;
 export const RemoveNotificationDocument = gql`
     mutation RemoveNotification($input: RemoveNotificationInput!) {
   removeNotification(input: $input) {
@@ -541,6 +756,141 @@ export function useReturnBookMutation(baseOptions?: Apollo.MutationHookOptions<R
 export type ReturnBookMutationHookResult = ReturnType<typeof useReturnBookMutation>;
 export type ReturnBookMutationResult = Apollo.MutationResult<ReturnBookMutation>;
 export type ReturnBookMutationOptions = Apollo.BaseMutationOptions<ReturnBookMutation, ReturnBookMutationVariables>;
+export const UpdateMaterialDocument = gql`
+    mutation UpdateMaterial($identifier: String!, $id_type: String, $type: String, $location_id: Int, $title: String, $author: String, $category: String, $updated_at: DateTime!) {
+  updateMaterial(
+    input: {identifier: $identifier, id_type: $id_type, type: $type, location_id: $location_id, title: $title, author: $author, category: $category, updated_at: $updated_at}
+  ) {
+    identifier
+    id_type
+    type
+    location_id
+    title
+    author
+    category
+    updated_at
+  }
+}
+    `;
+export type UpdateMaterialMutationFn = Apollo.MutationFunction<UpdateMaterialMutation, UpdateMaterialMutationVariables>;
+
+/**
+ * __useUpdateMaterialMutation__
+ *
+ * To run a mutation, you first call `useUpdateMaterialMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateMaterialMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateMaterialMutation, { data, loading, error }] = useUpdateMaterialMutation({
+ *   variables: {
+ *      identifier: // value for 'identifier'
+ *      id_type: // value for 'id_type'
+ *      type: // value for 'type'
+ *      location_id: // value for 'location_id'
+ *      title: // value for 'title'
+ *      author: // value for 'author'
+ *      category: // value for 'category'
+ *      updated_at: // value for 'updated_at'
+ *   },
+ * });
+ */
+export function useUpdateMaterialMutation(baseOptions?: Apollo.MutationHookOptions<UpdateMaterialMutation, UpdateMaterialMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateMaterialMutation, UpdateMaterialMutationVariables>(UpdateMaterialDocument, options);
+      }
+export type UpdateMaterialMutationHookResult = ReturnType<typeof useUpdateMaterialMutation>;
+export type UpdateMaterialMutationResult = Apollo.MutationResult<UpdateMaterialMutation>;
+export type UpdateMaterialMutationOptions = Apollo.BaseMutationOptions<UpdateMaterialMutation, UpdateMaterialMutationVariables>;
+export const GetAllLocationsDocument = gql`
+    query GetAllLocations {
+  getAllLocations {
+    id
+    location
+  }
+}
+    `;
+
+/**
+ * __useGetAllLocationsQuery__
+ *
+ * To run a query within a React component, call `useGetAllLocationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllLocationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllLocationsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllLocationsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllLocationsQuery, GetAllLocationsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllLocationsQuery, GetAllLocationsQueryVariables>(GetAllLocationsDocument, options);
+      }
+export function useGetAllLocationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllLocationsQuery, GetAllLocationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllLocationsQuery, GetAllLocationsQueryVariables>(GetAllLocationsDocument, options);
+        }
+export type GetAllLocationsQueryHookResult = ReturnType<typeof useGetAllLocationsQuery>;
+export type GetAllLocationsLazyQueryHookResult = ReturnType<typeof useGetAllLocationsLazyQuery>;
+export type GetAllLocationsQueryResult = Apollo.QueryResult<GetAllLocationsQuery, GetAllLocationsQueryVariables>;
+export const GetAllMaterialsDocument = gql`
+    query GetAllMaterials {
+  getAllMaterials {
+    author
+    category
+    created_at
+    id
+    id_type
+    identifier
+    notifications {
+      material_id
+      person_id
+    }
+    picture
+    statuses {
+      status
+      person_id
+    }
+    title
+    type
+    updated_at
+  }
+}
+    `;
+
+/**
+ * __useGetAllMaterialsQuery__
+ *
+ * To run a query within a React component, call `useGetAllMaterialsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllMaterialsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllMaterialsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllMaterialsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>(GetAllMaterialsDocument, options);
+      }
+export function useGetAllMaterialsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>(GetAllMaterialsDocument, options);
+        }
+export type GetAllMaterialsQueryHookResult = ReturnType<typeof useGetAllMaterialsQuery>;
+export type GetAllMaterialsLazyQueryHookResult = ReturnType<typeof useGetAllMaterialsLazyQuery>;
+export type GetAllMaterialsQueryResult = Apollo.QueryResult<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>;
 export const GetAllTakenItemsDocument = gql`
     query GetAllTakenItems($person_id: Int!) {
   getAllTakenItems(person_id: $person_id) {
@@ -588,12 +938,16 @@ export type GetAllTakenItemsQueryResult = Apollo.QueryResult<GetAllTakenItemsQue
 export const GetMaterialByIdDocument = gql`
     query GetMaterialById($id: ID!) {
   getMaterialById(id: $id) {
+    id
     identifier
     picture
     title
     author
     category
     created_at
+    updated_at
+    location_id
+    type
     statuses {
       id
       person_id

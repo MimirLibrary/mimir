@@ -67,9 +67,18 @@ const WrapperButtons = styled.div`
 interface IPropsErrorMessage {
   setActive: React.Dispatch<React.SetStateAction<boolean>>;
   message: string | null;
+  title: string;
+  onClick?: () => void;
+  titleCancel: string;
 }
 
-const ErrorMessage: FC<IPropsErrorMessage> = ({ setActive, message }) => {
+const ErrorMessage: FC<IPropsErrorMessage> = ({
+  setActive,
+  message,
+  title,
+  onClick,
+  titleCancel,
+}) => {
   const closeModal = () => {
     setActive(false);
   };
@@ -78,7 +87,7 @@ const ErrorMessage: FC<IPropsErrorMessage> = ({ setActive, message }) => {
     <Wrapper>
       <WrapperErrorClaim>
         <WrapperInfo>
-          <TitleOfError>Something wents wrong with your claiming</TitleOfError>
+          <TitleOfError>{title}</TitleOfError>
           <Description>
             {message || 'Take another book or try contacting the manager'}
           </Description>
@@ -88,7 +97,11 @@ const ErrorMessage: FC<IPropsErrorMessage> = ({ setActive, message }) => {
         </WrapperInfo>
         <WrapperButtons>
           <StyledButton value="Ok" onClick={closeModal} />
-          <StyledButton value="Ask a manager" transparent />
+          <StyledButton
+            value={titleCancel || 'Cancel'}
+            transparent
+            onClick={onClick}
+          />
         </WrapperButtons>
       </WrapperErrorClaim>
     </Wrapper>

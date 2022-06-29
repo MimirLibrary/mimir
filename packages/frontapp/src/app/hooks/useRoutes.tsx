@@ -5,12 +5,12 @@ import SearchPage from '../pages/SearchPage';
 import HistoryOfClaimPage from '../pages/HistoryOfClaimPage';
 import HistoryOfDonatePage from '../pages/HistoryOfDonatePage';
 import SettingsPage from '../pages/SettingsPage';
-import React from 'react';
 import { RoutesTypes } from '../../utils/routes';
 import Readers from '../pages/Readers';
 import BooksStuff from '../pages/BooksStuff';
 import DonatesFromUser from '../pages/DonatesFromUser';
 import CreateNewItem from '../pages/CreateNewItem';
+import DonateToLibrary from '../pages/DonateToLibrary';
 
 export const useRoutes = (role: string) => {
   if (role === RolesTypes.READER) {
@@ -19,6 +19,10 @@ export const useRoutes = (role: string) => {
         {}
         <Route path={RoutesTypes.HOME} element={<HomePage />} />
         <Route path={RoutesTypes.SEARCH} element={<SearchPage />} />
+        <Route
+          path={RoutesTypes.DONATE_TO_LIBRARY}
+          element={<DonateToLibrary />}
+        />
         <Route
           path={RoutesTypes.HISTORY_OF_CLAIM}
           element={<HistoryOfClaimPage />}
@@ -36,6 +40,7 @@ export const useRoutes = (role: string) => {
         <Route path={RoutesTypes.HOME} element={<HomePage />} />
         <Route path={RoutesTypes.READERS} element={<Readers />} />
         <Route path={RoutesTypes.BOOKS_STUFF} element={<BooksStuff />} />
+        <Route path={RoutesTypes.SETTINGS} element={<SettingsPage />} />
         <Route
           path={RoutesTypes.DONATES_FROM_USER}
           element={<DonatesFromUser />}

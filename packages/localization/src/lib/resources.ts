@@ -14,6 +14,7 @@ export const resources = {
       NavbarReader: {
         Home: 'Home',
         Search: 'Search',
+        'Donate to the library': 'Donate to the library',
         'History of claim': 'History of claim',
         'History of donate': 'History of donate',
         Settings: 'Settings',
@@ -21,12 +22,21 @@ export const resources = {
       NavbarManager: {
         Home: 'Home',
         Readers: 'Readers',
-        'Books/stuff': 'Books/stuff',
+        Library: 'Library',
         'Donates from user': 'Donates from user',
-        'Create new item': 'Create new item',
+        'Add item to library': 'Add item to library',
+        Settings: 'Settings',
       },
       Search: {
         Placeholder: 'Search by book or author',
+      },
+      Start: {
+        ChooseLocation: 'Your current location',
+      },
+      Settings: {
+        Location: 'Location',
+        Language: 'Language',
+        Notification: 'Notification',
       },
     },
   },
@@ -45,6 +55,7 @@ export const resources = {
       NavbarReader: {
         Home: 'Домой',
         Search: 'Поиск',
+        'Donate to the library': 'Пожертвовать библиотеке',
         'History of claim': 'История клеймов',
         'History of donate': 'История донатов',
         Settings: 'Настройки',
@@ -58,6 +69,14 @@ export const resources = {
       },
       Search: {
         Placeholder: 'Поиск по книге или автору',
+      },
+      Start: {
+        ChooseLocation: 'Ваше текущее местоположение',
+      },
+      Settings: {
+        Location: 'Местоположение',
+        Language: 'Язык',
+        Notification: 'Уведомления',
       },
     },
   },

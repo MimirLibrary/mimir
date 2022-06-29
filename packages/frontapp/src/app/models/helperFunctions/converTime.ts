@@ -1,7 +1,8 @@
+export const periodOfKeeping = 30;
+
 export const getDates = (date: Date) => {
   const currentDate = new Date();
   const startDate = new Date(date);
-  const periodOfKeeping = 30;
   const returnDate = new Date(
     startDate.setDate(startDate.getDate() + periodOfKeeping)
   );
@@ -18,6 +19,7 @@ export const isOverdue = (date: Date) =>
 export const getStatus = (status: string | undefined, date: any) => {
   if (!status) return null;
   if (status === 'Free') return 'Free';
+  if (status === 'Prolong') return 'Prolong';
   if (isOverdue(date)) return 'Busy';
   return 'Overdue';
 };

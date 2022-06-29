@@ -1,30 +1,37 @@
 import styled from '@emotion/styled';
 import bookImage from '../../../assets/MOC-data/BookImage.png';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { ReactComponent as Claim } from '../../../assets/claim.svg';
+import { ReactComponent as Edit } from '../../../assets/Edit.svg';
+import { ReactComponent as Remove } from '../../../assets/Remove.svg';
 import Button from '../Button';
 import ClaimOperation from '../ClaimOperation';
 import Modal from '../Modal';
-import { getDates, getStatus } from '../../models/helperFunctions/converTime';
+import {
+  getDates,
+  getStatus,
+  periodOfKeeping,
+} from '../../models/helperFunctions/converTime';
 import { StyledBookStatus } from '../../globalUI/Status';
 import SuccessMessage from '../SuccesMessage';
 import {
   GetAllTakenItemsDocument,
   GetMaterialByIdDocument,
   useClaimBookMutation,
+  useProlongTimeMutation,
   useReturnBookMutation,
-  useGetAllTakenItemsQuery,
-  useCreateNotificationMutation,
-  useRemoveNotificationMutation,
+  useRemoveMaterialMutation,
+  useUpdateMaterialMutation,
+  useGetAllMaterialsQuery,
 } from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import ErrorMessage from '../ErrorMessge';
-import { useParams } from 'react-router';
-
+import { RolesTypes } from '../../../utils/rolesTypes';
+import AskManagerForm from '../AskManagerForm';
+import { WrapperInput } from '../Search';
+import { useNavigate } from 'react-router-dom';
 const BookHolder = styled.div`
-  max-width: 62.5rem;
-  height: 41rem;
   top: 11.5rem;
   left: 24.5rem;
   border-radius: ${dimensions.xs_1};
@@ -37,6 +44,7 @@ const BookImage = styled.img`
   display: inline-block;
   width: 12rem;
   height: 19.5rem;
+  border-radius: 10px;
   @media (max-width: ${dimensions.phone_width}) {
     width: 5rem;
     height: 8rem;
@@ -75,6 +83,7 @@ const TopicDescription = styled.p`
   font-weight: 300;
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
+  color: ${colors.main_black};
 `;
 
 const LongDescription = styled.div`
@@ -85,7 +94,7 @@ const LongDescription = styled.div`
 const OpenLink = styled.a`
   cursor: pointer;
   margin: ${dimensions.xs_2} 0;
-  font-weight: 500;
+  font-weight: 300;
   color: ${colors.accent_color};
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
@@ -96,6 +105,7 @@ const Description = styled.p`
   font-weight: 300;
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
+  color: ${colors.main_black};
 `;
 
 const StyledStatus = styled(StyledBookStatus)`
@@ -121,15 +131,80 @@ const StyledButton = styled(Button)`
   margin-bottom: 8px;
 `;
 
+const StyledInput = styled.input`
+  width: 19rem;
+  border: none;
+  outline: none;
+  margin-left: ${dimensions.xs_2};
+  color: ${colors.main_black};
+  margin-right: 0.12rem;
+`;
+const StyledInputDeadline = styled.input`
+  border: 0.5px solid #bdbdbd;
+  border-radius: ${dimensions.xl_3};
+  padding: 10px 0;
+  width: 3.7rem;
+  outline: none;
+  padding-left: ${dimensions.xl};
+  background: ${colors.bg_secondary};
+  :hover {
+    border: 0.5px solid ${colors.accent_color};
+  }
+  :focus {
+    border: 0.5px solid ${colors.accent_color};
+  }
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    width: 100%;
+  }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    width: 70%;
+  }
+  ::-webkit-inner-spin-button,
+  ::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+`;
+const TitleHolder = styled.p`
+  font-weight: 700;
+  font-size: ${dimensions.base};
+  margin-bottom: ${dimensions.xs};
+`;
+
+const StyledSelect = styled.select`
+  border: none;
+  outline: none;
+  width: 95%;
+  color: ${colors.main_black};
+`;
+const StyledTextArea = styled.textarea`
+  border: none;
+  outline: none;
+  width: 98%;
+  height: 10rem;
+  font-weight: 300;
+  font-size: ${dimensions.base};
+  line-height: ${dimensions.xl};
+  color: ${colors.main_black};
+  resize: none;
+`;
+
 interface IBookInfoProps {
+  person_id: number | undefined;
   src: string | null | undefined;
   title: string | undefined;
   description: string | undefined;
   status: string | undefined;
   author: string | undefined;
-  category: string | string[] | undefined;
+  category: string | undefined;
   identifier: string;
+  material_id: string;
   created_at: any;
+  updated_at: any;
+  type: string;
+  location_id: number;
 }
 
 const BookInfo: FC<IBookInfoProps> = ({
@@ -141,43 +216,99 @@ const BookInfo: FC<IBookInfoProps> = ({
   category,
   identifier,
   created_at,
+  updated_at,
+  material_id,
+  person_id,
+  type,
+  location_id,
 }) => {
-  const { id } = useAppSelector((state) => state.user);
-  const { item_id } = useParams();
+  const { id, userRole } = useAppSelector((state) => state.user);
+  const { data: allMaterials } = useGetAllMaterialsQuery();
+  const navigate = useNavigate();
   const [statusText, setStatusText] = useState<string>('');
   const [isShowClaimModal, setIsShowClaimModal] = useState<boolean>(false);
+  const [isShowAskManger, setIsShowAskManager] = useState<boolean>(false);
   const [isShowSuccessClaim, setIsShowSuccessClaim] = useState<boolean>(false);
-  const [isShowErrorMessage, setIsShowErrorMessage] = useState<boolean>(false);
-  const [isShowSuccessReturn, setIsSuccessReturn] = useState<boolean>(false);
-  const [isMaterialTakenByCurrentUser, setIsMaterialTakenByCurrentUser] =
+  const [isShowErrorMessageOfClaiming, setIsShowErrorMessageOfClaiming] =
     useState<boolean>(false);
-  const [
-    isNotificationEnabledByCurrentUser,
-    setIsNotificationEnabledByCurrentUser,
-  ] = useState<boolean>(false);
+  const [isShowSuccessReturn, setIsSuccessReturn] = useState<boolean>(false);
+  const [isShowSuccessExtend, setIsSuccessExtend] = useState<boolean>(false);
+  const [isShowErrorMessageOfExtending, setIsShowErrorMessageOfExtending] =
+    useState<boolean>(false);
+  const [isShowWindowReportedToManager, setIsShowWindowReportedToManager] =
+    useState<boolean>(false);
   const [valueIsISBN, setValueIsISBN] = useState<string>('');
+  const [editing, setEditing] = useState<boolean>(false);
+  const [newTitle, setNewTitle] = useState(title);
+  const [newAuthor, setNewAuthor] = useState(author);
+  const [newCategory, setNewCategory] = useState(category);
+  const [newDescription, setNewDescription] = useState(
+    description
+      ? description
+      : ' Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi impedit aliquid alias consequuntur! Totam sequi expedita sunt dolor obcaecati, iusto ducimus? Beatae ea, commodi ab repellat, corporis atque quasi, tempore sunt modi similique soluta nemo hic necessitatibus esse accusantium omnis neque rerum. Placeat tempore, fugiat unde consequuntur dolor tempora ducimus.'
+  );
+  const [newDeadline, setNewDeadline] = useState(periodOfKeeping);
+  const [deleteWarning, setDeleteWarning] = useState(false);
+  const [authorsDropDown, setAuthorsDropDown] = useState<
+    (string | undefined)[] | undefined
+  >();
+  const [categoriesDropDown, setCategoriesDropDown] = useState<
+    (string | undefined)[] | undefined
+  >();
+  const [isMaterialTakenByCurrentUser, setIsMaterialTakenByCurrentUser] =
+    useState(false);
+
+  useEffect(() => {
+    const authors = allMaterials?.getAllMaterials?.map((item) => {
+      return item?.author;
+    });
+    const categories = allMaterials?.getAllMaterials?.map((item) => {
+      return item?.category;
+    });
+    setAuthorsDropDown([...new Set(authors)]);
+    setCategoriesDropDown([...new Set(categories)]);
+  }, []);
+  const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewTitle(e.target.value);
+  };
+  const handleChangeDescription = (e: any) => {
+    setNewDescription(e.target.value);
+  };
+  const handleChangeDeadline = (e: any) => {
+    setNewDeadline(e.target.value);
+    e.target.value > 31 && setNewDeadline(31);
+    e.target.value <= 0 && setNewDeadline(1);
+  };
+
   const [claimBook, { data }] = useClaimBookMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
   const [returnBook, infoReturnBook] = useReturnBookMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
-  const {
-    data: allTakenItemsByCurrentUserData,
-    loading: allTakenItemsByCurrentUserLoading,
-  } = useGetAllTakenItemsQuery({
-    variables: {
-      person_id: id,
-    },
+  const [prolongTime, { data: infoOfProlong }] = useProlongTimeMutation({
+    refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
-  const [createNotification] = useCreateNotificationMutation();
-  const [removeNotification] = useRemoveNotificationMutation();
-
+  const [removeMaterial] = useRemoveMaterialMutation({
+    refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
+  });
+  const [updateMaterial] = useUpdateMaterialMutation({
+    refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
+  });
   const currentStatus = getStatus(status, created_at);
   const dateConditionOfClaiming =
     data?.claimBook.__typename === 'Status' ? data.claimBook.created_at : null;
+  const dateConditionOfExtending =
+    infoOfProlong?.prolongClaimPeriod.__typename === 'Status'
+      ? infoOfProlong?.prolongClaimPeriod.created_at
+      : null;
   const errorConditionOfClaiming =
     data?.claimBook.__typename === 'Error' ? data.claimBook.message : null;
+  const errorConditionOfExtending =
+    infoOfProlong?.prolongClaimPeriod.__typename === 'Error'
+      ? infoOfProlong?.prolongClaimPeriod.message
+      : null;
+
   const claim = async () => {
     await claimBook({
       variables: {
@@ -201,12 +332,70 @@ const BookInfo: FC<IBookInfoProps> = ({
     setIsSuccessReturn(true);
   };
 
+  const prolongPeriod = async () => {
+    await prolongTime({
+      variables: {
+        person_id: id,
+        material_id: Number(material_id),
+      },
+    });
+  };
+
+  const editInformation = async () => {
+    await updateMaterial({
+      variables: {
+        identifier: identifier,
+        type: type,
+        location_id: location_id,
+        title: newTitle,
+        author: newAuthor,
+        category: newCategory,
+        updated_at: getDates(updated_at).currentDate,
+      },
+    });
+    setEditing(false);
+  };
+
+  const deleteItem = async () => {
+    await removeMaterial({
+      variables: {
+        identifier: identifier,
+        type: type,
+        location_id: location_id,
+      },
+    });
+    navigate('/search');
+    window.location.reload();
+  };
+  const handleEditBtn = () => setEditing(true);
+  const handleDeleteBtn = () => setDeleteWarning(true);
+
+  const discardChanges = () => {
+    setNewTitle(title);
+    setNewAuthor(author);
+    setNewCategory(category);
+    setNewDescription(
+      description
+        ? description
+        : ' Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi impedit aliquid alias consequuntur! Totam sequi expedita sunt dolor obcaecati, iusto ducimus? Beatae ea, commodi ab repellat, corporis atque quasi, tempore sunt modi similique soluta nemo hic necessitatibus esse accusantium omnis neque rerum. Placeat tempore, fugiat unde consequuntur dolor tempora ducimus.'
+    );
+    setEditing(false);
+  };
+
+  useEffect(() => {
+    if (infoOfProlong?.prolongClaimPeriod.__typename === 'Status') {
+      setIsSuccessExtend(true);
+    } else if (infoOfProlong?.prolongClaimPeriod.__typename === 'Error') {
+      setIsShowErrorMessageOfExtending(true);
+    }
+  }, [infoOfProlong]);
+
   useEffect(() => {
     setIsShowClaimModal(false);
     if (data?.claimBook.__typename === 'Status') {
       setIsShowSuccessClaim(true);
     } else if (data?.claimBook.__typename === 'Error') {
-      setIsShowErrorMessage(true);
+      setIsShowErrorMessageOfClaiming(true);
     }
   }, [data]);
 
@@ -226,6 +415,17 @@ const BookInfo: FC<IBookInfoProps> = ({
         setStatusText(`Return till: ${day}.${month}`);
         break;
       }
+      case 'Prolong': {
+        const day = `${getDates(created_at).returnDate.getDate()}`.padStart(
+          2,
+          '0'
+        );
+        const month = `${
+          getDates(created_at).returnDate.getMonth() + 1
+        }`.padStart(2, '0');
+        setStatusText(`Return till: ${day}.${month}`);
+        break;
+      }
       case 'Overdue':
         setStatusText('Overdue');
         break;
@@ -235,45 +435,18 @@ const BookInfo: FC<IBookInfoProps> = ({
     }
   }, [currentStatus]);
 
-  useEffect(() => {
-    if (!allTakenItemsByCurrentUserLoading) {
-      setIsMaterialTakenByCurrentUser(
-        !!allTakenItemsByCurrentUserData?.getAllTakenItems.find(
-          (item) => item?.material.id === item_id
-        )
-      );
-    }
-  }, [allTakenItemsByCurrentUserLoading]);
+  const showAskManagerModal = () => {
+    setIsShowErrorMessageOfClaiming(false);
+    setIsShowAskManager(true);
+  };
 
-  const showClaimModal = () => {
+  const closeReportedManager = useCallback(() => {
+    setIsShowWindowReportedToManager(false);
+  }, []);
+
+  const showClaimModal = useCallback(() => {
     setIsShowClaimModal(true);
-  };
-
-  const handleCreateNotification = async () => {
-    await createNotification({
-      variables: {
-        input: {
-          material_id: parseInt(item_id!),
-          person_id: id,
-        },
-      },
-    });
-
-    setIsNotificationEnabledByCurrentUser(true);
-  };
-
-  const handleRemoveNotification = async () => {
-    await removeNotification({
-      variables: {
-        input: {
-          material_id: parseInt(item_id!),
-          person_id: id,
-        },
-      },
-    });
-
-    setIsNotificationEnabledByCurrentUser(false);
-  };
+  }, []);
 
   return (
     <>
@@ -282,59 +455,170 @@ const BookInfo: FC<IBookInfoProps> = ({
           <WrapperInfo>
             <BookImage src={src || bookImage} />
             <ShortDescription>
-              <TitleBook>{title || 'Book Title'}</TitleBook>
-              <Topic>Genre: </Topic>
-              <OpenLink>{category || 'Genres of book'}</OpenLink>
-              <Topic>Author: </Topic>
-              <TopicDescription>{author || 'Author Name'}</TopicDescription>
-              <StyledStatus status={currentStatus}>{statusText}</StyledStatus>
-            </ShortDescription>
-          </WrapperInfo>
-          <WrapperButtons>
-            {status === 'Free' && !allTakenItemsByCurrentUserLoading && (
-              <StyledButton
-                value="Claim a book"
-                svgComponent={<Claim />}
-                onClick={showClaimModal}
-              />
-            )}
-            {status !== 'Free' &&
-              isMaterialTakenByCurrentUser &&
-              !allTakenItemsByCurrentUserLoading && (
+              {editing ? (
                 <>
-                  <StyledButton value="Return a book" onClick={retrieveBook} />
-                  <StyledButton value="Extend claim period" transparent />
+                  <TitleHolder>Name </TitleHolder>
+                  <WrapperInput>
+                    <StyledInput
+                      type="text"
+                      value={newTitle}
+                      onChange={handleChangeTitle}
+                    />
+                  </WrapperInput>
+                </>
+              ) : (
+                <TitleBook>{title || 'Book Title'}</TitleBook>
+              )}
+              {!editing && <Topic>Genre: </Topic>}
+              {userRole === RolesTypes.READER ? (
+                <OpenLink>{category || 'Genres of book'}</OpenLink>
+              ) : editing ? (
+                <>
+                  <br />
+                  <TitleHolder>Genre </TitleHolder>
+                  <WrapperInput>
+                    <StyledSelect
+                      name="categories"
+                      onChange={(e) => {
+                        setNewCategory(e.target.value);
+                      }}
+                    >
+                      {categoriesDropDown?.map(
+                        (category: string | undefined) => (
+                          <option value={category}>{category}</option>
+                        )
+                      )}
+                    </StyledSelect>
+                  </WrapperInput>
+                </>
+              ) : (
+                <TopicDescription>
+                  {category || 'Genres of book'}
+                </TopicDescription>
+              )}
+              {editing ? (
+                <>
+                  <br />
+                  <TitleHolder>Author </TitleHolder>
+                  <WrapperInput>
+                    <StyledSelect
+                      name="authors"
+                      onChange={(e) => {
+                        setNewAuthor(e.target.value);
+                      }}
+                    >
+                      {authorsDropDown?.map((author: string | undefined) => (
+                        <option value={author}>{author}</option>
+                      ))}
+                    </StyledSelect>
+                  </WrapperInput>
+                </>
+              ) : (
+                <>
+                  <Topic>Author: </Topic>
+                  <TopicDescription>{author || 'Author Name'}</TopicDescription>
                 </>
               )}
-            {status === 'Busy' &&
-              !isMaterialTakenByCurrentUser &&
-              !allTakenItemsByCurrentUserLoading &&
-              !isNotificationEnabledByCurrentUser && (
-                <StyledButton
-                  value="Notify when available"
-                  onClick={handleCreateNotification}
-                />
+              {userRole === RolesTypes.READER ? (
+                <StyledStatus status={currentStatus}>{statusText}</StyledStatus>
+              ) : editing ? (
+                <>
+                  <br />
+                  <TitleHolder>Deadline </TitleHolder>
+                  <StyledInputDeadline
+                    value={newDeadline}
+                    type="number"
+                    onChange={handleChangeDeadline}
+                    min="1"
+                    max="31"
+                  />{' '}
+                  days
+                </>
+              ) : (
+                <>
+                  <Topic>Deadline: </Topic>
+                  <TopicDescription>{newDeadline + ' days'}</TopicDescription>
+                </>
               )}
-            {status === 'Busy' &&
-              !isMaterialTakenByCurrentUser &&
-              !allTakenItemsByCurrentUserLoading &&
-              isNotificationEnabledByCurrentUser && (
+            </ShortDescription>
+          </WrapperInfo>
+          {userRole === RolesTypes.READER ? (
+            <>
+              {person_id === id ? (
+                <WrapperButtons>
+                  {status !== 'Free' ? (
+                    <>
+                      <StyledButton
+                        value="Return a book"
+                        onClick={retrieveBook}
+                      />
+                      <StyledButton
+                        value="Extend claim period"
+                        transparent
+                        onClick={prolongPeriod}
+                      />
+                    </>
+                  ) : null}
+                </WrapperButtons>
+              ) : null}
+              {status === 'Free' ? (
                 <StyledButton
-                  value="Cancel"
-                  onClick={handleRemoveNotification}
-                  transparent
+                  value="Claim a book"
+                  svgComponent={<Claim />}
+                  onClick={showClaimModal}
                 />
-              )}
-          </WrapperButtons>
+              ) : null}
+            </>
+          ) : editing ? (
+            <WrapperButtons>
+              <StyledButton value="Save changes" onClick={editInformation} />
+              <StyledButton
+                value="Cancel changes"
+                transparent
+                onClick={discardChanges}
+              />
+            </WrapperButtons>
+          ) : (
+            <WrapperButtons>
+              <StyledButton
+                value="Edit information"
+                transparent
+                svgComponent={<Edit />}
+                onClick={handleEditBtn}
+              />
+              <StyledButton
+                value="Delete item"
+                transparent
+                secondary
+                svgComponent={<Remove />}
+                onClick={handleDeleteBtn}
+              />
+            </WrapperButtons>
+          )}
         </ShortDescriptionWrapper>
-        <LongDescription>
-          <Topic>Description: </Topic>
-          <Description>
-            {description ||
-              ' Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi impedit aliquid alias consequuntur! Totam sequi expedita sunt dolor obcaecati, iusto ducimus? Beatae ea, commodi ab repellat, corporis atque quasi, tempore sunt modi similique soluta nemo hic necessitatibus esse accusantium omnis neque rerum. Placeat tempore, fugiat unde consequuntur dolor tempora ducimus.'}
-          </Description>
-          <OpenLink>see full description</OpenLink>
-        </LongDescription>
+        {editing ? (
+          <>
+            <br />
+            <TitleHolder>Description: </TitleHolder>
+            <WrapperInput>
+              <StyledTextArea
+                value={newDescription}
+                onChange={handleChangeDescription}
+              />
+            </WrapperInput>
+          </>
+        ) : (
+          <LongDescription>
+            <Topic>Description: </Topic>
+            <Description>
+              {description ||
+                ' Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi impedit aliquid alias consequuntur! Totam sequi expedita sunt dolor obcaecati, iusto ducimus? Beatae ea, commodi ab repellat, corporis atque quasi, tempore sunt modi similique soluta nemo hic necessitatibus esse accusantium omnis neque rerum. Placeat tempore, fugiat unde consequuntur dolor tempora ducimus.'}
+            </Description>
+            {userRole === RolesTypes.READER ? (
+              <OpenLink>see full description</OpenLink>
+            ) : null}
+          </LongDescription>
+        )}
       </BookHolder>
       <Modal active={isShowClaimModal} setActive={setIsShowClaimModal}>
         <ClaimOperation
@@ -352,10 +636,16 @@ const BookInfo: FC<IBookInfoProps> = ({
           created_at={dateConditionOfClaiming}
         />
       </Modal>
-      <Modal active={isShowErrorMessage} setActive={setIsShowErrorMessage}>
+      <Modal
+        active={isShowErrorMessageOfClaiming}
+        setActive={setIsShowErrorMessageOfClaiming}
+      >
         <ErrorMessage
+          title="Something goes wrong with your claiming"
           message={errorConditionOfClaiming}
-          setActive={setIsShowErrorMessage}
+          titleCancel="Ask a manager"
+          setActive={setIsShowErrorMessageOfClaiming}
+          onClick={showAskManagerModal}
         />
       </Modal>
       <Modal active={isShowSuccessReturn} setActive={setIsSuccessReturn}>
@@ -363,6 +653,62 @@ const BookInfo: FC<IBookInfoProps> = ({
           setActive={setIsSuccessReturn}
           title="You have successfully return the book"
         />
+      </Modal>
+      <Modal active={isShowSuccessExtend} setActive={setIsSuccessExtend}>
+        <SuccessMessage
+          setActive={setIsSuccessExtend}
+          created_at={dateConditionOfExtending}
+          title="You have successfully extend claim period"
+          description="Enjoy reading and don't forget to return this by"
+        />
+      </Modal>
+      <Modal
+        active={isShowErrorMessageOfExtending}
+        setActive={setIsShowErrorMessageOfExtending}
+      >
+        <ErrorMessage
+          title="Something goes wrong with your extending"
+          message={errorConditionOfExtending}
+          setActive={setIsShowErrorMessageOfExtending}
+          titleCancel="Close"
+        />
+      </Modal>
+      <Modal active={isShowAskManger} setActive={setIsShowAskManager}>
+        <AskManagerForm
+          setActive={setIsShowAskManager}
+          setSuccessModal={setIsShowWindowReportedToManager}
+          material_id={material_id}
+        />
+      </Modal>
+      <Modal
+        active={isShowWindowReportedToManager}
+        setActive={setIsShowWindowReportedToManager}
+      >
+        <ErrorMessage
+          title="We reported the problem to the manager"
+          message="The problem will be solved soon"
+          setActive={setIsShowWindowReportedToManager}
+          titleCancel="Close"
+          onClick={closeReportedManager}
+        />
+      </Modal>
+      <Modal active={deleteWarning} setActive={setDeleteWarning}>
+        <TitleBook>Are you sure you want to delete this item?</TitleBook>
+        <WrapperInfo>
+          <StyledButton
+            value="Cancel"
+            transparent
+            onClick={() => setDeleteWarning(false)}
+          />
+          <hr />
+          <StyledButton
+            value="Delete item"
+            transparent
+            secondary
+            svgComponent={<Remove />}
+            onClick={deleteItem}
+          />
+        </WrapperInfo>
       </Modal>
     </>
   );

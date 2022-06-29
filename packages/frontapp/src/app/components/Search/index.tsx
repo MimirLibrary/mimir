@@ -5,7 +5,7 @@ import { ReactComponent as SearchIcon } from '../../../assets/Navbar/Search.svg'
 import Input from '../Input';
 import { t } from 'i18next';
 
-const InputSearch = styled(Input)`
+export const InputSearch = styled(Input)`
   width: 19rem;
   border: none;
   outline: none;
@@ -25,17 +25,16 @@ const InputSearch = styled(Input)`
   }
 `;
 
-const WrapperInput = styled.div`
+export const WrapperInput = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 21.5rem;
   width: 100% - 100px;
   border: 0.5px solid #bdbdbd;
   border-radius: ${dimensions.xl_3};
   padding: 10px 0;
   padding-left: ${dimensions.xs_1};
-  margin: 0 ${dimensions.xs_1};
+  margin-right: ${dimensions.xs_1};
   background: ${colors.bg_secondary};
 
   :hover {

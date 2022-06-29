@@ -3,20 +3,60 @@ type Material {
   identifier: String!
   id_type: String!
   type: String!
+  location_id: Int!
   created_at: DateTime!
   updated_at: DateTime!
   title: String!
   picture: String
   author: String!
   category: String!
+  location: Location!
   statuses: [Status]!
   notifications: [Notification]!
+  messages: [Message]!
 }
 
 input CreateMaterialInput {
   identifier: String!
   id_type: String!
+  location_id: Int!
   type: String!
+  title: String!
+  picture: String
+  author: String!
+  category: String!
+}
+
+input RemoveMaterialInput {
+  identifier: String!
+  location_id: Int!
+  type: String!
+}
+
+input UpdateMaterialInput {
+  identifier: String
+  id_type: String
+  location_id: Int
+  type: String
+  title: String
+  picture: String
+  author: String
+  category: String
+  updated_at: DateTime!
+
+}
+
+input DonateBookInput {
+  identifier: String!
+  id_type: String!
+  location_id: Int!
+  type: String!
+  title: String!
+  author: String!
+  category: String!
+  description: String
+  picture: String
+  person_id: Int!
 }
 
 extend type Query {
@@ -26,4 +66,7 @@ extend type Query {
 
 extend type Mutation {
   createMaterial(input: CreateMaterialInput!): Material!
+  removeMaterial(input: RemoveMaterialInput!): Material!
+  updateMaterial(input: UpdateMaterialInput!): Material!
+  donateBook(input: DonateBookInput!): Material!
 }
