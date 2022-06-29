@@ -57,6 +57,7 @@ const App: FC = () => {
                   path="category/:category"
                   element={<BooksByCategory />}
                 />
+                <Route path="/category" element={<BooksByCategory />} />
               </Routes>
             </WrapperRoutes>
           </WrapperPage>

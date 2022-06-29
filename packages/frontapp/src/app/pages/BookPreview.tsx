@@ -57,7 +57,7 @@ const BookPreview = () => {
   const lastStatusAnotherPerson = data?.getMaterialById.statuses.slice(-1)[0];
 
   const handleGoBack = () => {
-    navigate('/search');
+    navigate(-1);
   };
 
   if (loading) return <h1>Loading...</h1>;

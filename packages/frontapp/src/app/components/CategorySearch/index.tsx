@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { dimensions, colors } from '@mimir/ui-kit';
-import { AttributesList } from '../FilterAttributes';
+import { attributes } from '../FilterAttributes';
 import Button from '../Button';
+import { createSearchParams, useNavigate } from 'react-router-dom';
+
 const Filters = styled.div`
   font-weight: 700;
   font-size: ${dimensions.xl_2};
@@ -48,59 +50,116 @@ const StyledCheckBox = styled.input`
   width: ${dimensions.lg};
   height: ${dimensions.lg};
 `;
-
-export const checkedFilters: string[] = [];
-
+type paramsType = {
+  [key: string]: string[];
+};
+type subItemType = {
+  title: string;
+  id: number;
+  checked: boolean;
+};
+type itemsType = {
+  title: string;
+  inputType: string;
+  id: number;
+  subAttributes: subItemType[];
+};
 const CategorySearch = ({ setActive }: any) => {
-  const handleClick = (filters: string[]) => {
-    checkedFilters.push(...filters);
+  const [applyFilters, setApplyFilters] = useState(false);
+  const navigate = useNavigate();
+  const params: paramsType = {
+    availability: [],
+    items: [],
+    categories: [],
+    authors: [],
+    sortby: [],
   };
-  const [filters, setFilters] = React.useState<string[]>([]);
+
+  const handleResetClick = () => {
+    attributes?.map((item: itemsType) =>
+      item?.subAttributes.forEach(
+        (subItem: subItemType) => (subItem.checked = false)
+      )
+    );
+
+    setActive(false);
+    navigate('/search');
+  };
+  const radioBtnHandler = (
+    attributes: subItemType[],
+    type: string,
+    value: string
+  ) => {
+    if (type === 'radio') {
+      attributes[0].title === value
+        ? (attributes[1].checked = false)
+        : (attributes[0].checked = false);
+    }
+  };
+  const checkBoxHandler = (attribute: subItemType) =>
+    (attribute.checked = !attribute.checked);
+
+  useEffect(() => {
+    attributes?.map((item: itemsType) =>
+      item?.subAttributes.map(
+        (subItem: subItemType) =>
+          subItem.checked &&
+          params[item.title.toLowerCase()].push(subItem.title)
+      )
+    );
+  });
+  useEffect(() => {
+    if (applyFilters) {
+      navigate({
+        pathname: '/category',
+        search: `?${createSearchParams(params)}`,
+      });
+      setActive(false);
+    }
+    setApplyFilters(false);
+  }, [applyFilters]);
+
   return (
-    <>
+    <form>
       <Filters>Filters</Filters>
-      {AttributesList.map((item) => (
-        <>
+      {attributes.map((item) => (
+        <div key={item.id}>
           <Title>{item.title}</Title>
-          <AttributeWrapper key={item.title}>
-            {item.attributes.slice(0, 7).map((attribute) => (
-              <OneCategory>
-                {attribute}
+          <AttributeWrapper>
+            {item.subAttributes.slice(0, 7).map((attribute) => (
+              <OneCategory key={attribute.id}>
+                {attribute.title}
                 <StyledCheckBox
                   type={item.inputType}
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setFilters(() => [...filters, attribute]);
-                    } else {
-                      setFilters(() =>
-                        filters.filter((item) => item !== attribute)
-                      );
-                    }
-                  }}
+                  name={item.title.toLowerCase()}
+                  value={attribute.title}
+                  onChange={(e) =>
+                    radioBtnHandler(
+                      item.subAttributes,
+                      item.inputType,
+                      e.target.value
+                    )
+                  }
+                  onMouseDown={() => checkBoxHandler(attribute)}
                 />
               </OneCategory>
             ))}
-            {item.attributes.length > 7 && (
-              <SeeMoreButton>SEE MORE</SeeMoreButton>
+            {item.subAttributes.length > 7 && (
+              <SeeMoreButton>SEE MORE </SeeMoreButton>
             )}
           </AttributeWrapper>
-        </>
+        </div>
       ))}
       <ButtonWrapper>
+        <Button value="Apply filters" onClick={() => setApplyFilters(true)} />
         <Button
-          value="Apply filters"
-          onClick={() => {
-            handleClick(filters);
-            setActive(false);
-          }}
-        />
-        <Button
+          type="reset"
           transparent
           value="Reset all filters"
-          onClick={() => setActive(false)}
+          onClick={handleResetClick}
         />
       </ButtonWrapper>
-    </>
+    </form>
   );
 };
 

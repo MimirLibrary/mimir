@@ -1,42 +1,127 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
 import { GoBack, ButtonWrapper } from '../../pages/BookPreview';
 import { ReactComponent as ArrowBack } from '../../../assets/ArrowUp2.svg';
 import { useParams, useNavigate } from 'react-router-dom';
 import BookCard from '../BookCard';
 import { WrapperList } from '../ListBooks';
+import { useSearchParams } from 'react-router-dom';
+import { Material } from '@mimir/apollo-client';
+
+type IMaterial =
+  | null
+  | undefined
+  | Pick<
+      Material,
+      'id' | 'title' | 'author' | 'type' | 'picture' | 'created_at' | 'category'
+    >;
 
 const BooksByCategory = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { category } = useParams();
   const navigate = useNavigate();
   const { data, loading } = useGetAllMaterialsQuery();
   const handleGoBack = () => {
     navigate('/search');
   };
+  const [filteredData, setFilteredData] = useState(data?.getAllMaterials);
+
+  useEffect(() => {
+    const authors = searchParams.getAll('authors');
+    const availability = searchParams.getAll('availability');
+    const categories = searchParams.getAll('categories');
+    const items = searchParams.getAll('items');
+    const sortBy = searchParams.getAll('sortBy');
+    let allBooks = data?.getAllMaterials;
+    if (authors?.length !== 0) {
+      const filter = allBooks?.filter(
+        (book: IMaterial) => book && authors.includes(book.author)
+      );
+      !authors.includes('All') && (allBooks = filter);
+    }
+    if (categories?.length !== 0) {
+      const filter = allBooks?.filter(
+        (book: IMaterial) => book && categories.includes(book.category)
+      );
+
+      !categories.includes('All') && (allBooks = filter);
+    }
+    if (items?.length !== 0) {
+      const correctItemsArray: string[] = items.map((type: string) =>
+        type.slice(0, -1)
+      );
+      const filter = allBooks?.filter(
+        (book: IMaterial) => book && correctItemsArray?.includes(book.type)
+      );
+      allBooks = filter;
+    }
+    if (availability?.length !== 0) {
+      const filter = allBooks?.filter((book: any) => {
+        const lastStatus = book.statuses.slice(-1)[0];
+        if (lastStatus) {
+          if (
+            lastStatus.status === 'Free' &&
+            availability.includes('On the Shelf')
+          )
+            return true;
+        } else if (
+          lastStatus === undefined &&
+          availability.includes('Will be available this week')
+        ) {
+          return true;
+        }
+        return false;
+      });
+      !availability.includes('All') && (allBooks = filter);
+    }
+    setFilteredData(allBooks);
+  }, [searchParams]);
+
   if (loading) return <h1>Loading...</h1>;
+
   return (
     <div>
       <ButtonWrapper onClick={handleGoBack}>
         <ArrowBack />
         <GoBack>Back to all categories</GoBack>
       </ButtonWrapper>
-      <WrapperList>
-        {data &&
-          data?.getAllMaterials.map(
-            (material: any) =>
-              material?.category === category && (
-                <BookCard
-                  key={material.id}
-                  id={material.id}
-                  src={material.picture}
-                  title={material.title}
-                  author={material.author}
-                  category={material.category}
-                  date={material.created_at}
-                />
-              )
+      {!category ? (
+        <WrapperList>
+          {filteredData?.length !== 0 ? (
+            filteredData?.map((material: IMaterial) => (
+              <BookCard
+                key={material?.id}
+                id={material?.id}
+                src={material?.picture}
+                title={material?.title}
+                author={material?.author}
+                category={material?.category}
+                date={material?.created_at}
+              />
+            ))
+          ) : (
+            <h3>Nothing was found</h3>
           )}
-      </WrapperList>
+        </WrapperList>
+      ) : (
+        <WrapperList>
+          {data &&
+            data?.getAllMaterials.map(
+              (material: IMaterial) =>
+                material?.category === category && (
+                  <BookCard
+                    key={material.id}
+                    id={material.id}
+                    src={material.picture}
+                    title={material.title}
+                    author={material.author}
+                    category={material.category}
+                    date={material.created_at}
+                  />
+                )
+            )}
+        </WrapperList>
+      )}
     </div>
   );
 };
