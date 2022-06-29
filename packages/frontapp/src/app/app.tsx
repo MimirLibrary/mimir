@@ -12,6 +12,8 @@ import NotificationPage from './pages/NotificationPage';
 import SearchWrapper from './components/SearchWrapper';
 import BookPreview from './pages/BookPreview';
 import BooksByCategory from './components/BooksByCategory';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const WrapperPage = styled.main`
   display: flex;
@@ -68,6 +70,7 @@ const App: FC = () => {
           <Route path="*" element={<StartPage />} />
         </Routes>
       )}
+      <ToastContainer position="bottom-right" />
     </div>
   );
 };
