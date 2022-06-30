@@ -456,7 +456,9 @@ const BookInfo: FC<IBookInfoProps> = ({
       <BookHolder>
         <ShortDescriptionWrapper>
           <WrapperInfo>
-            <BookImage src={src || bookImage} />
+            <BookImage
+              src={`${process.env['NX_API_ROOT_URL']}/${src}` || bookImage}
+            />
             <ShortDescription>
               {editing ? (
                 <>

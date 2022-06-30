@@ -81,6 +81,8 @@ const StyledInput = styled.input`
     -webkit-appearance: none;
     margin: 0;
   }
+
+  -moz-appearance: textfield;
 `;
 
 const WrapperMainInfo = styled.div`
@@ -211,7 +213,7 @@ const DonateBook: FC = () => {
     identifier: '',
   });
 
-  const [donateBook, { data: donateData, error }] = useDonateBookMutation();
+  const [donateBook, { error }] = useDonateBookMutation();
 
   const isInvalid =
     !dataOfBook.author ||
@@ -313,6 +315,7 @@ const DonateBook: FC = () => {
       });
       setSuccess(true);
     } catch (e) {
+      console.log(e);
     } finally {
       setPicture('');
       setFile(null);
