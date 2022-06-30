@@ -507,7 +507,9 @@ const BookInfo: FC<IBookInfoProps> = ({
         <ShortDescriptionWrapper>
           <WrapperInfo>
             <BookImage
-              src={`${process.env['NX_API_ROOT_URL']}/${src}` || bookImage}
+              src={
+                (src && `${process.env['NX_API_ROOT_URL']}/${src}`) || bookImage
+              }
             />
             <ShortDescription>
               {editing ? (

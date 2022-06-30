@@ -58,9 +58,15 @@ input DonateBookInput {
   person_id: Int!
 }
 
+input SearchInput{
+  search: String!
+  location: String!
+}
+
 extend type Query {
   getAllMaterials: [Material]!
   getMaterialById(id: ID!): Material!
+  searchOfMaterials(input: SearchInput!): [Material]
 }
 
 extend type Mutation {

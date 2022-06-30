@@ -7,8 +7,9 @@ export const WrapperList = styled.section`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   row-gap: ${dimensions.base};
-  column-gap: ${dimensions.base};
+  column-gap: ${dimensions.base_2};
   width: 100%;
+  max-height: 42.25rem;
   height: 100%;
   overflow-y: auto;
 

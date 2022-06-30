@@ -86,7 +86,7 @@ const BookCard: FC<IBookCardProps> = ({
   return (
     <BookCardWrapper onClick={handleItemRedirect}>
       <BookImage
-        src={`${process.env['NX_API_ROOT_URL']}/${src}` || bookImage}
+        src={(src && `${process.env['NX_API_ROOT_URL']}/${src}`) || bookImage}
       />
       <DescriptionWrapper>
         <TitleBook>{title}</TitleBook>
