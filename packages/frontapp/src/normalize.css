@@ -105,6 +105,16 @@ html {
 body {
   line-height: 1;
 }
+body::-webkit-scrollbar {
+  background: #e0e0e0;
+  width: 12px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #1a1ed6;
+  border-radius: 8px;
+  height: 8px;
+}
 
 ol,
 ul {

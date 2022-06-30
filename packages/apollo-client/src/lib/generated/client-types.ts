@@ -28,9 +28,13 @@ export type CreateLocationInput = {
 };
 
 export type CreateMaterialInput = {
+  author: Scalars['String'];
+  category: Scalars['String'];
   id_type: Scalars['String'];
   identifier: Scalars['String'];
   location_id: Scalars['Int'];
+  picture?: InputMaybe<Scalars['String']>;
+  title: Scalars['String'];
   type: Scalars['String'];
 };
 
@@ -56,6 +60,19 @@ export type CreateStatusInput = {
   material_id: Scalars['Int'];
   person_id: Scalars['Int'];
   status: Scalars['String'];
+};
+
+export type DonateBookInput = {
+  author: Scalars['String'];
+  category: Scalars['String'];
+  description?: InputMaybe<Scalars['String']>;
+  id_type: Scalars['String'];
+  identifier: Scalars['String'];
+  location_id: Scalars['Int'];
+  person_id: Scalars['Int'];
+  picture?: InputMaybe<Scalars['String']>;
+  title: Scalars['String'];
+  type: Scalars['String'];
 };
 
 export type Error = {
@@ -113,10 +130,13 @@ export type Mutation = {
   createNotification?: Maybe<Notification>;
   createPerson: Person;
   createStatus: Status;
+  donateBook: Material;
   prolongClaimPeriod: BookUnionResult;
   removeLocation?: Maybe<Location>;
+  removeMaterial: Material;
   removeNotification?: Maybe<Notification>;
   returnItem: BookUnionResult;
+  updateMaterial: Material;
 };
 
 
@@ -155,6 +175,11 @@ export type MutationCreateStatusArgs = {
 };
 
 
+export type MutationDonateBookArgs = {
+  input: DonateBookInput;
+};
+
+
 export type MutationProlongClaimPeriodArgs = {
   input?: InputMaybe<ProlongTimeInput>;
 };
@@ -165,6 +190,11 @@ export type MutationRemoveLocationArgs = {
 };
 
 
+export type MutationRemoveMaterialArgs = {
+  input: RemoveMaterialInput;
+};
+
+
 export type MutationRemoveNotificationArgs = {
   input: RemoveNotificationInput;
 };
@@ -172,6 +202,11 @@ export type MutationRemoveNotificationArgs = {
 
 export type MutationReturnItemArgs = {
   input?: InputMaybe<BookInput>;
+};
+
+
+export type MutationUpdateMaterialArgs = {
+  input: UpdateMaterialInput;
 };
 
 export type Notification = {
@@ -262,6 +297,12 @@ export type RemoveLocationInput = {
   location_id: Scalars['Int'];
 };
 
+export type RemoveMaterialInput = {
+  identifier: Scalars['String'];
+  location_id: Scalars['Int'];
+  type: Scalars['String'];
+};
+
 export type RemoveNotificationInput = {
   material_id: Scalars['Int'];
   person_id: Scalars['Int'];
@@ -283,6 +324,18 @@ export type Status = {
   status: Scalars['String'];
 };
 
+export type UpdateMaterialInput = {
+  author?: InputMaybe<Scalars['String']>;
+  category?: InputMaybe<Scalars['String']>;
+  id_type?: InputMaybe<Scalars['String']>;
+  identifier?: InputMaybe<Scalars['String']>;
+  location_id?: InputMaybe<Scalars['Int']>;
+  picture?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Scalars['String']>;
+  updated_at: Scalars['DateTime'];
+};
+
 export type ClaimBookMutationVariables = Exact<{
   identifier: Scalars['String'];
   person_id: Scalars['Int'];
@@ -301,6 +354,22 @@ export type CreateMessageForManagerMutationVariables = Exact<{
 
 export type CreateMessageForManagerMutation = { __typename?: 'Mutation', createMessageForManager: { __typename?: 'Error', message: string } | { __typename?: 'Message', message: string, title: string } };
 
+export type DonateBookMutationVariables = Exact<{
+  person_id: Scalars['Int'];
+  location_id: Scalars['Int'];
+  identifier: Scalars['String'];
+  id_type: Scalars['String'];
+  type: Scalars['String'];
+  title: Scalars['String'];
+  author: Scalars['String'];
+  category: Scalars['String'];
+  description?: InputMaybe<Scalars['String']>;
+  picture?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type DonateBookMutation = { __typename?: 'Mutation', donateBook: { __typename?: 'Material', title: string, picture?: string | null, identifier: string } };
+
 export type ProlongTimeMutationVariables = Exact<{
   person_id: Scalars['Int'];
   material_id: Scalars['Int'];
@@ -309,6 +378,15 @@ export type ProlongTimeMutationVariables = Exact<{
 
 export type ProlongTimeMutation = { __typename?: 'Mutation', prolongClaimPeriod: { __typename?: 'Error', message: string } | { __typename?: 'Status', created_at: any, status: string } };
 
+export type RemoveMaterialMutationVariables = Exact<{
+  identifier: Scalars['String'];
+  type: Scalars['String'];
+  location_id: Scalars['Int'];
+}>;
+
+
+export type RemoveMaterialMutation = { __typename?: 'Mutation', removeMaterial: { __typename?: 'Material', identifier: string, id_type: string, type: string, location_id: number, title: string, author: string, category: string } };
+
 export type ReturnBookMutationVariables = Exact<{
   identifier: Scalars['String'];
   person_id: Scalars['Int'];
@@ -316,6 +394,20 @@ export type ReturnBookMutationVariables = Exact<{
 
 
 export type ReturnBookMutation = { __typename?: 'Mutation', returnItem: { __typename?: 'Error', message: string } | { __typename?: 'Status', created_at: any, status: string } };
+
+export type UpdateMaterialMutationVariables = Exact<{
+  identifier: Scalars['String'];
+  id_type?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Scalars['String']>;
+  location_id?: InputMaybe<Scalars['Int']>;
+  title?: InputMaybe<Scalars['String']>;
+  author?: InputMaybe<Scalars['String']>;
+  category?: InputMaybe<Scalars['String']>;
+  updated_at: Scalars['DateTime'];
+}>;
+
+
+export type UpdateMaterialMutation = { __typename?: 'Mutation', updateMaterial: { __typename?: 'Material', identifier: string, id_type: string, type: string, location_id: number, title: string, author: string, category: string, updated_at: any } };
 
 export type GetAllLocationsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -339,7 +431,7 @@ export type GetMaterialByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetMaterialByIdQuery = { __typename?: 'Query', getMaterialById: { __typename?: 'Material', id: string, identifier: string, picture?: string | null, title: string, author: string, category: string, created_at: any, statuses: Array<{ __typename?: 'Status', id: string, person_id: number, status: string, created_at: any } | null> } };
+export type GetMaterialByIdQuery = { __typename?: 'Query', getMaterialById: { __typename?: 'Material', id: string, identifier: string, picture?: string | null, title: string, author: string, category: string, created_at: any, updated_at: any, location_id: number, type: string, statuses: Array<{ __typename?: 'Status', id: string, person_id: number, status: string, created_at: any } | null> } };
 
 export type SearchOfMaterialsQueryVariables = Exact<{
   search: Scalars['String'];
@@ -434,6 +526,52 @@ export function useCreateMessageForManagerMutation(baseOptions?: Apollo.Mutation
 export type CreateMessageForManagerMutationHookResult = ReturnType<typeof useCreateMessageForManagerMutation>;
 export type CreateMessageForManagerMutationResult = Apollo.MutationResult<CreateMessageForManagerMutation>;
 export type CreateMessageForManagerMutationOptions = Apollo.BaseMutationOptions<CreateMessageForManagerMutation, CreateMessageForManagerMutationVariables>;
+export const DonateBookDocument = gql`
+    mutation DonateBook($person_id: Int!, $location_id: Int!, $identifier: String!, $id_type: String!, $type: String!, $title: String!, $author: String!, $category: String!, $description: String, $picture: String) {
+  donateBook(
+    input: {person_id: $person_id, location_id: $location_id, identifier: $identifier, type: $type, author: $author, category: $category, description: $description, id_type: $id_type, picture: $picture, title: $title}
+  ) {
+    title
+    picture
+    identifier
+  }
+}
+    `;
+export type DonateBookMutationFn = Apollo.MutationFunction<DonateBookMutation, DonateBookMutationVariables>;
+
+/**
+ * __useDonateBookMutation__
+ *
+ * To run a mutation, you first call `useDonateBookMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDonateBookMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [donateBookMutation, { data, loading, error }] = useDonateBookMutation({
+ *   variables: {
+ *      person_id: // value for 'person_id'
+ *      location_id: // value for 'location_id'
+ *      identifier: // value for 'identifier'
+ *      id_type: // value for 'id_type'
+ *      type: // value for 'type'
+ *      title: // value for 'title'
+ *      author: // value for 'author'
+ *      category: // value for 'category'
+ *      description: // value for 'description'
+ *      picture: // value for 'picture'
+ *   },
+ * });
+ */
+export function useDonateBookMutation(baseOptions?: Apollo.MutationHookOptions<DonateBookMutation, DonateBookMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DonateBookMutation, DonateBookMutationVariables>(DonateBookDocument, options);
+      }
+export type DonateBookMutationHookResult = ReturnType<typeof useDonateBookMutation>;
+export type DonateBookMutationResult = Apollo.MutationResult<DonateBookMutation>;
+export type DonateBookMutationOptions = Apollo.BaseMutationOptions<DonateBookMutation, DonateBookMutationVariables>;
 export const ProlongTimeDocument = gql`
     mutation ProlongTime($person_id: Int!, $material_id: Int!) {
   prolongClaimPeriod(input: {material_id: $material_id, person_id: $person_id}) {
@@ -474,6 +612,49 @@ export function useProlongTimeMutation(baseOptions?: Apollo.MutationHookOptions<
 export type ProlongTimeMutationHookResult = ReturnType<typeof useProlongTimeMutation>;
 export type ProlongTimeMutationResult = Apollo.MutationResult<ProlongTimeMutation>;
 export type ProlongTimeMutationOptions = Apollo.BaseMutationOptions<ProlongTimeMutation, ProlongTimeMutationVariables>;
+export const RemoveMaterialDocument = gql`
+    mutation RemoveMaterial($identifier: String!, $type: String!, $location_id: Int!) {
+  removeMaterial(
+    input: {identifier: $identifier, type: $type, location_id: $location_id}
+  ) {
+    identifier
+    id_type
+    type
+    location_id
+    title
+    author
+    category
+  }
+}
+    `;
+export type RemoveMaterialMutationFn = Apollo.MutationFunction<RemoveMaterialMutation, RemoveMaterialMutationVariables>;
+
+/**
+ * __useRemoveMaterialMutation__
+ *
+ * To run a mutation, you first call `useRemoveMaterialMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveMaterialMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeMaterialMutation, { data, loading, error }] = useRemoveMaterialMutation({
+ *   variables: {
+ *      identifier: // value for 'identifier'
+ *      type: // value for 'type'
+ *      location_id: // value for 'location_id'
+ *   },
+ * });
+ */
+export function useRemoveMaterialMutation(baseOptions?: Apollo.MutationHookOptions<RemoveMaterialMutation, RemoveMaterialMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveMaterialMutation, RemoveMaterialMutationVariables>(RemoveMaterialDocument, options);
+      }
+export type RemoveMaterialMutationHookResult = ReturnType<typeof useRemoveMaterialMutation>;
+export type RemoveMaterialMutationResult = Apollo.MutationResult<RemoveMaterialMutation>;
+export type RemoveMaterialMutationOptions = Apollo.BaseMutationOptions<RemoveMaterialMutation, RemoveMaterialMutationVariables>;
 export const ReturnBookDocument = gql`
     mutation ReturnBook($identifier: String!, $person_id: Int!) {
   returnItem(input: {identifier: $identifier, person_id: $person_id}) {
@@ -514,6 +695,55 @@ export function useReturnBookMutation(baseOptions?: Apollo.MutationHookOptions<R
 export type ReturnBookMutationHookResult = ReturnType<typeof useReturnBookMutation>;
 export type ReturnBookMutationResult = Apollo.MutationResult<ReturnBookMutation>;
 export type ReturnBookMutationOptions = Apollo.BaseMutationOptions<ReturnBookMutation, ReturnBookMutationVariables>;
+export const UpdateMaterialDocument = gql`
+    mutation UpdateMaterial($identifier: String!, $id_type: String, $type: String, $location_id: Int, $title: String, $author: String, $category: String, $updated_at: DateTime!) {
+  updateMaterial(
+    input: {identifier: $identifier, id_type: $id_type, type: $type, location_id: $location_id, title: $title, author: $author, category: $category, updated_at: $updated_at}
+  ) {
+    identifier
+    id_type
+    type
+    location_id
+    title
+    author
+    category
+    updated_at
+  }
+}
+    `;
+export type UpdateMaterialMutationFn = Apollo.MutationFunction<UpdateMaterialMutation, UpdateMaterialMutationVariables>;
+
+/**
+ * __useUpdateMaterialMutation__
+ *
+ * To run a mutation, you first call `useUpdateMaterialMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateMaterialMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateMaterialMutation, { data, loading, error }] = useUpdateMaterialMutation({
+ *   variables: {
+ *      identifier: // value for 'identifier'
+ *      id_type: // value for 'id_type'
+ *      type: // value for 'type'
+ *      location_id: // value for 'location_id'
+ *      title: // value for 'title'
+ *      author: // value for 'author'
+ *      category: // value for 'category'
+ *      updated_at: // value for 'updated_at'
+ *   },
+ * });
+ */
+export function useUpdateMaterialMutation(baseOptions?: Apollo.MutationHookOptions<UpdateMaterialMutation, UpdateMaterialMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateMaterialMutation, UpdateMaterialMutationVariables>(UpdateMaterialDocument, options);
+      }
+export type UpdateMaterialMutationHookResult = ReturnType<typeof useUpdateMaterialMutation>;
+export type UpdateMaterialMutationResult = Apollo.MutationResult<UpdateMaterialMutation>;
+export type UpdateMaterialMutationOptions = Apollo.BaseMutationOptions<UpdateMaterialMutation, UpdateMaterialMutationVariables>;
 export const GetAllLocationsDocument = gql`
     query GetAllLocations {
   getAllLocations {
@@ -654,6 +884,9 @@ export const GetMaterialByIdDocument = gql`
     author
     category
     created_at
+    updated_at
+    location_id
+    type
     statuses {
       id
       person_id

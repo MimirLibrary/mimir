@@ -3,10 +3,16 @@ import bookImage from '../../../assets/MOC-data/BookImage.png';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { ReactComponent as Claim } from '../../../assets/claim.svg';
+import { ReactComponent as Edit } from '../../../assets/Edit.svg';
+import { ReactComponent as Remove } from '../../../assets/Remove.svg';
 import Button from '../Button';
 import ClaimOperation from '../ClaimOperation';
 import Modal from '../Modal';
-import { getDates, getStatus } from '../../models/helperFunctions/converTime';
+import {
+  getDates,
+  getStatus,
+  periodOfKeeping,
+} from '../../models/helperFunctions/converTime';
 import { StyledBookStatus } from '../../globalUI/Status';
 import SuccessMessage from '../SuccesMessage';
 import {
@@ -15,13 +21,17 @@ import {
   useClaimBookMutation,
   useProlongTimeMutation,
   useReturnBookMutation,
+  useRemoveMaterialMutation,
+  useUpdateMaterialMutation,
+  useGetAllMaterialsQuery,
 } from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import ErrorMessage from '../ErrorMessge';
+import { RolesTypes } from '../../../utils/rolesTypes';
 import AskManagerForm from '../AskManagerForm';
-
+import { WrapperInput } from '../Search';
+import { useNavigate } from 'react-router-dom';
 const BookHolder = styled.div`
-  height: 41rem;
   top: 11.5rem;
   left: 24.5rem;
   border-radius: ${dimensions.xs_1};
@@ -34,6 +44,7 @@ const BookImage = styled.img`
   display: inline-block;
   width: 12rem;
   height: 19.5rem;
+  border-radius: 10px;
   @media (max-width: ${dimensions.phone_width}) {
     width: 5rem;
     height: 8rem;
@@ -72,6 +83,7 @@ const TopicDescription = styled.p`
   font-weight: 300;
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
+  color: ${colors.main_black};
 `;
 
 const StatusInfoDescription = styled.p`
@@ -90,7 +102,7 @@ const LongDescription = styled.div`
 const OpenLink = styled.a`
   cursor: pointer;
   margin: ${dimensions.xs_2} 0;
-  font-weight: 500;
+  font-weight: 300;
   color: ${colors.accent_color};
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
@@ -101,6 +113,7 @@ const Description = styled.p`
   font-weight: 300;
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
+  color: ${colors.main_black};
 `;
 
 const StyledStatus = styled(StyledBookStatus)`
@@ -126,6 +139,66 @@ const StyledButton = styled(Button)`
   margin-bottom: 8px;
 `;
 
+const StyledInput = styled.input`
+  width: 19rem;
+  border: none;
+  outline: none;
+  margin-left: ${dimensions.xs_2};
+  color: ${colors.main_black};
+  margin-right: 0.12rem;
+`;
+const StyledInputDeadline = styled.input`
+  border: 0.5px solid #bdbdbd;
+  border-radius: ${dimensions.xl_3};
+  padding: 10px 0;
+  width: 3.7rem;
+  outline: none;
+  padding-left: ${dimensions.xl};
+  background: ${colors.bg_secondary};
+  :hover {
+    border: 0.5px solid ${colors.accent_color};
+  }
+  :focus {
+    border: 0.5px solid ${colors.accent_color};
+  }
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    width: 100%;
+  }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    width: 70%;
+  }
+  ::-webkit-inner-spin-button,
+  ::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+`;
+const TitleHolder = styled.p`
+  font-weight: 700;
+  font-size: ${dimensions.base};
+  margin-bottom: ${dimensions.xs};
+`;
+
+const StyledSelect = styled.select`
+  border: none;
+  outline: none;
+  width: 95%;
+  color: ${colors.main_black};
+`;
+const StyledTextArea = styled.textarea`
+  border: none;
+  outline: none;
+  width: 98%;
+  height: 10rem;
+  font-weight: 300;
+  font-size: ${dimensions.base};
+  line-height: ${dimensions.xl};
+  color: ${colors.main_black};
+  resize: none;
+`;
+
 interface IBookInfoProps {
   person_id: number | undefined;
   src: string | null | undefined;
@@ -133,10 +206,13 @@ interface IBookInfoProps {
   description: string | undefined;
   status: string | undefined;
   author: string | undefined;
-  category: string | string[] | undefined;
+  category: string | undefined;
   identifier: string;
   material_id: string;
   created_at: any;
+  updated_at: any;
+  type: string;
+  location_id: number;
 }
 
 const BookInfo: FC<IBookInfoProps> = ({
@@ -148,10 +224,15 @@ const BookInfo: FC<IBookInfoProps> = ({
   category,
   identifier,
   created_at,
+  updated_at,
   material_id,
   person_id,
+  type,
+  location_id,
 }) => {
-  const { id } = useAppSelector((state) => state.user);
+  const { id, userRole } = useAppSelector((state) => state.user);
+  const { data: allMaterials } = useGetAllMaterialsQuery();
+  const navigate = useNavigate();
   const [statusText, setStatusText] = useState<string>('');
   const [isShowClaimModal, setIsShowClaimModal] = useState<boolean>(false);
   const [isShowAskManger, setIsShowAskManager] = useState<boolean>(false);
@@ -165,6 +246,45 @@ const BookInfo: FC<IBookInfoProps> = ({
   const [isShowWindowReportedToManager, setIsShowWindowReportedToManager] =
     useState<boolean>(false);
   const [valueIsISBN, setValueIsISBN] = useState<string>('');
+  const [editing, setEditing] = useState<boolean>(false);
+  const [newTitle, setNewTitle] = useState(title);
+  const [newAuthor, setNewAuthor] = useState(author);
+  const [newCategory, setNewCategory] = useState(category);
+  const [newDescription, setNewDescription] = useState(
+    description
+      ? description
+      : ' Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi impedit aliquid alias consequuntur! Totam sequi expedita sunt dolor obcaecati, iusto ducimus? Beatae ea, commodi ab repellat, corporis atque quasi, tempore sunt modi similique soluta nemo hic necessitatibus esse accusantium omnis neque rerum. Placeat tempore, fugiat unde consequuntur dolor tempora ducimus.'
+  );
+  const [newDeadline, setNewDeadline] = useState(periodOfKeeping);
+  const [deleteWarning, setDeleteWarning] = useState(false);
+  const [authorsDropDown, setAuthorsDropDown] = useState<
+    (string | undefined)[] | undefined
+  >();
+  const [categoriesDropDown, setCategoriesDropDown] = useState<
+    (string | undefined)[] | undefined
+  >();
+
+  useEffect(() => {
+    const authors = allMaterials?.getAllMaterials?.map((item) => {
+      return item?.author;
+    });
+    const categories = allMaterials?.getAllMaterials?.map((item) => {
+      return item?.category;
+    });
+    setAuthorsDropDown([...new Set(authors)]);
+    setCategoriesDropDown([...new Set(categories)]);
+  }, []);
+  const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewTitle(e.target.value);
+  };
+  const handleChangeDescription = (e: any) => {
+    setNewDescription(e.target.value);
+  };
+  const handleChangeDeadline = (e: any) => {
+    setNewDeadline(e.target.value);
+    e.target.value > 31 && setNewDeadline(31);
+    e.target.value <= 0 && setNewDeadline(1);
+  };
 
   const [claimBook, { data }] = useClaimBookMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
@@ -175,7 +295,12 @@ const BookInfo: FC<IBookInfoProps> = ({
   const [prolongTime, { data: infoOfProlong }] = useProlongTimeMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
-
+  const [removeMaterial] = useRemoveMaterialMutation({
+    refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
+  });
+  const [updateMaterial] = useUpdateMaterialMutation({
+    refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
+  });
   const currentStatus = getStatus(status, created_at);
   const dateConditionOfClaiming =
     data?.claimBook.__typename === 'Status' ? data.claimBook.created_at : null;
@@ -217,6 +342,47 @@ const BookInfo: FC<IBookInfoProps> = ({
         material_id: Number(material_id),
       },
     });
+  };
+
+  const editInformation = async () => {
+    await updateMaterial({
+      variables: {
+        identifier: identifier,
+        type: type,
+        location_id: location_id,
+        title: newTitle,
+        author: newAuthor,
+        category: newCategory,
+        updated_at: getDates(updated_at).currentDate,
+      },
+    });
+    setEditing(false);
+  };
+
+  const deleteItem = async () => {
+    await removeMaterial({
+      variables: {
+        identifier: identifier,
+        type: type,
+        location_id: location_id,
+      },
+    });
+    navigate('/search');
+    window.location.reload();
+  };
+  const handleEditBtn = () => setEditing(true);
+  const handleDeleteBtn = () => setDeleteWarning(true);
+
+  const discardChanges = () => {
+    setNewTitle(title);
+    setNewAuthor(author);
+    setNewCategory(category);
+    setNewDescription(
+      description
+        ? description
+        : ' Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi impedit aliquid alias consequuntur! Totam sequi expedita sunt dolor obcaecati, iusto ducimus? Beatae ea, commodi ab repellat, corporis atque quasi, tempore sunt modi similique soluta nemo hic necessitatibus esse accusantium omnis neque rerum. Placeat tempore, fugiat unde consequuntur dolor tempora ducimus.'
+    );
+    setEditing(false);
   };
 
   useEffect(() => {
@@ -290,49 +456,181 @@ const BookInfo: FC<IBookInfoProps> = ({
       <BookHolder>
         <ShortDescriptionWrapper>
           <WrapperInfo>
-            <BookImage src={src || bookImage} />
+            <BookImage
+              src={`${process.env['NX_API_ROOT_URL']}/${src}` || bookImage}
+            />
             <ShortDescription>
-              <TitleBook>{title || 'Book Title'}</TitleBook>
-              <Topic>Genre: </Topic>
-              <OpenLink>{category || 'Genres of book'}</OpenLink>
-              <Topic>Author: </Topic>
-              <TopicDescription>{author || 'Author Name'}</TopicDescription>
-              <StyledStatus status={currentStatus}>{statusText}</StyledStatus>
-              <StatusInfoDescription>
-                Use the mobile app to claim an item
-              </StatusInfoDescription>
+              {editing ? (
+                <>
+                  <TitleHolder>Name </TitleHolder>
+                  <WrapperInput>
+                    <StyledInput
+                      type="text"
+                      value={newTitle}
+                      onChange={handleChangeTitle}
+                    />
+                  </WrapperInput>
+                </>
+              ) : (
+                <TitleBook>{title || 'Book Title'}</TitleBook>
+              )}
+              {!editing && <Topic>Genre: </Topic>}
+              {userRole === RolesTypes.READER ? (
+                <OpenLink>{category || 'Genres of book'}</OpenLink>
+              ) : editing ? (
+                <>
+                  <br />
+                  <TitleHolder>Genre </TitleHolder>
+                  <WrapperInput>
+                    <StyledSelect
+                      name="categories"
+                      onChange={(e) => {
+                        setNewCategory(e.target.value);
+                      }}
+                    >
+                      {categoriesDropDown?.map(
+                        (category: string | undefined) => (
+                          <option value={category}>{category}</option>
+                        )
+                      )}
+                    </StyledSelect>
+                  </WrapperInput>
+                </>
+              ) : (
+                <TopicDescription>
+                  {category || 'Genres of book'}
+                </TopicDescription>
+              )}
+              {editing ? (
+                <>
+                  <br />
+                  <TitleHolder>Author </TitleHolder>
+                  <WrapperInput>
+                    <StyledSelect
+                      name="authors"
+                      onChange={(e) => {
+                        setNewAuthor(e.target.value);
+                      }}
+                    >
+                      {authorsDropDown?.map((author: string | undefined) => (
+                        <option value={author}>{author}</option>
+                      ))}
+                    </StyledSelect>
+                  </WrapperInput>
+                </>
+              ) : (
+                <>
+                  <Topic>Author: </Topic>
+                  <TopicDescription>{author || 'Author Name'}</TopicDescription>
+                </>
+              )}
+              {userRole === RolesTypes.READER ? (
+                <>
+                  <StyledStatus status={currentStatus}>
+                    {statusText}
+                  </StyledStatus>
+                  <StatusInfoDescription>
+                    Use the mobile app to claim an item
+                  </StatusInfoDescription>
+                </>
+              ) : editing ? (
+                <>
+                  <br />
+                  <TitleHolder>Deadline </TitleHolder>
+                  <StyledInputDeadline
+                    value={newDeadline}
+                    type="number"
+                    onChange={handleChangeDeadline}
+                    min="1"
+                    max="31"
+                  />{' '}
+                  days
+                </>
+              ) : (
+                <>
+                  <Topic>Deadline: </Topic>
+                  <TopicDescription>{newDeadline + ' days'}</TopicDescription>
+                </>
+              )}
             </ShortDescription>
           </WrapperInfo>
-          {person_id === id ? (
-            <WrapperButtons>
-              {status !== 'Free' ? (
-                <>
-                  <StyledButton value="Return a book" onClick={retrieveBook} />
-                  <StyledButton
-                    value="Extend claim period"
-                    transparent
-                    onClick={prolongPeriod}
-                  />
-                </>
+          {userRole === RolesTypes.READER ? (
+            <>
+              {person_id === id ? (
+                <WrapperButtons>
+                  {status !== 'Free' ? (
+                    <>
+                      <StyledButton
+                        value="Return a book"
+                        onClick={retrieveBook}
+                      />
+                      <StyledButton
+                        value="Extend claim period"
+                        transparent
+                        onClick={prolongPeriod}
+                      />
+                    </>
+                  ) : null}
+                </WrapperButtons>
               ) : null}
+              {status === 'Free' ? (
+                <StyledButton
+                  value="Claim a book"
+                  svgComponent={<Claim />}
+                  onClick={showClaimModal}
+                />
+              ) : null}
+            </>
+          ) : editing ? (
+            <WrapperButtons>
+              <StyledButton value="Save changes" onClick={editInformation} />
+              <StyledButton
+                value="Cancel changes"
+                transparent
+                onClick={discardChanges}
+              />
             </WrapperButtons>
-          ) : null}
-          {status === 'Free' ? (
-            <StyledButton
-              value="Claim a book"
-              svgComponent={<Claim />}
-              onClick={showClaimModal}
-            />
-          ) : null}
+          ) : (
+            <WrapperButtons>
+              <StyledButton
+                value="Edit information"
+                transparent
+                svgComponent={<Edit />}
+                onClick={handleEditBtn}
+              />
+              <StyledButton
+                value="Delete item"
+                transparent
+                secondary
+                svgComponent={<Remove />}
+                onClick={handleDeleteBtn}
+              />
+            </WrapperButtons>
+          )}
         </ShortDescriptionWrapper>
-        <LongDescription>
-          <Topic>Description: </Topic>
-          <Description>
-            {description ||
-              ' Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi impedit aliquid alias consequuntur! Totam sequi expedita sunt dolor obcaecati, iusto ducimus? Beatae ea, commodi ab repellat, corporis atque quasi, tempore sunt modi similique soluta nemo hic necessitatibus esse accusantium omnis neque rerum. Placeat tempore, fugiat unde consequuntur dolor tempora ducimus.'}
-          </Description>
-          <OpenLink>see full description</OpenLink>
-        </LongDescription>
+        {editing ? (
+          <>
+            <br />
+            <TitleHolder>Description: </TitleHolder>
+            <WrapperInput>
+              <StyledTextArea
+                value={newDescription}
+                onChange={handleChangeDescription}
+              />
+            </WrapperInput>
+          </>
+        ) : (
+          <LongDescription>
+            <Topic>Description: </Topic>
+            <Description>
+              {description ||
+                ' Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi impedit aliquid alias consequuntur! Totam sequi expedita sunt dolor obcaecati, iusto ducimus? Beatae ea, commodi ab repellat, corporis atque quasi, tempore sunt modi similique soluta nemo hic necessitatibus esse accusantium omnis neque rerum. Placeat tempore, fugiat unde consequuntur dolor tempora ducimus.'}
+            </Description>
+            {userRole === RolesTypes.READER ? (
+              <OpenLink>see full description</OpenLink>
+            ) : null}
+          </LongDescription>
+        )}
       </BookHolder>
       <Modal active={isShowClaimModal} setActive={setIsShowClaimModal}>
         <ClaimOperation
@@ -405,6 +703,24 @@ const BookInfo: FC<IBookInfoProps> = ({
           titleCancel="Close"
           onClick={closeReportedManager}
         />
+      </Modal>
+      <Modal active={deleteWarning} setActive={setDeleteWarning}>
+        <TitleBook>Are you sure you want to delete this item?</TitleBook>
+        <WrapperInfo>
+          <StyledButton
+            value="Cancel"
+            transparent
+            onClick={() => setDeleteWarning(false)}
+          />
+          <hr />
+          <StyledButton
+            value="Delete item"
+            transparent
+            secondary
+            svgComponent={<Remove />}
+            onClick={deleteItem}
+          />
+        </WrapperInfo>
       </Modal>
     </>
   );

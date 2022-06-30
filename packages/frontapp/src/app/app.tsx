@@ -11,6 +11,9 @@ import { useAppSelector } from './hooks/useTypedSelector';
 import NotificationPage from './pages/NotificationPage';
 import SearchWrapper from './components/SearchWrapper';
 import BookPreview from './pages/BookPreview';
+import BooksByCategory from './components/BooksByCategory';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const WrapperPage = styled.main`
   display: flex;
@@ -22,7 +25,7 @@ const WrapperPage = styled.main`
 const WrapperRoutes = styled.div`
   width: calc(100% - 22rem);
   background-color: ${colors.bg_primary};
-  padding: 2.5rem 2.5rem 2.5rem 2.3rem;
+  padding: 2.5rem 2.5rem 0 2.3rem;
 
   @media (max-width: ${dimensions.tablet_width}) {
     width: 100%;
@@ -52,6 +55,11 @@ const App: FC = () => {
                 <Route path="/notifications" element={<NotificationPage />} />
                 <Route path="*" element={<HomePage />} />
                 <Route path="item/:item_id" element={<BookPreview />} />
+                <Route
+                  path="category/:category"
+                  element={<BooksByCategory />}
+                />
+                <Route path="/category" element={<BooksByCategory />} />
               </Routes>
             </WrapperRoutes>
           </WrapperPage>
@@ -62,6 +70,7 @@ const App: FC = () => {
           <Route path="*" element={<StartPage />} />
         </Routes>
       )}
+      <ToastContainer position="bottom-right" />
     </div>
   );
 };

@@ -12,7 +12,7 @@ import { LocationsModule } from '../resources/locations/location.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ItemModule } from '../resources/item/item.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { join } from 'path';
+import { join, resolve } from 'path';
 import { AppResolver } from './app.resolver';
 import { Person } from '../resources/persons/person.entity';
 import { Material } from '../resources/materials/material.entity';
@@ -25,6 +25,8 @@ import {
 } from 'graphql-scalars';
 import { MessageModule } from '../resources/messages/message.module';
 import { Message } from '../resources/messages/messages.entity';
+import { FileModule } from '../file/file.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   imports: [
@@ -41,6 +43,7 @@ import { Message } from '../resources/messages/messages.entity';
     NotificationModule,
     MessageModule,
     LocationsModule,
+    FileModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       typePaths: ['./packages/apiserver/**/*.graphql'],
@@ -52,6 +55,9 @@ import { Message } from '../resources/messages/messages.entity';
           './packages/global-types/src/lib/global-types.ts'
         ),
       },
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: resolve(process.cwd(), 'storage'),
     }),
   ],
   controllers: [AppController],

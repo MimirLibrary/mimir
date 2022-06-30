@@ -13,7 +13,7 @@ import { useDebounce } from '../../hooks/useDebounce';
 import { RoutesTypes } from '../../../utils/routes';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 
-const InputSearch = styled(Input)`
+export const InputSearch = styled(Input)`
   width: 19rem;
   border: none;
   outline: none;
@@ -40,7 +40,7 @@ const StyledSearchIcon = styled(SearchIcon)`
   }
 `;
 
-const WrapperInput = styled.div`
+export const WrapperInput = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -50,6 +50,7 @@ const WrapperInput = styled.div`
   border-radius: ${dimensions.xl_3};
   padding: 10px 0;
   padding-left: ${dimensions.xs_1};
+  margin-right: ${dimensions.xs_1};
   background: ${colors.bg_secondary};
 
   :hover {
