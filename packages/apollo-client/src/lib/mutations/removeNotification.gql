@@ -1,0 +1,5 @@
+mutation RemoveNotification($input: RemoveNotificationInput!) {
+  removeNotification(input: $input) {
+    id
+  }
+}

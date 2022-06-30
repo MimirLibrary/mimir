@@ -4,11 +4,7 @@ mutation RemoveMaterial(
   $location_id: Int!
 ) {
   removeMaterial(
-    input: {
-      identifier: $identifier
-      type: $type
-      location_id: $location_id
-    }
+    input: { identifier: $identifier, type: $type, location_id: $location_id }
   ) {
     identifier
     id_type

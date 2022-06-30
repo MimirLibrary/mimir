@@ -5,6 +5,8 @@ import { colors, dimensions } from '@mimir/ui-kit';
 import { ReactComponent as Claim } from '../../../assets/claim.svg';
 import { ReactComponent as Edit } from '../../../assets/Edit.svg';
 import { ReactComponent as Remove } from '../../../assets/Remove.svg';
+import { ReactComponent as EnableNotifySvg } from '../../../assets/NoNotification.svg';
+import { ReactComponent as CancelNotifySvg } from '../../../assets/CancelNotification.svg';
 import Button from '../Button';
 import ClaimOperation from '../ClaimOperation';
 import Modal from '../Modal';
@@ -18,12 +20,16 @@ import SuccessMessage from '../SuccesMessage';
 import {
   GetAllTakenItemsDocument,
   GetMaterialByIdDocument,
+  GetNotificationsByPersonDocument,
   useClaimBookMutation,
   useProlongTimeMutation,
   useReturnBookMutation,
   useRemoveMaterialMutation,
   useUpdateMaterialMutation,
   useGetAllMaterialsQuery,
+  useGetNotificationsByPersonQuery,
+  useCreateNotificationMutation,
+  useRemoveNotificationMutation,
 } from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import ErrorMessage from '../ErrorMessge';
@@ -84,14 +90,6 @@ const TopicDescription = styled.p`
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
   color: ${colors.main_black};
-`;
-
-const StatusInfoDescription = styled.p`
-  font-weight: 300;
-  font-size: ${dimensions.base};
-  line-height: ${dimensions.xl};
-  color: ${colors.description_gray};
-  margin-top: ${dimensions.xs_2};
 `;
 
 const LongDescription = styled.div`
@@ -232,6 +230,18 @@ const BookInfo: FC<IBookInfoProps> = ({
 }) => {
   const { id, userRole } = useAppSelector((state) => state.user);
   const { data: allMaterials } = useGetAllMaterialsQuery();
+  const { data: getNotificationsByPersonData } =
+    useGetNotificationsByPersonQuery({
+      variables: {
+        person_id: id,
+      },
+    });
+  const [createNotificationMutation] = useCreateNotificationMutation({
+    refetchQueries: [GetNotificationsByPersonDocument],
+  });
+  const [removeNotificationMutation] = useRemoveNotificationMutation({
+    refetchQueries: [GetNotificationsByPersonDocument],
+  });
   const navigate = useNavigate();
   const [statusText, setStatusText] = useState<string>('');
   const [isShowClaimModal, setIsShowClaimModal] = useState<boolean>(false);
@@ -263,6 +273,8 @@ const BookInfo: FC<IBookInfoProps> = ({
   const [categoriesDropDown, setCategoriesDropDown] = useState<
     (string | undefined)[] | undefined
   >();
+  const [isMaterialTakenByCurrentUser, setIsMaterialTakenByCurrentUser] =
+    useState(false);
 
   useEffect(() => {
     const authors = allMaterials?.getAllMaterials?.map((item) => {
@@ -322,16 +334,19 @@ const BookInfo: FC<IBookInfoProps> = ({
         identifier: valueIsISBN,
       },
     });
+
     setValueIsISBN('');
+    setIsMaterialTakenByCurrentUser(true);
   };
 
   const retrieveBook = async () => {
     await returnBook({
       variables: {
         person_id: id,
-        identifier: identifier,
+        identifier,
       },
     });
+
     setIsSuccessReturn(true);
   };
 
@@ -438,6 +453,17 @@ const BookInfo: FC<IBookInfoProps> = ({
     }
   }, [currentStatus]);
 
+  useEffect(() => {
+    if (!getNotificationsByPersonData) return;
+
+    if (
+      getNotificationsByPersonData.getNotificationsByPerson.find(
+        (notification) => notification?.person_id === id
+      )
+    )
+      return setIsMaterialTakenByCurrentUser(true);
+  }, [getNotificationsByPersonData]);
+
   const showAskManagerModal = () => {
     setIsShowErrorMessageOfClaiming(false);
     setIsShowAskManager(true);
@@ -450,6 +476,30 @@ const BookInfo: FC<IBookInfoProps> = ({
   const showClaimModal = useCallback(() => {
     setIsShowClaimModal(true);
   }, []);
+
+  const handleEnableNotifyButton = async () => {
+    await createNotificationMutation({
+      variables: {
+        input: {
+          material_id: parseInt(material_id),
+          person_id: id,
+        },
+      },
+    });
+    setIsMaterialTakenByCurrentUser(true);
+  };
+
+  const handleCancelNotifyButton = async () => {
+    await removeNotificationMutation({
+      variables: {
+        input: {
+          material_id: parseInt(material_id),
+          person_id: id,
+        },
+      },
+    });
+    setIsMaterialTakenByCurrentUser(false);
+  };
 
   return (
     <>
@@ -527,14 +577,7 @@ const BookInfo: FC<IBookInfoProps> = ({
                 </>
               )}
               {userRole === RolesTypes.READER ? (
-                <>
-                  <StyledStatus status={currentStatus}>
-                    {statusText}
-                  </StyledStatus>
-                  <StatusInfoDescription>
-                    Use the mobile app to claim an item
-                  </StatusInfoDescription>
-                </>
+                <StyledStatus status={currentStatus}>{statusText}</StyledStatus>
               ) : editing ? (
                 <>
                   <br />
@@ -574,7 +617,25 @@ const BookInfo: FC<IBookInfoProps> = ({
                     </>
                   ) : null}
                 </WrapperButtons>
-              ) : null}
+              ) : (
+                <WrapperButtons>
+                  {status !== 'Free' &&
+                    (!isMaterialTakenByCurrentUser ? (
+                      <StyledButton
+                        value="Notify when available"
+                        svgComponent={<EnableNotifySvg />}
+                        onClick={handleEnableNotifyButton}
+                      />
+                    ) : (
+                      <StyledButton
+                        value="Cancel"
+                        svgComponent={<CancelNotifySvg />}
+                        transparent
+                        onClick={handleCancelNotifyButton}
+                      />
+                    ))}
+                </WrapperButtons>
+              )}
               {status === 'Free' ? (
                 <StyledButton
                   value="Claim a book"
