@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { Material } from './material.entity';
+import { SearchInput } from '@mimir/global-types';
 import { DonateBookInput } from '@mimir/global-types';
 import { FileService } from '../../file/file.service';
 import { Status } from '../statuses/status.entity';
-import { Material } from './material.entity';
 import { Connection } from 'typeorm';
 import { ErrorBook } from '../../errors';
 import { StatusTypes } from '../../utils/types/statusTypes';
@@ -14,6 +15,21 @@ export class MaterialService {
     private fileService: FileService,
     private connection: Connection
   ) {}
+  async search(searchInput: SearchInput) {
+    const { search, location } = searchInput;
+    if (!search) return null;
+    const data = await Material.createQueryBuilder('material')
+      .leftJoinAndSelect('material.location', 'location')
+      .where(
+        'location.location = :location ' +
+          'AND (material.title ILIKE :text OR material.author ILIKE :text)',
+        { location, text: `%${search}%` }
+      )
+      .getMany();
+    return data.sort((a, b) =>
+      a.title.toLowerCase().localeCompare(b.title.toLowerCase())
+    );
+  }
 
   async donate(donateBookInput: DonateBookInput) {
     const queryRunner = this.connection.createQueryRunner();

@@ -1,0 +1,5 @@
+mutation CreateNotification($input: CreateNotificationInput!) {
+  createNotification(input: $input) {
+    id
+  }
+}
