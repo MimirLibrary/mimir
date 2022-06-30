@@ -1,4 +1,3 @@
-import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import BookInfo from '../components/BookInfo';
 import AllBooksList from '../components/AllBooksList';

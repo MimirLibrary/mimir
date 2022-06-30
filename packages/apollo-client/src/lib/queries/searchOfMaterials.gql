@@ -1,0 +1,15 @@
+query SearchOfMaterials($search: String!, $location: String!){
+  searchOfMaterials(input: {search:$search, location: $location}){
+    title
+    created_at
+    picture
+    author
+    category
+    id
+    statuses {
+      id
+      created_at
+      status
+    }
+  }
+}

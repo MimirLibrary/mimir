@@ -13,11 +13,12 @@ import {
   UpdateMaterialInput,
   RemoveMaterialInput,
   DonateBookInput,
+  SearchInput,
 } from '@mimir/global-types';
 import { Notification } from '../notifications/notification.entity';
+import { MaterialService } from './material.service';
 import { BadRequestException } from '@nestjs/common';
 import { Message } from '../messages/messages.entity';
-import { MaterialService } from './material.service';
 
 @Resolver('Material')
 export class MaterialResolver {
@@ -31,6 +32,11 @@ export class MaterialResolver {
   @Query(() => Material)
   async getMaterialById(@Args('id') id: number | string) {
     return Material.findOneOrFail(id);
+  }
+
+  @Query(() => [Material])
+  async searchOfMaterials(@Args('input') searchInput: SearchInput) {
+    return this.materialService.search(searchInput);
   }
 
   @Mutation(() => Material)
@@ -90,6 +96,7 @@ export class MaterialResolver {
       order: { id: 'ASC' },
     });
   }
+
   @ResolveField(() => [Notification])
   async notifications(@Parent() material: Material) {
     const { id } = material;

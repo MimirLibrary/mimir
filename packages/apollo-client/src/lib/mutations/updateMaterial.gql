@@ -1,5 +1,5 @@
 mutation UpdateMaterial(
-  $identifier: String!  
+  $identifier: String!
   $id_type: String
   $type: String
   $location_id: Int
