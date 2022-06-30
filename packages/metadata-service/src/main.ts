@@ -8,6 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
     {
+      // TODO Use UDS / pipes
       transport: Transport.TCP,
     }
   );

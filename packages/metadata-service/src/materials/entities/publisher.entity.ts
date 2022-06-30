@@ -5,10 +5,10 @@ import { Job } from './job.entity';
 
 @Entity()
 @Index(['name', 'identifier'], { unique: true })
-export class Material extends BaseEntity {
+export class Publisher extends BaseEntity {
   @Column()
   @Index()
-  title: string;
+  name: string;
 
   @Column({
     comment: 'Identifies publishers with the same name',
