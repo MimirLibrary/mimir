@@ -42,11 +42,16 @@ const Description = styled.p`
 
 const FieldDescription = styled.p`
   display: flex;
-
   font-weight: 400;
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
   color: ${colors.main_black};
+`;
+
+const InlineFieldDescription = styled(FieldDescription)`
+  order: 0;
+  flex-grow: 0;
+  flex-basis: auto;
 `;
 
 const WrapperFooter = styled.div`
@@ -66,6 +71,12 @@ const OpenLink = styled.a`
   text-decoration: underline;
 `;
 
+const InlineOpenLink = styled(OpenLink)`
+  order: 1;
+  text-align: center;
+  flex: none;
+`;
+
 const FieldWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -76,6 +87,10 @@ const FieldWrapper = styled.div`
   background: ${colors.bg_fields};
   border-radius: 10px;
 `;
+const InlineWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 
 interface IFieldOpenLinkProps {
   secondary?: boolean;
@@ -83,11 +98,6 @@ interface IFieldOpenLinkProps {
 const FieldOpenLink = styled(OpenLink)<IFieldOpenLinkProps>`
   font-weight: 400;
   color: ${({ secondary }) => (secondary ? colors.red_main : null)};
-`;
-
-const InlineWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
 `;
 
 function renderSwitch(type: ManagerCardTypes) {
@@ -116,14 +126,15 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
           {type === ManagerCardTypes.NOTIFICATIONS ? (
             <>
               <FieldTitle>Problem with iban</FieldTitle>
-              <FieldDescription>
-                Cant scan book
-                clnflwmfmd;lwmd;md;m;ewm;wme;wme;wf;wef;ewmewwewerwewwwewewrw
-                clnflwmfmd;l clnflwmfmd;lwmd;md;m;ewm;wme;wf;wef;ewmf;ew
-                clnflwmfmd;lwmd;md;m;ewm;wme
-              </FieldDescription>
-              <OpenLink>Answer</OpenLink>
-
+              <InlineWrapper>
+                <InlineFieldDescription>
+                  Cant scan book
+                  clnflwmfmd;lwmd;md;m;ewm;wme;wme;wf;wef;ewmewwewerwewwwewewrw
+                  clnflwmfmd;l clnflwmfmd;lwmd;md;m;ewm;wme;wf;wef;ewmf;ew
+                  clnflwmfmd;lwmd;md;m;ewm;wme
+                </InlineFieldDescription>
+                <InlineOpenLink>Answer</InlineOpenLink>
+              </InlineWrapper>
               <FieldOpenLink>Ivan Ivanov</FieldOpenLink>
             </>
           ) : (
