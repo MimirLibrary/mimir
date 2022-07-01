@@ -56,7 +56,7 @@ const HomePage: FC = () => {
   const { data, loading } = useGetAllTakenItemsQuery({
     variables: { person_id: id },
   });
-
+  const Pic = '../../../assets/avatar.jpg';
   if (loading) return <h1>Loading...</h1>;
 
   return (
@@ -84,15 +84,46 @@ const HomePage: FC = () => {
           <CardsWrapper>
             <ManagerInfoCard
               type={ManagerCardTypes.OVERDUE}
-              fields={['haha', ',a,a,', 'ijewf']}
+              fields={[
+                { title: 'Alica in Wonderland', img: Pic, person_id: '1' },
+                { title: 'Alica in Wonderland', img: Pic, person_id: '1' },
+                { title: 'Alica in Wonderland', img: Pic, person_id: '1' },
+              ]}
             />
             <ManagerInfoCard
               type={ManagerCardTypes.DONATES}
-              fields={['haha', ',a,a,', 'ijewf']}
+              fields={[
+                { title: 'Alica in Wonderland', img: Pic, person_id: '1' },
+                { title: 'Alica in Wonderland', img: Pic, person_id: '1' },
+                { title: 'Alica in Wonderland', img: Pic, person_id: '1' },
+                { title: 'Alica in Wonderland', img: Pic, person_id: '1' },
+              ]}
             />
             <ManagerInfoCard
               type={ManagerCardTypes.NOTIFICATIONS}
-              fields={['haha', ',a,a,', 'ijewf']}
+              fields={[
+                {
+                  title: 'Problems with iban',
+                  img: Pic,
+                  person_id: '1',
+                  description:
+                    'lala lalal alallala lalal lla lal lala la   lla lal lala la   lla lal lala la   lla lal lala la   lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la lalla la la lla la la lalallal a',
+                },
+                {
+                  title: 'Problems with iban',
+                  img: Pic,
+                  person_id: '1',
+                  description:
+                    'lala lalal alallala lalal lla lal lala la lalla la la lla la la lalallal a',
+                },
+                {
+                  title: 'Problems with iban',
+                  img: Pic,
+                  person_id: '1',
+                  description:
+                    'lala lalal alallala lalal lla lal lala la lalla la la lla la la lalallal a',
+                },
+              ]}
             />
           </CardsWrapper>
         </>

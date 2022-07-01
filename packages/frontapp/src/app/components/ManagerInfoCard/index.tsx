@@ -1,11 +1,18 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, ReactElement, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { ManagerCardTypes } from '../../../utils/managerCardTypes';
 import { colors, dimensions } from '@mimir/ui-kit';
 
+export interface IField {
+  title: string;
+  description?: string;
+  person_id: string;
+  img: string;
+}
+
 interface IManagerInfoCard {
   type: ManagerCardTypes;
-  fields: string[];
+  fields: IField[];
 }
 
 const WrapperCard = styled.div`
@@ -49,12 +56,14 @@ const FieldDescription = styled.p`
 `;
 
 const InlineFieldDescription = styled(FieldDescription)`
+  width: 90%;
   order: 0;
   flex-grow: 0;
-  flex-basis: auto;
 `;
 
 const WrapperFooter = styled.div`
+  order: 4;
+  flex-grow: 0;
   display: flex;
   flex-direction: row;
   buttom: 10px;
@@ -72,15 +81,21 @@ const OpenLink = styled.a`
 `;
 
 const InlineOpenLink = styled(OpenLink)`
-  order: 1;
-  text-align: center;
   flex: none;
+  position: absolute;
+  right: 71px;
+  order: 1;
+  flex-grow: 0;
+  text-align: center;
 `;
 
 const FieldWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  flex: none;
+  order: 3;
+  flex-grow: 0;
   height: auto;
   padding: 16px 0px 16px 16px;
   gap: 8px;
@@ -98,6 +113,27 @@ interface IFieldOpenLinkProps {
 const FieldOpenLink = styled(OpenLink)<IFieldOpenLinkProps>`
   font-weight: 400;
   color: ${({ secondary }) => (secondary ? colors.red_main : null)};
+`;
+
+const StyledIcon = styled.img`
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid ${colors.bg_secondary};
+  position: relative;
+  :nth-child(2) {
+    left: -16px;
+  }
+  :nth-child(3) {
+    left: -32px;
+  }
+`;
+const NotificationDescription = styled(FieldDescription)`
+  position: relative;
+  font-weight: 500;
+  font-size: 14px;
+  left: -16px;
+  align-self: center;
 `;
 
 function renderSwitch(type: ManagerCardTypes) {
@@ -125,13 +161,10 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
         <FieldWrapper>
           {type === ManagerCardTypes.NOTIFICATIONS ? (
             <>
-              <FieldTitle>Problem with iban</FieldTitle>
+              <FieldTitle>{field.title}</FieldTitle>
               <InlineWrapper>
                 <InlineFieldDescription>
-                  Cant scan book
-                  clnflwmfmd;lwmd;md;m;ewm;wme;wme;wf;wef;ewmewwewerwewwwewewrw
-                  clnflwmfmd;l clnflwmfmd;lwmd;md;m;ewm;wme;wf;wef;ewmf;ew
-                  clnflwmfmd;lwmd;md;m;ewm;wme
+                  {field.description}
                 </InlineFieldDescription>
                 <InlineOpenLink>Answer</InlineOpenLink>
               </InlineWrapper>
@@ -139,7 +172,7 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
             </>
           ) : (
             <>
-              <FieldTitle>Alice in Wonderland</FieldTitle>
+              <FieldTitle>{field.title}</FieldTitle>
 
               {type === ManagerCardTypes.OVERDUE ? (
                 <InlineWrapper>
@@ -157,7 +190,18 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
         </FieldWrapper>
       ))}
       <WrapperFooter>
-        <p>pictures will be here</p>
+        <>
+          <InlineWrapper>
+            {fields.slice(0, 3).map((field) => (
+              <StyledIcon src={field.img}></StyledIcon>
+            ))}
+            {fields.length > 3 ? (
+              <NotificationDescription>
+                {`+ ${fields.length - 3} more`}
+              </NotificationDescription>
+            ) : null}
+          </InlineWrapper>
+        </>
         <OpenLink>{`See all ${
           type === ManagerCardTypes.OVERDUE
             ? 'overdues'
