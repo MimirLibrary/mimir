@@ -57,6 +57,35 @@ const HomePage: FC = () => {
     variables: { person_id: id },
   });
   const Pic = '../../../assets/avatar.jpg';
+  const managerData = [
+    {
+      title: 'Alica in Wonderland',
+      img: Pic,
+      person_id: '1',
+      created_at: '2022-06-01 10:45:09.999641',
+      description:
+        '1lala lalal alallala lalal lla lal lala la   lla lal lala la   lla lal lala la   lla lal lala la   lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la lalla la la lla la la lalallal a',
+    },
+    {
+      title: 'Alica in Wonderland',
+      img: Pic,
+      person_id: '1',
+      created_at: '2022-08-04 10:45:09.999641',
+      description:
+        '3lala lalal alallala lalal lla lal lala la   lla lal lala la   lla lal lala la   lla lal lala la   lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la lalla la la lla la la lalallal a',
+    },
+    {
+      title: 'Alica in Wonderland',
+      img: Pic,
+      person_id: '1',
+      created_at: '2022-08-01 10:45:09.999641',
+      description:
+        '2lala lalal alallala lalal lla lal lala la   lla lal lala la   lla lal lala la   lla lal lala la   lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la lalla la la lla la la lalallal a',
+    },
+  ].sort((a, b) =>
+    a.created_at > b.created_at ? 1 : b.created_at > a.created_at ? -1 : 0
+  );
+
   if (loading) return <h1>Loading...</h1>;
 
   return (
@@ -84,46 +113,15 @@ const HomePage: FC = () => {
           <CardsWrapper>
             <ManagerInfoCard
               type={ManagerCardTypes.OVERDUE}
-              fields={[
-                { title: 'Alica in Wonderland', img: Pic, person_id: '1' },
-                { title: 'Alica in Wonderland', img: Pic, person_id: '1' },
-                { title: 'Alica in Wonderland', img: Pic, person_id: '1' },
-              ]}
+              fields={managerData}
             />
             <ManagerInfoCard
               type={ManagerCardTypes.DONATES}
-              fields={[
-                { title: 'Alica in Wonderland', img: Pic, person_id: '1' },
-                { title: 'Alica in Wonderland', img: Pic, person_id: '1' },
-                { title: 'Alica in Wonderland', img: Pic, person_id: '1' },
-                { title: 'Alica in Wonderland', img: Pic, person_id: '1' },
-              ]}
+              fields={managerData}
             />
             <ManagerInfoCard
               type={ManagerCardTypes.NOTIFICATIONS}
-              fields={[
-                {
-                  title: 'Problems with iban',
-                  img: Pic,
-                  person_id: '1',
-                  description:
-                    'lala lalal alallala lalal lla lal lala la   lla lal lala la   lla lal lala la   lla lal lala la   lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la lalla la la lla la la lalallal a',
-                },
-                {
-                  title: 'Problems with iban',
-                  img: Pic,
-                  person_id: '1',
-                  description:
-                    'lala lalal alallala lalal lla lal lala la lalla la la lla la la lalallal a',
-                },
-                {
-                  title: 'Problems with iban',
-                  img: Pic,
-                  person_id: '1',
-                  description:
-                    'lala lalal alallala lalal lla lal lala la lalla la la lla la la lalallal a',
-                },
-              ]}
+              fields={managerData}
             />
           </CardsWrapper>
         </>
