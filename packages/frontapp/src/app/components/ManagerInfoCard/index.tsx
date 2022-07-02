@@ -152,9 +152,8 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
   useEffect(() => {
     setDescription(renderSwitch(type));
   }, []);
-  console.log(fields);
   return (
-    <WrapperCard style={{ gridArea: type }}>
+    <WrapperCard>
       <Title>{type.split('_').join(' ') + ` — (${fields.length})`}</Title>
       <Description>{description}</Description>
       {fields.slice(0, 3).map((field, key) => (

@@ -40,15 +40,15 @@ const Wrapper = styled.div`
 
 const CardsWrapper = styled.div`
   padding-top: 58px;
-  display: grid;
-  width: auto;
-  grid-template-areas:
-    '${ManagerCardTypes.OVERDUE} ${ManagerCardTypes.DONATES}'
-    '${ManagerCardTypes.NOTIFICATIONS} ${ManagerCardTypes.NOTIFICATIONS}';
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 467px 587px;
-  grid-column-gap: 18px;
-  grid-row-gap: 30px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 30px;
+`;
+
+const OverdueDonatesWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  column-gap: 18px;
 `;
 
 const HomePage: FC = () => {
@@ -73,6 +73,14 @@ const HomePage: FC = () => {
       created_at: '2022-08-04 10:45:09.999641',
       description:
         '3lala lalal alallala lalal lla lal lala la   lla lal lala la   lla lal lala la   lla lal lala la   lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la lalla la la lla la la lalallal a',
+    },
+    {
+      title: 'Alica in Wonderland',
+      img: Pic,
+      person_id: '1',
+      created_at: '2022-08-01 10:45:09.999641',
+      description:
+        '2lala lalal alallala lalal lla lal lala la   lla lal lala la   lla lal lala la   lla lal lala la   lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la lalla la la lla la la lalallal a',
     },
     {
       title: 'Alica in Wonderland',
@@ -111,14 +119,16 @@ const HomePage: FC = () => {
             <Button value={'Open library statistics'} />
           </ButtonWrapper>
           <CardsWrapper>
-            <ManagerInfoCard
-              type={ManagerCardTypes.OVERDUE}
-              fields={managerData}
-            />
-            <ManagerInfoCard
-              type={ManagerCardTypes.DONATES}
-              fields={managerData}
-            />
+            <OverdueDonatesWrapper>
+              <ManagerInfoCard
+                type={ManagerCardTypes.OVERDUE}
+                fields={managerData}
+              />
+              <ManagerInfoCard
+                type={ManagerCardTypes.DONATES}
+                fields={managerData}
+              />
+            </OverdueDonatesWrapper>
             <ManagerInfoCard
               type={ManagerCardTypes.NOTIFICATIONS}
               fields={managerData}
