@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { ManagerCardTypes } from '../../../utils/managerCardTypes';
 import { colors, dimensions } from '@mimir/ui-kit';
@@ -20,6 +20,7 @@ const WrapperCard = styled.div`
   flex-direction: column;
   justify-content: space-between;
   background: ${colors.bg_secondary};
+  height: inherit;
   width: 100%;
   box-shadow: 0px 10px 70px rgba(26, 30, 214, 0.08);
   border-radius: 10px;
@@ -66,7 +67,7 @@ const WrapperFooter = styled.div`
   flex-grow: 0;
   display: flex;
   flex-direction: row;
-  buttom: 10px;
+  bottom: 10px;
   justify-content: space-between;
 `;
 const OpenLink = styled.a`

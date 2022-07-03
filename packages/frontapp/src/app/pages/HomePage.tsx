@@ -45,8 +45,13 @@ const CardsWrapper = styled.div`
   row-gap: 30px;
 `;
 
+const NotificationsWrapper = styled.div`
+  height: 587px;
+`;
+
 const OverdueDonatesWrapper = styled.div`
   display: flex;
+  height: 467px;
   flex-direction: row;
   column-gap: 18px;
 `;
@@ -129,10 +134,12 @@ const HomePage: FC = () => {
                 fields={managerData}
               />
             </OverdueDonatesWrapper>
-            <ManagerInfoCard
-              type={ManagerCardTypes.NOTIFICATIONS}
-              fields={managerData}
-            />
+            <NotificationsWrapper>
+              <ManagerInfoCard
+                type={ManagerCardTypes.NOTIFICATIONS}
+                fields={managerData}
+              />
+            </NotificationsWrapper>
           </CardsWrapper>
         </>
       )}
