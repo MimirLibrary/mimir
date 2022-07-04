@@ -34,6 +34,7 @@ const Description = styled.p`
   color: ${colors.main_black};
   margin-bottom: ${dimensions.base};
   text-align: center;
+  width: 100%;
 
   span {
     color: ${colors.accent_color};
@@ -41,6 +42,7 @@ const Description = styled.p`
 `;
 
 const StyledButton = styled(Button)`
+  width: 50%;
   :first-of-type {
     margin-right: ${dimensions.base};
   }
@@ -52,13 +54,13 @@ const WrapperInfo = styled.div`
   align-items: center;
   flex-direction: column;
 
-  max-width: 346px;
+  max-width: 551px;
   width: 100%;
 `;
 
-const WrapperButtons = styled.div`
+const WrapperButtons = styled.div<{ active: boolean }>`
   display: flex;
-  justify-content: space-between;
+  justify-content: ${(props) => (props.active ? 'space-between' : 'center')};
   align-items: center;
   width: 100%;
   margin-top: ${dimensions.base_2};
@@ -70,6 +72,7 @@ interface IPropsErrorMessage {
   title: string;
   onClick?: () => void;
   titleCancel: string;
+  activeAskManager?: boolean;
 }
 
 const ErrorMessage: FC<IPropsErrorMessage> = ({
@@ -78,6 +81,7 @@ const ErrorMessage: FC<IPropsErrorMessage> = ({
   title,
   onClick,
   titleCancel,
+  activeAskManager = true,
 }) => {
   const closeModal = () => {
     setActive(false);
@@ -95,13 +99,15 @@ const ErrorMessage: FC<IPropsErrorMessage> = ({
             <img src={claimPicture} alt="error to claim" />
           </div>
         </WrapperInfo>
-        <WrapperButtons>
+        <WrapperButtons active={activeAskManager}>
           <StyledButton value="Ok" onClick={closeModal} />
-          <StyledButton
-            value={titleCancel || 'Cancel'}
-            transparent
-            onClick={onClick}
-          />
+          {activeAskManager && (
+            <StyledButton
+              value={titleCancel || 'Cancel'}
+              transparent
+              onClick={onClick}
+            />
+          )}
         </WrapperButtons>
       </WrapperErrorClaim>
     </Wrapper>

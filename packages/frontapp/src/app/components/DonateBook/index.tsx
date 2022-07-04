@@ -4,7 +4,10 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { ReactComponent as PhotoIcon } from '../../../assets/Photo.svg';
-import { useDonateBookMutation } from '@mimir/apollo-client';
+import {
+  GetMaterialByIdentifierQuery,
+  useDonateBookMutation,
+} from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import Button from '../Button';
 import Modal from '../Modal';
@@ -199,11 +202,15 @@ interface IDataOfBook {
   identifier: string;
 }
 
-const DonateBook: FC = () => {
+interface IPropsDonateBook {
+  data: GetMaterialByIdentifierQuery;
+}
+const DonateBook: FC<IPropsDonateBook> = ({ data }) => {
+  const { identifier } = useAppSelector((state) => state.identifier);
   const ref = useRef<HTMLInputElement | null>(null);
   const { id, location } = useAppSelector((state) => state.user);
   const [file, setFile] = useState<File | null>(null);
-  const [picture, setPicture] = useState('');
+  const [pictureOfCover, setPictureOfCover] = useState('');
   const [isSuccess, setSuccess] = useState<boolean>(false);
   const [description, setDescription] = useState<string>('');
   const [dataOfBook, setDataOfBook] = useState<IDataOfBook>({
@@ -212,6 +219,13 @@ const DonateBook: FC = () => {
     title: '',
     identifier: '',
   });
+
+  useEffect(() => {
+    if (data) {
+      const { author, title, picture, category } = data.getMaterialByIdentifier;
+      setDataOfBook({ title, genre: category, author, identifier });
+    }
+  }, []);
 
   const [donateBook, { error }] = useDonateBookMutation();
 
@@ -242,7 +256,7 @@ const DonateBook: FC = () => {
         `${process.env['NX_API_ROOT_URL']}/api/file/create`,
         formData
       );
-      setPicture(response.data);
+      setPictureOfCover(response.data);
     } catch (e) {
       if (e instanceof Error) {
         toast.error(e.message);
@@ -261,13 +275,13 @@ const DonateBook: FC = () => {
   useEffect(() => {
     const operationWithFiles = async () => {
       const formData = new FormData();
-      if (file && !picture) {
+      if (file && !pictureOfCover) {
         formData.append('file', file);
         await getFile(formData);
       }
-      if (picture) {
+      if (pictureOfCover) {
         formData.append('file', file!);
-        await deleteFile(picture);
+        await deleteFile(pictureOfCover);
         await getFile(formData);
         formData.delete('file');
       }
@@ -302,7 +316,7 @@ const DonateBook: FC = () => {
       await donateBook({
         variables: {
           person_id: id,
-          picture,
+          picture: pictureOfCover,
           title,
           author,
           identifier,
@@ -317,7 +331,7 @@ const DonateBook: FC = () => {
     } catch (e) {
       console.log(e);
     } finally {
-      setPicture('');
+      setPictureOfCover('');
       setFile(null);
       setDescription('');
       setDataOfBook({ genre: '', title: '', author: '', identifier: '' });
@@ -331,12 +345,14 @@ const DonateBook: FC = () => {
           <WrapperMainInfo>
             <WrapperWithoutButtons>
               <div>
-                {picture ? (
+                {pictureOfCover ? (
                   <div>
                     <StyledImg
                       onClick={() => ref?.current?.click()}
-                      src={process.env['NX_API_ROOT_URL'] + '/' + picture}
-                      alt="material picture"
+                      src={
+                        process.env['NX_API_ROOT_URL'] + '/' + pictureOfCover
+                      }
+                      alt="material pictureOfСover"
                     />
                     <input
                       type="file"
