@@ -38,6 +38,12 @@
         "lintFilePatterns": ["packages/metadata-service/**/*.ts"]
       }
     },
+    "migrate": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "ts-node"
+      }
+    },
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/packages/metadata-service"],

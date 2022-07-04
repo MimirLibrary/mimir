@@ -1,20 +1,50 @@
-import { Column, Entity, Index, OneToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  OneToOne,
+  ManyToMany,
+  JoinTable,
+  ManyToOne,
+} from 'typeorm';
 
+import { Author } from './author.entity';
 import { BaseEntity } from './base.entity';
 import { Job } from './job.entity';
+import { Publisher } from './publisher.entity';
 
 @Entity()
-@Index(['name', 'identifier'], { unique: true })
 export class Material extends BaseEntity {
   @Column()
   @Index()
   title: string;
 
+  @Column()
+  description: string;
+
+  @ManyToMany(() => Author)
+  @JoinTable()
+  authors: Array<Author>;
+
+  @ManyToOne(() => Publisher)
+  publisher: Publisher;
+
   @Column({
-    comment: 'Identifies publishers with the same name',
+    type: 'smallint',
+    unsigned: true,
+    comment: 'Year published',
   })
-  @Index()
-  identifier: string;
+  yearPublishedAt: number;
+
+  @Column({
+    type: 'smallint',
+    unsigned: true,
+    comment: 'Month published',
+  })
+  monthPublishedAt: number;
+
+  @Column()
+  cover: string;
 
   @Column({
     type: 'jsonb',
