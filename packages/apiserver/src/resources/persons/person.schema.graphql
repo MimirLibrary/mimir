@@ -18,7 +18,7 @@ input CreatePersonInput {
 
 extend type Query {
   getOnePerson(id: ID!): Person!
-  getAllPersons: [Person]!
+  getAllPersons: [Person!]!
 }
 
 extend type Mutation {
