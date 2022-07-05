@@ -1,0 +1,15 @@
+{
+  "name": "mimir",
+  "version": "0.0.0",
+  "license": "MIT",
+  "authors": "See commit history",
+  "version": "0.0.0",
+  "scripts": {
+    "typeorm": "typeorm-ts-node-esm",
+    "typeorm:cli": "ts-node --project ./tsconfig.app.json ../../node_modules/typeorm/cli --config ./src/ormconfig.ts",
+    "migration:generate": "npm run typeorm:cli -- migration:generate -n rename-me",
+    "migration:create": "npm run typeorm:cli -- migration:create -n rename-me",
+    "migration:run": "npm run typeorm:cli -- migration:run"
+  },
+  "dependencies": {}
+}
