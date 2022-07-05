@@ -73,6 +73,7 @@ interface IPropsErrorMessage {
   onClick?: () => void;
   titleCancel: string;
   activeAskManager?: boolean;
+  showContentOfDonate?: () => void;
 }
 
 const ErrorMessage: FC<IPropsErrorMessage> = ({
@@ -82,9 +83,13 @@ const ErrorMessage: FC<IPropsErrorMessage> = ({
   onClick,
   titleCancel,
   activeAskManager = true,
+  showContentOfDonate,
 }) => {
   const closeModal = () => {
     setActive(false);
+    if (showContentOfDonate) {
+      showContentOfDonate();
+    }
   };
 
   return (

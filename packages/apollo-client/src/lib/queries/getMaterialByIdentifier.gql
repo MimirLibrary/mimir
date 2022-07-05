@@ -1,5 +1,7 @@
-query GetMaterialByIdentifier($identifier: String!, $location_id: Int!){
-  getMaterialByIdentifier(input: {identifier: $identifier, location_id: $location_id}){
+query GetMaterialByIdentifier($identifier: String!, $location_id: Int!) {
+  getMaterialByIdentifier(
+    input: { identifier: $identifier, location_id: $location_id }
+  ) {
     picture
     author
     title

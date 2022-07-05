@@ -109,12 +109,11 @@ const DonateViaISBN = () => {
           <ISBNWrapper>
             <WrapperInputStyled>
               <InputStyledMask
-                type="text"
-                mask="***-*-***-*****-*"
+                mask="999-9-999-99999-9"
                 value={valueOfISBN}
                 onChange={handelChangeInput}
                 required
-                placeholder="_ _ _ - _ - _ _ - _ _ _ _ _ _ - _ "
+                placeholder="Enter ISBN"
               />
             </WrapperInputStyled>
             <ButtonScanner

@@ -12,6 +12,8 @@ import { useAppSelector } from '../../hooks/useTypedSelector';
 import Button from '../Button';
 import Modal from '../Modal';
 import SuccessMessage from '../SuccesMessage';
+import AskManagerForm from '../AskManagerForm';
+import ErrorMessage from '../ErrorMessge';
 
 const WrapperDonate = styled.section`
   background-color: ${colors.bg_secondary};
@@ -203,16 +205,18 @@ interface IDataOfBook {
 }
 
 interface IPropsDonateBook {
-  data: GetMaterialByIdentifierQuery;
+  data?: GetMaterialByIdentifierQuery;
+  onHideContent: () => void;
 }
-const DonateBook: FC<IPropsDonateBook> = ({ data }) => {
-  const { identifier } = useAppSelector((state) => state.identifier);
+const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
   const ref = useRef<HTMLInputElement | null>(null);
   const { id, location } = useAppSelector((state) => state.user);
   const [file, setFile] = useState<File | null>(null);
   const [pictureOfCover, setPictureOfCover] = useState('');
   const [isSuccess, setSuccess] = useState<boolean>(false);
   const [description, setDescription] = useState<string>('');
+  const [isAskManager, setIsAskManager] = useState<boolean>(false);
+  const [sendManagerSuccess, setSendManagerSuccess] = useState<boolean>(false);
   const [dataOfBook, setDataOfBook] = useState<IDataOfBook>({
     author: '',
     genre: '',
@@ -220,14 +224,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data }) => {
     identifier: '',
   });
 
-  useEffect(() => {
-    if (data) {
-      const { author, title, picture, category } = data.getMaterialByIdentifier;
-      setDataOfBook({ title, genre: category, author, identifier });
-    }
-  }, []);
-
-  const [donateBook, { error }] = useDonateBookMutation();
+  const [donateBook, { error, data: donateData }] = useDonateBookMutation();
 
   const isInvalid =
     !dataOfBook.author ||
@@ -265,6 +262,19 @@ const DonateBook: FC<IPropsDonateBook> = ({ data }) => {
   };
 
   useEffect(() => {
+    if (data) {
+      const { author, title, picture, category } = data.getMaterialByIdentifier;
+      setDataOfBook({
+        title,
+        genre: category,
+        author,
+        identifier: '12345678910',
+      });
+      if (picture) setPictureOfCover(picture);
+    }
+  }, []);
+
+  useEffect(() => {
     if (error) {
       toast.error(error.message, {
         style: { backgroundColor: '#FFF5F5' },
@@ -289,6 +299,12 @@ const DonateBook: FC<IPropsDonateBook> = ({ data }) => {
     operationWithFiles();
   }, [file]);
 
+  useEffect(() => {
+    if (donateData) {
+      setSuccess(true);
+    }
+  }, [donateData]);
+
   const handleChangeFile = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const fileList = e.target.files;
@@ -309,6 +325,10 @@ const DonateBook: FC<IPropsDonateBook> = ({ data }) => {
     setDescription(e.target.value);
   };
 
+  const handleShowAskManagerForm = useCallback(() => {
+    setIsAskManager(true);
+  }, []);
+
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
@@ -327,7 +347,6 @@ const DonateBook: FC<IPropsDonateBook> = ({ data }) => {
           id_type: 'ISBN',
         },
       });
-      setSuccess(true);
     } catch (e) {
       console.log(e);
     } finally {
@@ -352,7 +371,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data }) => {
                       src={
                         process.env['NX_API_ROOT_URL'] + '/' + pictureOfCover
                       }
-                      alt="material pictureOfСover"
+                      alt="material pictureOfCover"
                     />
                     <input
                       type="file"
@@ -447,7 +466,11 @@ const DonateBook: FC<IPropsDonateBook> = ({ data }) => {
                 disabled={isInvalid}
                 type="submit"
               />
-              <StyledButton value="Ask a manger" transparent />
+              <StyledButton
+                value="Ask a manger"
+                transparent
+                onClick={handleShowAskManagerForm}
+              />
             </WrapperButtons>
           </WrapperMainInfo>
           <WrapperDescription>
@@ -469,6 +492,22 @@ const DonateBook: FC<IPropsDonateBook> = ({ data }) => {
           setActive={setSuccess}
           title="You have successfully donated to the library"
           description="Put the book on the nearest free space on the shelf. In case of any problems, our manager will contact you"
+          onCloseContentDonate={onHideContent}
+        />
+      </Modal>
+      <Modal active={isAskManager} setActive={setIsAskManager}>
+        <AskManagerForm
+          setActive={setIsAskManager}
+          setSuccessModal={setSendManagerSuccess}
+        />
+      </Modal>
+      <Modal active={sendManagerSuccess} setActive={setSendManagerSuccess}>
+        <ErrorMessage
+          title="We reported the problem to the manager"
+          message="The problem will be solved soon"
+          titleCancel="Ok"
+          setActive={setSendManagerSuccess}
+          activeAskManager={false}
         />
       </Modal>
     </>

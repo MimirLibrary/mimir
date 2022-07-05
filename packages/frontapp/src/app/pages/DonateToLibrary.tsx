@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
+import { Oval } from 'react-loader-spinner';
 import DonateBook from '../components/DonateBook';
 import DonateViaISBN from '../components/DonateViaISBN';
+import ErrorMessage from '../components/ErrorMessge';
+import Modal from '../components/Modal';
 import { useAppSelector } from '../hooks/useTypedSelector';
-import { ReactComponent as ArrowIcon } from '../../assets/ArrowUp2.svg';
 import { useDispatch } from 'react-redux';
 import { removeIdentifier } from '../store/slices/identifierSlice';
 import { useGetMaterialByIdentifierQuery } from '@mimir/apollo-client';
-import Modal from '../components/Modal';
-import ErrorMessage from '../components/ErrorMessge';
+import { ReactComponent as ArrowIcon } from '../../assets/ArrowUp2.svg';
 
 const Wrapper = styled.section``;
 
@@ -47,25 +48,55 @@ const BackSpan = styled.div`
   color: #000000;
   cursor: pointer;
 `;
+
+const WrapperLoader = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 const DonateToLibrary = () => {
   const dispatch = useDispatch();
   const { identifier } = useAppSelector((state) => state.identifier);
   const { location } = useAppSelector((state) => state.user);
   const [isShowError, setIsShowError] = useState<boolean>(false);
+  const [showEmptyContentDonate, setShowEmptyContentDonate] =
+    useState<boolean>(false);
 
-  const material = useGetMaterialByIdentifierQuery({
+  const { data, loading, error } = useGetMaterialByIdentifierQuery({
     skip: !identifier,
     variables: {
       identifier: String(identifier.split('-').join('')),
       location_id: Number(location.id),
     },
+    fetchPolicy: 'no-cache',
   });
 
   useEffect(() => {
-    if (material.error) {
+    return () => {
+      if (identifier) dispatch(removeIdentifier());
+    };
+  }, [identifier]);
+
+  useEffect(() => {
+    if (error) {
       setIsShowError(true);
     }
-  }, [material.error]);
+  }, [error]);
+
+  useEffect(() => {
+    if (data) {
+      setShowEmptyContentDonate(true);
+    }
+  }, [data]);
+
+  const handleCloseContentOfDonate = useCallback(() => {
+    dispatch(removeIdentifier());
+    setShowEmptyContentDonate(false);
+  }, [dispatch]);
+
+  const showContentOfDonate = useCallback(() => {
+    setShowEmptyContentDonate(true);
+  }, []);
 
   return (
     <>
@@ -77,14 +108,33 @@ const DonateToLibrary = () => {
           <SubTitle>
             Fill in the required* fields or try to scan the code
           </SubTitle>
-          {material.data && (
-            <BackSpan onClick={() => dispatch(removeIdentifier())}>
+          {showEmptyContentDonate && (
+            <BackSpan onClick={handleCloseContentOfDonate}>
               <ArrowIcon /> Back
             </BackSpan>
           )}
-          {!material.data && <DonateViaISBN />}
         </WrapperInfo>
-        {material.data && <DonateBook data={material?.data} />}
+        {loading ? (
+          <WrapperLoader>
+            <Oval
+              ariaLabel="loading-indicator"
+              height={100}
+              width={100}
+              strokeWidth={5}
+              strokeWidthSecondary={1}
+              color="blue"
+              secondaryColor="white"
+            />
+          </WrapperLoader>
+        ) : (
+          !showEmptyContentDonate && <DonateViaISBN />
+        )}
+        {data && showEmptyContentDonate && (
+          <DonateBook data={data} onHideContent={handleCloseContentOfDonate} />
+        )}
+        {!data && showEmptyContentDonate && (
+          <DonateBook onHideContent={handleCloseContentOfDonate} />
+        )}
       </Wrapper>
       <Modal active={isShowError} setActive={setIsShowError}>
         <ErrorMessage
@@ -94,6 +144,7 @@ const DonateToLibrary = () => {
           title="ISBN is not known"
           titleCancel="Ok"
           activeAskManager={false}
+          showContentOfDonate={showContentOfDonate}
         />
       </Modal>
     </>

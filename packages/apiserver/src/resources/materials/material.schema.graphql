@@ -33,7 +33,7 @@ input RemoveMaterialInput {
   type: String!
 }
 
-input SearchOneMaterial{
+input SearchOneMaterial {
   identifier: String!
   location_id: Int!
 }
@@ -62,7 +62,7 @@ input DonateBookInput {
   person_id: Int!
 }
 
-input SearchInput{
+input SearchInput {
   search: String!
   location: String!
 }
@@ -79,5 +79,4 @@ extend type Mutation {
   removeMaterial(input: RemoveMaterialInput!): Material!
   updateMaterial(input: UpdateMaterialInput!): Material!
   donateBook(input: DonateBookInput!): Material!
-
 }

@@ -50,6 +50,7 @@ interface IPropsSuccessClaim {
   title: string;
   created_at?: Date;
   description?: string;
+  onCloseContentDonate?: () => void;
 }
 
 const SuccessMessage: FC<IPropsSuccessClaim> = ({
@@ -57,9 +58,13 @@ const SuccessMessage: FC<IPropsSuccessClaim> = ({
   title,
   created_at,
   description,
+  onCloseContentDonate,
 }) => {
   const closeModal = () => {
     setActive(false);
+    if (onCloseContentDonate) {
+      onCloseContentDonate();
+    }
   };
 
   const { returnDate } = getDates(created_at!);
