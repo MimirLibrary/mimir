@@ -1,0 +1,57 @@
+{
+  "sourceRoot": "packages/metadata-service/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/metadata-service",
+        "main": "packages/metadata-service/src/main.ts",
+        "tsConfig": "packages/metadata-service/tsconfig.app.json",
+        "assets": ["packages/metadata-service/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "packages/metadata-service/src/environments/environment.ts",
+              "with": "packages/metadata-service/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "buildTarget": "metadata-service:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/metadata-service/**/*.ts"]
+      }
+    },
+    "migrate": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "ts-node"
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/metadata-service"],
+      "options": {
+        "jestConfig": "packages/metadata-service/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
