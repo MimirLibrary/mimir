@@ -34,7 +34,6 @@ const Description = styled.p`
   color: ${colors.main_black};
   margin-bottom: ${dimensions.base};
   text-align: center;
-
   span {
     color: ${colors.accent_color};
   }
@@ -52,7 +51,7 @@ const WrapperInfo = styled.div`
   align-items: center;
   flex-direction: column;
 
-  max-width: 346px;
+  max-width: 446px;
   width: 100%;
 `;
 
@@ -70,6 +69,7 @@ interface IPropsErrorMessage {
   title: string;
   onClick?: () => void;
   titleCancel: string;
+  titleOption?: string;
 }
 
 const ErrorMessage: FC<IPropsErrorMessage> = ({
@@ -78,6 +78,7 @@ const ErrorMessage: FC<IPropsErrorMessage> = ({
   title,
   onClick,
   titleCancel,
+  titleOption,
 }) => {
   const closeModal = () => {
     setActive(false);
@@ -96,11 +97,11 @@ const ErrorMessage: FC<IPropsErrorMessage> = ({
           </div>
         </WrapperInfo>
         <WrapperButtons>
-          <StyledButton value="Ok" onClick={closeModal} />
+          <StyledButton value={titleOption || 'Ok'} onClick={onClick} />
           <StyledButton
             value={titleCancel || 'Cancel'}
             transparent
-            onClick={onClick}
+            onClick={closeModal}
           />
         </WrapperButtons>
       </WrapperErrorClaim>
