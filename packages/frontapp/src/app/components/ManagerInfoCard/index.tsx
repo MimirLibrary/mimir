@@ -23,7 +23,7 @@ const WrapperCard = styled.div`
   background: ${colors.bg_secondary};
   height: inherit;
   width: 100%;
-  box-shadow: 0px 10px 70px rgba(26, 30, 214, 0.08);
+  box-shadow: ${colors.shadow};
   border-radius: 10px;
   padding: 24px 24px 28px 24px;
 `;
