@@ -1,7 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { ManagerCardTypes } from '../../../utils/managerCardTypes';
+import { ManagerCardTypes } from './managerCardTypes';
 import { colors, dimensions } from '@mimir/ui-kit';
+import { t } from 'i18next';
 
 export interface IField {
   title: string;
@@ -113,7 +114,7 @@ interface IFieldOpenLinkProps {
 }
 const FieldOpenLink = styled(OpenLink)<IFieldOpenLinkProps>`
   font-weight: 400;
-  color: ${({ secondary }) => (secondary ? colors.red_main : null)};
+  color: ${({ secondary }) => (secondary ? colors.problem_red : null)};
 `;
 
 const StyledIcon = styled.img`
@@ -140,11 +141,11 @@ const NotificationDescription = styled(FieldDescription)`
 function renderSwitch(type: ManagerCardTypes) {
   switch (type) {
     case ManagerCardTypes.OVERDUE:
-      return 'The following users have not turned in their books';
+      return t('The following users have not turned in their books');
     case ManagerCardTypes.DONATES:
-      return 'New arrivals awaiting your confirmation';
+      return t('New arrivals awaiting your confirmation');
     case ManagerCardTypes.NOTIFICATIONS:
-      return 'Problems faced by users';
+      return t('Problems faced by users');
   }
 }
 
@@ -155,7 +156,7 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
   }, []);
   return (
     <WrapperCard>
-      <Title>{type.split('_').join(' ') + ` — (${fields.length})`}</Title>
+      <Title>{t(type.split('_').join(' ') + ` — (${fields.length})`)}</Title>
       <Description>{description}</Description>
       {fields.slice(0, 3).map((field, key) => (
         <FieldWrapper>
@@ -166,7 +167,7 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
                 <InlineFieldDescription>
                   {field.description}
                 </InlineFieldDescription>
-                <InlineOpenLink>Answer</InlineOpenLink>
+                <InlineOpenLink>{t('Answer')}</InlineOpenLink>
               </InlineWrapper>
               <FieldOpenLink>Ivan Ivanov</FieldOpenLink>
             </>
@@ -176,12 +177,12 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
 
               {type === ManagerCardTypes.OVERDUE ? (
                 <InlineWrapper>
-                  <FieldDescription>Was overdue by</FieldDescription>
+                  <FieldDescription>{t('Was overdue by')}</FieldDescription>
                   <FieldOpenLink secondary>Ivan Ivanov</FieldOpenLink>
                 </InlineWrapper>
               ) : (
                 <InlineWrapper>
-                  <FieldDescription>Was donated by</FieldDescription>
+                  <FieldDescription>{t('Was donated by')}</FieldDescription>
                   <FieldOpenLink>Ivan Ivanov</FieldOpenLink>
                 </InlineWrapper>
               )}
@@ -202,13 +203,17 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
             ) : null}
           </InlineWrapper>
         </>
-        <OpenLink>{`See all ${
-          type === ManagerCardTypes.OVERDUE
-            ? 'overdues'
-            : type === ManagerCardTypes.DONATES
-            ? 'donates'
-            : 'notifications'
-        }`}</OpenLink>
+        <OpenLink>
+          {t(
+            `See all ${
+              type === ManagerCardTypes.OVERDUE
+                ? 'overdues'
+                : type === ManagerCardTypes.DONATES
+                ? 'donates'
+                : 'notifications'
+            }`
+          )}
+        </OpenLink>
       </WrapperFooter>
     </WrapperCard>
   );

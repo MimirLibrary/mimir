@@ -10,8 +10,9 @@ import { useGetAllTakenItemsQuery } from '@mimir/apollo-client';
 import { useAppSelector } from '../hooks/useTypedSelector';
 import { RolesTypes } from '../../utils/rolesTypes';
 import ManagerInfoCard from '../components/ManagerInfoCard';
-import { ManagerCardTypes } from '../../utils/managerCardTypes';
+import { ManagerCardTypes } from '../components/ManagerInfoCard/managerCardTypes';
 import Button from '../components/Button';
+import { t } from 'i18next';
 
 const WrapperHome = styled.div`
   @media (max-width: ${dimensions.tablet_width}) {
@@ -121,7 +122,7 @@ const HomePage: FC = () => {
       ) : (
         <>
           <ButtonWrapper>
-            <Button value={'Open library statistics'} />
+            <Button value={t(`Open library statistics`)} />
           </ButtonWrapper>
           <CardsWrapper>
             <OverdueDonatesWrapper>
