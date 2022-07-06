@@ -13,4 +13,5 @@ export const colors = {
   bg_primary: '#F9FAFF',
   bg_secondary: '#FFFFFF',
   free_book: '#2AA816',
+  shadow: '0px 10px 70px rgba(26, 30, 214, 0.08)',
 };

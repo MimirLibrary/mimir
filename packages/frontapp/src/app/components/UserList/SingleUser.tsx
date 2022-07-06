@@ -4,15 +4,15 @@ import Avatar from '../Avatar';
 import { mocData } from './mocData';
 import { t } from 'i18next';
 import styled from '@emotion/styled';
-import { colors } from '@mimir/ui-kit';
+import { colors, dimensions } from '@mimir/ui-kit';
 
 const InfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 16px;
-  row-gap: 8px;
+  margin-left: ${dimensions.base};
+  row-gap: ${dimensions.xs_2};
   > p:first-child {
-    margin-bottom: 8px;
+    margin-bottom: ${dimensions.xs_2};
   }
 `;
 
@@ -25,13 +25,13 @@ const InlineWrapper = styled.div`
 const CardWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  background: #ffffff;
+  background: ${colors.bg_secondary};
   width: 320px;
-  margin: 0 0 20px;
+  margin: 0 0 ${dimensions.xl};
   height: 151px;
-  padding: 24px;
-  box-shadow: 0px 10px 70px rgba(26, 30, 214, 0.08);
-  border-radius: 10px;
+  padding: ${dimensions.xl_2};
+  box-shadow: ${colors.shadow};
+  border-radius: ${dimensions.xs_1};
 `;
 const AvatarWrapper = styled.div`
   height: 71px;
@@ -45,8 +45,10 @@ interface IDescriptionProps {
 }
 const Description = styled.p<IDescriptionProps>`
   font-weight: ${({ bold }) => (bold ? 500 : 300)};
-  font-size: ${({ secondary }) => (secondary ? '14px' : '16px')};
-  line-height: ${({ secondary }) => (secondary ? '17px' : '20px')};
+  font-size: ${({ secondary }) =>
+    secondary ? `${dimensions.sm}` : `${dimensions.base}`};
+  line-height: ${({ secondary }) =>
+    secondary ? `${dimensions.lg}` : `${dimensions.xl}`};
   color: ${({ warning }) => (warning ? colors.problem_red : null)};
 `;
 
@@ -108,43 +110,47 @@ const SingleUser: FC<ISingleUser> = ({ id = '', statuses = [] }) => {
         <Description bold>{mocData.name}</Description>
         <InlineWrapper>
           <Description bold secondary>
-            {t('Claim history:')}
+            {t('Readers.SingleUser.ClaimHistory')}
           </Description>
           <Description secondary>
             {claims.claimHistory ? claims.claimHistory : '-'}
             {claims.claimHistory
               ? claims.claimHistory === 1
-                ? ' item'
-                : ' items'
+                ? ' ' + t('Readers.SingleUser.Item')
+                : ' ' + t('Readers.SingleUser.Items')
               : null}
           </Description>
         </InlineWrapper>
         <InlineWrapper>
           <Description bold secondary>
-            {t('Claim now:')}
+            {t('Readers.SingleUser.ClaimNow')}
           </Description>
           <Description secondary>
             {claims.claimNow ? claims.claimNow : '-'}
             {claims.claimNow
               ? claims.claimNow === 1
-                ? ' item'
-                : ' items'
+                ? ' ' + t('Readers.SingleUser.Item')
+                : ' ' + t('Readers.SingleUser.Items')
               : null}
           </Description>
         </InlineWrapper>
         <InlineWrapper>
           {claims.overdue ? (
             <>
-              <Description>{t('Overdue: ')}</Description>
-              <Description>
+              <Description secondary bold warning>
+                {t('Readers.SingleUser.Overdue')}
+              </Description>
+              <Description secondary>
                 {claims.overdue}
-                {claims.overdue === 1 ? ' item' : ' items'}
+                {claims.overdue === 1
+                  ? ' ' + t('Readers.SingleUser.Item')
+                  : ' ' + t('Readers.SingleUser.Items')}
               </Description>
             </>
           ) : (
             <>
               <Description bold secondary>
-                {t('Claim now:')}
+                {t('Readers.SingleUser.Overdue')}
               </Description>
               <Description secondary>-</Description>
             </>
