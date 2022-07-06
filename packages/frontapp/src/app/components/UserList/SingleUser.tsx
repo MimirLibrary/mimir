@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { isOverdue } from '../../models/helperFunctions/converTime';
 import Avatar from '../Avatar';
-import { mocData } from './mocData';
+import { mockData } from './mockData';
 import { t } from 'i18next';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
@@ -75,7 +75,6 @@ const countClaimHistory = (statuses: IClaimHistory[] = []) => {
   const overdueItems = claimNowItems.filter((item) =>
     isOverdue(item.created_at)
   );
-  console.log(busyItems, freeItems, claimNowItems);
   const claimHistory = busyItems.length;
   const claimNow = claimNowItems.length;
   const overdue = overdueItems.length;
@@ -107,7 +106,7 @@ const SingleUser: FC<ISingleUser> = ({ id = '', statuses = [] }) => {
         <Avatar src={''} />
       </AvatarWrapper>
       <InfoWrapper>
-        <Description bold>{mocData.name}</Description>
+        <Description bold>{mockData.name}</Description>
         <InlineWrapper>
           <Description bold secondary>
             {t('Readers.SingleUser.ClaimHistory')}

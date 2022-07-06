@@ -1,6 +1,6 @@
 import Avatarr from '../../../assets/avatar.jpg';
 
-export const mocData1 = [
+export const mockData1 = [
   { name: 'Alex', avatar: Avatarr, claimHistory: 24, claimNow: 5, overdue: 1 },
   {
     name: 'Dmitry',
@@ -48,6 +48,6 @@ export const mocData1 = [
   { name: 'Linkis', avatar: Avatarr, claimHistory: 0, claimNow: 0, overdue: 0 },
 ];
 
-export const mocData = {
+export const mockData = {
   name: 'Linkis',
 };
