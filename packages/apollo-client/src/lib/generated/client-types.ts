@@ -2,15 +2,9 @@ import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -45,7 +39,7 @@ export type CreateMaterialInput = {
 };
 
 export type CreateMessageInput = {
-  material_id: Scalars['Int'];
+  material_id?: InputMaybe<Scalars['Int']>;
   message: Scalars['String'];
   person_id: Scalars['Int'];
   title: Scalars['String'];
@@ -145,57 +139,71 @@ export type Mutation = {
   updateMaterial: Material;
 };
 
+
 export type MutationClaimBookArgs = {
   input?: InputMaybe<BookInput>;
 };
+
 
 export type MutationCreateLocationArgs = {
   input: CreateLocationInput;
 };
 
+
 export type MutationCreateMaterialArgs = {
   input: CreateMaterialInput;
 };
+
 
 export type MutationCreateMessageForManagerArgs = {
   input: CreateMessageInput;
 };
 
+
 export type MutationCreateNotificationArgs = {
   input: CreateNotificationInput;
 };
+
 
 export type MutationCreatePersonArgs = {
   input: CreatePersonInput;
 };
 
+
 export type MutationCreateStatusArgs = {
   input: CreateStatusInput;
 };
+
 
 export type MutationDonateBookArgs = {
   input: DonateBookInput;
 };
 
+
 export type MutationProlongClaimPeriodArgs = {
   input?: InputMaybe<ProlongTimeInput>;
 };
+
 
 export type MutationRemoveLocationArgs = {
   input: RemoveLocationInput;
 };
 
+
 export type MutationRemoveMaterialArgs = {
   input: RemoveMaterialInput;
 };
+
 
 export type MutationRemoveNotificationArgs = {
   input: RemoveNotificationInput;
 };
 
+
 export type MutationReturnItemArgs = {
   input?: InputMaybe<BookInput>;
 };
+
 
 export type MutationUpdateMaterialArgs = {
   input: UpdateMaterialInput;
@@ -246,37 +254,46 @@ export type Query = {
   welcome: Scalars['String'];
 };
 
+
 export type QueryGetAllTakenItemsArgs = {
   person_id: Scalars['Int'];
 };
+
 
 export type QueryGetMaterialByIdArgs = {
   id: Scalars['ID'];
 };
 
+
 export type QueryGetMaterialByIdentifierArgs = {
   input: SearchOneMaterial;
 };
+
 
 export type QueryGetNotificationsByMaterialArgs = {
   material_id: Scalars['Int'];
 };
 
+
 export type QueryGetNotificationsByPersonArgs = {
   person_id: Scalars['Int'];
 };
+
 
 export type QueryGetOnePersonArgs = {
   id: Scalars['ID'];
 };
 
+
 export type QueryGetStatusesByMaterialArgs = {
   material_id: Scalars['ID'];
 };
 
+
 export type QueryGetStatusesByPersonArgs = {
   person_id: Scalars['ID'];
 };
+
 
 export type QuerySearchOfMaterialsArgs = {
   input: SearchInput;
@@ -335,35 +352,25 @@ export type ClaimBookMutationVariables = Exact<{
   person_id: Scalars['Int'];
 }>;
 
-export type ClaimBookMutation = {
-  __typename?: 'Mutation';
-  claimBook:
-    | { __typename?: 'Error'; message: string }
-    | { __typename?: 'Status'; created_at: any; status: string };
-};
+
+export type ClaimBookMutation = { __typename?: 'Mutation', claimBook: { __typename?: 'Error', message: string } | { __typename?: 'Status', created_at: any, status: string } };
 
 export type CreateMessageForManagerMutationVariables = Exact<{
   person_id: Scalars['Int'];
-  material_id: Scalars['Int'];
+  material_id?: InputMaybe<Scalars['Int']>;
   title: Scalars['String'];
   message: Scalars['String'];
 }>;
 
-export type CreateMessageForManagerMutation = {
-  __typename?: 'Mutation';
-  createMessageForManager:
-    | { __typename?: 'Error'; message: string }
-    | { __typename?: 'Message'; message: string; title: string };
-};
+
+export type CreateMessageForManagerMutation = { __typename?: 'Mutation', createMessageForManager: { __typename?: 'Error', message: string } | { __typename?: 'Message', message: string, title: string } };
 
 export type CreateNotificationMutationVariables = Exact<{
   input: CreateNotificationInput;
 }>;
 
-export type CreateNotificationMutation = {
-  __typename?: 'Mutation';
-  createNotification?: { __typename?: 'Notification'; id: string } | null;
-};
+
+export type CreateNotificationMutation = { __typename?: 'Mutation', createNotification?: { __typename?: 'Notification', id: string } | null };
 
 export type DonateBookMutationVariables = Exact<{
   person_id: Scalars['Int'];
@@ -378,27 +385,16 @@ export type DonateBookMutationVariables = Exact<{
   picture?: InputMaybe<Scalars['String']>;
 }>;
 
-export type DonateBookMutation = {
-  __typename?: 'Mutation';
-  donateBook: {
-    __typename?: 'Material';
-    title: string;
-    picture?: string | null;
-    identifier: string;
-  };
-};
+
+export type DonateBookMutation = { __typename?: 'Mutation', donateBook: { __typename?: 'Material', title: string, picture?: string | null, identifier: string } };
 
 export type ProlongTimeMutationVariables = Exact<{
   person_id: Scalars['Int'];
   material_id: Scalars['Int'];
 }>;
 
-export type ProlongTimeMutation = {
-  __typename?: 'Mutation';
-  prolongClaimPeriod:
-    | { __typename?: 'Error'; message: string }
-    | { __typename?: 'Status'; created_at: any; status: string };
-};
+
+export type ProlongTimeMutation = { __typename?: 'Mutation', prolongClaimPeriod: { __typename?: 'Error', message: string } | { __typename?: 'Status', created_at: any, status: string } };
 
 export type RemoveMaterialMutationVariables = Exact<{
   identifier: Scalars['String'];
@@ -406,40 +402,23 @@ export type RemoveMaterialMutationVariables = Exact<{
   location_id: Scalars['Int'];
 }>;
 
-export type RemoveMaterialMutation = {
-  __typename?: 'Mutation';
-  removeMaterial: {
-    __typename?: 'Material';
-    identifier: string;
-    id_type: string;
-    type: string;
-    location_id: number;
-    title: string;
-    author: string;
-    category: string;
-  };
-};
+
+export type RemoveMaterialMutation = { __typename?: 'Mutation', removeMaterial: { __typename?: 'Material', identifier: string, id_type: string, type: string, location_id: number, title: string, author: string, category: string } };
 
 export type RemoveNotificationMutationVariables = Exact<{
   input: RemoveNotificationInput;
 }>;
 
-export type RemoveNotificationMutation = {
-  __typename?: 'Mutation';
-  removeNotification?: { __typename?: 'Notification'; id: string } | null;
-};
+
+export type RemoveNotificationMutation = { __typename?: 'Mutation', removeNotification?: { __typename?: 'Notification', id: string } | null };
 
 export type ReturnBookMutationVariables = Exact<{
   identifier: Scalars['String'];
   person_id: Scalars['Int'];
 }>;
 
-export type ReturnBookMutation = {
-  __typename?: 'Mutation';
-  returnItem:
-    | { __typename?: 'Error'; message: string }
-    | { __typename?: 'Status'; created_at: any; status: string };
-};
+
+export type ReturnBookMutation = { __typename?: 'Mutation', returnItem: { __typename?: 'Error', message: string } | { __typename?: 'Status', created_at: any, status: string } };
 
 export type UpdateMaterialMutationVariables = Exact<{
   identifier: Scalars['String'];
@@ -452,182 +431,71 @@ export type UpdateMaterialMutationVariables = Exact<{
   updated_at: Scalars['DateTime'];
 }>;
 
-export type UpdateMaterialMutation = {
-  __typename?: 'Mutation';
-  updateMaterial: {
-    __typename?: 'Material';
-    identifier: string;
-    id_type: string;
-    type: string;
-    location_id: number;
-    title: string;
-    author: string;
-    category: string;
-    updated_at: any;
-  };
-};
 
-export type GetAllLocationsQueryVariables = Exact<{ [key: string]: never }>;
+export type UpdateMaterialMutation = { __typename?: 'Mutation', updateMaterial: { __typename?: 'Material', identifier: string, id_type: string, type: string, location_id: number, title: string, author: string, category: string, updated_at: any } };
 
-export type GetAllLocationsQuery = {
-  __typename?: 'Query';
-  getAllLocations: Array<{
-    __typename?: 'Location';
-    id: string;
-    location: string;
-  } | null>;
-};
+export type GetAllLocationsQueryVariables = Exact<{ [key: string]: never; }>;
 
-export type GetAllMaterialsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetAllMaterialsQuery = {
-  __typename?: 'Query';
-  getAllMaterials: Array<{
-    __typename?: 'Material';
-    author: string;
-    category: string;
-    created_at: any;
-    id: string;
-    id_type: string;
-    identifier: string;
-    picture?: string | null;
-    title: string;
-    type: string;
-    updated_at: any;
-    notifications: Array<{
-      __typename?: 'Notification';
-      material_id: number;
-      person_id: number;
-    } | null>;
-    statuses: Array<{
-      __typename?: 'Status';
-      status: string;
-      person_id: number;
-    } | null>;
-  } | null>;
-};
+export type GetAllLocationsQuery = { __typename?: 'Query', getAllLocations: Array<{ __typename?: 'Location', id: string, location: string } | null> };
+
+export type GetAllMaterialsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllMaterialsQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', author: string, category: string, created_at: any, id: string, id_type: string, identifier: string, picture?: string | null, title: string, type: string, updated_at: any, notifications: Array<{ __typename?: 'Notification', material_id: number, person_id: number } | null>, statuses: Array<{ __typename?: 'Status', status: string, person_id: number } | null> } | null> };
 
 export type GetAllTakenItemsQueryVariables = Exact<{
   person_id: Scalars['Int'];
 }>;
 
-export type GetAllTakenItemsQuery = {
-  __typename?: 'Query';
-  getAllTakenItems: Array<{
-    __typename?: 'Status';
-    id: string;
-    created_at: any;
-    status: string;
-    material: {
-      __typename?: 'Material';
-      id: string;
-      picture?: string | null;
-      title: string;
-      author: string;
-      category: string;
-    };
-  } | null>;
-};
+
+export type GetAllTakenItemsQuery = { __typename?: 'Query', getAllTakenItems: Array<{ __typename?: 'Status', id: string, created_at: any, status: string, material: { __typename?: 'Material', id: string, picture?: string | null, title: string, author: string, category: string } } | null> };
 
 export type GetMaterialByIdQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
-export type GetMaterialByIdQuery = {
-  __typename?: 'Query';
-  getMaterialById: {
-    __typename?: 'Material';
-    id: string;
-    identifier: string;
-    picture?: string | null;
-    title: string;
-    author: string;
-    category: string;
-    created_at: any;
-    updated_at: any;
-    location_id: number;
-    type: string;
-    statuses: Array<{
-      __typename?: 'Status';
-      id: string;
-      person_id: number;
-      status: string;
-      created_at: any;
-    } | null>;
-  };
-};
+
+export type GetMaterialByIdQuery = { __typename?: 'Query', getMaterialById: { __typename?: 'Material', id: string, identifier: string, picture?: string | null, title: string, author: string, category: string, created_at: any, updated_at: any, location_id: number, type: string, statuses: Array<{ __typename?: 'Status', id: string, person_id: number, status: string, created_at: any } | null> } };
 
 export type GetMaterialByIdentifierQueryVariables = Exact<{
   identifier: Scalars['String'];
   location_id: Scalars['Int'];
 }>;
 
-export type GetMaterialByIdentifierQuery = {
-  __typename?: 'Query';
-  getMaterialByIdentifier: {
-    __typename?: 'Material';
-    picture?: string | null;
-    author: string;
-    title: string;
-    category: string;
-  };
-};
+
+export type GetMaterialByIdentifierQuery = { __typename?: 'Query', getMaterialByIdentifier: { __typename?: 'Material', picture?: string | null, author: string, title: string, category: string } };
 
 export type GetNotificationsByPersonQueryVariables = Exact<{
   person_id: Scalars['Int'];
 }>;
 
-export type GetNotificationsByPersonQuery = {
-  __typename?: 'Query';
-  getNotificationsByPerson: Array<{
-    __typename?: 'Notification';
-    id: string;
-    material_id: number;
-    person_id: number;
-  } | null>;
-};
+
+export type GetNotificationsByPersonQuery = { __typename?: 'Query', getNotificationsByPerson: Array<{ __typename?: 'Notification', id: string, material_id: number, person_id: number } | null> };
 
 export type SearchOfMaterialsQueryVariables = Exact<{
   search: Scalars['String'];
   location: Scalars['String'];
 }>;
 
-export type SearchOfMaterialsQuery = {
-  __typename?: 'Query';
-  searchOfMaterials?: Array<{
-    __typename?: 'Material';
-    title: string;
-    created_at: any;
-    picture?: string | null;
-    author: string;
-    category: string;
-    id: string;
-    statuses: Array<{
-      __typename?: 'Status';
-      id: string;
-      created_at: any;
-      status: string;
-    } | null>;
-  } | null> | null;
-};
+
+export type SearchOfMaterialsQuery = { __typename?: 'Query', searchOfMaterials?: Array<{ __typename?: 'Material', title: string, created_at: any, picture?: string | null, author: string, category: string, id: string, statuses: Array<{ __typename?: 'Status', id: string, created_at: any, status: string } | null> } | null> | null };
+
 
 export const ClaimBookDocument = gql`
-  mutation ClaimBook($identifier: String!, $person_id: Int!) {
-    claimBook(input: { identifier: $identifier, person_id: $person_id }) {
-      ... on Status {
-        created_at
-        status
-      }
-      ... on Error {
-        message
-      }
+    mutation ClaimBook($identifier: String!, $person_id: Int!) {
+  claimBook(input: {identifier: $identifier, person_id: $person_id}) {
+    ... on Status {
+      created_at
+      status
+    }
+    ... on Error {
+      message
     }
   }
-`;
-export type ClaimBookMutationFn = Apollo.MutationFunction<
-  ClaimBookMutation,
-  ClaimBookMutationVariables
->;
+}
+    `;
+export type ClaimBookMutationFn = Apollo.MutationFunction<ClaimBookMutation, ClaimBookMutationVariables>;
 
 /**
  * __useClaimBookMutation__
@@ -647,55 +515,29 @@ export type ClaimBookMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useClaimBookMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    ClaimBookMutation,
-    ClaimBookMutationVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<ClaimBookMutation, ClaimBookMutationVariables>(
-    ClaimBookDocument,
-    options
-  );
-}
-export type ClaimBookMutationHookResult = ReturnType<
-  typeof useClaimBookMutation
->;
+export function useClaimBookMutation(baseOptions?: Apollo.MutationHookOptions<ClaimBookMutation, ClaimBookMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ClaimBookMutation, ClaimBookMutationVariables>(ClaimBookDocument, options);
+      }
+export type ClaimBookMutationHookResult = ReturnType<typeof useClaimBookMutation>;
 export type ClaimBookMutationResult = Apollo.MutationResult<ClaimBookMutation>;
-export type ClaimBookMutationOptions = Apollo.BaseMutationOptions<
-  ClaimBookMutation,
-  ClaimBookMutationVariables
->;
+export type ClaimBookMutationOptions = Apollo.BaseMutationOptions<ClaimBookMutation, ClaimBookMutationVariables>;
 export const CreateMessageForManagerDocument = gql`
-  mutation CreateMessageForManager(
-    $person_id: Int!
-    $material_id: Int!
-    $title: String!
-    $message: String!
+    mutation CreateMessageForManager($person_id: Int!, $material_id: Int, $title: String!, $message: String!) {
+  createMessageForManager(
+    input: {person_id: $person_id, material_id: $material_id, title: $title, message: $message}
   ) {
-    createMessageForManager(
-      input: {
-        person_id: $person_id
-        material_id: $material_id
-        title: $title
-        message: $message
-      }
-    ) {
-      ... on Message {
-        message
-        title
-      }
-      ... on Error {
-        message
-      }
+    ... on Message {
+      message
+      title
+    }
+    ... on Error {
+      message
     }
   }
-`;
-export type CreateMessageForManagerMutationFn = Apollo.MutationFunction<
-  CreateMessageForManagerMutation,
-  CreateMessageForManagerMutationVariables
->;
+}
+    `;
+export type CreateMessageForManagerMutationFn = Apollo.MutationFunction<CreateMessageForManagerMutation, CreateMessageForManagerMutationVariables>;
 
 /**
  * __useCreateMessageForManagerMutation__
@@ -717,38 +559,21 @@ export type CreateMessageForManagerMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useCreateMessageForManagerMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    CreateMessageForManagerMutation,
-    CreateMessageForManagerMutationVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<
-    CreateMessageForManagerMutation,
-    CreateMessageForManagerMutationVariables
-  >(CreateMessageForManagerDocument, options);
-}
-export type CreateMessageForManagerMutationHookResult = ReturnType<
-  typeof useCreateMessageForManagerMutation
->;
-export type CreateMessageForManagerMutationResult =
-  Apollo.MutationResult<CreateMessageForManagerMutation>;
-export type CreateMessageForManagerMutationOptions = Apollo.BaseMutationOptions<
-  CreateMessageForManagerMutation,
-  CreateMessageForManagerMutationVariables
->;
+export function useCreateMessageForManagerMutation(baseOptions?: Apollo.MutationHookOptions<CreateMessageForManagerMutation, CreateMessageForManagerMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateMessageForManagerMutation, CreateMessageForManagerMutationVariables>(CreateMessageForManagerDocument, options);
+      }
+export type CreateMessageForManagerMutationHookResult = ReturnType<typeof useCreateMessageForManagerMutation>;
+export type CreateMessageForManagerMutationResult = Apollo.MutationResult<CreateMessageForManagerMutation>;
+export type CreateMessageForManagerMutationOptions = Apollo.BaseMutationOptions<CreateMessageForManagerMutation, CreateMessageForManagerMutationVariables>;
 export const CreateNotificationDocument = gql`
-  mutation CreateNotification($input: CreateNotificationInput!) {
-    createNotification(input: $input) {
-      id
-    }
+    mutation CreateNotification($input: CreateNotificationInput!) {
+  createNotification(input: $input) {
+    id
   }
-`;
-export type CreateNotificationMutationFn = Apollo.MutationFunction<
-  CreateNotificationMutation,
-  CreateNotificationMutationVariables
->;
+}
+    `;
+export type CreateNotificationMutationFn = Apollo.MutationFunction<CreateNotificationMutation, CreateNotificationMutationVariables>;
 
 /**
  * __useCreateNotificationMutation__
@@ -767,64 +592,25 @@ export type CreateNotificationMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useCreateNotificationMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    CreateNotificationMutation,
-    CreateNotificationMutationVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<
-    CreateNotificationMutation,
-    CreateNotificationMutationVariables
-  >(CreateNotificationDocument, options);
-}
-export type CreateNotificationMutationHookResult = ReturnType<
-  typeof useCreateNotificationMutation
->;
-export type CreateNotificationMutationResult =
-  Apollo.MutationResult<CreateNotificationMutation>;
-export type CreateNotificationMutationOptions = Apollo.BaseMutationOptions<
-  CreateNotificationMutation,
-  CreateNotificationMutationVariables
->;
-export const DonateBookDocument = gql`
-  mutation DonateBook(
-    $person_id: Int!
-    $location_id: Int!
-    $identifier: String!
-    $id_type: String!
-    $type: String!
-    $title: String!
-    $author: String!
-    $category: String!
-    $description: String
-    $picture: String
-  ) {
-    donateBook(
-      input: {
-        person_id: $person_id
-        location_id: $location_id
-        identifier: $identifier
-        type: $type
-        author: $author
-        category: $category
-        description: $description
-        id_type: $id_type
-        picture: $picture
-        title: $title
+export function useCreateNotificationMutation(baseOptions?: Apollo.MutationHookOptions<CreateNotificationMutation, CreateNotificationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateNotificationMutation, CreateNotificationMutationVariables>(CreateNotificationDocument, options);
       }
-    ) {
-      title
-      picture
-      identifier
-    }
+export type CreateNotificationMutationHookResult = ReturnType<typeof useCreateNotificationMutation>;
+export type CreateNotificationMutationResult = Apollo.MutationResult<CreateNotificationMutation>;
+export type CreateNotificationMutationOptions = Apollo.BaseMutationOptions<CreateNotificationMutation, CreateNotificationMutationVariables>;
+export const DonateBookDocument = gql`
+    mutation DonateBook($person_id: Int!, $location_id: Int!, $identifier: String!, $id_type: String!, $type: String!, $title: String!, $author: String!, $category: String!, $description: String, $picture: String) {
+  donateBook(
+    input: {person_id: $person_id, location_id: $location_id, identifier: $identifier, type: $type, author: $author, category: $category, description: $description, id_type: $id_type, picture: $picture, title: $title}
+  ) {
+    title
+    picture
+    identifier
   }
-`;
-export type DonateBookMutationFn = Apollo.MutationFunction<
-  DonateBookMutation,
-  DonateBookMutationVariables
->;
+}
+    `;
+export type DonateBookMutationFn = Apollo.MutationFunction<DonateBookMutation, DonateBookMutationVariables>;
 
 /**
  * __useDonateBookMutation__
@@ -852,46 +638,27 @@ export type DonateBookMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useDonateBookMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    DonateBookMutation,
-    DonateBookMutationVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<DonateBookMutation, DonateBookMutationVariables>(
-    DonateBookDocument,
-    options
-  );
-}
-export type DonateBookMutationHookResult = ReturnType<
-  typeof useDonateBookMutation
->;
-export type DonateBookMutationResult =
-  Apollo.MutationResult<DonateBookMutation>;
-export type DonateBookMutationOptions = Apollo.BaseMutationOptions<
-  DonateBookMutation,
-  DonateBookMutationVariables
->;
+export function useDonateBookMutation(baseOptions?: Apollo.MutationHookOptions<DonateBookMutation, DonateBookMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DonateBookMutation, DonateBookMutationVariables>(DonateBookDocument, options);
+      }
+export type DonateBookMutationHookResult = ReturnType<typeof useDonateBookMutation>;
+export type DonateBookMutationResult = Apollo.MutationResult<DonateBookMutation>;
+export type DonateBookMutationOptions = Apollo.BaseMutationOptions<DonateBookMutation, DonateBookMutationVariables>;
 export const ProlongTimeDocument = gql`
-  mutation ProlongTime($person_id: Int!, $material_id: Int!) {
-    prolongClaimPeriod(
-      input: { material_id: $material_id, person_id: $person_id }
-    ) {
-      ... on Status {
-        created_at
-        status
-      }
-      ... on Error {
-        message
-      }
+    mutation ProlongTime($person_id: Int!, $material_id: Int!) {
+  prolongClaimPeriod(input: {material_id: $material_id, person_id: $person_id}) {
+    ... on Status {
+      created_at
+      status
+    }
+    ... on Error {
+      message
     }
   }
-`;
-export type ProlongTimeMutationFn = Apollo.MutationFunction<
-  ProlongTimeMutation,
-  ProlongTimeMutationVariables
->;
+}
+    `;
+export type ProlongTimeMutationFn = Apollo.MutationFunction<ProlongTimeMutation, ProlongTimeMutationVariables>;
 
 /**
  * __useProlongTimeMutation__
@@ -911,50 +678,29 @@ export type ProlongTimeMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useProlongTimeMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    ProlongTimeMutation,
-    ProlongTimeMutationVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<ProlongTimeMutation, ProlongTimeMutationVariables>(
-    ProlongTimeDocument,
-    options
-  );
-}
-export type ProlongTimeMutationHookResult = ReturnType<
-  typeof useProlongTimeMutation
->;
-export type ProlongTimeMutationResult =
-  Apollo.MutationResult<ProlongTimeMutation>;
-export type ProlongTimeMutationOptions = Apollo.BaseMutationOptions<
-  ProlongTimeMutation,
-  ProlongTimeMutationVariables
->;
+export function useProlongTimeMutation(baseOptions?: Apollo.MutationHookOptions<ProlongTimeMutation, ProlongTimeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ProlongTimeMutation, ProlongTimeMutationVariables>(ProlongTimeDocument, options);
+      }
+export type ProlongTimeMutationHookResult = ReturnType<typeof useProlongTimeMutation>;
+export type ProlongTimeMutationResult = Apollo.MutationResult<ProlongTimeMutation>;
+export type ProlongTimeMutationOptions = Apollo.BaseMutationOptions<ProlongTimeMutation, ProlongTimeMutationVariables>;
 export const RemoveMaterialDocument = gql`
-  mutation RemoveMaterial(
-    $identifier: String!
-    $type: String!
-    $location_id: Int!
+    mutation RemoveMaterial($identifier: String!, $type: String!, $location_id: Int!) {
+  removeMaterial(
+    input: {identifier: $identifier, type: $type, location_id: $location_id}
   ) {
-    removeMaterial(
-      input: { identifier: $identifier, type: $type, location_id: $location_id }
-    ) {
-      identifier
-      id_type
-      type
-      location_id
-      title
-      author
-      category
-    }
+    identifier
+    id_type
+    type
+    location_id
+    title
+    author
+    category
   }
-`;
-export type RemoveMaterialMutationFn = Apollo.MutationFunction<
-  RemoveMaterialMutation,
-  RemoveMaterialMutationVariables
->;
+}
+    `;
+export type RemoveMaterialMutationFn = Apollo.MutationFunction<RemoveMaterialMutation, RemoveMaterialMutationVariables>;
 
 /**
  * __useRemoveMaterialMutation__
@@ -975,38 +721,21 @@ export type RemoveMaterialMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useRemoveMaterialMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    RemoveMaterialMutation,
-    RemoveMaterialMutationVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<
-    RemoveMaterialMutation,
-    RemoveMaterialMutationVariables
-  >(RemoveMaterialDocument, options);
-}
-export type RemoveMaterialMutationHookResult = ReturnType<
-  typeof useRemoveMaterialMutation
->;
-export type RemoveMaterialMutationResult =
-  Apollo.MutationResult<RemoveMaterialMutation>;
-export type RemoveMaterialMutationOptions = Apollo.BaseMutationOptions<
-  RemoveMaterialMutation,
-  RemoveMaterialMutationVariables
->;
+export function useRemoveMaterialMutation(baseOptions?: Apollo.MutationHookOptions<RemoveMaterialMutation, RemoveMaterialMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveMaterialMutation, RemoveMaterialMutationVariables>(RemoveMaterialDocument, options);
+      }
+export type RemoveMaterialMutationHookResult = ReturnType<typeof useRemoveMaterialMutation>;
+export type RemoveMaterialMutationResult = Apollo.MutationResult<RemoveMaterialMutation>;
+export type RemoveMaterialMutationOptions = Apollo.BaseMutationOptions<RemoveMaterialMutation, RemoveMaterialMutationVariables>;
 export const RemoveNotificationDocument = gql`
-  mutation RemoveNotification($input: RemoveNotificationInput!) {
-    removeNotification(input: $input) {
-      id
-    }
+    mutation RemoveNotification($input: RemoveNotificationInput!) {
+  removeNotification(input: $input) {
+    id
   }
-`;
-export type RemoveNotificationMutationFn = Apollo.MutationFunction<
-  RemoveNotificationMutation,
-  RemoveNotificationMutationVariables
->;
+}
+    `;
+export type RemoveNotificationMutationFn = Apollo.MutationFunction<RemoveNotificationMutation, RemoveNotificationMutationVariables>;
 
 /**
  * __useRemoveNotificationMutation__
@@ -1025,44 +754,27 @@ export type RemoveNotificationMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useRemoveNotificationMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    RemoveNotificationMutation,
-    RemoveNotificationMutationVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<
-    RemoveNotificationMutation,
-    RemoveNotificationMutationVariables
-  >(RemoveNotificationDocument, options);
-}
-export type RemoveNotificationMutationHookResult = ReturnType<
-  typeof useRemoveNotificationMutation
->;
-export type RemoveNotificationMutationResult =
-  Apollo.MutationResult<RemoveNotificationMutation>;
-export type RemoveNotificationMutationOptions = Apollo.BaseMutationOptions<
-  RemoveNotificationMutation,
-  RemoveNotificationMutationVariables
->;
+export function useRemoveNotificationMutation(baseOptions?: Apollo.MutationHookOptions<RemoveNotificationMutation, RemoveNotificationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveNotificationMutation, RemoveNotificationMutationVariables>(RemoveNotificationDocument, options);
+      }
+export type RemoveNotificationMutationHookResult = ReturnType<typeof useRemoveNotificationMutation>;
+export type RemoveNotificationMutationResult = Apollo.MutationResult<RemoveNotificationMutation>;
+export type RemoveNotificationMutationOptions = Apollo.BaseMutationOptions<RemoveNotificationMutation, RemoveNotificationMutationVariables>;
 export const ReturnBookDocument = gql`
-  mutation ReturnBook($identifier: String!, $person_id: Int!) {
-    returnItem(input: { identifier: $identifier, person_id: $person_id }) {
-      ... on Status {
-        created_at
-        status
-      }
-      ... on Error {
-        message
-      }
+    mutation ReturnBook($identifier: String!, $person_id: Int!) {
+  returnItem(input: {identifier: $identifier, person_id: $person_id}) {
+    ... on Status {
+      created_at
+      status
+    }
+    ... on Error {
+      message
     }
   }
-`;
-export type ReturnBookMutationFn = Apollo.MutationFunction<
-  ReturnBookMutation,
-  ReturnBookMutationVariables
->;
+}
+    `;
+export type ReturnBookMutationFn = Apollo.MutationFunction<ReturnBookMutation, ReturnBookMutationVariables>;
 
 /**
  * __useReturnBookMutation__
@@ -1082,65 +794,30 @@ export type ReturnBookMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useReturnBookMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    ReturnBookMutation,
-    ReturnBookMutationVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<ReturnBookMutation, ReturnBookMutationVariables>(
-    ReturnBookDocument,
-    options
-  );
-}
-export type ReturnBookMutationHookResult = ReturnType<
-  typeof useReturnBookMutation
->;
-export type ReturnBookMutationResult =
-  Apollo.MutationResult<ReturnBookMutation>;
-export type ReturnBookMutationOptions = Apollo.BaseMutationOptions<
-  ReturnBookMutation,
-  ReturnBookMutationVariables
->;
-export const UpdateMaterialDocument = gql`
-  mutation UpdateMaterial(
-    $identifier: String!
-    $id_type: String
-    $type: String
-    $location_id: Int
-    $title: String
-    $author: String
-    $category: String
-    $updated_at: DateTime!
-  ) {
-    updateMaterial(
-      input: {
-        identifier: $identifier
-        id_type: $id_type
-        type: $type
-        location_id: $location_id
-        title: $title
-        author: $author
-        category: $category
-        updated_at: $updated_at
+export function useReturnBookMutation(baseOptions?: Apollo.MutationHookOptions<ReturnBookMutation, ReturnBookMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ReturnBookMutation, ReturnBookMutationVariables>(ReturnBookDocument, options);
       }
-    ) {
-      identifier
-      id_type
-      type
-      location_id
-      title
-      author
-      category
-      updated_at
-    }
+export type ReturnBookMutationHookResult = ReturnType<typeof useReturnBookMutation>;
+export type ReturnBookMutationResult = Apollo.MutationResult<ReturnBookMutation>;
+export type ReturnBookMutationOptions = Apollo.BaseMutationOptions<ReturnBookMutation, ReturnBookMutationVariables>;
+export const UpdateMaterialDocument = gql`
+    mutation UpdateMaterial($identifier: String!, $id_type: String, $type: String, $location_id: Int, $title: String, $author: String, $category: String, $updated_at: DateTime!) {
+  updateMaterial(
+    input: {identifier: $identifier, id_type: $id_type, type: $type, location_id: $location_id, title: $title, author: $author, category: $category, updated_at: $updated_at}
+  ) {
+    identifier
+    id_type
+    type
+    location_id
+    title
+    author
+    category
+    updated_at
   }
-`;
-export type UpdateMaterialMutationFn = Apollo.MutationFunction<
-  UpdateMaterialMutation,
-  UpdateMaterialMutationVariables
->;
+}
+    `;
+export type UpdateMaterialMutationFn = Apollo.MutationFunction<UpdateMaterialMutation, UpdateMaterialMutationVariables>;
 
 /**
  * __useUpdateMaterialMutation__
@@ -1166,35 +843,21 @@ export type UpdateMaterialMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useUpdateMaterialMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    UpdateMaterialMutation,
-    UpdateMaterialMutationVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<
-    UpdateMaterialMutation,
-    UpdateMaterialMutationVariables
-  >(UpdateMaterialDocument, options);
-}
-export type UpdateMaterialMutationHookResult = ReturnType<
-  typeof useUpdateMaterialMutation
->;
-export type UpdateMaterialMutationResult =
-  Apollo.MutationResult<UpdateMaterialMutation>;
-export type UpdateMaterialMutationOptions = Apollo.BaseMutationOptions<
-  UpdateMaterialMutation,
-  UpdateMaterialMutationVariables
->;
+export function useUpdateMaterialMutation(baseOptions?: Apollo.MutationHookOptions<UpdateMaterialMutation, UpdateMaterialMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateMaterialMutation, UpdateMaterialMutationVariables>(UpdateMaterialDocument, options);
+      }
+export type UpdateMaterialMutationHookResult = ReturnType<typeof useUpdateMaterialMutation>;
+export type UpdateMaterialMutationResult = Apollo.MutationResult<UpdateMaterialMutation>;
+export type UpdateMaterialMutationOptions = Apollo.BaseMutationOptions<UpdateMaterialMutation, UpdateMaterialMutationVariables>;
 export const GetAllLocationsDocument = gql`
-  query GetAllLocations {
-    getAllLocations {
-      id
-      location
-    }
+    query GetAllLocations {
+  getAllLocations {
+    id
+    location
   }
-`;
+}
+    `;
 
 /**
  * __useGetAllLocationsQuery__
@@ -1211,64 +874,41 @@ export const GetAllLocationsDocument = gql`
  *   },
  * });
  */
-export function useGetAllLocationsQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    GetAllLocationsQuery,
-    GetAllLocationsQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetAllLocationsQuery, GetAllLocationsQueryVariables>(
-    GetAllLocationsDocument,
-    options
-  );
-}
-export function useGetAllLocationsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetAllLocationsQuery,
-    GetAllLocationsQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    GetAllLocationsQuery,
-    GetAllLocationsQueryVariables
-  >(GetAllLocationsDocument, options);
-}
-export type GetAllLocationsQueryHookResult = ReturnType<
-  typeof useGetAllLocationsQuery
->;
-export type GetAllLocationsLazyQueryHookResult = ReturnType<
-  typeof useGetAllLocationsLazyQuery
->;
-export type GetAllLocationsQueryResult = Apollo.QueryResult<
-  GetAllLocationsQuery,
-  GetAllLocationsQueryVariables
->;
+export function useGetAllLocationsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllLocationsQuery, GetAllLocationsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllLocationsQuery, GetAllLocationsQueryVariables>(GetAllLocationsDocument, options);
+      }
+export function useGetAllLocationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllLocationsQuery, GetAllLocationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllLocationsQuery, GetAllLocationsQueryVariables>(GetAllLocationsDocument, options);
+        }
+export type GetAllLocationsQueryHookResult = ReturnType<typeof useGetAllLocationsQuery>;
+export type GetAllLocationsLazyQueryHookResult = ReturnType<typeof useGetAllLocationsLazyQuery>;
+export type GetAllLocationsQueryResult = Apollo.QueryResult<GetAllLocationsQuery, GetAllLocationsQueryVariables>;
 export const GetAllMaterialsDocument = gql`
-  query GetAllMaterials {
-    getAllMaterials {
-      author
-      category
-      created_at
-      id
-      id_type
-      identifier
-      notifications {
-        material_id
-        person_id
-      }
-      picture
-      statuses {
-        status
-        person_id
-      }
-      title
-      type
-      updated_at
+    query GetAllMaterials {
+  getAllMaterials {
+    author
+    category
+    created_at
+    id
+    id_type
+    identifier
+    notifications {
+      material_id
+      person_id
     }
+    picture
+    statuses {
+      status
+      person_id
+    }
+    title
+    type
+    updated_at
   }
-`;
+}
+    `;
 
 /**
  * __useGetAllMaterialsQuery__
@@ -1285,56 +925,33 @@ export const GetAllMaterialsDocument = gql`
  *   },
  * });
  */
-export function useGetAllMaterialsQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    GetAllMaterialsQuery,
-    GetAllMaterialsQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>(
-    GetAllMaterialsDocument,
-    options
-  );
-}
-export function useGetAllMaterialsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetAllMaterialsQuery,
-    GetAllMaterialsQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    GetAllMaterialsQuery,
-    GetAllMaterialsQueryVariables
-  >(GetAllMaterialsDocument, options);
-}
-export type GetAllMaterialsQueryHookResult = ReturnType<
-  typeof useGetAllMaterialsQuery
->;
-export type GetAllMaterialsLazyQueryHookResult = ReturnType<
-  typeof useGetAllMaterialsLazyQuery
->;
-export type GetAllMaterialsQueryResult = Apollo.QueryResult<
-  GetAllMaterialsQuery,
-  GetAllMaterialsQueryVariables
->;
-export const GetAllTakenItemsDocument = gql`
-  query GetAllTakenItems($person_id: Int!) {
-    getAllTakenItems(person_id: $person_id) {
-      id
-      created_at
-      status
-      material {
-        id
-        picture
-        title
-        author
-        category
+export function useGetAllMaterialsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>(GetAllMaterialsDocument, options);
       }
+export function useGetAllMaterialsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>(GetAllMaterialsDocument, options);
+        }
+export type GetAllMaterialsQueryHookResult = ReturnType<typeof useGetAllMaterialsQuery>;
+export type GetAllMaterialsLazyQueryHookResult = ReturnType<typeof useGetAllMaterialsLazyQuery>;
+export type GetAllMaterialsQueryResult = Apollo.QueryResult<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>;
+export const GetAllTakenItemsDocument = gql`
+    query GetAllTakenItems($person_id: Int!) {
+  getAllTakenItems(person_id: $person_id) {
+    id
+    created_at
+    status
+    material {
+      id
+      picture
+      title
+      author
+      category
     }
   }
-`;
+}
+    `;
 
 /**
  * __useGetAllTakenItemsQuery__
@@ -1352,62 +969,39 @@ export const GetAllTakenItemsDocument = gql`
  *   },
  * });
  */
-export function useGetAllTakenItemsQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    GetAllTakenItemsQuery,
-    GetAllTakenItemsQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetAllTakenItemsQuery, GetAllTakenItemsQueryVariables>(
-    GetAllTakenItemsDocument,
-    options
-  );
-}
-export function useGetAllTakenItemsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetAllTakenItemsQuery,
-    GetAllTakenItemsQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    GetAllTakenItemsQuery,
-    GetAllTakenItemsQueryVariables
-  >(GetAllTakenItemsDocument, options);
-}
-export type GetAllTakenItemsQueryHookResult = ReturnType<
-  typeof useGetAllTakenItemsQuery
->;
-export type GetAllTakenItemsLazyQueryHookResult = ReturnType<
-  typeof useGetAllTakenItemsLazyQuery
->;
-export type GetAllTakenItemsQueryResult = Apollo.QueryResult<
-  GetAllTakenItemsQuery,
-  GetAllTakenItemsQueryVariables
->;
-export const GetMaterialByIdDocument = gql`
-  query GetMaterialById($id: ID!) {
-    getMaterialById(id: $id) {
-      id
-      identifier
-      picture
-      title
-      author
-      category
-      created_at
-      updated_at
-      location_id
-      type
-      statuses {
-        id
-        person_id
-        status
-        created_at
+export function useGetAllTakenItemsQuery(baseOptions: Apollo.QueryHookOptions<GetAllTakenItemsQuery, GetAllTakenItemsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllTakenItemsQuery, GetAllTakenItemsQueryVariables>(GetAllTakenItemsDocument, options);
       }
+export function useGetAllTakenItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllTakenItemsQuery, GetAllTakenItemsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllTakenItemsQuery, GetAllTakenItemsQueryVariables>(GetAllTakenItemsDocument, options);
+        }
+export type GetAllTakenItemsQueryHookResult = ReturnType<typeof useGetAllTakenItemsQuery>;
+export type GetAllTakenItemsLazyQueryHookResult = ReturnType<typeof useGetAllTakenItemsLazyQuery>;
+export type GetAllTakenItemsQueryResult = Apollo.QueryResult<GetAllTakenItemsQuery, GetAllTakenItemsQueryVariables>;
+export const GetMaterialByIdDocument = gql`
+    query GetMaterialById($id: ID!) {
+  getMaterialById(id: $id) {
+    id
+    identifier
+    picture
+    title
+    author
+    category
+    created_at
+    updated_at
+    location_id
+    type
+    statuses {
+      id
+      person_id
+      status
+      created_at
     }
   }
-`;
+}
+    `;
 
 /**
  * __useGetMaterialByIdQuery__
@@ -1425,52 +1019,29 @@ export const GetMaterialByIdDocument = gql`
  *   },
  * });
  */
-export function useGetMaterialByIdQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    GetMaterialByIdQuery,
-    GetMaterialByIdQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetMaterialByIdQuery, GetMaterialByIdQueryVariables>(
-    GetMaterialByIdDocument,
-    options
-  );
-}
-export function useGetMaterialByIdLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetMaterialByIdQuery,
-    GetMaterialByIdQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    GetMaterialByIdQuery,
-    GetMaterialByIdQueryVariables
-  >(GetMaterialByIdDocument, options);
-}
-export type GetMaterialByIdQueryHookResult = ReturnType<
-  typeof useGetMaterialByIdQuery
->;
-export type GetMaterialByIdLazyQueryHookResult = ReturnType<
-  typeof useGetMaterialByIdLazyQuery
->;
-export type GetMaterialByIdQueryResult = Apollo.QueryResult<
-  GetMaterialByIdQuery,
-  GetMaterialByIdQueryVariables
->;
+export function useGetMaterialByIdQuery(baseOptions: Apollo.QueryHookOptions<GetMaterialByIdQuery, GetMaterialByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMaterialByIdQuery, GetMaterialByIdQueryVariables>(GetMaterialByIdDocument, options);
+      }
+export function useGetMaterialByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMaterialByIdQuery, GetMaterialByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMaterialByIdQuery, GetMaterialByIdQueryVariables>(GetMaterialByIdDocument, options);
+        }
+export type GetMaterialByIdQueryHookResult = ReturnType<typeof useGetMaterialByIdQuery>;
+export type GetMaterialByIdLazyQueryHookResult = ReturnType<typeof useGetMaterialByIdLazyQuery>;
+export type GetMaterialByIdQueryResult = Apollo.QueryResult<GetMaterialByIdQuery, GetMaterialByIdQueryVariables>;
 export const GetMaterialByIdentifierDocument = gql`
-  query GetMaterialByIdentifier($identifier: String!, $location_id: Int!) {
-    getMaterialByIdentifier(
-      input: { identifier: $identifier, location_id: $location_id }
-    ) {
-      picture
-      author
-      title
-      category
-    }
+    query GetMaterialByIdentifier($identifier: String!, $location_id: Int!) {
+  getMaterialByIdentifier(
+    input: {identifier: $identifier, location_id: $location_id}
+  ) {
+    picture
+    author
+    title
+    category
   }
-`;
+}
+    `;
 
 /**
  * __useGetMaterialByIdentifierQuery__
@@ -1489,49 +1060,26 @@ export const GetMaterialByIdentifierDocument = gql`
  *   },
  * });
  */
-export function useGetMaterialByIdentifierQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    GetMaterialByIdentifierQuery,
-    GetMaterialByIdentifierQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<
-    GetMaterialByIdentifierQuery,
-    GetMaterialByIdentifierQueryVariables
-  >(GetMaterialByIdentifierDocument, options);
-}
-export function useGetMaterialByIdentifierLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetMaterialByIdentifierQuery,
-    GetMaterialByIdentifierQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    GetMaterialByIdentifierQuery,
-    GetMaterialByIdentifierQueryVariables
-  >(GetMaterialByIdentifierDocument, options);
-}
-export type GetMaterialByIdentifierQueryHookResult = ReturnType<
-  typeof useGetMaterialByIdentifierQuery
->;
-export type GetMaterialByIdentifierLazyQueryHookResult = ReturnType<
-  typeof useGetMaterialByIdentifierLazyQuery
->;
-export type GetMaterialByIdentifierQueryResult = Apollo.QueryResult<
-  GetMaterialByIdentifierQuery,
-  GetMaterialByIdentifierQueryVariables
->;
+export function useGetMaterialByIdentifierQuery(baseOptions: Apollo.QueryHookOptions<GetMaterialByIdentifierQuery, GetMaterialByIdentifierQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMaterialByIdentifierQuery, GetMaterialByIdentifierQueryVariables>(GetMaterialByIdentifierDocument, options);
+      }
+export function useGetMaterialByIdentifierLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMaterialByIdentifierQuery, GetMaterialByIdentifierQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMaterialByIdentifierQuery, GetMaterialByIdentifierQueryVariables>(GetMaterialByIdentifierDocument, options);
+        }
+export type GetMaterialByIdentifierQueryHookResult = ReturnType<typeof useGetMaterialByIdentifierQuery>;
+export type GetMaterialByIdentifierLazyQueryHookResult = ReturnType<typeof useGetMaterialByIdentifierLazyQuery>;
+export type GetMaterialByIdentifierQueryResult = Apollo.QueryResult<GetMaterialByIdentifierQuery, GetMaterialByIdentifierQueryVariables>;
 export const GetNotificationsByPersonDocument = gql`
-  query GetNotificationsByPerson($person_id: Int!) {
-    getNotificationsByPerson(person_id: $person_id) {
-      id
-      material_id
-      person_id
-    }
+    query GetNotificationsByPerson($person_id: Int!) {
+  getNotificationsByPerson(person_id: $person_id) {
+    id
+    material_id
+    person_id
   }
-`;
+}
+    `;
 
 /**
  * __useGetNotificationsByPersonQuery__
@@ -1549,57 +1097,34 @@ export const GetNotificationsByPersonDocument = gql`
  *   },
  * });
  */
-export function useGetNotificationsByPersonQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    GetNotificationsByPersonQuery,
-    GetNotificationsByPersonQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<
-    GetNotificationsByPersonQuery,
-    GetNotificationsByPersonQueryVariables
-  >(GetNotificationsByPersonDocument, options);
-}
-export function useGetNotificationsByPersonLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetNotificationsByPersonQuery,
-    GetNotificationsByPersonQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    GetNotificationsByPersonQuery,
-    GetNotificationsByPersonQueryVariables
-  >(GetNotificationsByPersonDocument, options);
-}
-export type GetNotificationsByPersonQueryHookResult = ReturnType<
-  typeof useGetNotificationsByPersonQuery
->;
-export type GetNotificationsByPersonLazyQueryHookResult = ReturnType<
-  typeof useGetNotificationsByPersonLazyQuery
->;
-export type GetNotificationsByPersonQueryResult = Apollo.QueryResult<
-  GetNotificationsByPersonQuery,
-  GetNotificationsByPersonQueryVariables
->;
-export const SearchOfMaterialsDocument = gql`
-  query SearchOfMaterials($search: String!, $location: String!) {
-    searchOfMaterials(input: { search: $search, location: $location }) {
-      title
-      created_at
-      picture
-      author
-      category
-      id
-      statuses {
-        id
-        created_at
-        status
+export function useGetNotificationsByPersonQuery(baseOptions: Apollo.QueryHookOptions<GetNotificationsByPersonQuery, GetNotificationsByPersonQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetNotificationsByPersonQuery, GetNotificationsByPersonQueryVariables>(GetNotificationsByPersonDocument, options);
       }
+export function useGetNotificationsByPersonLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetNotificationsByPersonQuery, GetNotificationsByPersonQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetNotificationsByPersonQuery, GetNotificationsByPersonQueryVariables>(GetNotificationsByPersonDocument, options);
+        }
+export type GetNotificationsByPersonQueryHookResult = ReturnType<typeof useGetNotificationsByPersonQuery>;
+export type GetNotificationsByPersonLazyQueryHookResult = ReturnType<typeof useGetNotificationsByPersonLazyQuery>;
+export type GetNotificationsByPersonQueryResult = Apollo.QueryResult<GetNotificationsByPersonQuery, GetNotificationsByPersonQueryVariables>;
+export const SearchOfMaterialsDocument = gql`
+    query SearchOfMaterials($search: String!, $location: String!) {
+  searchOfMaterials(input: {search: $search, location: $location}) {
+    title
+    created_at
+    picture
+    author
+    category
+    id
+    statuses {
+      id
+      created_at
+      status
     }
   }
-`;
+}
+    `;
 
 /**
  * __useSearchOfMaterialsQuery__
@@ -1618,37 +1143,14 @@ export const SearchOfMaterialsDocument = gql`
  *   },
  * });
  */
-export function useSearchOfMaterialsQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    SearchOfMaterialsQuery,
-    SearchOfMaterialsQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<
-    SearchOfMaterialsQuery,
-    SearchOfMaterialsQueryVariables
-  >(SearchOfMaterialsDocument, options);
-}
-export function useSearchOfMaterialsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    SearchOfMaterialsQuery,
-    SearchOfMaterialsQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    SearchOfMaterialsQuery,
-    SearchOfMaterialsQueryVariables
-  >(SearchOfMaterialsDocument, options);
-}
-export type SearchOfMaterialsQueryHookResult = ReturnType<
-  typeof useSearchOfMaterialsQuery
->;
-export type SearchOfMaterialsLazyQueryHookResult = ReturnType<
-  typeof useSearchOfMaterialsLazyQuery
->;
-export type SearchOfMaterialsQueryResult = Apollo.QueryResult<
-  SearchOfMaterialsQuery,
-  SearchOfMaterialsQueryVariables
->;
+export function useSearchOfMaterialsQuery(baseOptions: Apollo.QueryHookOptions<SearchOfMaterialsQuery, SearchOfMaterialsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchOfMaterialsQuery, SearchOfMaterialsQueryVariables>(SearchOfMaterialsDocument, options);
+      }
+export function useSearchOfMaterialsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchOfMaterialsQuery, SearchOfMaterialsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchOfMaterialsQuery, SearchOfMaterialsQueryVariables>(SearchOfMaterialsDocument, options);
+        }
+export type SearchOfMaterialsQueryHookResult = ReturnType<typeof useSearchOfMaterialsQuery>;
+export type SearchOfMaterialsLazyQueryHookResult = ReturnType<typeof useSearchOfMaterialsLazyQuery>;
+export type SearchOfMaterialsQueryResult = Apollo.QueryResult<SearchOfMaterialsQuery, SearchOfMaterialsQueryVariables>;

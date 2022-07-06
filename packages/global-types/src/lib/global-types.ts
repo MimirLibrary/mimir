@@ -80,7 +80,7 @@ export interface SearchInput {
 export interface CreateMessageInput {
     title: string;
     message: string;
-    material_id: number;
+    material_id?: Nullable<number>;
     person_id: number;
 }
 

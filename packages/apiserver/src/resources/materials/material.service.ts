@@ -60,7 +60,7 @@ export class MaterialService {
       });
       const savedMaterial = await materialRepository.save(newMaterial);
       await statusRepository.save({
-        status: StatusTypes.FREE,
+        status: StatusTypes.PENDING,
         material_id: savedMaterial.id,
         person_id: donateBookInput.person_id,
       });

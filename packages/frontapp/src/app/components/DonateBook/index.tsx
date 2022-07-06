@@ -211,6 +211,7 @@ interface IPropsDonateBook {
 const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
   const ref = useRef<HTMLInputElement | null>(null);
   const { id, location } = useAppSelector((state) => state.user);
+  const { identifier } = useAppSelector((state) => state.identifier);
   const [file, setFile] = useState<File | null>(null);
   const [pictureOfCover, setPictureOfCover] = useState('');
   const [isSuccess, setSuccess] = useState<boolean>(false);
@@ -221,7 +222,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
     author: '',
     genre: '',
     title: '',
-    identifier: '',
+    identifier,
   });
 
   const [donateBook, { error, data: donateData }] = useDonateBookMutation();
@@ -438,20 +439,6 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
                       id="genre"
                       name="genre"
                       value={dataOfBook.genre}
-                      onChange={handleChange}
-                      autoComplete="off"
-                      required
-                    />
-                  </WrapperInput>
-                </WrapperStyledInput>
-                <WrapperStyledInput>
-                  <Label htmlFor="identifier">ISBN*</Label>
-                  <WrapperInput>
-                    <StyledInput
-                      type="number"
-                      id="identifier"
-                      name="identifier"
-                      value={dataOfBook.identifier}
                       onChange={handleChange}
                       autoComplete="off"
                       required

@@ -206,7 +206,7 @@ interface IBookInfoProps {
   author: string | undefined;
   category: string | undefined;
   identifier: string;
-  material_id: string;
+  material_id: number;
   created_at: any;
   updated_at: any;
   type: string;
@@ -354,7 +354,7 @@ const BookInfo: FC<IBookInfoProps> = ({
     await prolongTime({
       variables: {
         person_id: id,
-        material_id: Number(material_id),
+        material_id,
       },
     });
   };
@@ -481,7 +481,7 @@ const BookInfo: FC<IBookInfoProps> = ({
     await createNotificationMutation({
       variables: {
         input: {
-          material_id: parseInt(material_id),
+          material_id,
           person_id: id,
         },
       },
@@ -493,7 +493,7 @@ const BookInfo: FC<IBookInfoProps> = ({
     await removeNotificationMutation({
       variables: {
         input: {
-          material_id: parseInt(material_id),
+          material_id,
           person_id: id,
         },
       },
