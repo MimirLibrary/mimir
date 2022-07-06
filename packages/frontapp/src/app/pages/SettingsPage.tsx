@@ -45,7 +45,7 @@ const SettingsPage = () => {
   const { t } = useTranslation();
   const { data: GetAllLocationsData, loading: GetAllLocationsLoading } =
     useGetAllLocationsQuery();
-  const { location: currentLocation } = useAppSelector((state) => state.user);
+  const { location } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
   const languages = [{ value: 'RUS' }, { value: 'ENG' }];
@@ -67,9 +67,10 @@ const SettingsPage = () => {
               id: loc!.id,
               value: loc!.location,
             }))}
-            initIndex={GetAllLocationsData.getAllLocations.findIndex(
-              (loc) => loc!.id === currentLocation.id
-            )}
+            initIndex={GetAllLocationsData.getAllLocations.findIndex((loc) => {
+              if (location) return loc!.id === location.id;
+              return 0;
+            })}
             onChange={(option) =>
               dispatch(updateUserLocation(option as TUserLocation))
             }

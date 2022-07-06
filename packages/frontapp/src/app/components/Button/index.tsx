@@ -4,11 +4,13 @@ import { colors, dimensions } from '@mimir/ui-kit';
 
 export interface IButtonProps {
   svgComponent?: JSX.Element;
+  leaveSvg?: boolean;
+  invert?: boolean;
   transparent?: boolean;
   secondary?: boolean;
   value: string;
   onClick?: () => void;
-  type?: 'button' | 'submit' | 'reset' | undefined;
+  type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
 }
 
@@ -92,15 +94,21 @@ const ButtonContainer = styled.button<IButtonProps>`
   }
 
   svg {
-    fill: ${({ transparent, secondary }) =>
-      transparent
-        ? secondary
-          ? colors.dropdown_gray
-          : colors.hover_color
-        : colors.bg_secondary};
+    ${({ leaveSvg, transparent, secondary }) =>
+      leaveSvg
+        ? null
+        : `${() =>
+            transparent
+              ? secondary
+                ? colors.dropdown_gray
+                : colors.hover_color
+              : colors.bg_secondary}`}
     height: auto;
     max-width: ${dimensions.xl_2};
-    margin-right: ${dimensions.xs_1};
+    ${({ invert }) =>
+      invert
+        ? `margin-left: ${dimensions.xs_1};`
+        : `margin-right: ${dimensions.xs_1}`}
   }
 
   span {
@@ -124,8 +132,17 @@ const Button: FC<IButtonProps> = (props) => {
       type={props.type || 'button'}
       disabled={props.disabled}
     >
-      {props.svgComponent}
-      <span>{props.value}</span>
+      {props.invert ? (
+        <>
+          <span>{props.value}</span>
+          {props.svgComponent}
+        </>
+      ) : (
+        <>
+          {props.svgComponent}
+          <span>{props.value}</span>
+        </>
+      )}
     </ButtonContainer>
   );
 };

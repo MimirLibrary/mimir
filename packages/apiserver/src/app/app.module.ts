@@ -8,7 +8,7 @@ import { MaterialModule } from '../resources/materials/material.module';
 import { StatusModule } from '../resources/statuses/status.module';
 import { PersonModule } from '../resources/persons/person.module';
 import { NotificationModule } from '../resources/notifications/notification.module';
-import { LocationsModule } from '../resources/locations/location.module';
+import { LocationModule } from '../resources/locations/location.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ItemModule } from '../resources/item/item.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
@@ -27,6 +27,7 @@ import { MessageModule } from '../resources/messages/message.module';
 import { Message } from '../resources/messages/messages.entity';
 import { FileModule } from '../file/file.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
@@ -42,7 +43,8 @@ import { ServeStaticModule } from '@nestjs/serve-static';
     ItemModule,
     NotificationModule,
     MessageModule,
-    LocationsModule,
+    LocationModule,
+    AuthModule,
     FileModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
