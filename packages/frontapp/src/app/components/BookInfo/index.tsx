@@ -16,7 +16,7 @@ import {
   periodOfKeeping,
 } from '../../models/helperFunctions/converTime';
 import { StyledBookStatus } from '../../globalUI/Status';
-import SuccessMessage from '../SuccesMessage';
+import SuccessMessage from '../SuccessMessage';
 import {
   GetAllTakenItemsDocument,
   GetMaterialByIdDocument,

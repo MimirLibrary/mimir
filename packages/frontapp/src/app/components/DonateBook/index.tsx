@@ -11,7 +11,7 @@ import {
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import Button from '../Button';
 import Modal from '../Modal';
-import SuccessMessage from '../SuccesMessage';
+import SuccessMessage from '../SuccessMessage';
 import AskManagerForm from '../AskManagerForm';
 import ErrorMessage from '../ErrorMessge';
 
