@@ -10,7 +10,8 @@ export const colors = {
   warning_yellow: '#FF910F',
   problem_red: '#FF372A',
   main_green: '#2AA816',
-  bg_primary: '#F3F7FF',
+  bg_primary: '#F9FAFF',
   bg_secondary: '#FFFFFF',
   free_book: '#2AA816',
+  shadow: '0px 10px 70px rgba(26, 30, 214, 0.08)',
 };

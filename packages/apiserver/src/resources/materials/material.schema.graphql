@@ -58,7 +58,7 @@ input DonateBookInput {
   person_id: Int!
 }
 
-input SearchInput{
+input SearchInput {
   search: String!
   location: String!
 }
