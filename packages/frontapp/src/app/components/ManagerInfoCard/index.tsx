@@ -24,8 +24,9 @@ const WrapperCard = styled.div`
   height: inherit;
   width: 100%;
   box-shadow: ${colors.shadow};
-  border-radius: 10px;
-  padding: 24px 24px 28px 24px;
+  border-radius: ${dimensions.xs_1};
+  padding: ${dimensions.xl_2} ${dimensions.xl_2} ${dimensions.xl_3}
+    ${dimensions.xl_2};
 `;
 
 const Title = styled.p`
@@ -68,7 +69,7 @@ const WrapperFooter = styled.div`
   flex-grow: 0;
   display: flex;
   flex-direction: row;
-  bottom: 10px;
+  bottom: ${dimensions.xs_1};
   justify-content: space-between;
 `;
 const OpenLink = styled.a`
@@ -77,7 +78,7 @@ const OpenLink = styled.a`
   color: ${colors.accent_color};
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
-  width: 94px;
+  width: 120px;
   text-align: right;
   text-decoration: underline;
 `;
@@ -99,10 +100,10 @@ const FieldWrapper = styled.div`
   order: 3;
   flex-grow: 0;
   height: auto;
-  padding: 16px 0px 16px 16px;
-  gap: 8px;
+  padding: ${dimensions.base} 0px ${dimensions.base} ${dimensions.base};
+  gap: ${dimensions.xs_2};
   background: ${colors.bg_fields};
-  border-radius: 10px;
+  border-radius: ${dimensions.xs_1};
 `;
 const InlineWrapper = styled.div`
   display: flex;
@@ -114,12 +115,14 @@ interface IFieldOpenLinkProps {
 }
 const FieldOpenLink = styled(OpenLink)<IFieldOpenLinkProps>`
   font-weight: 400;
+  width: auto;
+  margin-left: 4px;
   color: ${({ secondary }) => (secondary ? colors.problem_red : null)};
 `;
 
 const StyledIcon = styled.img`
-  width: 48px;
-  height: 48px;
+  width: ${dimensions.base_3};
+  height: ${dimensions.base_3};
   border-radius: 50%;
   border: 2px solid ${colors.bg_secondary};
   position: relative;
@@ -133,31 +136,18 @@ const StyledIcon = styled.img`
 const NotificationDescription = styled(FieldDescription)`
   position: relative;
   font-weight: 500;
-  font-size: 14px;
+  font-size: ${dimensions.sm};
   left: -16px;
   align-self: center;
 `;
 
-function renderSwitch(type: ManagerCardTypes) {
-  switch (type) {
-    case ManagerCardTypes.OVERDUE:
-      return t('The following users have not turned in their books');
-    case ManagerCardTypes.DONATES:
-      return t('New arrivals awaiting your confirmation');
-    case ManagerCardTypes.NOTIFICATIONS:
-      return t('Problems faced by users');
-  }
-}
-
 const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
-  const [description, setDescription] = useState('');
-  useEffect(() => {
-    setDescription(renderSwitch(type));
-  }, []);
   return (
     <WrapperCard>
-      <Title>{t(type.split('_').join(' ') + ` — (${fields.length})`)}</Title>
-      <Description>{description}</Description>
+      <Title>
+        {t(`ManagerInfoCard.Title.${type}`) + ` — (${fields.length})`}
+      </Title>
+      <Description>{t(`ManagerInfoCard.Description.${type}`)}</Description>
       {fields.slice(0, 3).map((field, key) => (
         <FieldWrapper>
           {type === ManagerCardTypes.NOTIFICATIONS ? (
@@ -167,25 +157,21 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
                 <InlineFieldDescription>
                   {field.description}
                 </InlineFieldDescription>
-                <InlineOpenLink>{t('Answer')}</InlineOpenLink>
+                <InlineOpenLink>
+                  {t('ManagerInfoCard.Link.Answer')}
+                </InlineOpenLink>
               </InlineWrapper>
               <FieldOpenLink>Ivan Ivanov</FieldOpenLink>
             </>
           ) : (
             <>
               <FieldTitle>{field.title}</FieldTitle>
-
-              {type === ManagerCardTypes.OVERDUE ? (
-                <InlineWrapper>
-                  <FieldDescription>{t('Was overdue by')}</FieldDescription>
-                  <FieldOpenLink secondary>Ivan Ivanov</FieldOpenLink>
-                </InlineWrapper>
-              ) : (
-                <InlineWrapper>
-                  <FieldDescription>{t('Was donated by')}</FieldDescription>
-                  <FieldOpenLink>Ivan Ivanov</FieldOpenLink>
-                </InlineWrapper>
-              )}
+              <InlineWrapper>
+                <FieldDescription>
+                  {t(`ManagerInfoCard.FieldDescription.${type}`)}
+                </FieldDescription>
+                <FieldOpenLink secondary>Ivan Ivanov</FieldOpenLink>
+              </InlineWrapper>
             </>
           )}
         </FieldWrapper>
@@ -198,22 +184,13 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
             ))}
             {fields.length > 3 ? (
               <NotificationDescription>
-                {`+ ${fields.length - 3} more`}
+                {`+${fields.length - 3} ` +
+                  t(`ManagerInfoCard.Description.More`)}
               </NotificationDescription>
             ) : null}
           </InlineWrapper>
         </>
-        <OpenLink>
-          {t(
-            `See all ${
-              type === ManagerCardTypes.OVERDUE
-                ? 'overdues'
-                : type === ManagerCardTypes.DONATES
-                ? 'donates'
-                : 'notifications'
-            }`
-          )}
-        </OpenLink>
+        <OpenLink>{t(`ManagerInfoCard.Link.${type}`)}</OpenLink>
       </WrapperFooter>
     </WrapperCard>
   );

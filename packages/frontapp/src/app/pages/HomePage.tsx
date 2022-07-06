@@ -13,6 +13,7 @@ import ManagerInfoCard from '../components/ManagerInfoCard';
 import { ManagerCardTypes } from '../components/ManagerInfoCard/managerCardTypes';
 import Button from '../components/Button';
 import { t } from 'i18next';
+import { managerData } from '../models/mockData/managerInfoCard';
 
 const WrapperHome = styled.div`
   @media (max-width: ${dimensions.tablet_width}) {
@@ -62,43 +63,7 @@ const HomePage: FC = () => {
   const { data, loading } = useGetAllTakenItemsQuery({
     variables: { person_id: id },
   });
-  const Pic = '../../../assets/avatar.jpg';
-  const managerData = [
-    {
-      title: 'Alica in Wonderland',
-      img: Pic,
-      person_id: '1',
-      created_at: '2022-06-01 10:45:09.999641',
-      description:
-        '1lala lalal alallala lalal lla lal lala la   lla lal lala la   lla lal lala la   lla lal lala la   lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la lalla la la lla la la lalallal a',
-    },
-    {
-      title: 'Alica in Wonderland',
-      img: Pic,
-      person_id: '1',
-      created_at: '2022-08-04 10:45:09.999641',
-      description:
-        '3lala lalal alallala lalal lla lal lala la   lla lal lala la   lla lal lala la   lla lal lala la   lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la lalla la la lla la la lalallal a',
-    },
-    {
-      title: 'Alica in Wonderland',
-      img: Pic,
-      person_id: '1',
-      created_at: '2022-08-01 10:45:09.999641',
-      description:
-        '2lala lalal alallala lalal lla lal lala la   lla lal lala la   lla lal lala la   lla lal lala la   lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la lalla la la lla la la lalallal a',
-    },
-    {
-      title: 'Alica in Wonderland',
-      img: Pic,
-      person_id: '1',
-      created_at: '2022-08-01 10:45:09.999641',
-      description:
-        '2lala lalal alallala lalal lla lal lala la   lla lal lala la   lla lal lala la   lla lal lala la   lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la  lla lal lala la lalla la la lla la la lalallal a',
-    },
-  ].sort((a, b) =>
-    a.created_at > b.created_at ? 1 : b.created_at > a.created_at ? -1 : 0
-  );
+  managerData.sort((a, b) => a.created_at.getTime() - b.created_at.getTime());
 
   if (loading) return <h1>Loading...</h1>;
 
@@ -122,7 +87,7 @@ const HomePage: FC = () => {
       ) : (
         <>
           <ButtonWrapper>
-            <Button value={t(`Open library statistics`)} />
+            <Button value={t(`ManagerInfoCard.Description.Library`)} />
           </ButtonWrapper>
           <CardsWrapper>
             <OverdueDonatesWrapper>
