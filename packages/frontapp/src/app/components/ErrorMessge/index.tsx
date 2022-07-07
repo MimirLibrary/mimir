@@ -54,7 +54,7 @@ const WrapperInfo = styled.div`
   align-items: center;
   flex-direction: column;
 
-  max-width: 551px;
+  max-width: 346px;
   width: 100%;
 `;
 
@@ -74,6 +74,7 @@ interface IPropsErrorMessage {
   titleCancel: string;
   activeAskManager?: boolean;
   showContentOfDonate?: () => void;
+  titleOption?: string;
 }
 
 const ErrorMessage: FC<IPropsErrorMessage> = ({
@@ -84,6 +85,7 @@ const ErrorMessage: FC<IPropsErrorMessage> = ({
   titleCancel,
   activeAskManager = true,
   showContentOfDonate,
+  titleOption,
 }) => {
   const closeModal = () => {
     setActive(false);
@@ -105,7 +107,7 @@ const ErrorMessage: FC<IPropsErrorMessage> = ({
           </div>
         </WrapperInfo>
         <WrapperButtons active={activeAskManager}>
-          <StyledButton value="Ok" onClick={closeModal} />
+          <StyledButton value={titleOption || 'Ok'} onClick={closeModal} />
           {activeAskManager && (
             <StyledButton
               value={titleCancel || 'Cancel'}

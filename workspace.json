@@ -7,6 +7,7 @@
     "frontapp-e2e": "packages/frontapp-e2e",
     "global-types": "packages/global-types",
     "localization": "packages/localization",
+    "metadata-service": "packages/metadata-service",
     "mobile": "apps/mobile",
     "mobile-e2e": "packages/mobile-e2e",
     "ui-kit": "packages/ui-kit"
