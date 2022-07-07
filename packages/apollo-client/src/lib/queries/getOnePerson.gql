@@ -1,5 +1,5 @@
-query GetOnePerson($id:ID!){
-  getOnePerson(id: $id){
-      id
+query GetOnePerson($id: ID!) {
+  getOnePerson(id: $id) {
+    id
   }
 }
