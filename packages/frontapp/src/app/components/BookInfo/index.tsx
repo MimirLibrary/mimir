@@ -44,6 +44,9 @@ const BookHolder = styled.div`
   background-color: ${colors.bg_secondary};
   padding: ${dimensions.base_2};
   box-shadow: 0px 10px 70px rgba(26, 30, 214, 0.08);
+  @media (max-width: ${dimensions.phone_width}) {
+    padding-top: ${dimensions.base};
+  }
 `;
 
 const BookImage = styled.img`
@@ -52,8 +55,6 @@ const BookImage = styled.img`
   height: 19.5rem;
   border-radius: 10px;
   @media (max-width: ${dimensions.phone_width}) {
-    width: 5rem;
-    height: 8rem;
     margin-right: ${dimensions.base};
   }
 `;
@@ -63,10 +64,17 @@ const ShortDescriptionWrapper = styled.div`
   justify-content: space-between;
   width: 100%;
   gap: ${dimensions.xl_2};
+  @media (max-width: ${dimensions.phone_width}) {
+    flex-direction: column;
+  }
 `;
+
 const ShortDescription = styled.div`
   width: 100%;
   margin-left: ${dimensions.xl_2};
+  @media (max-width: ${dimensions.phone_width}) {
+    margin: 0;
+  }
 `;
 
 const TitleBook = styled.h3`
@@ -75,6 +83,10 @@ const TitleBook = styled.h3`
   font-size: ${dimensions.xl};
   line-height: ${dimensions.xl_2};
   color: ${colors.main_black};
+  @media (max-width: ${dimensions.phone_width}) {
+    margin-bottom: 0;
+    margin-top: ${dimensions.base};
+  }
 `;
 
 const Topic = styled.p`
@@ -121,6 +133,10 @@ const StyledStatus = styled(StyledBookStatus)`
 
 const WrapperInfo = styled.div`
   display: flex;
+  @media (max-width: ${dimensions.phone_width}) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const WrapperButtons = styled.div`
@@ -159,11 +175,9 @@ const StyledInputDeadline = styled.input`
   :focus {
     border: 0.5px solid ${colors.accent_color};
   }
-
   @media (max-width: ${dimensions.tablet_width}) {
     width: 100%;
   }
-
   @media (max-width: ${dimensions.phone_width}) {
     width: 70%;
   }
@@ -196,13 +210,39 @@ const StyledTextArea = styled.textarea`
   color: ${colors.main_black};
   resize: none;
 `;
+const TextAreaWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100% - 100px;
+  border: 0.5px solid #bdbdbd;
+  border-radius: ${dimensions.xl_3};
+  padding: 10px 0;
+  padding-left: ${dimensions.xs_1};
+  margin-right: ${dimensions.xs_1};
+  background: ${colors.bg_secondary};
+  :hover {
+    border: 0.5px solid ${colors.accent_color};
+  }
+  :focus {
+    border: 0.5px solid ${colors.accent_color};
+  }
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    width: 100%;
+  }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    width: 70%;
+  }
+`;
 
 interface IBookInfoProps {
   person_id: number | undefined;
   src: string | null | undefined;
   title: string | undefined;
   description: string | undefined;
-  status: string | undefined;
+  statusInfo: any;
   author: string | undefined;
   category: string | undefined;
   identifier: string;
@@ -217,7 +257,7 @@ const BookInfo: FC<IBookInfoProps> = ({
   src = '',
   title = '',
   author = '',
-  status,
+  statusInfo,
   description = '',
   category,
   identifier,
@@ -276,16 +316,6 @@ const BookInfo: FC<IBookInfoProps> = ({
   const [isMaterialTakenByCurrentUser, setIsMaterialTakenByCurrentUser] =
     useState(false);
 
-  useEffect(() => {
-    const authors = allMaterials?.getAllMaterials?.map((item) => {
-      return item?.author;
-    });
-    const categories = allMaterials?.getAllMaterials?.map((item) => {
-      return item?.category;
-    });
-    setAuthorsDropDown([...new Set(authors)]);
-    setCategoriesDropDown([...new Set(categories)]);
-  }, []);
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewTitle(e.target.value);
   };
@@ -313,7 +343,7 @@ const BookInfo: FC<IBookInfoProps> = ({
   const [updateMaterial] = useUpdateMaterialMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
-  const currentStatus = getStatus(status, created_at);
+  const currentStatus = getStatus(statusInfo?.status, created_at);
   const dateConditionOfClaiming =
     data?.claimBook.__typename === 'Status' ? data.claimBook.created_at : null;
   const dateConditionOfExtending =
@@ -326,7 +356,6 @@ const BookInfo: FC<IBookInfoProps> = ({
     infoOfProlong?.prolongClaimPeriod.__typename === 'Error'
       ? infoOfProlong?.prolongClaimPeriod.message
       : null;
-
   const claim = async () => {
     await claimBook({
       variables: {
@@ -399,7 +428,16 @@ const BookInfo: FC<IBookInfoProps> = ({
     );
     setEditing(false);
   };
-
+  useEffect(() => {
+    const authors = allMaterials?.getAllMaterials?.map((item) => {
+      return item?.author;
+    });
+    const categories = allMaterials?.getAllMaterials?.map((item) => {
+      return item?.category;
+    });
+    setAuthorsDropDown([...new Set(authors)]);
+    setCategoriesDropDown([...new Set(categories)]);
+  }, []);
   useEffect(() => {
     if (infoOfProlong?.prolongClaimPeriod.__typename === 'Status') {
       setIsSuccessExtend(true);
@@ -603,7 +641,7 @@ const BookInfo: FC<IBookInfoProps> = ({
             <>
               {person_id === id ? (
                 <WrapperButtons>
-                  {status !== 'Free' ? (
+                  {statusInfo?.status !== 'Free' ? (
                     <>
                       <StyledButton
                         value="Return a book"
@@ -619,7 +657,7 @@ const BookInfo: FC<IBookInfoProps> = ({
                 </WrapperButtons>
               ) : (
                 <WrapperButtons>
-                  {status !== 'Free' &&
+                  {statusInfo?.status !== 'Free' &&
                     (!isMaterialTakenByCurrentUser ? (
                       <StyledButton
                         value="Notify when available"
@@ -636,7 +674,7 @@ const BookInfo: FC<IBookInfoProps> = ({
                     ))}
                 </WrapperButtons>
               )}
-              {status === 'Free' ? (
+              {statusInfo?.status === 'Free' ? (
                 <StyledButton
                   value="Claim a book"
                   svgComponent={<Claim />}
@@ -675,12 +713,12 @@ const BookInfo: FC<IBookInfoProps> = ({
           <>
             <br />
             <TitleHolder>Description: </TitleHolder>
-            <WrapperInput>
+            <TextAreaWrapper>
               <StyledTextArea
                 value={newDescription}
                 onChange={handleChangeDescription}
               />
-            </WrapperInput>
+            </TextAreaWrapper>
           </>
         ) : (
           <LongDescription>
@@ -767,24 +805,29 @@ const BookInfo: FC<IBookInfoProps> = ({
           onClick={closeReportedManager}
         />
       </Modal>
-      <Modal active={deleteWarning} setActive={setDeleteWarning}>
-        <TitleBook>Are you sure you want to delete this item?</TitleBook>
-        <WrapperInfo>
-          <StyledButton
-            value="Cancel"
-            transparent
-            onClick={() => setDeleteWarning(false)}
-          />
-          <hr />
-          <StyledButton
-            value="Delete item"
-            transparent
-            secondary
-            svgComponent={<Remove />}
+      {currentStatus === 'Free' ? (
+        <Modal active={deleteWarning} setActive={setDeleteWarning}>
+          <ErrorMessage
+            title="Warning"
+            message={`Are you sure you want to delete the book "${title}" from the library permanently?`}
+            setActive={setDeleteWarning}
+            titleCancel="Cancel"
+            titleOption="Yes, delete"
             onClick={deleteItem}
           />
-        </WrapperInfo>
-      </Modal>
+        </Modal>
+      ) : (
+        <Modal active={deleteWarning} setActive={setDeleteWarning}>
+          <ErrorMessage
+            title="Warning"
+            message={`The book "${title}" is now in the possession of a person with Id ${statusInfo?.person_id} .Are you sure you want to delete the book "${title}" from the library permanently?`}
+            setActive={setDeleteWarning}
+            titleCancel="Cancel"
+            titleOption="Yes, delete"
+            onClick={deleteItem}
+          />
+        </Modal>
+      )}
     </>
   );
 };

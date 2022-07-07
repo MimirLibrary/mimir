@@ -51,6 +51,30 @@ export const resources = {
           Items: 'items',
         },
       },
+      ManagerInfoCard: {
+        Title: {
+          Overdue: 'Overdue',
+          Donates: 'Donates',
+          Notifications: 'New user notifications',
+        },
+        Description: {
+          Overdue: 'The following users have not turned in their books',
+          Donates: 'New arrivals awaiting your confirmation',
+          Notifications: 'Problems faced by users',
+          More: 'more',
+          Library: 'Open library statistics',
+        },
+        Link: {
+          Overdue: 'See all overdue',
+          Donates: 'See all donates',
+          Notifications: 'See all notifications',
+          Answer: 'Answer',
+        },
+        FieldDescription: {
+          Overdue: 'Was overdue by',
+          Donates: 'Was donated by',
+        },
+      },
     },
   },
   ru: {
@@ -102,6 +126,30 @@ export const resources = {
           Overdue: 'Просрочены:',
           Item: 'предмет',
           Items: 'предмета',
+        },
+      },
+      ManagerInfoCard: {
+        Title: {
+          Overdue: 'Просроченные',
+          Donates: 'Пожертвования',
+          Notifications: 'Новые уведомления от пользователей',
+        },
+        Description: {
+          Overdue: 'Эти пользователи не вернули свои книги вовремя',
+          Donates: 'Новые поступления от пользователей',
+          Notifications: 'Проблемы, описанные пользователями',
+          More: 'ещё',
+          Library: 'Открыть статистику библиотеки',
+        },
+        Link: {
+          Overdue: 'Все просроченные',
+          Donates: 'Все пожертвования',
+          Notifications: 'Все уведомления',
+          Answer: 'Ответить',
+        },
+        FieldDescription: {
+          Overdue: 'Просрочил:',
+          Donates: 'Пожертвовал:',
         },
       },
     },
