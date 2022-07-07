@@ -2,6 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import BookInfo from '../components/BookInfo';
 import AllBooksList from '../components/AllBooksList';
 import styled from '@emotion/styled';
+import { useAppSelector } from '../hooks/useTypedSelector';
 
 import { colors, dimensions } from '@mimir/ui-kit';
 import {
@@ -48,6 +49,7 @@ const SuggestionText = styled.h3`
 const BookPreview = () => {
   const { item_id } = useParams();
   const navigate = useNavigate();
+  const { id } = useAppSelector((state) => state.user);
   const { data, loading } = useGetMaterialByIdQuery({
     variables: { id: item_id! },
   });
@@ -69,7 +71,7 @@ const BookPreview = () => {
       </ButtonWrapper>
       {data?.getMaterialById && (
         <BookInfo
-          person_id={lastStatusAnotherPerson?.person_id}
+          person_id={id}
           identifier={data.getMaterialById.identifier}
           src={data?.getMaterialById.picture}
           title={data?.getMaterialById.title}
