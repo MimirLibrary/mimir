@@ -33,10 +33,10 @@ import {
 } from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import ErrorMessage from '../ErrorMessge';
-import { RolesTypes } from '../../../utils/rolesTypes';
 import AskManagerForm from '../AskManagerForm';
 import { WrapperInput } from '../Search';
 import { useNavigate } from 'react-router-dom';
+import { RolesTypes } from '@mimir/global-types';
 const BookHolder = styled.div`
   top: 11.5rem;
   left: 24.5rem;

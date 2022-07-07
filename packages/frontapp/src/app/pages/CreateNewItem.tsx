@@ -1,7 +1,8 @@
 import React from 'react';
+import DonateBookFlow from '../components/DonateBookFlow';
 
 const CreateNewItem = () => {
-  return <div>Create New Item</div>;
+  return <DonateBookFlow />;
 };
 
 export default CreateNewItem;

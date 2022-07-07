@@ -70,6 +70,7 @@ export interface DonateBookInput {
     description?: Nullable<string>;
     picture?: Nullable<string>;
     person_id: number;
+    role: string;
 }
 
 export interface SearchInput {

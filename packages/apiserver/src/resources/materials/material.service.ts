@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Material } from './material.entity';
-import { SearchInput } from '@mimir/global-types';
-import { DonateBookInput } from '@mimir/global-types';
+import { DonateBookInput, RolesTypes, SearchInput } from '@mimir/global-types';
 import { FileService } from '../../file/file.service';
 import { Status } from '../statuses/status.entity';
 import { Connection } from 'typeorm';
@@ -40,9 +39,6 @@ export class MaterialService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      if (!donateBookInput.picture) {
-        throw new ErrorBook('Picture is required!');
-      }
       const { person_id, ...newMaterialObj } = donateBookInput;
       const isExistMaterial = await materialRepository.findOne({
         where: { identifier: donateBookInput.identifier },
@@ -50,6 +46,7 @@ export class MaterialService {
       if (isExistMaterial) {
         throw new ErrorBook('This material is already exist!');
       }
+
       const pictureWithIdentifier = this.fileService.moveFileInMainStorage(
         donateBookInput.picture,
         donateBookInput.identifier
@@ -60,7 +57,10 @@ export class MaterialService {
       });
       const savedMaterial = await materialRepository.save(newMaterial);
       await statusRepository.save({
-        status: StatusTypes.PENDING,
+        status:
+          donateBookInput.role === RolesTypes.READER
+            ? StatusTypes.PENDING
+            : StatusTypes.FREE,
         material_id: savedMaterial.id,
         person_id: donateBookInput.person_id,
       });

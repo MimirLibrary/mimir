@@ -71,6 +71,7 @@ export type DonateBookInput = {
   location_id: Scalars['Int'];
   person_id: Scalars['Int'];
   picture?: InputMaybe<Scalars['String']>;
+  role: Scalars['String'];
   title: Scalars['String'];
   type: Scalars['String'];
 };
@@ -383,6 +384,7 @@ export type DonateBookMutationVariables = Exact<{
   category: Scalars['String'];
   description?: InputMaybe<Scalars['String']>;
   picture?: InputMaybe<Scalars['String']>;
+  role: Scalars['String'];
 }>;
 
 
@@ -600,9 +602,9 @@ export type CreateNotificationMutationHookResult = ReturnType<typeof useCreateNo
 export type CreateNotificationMutationResult = Apollo.MutationResult<CreateNotificationMutation>;
 export type CreateNotificationMutationOptions = Apollo.BaseMutationOptions<CreateNotificationMutation, CreateNotificationMutationVariables>;
 export const DonateBookDocument = gql`
-    mutation DonateBook($person_id: Int!, $location_id: Int!, $identifier: String!, $id_type: String!, $type: String!, $title: String!, $author: String!, $category: String!, $description: String, $picture: String) {
+    mutation DonateBook($person_id: Int!, $location_id: Int!, $identifier: String!, $id_type: String!, $type: String!, $title: String!, $author: String!, $category: String!, $description: String, $picture: String, $role: String!) {
   donateBook(
-    input: {person_id: $person_id, location_id: $location_id, identifier: $identifier, type: $type, author: $author, category: $category, description: $description, id_type: $id_type, picture: $picture, title: $title}
+    input: {person_id: $person_id, location_id: $location_id, identifier: $identifier, type: $type, author: $author, category: $category, description: $description, id_type: $id_type, picture: $picture, title: $title, role: $role}
   ) {
     title
     picture
@@ -635,6 +637,7 @@ export type DonateBookMutationFn = Apollo.MutationFunction<DonateBookMutation, D
  *      category: // value for 'category'
  *      description: // value for 'description'
  *      picture: // value for 'picture'
+ *      role: // value for 'role'
  *   },
  * });
  */

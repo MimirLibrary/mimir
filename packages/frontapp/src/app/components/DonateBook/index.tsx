@@ -14,6 +14,9 @@ import Modal from '../Modal';
 import SuccessMessage from '../SuccessMessage';
 import AskManagerForm from '../AskManagerForm';
 import ErrorMessage from '../ErrorMessge';
+import { RolesTypes } from '@mimir/global-types';
+import { useAppDispatch } from '../../hooks/useTypedDispatch';
+import { removeIdentifier } from '../../store/slices/identifierSlice';
 
 const WrapperDonate = styled.section`
   background-color: ${colors.bg_secondary};
@@ -210,14 +213,16 @@ interface IPropsDonateBook {
 }
 const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
   const ref = useRef<HTMLInputElement | null>(null);
-  const { id, location } = useAppSelector((state) => state.user);
+  const { id, location, userRole } = useAppSelector((state) => state.user);
   const { identifier } = useAppSelector((state) => state.identifier);
   const [file, setFile] = useState<File | null>(null);
-  const [pictureOfCover, setPictureOfCover] = useState('');
+  const [pictureOfCover, setPictureOfCover] = useState<string | null>(null);
   const [isSuccess, setSuccess] = useState<boolean>(false);
   const [description, setDescription] = useState<string>('');
   const [isAskManager, setIsAskManager] = useState<boolean>(false);
   const [sendManagerSuccess, setSendManagerSuccess] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+
   const [dataOfBook, setDataOfBook] = useState<IDataOfBook>({
     author: '',
     genre: '',
@@ -231,7 +236,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
     !dataOfBook.author ||
     !dataOfBook.title ||
     !dataOfBook.genre ||
-    !dataOfBook.identifier ||
+    // !dataOfBook.identifier ||
     !description;
 
   const deleteFile = async (fileName: string) => {
@@ -269,7 +274,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
         title,
         genre: category,
         author,
-        identifier: '12345678910',
+        identifier,
       });
       if (picture) setPictureOfCover(picture);
     }
@@ -282,6 +287,12 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
       });
     }
   }, [error]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(removeIdentifier());
+    };
+  }, []);
 
   useEffect(() => {
     const operationWithFiles = async () => {
@@ -334,6 +345,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
     e.preventDefault();
     try {
       const { author, title, genre, identifier } = dataOfBook;
+      console.log(identifier);
       await donateBook({
         variables: {
           person_id: id,
@@ -346,6 +358,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
           category: genre,
           location_id: Number(location.id),
           id_type: 'ISBN',
+          role: userRole,
         },
       });
     } catch (e) {
@@ -414,6 +427,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
                       value={dataOfBook.title}
                       onChange={handleChange}
                       autoComplete="off"
+                      placeholder="Enter title"
                     />
                   </WrapperInput>
                 </WrapperStyledInput>
@@ -428,6 +442,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
                       onChange={handleChange}
                       autoComplete="off"
                       required
+                      placeholder="Enter author"
                     />
                   </WrapperInput>
                 </WrapperStyledInput>
@@ -442,6 +457,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
                       onChange={handleChange}
                       autoComplete="off"
                       required
+                      placeholder="Enter genre"
                     />
                   </WrapperInput>
                 </WrapperStyledInput>
@@ -453,11 +469,13 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
                 disabled={isInvalid}
                 type="submit"
               />
-              <StyledButton
-                value="Ask a manger"
-                transparent
-                onClick={handleShowAskManagerForm}
-              />
+              {userRole !== RolesTypes.MANAGER && (
+                <StyledButton
+                  value="Ask a manger"
+                  transparent
+                  onClick={handleShowAskManagerForm}
+                />
+              )}
             </WrapperButtons>
           </WrapperMainInfo>
           <WrapperDescription>

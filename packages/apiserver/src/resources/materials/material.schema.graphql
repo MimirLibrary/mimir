@@ -60,6 +60,7 @@ input DonateBookInput {
   description: String
   picture: String
   person_id: Int!
+  role: String!
 }
 
 input SearchInput {
