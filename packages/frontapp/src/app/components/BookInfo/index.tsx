@@ -820,7 +820,7 @@ const BookInfo: FC<IBookInfoProps> = ({
         <Modal active={deleteWarning} setActive={setDeleteWarning}>
           <ErrorMessage
             title="Warning"
-            message={`The book "${title}" is now in the possession of a person with Id ${statusInfo?.person_id} .Are you sure you want to delete the book “Picture of Dorian Gray” from the library permanently?`}
+            message={`The book "${title}" is now in the possession of a person with Id ${statusInfo?.person_id} .Are you sure you want to delete the book "${title}" from the library permanently?`}
             setActive={setDeleteWarning}
             titleCancel="Cancel"
             titleOption="Yes, delete"
