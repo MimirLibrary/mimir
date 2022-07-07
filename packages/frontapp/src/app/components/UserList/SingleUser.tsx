@@ -5,6 +5,7 @@ import { mockData } from './mockData';
 import { t } from 'i18next';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
+import { useNavigate } from 'react-router-dom';
 
 const InfoWrapper = styled.div`
   display: flex;
@@ -99,9 +100,13 @@ const SingleUser: FC<ISingleUser> = ({ id = '', statuses = [] }) => {
   useEffect(() => {
     setClaims(countClaimHistory(statuses));
   }, []);
+  const navigate = useNavigate();
+  const handleUserRedirect = () => {
+    navigate(`/readers/${id}`);
+  };
 
   return (
-    <CardWrapper>
+    <CardWrapper onClick={handleUserRedirect}>
       <AvatarWrapper>
         <Avatar src={''} />
       </AvatarWrapper>
