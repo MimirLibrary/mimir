@@ -94,9 +94,10 @@ const DonateViaISBN = () => {
     setValueIsISBN('');
   };
 
-  const handleShowScanner = useCallback(() => {
+  const handleShowScanner = () => {
+    setValueIsISBN('');
     setIsShowScanner(true);
-  }, []);
+  };
 
   return (
     <>
@@ -117,6 +118,7 @@ const DonateViaISBN = () => {
               />
             </WrapperInputStyled>
             <ButtonScanner
+              type="button"
               margin={`0 ${dimensions.xs_2}`}
               onClick={handleShowScanner}
             />
