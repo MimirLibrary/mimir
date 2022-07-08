@@ -8,6 +8,8 @@ export type TUserLocation = {
 interface IUserState {
   id: number;
   username: string;
+  avatar: string;
+  email: string;
   userRole: string;
   location: TUserLocation;
   isAuth: boolean;
@@ -24,6 +26,8 @@ const initialState: IUserState = {
   id: 5,
   isAuth: false,
   username: 'Test UserName',
+  avatar: '',
+  email: 'example@email.com',
   userRole: 'Reader',
   location: {
     id: '2',
@@ -36,9 +40,13 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state: IUserState, action: PayloadAction<IUserPayload>) => {
-      const { username, location, id, userRole } = action.payload;
+      const { username, avatar, email, location, id, userRole } =
+        action.payload;
 
       state.location = location;
+      state.username = username;
+      state.avatar = avatar;
+      state.email = email;
       state.id = id;
       state.isAuth = true;
       state.location = location;

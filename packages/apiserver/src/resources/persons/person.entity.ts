@@ -24,6 +24,15 @@ export class Person extends BaseEntity {
   @Column()
   type!: string;
 
+  @Column()
+  username!: string;
+
+  @Column()
+  email!: string;
+
+  @Column({ nullable: true })
+  avatar: string;
+
   @Column({ nullable: true })
   location_id: number;
 

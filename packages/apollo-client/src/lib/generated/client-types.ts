@@ -227,7 +227,9 @@ export type Notification = {
 
 export type Person = {
   __typename?: 'Person';
+  avatar: Scalars['String'];
   created_at: Scalars['DateTime'];
+  email: Scalars['String'];
   id: Scalars['ID'];
   location: Location;
   location_id: Scalars['Int'];
@@ -236,6 +238,7 @@ export type Person = {
   smg_id: Scalars['String'];
   statuses?: Maybe<Array<Maybe<Status>>>;
   type: Scalars['String'];
+  username: Scalars['String'];
 };
 
 export type ProlongTimeInput = {

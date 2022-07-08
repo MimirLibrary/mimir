@@ -25,7 +25,13 @@ export class AuthService {
 
     if (person) return { ...tokens, ...person, userRole: person.type };
 
-    const newPerson = Person.create({ smg_id: result.sub, type: 'Reader' });
+    const newPerson = Person.create({
+      smg_id: result.sub,
+      avatar: result.picture,
+      email: result.email,
+      username: result.name,
+      type: 'Reader',
+    });
     await Person.save(newPerson);
 
     return { ...tokens, ...newPerson, userRole: newPerson.type };

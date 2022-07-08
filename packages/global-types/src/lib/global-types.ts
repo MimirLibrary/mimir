@@ -188,6 +188,9 @@ export interface Person {
     id: string;
     smg_id: string;
     type: string;
+    username: string;
+    email: string;
+    avatar: string;
     location_id: number;
     created_at: DateTime;
     statuses?: Nullable<Nullable<Status>[]>;
