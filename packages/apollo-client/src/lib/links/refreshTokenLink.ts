@@ -15,11 +15,9 @@ export const refreshTokenLink = setContext(async () => {
       access_token: string;
       id_token: string;
       expiry_date: string;
-    }>('http://localhost:3333/api/auth/refresh-token', {
+    }>(`${process.env['NX_API_ROOT_URL']}/api/auth/refresh-token`, {
       refresh_token,
     });
-
-    console.log(data);
 
     localStorage.setItem('access_token', data.access_token);
     localStorage.setItem('id_token', data.id_token);

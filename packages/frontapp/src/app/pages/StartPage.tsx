@@ -96,10 +96,9 @@ const StartPage: FC = () => {
     flow: 'auth-code',
     onSuccess: async ({ code }) => {
       const { data } = await axios.post<TAuthResponseData>(
-        'http://localhost:3333/api/auth',
+        `${process.env['NX_API_ROOT_URL']}/api/auth`,
         {
           code,
-          // tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
         }
       );
       localStorage.setItem('access_token', data.access_token);
