@@ -10,7 +10,7 @@ export const colors = {
   warning_yellow: '#FF910F',
   problem_red: '#FF372A',
   main_green: '#2AA816',
-  bg_primary: '#F3F7FF',
+  bg_primary: '#F9FAFF',
   bg_secondary: '#FFFFFF',
   bg_fields: '#EFF4FF',
   free_book: '#2AA816',

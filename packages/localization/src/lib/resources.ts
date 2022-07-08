@@ -1,6 +1,7 @@
 export const resources = {
   en: {
     translation: {
+      Loading: 'Loading...',
       EmptyListItems: {
         Header: 'Shelf for your books and other items',
         Description:
@@ -38,6 +39,18 @@ export const resources = {
         Language: 'Language',
         Notification: 'Notification',
       },
+      Readers: {
+        Title: 'All users',
+        Description:
+          'For detailed information and interaction with the user, go to his card',
+        SingleUser: {
+          ClaimHistory: 'Claim history:',
+          ClaimNow: 'Claim now:',
+          Overdue: 'Overdue:',
+          Item: 'item',
+          Items: 'items',
+        },
+      },
       ManagerInfoCard: {
         Title: {
           Overdue: 'Overdue',
@@ -66,6 +79,7 @@ export const resources = {
   },
   ru: {
     translation: {
+      Loading: 'Загрузка...',
       EmptyListItems: {
         Header: 'Полка для ваших книг и других предметов',
         Description:
@@ -101,6 +115,18 @@ export const resources = {
         Location: 'Местоположение',
         Language: 'Язык',
         Notification: 'Уведомления',
+      },
+      Readers: {
+        Title: 'Все пользователи',
+        Description:
+          'Для подробной информации и взаимодействия с пользователем, перейдите к его карточке',
+        SingleUser: {
+          ClaimHistory: 'История:',
+          ClaimNow: 'На руках:',
+          Overdue: 'Просрочены:',
+          Item: 'предмет',
+          Items: 'предмета',
+        },
       },
       ManagerInfoCard: {
         Title: {

@@ -446,6 +446,11 @@ export type GetAllMaterialsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAllMaterialsQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', author: string, category: string, created_at: any, id: string, id_type: string, identifier: string, picture?: string | null, title: string, type: string, updated_at: any, notifications: Array<{ __typename?: 'Notification', material_id: number, person_id: number } | null>, statuses: Array<{ __typename?: 'Status', status: string, person_id: number } | null> } | null> };
 
+export type GetAllPersonsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllPersonsQuery = { __typename?: 'Query', getAllPersons: Array<{ __typename?: 'Person', id: string, statuses?: Array<{ __typename?: 'Status', id: string, material_id: number, created_at: any, status: string } | null> | null } | null> };
+
 export type GetAllTakenItemsQueryVariables = Exact<{
   person_id: Scalars['Int'];
 }>;
@@ -939,6 +944,46 @@ export function useGetAllMaterialsLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetAllMaterialsQueryHookResult = ReturnType<typeof useGetAllMaterialsQuery>;
 export type GetAllMaterialsLazyQueryHookResult = ReturnType<typeof useGetAllMaterialsLazyQuery>;
 export type GetAllMaterialsQueryResult = Apollo.QueryResult<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>;
+export const GetAllPersonsDocument = gql`
+    query GetAllPersons {
+  getAllPersons {
+    id
+    statuses {
+      id
+      material_id
+      created_at
+      status
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAllPersonsQuery__
+ *
+ * To run a query within a React component, call `useGetAllPersonsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllPersonsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllPersonsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllPersonsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllPersonsQuery, GetAllPersonsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllPersonsQuery, GetAllPersonsQueryVariables>(GetAllPersonsDocument, options);
+      }
+export function useGetAllPersonsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllPersonsQuery, GetAllPersonsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllPersonsQuery, GetAllPersonsQueryVariables>(GetAllPersonsDocument, options);
+        }
+export type GetAllPersonsQueryHookResult = ReturnType<typeof useGetAllPersonsQuery>;
+export type GetAllPersonsLazyQueryHookResult = ReturnType<typeof useGetAllPersonsLazyQuery>;
+export type GetAllPersonsQueryResult = Apollo.QueryResult<GetAllPersonsQuery, GetAllPersonsQueryVariables>;
 export const GetAllTakenItemsDocument = gql`
     query GetAllTakenItems($person_id: Int!) {
   getAllTakenItems(person_id: $person_id) {
