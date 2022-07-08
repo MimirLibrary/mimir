@@ -17,6 +17,7 @@ import ErrorMessage from '../ErrorMessge';
 import { RolesTypes } from '@mimir/global-types';
 import { useAppDispatch } from '../../hooks/useTypedDispatch';
 import { removeIdentifier } from '../../store/slices/identifierSlice';
+import FielUpload from '../FielUpload';
 
 const WrapperDonate = styled.section`
   background-color: ${colors.bg_secondary};
@@ -163,48 +164,10 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const WrapperUploadFile = styled.div`
-  width: 12.25rem;
-  height: 20.5rem;
-  border: ${colors.accent_color};
-  border-radius: ${dimensions.xs_1};
-  background-color: #f9faff;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  @media (max-width: ${dimensions.tablet_width}) {
-    width: 8rem;
-  }
-
-  @media (max-width: ${dimensions.phone_width}) {
-    width: 6rem;
-  }
-`;
-
-const StyledUploadFile = styled.span`
-  display: block;
-  text-decoration: underline;
-  color: ${colors.accent_color};
-  text-align: center;
-  margin-top: 0.25rem;
-  width: 100%;
-  cursor: pointer;
-`;
-
-const StyledImg = styled.img`
-  height: 20.5rem;
-  width: 12.3rem;
-  border-radius: ${dimensions.xs_1};
-  cursor: pointer;
-`;
-
 interface IDataOfBook {
   title: string;
   author: string;
   genre: string;
-  identifier: string;
 }
 
 interface IPropsDonateBook {
@@ -212,7 +175,6 @@ interface IPropsDonateBook {
   onHideContent: () => void;
 }
 const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
-  const ref = useRef<HTMLInputElement | null>(null);
   const { id, location, userRole } = useAppSelector((state) => state.user);
   const { identifier } = useAppSelector((state) => state.identifier);
   const [file, setFile] = useState<File | null>(null);
@@ -227,7 +189,6 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
     author: '',
     genre: '',
     title: '',
-    identifier,
   });
 
   const [donateBook, { error, data: donateData }] = useDonateBookMutation();
@@ -236,7 +197,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
     !dataOfBook.author ||
     !dataOfBook.title ||
     !dataOfBook.genre ||
-    // !dataOfBook.identifier ||
+    !identifier ||
     !description;
 
   const deleteFile = async (fileName: string) => {
@@ -274,7 +235,6 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
         title,
         genre: category,
         author,
-        identifier,
       });
       if (picture) setPictureOfCover(picture);
     }
@@ -344,8 +304,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      const { author, title, genre, identifier } = dataOfBook;
-      console.log(identifier);
+      const { author, title, genre } = dataOfBook;
       await donateBook({
         variables: {
           person_id: id,
@@ -367,7 +326,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
       setPictureOfCover('');
       setFile(null);
       setDescription('');
-      setDataOfBook({ genre: '', title: '', author: '', identifier: '' });
+      setDataOfBook({ genre: '', title: '', author: '' });
     }
   };
 
@@ -378,43 +337,11 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
           <WrapperMainInfo>
             <WrapperWithoutButtons>
               <div>
-                {pictureOfCover ? (
-                  <div>
-                    <StyledImg
-                      onClick={() => ref?.current?.click()}
-                      src={
-                        process.env['NX_API_ROOT_URL'] + '/' + pictureOfCover
-                      }
-                      alt="material pictureOfCover"
-                    />
-                    <input
-                      type="file"
-                      onChange={handleChangeFile}
-                      accept="image/*"
-                      style={{ display: 'none' }}
-                      ref={ref}
-                    />
-                    <StyledUploadFile onClick={() => ref?.current?.click()}>
-                      {file ? 'Upload new' : 'Upload File'}
-                    </StyledUploadFile>
-                  </div>
-                ) : (
-                  <>
-                    <WrapperUploadFile onClick={() => ref?.current?.click()}>
-                      <input
-                        type="file"
-                        onChange={handleChangeFile}
-                        accept="image/*"
-                        style={{ display: 'none' }}
-                        ref={ref}
-                      />
-                      <PhotoIcon />
-                    </WrapperUploadFile>
-                    <StyledUploadFile onClick={() => ref?.current?.click()}>
-                      {file ? 'Upload new' : 'Upload File'}
-                    </StyledUploadFile>
-                  </>
-                )}
+                <FielUpload
+                  file={file}
+                  handleChangeFile={handleChangeFile}
+                  pictureOfCover={pictureOfCover}
+                />
               </div>
               <WrapperBlockInput>
                 <WrapperStyledInput>
