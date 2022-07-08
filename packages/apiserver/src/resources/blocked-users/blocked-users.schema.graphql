@@ -1,0 +1,7 @@
+type BlockedUsers{
+  id: ID!
+  description: String!
+  state: Boolean!
+  created_at: DateTime!
+  person: Person!
+}

@@ -1,6 +1,9 @@
 type Person {
   id: ID!
   smg_id: String!
+  name: String!
+  email: String!
+  position: String!
   type: String!
   location_id: Int!
   created_at: DateTime!
@@ -8,6 +11,7 @@ type Person {
   notifications: [Notification]
   location: Location!
   messages: [Message]!
+  state: [BlockedUsers]
 }
 
 input CreatePersonInput {

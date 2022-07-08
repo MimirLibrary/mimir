@@ -1,5 +1,14 @@
 query GetOnePerson($id: ID!) {
   getOnePerson(id: $id) {
     id
+    name
+    email
+    position
+    statuses {
+      id
+      material_id
+      status
+      created_at
+    }
   }
 }

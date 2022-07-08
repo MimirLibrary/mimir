@@ -107,6 +107,14 @@ export interface CreateStatusInput {
     status: string;
 }
 
+export interface BlockedUsers {
+    id: string;
+    description: string;
+    state: boolean;
+    created_at: DateTime;
+    person: Person;
+}
+
 export interface IQuery {
     getAllTakenItems(person_id: number): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getAllLocations(): Nullable<Location>[] | Promise<Nullable<Location>[]>;
@@ -188,6 +196,9 @@ export interface Notification {
 export interface Person {
     id: string;
     smg_id: string;
+    name: string;
+    email: string;
+    position: string;
     type: string;
     location_id: number;
     created_at: DateTime;
@@ -195,6 +206,7 @@ export interface Person {
     notifications?: Nullable<Nullable<Notification>[]>;
     location: Location;
     messages: Nullable<Message>[];
+    state?: Nullable<Nullable<BlockedUsers>[]>;
 }
 
 export interface Status {

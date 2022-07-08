@@ -1,11 +1,14 @@
 import React, { FC, useEffect, useState } from 'react';
-import { isOverdue } from '../../models/helperFunctions/converTime';
 import Avatar from '../Avatar';
 import { mockData } from './mockData';
 import { t } from 'i18next';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { useNavigate } from 'react-router-dom';
+import {
+  countClaimHistory,
+  IClaimHistory,
+} from '../../models/helperFunctions/claimHistory';
 
 const InfoWrapper = styled.div`
   display: flex;
@@ -53,45 +56,13 @@ const Description = styled.p<IDescriptionProps>`
   color: ${({ warning }) => (warning ? colors.problem_red : null)};
 `;
 
-export interface IClaimHistory {
-  material_id: number;
-  status: string;
-  created_at: Date;
-}
-
-const countClaimHistory = (statuses: IClaimHistory[] = []) => {
-  const busyItems = statuses.filter(
-    (status) => status.status === 'Busy' || status.status === 'Prolong'
-  );
-  const freeItems = statuses.filter((status) => status.status === 'Free');
-  const claimNowItems = busyItems.filter((busyItem) => {
-    const ind = freeItems.findIndex(
-      (freeItem) => freeItem.material_id === busyItem.material_id
-    );
-    if (ind) {
-      freeItems.splice(ind, 1);
-    }
-    return ind;
-  });
-  const overdueItems = claimNowItems.filter((item) =>
-    isOverdue(item.created_at)
-  );
-  const claimHistory = busyItems.length;
-  const claimNow = claimNowItems.length;
-  const overdue = overdueItems.length;
-  return {
-    claimNow,
-    claimHistory,
-    overdue,
-  };
-};
-
 export interface ISingleUser {
   id: string;
+  name: string;
   statuses: IClaimHistory[];
 }
 
-const SingleUser: FC<ISingleUser> = ({ id = '', statuses = [] }) => {
+const SingleUser: FC<ISingleUser> = ({ id = '', statuses = [], name }) => {
   const [claims, setClaims] = useState({
     claimNow: 0,
     claimHistory: 0,
@@ -111,7 +82,7 @@ const SingleUser: FC<ISingleUser> = ({ id = '', statuses = [] }) => {
         <Avatar src={''} />
       </AvatarWrapper>
       <InfoWrapper>
-        <Description bold>{mockData.name}</Description>
+        <Description bold>{name}</Description>
         <InlineWrapper>
           <Description bold secondary>
             {t('Readers.SingleUser.ClaimHistory')}

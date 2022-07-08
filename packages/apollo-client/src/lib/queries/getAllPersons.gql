@@ -1,11 +1,13 @@
 query GetAllPersons {
   getAllPersons {
     id
+    name
     statuses {
       id
       material_id
       created_at
       status
     }
+
   }
 }

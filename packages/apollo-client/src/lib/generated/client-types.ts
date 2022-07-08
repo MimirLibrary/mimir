@@ -16,6 +16,15 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type BlockedUsers = {
+  __typename?: 'BlockedUsers';
+  created_at: Scalars['DateTime'];
+  description: Scalars['String'];
+  id: Scalars['ID'];
+  person: Person;
+  state: Scalars['Boolean'];
+};
+
 export type BookInput = {
   identifier: Scalars['String'];
   person_id: Scalars['Int'];
@@ -223,12 +232,16 @@ export type Notification = {
 export type Person = {
   __typename?: 'Person';
   created_at: Scalars['DateTime'];
+  email: Scalars['String'];
   id: Scalars['ID'];
   location: Location;
   location_id: Scalars['Int'];
   messages: Array<Maybe<Message>>;
+  name: Scalars['String'];
   notifications?: Maybe<Array<Maybe<Notification>>>;
+  position: Scalars['String'];
   smg_id: Scalars['String'];
+  state?: Maybe<Array<Maybe<BlockedUsers>>>;
   statuses?: Maybe<Array<Maybe<Status>>>;
   type: Scalars['String'];
 };
@@ -242,7 +255,7 @@ export type Query = {
   __typename?: 'Query';
   getAllLocations: Array<Maybe<Location>>;
   getAllMaterials: Array<Maybe<Material>>;
-  getAllPersons: Array<Maybe<Person>>;
+  getAllPersons: Array<Person>;
   getAllTakenItems: Array<Maybe<Status>>;
   getMaterialById: Material;
   getMaterialByIdentifier: Material;
@@ -449,7 +462,7 @@ export type GetAllMaterialsQuery = { __typename?: 'Query', getAllMaterials: Arra
 export type GetAllPersonsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllPersonsQuery = { __typename?: 'Query', getAllPersons: Array<{ __typename?: 'Person', id: string, statuses?: Array<{ __typename?: 'Status', id: string, material_id: number, created_at: any, status: string } | null> | null } | null> };
+export type GetAllPersonsQuery = { __typename?: 'Query', getAllPersons: Array<{ __typename?: 'Person', id: string, name: string, statuses?: Array<{ __typename?: 'Status', id: string, material_id: number, created_at: any, status: string } | null> | null }> };
 
 export type GetAllTakenItemsQueryVariables = Exact<{
   person_id: Scalars['Int'];
@@ -479,6 +492,13 @@ export type GetNotificationsByPersonQueryVariables = Exact<{
 
 
 export type GetNotificationsByPersonQuery = { __typename?: 'Query', getNotificationsByPerson: Array<{ __typename?: 'Notification', id: string, material_id: number, person_id: number } | null> };
+
+export type GetOnePersonQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetOnePersonQuery = { __typename?: 'Query', getOnePerson: { __typename?: 'Person', id: string, name: string, email: string, position: string, statuses?: Array<{ __typename?: 'Status', id: string, material_id: number, status: string, created_at: any } | null> | null, state?: Array<{ __typename?: 'BlockedUsers', id: string, description: string, created_at: any } | null> | null } };
 
 export type SearchOfMaterialsQueryVariables = Exact<{
   search: Scalars['String'];
@@ -948,6 +968,7 @@ export const GetAllPersonsDocument = gql`
     query GetAllPersons {
   getAllPersons {
     id
+    name
     statuses {
       id
       material_id
@@ -1156,6 +1177,55 @@ export function useGetNotificationsByPersonLazyQuery(baseOptions?: Apollo.LazyQu
 export type GetNotificationsByPersonQueryHookResult = ReturnType<typeof useGetNotificationsByPersonQuery>;
 export type GetNotificationsByPersonLazyQueryHookResult = ReturnType<typeof useGetNotificationsByPersonLazyQuery>;
 export type GetNotificationsByPersonQueryResult = Apollo.QueryResult<GetNotificationsByPersonQuery, GetNotificationsByPersonQueryVariables>;
+export const GetOnePersonDocument = gql`
+    query GetOnePerson($id: ID!) {
+  getOnePerson(id: $id) {
+    id
+    name
+    email
+    position
+    statuses {
+      id
+      material_id
+      status
+      created_at
+    }
+    state {
+      id
+      description
+      created_at
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetOnePersonQuery__
+ *
+ * To run a query within a React component, call `useGetOnePersonQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOnePersonQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetOnePersonQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetOnePersonQuery(baseOptions: Apollo.QueryHookOptions<GetOnePersonQuery, GetOnePersonQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetOnePersonQuery, GetOnePersonQueryVariables>(GetOnePersonDocument, options);
+      }
+export function useGetOnePersonLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOnePersonQuery, GetOnePersonQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetOnePersonQuery, GetOnePersonQueryVariables>(GetOnePersonDocument, options);
+        }
+export type GetOnePersonQueryHookResult = ReturnType<typeof useGetOnePersonQuery>;
+export type GetOnePersonLazyQueryHookResult = ReturnType<typeof useGetOnePersonLazyQuery>;
+export type GetOnePersonQueryResult = Apollo.QueryResult<GetOnePersonQuery, GetOnePersonQueryVariables>;
 export const SearchOfMaterialsDocument = gql`
     query SearchOfMaterials($search: String!, $location: String!) {
   searchOfMaterials(input: {search: $search, location: $location}) {
