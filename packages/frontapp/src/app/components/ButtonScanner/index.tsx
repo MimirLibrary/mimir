@@ -10,6 +10,7 @@ interface IButtonScanner {
   height?: string;
   margin?: string;
   onClick?: () => void;
+  type?: 'button' | 'submit' | 'reset' | undefined;
 }
 
 const StyledButtonScanner = styled.button<IStyledButton>`
@@ -29,7 +30,7 @@ const StyledButtonScanner = styled.button<IStyledButton>`
 
 const ButtonScanner: FC<IButtonScanner> = (props) => {
   return (
-    <StyledButtonScanner {...props} onClick={props.onClick}>
+    <StyledButtonScanner {...props} onClick={props.onClick} type={props.type}>
       <QrIcon />
     </StyledButtonScanner>
   );
