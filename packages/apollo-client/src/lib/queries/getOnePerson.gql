@@ -10,5 +10,10 @@ query GetOnePerson($id: ID!) {
       status
       created_at
     }
+    state {
+      id
+      description
+      created_at
+    }
   }
 }

@@ -8,6 +8,5 @@ query GetAllPersons {
       created_at
       status
     }
-
   }
 }
