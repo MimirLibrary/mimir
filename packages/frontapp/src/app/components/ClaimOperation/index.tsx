@@ -36,7 +36,7 @@ const Description = styled.p`
   text-align: center;
 `;
 
-const InputISBN = styled.input`
+export const InputISBN = styled.input`
   width: 19rem;
   border: none;
   outline: none;

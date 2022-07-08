@@ -4,11 +4,20 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { ReactComponent as PhotoIcon } from '../../../assets/Photo.svg';
-import { useDonateBookMutation } from '@mimir/apollo-client';
+import {
+  GetMaterialByIdentifierQuery,
+  useDonateBookMutation,
+} from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import Button from '../Button';
 import Modal from '../Modal';
-import SuccessMessage from '../SuccesMessage';
+import SuccessMessage from '../SuccessMessage';
+import AskManagerForm from '../AskManagerForm';
+import ErrorMessage from '../ErrorMessge';
+import { RolesTypes } from '@mimir/global-types';
+import { useAppDispatch } from '../../hooks/useTypedDispatch';
+import { removeIdentifier } from '../../store/slices/identifierSlice';
+import FielUpload from '../FielUpload';
 
 const WrapperDonate = styled.section`
   background-color: ${colors.bg_secondary};
@@ -155,71 +164,40 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const WrapperUploadFile = styled.div`
-  width: 12.25rem;
-  height: 20.5rem;
-  border: ${colors.accent_color};
-  border-radius: ${dimensions.xs_1};
-  background-color: #f9faff;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  @media (max-width: ${dimensions.tablet_width}) {
-    width: 8rem;
-  }
-
-  @media (max-width: ${dimensions.phone_width}) {
-    width: 6rem;
-  }
-`;
-
-const StyledUploadFile = styled.span`
-  display: block;
-  text-decoration: underline;
-  color: ${colors.accent_color};
-  text-align: center;
-  margin-top: 0.25rem;
-  width: 100%;
-  cursor: pointer;
-`;
-
-const StyledImg = styled.img`
-  height: 20.5rem;
-  width: 12.3rem;
-  border-radius: ${dimensions.xs_1};
-  cursor: pointer;
-`;
-
 interface IDataOfBook {
   title: string;
   author: string;
   genre: string;
-  identifier: string;
 }
 
-const DonateBook: FC = () => {
-  const ref = useRef<HTMLInputElement | null>(null);
-  const { id, location } = useAppSelector((state) => state.user);
+interface IPropsDonateBook {
+  data?: GetMaterialByIdentifierQuery;
+  onHideContent: () => void;
+}
+const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
+  const { id, location, userRole } = useAppSelector((state) => state.user);
+  const { identifier } = useAppSelector((state) => state.identifier);
   const [file, setFile] = useState<File | null>(null);
-  const [picture, setPicture] = useState('');
+  const [pictureOfCover, setPictureOfCover] = useState<string | null>(null);
   const [isSuccess, setSuccess] = useState<boolean>(false);
   const [description, setDescription] = useState<string>('');
+  const [isAskManager, setIsAskManager] = useState<boolean>(false);
+  const [sendManagerSuccess, setSendManagerSuccess] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+
   const [dataOfBook, setDataOfBook] = useState<IDataOfBook>({
     author: '',
     genre: '',
     title: '',
-    identifier: '',
   });
 
-  const [donateBook, { error }] = useDonateBookMutation();
+  const [donateBook, { error, data: donateData }] = useDonateBookMutation();
 
   const isInvalid =
     !dataOfBook.author ||
     !dataOfBook.title ||
     !dataOfBook.genre ||
-    !dataOfBook.identifier ||
+    !identifier ||
     !description;
 
   const deleteFile = async (fileName: string) => {
@@ -242,13 +220,25 @@ const DonateBook: FC = () => {
         `${process.env['NX_API_ROOT_URL']}/api/file/create`,
         formData
       );
-      setPicture(response.data);
+      setPictureOfCover(response.data);
     } catch (e) {
       if (e instanceof Error) {
         toast.error(e.message);
       }
     }
   };
+
+  useEffect(() => {
+    if (data) {
+      const { author, title, picture, category } = data.getMaterialByIdentifier;
+      setDataOfBook({
+        title,
+        genre: category,
+        author,
+      });
+      if (picture) setPictureOfCover(picture);
+    }
+  }, []);
 
   useEffect(() => {
     if (error) {
@@ -259,21 +249,33 @@ const DonateBook: FC = () => {
   }, [error]);
 
   useEffect(() => {
+    return () => {
+      dispatch(removeIdentifier());
+    };
+  }, []);
+
+  useEffect(() => {
     const operationWithFiles = async () => {
       const formData = new FormData();
-      if (file && !picture) {
+      if (file && !pictureOfCover) {
         formData.append('file', file);
         await getFile(formData);
       }
-      if (picture) {
+      if (pictureOfCover) {
         formData.append('file', file!);
-        await deleteFile(picture);
+        await deleteFile(pictureOfCover);
         await getFile(formData);
         formData.delete('file');
       }
     };
     operationWithFiles();
   }, [file]);
+
+  useEffect(() => {
+    if (donateData) {
+      setSuccess(true);
+    }
+  }, [donateData]);
 
   const handleChangeFile = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -295,14 +297,18 @@ const DonateBook: FC = () => {
     setDescription(e.target.value);
   };
 
+  const handleShowAskManagerForm = useCallback(() => {
+    setIsAskManager(true);
+  }, []);
+
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      const { author, title, genre, identifier } = dataOfBook;
+      const { author, title, genre } = dataOfBook;
       await donateBook({
         variables: {
           person_id: id,
-          picture,
+          picture: pictureOfCover,
           title,
           author,
           identifier,
@@ -311,16 +317,16 @@ const DonateBook: FC = () => {
           category: genre,
           location_id: Number(location.id),
           id_type: 'ISBN',
+          role: userRole,
         },
       });
-      setSuccess(true);
     } catch (e) {
       console.log(e);
     } finally {
-      setPicture('');
+      setPictureOfCover('');
       setFile(null);
       setDescription('');
-      setDataOfBook({ genre: '', title: '', author: '', identifier: '' });
+      setDataOfBook({ genre: '', title: '', author: '' });
     }
   };
 
@@ -331,41 +337,11 @@ const DonateBook: FC = () => {
           <WrapperMainInfo>
             <WrapperWithoutButtons>
               <div>
-                {picture ? (
-                  <div>
-                    <StyledImg
-                      onClick={() => ref?.current?.click()}
-                      src={process.env['NX_API_ROOT_URL'] + '/' + picture}
-                      alt="material picture"
-                    />
-                    <input
-                      type="file"
-                      onChange={handleChangeFile}
-                      accept="image/*"
-                      style={{ display: 'none' }}
-                      ref={ref}
-                    />
-                    <StyledUploadFile onClick={() => ref?.current?.click()}>
-                      {file ? 'Upload new' : 'Upload File'}
-                    </StyledUploadFile>
-                  </div>
-                ) : (
-                  <>
-                    <WrapperUploadFile onClick={() => ref?.current?.click()}>
-                      <input
-                        type="file"
-                        onChange={handleChangeFile}
-                        accept="image/*"
-                        style={{ display: 'none' }}
-                        ref={ref}
-                      />
-                      <PhotoIcon />
-                    </WrapperUploadFile>
-                    <StyledUploadFile onClick={() => ref?.current?.click()}>
-                      {file ? 'Upload new' : 'Upload File'}
-                    </StyledUploadFile>
-                  </>
-                )}
+                <FielUpload
+                  file={file}
+                  handleChangeFile={handleChangeFile}
+                  pictureOfCover={pictureOfCover}
+                />
               </div>
               <WrapperBlockInput>
                 <WrapperStyledInput>
@@ -378,6 +354,7 @@ const DonateBook: FC = () => {
                       value={dataOfBook.title}
                       onChange={handleChange}
                       autoComplete="off"
+                      placeholder="Enter title"
                     />
                   </WrapperInput>
                 </WrapperStyledInput>
@@ -392,6 +369,7 @@ const DonateBook: FC = () => {
                       onChange={handleChange}
                       autoComplete="off"
                       required
+                      placeholder="Enter author"
                     />
                   </WrapperInput>
                 </WrapperStyledInput>
@@ -406,20 +384,7 @@ const DonateBook: FC = () => {
                       onChange={handleChange}
                       autoComplete="off"
                       required
-                    />
-                  </WrapperInput>
-                </WrapperStyledInput>
-                <WrapperStyledInput>
-                  <Label htmlFor="identifier">ISBN*</Label>
-                  <WrapperInput>
-                    <StyledInput
-                      type="number"
-                      id="identifier"
-                      name="identifier"
-                      value={dataOfBook.identifier}
-                      onChange={handleChange}
-                      autoComplete="off"
-                      required
+                      placeholder="Enter genre"
                     />
                   </WrapperInput>
                 </WrapperStyledInput>
@@ -431,7 +396,13 @@ const DonateBook: FC = () => {
                 disabled={isInvalid}
                 type="submit"
               />
-              <StyledButton value="Ask a manger" transparent />
+              {userRole !== RolesTypes.MANAGER && (
+                <StyledButton
+                  value="Ask a manger"
+                  transparent
+                  onClick={handleShowAskManagerForm}
+                />
+              )}
             </WrapperButtons>
           </WrapperMainInfo>
           <WrapperDescription>
@@ -453,6 +424,22 @@ const DonateBook: FC = () => {
           setActive={setSuccess}
           title="You have successfully donated to the library"
           description="Put the book on the nearest free space on the shelf. In case of any problems, our manager will contact you"
+          onCloseContentDonate={onHideContent}
+        />
+      </Modal>
+      <Modal active={isAskManager} setActive={setIsAskManager}>
+        <AskManagerForm
+          setActive={setIsAskManager}
+          setSuccessModal={setSendManagerSuccess}
+        />
+      </Modal>
+      <Modal active={sendManagerSuccess} setActive={setSendManagerSuccess}>
+        <ErrorMessage
+          title="We reported the problem to the manager"
+          message="The problem will be solved soon"
+          titleCancel="Ok"
+          setActive={setSendManagerSuccess}
+          activeAskManager={false}
         />
       </Modal>
     </>

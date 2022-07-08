@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RolesTypes } from '@mimir/global-types';
 
 export type TUserLocation = {
   id: string;
@@ -10,7 +11,7 @@ interface IUserState {
   username: string;
   avatar: string;
   email: string;
-  userRole: string;
+  userRole: RolesTypes;
   location: TUserLocation;
   isAuth: boolean;
 }
@@ -28,7 +29,7 @@ const initialState: IUserState = {
   username: 'Test UserName',
   avatar: '',
   email: 'example@email.com',
-  userRole: 'Reader',
+  userRole: RolesTypes.READER,
   location: {
     id: '2',
     value: 'Gomel',

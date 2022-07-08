@@ -34,12 +34,15 @@ const Description = styled.p`
   color: ${colors.main_black};
   margin-bottom: ${dimensions.base};
   text-align: center;
+  width: 100%;
+
   span {
     color: ${colors.accent_color};
   }
 `;
 
 const StyledButton = styled(Button)`
+  width: 50%;
   :first-of-type {
     margin-right: ${dimensions.base};
   }
@@ -51,13 +54,13 @@ const WrapperInfo = styled.div`
   align-items: center;
   flex-direction: column;
 
-  max-width: 446px;
+  max-width: 346px;
   width: 100%;
 `;
 
-const WrapperButtons = styled.div`
+const WrapperButtons = styled.div<{ active: boolean }>`
   display: flex;
-  justify-content: space-between;
+  justify-content: ${(props) => (props.active ? 'space-between' : 'center')};
   align-items: center;
   width: 100%;
   margin-top: ${dimensions.base_2};
@@ -69,6 +72,8 @@ interface IPropsErrorMessage {
   title: string;
   onClick?: () => void;
   titleCancel: string;
+  activeAskManager?: boolean;
+  showContentOfDonate?: () => void;
   titleOption?: string;
 }
 
@@ -78,10 +83,15 @@ const ErrorMessage: FC<IPropsErrorMessage> = ({
   title,
   onClick,
   titleCancel,
+  activeAskManager = true,
+  showContentOfDonate,
   titleOption,
 }) => {
   const closeModal = () => {
     setActive(false);
+    if (showContentOfDonate) {
+      showContentOfDonate();
+    }
   };
 
   return (
@@ -96,13 +106,15 @@ const ErrorMessage: FC<IPropsErrorMessage> = ({
             <img src={claimPicture} alt="error to claim" />
           </div>
         </WrapperInfo>
-        <WrapperButtons>
-          <StyledButton value={titleOption || 'Ok'} onClick={onClick} />
-          <StyledButton
-            value={titleCancel || 'Cancel'}
-            transparent
-            onClick={closeModal}
-          />
+        <WrapperButtons active={activeAskManager}>
+          <StyledButton value={titleOption || 'Ok'} onClick={closeModal} />
+          {activeAskManager && (
+            <StyledButton
+              value={titleCancel || 'Cancel'}
+              transparent
+              onClick={onClick}
+            />
+          )}
         </WrapperButtons>
       </WrapperErrorClaim>
     </Wrapper>

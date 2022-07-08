@@ -3,7 +3,7 @@ import { resources, defaultNS } from './i18n';
 declare module 'react-i18next' {
   type DefaultResources = typeof resources['en'];
 
-  interface Resources extends DefaultResources {}
+  type Resources = DefaultResources;
 }
 
 declare module 'react-i18next' {

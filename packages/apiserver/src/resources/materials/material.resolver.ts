@@ -14,12 +14,14 @@ import {
   RemoveMaterialInput,
   DonateBookInput,
   SearchInput,
+  SearchOneMaterial,
 } from '@mimir/global-types';
 import { Notification } from '../notifications/notification.entity';
 import { MaterialService } from './material.service';
 import { BadRequestException, UseGuards } from '@nestjs/common';
 import { Message } from '../messages/message.entity';
 import { AuthGuard } from '../../auth/auth.guard';
+import { GraphQLError } from 'graphql';
 
 @Resolver('Material')
 export class MaterialResolver {
@@ -35,6 +37,21 @@ export class MaterialResolver {
   @UseGuards(AuthGuard)
   async getMaterialById(@Args('id') id: number | string) {
     return Material.findOneOrFail(id);
+  }
+
+  @Query(() => Material)
+  async getMaterialByIdentifier(
+    @Args('input') searchOneMaterial: SearchOneMaterial
+  ) {
+    try {
+      const { identifier, location_id } = searchOneMaterial;
+      const [material] = await Material.find({
+        where: { identifier, location_id },
+      });
+      return material;
+    } catch (e) {
+      throw new GraphQLError(e.message);
+    }
   }
 
   @Query(() => [Material])
@@ -57,7 +74,7 @@ export class MaterialResolver {
     const identifier = createMaterialInput.identifier;
     const existMaterial = await Material.findOne({ where: { identifier } });
     if (existMaterial) return new Error('a material already exists');
-    const material = await Material.create(createMaterialInput);
+    const material = Material.create(createMaterialInput);
     return await Material.save(material);
   }
 

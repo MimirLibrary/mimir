@@ -4,10 +4,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { t } from 'i18next';
 import { useAppSelector } from '../../hooks/useTypedSelector';
-import { RolesTypes } from '../../../utils/rolesTypes';
 import { NavbarItems } from '../../../utils/NavbarItems';
 import { useAppDispatch } from '../../hooks/useTypedDispatch';
 import { logout } from '../../store/slices/userSlice';
+import { RolesTypes } from '@mimir/global-types';
 
 interface IProps {
   icon: ReactElement;
