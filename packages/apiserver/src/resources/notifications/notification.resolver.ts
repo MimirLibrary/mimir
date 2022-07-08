@@ -1,7 +1,10 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Notification } from './notification.entity';
 import { BadRequestException } from '@nestjs/common';
-import { CreateNotificationInput } from '@mimir/global-types';
+import {
+  CreateNotificationInput,
+  RemoveNotificationInput,
+} from '@mimir/global-types';
 
 @Resolver('Notification')
 export class NotificationResolver {
@@ -35,7 +38,7 @@ export class NotificationResolver {
 
   @Mutation(() => Notification)
   async removeNotification(
-    @Args('input') removeNotificationInput: CreateNotificationInput
+    @Args('input') removeNotificationInput: RemoveNotificationInput
   ) {
     try {
       const { material_id, person_id } = removeNotificationInput;

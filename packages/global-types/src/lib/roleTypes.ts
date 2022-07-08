@@ -1,4 +1,4 @@
 export enum RolesTypes {
-  MANAGER = 'manager',
-  READER = 'reader',
+  MANAGER = 'Manager',
+  READER = 'Reader',
 }

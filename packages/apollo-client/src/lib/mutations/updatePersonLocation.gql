@@ -1,0 +1,7 @@
+mutation UpdatePersonLocation($location_id: Int!, $person_id: Int!) {
+  updatePersonLocation(
+    input: { location_id: $location_id, person_id: $person_id }
+  ) {
+    location_id
+  }
+}

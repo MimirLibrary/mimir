@@ -18,8 +18,9 @@ import {
 } from '@mimir/global-types';
 import { Notification } from '../notifications/notification.entity';
 import { MaterialService } from './material.service';
-import { BadRequestException } from '@nestjs/common';
-import { Message } from '../messages/messages.entity';
+import { BadRequestException, UseGuards } from '@nestjs/common';
+import { Message } from '../messages/message.entity';
+import { AuthGuard } from '../../auth/auth.guard';
 import { GraphQLError } from 'graphql';
 
 @Resolver('Material')
@@ -27,11 +28,13 @@ export class MaterialResolver {
   constructor(private materialService: MaterialService) {}
 
   @Query(() => [Material])
+  @UseGuards(AuthGuard)
   async getAllMaterials() {
     return Material.find();
   }
 
   @Query(() => Material)
+  @UseGuards(AuthGuard)
   async getMaterialById(@Args('id') id: number | string) {
     return Material.findOneOrFail(id);
   }
@@ -52,27 +55,31 @@ export class MaterialResolver {
   }
 
   @Query(() => [Material])
+  @UseGuards(AuthGuard)
   async searchOfMaterials(@Args('input') searchInput: SearchInput) {
     return this.materialService.search(searchInput);
   }
 
   @Mutation(() => Material)
+  @UseGuards(AuthGuard)
   async donateBook(@Args('input') donateBookInput: DonateBookInput) {
     return this.materialService.donate(donateBookInput);
   }
 
   @Mutation(() => Material)
+  @UseGuards(AuthGuard)
   async createMaterial(
     @Args('input') createMaterialInput: CreateMaterialInput
   ) {
     const identifier = createMaterialInput.identifier;
     const existMaterial = await Material.findOne({ where: { identifier } });
     if (existMaterial) return new Error('a material already exists');
-    const material = await Material.create(createMaterialInput);
+    const material = Material.create(createMaterialInput);
     return await Material.save(material);
   }
 
   @Mutation(() => Material)
+  @UseGuards(AuthGuard)
   async removeMaterial(
     @Args('input') removeMaterialInput: RemoveMaterialInput
   ) {
@@ -89,6 +96,7 @@ export class MaterialResolver {
     }
   }
   @Mutation(() => Material)
+  @UseGuards(AuthGuard)
   async updateMaterial(
     @Args('input') updateMaterialInput: UpdateMaterialInput
   ) {
