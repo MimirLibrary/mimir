@@ -4,7 +4,6 @@ import { colors, dimensions } from '@mimir/ui-kit';
 
 export interface IButtonProps {
   svgComponent?: JSX.Element;
-  leaveSvg?: boolean;
   invert?: boolean;
   transparent?: boolean;
   secondary?: boolean;
@@ -94,15 +93,12 @@ const ButtonContainer = styled.button<IButtonProps>`
   }
 
   svg {
-    ${({ leaveSvg, transparent, secondary }) =>
-      leaveSvg
-        ? null
-        : `${() =>
-            transparent
-              ? secondary
-                ? colors.dropdown_gray
-                : colors.hover_color
-              : colors.bg_secondary}`}
+    fill: ${({ transparent, secondary }) =>
+      transparent
+        ? secondary
+          ? colors.dropdown_gray
+          : colors.hover_color
+        : colors.bg_secondary};
     height: auto;
     max-width: ${dimensions.xl_2};
     ${({ invert }) =>

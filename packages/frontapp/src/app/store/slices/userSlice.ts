@@ -8,25 +8,22 @@ export type TUserLocation = {
 interface IUserState {
   id: number;
   username: string;
-  access_token: string;
-  id_token: string;
-  expiry_date: number;
   userRole: string;
   location: TUserLocation;
   isAuth: boolean;
 }
 
 export interface IUserPayload extends IUserState {
+  access_token: string;
+  id_token: string;
   refresh_token: string;
+  expiry_date: number;
 }
 
 const initialState: IUserState = {
   id: 5,
   isAuth: false,
   username: 'Test UserName',
-  access_token: '',
-  id_token: '',
-  expiry_date: Date.now(),
   userRole: 'Reader',
   location: {
     id: '2',
@@ -39,23 +36,10 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state: IUserState, action: PayloadAction<IUserPayload>) => {
-      const {
-        username,
-        location,
-        access_token,
-        expiry_date,
-        id_token,
-        id,
-        refresh_token,
-        userRole,
-      } = action.payload;
+      const { username, location, id, userRole } = action.payload;
 
-      localStorage.setItem('refresh_token', refresh_token);
       state.location = location;
-      state.access_token = access_token;
-      state.expiry_date = expiry_date;
       state.id = id;
-      state.id_token = id_token;
       state.isAuth = true;
       state.location = location;
       state.userRole = userRole;
@@ -66,9 +50,12 @@ const userSlice = createSlice({
     ) => {
       state.location = action.payload;
     },
+    logout: (state: IUserState) => {
+      state.isAuth = false;
+    },
   },
 });
 
-export const { setUser, updateUserLocation } = userSlice.actions;
+export const { setUser, updateUserLocation, logout } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -6,10 +6,15 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { BadRequestException, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import { Location } from './location.entity';
 import { Person } from '../persons/person.entity';
 import { CreateLocationInput, RemoveLocationInput } from '@mimir/global-types';
+import { AuthGuard } from '../../auth/auth.guard';
 
 @Resolver('Location')
 export class LocationResolver {
@@ -19,6 +24,7 @@ export class LocationResolver {
   }
 
   @Mutation(() => Location)
+  @UseGuards(AuthGuard)
   async createLocation(
     @Args('input') createLocationInput: CreateLocationInput
   ) {
@@ -37,6 +43,7 @@ export class LocationResolver {
   }
 
   @Mutation(() => Location)
+  @UseGuards(AuthGuard)
   async removeLocation(
     @Args('input') removeLocationInput: RemoveLocationInput
   ) {

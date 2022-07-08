@@ -31,12 +31,19 @@ export class AuthService {
     return { ...tokens, ...newPerson, userRole: newPerson.type };
   }
 
-  async refreshToken(refresh_token: string, id_token: string) {
+  async verifyToken(id_token: string) {
     try {
       await this.oAuth2Client.verifyIdToken({
         idToken: id_token,
         audience: process.env.GOOGLE_CLIENT_ID,
       });
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async refreshToken(refresh_token: string) {
+    try {
       const user = new UserRefreshClient(
         process.env.GOOGLE_CLIENT_ID,
         process.env.GOOGLE_CLIENT_SECRET,

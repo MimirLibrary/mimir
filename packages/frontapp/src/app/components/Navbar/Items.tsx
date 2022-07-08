@@ -8,8 +8,7 @@ import { ReactComponent as Books } from '../../../assets/Navbar/Books.svg';
 import { ReactComponent as DonateFromUser } from '../../../assets/Navbar/DonateFromUser.svg';
 import { ReactComponent as Create } from '../../../assets/Navbar/Create.svg';
 import { ReactComponent as DonateToLibrary } from '../../../assets/Navbar/DonateToLibrary.svg';
-
-import React from 'react';
+import { ReactComponent as Logout } from '../../../assets/Navbar/Logout.svg';
 import { RoutesTypes } from '../../../utils/routes';
 import { NavbarItems } from '../../../utils/NavbarItems';
 
@@ -36,10 +35,15 @@ export const navReaderItemsArray = [
     name: NavbarItems.SETTINGS,
     path: RoutesTypes.SETTINGS,
   },
+  {
+    icon: <Logout />,
+    name: NavbarItems.LOGOUT,
+    path: '',
+  },
 ];
 
 export const navManagerItemsArray = [
-  { icon: <Home />, name: NavbarItems.HOME, path: '/home' },
+  { icon: <Home />, name: NavbarItems.HOME, path: RoutesTypes.HOME },
   { icon: <Readers />, name: NavbarItems.READERS, path: RoutesTypes.READERS },
   {
     icon: <Books />,
@@ -60,5 +64,10 @@ export const navManagerItemsArray = [
     icon: <Settings />,
     name: NavbarItems.SETTINGS,
     path: RoutesTypes.SETTINGS,
+  },
+  {
+    icon: <Logout />,
+    name: NavbarItems.LOGOUT,
+    path: '',
   },
 ];

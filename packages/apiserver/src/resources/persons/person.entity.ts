@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import { Notification } from '../notifications/notification.entity';
 import { Status } from '../statuses/status.entity';
-import { Message } from '../messages/messages.entity';
+import { Message } from '../messages/message.entity';
 import { Location } from '../locations/location.entity';
 
 @Entity('person')

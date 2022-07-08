@@ -95,6 +95,11 @@ export interface CreatePersonInput {
     type: string;
 }
 
+export interface UpdatePersonLocationInput {
+    person_id: number;
+    location_id: number;
+}
+
 export interface CreateStatusInput {
     material_id: number;
     person_id: number;
@@ -130,6 +135,7 @@ export interface IMutation {
     createNotification(input: CreateNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
     removeNotification(input: RemoveNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
     createPerson(input: CreatePersonInput): Person | Promise<Person>;
+    updatePersonLocation(input: UpdatePersonLocationInput): Person | Promise<Person>;
     createStatus(input: CreateStatusInput): Status | Promise<Status>;
 }
 

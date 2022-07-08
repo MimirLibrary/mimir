@@ -1,5 +1,8 @@
 import styled from '@emotion/styled';
-import { useGetAllLocationsQuery } from '@mimir/apollo-client';
+import {
+  useGetAllLocationsQuery,
+  useUpdatePersonLocationMutation,
+} from '@mimir/apollo-client';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { useTranslation } from 'react-i18next';
 import Dropdown from '../components/Dropdown';
@@ -45,10 +48,21 @@ const SettingsPage = () => {
   const { t } = useTranslation();
   const { data: GetAllLocationsData, loading: GetAllLocationsLoading } =
     useGetAllLocationsQuery();
-  const { location } = useAppSelector((state) => state.user);
+  const [updatePersonLocationMutate] = useUpdatePersonLocationMutation();
+  const { id, location } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
   const languages = [{ value: 'RUS' }, { value: 'ENG' }];
+
+  const handleLocationChange = async (location: TUserLocation) => {
+    dispatch(updateUserLocation(location));
+    await updatePersonLocationMutate({
+      variables: {
+        location_id: parseInt(location.id),
+        person_id: id,
+      },
+    });
+  };
 
   return (
     <WrapperSettings>
@@ -71,9 +85,7 @@ const SettingsPage = () => {
               if (location) return loc!.id === location.id;
               return 0;
             })}
-            onChange={(option) =>
-              dispatch(updateUserLocation(option as TUserLocation))
-            }
+            onChange={(option) => handleLocationChange(option as TUserLocation)}
           />
         )}
         <SettingsArticle>{t('Settings.Language')}</SettingsArticle>

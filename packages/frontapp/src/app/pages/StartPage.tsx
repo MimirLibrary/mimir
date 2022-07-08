@@ -5,19 +5,21 @@ import { useAppDispatch } from '../hooks/useTypedDispatch';
 import {
   IUserPayload,
   setUser,
-  updateUserLocation,
   TUserLocation,
 } from '../store/slices/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { colors, dimensions, fonts } from '@mimir/ui-kit';
 import Dropdown from '../components/Dropdown';
-import { useGetAllLocationsQuery } from '@mimir/apollo-client';
+import {
+  useGetAllLocationsQuery,
+  useUpdatePersonLocationMutation,
+} from '@mimir/apollo-client';
 import { useGoogleLogin } from '@react-oauth/google';
 import { ReactComponent as GoogleSvg } from '../../assets/google.svg';
 import { ReactComponent as LogoSvg } from '../../assets/Mimir.svg';
 import Button from '../components/Button';
-import { Buffer } from 'buffer';
 import axios from 'axios';
+import { TAuthResponseData } from '../types';
 
 const StartPageBackground = styled.div`
   height: 100vh;
@@ -86,29 +88,50 @@ const StartPage: FC = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const { data: GetAllLocationsData, loading: GetAllLocationsLoading } =
     useGetAllLocationsQuery();
+  const [updatePersonLocationMutation] = useUpdatePersonLocationMutation();
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const history = useNavigate();
   const googleLogin = useGoogleLogin({
     flow: 'auth-code',
     onSuccess: async ({ code }) => {
-      const { data } = await axios.post<IUserPayload>(
+      const { data } = await axios.post<TAuthResponseData>(
         'http://localhost:3333/api/auth',
         {
           code,
           // tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
         }
       );
-      if (data.location) {
-        dispatch(setUser({ ...data, isAuth: true }));
+      localStorage.setItem('access_token', data.access_token);
+      localStorage.setItem('id_token', data.id_token);
+      localStorage.setItem('expiry_date', data.expiry_date.toString());
+      localStorage.setItem('refresh_token', data.refresh_token);
+
+      const location = GetAllLocationsData?.getAllLocations.find((loc) => {
+        if (!data.location_id) return null;
+        return loc?.id === data.location_id.toString();
+      });
+
+      if (location) {
+        const reworkedLocation = { id: location.id, value: location.location };
+        dispatch(
+          setUser({ ...data, location: reworkedLocation, isAuth: true })
+        );
         return history('/home');
       }
-      setPreparedUserPayload({ ...data });
+
+      setPreparedUserPayload({ ...data, location: { id: '0', value: '' } });
       setIsSignUp(true);
     },
   });
 
-  const handleChangeDropdown = (location: TUserLocation) => {
+  const handleChangeDropdown = async (location: TUserLocation) => {
+    await updatePersonLocationMutation({
+      variables: {
+        location_id: parseInt(location.id),
+        person_id: preparedUserPayload!.id,
+      },
+    });
     dispatch(
       setUser({
         ...preparedUserPayload,

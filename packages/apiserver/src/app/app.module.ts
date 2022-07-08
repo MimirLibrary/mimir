@@ -24,7 +24,7 @@ import {
   resolvers as scalarResolvers,
 } from 'graphql-scalars';
 import { MessageModule } from '../resources/messages/message.module';
-import { Message } from '../resources/messages/messages.entity';
+import { Message } from '../resources/messages/message.entity';
 import { FileModule } from '../file/file.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { AuthModule } from '../auth/auth.module';

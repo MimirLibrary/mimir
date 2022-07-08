@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Post,
-  Body,
-  Res,
-  HttpException,
-  HttpStatus,
-  Req,
-} from '@nestjs/common';
+import { Controller, Post, Body, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 
@@ -22,12 +14,11 @@ export class AuthController {
 
   @Post('/refresh-token')
   async refreshToken(
-    @Body() tokens: { refresh_token: string; id_token: string },
+    @Body() tokens: { refresh_token: string },
     @Res() res: Response
   ) {
     const credentials = await this.authService.refreshToken(
-      tokens.refresh_token,
-      tokens.id_token
+      tokens.refresh_token
     );
     res.json(credentials);
   }
