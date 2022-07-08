@@ -19,6 +19,7 @@ export const resources = {
         'History of claim': 'History of claim',
         'History of donate': 'History of donate',
         Settings: 'Settings',
+        'Log out': 'Log out',
       },
       NavbarManager: {
         Home: 'Home',
@@ -27,6 +28,7 @@ export const resources = {
         'Donates from user': 'Donates from user',
         'Add item to library': 'Add item to library',
         Settings: 'Settings',
+        'Log out': 'Log out',
       },
       Search: {
         Placeholder: 'Search by book or author',
@@ -97,6 +99,7 @@ export const resources = {
         'History of claim': 'История клеймов',
         'History of donate': 'История донатов',
         Settings: 'Настройки',
+        'Log out': 'Выход',
       },
       NavbarManager: {
         Home: 'Домой',
@@ -104,6 +107,8 @@ export const resources = {
         'Books/stuff': 'Книги/предметы',
         'Donates from user': 'Донаты от пользователей',
         'Create new item': 'Создать новый предмет',
+        Setting: 'Настройки',
+        'Log out': 'Выход',
       },
       Search: {
         Placeholder: 'Поиск по книге или автору',

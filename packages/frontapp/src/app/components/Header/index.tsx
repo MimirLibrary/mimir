@@ -40,7 +40,7 @@ const WrapperHeader = styled.header`
 `;
 
 const Header: FC<IProps> = ({ setSidebarActive }) => {
-  const { username } = useAppSelector((state) => state.user);
+  const { username, email, avatar } = useAppSelector((state) => state.user);
   return (
     <WrapperHeader>
       <WrapperTitle>
@@ -50,8 +50,8 @@ const Header: FC<IProps> = ({ setSidebarActive }) => {
       </WrapperTitle>
       <WrapperForCenter>
         <WrapperUserInfo>
-          <Avatar src={''} />
-          <UserInfo userName={username} email="ivanivanov@itechart-group.com" />
+          <Avatar src={avatar} />
+          <UserInfo userName={username} email={email} />
         </WrapperUserInfo>
       </WrapperForCenter>
     </WrapperHeader>

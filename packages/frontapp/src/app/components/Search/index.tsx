@@ -76,7 +76,7 @@ const Search = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { data } = useSearchOfMaterialsQuery({
-    variables: { search: debounceSearch, location: location.value },
+    variables: { search: debounceSearch, location: location?.value },
     skip: !search,
   });
 

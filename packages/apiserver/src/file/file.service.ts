@@ -30,8 +30,8 @@ export class FileService {
   }
 
   moveFileInMainStorage(fileName: string | null, identifier: string) {
+    if (!fileName) return null;
     try {
-      if (!fileName) return null;
       const onlyFileName = fileName.split('/').pop();
       const filePathToStorage = path.resolve(
         process.cwd(),

@@ -9,4 +9,5 @@ export enum NavbarItems {
   DONATES_FROM_USER = 'Donates from user',
   CREATE_NEW_ITEM = 'Add item to library',
   DONATE_TO_LIBRARY = 'Donate to the library',
+  LOGOUT = 'Log out',
 }

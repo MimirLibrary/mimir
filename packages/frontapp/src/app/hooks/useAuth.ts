@@ -1,8 +1,8 @@
 import { useAppSelector } from './useTypedSelector';
 
 export const useAuth = () => {
-  const username = useAppSelector((state) => state.user.username);
+  const isAuth = useAppSelector((state) => state.user.isAuth);
   return {
-    isAuth: !!username,
+    isAuth,
   };
 };

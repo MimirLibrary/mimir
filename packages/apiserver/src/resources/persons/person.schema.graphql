@@ -1,10 +1,11 @@
 type Person {
   id: ID!
   smg_id: String!
-  name: String!
-  email: String!
   position: String!
   type: String!
+  username: String!
+  email: String!
+  avatar: String!
   location_id: Int!
   created_at: DateTime!
   statuses: [Status]
@@ -20,6 +21,11 @@ input CreatePersonInput {
   type: String!
 }
 
+input UpdatePersonLocationInput {
+  person_id: Int!
+  location_id: Int!
+}
+
 extend type Query {
   getOnePerson(id: ID!): Person!
   getAllPersons: [Person!]!
@@ -27,4 +33,5 @@ extend type Query {
 
 extend type Mutation {
   createPerson(input: CreatePersonInput!): Person!
+  updatePersonLocation(input: UpdatePersonLocationInput!): Person!
 }

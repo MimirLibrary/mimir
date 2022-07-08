@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum IdentifierType {
+  ISBN_10 @map("ISBN-10")
+  ISBN_13 @map("ISBN-13")
+}
+
+enum JobStatus {
+  PENDING
+  FOUND
+  MISS
+}
+
+model Author {
+  id               Int                @id @default(autoincrement())
+  name             String
+  identifier       String
+  meta             Json
+  MaterialOnAuthor MaterialOnAuthor[]
+
+  @@unique([name, identifier])
+  @@index([identifier])
+  @@index([name])
+}
+
+model Identifier {
+  id     Int            @id @default(autoincrement())
+  value  String
+  idType IdentifierType
+  hits   Int            @default(1)
+  meta   Json
+
+  @@index([value])
+}
+
+model Job {
+  id         Int       @id @default(autoincrement())
+  startedAt  DateTime
+  finisherAt DateTime
+  status     JobStatus @default(PENDING)
+  meta       Json
+}
+
+model Material {
+  id               Int                @id @default(autoincrement())
+  title            String
+  description      String
+  yearPublishedAt  Int                @db.SmallInt
+  monthPublishedAt Int                @db.SmallInt
+  cover            String
+  meta             Json
+  publisherId      Int?
+  Publisher        Publisher?         @relation(fields: [publisherId], references: [id])
+  MaterialOnAuthor MaterialOnAuthor[]
+
+  @@index([title])
+}
+
+model MaterialOnAuthor {
+  materialId Int
+  authorId   Int
+  author     Author   @relation(fields: [authorId], references: [id])
+  material   Material @relation(fields: [materialId], references: [id])
+
+  @@id([materialId, authorId])
+  @@index([materialId])
+  @@index([authorId])
+}
+
+model Publisher {
+  id         Int        @id @default(autoincrement())
+  name       String
+  identifier String
+  meta       Json
+  material   Material[]
+
+  @@unique([name, identifier])
+  @@index([name])
+  @@index([identifier])
+}

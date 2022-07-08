@@ -1,9 +1,12 @@
 import { FC, ReactElement } from 'react';
 import styled from '@emotion/styled';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { t } from 'i18next';
 import { useAppSelector } from '../../hooks/useTypedSelector';
+import { NavbarItems } from '../../../utils/NavbarItems';
+import { useAppDispatch } from '../../hooks/useTypedDispatch';
+import { logout } from '../../store/slices/userSlice';
 import { RolesTypes } from '@mimir/global-types';
 
 interface IProps {
@@ -16,6 +19,7 @@ interface IProps {
 
 interface IStyle {
   primary: string;
+  name?: string;
 }
 
 const StyledLink = styled(Link)<IStyle>`
@@ -30,6 +34,9 @@ const StyledLink = styled(Link)<IStyle>`
   border-radius: 6.25rem;
   padding-left: ${dimensions.xl_2};
   margin-bottom: 0.12rem;
+  ${({ name }) => name === NavbarItems.LOGOUT && 'position: fixed; bottom: 0'};
+  ${({ name }) =>
+    name === NavbarItems.SETTINGS && 'position: fixed; bottom: 66px;'}
 
   :hover {
     background: ${colors.hover_color};
@@ -87,14 +94,26 @@ const NavbarItem: FC<IProps> = ({
   index,
   changeActiveTab,
 }) => {
+  const history = useNavigate();
+  const dispatch = useAppDispatch();
   const { userRole } = useAppSelector((state) => state.user);
   const { activeTab } = useAppSelector((state) => state.tabs);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    history('/');
+    localStorage.clear();
+  };
 
   return (
     <StyledLink
       primary={String(index === activeTab)}
+      name={name}
       to={path}
-      onClick={() => changeActiveTab(index)}
+      onClick={() => {
+        if (name === NavbarItems.LOGOUT) return handleLogout();
+        changeActiveTab(index);
+      }}
     >
       <InsideButtonContainer>
         <StyledIcon primary={String(index === activeTab)}>{icon}</StyledIcon>

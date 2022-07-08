@@ -7,4 +7,4 @@ import { LocationResolver } from './location.resolver';
   imports: [TypeOrmModule.forFeature([Location])],
   providers: [LocationResolver],
 })
-export class LocationsModule {}
+export class LocationModule {}
