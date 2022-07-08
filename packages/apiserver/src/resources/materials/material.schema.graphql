@@ -33,6 +33,10 @@ input RemoveMaterialInput {
   type: String!
 }
 
+input SearchOneMaterial {
+  identifier: String!
+  location_id: Int!
+}
 input UpdateMaterialInput {
   identifier: String
   id_type: String
@@ -56,6 +60,7 @@ input DonateBookInput {
   description: String
   picture: String
   person_id: Int!
+  role: String!
 }
 
 input SearchInput {
@@ -67,6 +72,7 @@ extend type Query {
   getAllMaterials: [Material]!
   getMaterialById(id: ID!): Material!
   searchOfMaterials(input: SearchInput!): [Material]
+  getMaterialByIdentifier(input: SearchOneMaterial!): Material!
 }
 
 extend type Mutation {

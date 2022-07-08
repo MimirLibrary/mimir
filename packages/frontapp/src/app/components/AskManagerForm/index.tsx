@@ -94,12 +94,12 @@ const WrapperButtons = styled.div`
 interface IPropsAskManagerForm {
   setActive: React.Dispatch<React.SetStateAction<boolean>>;
   setSuccessModal: React.Dispatch<React.SetStateAction<boolean>>;
-  material_id: string;
+  material_id?: number | null;
 }
 
 const AskManagerForm: FC<IPropsAskManagerForm> = ({
   setActive,
-  material_id,
+  material_id = null,
   setSuccessModal,
 }) => {
   const { id } = useAppSelector((state) => state.user);
@@ -131,14 +131,18 @@ const AskManagerForm: FC<IPropsAskManagerForm> = ({
 
   const onSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    await createMessage({
-      variables: {
-        title,
-        message: description,
-        person_id: id,
-        material_id: Number(material_id),
-      },
-    });
+    try {
+      await createMessage({
+        variables: {
+          title,
+          message: description,
+          person_id: id,
+          material_id,
+        },
+      });
+    } catch (e) {
+      console.log(e);
+    }
     setDescription('');
     setTitle('');
   };

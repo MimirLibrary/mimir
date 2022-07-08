@@ -5,7 +5,7 @@ import { useAppDispatch } from '../../hooks/useTypedDispatch';
 import { setActiveTab } from '../../store/slices/tabsSlice';
 import { navManagerItemsArray, navReaderItemsArray } from './Items';
 import { useAppSelector } from '../../hooks/useTypedSelector';
-import { RolesTypes } from '../../../utils/rolesTypes';
+import { RolesTypes } from '@mimir/global-types';
 
 const NavbarWrapper = styled.nav`
   display: flex;

@@ -12,7 +12,7 @@ type Message {
 input CreateMessageInput {
   title: String!
   message: String!
-  material_id: Int!
+  material_id: Int
   person_id: Int!
 }
 
