@@ -14,11 +14,13 @@ import {
   RemoveMaterialInput,
   DonateBookInput,
   SearchInput,
+  SearchOneMaterial,
 } from '@mimir/global-types';
 import { Notification } from '../notifications/notification.entity';
 import { MaterialService } from './material.service';
 import { BadRequestException } from '@nestjs/common';
 import { Message } from '../messages/messages.entity';
+import { GraphQLError } from 'graphql';
 
 @Resolver('Material')
 export class MaterialResolver {
@@ -32,6 +34,21 @@ export class MaterialResolver {
   @Query(() => Material)
   async getMaterialById(@Args('id') id: number | string) {
     return Material.findOneOrFail(id);
+  }
+
+  @Query(() => Material)
+  async getMaterialByIdentifier(
+    @Args('input') searchOneMaterial: SearchOneMaterial
+  ) {
+    try {
+      const { identifier, location_id } = searchOneMaterial;
+      const [material] = await Material.find({
+        where: { identifier, location_id },
+      });
+      return material;
+    } catch (e) {
+      throw new GraphQLError(e.message);
+    }
   }
 
   @Query(() => [Material])

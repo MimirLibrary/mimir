@@ -42,6 +42,11 @@ export interface RemoveMaterialInput {
     type: string;
 }
 
+export interface SearchOneMaterial {
+    identifier: string;
+    location_id: number;
+}
+
 export interface UpdateMaterialInput {
     identifier?: Nullable<string>;
     id_type?: Nullable<string>;
@@ -65,6 +70,7 @@ export interface DonateBookInput {
     description?: Nullable<string>;
     picture?: Nullable<string>;
     person_id: number;
+    role: string;
 }
 
 export interface SearchInput {
@@ -75,7 +81,7 @@ export interface SearchInput {
 export interface CreateMessageInput {
     title: string;
     message: string;
-    material_id: number;
+    material_id?: Nullable<number>;
     person_id: number;
 }
 
@@ -107,6 +113,7 @@ export interface IQuery {
     getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
     getMaterialById(id: string): Material | Promise<Material>;
     searchOfMaterials(input: SearchInput): Nullable<Nullable<Material>[]> | Promise<Nullable<Nullable<Material>[]>>;
+    getMaterialByIdentifier(input: SearchOneMaterial): Material | Promise<Material>;
     getNotificationsByPerson(person_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
     getNotificationsByMaterial(material_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
     getOnePerson(id: string): Person | Promise<Person>;

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { t } from 'i18next';
 import { useAppSelector } from '../../hooks/useTypedSelector';
-import { RolesTypes } from '../../../utils/rolesTypes';
+import { RolesTypes } from '@mimir/global-types';
 
 interface IProps {
   icon: ReactElement;

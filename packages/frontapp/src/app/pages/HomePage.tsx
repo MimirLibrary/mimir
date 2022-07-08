@@ -8,12 +8,12 @@ import EmptyListItems from '../components/EmptyListItems';
 import { dimensions } from '@mimir/ui-kit';
 import { useGetAllTakenItemsQuery } from '@mimir/apollo-client';
 import { useAppSelector } from '../hooks/useTypedSelector';
-import { RolesTypes } from '../../utils/rolesTypes';
 import ManagerInfoCard from '../components/ManagerInfoCard';
 import { ManagerCardTypes } from '../components/ManagerInfoCard/managerCardTypes';
 import Button from '../components/Button';
 import { t } from 'i18next';
 import { managerData } from '../models/mockData/managerInfoCard';
+import { RolesTypes } from '@mimir/global-types';
 
 const WrapperHome = styled.div`
   @media (max-width: ${dimensions.tablet_width}) {
