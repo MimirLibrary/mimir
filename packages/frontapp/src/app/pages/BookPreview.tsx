@@ -75,7 +75,7 @@ const BookPreview = () => {
           title={data?.getMaterialById.title}
           author={data?.getMaterialById.author}
           category={data?.getMaterialById.category}
-          status={lastStatusAnotherPerson?.status}
+          statusInfo={lastStatusAnotherPerson}
           created_at={lastStatusAnotherPerson?.created_at}
           material_id={data.getMaterialById.id}
           description=""
