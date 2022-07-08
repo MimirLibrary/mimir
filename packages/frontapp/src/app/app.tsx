@@ -38,7 +38,6 @@ const App: FC = () => {
   const { userRole } = useAppSelector((state) => state.user);
   const routes = useRoutes(userRole);
   const [isSidebarActive, setSidebarActive] = useState(false);
-
   return (
     <div>
       {isAuth ? (
