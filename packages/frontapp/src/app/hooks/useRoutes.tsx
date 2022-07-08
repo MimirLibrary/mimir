@@ -1,5 +1,5 @@
-import { RolesTypes } from '../../utils/rolesTypes';
 import { Route } from 'react-router-dom';
+import { RolesTypes } from '@mimir/global-types';
 import HomePage from '../pages/HomePage';
 import SearchPage from '../pages/SearchPage';
 import HistoryOfClaimPage from '../pages/HistoryOfClaimPage';

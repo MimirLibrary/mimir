@@ -16,7 +16,7 @@ import {
   periodOfKeeping,
 } from '../../models/helperFunctions/converTime';
 import { StyledBookStatus } from '../../globalUI/Status';
-import SuccessMessage from '../SuccesMessage';
+import SuccessMessage from '../SuccessMessage';
 import {
   GetAllTakenItemsDocument,
   GetMaterialByIdDocument,
@@ -33,10 +33,10 @@ import {
 } from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import ErrorMessage from '../ErrorMessge';
-import { RolesTypes } from '../../../utils/rolesTypes';
 import AskManagerForm from '../AskManagerForm';
 import { WrapperInput } from '../Search';
 import { useNavigate } from 'react-router-dom';
+import { RolesTypes } from '@mimir/global-types';
 const BookHolder = styled.div`
   top: 11.5rem;
   left: 24.5rem;
@@ -246,7 +246,7 @@ interface IBookInfoProps {
   author: string | undefined;
   category: string | undefined;
   identifier: string;
-  material_id: string;
+  material_id: number;
   created_at: any;
   updated_at: any;
   type: string;
@@ -383,7 +383,7 @@ const BookInfo: FC<IBookInfoProps> = ({
     await prolongTime({
       variables: {
         person_id: id,
-        material_id: Number(material_id),
+        material_id,
       },
     });
   };
@@ -519,7 +519,7 @@ const BookInfo: FC<IBookInfoProps> = ({
     await createNotificationMutation({
       variables: {
         input: {
-          material_id: parseInt(material_id),
+          material_id,
           person_id: id,
         },
       },
@@ -531,7 +531,7 @@ const BookInfo: FC<IBookInfoProps> = ({
     await removeNotificationMutation({
       variables: {
         input: {
-          material_id: parseInt(material_id),
+          material_id,
           person_id: id,
         },
       },

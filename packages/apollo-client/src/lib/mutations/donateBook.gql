@@ -9,6 +9,7 @@ mutation DonateBook(
   $category: String!
   $description: String
   $picture: String
+  $role: String!
 ) {
   donateBook(
     input: {
@@ -22,6 +23,7 @@ mutation DonateBook(
       id_type: $id_type
       picture: $picture
       title: $title
+      role: $role
     }
   ) {
     title
