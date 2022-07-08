@@ -4,11 +4,12 @@ import { colors, dimensions } from '@mimir/ui-kit';
 
 export interface IButtonProps {
   svgComponent?: JSX.Element;
+  invert?: boolean;
   transparent?: boolean;
   secondary?: boolean;
   value: string;
   onClick?: () => void;
-  type?: 'button' | 'submit' | 'reset' | undefined;
+  type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
 }
 
@@ -100,7 +101,10 @@ const ButtonContainer = styled.button<IButtonProps>`
         : colors.bg_secondary};
     height: auto;
     max-width: ${dimensions.xl_2};
-    margin-right: ${dimensions.xs_1};
+    ${({ invert }) =>
+      invert
+        ? `margin-left: ${dimensions.xs_1};`
+        : `margin-right: ${dimensions.xs_1}`}
   }
 
   span {
@@ -124,8 +128,17 @@ const Button: FC<IButtonProps> = (props) => {
       type={props.type || 'button'}
       disabled={props.disabled}
     >
-      {props.svgComponent}
-      <span>{props.value}</span>
+      {props.invert ? (
+        <>
+          <span>{props.value}</span>
+          {props.svgComponent}
+        </>
+      ) : (
+        <>
+          {props.svgComponent}
+          <span>{props.value}</span>
+        </>
+      )}
     </ButtonContainer>
   );
 };

@@ -3,7 +3,7 @@ import InstructionsClaim from '../components/InstructionsClaim';
 import { TitleArticle } from '../globalUI/TextArticle';
 import { TextBase } from '../globalUI/TextBase';
 import styled from '@emotion/styled';
-import ListItems from '../components/ListBooks';
+import ListBooks from '../components/ListBooks';
 import EmptyListItems from '../components/EmptyListItems';
 import { dimensions } from '@mimir/ui-kit';
 import { useGetAllTakenItemsQuery } from '@mimir/apollo-client';
@@ -78,7 +78,7 @@ const HomePage: FC = () => {
                 <TitleArticle>Don't forget to pass</TitleArticle>
                 <TextBase>List of items you have taken and due dates</TextBase>
               </Wrapper>
-              <ListItems items={data?.getAllTakenItems} />
+              <ListBooks items={data?.getAllTakenItems} />
             </>
           ) : (
             <EmptyListItems />

@@ -1,6 +1,5 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import styled from '@emotion/styled';
-import avatar from '../../../assets/avatar.jpg';
 
 const UserAvatar = styled.img`
   max-height: 7rem;
@@ -17,7 +16,7 @@ interface IProps {
 const Avatar: FC<IProps> = ({ src = '' }) => {
   return (
     <div>
-      <UserAvatar src={avatar} alt="avatar" />
+      <UserAvatar src={src} alt="avatar" />
     </div>
   );
 };

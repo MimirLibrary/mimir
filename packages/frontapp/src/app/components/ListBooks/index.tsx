@@ -34,7 +34,7 @@ export interface IMaterial {
   title: string;
 }
 
-export interface IListItems {
+export interface IListBooks {
   id: string;
   __typename?: 'Status' | undefined;
   status: string;
@@ -43,10 +43,10 @@ export interface IListItems {
 }
 
 interface IProps {
-  items: Array<IListItems | null>;
+  items: Array<IListBooks | null>;
 }
 
-const ListItems: FC<IProps> = ({ items }) => {
+const ListBooks: FC<IProps> = ({ items }) => {
   return (
     <WrapperList>
       {items &&
@@ -66,4 +66,4 @@ const ListItems: FC<IProps> = ({ items }) => {
   );
 };
 
-export default ListItems;
+export default ListBooks;

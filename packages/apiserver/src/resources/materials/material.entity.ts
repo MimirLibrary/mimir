@@ -12,7 +12,7 @@ import {
 import { Location } from '../locations/location.entity';
 import { Notification } from '../notifications/notification.entity';
 import { Status } from '../statuses/status.entity';
-import { Message } from '../messages/messages.entity';
+import { Message } from '../messages/message.entity';
 
 @Entity('material')
 export class Material extends BaseEntity {

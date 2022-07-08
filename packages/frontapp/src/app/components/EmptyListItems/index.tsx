@@ -1,4 +1,4 @@
-import emptyList from '../../../assets/EmptyList.png';
+import emptyList from '../../../assets/EmptyList.svg';
 import styled from '@emotion/styled';
 import { TitleArticle } from '../../globalUI/TextArticle';
 import { TextBase } from '../../globalUI/TextBase';

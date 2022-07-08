@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import { Notification } from '../notifications/notification.entity';
 import { Status } from '../statuses/status.entity';
-import { Message } from '../messages/messages.entity';
+import { Message } from '../messages/message.entity';
 import { Location } from '../locations/location.entity';
 
 @Entity('person')
@@ -23,6 +23,15 @@ export class Person extends BaseEntity {
 
   @Column()
   type!: string;
+
+  @Column()
+  username!: string;
+
+  @Column()
+  email!: string;
+
+  @Column({ nullable: true })
+  avatar: string;
 
   @Column({ nullable: true })
   location_id: number;

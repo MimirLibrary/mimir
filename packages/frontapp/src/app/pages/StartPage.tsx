@@ -2,27 +2,48 @@ import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from '@emotion/styled';
 import { useAppDispatch } from '../hooks/useTypedDispatch';
-import { setUser, TUserLocation } from '../store/slices/userSlice';
+import {
+  IUserPayload,
+  setUser,
+  TUserLocation,
+} from '../store/slices/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { colors, dimensions, fonts } from '@mimir/ui-kit';
-import Input from '../components/Input';
 import Dropdown from '../components/Dropdown';
-import { useGetAllLocationsQuery } from '@mimir/apollo-client';
+import {
+  useGetAllLocationsQuery,
+  useUpdatePersonLocationMutation,
+} from '@mimir/apollo-client';
+import { useGoogleLogin } from '@react-oauth/google';
+import { ReactComponent as GoogleSvg } from '../../assets/google.svg';
+import { ReactComponent as LogoSvg } from '../../assets/Mimir.svg';
+import Button from '../components/Button';
+import axios from 'axios';
+import { TAuthResponseData } from '../types';
 
-const StartPageWrapper = styled.div`
+const StartPageBackground = styled.div`
+  height: 100vh;
+  width: 100vw;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 10.5rem;
-
-  @media (max-width: ${dimensions.phone_width}) {
-    margin-top: 5rem;
-    padding: 3rem;
-  }
+  justify-content: center;
+  align-items: flex-end;
+  background-color: #f9faff;
+  background-image: url('../../assets/startpage-pattern.png');
 `;
 
-const Logo = styled.div`
-  background-image: url('../../assets/Mimir.svg');
+const StartPageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 96%;
+  background-color: ${colors.bg_secondary};
+  border-radius: 1000px 1000px 0 0;
+  box-shadow: 0px 10px 70px rgba(26, 30, 214, 0.08);
+  padding: 0 175px;
+`;
+
+const Logo = styled(LogoSvg)`
   width: 12.5rem;
   height: 17.2rem;
 `;
@@ -36,6 +57,7 @@ const WelcomeHeader = styled.h1`
   margin-top: ${dimensions.xs};
   margin-bottom: ${dimensions.base};
   text-align: center;
+  max-width: 380px;
 `;
 
 const StartPageParagraph = styled.p`
@@ -52,137 +74,100 @@ const StartPageParagraph = styled.p`
   }
 `;
 
-const WrapperForInputAndButton = styled.div`
-  display: flex;
-
-  @media (max-width: ${dimensions.phone_width}) {
-    flex-direction: column;
-  }
-`;
-
-const InputStart = styled(Input)`
-  margin-right: ${dimensions.xs};
-  margin-bottom: 0.7rem;
-  padding-left: ${dimensions.xl};
-  padding-bottom: 0.4rem;
-  width: 20rem;
-  height: 3.125rem;
-  border: 1px solid #1a1ed6;
-  box-sizing: border-box;
-  border-radius: ${dimensions.xl_3};
-
-  font-weight: 300;
-  font-size: ${dimensions.xl};
-  line-height: ${dimensions.xl_2};
-
-  ::placeholder {
-    font-weight: 400;
-    font-size: ${dimensions.xl};
-    line-height: ${dimensions.xl_2};
-    color: ${colors.main_gray};
-    opacity: 0.5;
-    padding-left: ${dimensions.xl};
-  }
-
-  :focus {
-    color: ${colors.main_black};
-    outline: 0;
-    box-shadow: 0 0 0 0.1rem ${colors.accent_color};
-  }
-
-  @media (max-width: ${dimensions.phone_width}) {
-    width: 100%;
-
-    ::placeholder {
-      padding-left: ${dimensions.xs_2};
-      font-size: ${dimensions.base};
-    }
-  }
-`;
-
-const LoginButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 8rem;
-  height: 3.1rem;
-  background: ${colors.accent_color};
-  border-radius: ${dimensions.xl_3};
-  border: none;
-  font-weight: 700;
-  font-size: ${dimensions.base};
-  line-height: ${dimensions.xl};
-  color: ${colors.bg_secondary};
-  cursor: pointer;
-
-  :hover {
-    background: ${colors.hover_color};
-  }
-
-  :active {
-    background: ${colors.pressed_color};
-  }
-
-  @media (max-width: ${dimensions.phone_width}) {
-    width: 100%;
-  }
-`;
-
 const RestyledDropdown = styled(Dropdown)`
   border: 2px solid ${colors.accent_color};
   max-width: 350px;
   width: 100%;
   height: ${dimensions.xl_10};
+  margin-bottom: ${dimensions.xs_2};
 `;
 
 const StartPage: FC = () => {
-  const { t } = useTranslation();
-  const history = useNavigate();
-  const [username, setUsername] = useState<string>('');
-  const [location, setLocation] = useState<TUserLocation>();
-  const dispatch = useAppDispatch();
+  const [preparedUserPayload, setPreparedUserPayload] =
+    useState<IUserPayload>();
+  const [isSignUp, setIsSignUp] = useState(false);
   const { data: GetAllLocationsData, loading: GetAllLocationsLoading } =
     useGetAllLocationsQuery();
+  const [updatePersonLocationMutation] = useUpdatePersonLocationMutation();
+  const dispatch = useAppDispatch();
+  const { t } = useTranslation();
+  const history = useNavigate();
+  const googleLogin = useGoogleLogin({
+    flow: 'auth-code',
+    onSuccess: async ({ code }) => {
+      const { data } = await axios.post<TAuthResponseData>(
+        `${process.env['NX_API_ROOT_URL']}/api/auth`,
+        {
+          code,
+        }
+      );
+      localStorage.setItem('access_token', data.access_token);
+      localStorage.setItem('id_token', data.id_token);
+      localStorage.setItem('expiry_date', data.expiry_date.toString());
+      localStorage.setItem('refresh_token', data.refresh_token);
 
-  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
-  };
+      const location = GetAllLocationsData?.getAllLocations.find((loc) => {
+        if (!data.location_id) return null;
+        return loc?.id === data.location_id.toString();
+      });
 
-  const handleChangeDropdown = (location: TUserLocation) => {
-    setLocation(location);
-  };
+      if (location) {
+        const reworkedLocation = { id: location.id, value: location.location };
+        dispatch(
+          setUser({ ...data, location: reworkedLocation, isAuth: true })
+        );
+        return history('/home');
+      }
 
-  const addUser = () => {
-    if (!location || !username) return;
-    dispatch(setUser({ username, location }));
+      setPreparedUserPayload({ ...data, location: { id: '0', value: '' } });
+      setIsSignUp(true);
+    },
+  });
+
+  const handleChangeDropdown = async (location: TUserLocation) => {
+    await updatePersonLocationMutation({
+      variables: {
+        location_id: parseInt(location.id),
+        person_id: preparedUserPayload!.id,
+      },
+    });
+    dispatch(
+      setUser({
+        ...preparedUserPayload,
+        isAuth: true,
+        location,
+      } as IUserPayload)
+    );
     history('/home');
   };
 
   return (
-    <StartPageWrapper>
-      <Logo />
-      <WelcomeHeader>Welcome to the library MIMIR</WelcomeHeader>
-      <StartPageParagraph>Simplify the process of claim</StartPageParagraph>
-      {!GetAllLocationsLoading && !!GetAllLocationsData && (
-        <RestyledDropdown
-          placeholder={t('Start.ChooseLocation')}
-          options={GetAllLocationsData.getAllLocations.map((loc) => ({
-            id: loc!.id,
-            value: loc!.location,
-          }))}
-          onChange={(option) => handleChangeDropdown(option as TUserLocation)}
-        />
-      )}
-      <WrapperForInputAndButton>
-        <InputStart
-          value={username}
-          onChange={handleChangeInput}
-          type="text"
-          placeholder="Enter your username"
-        />
-        <LoginButton onClick={addUser}>Login</LoginButton>
-      </WrapperForInputAndButton>
-    </StartPageWrapper>
+    <StartPageBackground>
+      <StartPageContainer>
+        <Logo />
+        <WelcomeHeader>Welcome to the library MIMIR</WelcomeHeader>
+        <StartPageParagraph>Simplify the process of claim</StartPageParagraph>
+        {!GetAllLocationsLoading && !!GetAllLocationsData && isSignUp && (
+          <RestyledDropdown
+            placeholder={t('Start.ChooseLocation')}
+            options={GetAllLocationsData.getAllLocations.map((loc) => ({
+              id: loc!.id,
+              value: loc!.location,
+            }))}
+            onChange={(option) => handleChangeDropdown(option as TUserLocation)}
+          />
+        )}
+        {!isSignUp && (
+          <Button
+            value="Sign In With"
+            svgComponent={<GoogleSvg />}
+            invert
+            transparent
+            onClick={googleLogin}
+          />
+        )}
+      </StartPageContainer>
+    </StartPageBackground>
   );
 };
 
