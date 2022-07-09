@@ -29,7 +29,7 @@ const initialState: IUserState = {
   username: 'Test UserName',
   avatar: '',
   email: 'example@email.com',
-  userRole: RolesTypes.READER,
+  userRole: RolesTypes.MANAGER,
   location: {
     id: '2',
     value: 'Gomel',

@@ -92,6 +92,7 @@ const StartPage: FC = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const history = useNavigate();
+  console.log(process.env['NX_API_ROOT_URL']);
   const googleLogin = useGoogleLogin({
     flow: 'auth-code',
     onSuccess: async ({ code }) => {

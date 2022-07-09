@@ -202,8 +202,6 @@ export interface Notification {
 export interface Person {
     id: string;
     smg_id: string;
-    name: string;
-    email: string;
     position: string;
     type: string;
     username: string;
