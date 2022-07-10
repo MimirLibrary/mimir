@@ -50,6 +50,7 @@ jobs:
         # Deploy part:
       - run: npx env-cmd -f .staging.env npx nx build frontapp:build:production
       - run: npx env-cmd -f .staging.env npx nx build apiserver:build:production --parallel --max-parallel=3
+      - run: npx env-cmd -f .staging.env npx nx build metadata-service:build:production
 
       - run: npx nx-cloud stop-all-agents
 
@@ -70,6 +71,17 @@ jobs:
           switches: -avzr --delete --chown=www-data:www-data
           path: dist/packages/apiserver/
           remote_path: /srv/apiserver
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_user: ${{ secrets.SSH_USER }}
+          remote_key: ${{ secrets.SSH_KEY }}
+          remote_key_pass: ${{ secrets.SSH_PASSPHRASE }}
+
+      - name: Rsync copy metadata-service
+        uses: burnett01/rsync-deployments@5.2
+        with:
+          switches: -avzr --delete --chown=www-data:www-data
+          path: dist/packages/metadata-service/
+          remote_path: /srv/metadata
           remote_host: ${{ secrets.SSH_HOST }}
           remote_user: ${{ secrets.SSH_USER }}
           remote_key: ${{ secrets.SSH_KEY }}
