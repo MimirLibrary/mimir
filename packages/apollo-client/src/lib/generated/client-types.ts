@@ -254,7 +254,6 @@ export type Query = {
   getAllPersons: Array<Maybe<Person>>;
   getAllTakenItems: Array<Maybe<Status>>;
   getMaterialById: Material;
-  getMaterialByIdentifier: Material;
   getNotificationsByMaterial: Array<Maybe<Notification>>;
   getNotificationsByPerson: Array<Maybe<Notification>>;
   getOnePerson: Person;
@@ -272,11 +271,6 @@ export type QueryGetAllTakenItemsArgs = {
 
 export type QueryGetMaterialByIdArgs = {
   id: Scalars['ID'];
-};
-
-
-export type QueryGetMaterialByIdentifierArgs = {
-  input: SearchOneMaterial;
 };
 
 
@@ -327,11 +321,6 @@ export type RemoveNotificationInput = {
 export type SearchInput = {
   location: Scalars['String'];
   search: Scalars['String'];
-};
-
-export type SearchOneMaterial = {
-  identifier: Scalars['String'];
-  location_id: Scalars['Int'];
 };
 
 export type Status = {
@@ -486,14 +475,6 @@ export type GetMaterialByIdQueryVariables = Exact<{
 
 
 export type GetMaterialByIdQuery = { __typename?: 'Query', getMaterialById: { __typename?: 'Material', id: string, identifier: string, picture?: string | null, title: string, author: string, category: string, created_at: any, updated_at: any, location_id: number, type: string, statuses: Array<{ __typename?: 'Status', id: string, person_id: number, status: string, created_at: any } | null> } };
-
-export type GetMaterialByIdentifierQueryVariables = Exact<{
-  identifier: Scalars['String'];
-  location_id: Scalars['Int'];
-}>;
-
-
-export type GetMaterialByIdentifierQuery = { __typename?: 'Query', getMaterialByIdentifier: { __typename?: 'Material', picture?: string | null, author: string, title: string, category: string } };
 
 export type GetNotificationsByPersonQueryVariables = Exact<{
   person_id: Scalars['Int'];
@@ -1134,47 +1115,6 @@ export function useGetMaterialByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetMaterialByIdQueryHookResult = ReturnType<typeof useGetMaterialByIdQuery>;
 export type GetMaterialByIdLazyQueryHookResult = ReturnType<typeof useGetMaterialByIdLazyQuery>;
 export type GetMaterialByIdQueryResult = Apollo.QueryResult<GetMaterialByIdQuery, GetMaterialByIdQueryVariables>;
-export const GetMaterialByIdentifierDocument = gql`
-    query GetMaterialByIdentifier($identifier: String!, $location_id: Int!) {
-  getMaterialByIdentifier(
-    input: {identifier: $identifier, location_id: $location_id}
-  ) {
-    picture
-    author
-    title
-    category
-  }
-}
-    `;
-
-/**
- * __useGetMaterialByIdentifierQuery__
- *
- * To run a query within a React component, call `useGetMaterialByIdentifierQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetMaterialByIdentifierQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetMaterialByIdentifierQuery({
- *   variables: {
- *      identifier: // value for 'identifier'
- *      location_id: // value for 'location_id'
- *   },
- * });
- */
-export function useGetMaterialByIdentifierQuery(baseOptions: Apollo.QueryHookOptions<GetMaterialByIdentifierQuery, GetMaterialByIdentifierQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetMaterialByIdentifierQuery, GetMaterialByIdentifierQueryVariables>(GetMaterialByIdentifierDocument, options);
-      }
-export function useGetMaterialByIdentifierLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMaterialByIdentifierQuery, GetMaterialByIdentifierQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetMaterialByIdentifierQuery, GetMaterialByIdentifierQueryVariables>(GetMaterialByIdentifierDocument, options);
-        }
-export type GetMaterialByIdentifierQueryHookResult = ReturnType<typeof useGetMaterialByIdentifierQuery>;
-export type GetMaterialByIdentifierLazyQueryHookResult = ReturnType<typeof useGetMaterialByIdentifierLazyQuery>;
-export type GetMaterialByIdentifierQueryResult = Apollo.QueryResult<GetMaterialByIdentifierQuery, GetMaterialByIdentifierQueryVariables>;
 export const GetNotificationsByPersonDocument = gql`
     query GetNotificationsByPerson($person_id: Int!) {
   getNotificationsByPerson(person_id: $person_id) {
