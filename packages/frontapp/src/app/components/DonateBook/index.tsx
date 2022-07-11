@@ -3,11 +3,7 @@ import styled from '@emotion/styled';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { colors, dimensions } from '@mimir/ui-kit';
-import { ReactComponent as PhotoIcon } from '../../../assets/Photo.svg';
-import {
-  GetMaterialByIdentifierQuery,
-  useDonateBookMutation,
-} from '@mimir/apollo-client';
+import { useDonateBookMutation } from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import Button from '../Button';
 import Modal from '../Modal';
@@ -16,8 +12,7 @@ import AskManagerForm from '../AskManagerForm';
 import ErrorMessage from '../ErrorMessge';
 import { RolesTypes } from '@mimir/global-types';
 import { useAppDispatch } from '../../hooks/useTypedDispatch';
-import { removeIdentifier } from '../../store/slices/identifierSlice';
-import FielUpload from '../FielUpload';
+import FileUpload from '../FielUpload';
 import { IMetaOfMaterial } from '../../types/metadata';
 
 const WrapperDonate = styled.section`
@@ -184,7 +179,6 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
   const [description, setDescription] = useState<string>('');
   const [isAskManager, setIsAskManager] = useState<boolean>(false);
   const [sendManagerSuccess, setSendManagerSuccess] = useState<boolean>(false);
-  const dispatch = useAppDispatch();
 
   const [dataOfBook, setDataOfBook] = useState<IDataOfBook>({
     author: '',
@@ -331,7 +325,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
           <WrapperMainInfo>
             <WrapperWithoutButtons>
               <div>
-                <FielUpload
+                <FileUpload
                   file={file}
                   handleChangeFile={handleChangeFile}
                   pictureOfCover={pictureOfCover}
