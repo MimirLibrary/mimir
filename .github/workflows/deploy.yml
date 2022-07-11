@@ -1,39 +1,160 @@
-name: Deploy_webapp
+name: Deploy
 on:
   push:
     branches:
       - main
+
+env:
+  NX_BRANCH: ${{ github.head_ref }}
+  NX_RUN_GROUP: ${{ github.run_id }}
+
 jobs:
-  deploy:
+  build_and_test:
     runs-on: ubuntu-latest
     environment: Staging
     steps:
       - uses: actions/checkout@v3
+        name: Checkout [main]
         with:
           fetch-depth: 0
-      - name: Cache package-lock.json
-        id: cache-package-lock
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+      - name: Restore NX Cache
+        id: nx-cache
         uses: actions/cache@v3
+        env:
+          cache-name: nx-cache
         with:
-          path: package-lock.json
-          key: ${{ runner.os }}-staging-package-lock-${{ hashFiles('**/package-lock.json') }}
+          path: node_modules/.cache/nx
+          key: permanent
+        # Generate prisma client
+      - run: cd packages/metadata-service && npx prisma generate && cd -
+      - run: npx env-cmd -f .staging.env npx nx affected --target=build --parallel --max-parallel=3
+      - run: npx env-cmd -f .staging.env npx nx affected --target=test --parallel --max-parallel=2
 
-      - name: SSH Git pull & npm install
-        if: steps.cache-package-lock.outputs.cache-hit != 'true'
+  deploy_apiserver:
+    runs-on: ubuntu-latest
+    environment: Staging
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout [main]
+        with:
+          fetch-depth: 0
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+      - name: Restore NX Cache
+        id: nx-cache
+        uses: actions/cache@v3
+        env:
+          cache-name: nx-cache
+        with:
+          path: node_modules/.cache/nx
+          key: permanent
+        # Generate prisma client
+      - run: cd packages/metadata-service && npx prisma generate && cd -
+      - run: npx env-cmd -f .staging.env npx nx build apiserver:build:production --parallel --max-parallel=3
+      - name: Rsync copy apiserver
+        uses: burnett01/rsync-deployments@5.2
+        with:
+          switches: -avzr --delete --chown=www-data:www-data
+          path: dist/packages/apiserver/
+          remote_path: /srv/apiserver
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_user: ${{ secrets.SSH_USER }}
+          remote_key: ${{ secrets.SSH_KEY }}
+          remote_key_pass: ${{ secrets.SSH_PASSPHRASE }}
+      - name: Run scripts on remote
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          script: bash mimir/scripts/deploy_webapp.sh
+          script: |
+            source ~/.nvm/nvm.sh
+            nvm use 16
+            cd /srv/apiserver/
+            npm i --force
+            export POSTGRES_USER=${{ secrets.DB_USER }}
+            export POSTGRES_PASSWORD=${{ secrets.DB_PASSWORD }}
+            pm2 restart apisrv
 
-      - name: SSH Git pull
-        if: steps.cache-package-lock.outputs.cache-hit == 'true'
-        uses: appleboy/ssh-action@master
+  deploy_frontend:
+    runs-on: ubuntu-latest
+    environment: Staging
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout [main]
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          script: bash mimir/scripts/deploy_webapp_pull_only.sh
+          fetch-depth: 0
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+      - name: Restore NX Cache
+        id: nx-cache
+        uses: actions/cache@v3
+        env:
+          cache-name: nx-cache
+        with:
+          path: node_modules/.cache/nx
+          key: permanent
+        # Generate prisma client
+      - run: cd packages/metadata-service && npx prisma generate && cd -
+      - run: npx env-cmd -f .staging.env npx nx build frontapp:build:production
+      - name: Rsync copy web
+        uses: burnett01/rsync-deployments@5.2
+        with:
+          switches: -avzr --delete --chown=www-data:www-data
+          path: dist/packages/frontapp/
+          remote_path: /srv/www
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_user: ${{ secrets.SSH_USER }}
+          remote_key: ${{ secrets.SSH_KEY }}
+          remote_key_pass: ${{ secrets.SSH_PASSPHRASE }}
+
+  deploy_metadata:
+    runs-on: ubuntu-latest
+    environment: Staging
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout [main]
+        with:
+          fetch-depth: 0
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+      - name: Restore NX Cache
+        id: nx-cache
+        uses: actions/cache@v3
+        env:
+          cache-name: nx-cache
+        with:
+          path: node_modules/.cache/nx
+          key: permanent
+        # Generate prisma client
+      - run: cd packages/metadata-service && npx prisma generate && cd -
+      - run: npx env-cmd -f .staging.env npx nx build metadata-service:build:production
+      - name: Rsync copy metadata-service
+        uses: burnett01/rsync-deployments@5.2
+        with:
+          switches: -avzr --delete --chown=www-data:www-data
+          path: dist/packages/metadata-service/
+          remote_path: /srv/metadata
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_user: ${{ secrets.SSH_USER }}
+          remote_key: ${{ secrets.SSH_KEY }}
+          remote_key_pass: ${{ secrets.SSH_PASSPHRASE }}

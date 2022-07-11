@@ -1,0 +1,39 @@
+name: CI
+on:
+  pull_request:
+
+env:
+  NX_BRANCH: ${{ github.head_ref }}
+  NX_RUN_GROUP: ${{ github.run_id }}
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    environment: Staging
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+      - name: Restore NX Cache
+        id: nx-cache
+        uses: actions/cache@v3
+        env:
+          cache-name: nx-cache
+        with:
+          path: node_modules/.cache/nx
+          key: permanent
+      - run: npm ci
+        # TODO Probably, should also be cached
+      - run: cd packages/metadata-service && npx prisma generate && cd -
+        # TODO Enable parallel execution
+        # https://nx.dev/ci/monorepo-ci-github-actions#distributed-ci-with-nx-cloud
+      - run: npx nx affected --target=lint --parallel --max-parallel=3
+      - run: npx nx affected --target=build --parallel --max-parallel=3
+      - run: npx nx affected --target=test --parallel --max-parallel=2
