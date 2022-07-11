@@ -19,7 +19,7 @@ This project was generated using [Nx](https://nx.dev).
 
 1. **Error:** `docker-compose up -d postgres` throws `open /home/<you>/mimir/..env: no such file or directory`
    **Fix:** write at the end of your `~/.bashrc` file `export NODE_ENV="local"`
-2. **Error:** `npm i` can't throws `npm ERR! command sh -c node ./bin/init`
+2. **Error:** `npm i` can throws `npm ERR! command sh -c node ./bin/init`
    **Fix:** run `npm i -g nx` and run again `npm i`
 
 ## Adding capabilities to your workspace
