@@ -23,6 +23,7 @@ jobs:
         with:
           node-version: '16'
           cache: 'npm'
+      - run: npm ci
       - name: Restore NX Cache
         id: nx-cache
         uses: actions/cache@v3
@@ -39,6 +40,7 @@ jobs:
   deploy_apiserver:
     runs-on: ubuntu-latest
     environment: Staging
+    needs: build_and_test
     steps:
       - uses: actions/checkout@v3
         name: Checkout [main]
@@ -50,6 +52,7 @@ jobs:
         with:
           node-version: '16'
           cache: 'npm'
+      - run: npm ci
       - name: Restore NX Cache
         id: nx-cache
         uses: actions/cache@v3
@@ -90,6 +93,7 @@ jobs:
   deploy_frontend:
     runs-on: ubuntu-latest
     environment: Staging
+    needs: build_and_test
     steps:
       - uses: actions/checkout@v3
         name: Checkout [main]
@@ -101,6 +105,7 @@ jobs:
         with:
           node-version: '16'
           cache: 'npm'
+      - run: npm ci
       - name: Restore NX Cache
         id: nx-cache
         uses: actions/cache@v3
@@ -126,6 +131,7 @@ jobs:
   deploy_metadata:
     runs-on: ubuntu-latest
     environment: Staging
+    needs: build_and_test
     steps:
       - uses: actions/checkout@v3
         name: Checkout [main]
@@ -137,6 +143,7 @@ jobs:
         with:
           node-version: '16'
           cache: 'npm'
+      - run: npm ci
       - name: Restore NX Cache
         id: nx-cache
         uses: actions/cache@v3
