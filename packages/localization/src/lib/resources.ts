@@ -32,6 +32,7 @@ export const resources = {
       },
       Search: {
         Placeholder: 'Search by book or author',
+        Scan: 'Scan a code',
       },
       Start: {
         ChooseLocation: 'Your current location',
@@ -112,6 +113,7 @@ export const resources = {
       },
       Search: {
         Placeholder: 'Поиск по книге или автору',
+        Scan: 'Сканировать',
       },
       Start: {
         ChooseLocation: 'Ваше текущее местоположение',

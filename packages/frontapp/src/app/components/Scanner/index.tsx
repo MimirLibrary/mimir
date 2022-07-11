@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useEffect, useMemo } from 'react';
+import { ChangeEvent, FC, memo, useEffect, useMemo } from 'react';
 import { BrowserMultiFormatReader } from '@zxing/browser';
 import styled from '@emotion/styled';
 import { createPortal } from 'react-dom';
@@ -57,7 +57,7 @@ const ScannerFrame = styled.div`
   align-items: center;
   position: absolute;
   margin: auto;
-  box-shadow: 0 0 0 1000px rgba(120, 120, 120, 0.6),
+  box-shadow: 0 0 0 3000px rgba(120, 120, 120, 0.6),
     inset 0 0 0 ${dimensions.xs} rgba(120, 120, 120, 0.6);
   border-radius: ${dimensions.xl};
 
@@ -135,7 +135,7 @@ const CloseButton = styled.div`
   }
 `;
 
-const Scanner: FC<IScannerProps> = ({ onDetected, onClose }) => {
+const Scanner: FC<IScannerProps> = memo(({ onDetected, onClose }) => {
   let videoStream: MediaStream | null;
   const scannerElement = useMemo(() => document.querySelector('#scanner')!, []);
   const barcodeReader = new BrowserMultiFormatReader();
@@ -209,7 +209,7 @@ const Scanner: FC<IScannerProps> = ({ onDetected, onClose }) => {
             barcodeReader
               .decodeFromImageUrl(url)
               .then(found) // calls onDetected with the barcode string
-              .catch(notfound)
+              .catch(notFound)
               .finally(() => releaseMemory(imageElement));
             imageElement.onload = null;
             setTimeout(scanFrame, timeout); // repeat
@@ -238,7 +238,7 @@ const Scanner: FC<IScannerProps> = ({ onDetected, onClose }) => {
     closeScanner();
   }
 
-  function notfound(err: Error) {
+  function notFound(err: Error) {
     if (err.name !== 'NotFoundException') {
       console.error(err);
     }
@@ -252,24 +252,26 @@ const Scanner: FC<IScannerProps> = ({ onDetected, onClose }) => {
     if (videoStream) {
       videoStream.getTracks().forEach((track) => track.stop()); // stop webcam feed
       videoStream = null;
-      onClose();
       hideScanner();
+      onClose();
     }
   }
 
   function showScanner() {
+    document.body.style.overflow = 'hidden';
     scannerElement.setAttribute('style', 'display: block');
   }
 
   function hideScanner() {
     scannerElement.setAttribute('style', 'display: none');
+    document.body.style.overflow = 'visible';
   }
 
   function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
     const value = event.target.value;
     if (!value.includes('_') && value.length) {
-      closeScanner();
       onDetected(value.replace(/-/g, ''));
+      closeScanner();
     }
   }
 
@@ -302,6 +304,6 @@ const Scanner: FC<IScannerProps> = ({ onDetected, onClose }) => {
     </>,
     scannerElement
   );
-};
+});
 
 export default Scanner;

@@ -1,4 +1,5 @@
-import { FC, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
+import { toast } from 'react-toastify';
 import StartPage from './pages/StartPage';
 import Sidebar from './components/Sidebar';
 import { Route, Routes } from 'react-router-dom';
@@ -14,6 +15,10 @@ import BookPreview from './pages/BookPreview';
 import BooksByCategory from './components/BooksByCategory';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Button from './components/Button';
+import { ReactComponent as QRCodeSvg } from '../assets/Qrcode.svg';
+import { t } from 'i18next';
+import Scanner from './components/Scanner';
 
 const WrapperPage = styled.main`
   display: flex;
@@ -33,13 +38,43 @@ const WrapperRoutes = styled.div`
   }
 `;
 
+const StyledButton = styled(Button)`
+  height: 56px;
+  width: 197px;
+  position: absolute;
+  top: ${dimensions.base_2};
+  right: ${dimensions.base_2};
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    position: fixed;
+    top: auto;
+    right: ${dimensions.base};
+    bottom: ${dimensions.base};
+    height: ${dimensions.base_3};
+    width: ${dimensions.base_3};
+
+    span {
+      display: none;
+    }
+  }
+`;
+
 const App: FC = () => {
+  const [isShowScanner, setIsShowScanner] = useState(false);
   const { isAuth } = useAuth();
   const { userRole } = useAppSelector((state) => state.user);
   const routes = useRoutes(userRole);
   const [isSidebarActive, setSidebarActive] = useState(false);
+
+  const handleOnDetectedScanner = useCallback((code) => {
+    console.log(code);
+    setIsShowScanner(false);
+  }, []);
+
+  const handleOnCloseScanner = useCallback(() => setIsShowScanner(false), []);
+
   return (
-    <div>
+    <>
       {isAuth ? (
         <div>
           <WrapperPage>
@@ -60,6 +95,17 @@ const App: FC = () => {
                 />
                 <Route path="/category" element={<BooksByCategory />} />
               </Routes>
+              <StyledButton
+                svgComponent={<QRCodeSvg />}
+                value={t('Search.Scan')}
+                onClick={() => setIsShowScanner(true)}
+              />
+              {isShowScanner && (
+                <Scanner
+                  onDetected={handleOnDetectedScanner}
+                  onClose={handleOnCloseScanner}
+                />
+              )}
             </WrapperRoutes>
           </WrapperPage>
         </div>
@@ -70,7 +116,7 @@ const App: FC = () => {
         </Routes>
       )}
       <ToastContainer position="bottom-right" />
-    </div>
+    </>
   );
 };
 

@@ -1,9 +1,8 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { colors, dimensions } from '@mimir/ui-kit';
-import { ReactComponent as PhotoIcon } from '../../../assets/Photo.svg';
 import {
   GetMaterialByIdentifierQuery,
   useDonateBookMutation,
