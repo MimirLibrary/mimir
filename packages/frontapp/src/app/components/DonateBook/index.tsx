@@ -18,6 +18,7 @@ import { RolesTypes } from '@mimir/global-types';
 import { useAppDispatch } from '../../hooks/useTypedDispatch';
 import { removeIdentifier } from '../../store/slices/identifierSlice';
 import FielUpload from '../FielUpload';
+import { IMetaOfMaterial } from '../../types/metadata';
 
 const WrapperDonate = styled.section`
   background-color: ${colors.bg_secondary};
@@ -171,7 +172,7 @@ interface IDataOfBook {
 }
 
 interface IPropsDonateBook {
-  data?: GetMaterialByIdentifierQuery;
+  data?: IMetaOfMaterial | null;
   onHideContent: () => void;
 }
 const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
@@ -197,7 +198,6 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
     !dataOfBook.author ||
     !dataOfBook.title ||
     !dataOfBook.genre ||
-    !identifier ||
     !description;
 
   const deleteFile = async (fileName: string) => {
@@ -230,13 +230,13 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
 
   useEffect(() => {
     if (data) {
-      const { author, title, picture, category } = data.getMaterialByIdentifier;
       setDataOfBook({
-        title,
-        genre: category,
-        author,
+        title: data.material.title,
+        genre: data.material.meta.series,
+        author: data.material.authors.map((item) => item.name).join('/'),
       });
-      if (picture) setPictureOfCover(picture);
+      setDescription(data.material.description);
+      if (data.material.cover) setPictureOfCover(data.material.cover);
     }
   }, []);
 
@@ -247,12 +247,6 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
       });
     }
   }, [error]);
-
-  useEffect(() => {
-    return () => {
-      dispatch(removeIdentifier());
-    };
-  }, []);
 
   useEffect(() => {
     const operationWithFiles = async () => {
@@ -316,7 +310,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
           description,
           category: genre,
           location_id: Number(location.id),
-          id_type: 'ISBN',
+          id_type: data?.idType || 'ISBN',
           role: userRole,
         },
       });
@@ -446,4 +440,4 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
   );
 };
 
-export default DonateBook;
+export default React.memo(DonateBook);

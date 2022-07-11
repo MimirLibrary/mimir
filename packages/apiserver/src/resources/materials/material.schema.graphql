@@ -33,10 +33,6 @@ input RemoveMaterialInput {
   type: String!
 }
 
-input SearchOneMaterial {
-  identifier: String!
-  location_id: Int!
-}
 input UpdateMaterialInput {
   identifier: String
   id_type: String
@@ -72,7 +68,6 @@ extend type Query {
   getAllMaterials: [Material]!
   getMaterialById(id: ID!): Material!
   searchOfMaterials(input: SearchInput!): [Material]
-  getMaterialByIdentifier(input: SearchOneMaterial!): Material!
 }
 
 extend type Mutation {
