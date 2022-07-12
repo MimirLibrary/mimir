@@ -85,7 +85,7 @@ const BookCard: FC<IBookCardProps> = ({
 
   return (
     <BookCardWrapper onClick={handleItemRedirect}>
-      <BookImage src={(src && src) || bookImage} />
+      <BookImage src={src || bookImage} />
       <DescriptionWrapper>
         <TitleBook>{title}</TitleBook>
         <DescriptionBook>{category + ' / ' + author}</DescriptionBook>

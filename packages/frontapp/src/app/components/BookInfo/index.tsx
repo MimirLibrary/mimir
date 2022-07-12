@@ -544,7 +544,7 @@ const BookInfo: FC<IBookInfoProps> = ({
       <BookHolder>
         <ShortDescriptionWrapper>
           <WrapperInfo>
-            <BookImage src={(src && src) || bookImage} />
+            <BookImage src={src || bookImage} />
             <ShortDescription>
               {editing ? (
                 <>
