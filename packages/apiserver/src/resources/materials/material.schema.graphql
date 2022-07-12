@@ -33,10 +33,6 @@ input RemoveMaterialInput {
   type: String!
 }
 
-input SearchOneMaterial {
-  identifier: String!
-  location_id: Int!
-}
 input UpdateMaterialInput {
   identifier: String
   id_type: String
@@ -47,6 +43,11 @@ input UpdateMaterialInput {
   author: String
   category: String
   updated_at: DateTime!
+}
+
+input SearchOneMaterial {
+  identifier: String!
+  location_id: Int!
 }
 
 input DonateBookInput {

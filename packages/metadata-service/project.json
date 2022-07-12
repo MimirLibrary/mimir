@@ -9,13 +9,14 @@
         "outputPath": "dist/packages/metadata-service",
         "main": "packages/metadata-service/src/main.ts",
         "tsConfig": "packages/metadata-service/tsconfig.app.json",
-        "assets": ["packages/metadata-service/src/assets"]
+        "assets": ["packages/metadata-service/src/prisma"]
       },
       "configurations": {
         "production": {
           "optimization": true,
           "extractLicenses": true,
           "inspect": false,
+          "generatePackageJson": true,
           "fileReplacements": [
             {
               "replace": "packages/metadata-service/src/environments/environment.ts",
