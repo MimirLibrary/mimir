@@ -1,5 +1,4 @@
 {
-  "root": "packages/frontapp",
   "sourceRoot": "packages/frontapp/src",
   "projectType": "application",
   "targets": {

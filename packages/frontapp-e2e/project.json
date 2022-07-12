@@ -1,5 +1,4 @@
 {
-  "root": "packages/frontapp-e2e",
   "sourceRoot": "packages/frontapp-e2e/src",
   "projectType": "application",
   "targets": {
