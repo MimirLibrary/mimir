@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import ButtonScanner from './index';
-import { dimensions } from '../../../../../ui-kit/src';
+import { dimensions } from '@mimir/ui-kit';
 
 export default {
   component: ButtonScanner,

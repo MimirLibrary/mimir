@@ -30,7 +30,7 @@ const ButtonContainer = styled.button<IButtonProps>`
         ? secondary
           ? colors.dropdown_gray
           : colors.accent_color
-        : colors.bg_secondary};
+        : 'transparent'};
 
   &:hover {
     background-color: ${({ transparent }) =>
@@ -41,7 +41,7 @@ const ButtonContainer = styled.button<IButtonProps>`
           ? secondary
             ? colors.main_gray
             : colors.hover_color
-          : colors.bg_secondary};
+          : 'transparent'};
 
     svg {
       fill: ${({ transparent, secondary }) =>
@@ -71,7 +71,7 @@ const ButtonContainer = styled.button<IButtonProps>`
           ? secondary
             ? colors.main_gray
             : colors.hover_color
-          : colors.bg_secondary};
+          : 'transparent'};
 
     svg {
       fill: ${({ transparent, secondary }) =>
@@ -90,6 +90,11 @@ const ButtonContainer = styled.button<IButtonProps>`
             : colors.hover_color
           : colors.bg_secondary};
     }
+  }
+
+  &:disabled {
+    background: ${colors.dropdown_gray};
+    cursor: default;
   }
 
   svg {

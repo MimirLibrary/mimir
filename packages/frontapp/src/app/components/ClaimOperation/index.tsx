@@ -1,7 +1,12 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import styled from '@emotion/styled';
 import Button from '../Button';
+import ButtonScanner from '../ButtonScanner';
 import { colors, dimensions, fonts } from '@mimir/ui-kit';
+import useScanner from '../../hooks/useScanner';
+import Scanner from '../Scanner';
+import Input from '../Input';
+import InputMask from 'react-input-mask';
 
 const Wrapper = styled.div`
   display: flex;
@@ -14,9 +19,8 @@ const WrapperClaimOperation = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  max-width: 22.75rem;
+  max-width: 22.6875rem;
   width: 100%;
-  padding-left: ${dimensions.base_2};
 `;
 
 const TitleOfClaim = styled.h3`
@@ -78,7 +82,7 @@ export const WrapperInput = styled.div`
   justify-content: center;
   align-items: center;
   max-width: 21.5rem;
-  width: 100% - 100px;
+  width: 100%;
   border: 0.5px solid #bdbdbd;
   border-radius: ${dimensions.xl_3};
   padding: 10px 0 10px ${dimensions.xs_1};
@@ -102,6 +106,11 @@ export const WrapperInput = styled.div`
   }
 `;
 
+const Row = styled.div`
+  display: flex;
+  width: 100%;
+`;
+
 interface IProps {
   setActive: React.Dispatch<React.SetStateAction<boolean>>;
   value: string;
@@ -115,8 +124,24 @@ const ClaimOperation: FC<IProps> = ({
   value,
   setValueInput,
 }) => {
-  const handleChangeISBNInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValueInput(e.target.value);
+  const { isShowScanner, setIsShowScanner } = useScanner();
+  const handleChangeISBNInput = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setValueInput(e.target.value);
+    },
+    [setValueInput]
+  );
+
+  const handleShowScanner = useCallback(() => {
+    setIsShowScanner(true);
+  }, [setIsShowScanner]);
+
+  const handleOnDetectedScanner = (code: string) => {
+    setValueInput(code);
+  };
+
+  const handleOnCloseScanner = () => {
+    setIsShowScanner(false);
   };
 
   const closeModal = () => {
@@ -131,22 +156,40 @@ const ClaimOperation: FC<IProps> = ({
         <Description>
           Look at the back of the book for the code and write it in the box.
         </Description>
-        <WrapperInput>
-          <InputISBN
-            value={value}
-            type="number"
-            onChange={handleChangeISBNInput}
-            required
-            placeholder="Enter ISBN code"
-            minLength={10}
-            maxLength={13}
+        <Row>
+          <WrapperInput>
+            <InputMask
+              mask="999-9-999-99999-9"
+              value={value}
+              onChange={handleChangeISBNInput}
+              required
+              placeholder="Enter ISBN"
+            >
+              <Input />
+            </InputMask>
+          </WrapperInput>
+          <ButtonScanner
+            type="button"
+            margin={`0 0 0 ${dimensions.xs_2}`}
+            onClick={handleShowScanner}
           />
-        </WrapperInput>
+        </Row>
         <WrapperButtons>
-          <StyledButton value="Claim a book" onClick={claimBook} />
+          <StyledButton
+            value="Claim a book"
+            onClick={claimBook}
+            disabled={!value}
+          />
           <StyledButton transparent value="Cancel" onClick={closeModal} />
         </WrapperButtons>
       </WrapperClaimOperation>
+      {isShowScanner && (
+        <Scanner
+          onDetected={handleOnDetectedScanner}
+          onClose={handleOnCloseScanner}
+          showInput
+        />
+      )}
     </Wrapper>
   );
 };

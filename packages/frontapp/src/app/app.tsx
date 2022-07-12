@@ -2,7 +2,7 @@ import { FC, useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 import StartPage from './pages/StartPage';
 import Sidebar from './components/Sidebar';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import { useAuth } from './hooks/useAuth';
 import styled from '@emotion/styled';
@@ -19,6 +19,8 @@ import Button from './components/Button';
 import { ReactComponent as QRCodeSvg } from '../assets/Qrcode.svg';
 import { t } from 'i18next';
 import Scanner from './components/Scanner';
+import { useGetMaterialByIdentifierQuery } from '@mimir/apollo-client';
+import useScanner from './hooks/useScanner';
 
 const WrapperPage = styled.main`
   display: flex;
@@ -60,18 +62,20 @@ const StyledButton = styled(Button)`
 `;
 
 const App: FC = () => {
-  const [isShowScanner, setIsShowScanner] = useState(false);
+  const {
+    isShowScanner,
+    setIsShowScanner,
+    handleOnDetectedScannerRoute,
+    handleOnCloseScanner,
+  } = useScanner();
   const { isAuth } = useAuth();
   const { userRole } = useAppSelector((state) => state.user);
   const routes = useRoutes(userRole);
   const [isSidebarActive, setSidebarActive] = useState(false);
 
-  const handleOnDetectedScanner = useCallback((code) => {
-    console.log(code);
-    setIsShowScanner(false);
-  }, []);
-
-  const handleOnCloseScanner = useCallback(() => setIsShowScanner(false), []);
+  const handleOnClickButton = useCallback(() => {
+    setIsShowScanner(true);
+  }, [setIsShowScanner]);
 
   return (
     <>
@@ -98,11 +102,11 @@ const App: FC = () => {
               <StyledButton
                 svgComponent={<QRCodeSvg />}
                 value={t('Search.Scan')}
-                onClick={() => setIsShowScanner(true)}
+                onClick={handleOnClickButton}
               />
               {isShowScanner && (
                 <Scanner
-                  onDetected={handleOnDetectedScanner}
+                  onDetected={handleOnDetectedScannerRoute}
                   onClose={handleOnCloseScanner}
                 />
               )}

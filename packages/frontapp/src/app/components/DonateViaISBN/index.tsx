@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions, fonts } from '@mimir/ui-kit';
 import { WrapperInput } from '../ClaimOperation';
@@ -46,13 +46,6 @@ const ISBNWrapper = styled.div`
     flex-direction: column;
     align-items: start;
     justify-content: start;
-  }
-`;
-
-const StyledButton = styled(Button)`
-  :disabled {
-    background: ${colors.dropdown_gray};
-    cursor: default;
   }
 `;
 
@@ -122,11 +115,7 @@ const DonateViaISBN = () => {
               margin={`0 ${dimensions.xs_2}`}
               onClick={handleShowScanner}
             />
-            <StyledButton
-              type="submit"
-              value="Find book"
-              disabled={!valueOfISBN}
-            />
+            <Button type="submit" value="Find book" disabled={!valueOfISBN} />
           </ISBNWrapper>
         </form>
       </Wrapper>
