@@ -1,14 +1,11 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import Avatar from '../Avatar';
 import { mockData } from './mockData';
-import { t } from 'i18next';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { useNavigate } from 'react-router-dom';
-import {
-  countClaimHistory,
-  IClaimHistory,
-} from '../../models/helperFunctions/claimHistory';
+import { IClaimHistory } from '../../models/helperFunctions/claimHistory';
+import ClaimHistory from '../ClaimHistory';
 
 const InfoWrapper = styled.div`
   display: flex;
@@ -20,10 +17,9 @@ const InfoWrapper = styled.div`
   }
 `;
 
-const InlineWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  column-gap: 4px;
+const ClaimsWrapper = styled.div`
+  font-size: ${dimensions.sm};
+  row-gap: 4px;
 `;
 
 const CardWrapper = styled.div`
@@ -42,35 +38,26 @@ const AvatarWrapper = styled.div`
   width: 71px;
   border-radius: 50%;
 `;
-interface IDescriptionProps {
-  warning?: boolean;
-  bold?: boolean;
-  secondary?: boolean;
-}
-const Description = styled.p<IDescriptionProps>`
-  font-weight: ${({ bold }) => (bold ? 500 : 300)};
-  font-size: ${({ secondary }) =>
-    secondary ? `${dimensions.sm}` : `${dimensions.base}`};
-  line-height: ${({ secondary }) =>
-    secondary ? `${dimensions.lg}` : `${dimensions.xl}`};
-  color: ${({ warning }) => (warning ? colors.problem_red : null)};
+
+const Description = styled.p`
+  font-weight: 500;
+  font-size: ${dimensions.base};
+  line-height: ${dimensions.xl};
 `;
 
 export interface ISingleUser {
+  avatar: string;
   id: string;
   name: string;
   statuses: IClaimHistory[];
 }
 
-const SingleUser: FC<ISingleUser> = ({ id = '', statuses = [], name }) => {
-  const [claims, setClaims] = useState({
-    claimNow: 0,
-    claimHistory: 0,
-    overdue: 0,
-  });
-  useEffect(() => {
-    setClaims(countClaimHistory(statuses));
-  }, []);
+const SingleUser: FC<ISingleUser> = ({
+  id = '',
+  statuses = [],
+  name,
+  avatar,
+}) => {
   const navigate = useNavigate();
   const handleUserRedirect = () => {
     navigate(`/readers/${id}`);
@@ -79,58 +66,13 @@ const SingleUser: FC<ISingleUser> = ({ id = '', statuses = [], name }) => {
   return (
     <CardWrapper onClick={handleUserRedirect}>
       <AvatarWrapper>
-        <Avatar src={''} />
+        <Avatar src={avatar || mockData.avatar} />
       </AvatarWrapper>
       <InfoWrapper>
-        <Description bold>{name}</Description>
-        <InlineWrapper>
-          <Description bold secondary>
-            {t('Readers.SingleUser.ClaimHistory')}
-          </Description>
-          <Description secondary>
-            {claims.claimHistory ? claims.claimHistory : '-'}
-            {claims.claimHistory
-              ? claims.claimHistory === 1
-                ? ' ' + t('Readers.SingleUser.Item')
-                : ' ' + t('Readers.SingleUser.Items')
-              : null}
-          </Description>
-        </InlineWrapper>
-        <InlineWrapper>
-          <Description bold secondary>
-            {t('Readers.SingleUser.ClaimNow')}
-          </Description>
-          <Description secondary>
-            {claims.claimNow ? claims.claimNow : '-'}
-            {claims.claimNow
-              ? claims.claimNow === 1
-                ? ' ' + t('Readers.SingleUser.Item')
-                : ' ' + t('Readers.SingleUser.Items')
-              : null}
-          </Description>
-        </InlineWrapper>
-        <InlineWrapper>
-          {claims.overdue ? (
-            <>
-              <Description secondary bold warning>
-                {t('Readers.SingleUser.Overdue')}
-              </Description>
-              <Description secondary>
-                {claims.overdue}
-                {claims.overdue === 1
-                  ? ' ' + t('Readers.SingleUser.Item')
-                  : ' ' + t('Readers.SingleUser.Items')}
-              </Description>
-            </>
-          ) : (
-            <>
-              <Description bold secondary>
-                {t('Readers.SingleUser.Overdue')}
-              </Description>
-              <Description secondary>-</Description>
-            </>
-          )}
-        </InlineWrapper>
+        <Description>{name}</Description>
+        <ClaimsWrapper>
+          <ClaimHistory statuses={statuses} />
+        </ClaimsWrapper>
       </InfoWrapper>
     </CardWrapper>
   );

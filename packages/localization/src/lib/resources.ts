@@ -1,6 +1,7 @@
 export const resources = {
   en: {
     translation: {
+      Back: 'Back',
       Loading: 'Loading...',
       EmptyListItems: {
         Header: 'Shelf for your books and other items',
@@ -77,10 +78,14 @@ export const resources = {
           Donates: 'Was donated by',
         },
       },
+      UserCard: {
+        Position: 'Position:',
+      },
     },
   },
   ru: {
     translation: {
+      Back: 'Назад',
       Loading: 'Загрузка...',
       EmptyListItems: {
         Header: 'Полка для ваших книг и других предметов',

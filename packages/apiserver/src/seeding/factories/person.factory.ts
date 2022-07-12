@@ -10,6 +10,6 @@ define(Person, () => {
   person.position = 'Fullstack Ruby Developer';
   person.email = 'example@email.com';
   person.username = 'Alina Danilevich';
-  person.avatar = null;
+  person.avatar = '';
   return person;
 });

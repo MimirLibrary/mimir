@@ -10,16 +10,30 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2017", "dom"],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@mimir/apollo-client": ["packages/apollo-client/src/index.ts"],
-      "@mimir/global-types": ["packages/global-types/src/index.ts"],
-      "@mimir/localization": ["packages/localization/src/index.ts"],
-      "@mimir/ui-kit": ["packages/ui-kit/src/index.ts"]
+      "@mimir/apollo-client": [
+        "packages/apollo-client/src/index.ts"
+      ],
+      "@mimir/global-types": [
+        "packages/global-types/src/index.ts"
+      ],
+      "@mimir/localization": [
+        "packages/localization/src/index.ts"
+      ],
+      "@mimir/ui-kit": [
+        "packages/ui-kit/src/index.ts"
+      ]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }

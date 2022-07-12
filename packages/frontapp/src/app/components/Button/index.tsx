@@ -7,6 +7,7 @@ export interface IButtonProps {
   invert?: boolean;
   transparent?: boolean;
   secondary?: boolean;
+  warning?: boolean;
   value: string;
   onClick?: () => void;
   type?: 'button' | 'submit' | 'reset';
@@ -19,33 +20,43 @@ const ButtonContainer = styled.button<IButtonProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${({ transparent }) =>
-    transparent ? colors.bg_secondary : colors.accent_color};
+  background-color: ${({ transparent, warning }) =>
+    transparent
+      ? colors.bg_secondary
+      : warning
+      ? colors.problem_red
+      : colors.accent_color};
   border-radius: ${dimensions.xl_3};
   height: ${dimensions.xl_10};
   width: 100%;
   border: 2px solid
-    ${({ transparent, secondary }) =>
+    ${({ transparent, secondary, warning }) =>
       transparent
         ? secondary
           ? colors.dropdown_gray
           : colors.accent_color
+        : warning
+        ? colors.problem_red
         : colors.bg_secondary};
 
   &:hover {
-    background-color: ${({ transparent }) =>
-      transparent ? colors.bg_secondary : colors.hover_color};
+    background-color: ${({ transparent, warning }) =>
+      warning || transparent ? colors.bg_secondary : colors.hover_color};
     border: 2px solid
-      ${({ transparent, secondary }) =>
-        transparent
+      ${({ transparent, secondary, warning }) =>
+        warning
+          ? colors.problem_red
+          : transparent
           ? secondary
             ? colors.main_gray
             : colors.hover_color
           : colors.bg_secondary};
 
     svg {
-      fill: ${({ transparent, secondary }) =>
-        transparent
+      fill: ${({ transparent, secondary, warning }) =>
+        warning
+          ? colors.problem_red
+          : transparent
           ? secondary
             ? colors.main_gray
             : colors.hover_color
@@ -53,8 +64,10 @@ const ButtonContainer = styled.button<IButtonProps>`
     }
 
     span {
-      color: ${({ transparent, secondary }) =>
-        transparent
+      color: ${({ transparent, secondary, warning }) =>
+        warning
+          ? colors.problem_red
+          : transparent
           ? secondary
             ? colors.main_gray
             : colors.hover_color
@@ -63,30 +76,40 @@ const ButtonContainer = styled.button<IButtonProps>`
   }
 
   &:active {
-    background-color: ${({ transparent }) =>
-      transparent ? colors.bg_secondary : colors.pressed_color};
+    background-color: ${({ transparent, warning }) =>
+      warning
+        ? colors.problem_red
+        : transparent
+        ? colors.bg_secondary
+        : colors.pressed_color};
     border: 2px solid
-      ${({ transparent, secondary }) =>
+      ${({ transparent, secondary, warning }) =>
         transparent
           ? secondary
-            ? colors.main_gray
+            ? warning
+              ? colors.problem_red
+              : colors.main_gray
             : colors.hover_color
           : colors.bg_secondary};
 
     svg {
-      fill: ${({ transparent, secondary }) =>
+      fill: ${({ transparent, secondary, warning }) =>
         transparent
           ? secondary
-            ? colors.main_gray
+            ? warning
+              ? colors.bg_secondary
+              : colors.main_gray
             : colors.hover_color
           : colors.bg_secondary};
     }
 
     span {
-      color: ${({ transparent, secondary }) =>
+      color: ${({ transparent, secondary, warning }) =>
         transparent
           ? secondary
-            ? colors.main_gray
+            ? warning
+              ? colors.bg_secondary
+              : colors.main_gray
             : colors.hover_color
           : colors.bg_secondary};
     }

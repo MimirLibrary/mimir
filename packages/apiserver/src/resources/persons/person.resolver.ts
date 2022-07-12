@@ -21,6 +21,7 @@ import {
 } from '@mimir/global-types';
 import { Message } from '../messages/message.entity';
 import { AuthGuard } from '../../auth/auth.guard';
+import { Material } from '../materials/material.entity';
 
 @Resolver('Person')
 export class PersonResolver {

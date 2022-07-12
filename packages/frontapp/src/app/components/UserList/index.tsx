@@ -45,7 +45,8 @@ const UserList = () => {
       <ListWrapper>
         {data?.getAllPersons.map((person) => (
           <SingleUser
-            name={person.name}
+            avatar={person.avatar}
+            name={person.username}
             id={person?.id as string}
             statuses={person?.statuses as IClaimHistory[]}
           />
