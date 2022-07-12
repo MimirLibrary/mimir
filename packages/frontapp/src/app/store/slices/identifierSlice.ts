@@ -16,7 +16,7 @@ export const identifierSlice = createSlice({
       state: IStateIdentifier,
       { payload }: PayloadAction<string>
     ) => {
-      state.identifier = payload.split('-').join('');
+      state.identifier = payload;
     },
     removeIdentifier: (state: IStateIdentifier) => {
       state.identifier = '';

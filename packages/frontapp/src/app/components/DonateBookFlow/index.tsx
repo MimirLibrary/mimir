@@ -1,7 +1,6 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../hooks/useTypedSelector';
-import { useGetMaterialByIdentifierQuery } from '@mimir/apollo-client';
 import { removeIdentifier } from '../../store/slices/identifierSlice';
 import { ReactComponent as ArrowIcon } from '../../../assets/ArrowUp2.svg';
 import { Oval } from 'react-loader-spinner';
@@ -11,6 +10,7 @@ import Modal from '../Modal';
 import ErrorMessage from '../ErrorMessge';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
+import { IMetaOfMaterial } from '../../types';
 
 const WrapperInfo = styled.div`
   display: flex;
@@ -55,19 +55,14 @@ const WrapperLoader = styled.div`
 const DonateBookFlow = () => {
   const dispatch = useDispatch();
   const { identifier } = useAppSelector((state) => state.identifier);
-  const { location } = useAppSelector((state) => state.user);
+  const [dataOfMaterial, setDataOfMaterial] = useState<IMetaOfMaterial | null>(
+    null
+  );
+  const [dataOfError, setDataOfError] = useState<Error | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isShowError, setIsShowError] = useState<boolean>(false);
   const [showEmptyContentDonate, setShowEmptyContentDonate] =
     useState<boolean>(false);
-
-  const { data, loading, error } = useGetMaterialByIdentifierQuery({
-    skip: !identifier,
-    variables: {
-      identifier: String(identifier.split('-').join('')),
-      location_id: Number(location.id),
-    },
-    fetchPolicy: 'no-cache',
-  });
 
   useEffect(() => {
     return () => {
@@ -76,19 +71,21 @@ const DonateBookFlow = () => {
   }, [identifier]);
 
   useEffect(() => {
-    if (error) {
+    if (dataOfError) {
       setIsShowError(true);
     }
-  }, [error]);
+  }, [dataOfError]);
 
   useEffect(() => {
-    if (data) {
+    if (dataOfMaterial) {
       setShowEmptyContentDonate(true);
     }
-  }, [data]);
+  }, [dataOfMaterial]);
 
   const handleCloseContentOfDonate = useCallback(() => {
     dispatch(removeIdentifier());
+    setDataOfError(null);
+    setDataOfMaterial(null);
     setShowEmptyContentDonate(false);
   }, [dispatch]);
 
@@ -112,7 +109,7 @@ const DonateBookFlow = () => {
             </BackSpan>
           )}
         </WrapperInfo>
-        {loading ? (
+        {isLoading ? (
           <WrapperLoader>
             <Oval
               ariaLabel="loading-indicator"
@@ -125,12 +122,21 @@ const DonateBookFlow = () => {
             />
           </WrapperLoader>
         ) : (
-          !showEmptyContentDonate && <DonateViaISBN />
+          !showEmptyContentDonate && (
+            <DonateViaISBN
+              setDataToState={setDataOfMaterial}
+              setIsLoading={setIsLoading}
+              setDataError={setDataOfError}
+            />
+          )
         )}
-        {data && showEmptyContentDonate && (
-          <DonateBook data={data} onHideContent={handleCloseContentOfDonate} />
+        {dataOfMaterial && showEmptyContentDonate && (
+          <DonateBook
+            data={dataOfMaterial}
+            onHideContent={handleCloseContentOfDonate}
+          />
         )}
-        {!data && showEmptyContentDonate && (
+        {!dataOfMaterial && showEmptyContentDonate && (
           <DonateBook onHideContent={handleCloseContentOfDonate} />
         )}
       </section>
