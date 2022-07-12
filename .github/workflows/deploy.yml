@@ -22,11 +22,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
-          cache: 'pnpm'
-      - uses: pnpm/action-setup@v2.2.2
-        with:
-          version: 7.5.1
-      - run: pnpm i --frozen-lockfile
+          cache: 'npm'
+      - run: npm ci
       - name: Restore NX Cache
         id: nx-cache
         uses: actions/cache@v3
