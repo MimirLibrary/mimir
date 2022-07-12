@@ -9,9 +9,9 @@
   },
   "tasksRunnerOptions": {
     "default": {
+      "runner": "nx/tasks-runners/default",
       "options": {
         "cacheableOperations": ["build", "lint", "test", "e2e"],
-        "accessToken": "YjU5OGVkYzMtMGY5My00ZTEzLWI0ZjQtYjFkOGZmZTliN2QzfHJlYWQtd3JpdGU=",
         "runtimeCacheInputs": ["echo $NX_API_ROOT_URL"]
       }
     }
