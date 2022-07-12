@@ -42,11 +42,6 @@ export interface RemoveMaterialInput {
     type: string;
 }
 
-export interface SearchOneMaterial {
-    identifier: string;
-    location_id: number;
-}
-
 export interface UpdateMaterialInput {
     identifier?: Nullable<string>;
     id_type?: Nullable<string>;
@@ -57,6 +52,11 @@ export interface UpdateMaterialInput {
     author?: Nullable<string>;
     category?: Nullable<string>;
     updated_at: DateTime;
+}
+
+export interface SearchOneMaterial {
+    identifier: string;
+    location_id: number;
 }
 
 export interface DonateBookInput {

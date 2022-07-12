@@ -2,19 +2,25 @@
 
 This project was generated using [Nx](https://nx.dev).
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+<p  style="text-align:  center;"><img  src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png"  width="450"></p>
 
 🔎 **Smart, Fast and Extensible Build System**
 
-## Development server for backend
+## How to run
 
-Run `docker-compose up` for to start the database
+1. Install dependencies `npm i`
+2. Run database: `docker-compose up -d postgres`
+3. Run backend and frontend together: `nx run-many --target serve --projects apiserver,frontapp`
 
-Run migrations `npm run migration:run`
+[App](http://localhost:4200/)
+[GraphQL Playground](http://localhost:3333/graphql)
 
-Run `nx serve apiserver` for to start the server on [http://localhost:3333/](http://localhost:3333/)
+## Possible errors
 
-Look Graphql playground on [http://localhost:3333/graphql](http://localhost:3333/graphql)
+1. **Error:** `docker-compose up -d postgres` throws `open /home/<you>/mimir/..env: no such file or directory`
+   **Fix:** write at the end of your `~/.bashrc` file `export NODE_ENV="local"`
+2. **Error:** `npm i` can throws `npm ERR! command sh -c node ./bin/init`
+   **Fix:** run `npm i -g nx` and run again `npm i`
 
 ## Adding capabilities to your workspace
 
@@ -25,17 +31,28 @@ These capabilities include generating applications, libraries, etc as well as th
 Below are our core plugins:
 
 - [React](https://reactjs.org)
-  - `npm install --save-dev @nrwl/react`
+
+- `npm install --save-dev @nrwl/react`
+
 - Web (no framework frontends)
-  - `npm install --save-dev @nrwl/web`
+
+- `npm install --save-dev @nrwl/web`
+
 - [Angular](https://angular.io)
-  - `npm install --save-dev @nrwl/angular`
+
+- `npm install --save-dev @nrwl/angular`
+
 - [Nest](https://nestjs.com)
-  - `npm install --save-dev @nrwl/nest`
+
+- `npm install --save-dev @nrwl/nest`
+
 - [Express](https://expressjs.com)
-  - `npm install --save-dev @nrwl/express`
+
+- `npm install --save-dev @nrwl/express`
+
 - [Node](https://nodejs.org)
-  - `npm install --save-dev @nrwl/node`
+
+- `npm install --save-dev @nrwl/node`
 
 There are also many [community plugins](https://nx.dev/community) you could add.
 
@@ -54,10 +71,6 @@ Run `nx g @nrwl/react:lib my-lib` to generate a library.
 > You can also use any of the plugins above to generate libraries as well.
 
 Libraries are shareable across libraries and applications. They can be imported from `@mimir/mylib`.
-
-## Development server
-
-Run `nx serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 
@@ -91,7 +104,7 @@ Visit the [Nx Documentation](https://nx.dev) to learn more.
 
 ### Distributed Computation Caching & Distributed Task Execution
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
+<p  style="text-align:  center;"><img  src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
 
 Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
 
