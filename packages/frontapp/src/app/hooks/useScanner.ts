@@ -1,7 +1,9 @@
 import { useGetMaterialByIdentifierQuery } from '@mimir/apollo-client';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useAppSelector } from './useTypedSelector';
+import { t } from 'i18next';
 
 const useScanner = () => {
   const navigate = useNavigate();
@@ -12,9 +14,7 @@ const useScanner = () => {
   const handleOnDetectedScannerRoute = useCallback(
     async (code) => {
       const {
-        data: {
-          getMaterialByIdentifier: { id },
-        },
+        data: { getMaterialByIdentifier },
       } = await fetchMore({
         variables: {
           identifier: code,
@@ -22,7 +22,10 @@ const useScanner = () => {
         },
       });
 
-      navigate(`/item/${id}?claimModal=${code}`);
+      if (!getMaterialByIdentifier)
+        return toast.error(t('PopUps.NotFoundByIdentifier'));
+
+      return navigate(`/item/${getMaterialByIdentifier.id}?claimModal=${code}`);
     },
     [fetchMore, location.id, navigate]
   );

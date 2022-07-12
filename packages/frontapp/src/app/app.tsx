@@ -1,8 +1,7 @@
 import { FC, useCallback, useState } from 'react';
-import { toast } from 'react-toastify';
 import StartPage from './pages/StartPage';
 import Sidebar from './components/Sidebar';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import { useAuth } from './hooks/useAuth';
 import styled from '@emotion/styled';
@@ -19,7 +18,6 @@ import Button from './components/Button';
 import { ReactComponent as QRCodeSvg } from '../assets/Qrcode.svg';
 import { t } from 'i18next';
 import Scanner from './components/Scanner';
-import { useGetMaterialByIdentifierQuery } from '@mimir/apollo-client';
 import useScanner from './hooks/useScanner';
 
 const WrapperPage = styled.main`

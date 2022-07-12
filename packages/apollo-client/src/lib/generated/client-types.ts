@@ -254,7 +254,7 @@ export type Query = {
   getAllPersons: Array<Maybe<Person>>;
   getAllTakenItems: Array<Maybe<Status>>;
   getMaterialById: Material;
-  getMaterialByIdentifier: Material;
+  getMaterialByIdentifier?: Maybe<Material>;
   getNotificationsByMaterial: Array<Maybe<Notification>>;
   getNotificationsByPerson: Array<Maybe<Notification>>;
   getOnePerson: Person;
@@ -493,7 +493,7 @@ export type GetMaterialByIdentifierQueryVariables = Exact<{
 }>;
 
 
-export type GetMaterialByIdentifierQuery = { __typename?: 'Query', getMaterialByIdentifier: { __typename?: 'Material', id: string, picture?: string | null, author: string, title: string, category: string } };
+export type GetMaterialByIdentifierQuery = { __typename?: 'Query', getMaterialByIdentifier?: { __typename?: 'Material', id: string, picture?: string | null, author: string, title: string, category: string } | null };
 
 export type GetNotificationsByPersonQueryVariables = Exact<{
   person_id: Scalars['Int'];

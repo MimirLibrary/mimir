@@ -229,7 +229,8 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
 
   useEffect(() => {
     if (data) {
-      const { author, title, picture, category } = data.getMaterialByIdentifier;
+      const { author, title, picture, category } =
+        data.getMaterialByIdentifier!;
       setDataOfBook({
         title,
         genre: category,
