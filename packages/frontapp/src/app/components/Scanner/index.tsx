@@ -128,6 +128,7 @@ const CloseButton = styled.div`
   height: ${dimensions.xl_6};
   background-color: ${colors.bg_secondary};
   border-radius: 50%;
+  cursor: pointer;
 
   svg {
     fill: ${colors.accent_color};
