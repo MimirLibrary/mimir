@@ -58,7 +58,7 @@ const FileUpload: FC<IPropsUploadFile> = ({
         <>
           <StyledImg
             onClick={() => ref?.current?.click()}
-            src={process.env['NX_API_ROOT_URL'] + '/' + pictureOfCover}
+            src={pictureOfCover}
             alt="material pictureOfCover"
           />
           <input
