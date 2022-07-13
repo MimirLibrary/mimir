@@ -73,7 +73,7 @@ const App: FC = () => {
 
   const handleOnClickButton = useCallback(() => {
     setIsShowScanner(true);
-  }, [setIsShowScanner]);
+  }, []);
 
   return (
     <>
