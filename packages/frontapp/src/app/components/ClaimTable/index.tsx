@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import {
   countClaimHistory,
   IClaimHistory,
@@ -10,6 +10,7 @@ import emptyList from '../../../assets/EmptyList.svg';
 import bookImage from '../../../assets/MOC-data/BookImage.png';
 import { StatusTypes } from '../../../../../apiserver/src/utils/types/statusTypes';
 import { getDates } from '../../models/helperFunctions/converTime';
+import { t } from 'i18next';
 
 const CardWrapper = styled.div`
   display: flex;
@@ -50,6 +51,7 @@ const StyledTable = styled.table`
   display: table;
   border-collapse: collapse;
   width: 100%;
+  height: fit-content;
   th:nth-child(1) {
     border-radius: 10px 0 0 0;
   }
@@ -75,6 +77,7 @@ const StyledTable = styled.table`
   }
 
   td {
+    height: 157px;
     color: ${colors.accent_color};
     padding: ${dimensions.base};
     vertical-align: top;
@@ -152,13 +155,6 @@ const ClaimTable: FC<IClaimTable> = ({ statuses, name }) => {
   const sortedStatuses = countClaimHistory(statuses).claimHistoryItems;
   const [allItemsActive, setAllItemsActive] = useState<boolean>(true);
   const [shownItems, setShownItems] = useState<IClaimHistory[]>(sortedStatuses);
-  useEffect(() => {
-    allItemsActive
-      ? setShownItems(sortedStatuses)
-      : setShownItems(
-          sortedStatuses.filter((item) => item.status === 'Overdue')
-        );
-  }, [sortedStatuses]);
   const changeList = (all: boolean) => {
     if (all !== allItemsActive)
       if (all) {
@@ -177,7 +173,7 @@ const ClaimTable: FC<IClaimTable> = ({ statuses, name }) => {
       2,
       '0'
     );
-    return `Return till: ${day}.${month}`;
+    return `${t('UserCard.Table.ReturnTill')} ${day}.${month}`;
   };
   const countReturnedDate = (created_at: Date) => {
     const day = `${getDates(created_at).startDate.getDate()}`.padStart(2, '0');
@@ -185,7 +181,7 @@ const ClaimTable: FC<IClaimTable> = ({ statuses, name }) => {
       2,
       '0'
     );
-    return `Returned at: ${day}.${month}`;
+    return `${t('UserCard.Table.ReturnedAt')} ${day}.${month}`;
   };
   return (
     <div>
@@ -193,15 +189,19 @@ const ClaimTable: FC<IClaimTable> = ({ statuses, name }) => {
         {allItemsActive ? (
           <InlineWrapper>
             <SortText onClick={() => changeList(true)} active>
-              All Items
+              {t('UserCard.Table.AllItems')}
             </SortText>
-            <SortText onClick={() => changeList(false)}>Overdue</SortText>
+            <SortText onClick={() => changeList(false)}>
+              {t('UserCard.Table.Overdue')}
+            </SortText>
           </InlineWrapper>
         ) : (
           <InlineWrapper>
-            <SortText onClick={() => changeList(true)}>All Items</SortText>{' '}
+            <SortText onClick={() => changeList(true)}>
+              {t('UserCard.Table.AllItems')}
+            </SortText>{' '}
             <SortText onClick={() => changeList(false)} active>
-              Overdue
+              {t('UserCard.Table.Overdue')}
             </SortText>
           </InlineWrapper>
         )}
@@ -212,9 +212,9 @@ const ClaimTable: FC<IClaimTable> = ({ statuses, name }) => {
           <StyledScroll>
             <StyledTable>
               <tr>
-                <th>Item name</th>
-                <th>Deadline</th>
-                <th>State</th>
+                <th>{t('UserCard.Table.ItemName')}</th>
+                <th>{t('UserCard.Table.Deadline')}</th>
+                <th>{t('UserCard.Table.State')}</th>
               </tr>
               {shownItems?.map((status) => (
                 <tr>
@@ -248,14 +248,18 @@ const ClaimTable: FC<IClaimTable> = ({ statuses, name }) => {
                   </td>
                   <td>
                     {status.status === StatusTypes.FREE ? (
-                      <FieldsText returned>Returned</FieldsText>
+                      <FieldsText returned>
+                        {t('UserCard.Table.Returned')}
+                      </FieldsText>
                     ) : status.status === 'Overdue' ? (
-                      <FieldsText overdue>Overdue</FieldsText>
+                      <FieldsText overdue>
+                        {t('UserCard.Table.Overdue')}
+                      </FieldsText>
                     ) : (
                       <FieldsText>
                         {status.status === StatusTypes.BUSY
-                          ? 'Claim'
-                          : status.status}
+                          ? t('UserCard.Table.Claim')
+                          : t('UserCard.Table.Prolong')}
                       </FieldsText>
                     )}
                   </td>
@@ -267,7 +271,9 @@ const ClaimTable: FC<IClaimTable> = ({ statuses, name }) => {
           <EmptyShelfWrapper>
             <img src={emptyList} alt="no items" />
             <p>
-              {'Shelf of ' + name?.split(' ')[0] + "'s books and other items"}
+              {t('UserCard.Table.ShelfOf') +
+                name?.split(' ')[0] +
+                t('UserCard.Table.BooksAndItems')}
             </p>
           </EmptyShelfWrapper>
         )}

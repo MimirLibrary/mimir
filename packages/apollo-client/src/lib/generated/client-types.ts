@@ -122,7 +122,7 @@ export type Message = {
   created_at: Scalars['DateTime'];
   id: Scalars['ID'];
   material: Material;
-  material_id: Scalars['Int'];
+  material_id?: Maybe<Scalars['Int']>;
   message: Scalars['String'];
   person: Person;
   person_id: Scalars['Int'];
@@ -243,11 +243,11 @@ export type Person = {
   id: Scalars['ID'];
   location: Location;
   location_id: Scalars['Int'];
-  messages: Array<Maybe<Message>>;
+  messages?: Maybe<Array<Maybe<Message>>>;
   notifications?: Maybe<Array<Maybe<Notification>>>;
   position: Scalars['String'];
   smg_id: Scalars['String'];
-  state?: Maybe<Array<Maybe<BlockedUsers>>>;
+  states?: Maybe<Array<Maybe<BlockedUsers>>>;
   statuses?: Maybe<Array<Maybe<Status>>>;
   type: Scalars['String'];
   username: Scalars['String'];
@@ -264,8 +264,10 @@ export type Query = {
   getAllMaterials: Array<Maybe<Material>>;
   getAllPersons: Array<Person>;
   getAllTakenItems: Array<Maybe<Status>>;
+  getBlocksByPerson: Array<Maybe<BlockedUsers>>;
   getMaterialById: Material;
   getMaterialByIdentifier: Material;
+  getMessagesByPerson: Array<Maybe<Message>>;
   getNotificationsByMaterial: Array<Maybe<Notification>>;
   getNotificationsByPerson: Array<Maybe<Notification>>;
   getOnePerson: Person;
@@ -281,6 +283,11 @@ export type QueryGetAllTakenItemsArgs = {
 };
 
 
+export type QueryGetBlocksByPersonArgs = {
+  person_id: Scalars['ID'];
+};
+
+
 export type QueryGetMaterialByIdArgs = {
   id: Scalars['ID'];
 };
@@ -288,6 +295,11 @@ export type QueryGetMaterialByIdArgs = {
 
 export type QueryGetMaterialByIdentifierArgs = {
   input: SearchOneMaterial;
+};
+
+
+export type QueryGetMessagesByPersonArgs = {
+  person_id: Scalars['ID'];
 };
 
 
@@ -518,7 +530,7 @@ export type GetOnePersonQueryVariables = Exact<{
 }>;
 
 
-export type GetOnePersonQuery = { __typename?: 'Query', getOnePerson: { __typename?: 'Person', id: string, username: string, email: string, position: string, avatar: string, statuses?: Array<{ __typename?: 'Status', id: string, material_id: number, status: string, created_at: any, material: { __typename?: 'Material', id: string, picture?: string | null, title: string, author: string, category: string } } | null> | null, state?: Array<{ __typename?: 'BlockedUsers', id: string, description: string, created_at: any } | null> | null, messages: Array<{ __typename?: 'Message', id: string, material_id: number, title: string, message: string, created_at: any } | null> } };
+export type GetOnePersonQuery = { __typename?: 'Query', getOnePerson: { __typename?: 'Person', id: string, username: string, email: string, position: string, avatar: string, statuses?: Array<{ __typename?: 'Status', id: string, material_id: number, status: string, created_at: any, material: { __typename?: 'Material', id: string, picture?: string | null, title: string, author: string, category: string } } | null> | null, states?: Array<{ __typename?: 'BlockedUsers', state: boolean, id: string, description: string, created_at: any } | null> | null, messages?: Array<{ __typename?: 'Message', id: string, material_id?: number | null, title: string, message: string, created_at: any } | null> | null } };
 
 export type SearchOfMaterialsQueryVariables = Exact<{
   search: Scalars['String'];
@@ -1253,7 +1265,8 @@ export const GetOnePersonDocument = gql`
         category
       }
     }
-    state {
+    states {
+      state
       id
       description
       created_at

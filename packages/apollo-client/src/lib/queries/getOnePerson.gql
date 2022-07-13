@@ -18,7 +18,8 @@ query GetOnePerson($id: ID!) {
         category
       }
     }
-    state {
+    states {
+      state
       id
       description
       created_at

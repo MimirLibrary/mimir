@@ -1,7 +1,11 @@
 type BlockedUsers {
   id: ID!
-  description: String!
+  description: String
   state: Boolean!
   created_at: DateTime!
   person: Person!
+}
+
+extend type Query {
+  getBlocksByPerson(person_id: ID!): [BlockedUsers]!
 }

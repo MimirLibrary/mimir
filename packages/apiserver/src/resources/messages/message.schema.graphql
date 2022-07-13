@@ -1,6 +1,6 @@
 type Message {
   id: ID!
-  material_id: Int!
+  material_id: Int
   person_id: Int!
   created_at: DateTime!
   person: Person!
@@ -15,6 +15,11 @@ input CreateMessageInput {
   material_id: Int
   person_id: Int!
 }
+
+extend type Query {
+  getMessagesByPerson(person_id: ID!): [Message]!
+}
+
 
 extend type Mutation {
   createMessageForManager(input: CreateMessageInput!): MessageUnionResult!

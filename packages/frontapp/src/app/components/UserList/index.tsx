@@ -37,7 +37,6 @@ const Description = styled.p`
 const UserList = () => {
   const { data, loading } = useGetAllPersonsQuery();
   if (loading) return <h1>{t('Loading')}</h1>;
-  console.log(data);
   return (
     <ReadersWrapper>
       <Title>{t('Readers.Title')}</Title>

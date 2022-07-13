@@ -22,6 +22,7 @@ import {
 import { Message } from '../messages/message.entity';
 import { AuthGuard } from '../../auth/auth.guard';
 import { Material } from '../materials/material.entity';
+import { BlockedUsers } from '../blocked-users/blocked-users.entity';
 
 @Resolver('Person')
 export class PersonResolver {
@@ -89,6 +90,12 @@ export class PersonResolver {
   async messages(@Parent() person: Person) {
     const { id } = person;
     return Message.find({ where: { person_id: id } });
+  }
+
+  @ResolveField(() => [BlockedUsers])
+  async states(@Parent() person: Person) {
+    const { id } = person;
+    return BlockedUsers.find({ where: { person_id: id } });
   }
 
   @ResolveField(() => [Location])

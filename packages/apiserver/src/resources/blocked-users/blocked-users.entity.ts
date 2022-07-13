@@ -15,7 +15,7 @@ export class BlockedUsers extends BaseEntity {
   id!: number;
 
   @Column()
-  description!: string;
+  description: string;
 
   @Column()
   state!: boolean;
@@ -24,7 +24,7 @@ export class BlockedUsers extends BaseEntity {
   created_at!: Date;
 
   @Column({ nullable: true })
-  person_id: number;
+  person_id!: number;
 
   @ManyToOne(() => Person, (person) => person.state)
   @JoinColumn({ name: 'person_id' })

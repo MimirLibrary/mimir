@@ -5,10 +5,7 @@ import { refreshTokenLink } from './links/refreshTokenLink';
 
 const httpLink = new HttpLink({
   uri: process.env['NX_API_ROOT_URL'] + '/graphql',
-  // uri: 'http://localhost:3333/graphql'
 });
-
-console.log(process.env['NX_API_ROOT_URL']);
 
 export const client = new ApolloClient({
   cache: new InMemoryCache(),

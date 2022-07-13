@@ -114,19 +114,21 @@ export interface CreateStatusInput {
 
 export interface BlockedUsers {
     id: string;
-    description: string;
+    description?: Nullable<string>;
     state: boolean;
     created_at: DateTime;
     person: Person;
 }
 
 export interface IQuery {
+    getBlocksByPerson(person_id: string): Nullable<BlockedUsers>[] | Promise<Nullable<BlockedUsers>[]>;
     getAllTakenItems(person_id: number): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getAllLocations(): Nullable<Location>[] | Promise<Nullable<Location>[]>;
     getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
     getMaterialById(id: string): Material | Promise<Material>;
     searchOfMaterials(input: SearchInput): Nullable<Nullable<Material>[]> | Promise<Nullable<Nullable<Material>[]>>;
     getMaterialByIdentifier(input: SearchOneMaterial): Material | Promise<Material>;
+    getMessagesByPerson(person_id: string): Nullable<Message>[] | Promise<Nullable<Message>[]>;
     getNotificationsByPerson(person_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
     getNotificationsByMaterial(material_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
     getOnePerson(id: string): Person | Promise<Person>;
@@ -181,7 +183,7 @@ export interface Material {
 
 export interface Message {
     id: string;
-    material_id: number;
+    material_id?: Nullable<number>;
     person_id: number;
     created_at: DateTime;
     person: Person;
@@ -212,8 +214,8 @@ export interface Person {
     statuses?: Nullable<Nullable<Status>[]>;
     notifications?: Nullable<Nullable<Notification>[]>;
     location: Location;
-    messages: Nullable<Message>[];
-    state?: Nullable<Nullable<BlockedUsers>[]>;
+    messages?: Nullable<Nullable<Message>[]>;
+    states?: Nullable<Nullable<BlockedUsers>[]>;
 }
 
 export interface Status {

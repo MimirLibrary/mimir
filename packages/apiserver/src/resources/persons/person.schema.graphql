@@ -11,8 +11,8 @@ type Person {
   statuses: [Status]
   notifications: [Notification]
   location: Location!
-  messages: [Message]!
-  state: [BlockedUsers]
+  messages: [Message]
+  states: [BlockedUsers]
 }
 
 input CreatePersonInput {
