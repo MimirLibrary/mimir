@@ -9,7 +9,7 @@ define(Person, () => {
   person.type = 'Reader';
   person.position = 'Fullstack Ruby Developer';
   person.email = 'example@email.com';
-  person.username = 'Alina Danilevich';
+  person.username = 'Simple user';
   person.avatar = '';
   return person;
 });

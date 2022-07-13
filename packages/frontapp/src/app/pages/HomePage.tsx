@@ -78,11 +78,7 @@ const HomePage: FC = () => {
                 <TitleArticle>Don't forget to pass</TitleArticle>
                 <TextBase>List of items you have taken and due dates</TextBase>
               </Wrapper>
-              <ListBooks
-                items={data?.getAllTakenItems.filter(
-                  (item) => item?.status !== 'Free'
-                )}
-              />
+              <ListBooks items={data?.getAllTakenItems} />
             </>
           ) : (
             <EmptyListItems />
