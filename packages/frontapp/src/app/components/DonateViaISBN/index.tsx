@@ -51,13 +51,6 @@ const ISBNWrapper = styled.div`
   }
 `;
 
-const StyledButton = styled(Button)`
-  :disabled {
-    background: ${colors.dropdown_gray};
-    cursor: default;
-  }
-`;
-
 const InputStyledMask = styled(InputMask)`
   width: 19rem;
   border: none;
@@ -159,7 +152,7 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
               margin={`0 ${dimensions.xs_2}`}
               onClick={handleShowScanner}
             />
-            <StyledButton
+            <Button
               type="submit"
               value="Find book"
               disabled={conditionToDisabledBtn}

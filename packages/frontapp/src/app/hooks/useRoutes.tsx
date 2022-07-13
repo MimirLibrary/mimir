@@ -17,7 +17,6 @@ export const useRoutes = (role: string) => {
   if (role === RolesTypes.READER) {
     return (
       <>
-        {}
         <Route path={RoutesTypes.HOME} element={<HomePage />} />
         <Route path={RoutesTypes.SEARCH} element={<SearchPage />} />
         <Route

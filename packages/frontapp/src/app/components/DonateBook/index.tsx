@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -11,7 +11,6 @@ import SuccessMessage from '../SuccessMessage';
 import AskManagerForm from '../AskManagerForm';
 import ErrorMessage from '../ErrorMessge';
 import { RolesTypes } from '@mimir/global-types';
-import { useAppDispatch } from '../../hooks/useTypedDispatch';
 import FileUpload from '../FielUpload';
 import { IMetaOfMaterial } from '../../types/metadata';
 

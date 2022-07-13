@@ -32,6 +32,7 @@ export const resources = {
       },
       Search: {
         Placeholder: 'Search by book or author',
+        Scan: 'Scan a code',
       },
       Start: {
         ChooseLocation: 'Your current location',
@@ -77,6 +78,9 @@ export const resources = {
           Donates: 'Was donated by',
         },
       },
+      PopUps: {
+        NotFoundByIdentifier: "Sorry, we didn't find a book by this identifier",
+      },
     },
   },
   ru: {
@@ -112,6 +116,7 @@ export const resources = {
       },
       Search: {
         Placeholder: 'Поиск по книге или автору',
+        Scan: 'Сканировать',
       },
       Start: {
         ChooseLocation: 'Ваше текущее местоположение',
@@ -156,6 +161,9 @@ export const resources = {
           Overdue: 'Просрочил:',
           Donates: 'Пожертвовал:',
         },
+      },
+      PopUps: {
+        NotFoundByIdentifier: 'Упс, мы не нашли книгу с таким идентификатором',
       },
     },
   },
