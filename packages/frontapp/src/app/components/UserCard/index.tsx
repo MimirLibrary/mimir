@@ -145,11 +145,6 @@ const UserCard = () => {
       getDates(notification.created_at).startDate
   );
   const state = OnePerson?.getOnePerson.states?.slice().pop()?.state;
-  const moc = {
-    created_at: '12',
-    title: 'blocked',
-    description: 'lala topola',
-  };
   if (loading) return <h1>{t('Loading')}</h1>;
 
   return (

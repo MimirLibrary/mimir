@@ -114,7 +114,7 @@ export interface CreateStatusInput {
 
 export interface BlockedUsers {
     id: string;
-    description?: Nullable<string>;
+    description: string;
     state: boolean;
     created_at: DateTime;
     person: Person;

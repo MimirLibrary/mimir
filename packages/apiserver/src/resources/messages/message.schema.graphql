@@ -20,7 +20,6 @@ extend type Query {
   getMessagesByPerson(person_id: ID!): [Message]!
 }
 
-
 extend type Mutation {
   createMessageForManager(input: CreateMessageInput!): MessageUnionResult!
 }
