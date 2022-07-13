@@ -19,6 +19,7 @@ import { ReactComponent as QRCodeSvg } from '../assets/Qrcode.svg';
 import { t } from 'i18next';
 import Scanner from './components/Scanner';
 import useScanner from './hooks/useScanner';
+import { RolesTypes } from '@mimir/global-types';
 
 const WrapperPage = styled.main`
   display: flex;
@@ -97,11 +98,14 @@ const App: FC = () => {
                 />
                 <Route path="/category" element={<BooksByCategory />} />
               </Routes>
-              <StyledButton
-                svgComponent={<QRCodeSvg />}
-                value={t('Search.Scan')}
-                onClick={handleOnClickButton}
-              />
+              {RolesTypes.MANAGER === userRole || (
+                <StyledButton
+                  svgComponent={<QRCodeSvg />}
+                  value={t('Search.Scan')}
+                  onClick={handleOnClickButton}
+                />
+              )}
+
               {isShowScanner && (
                 <Scanner
                   onDetected={handleOnDetectedScannerRoute}

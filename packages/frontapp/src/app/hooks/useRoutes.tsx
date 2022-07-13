@@ -12,6 +12,7 @@ import DonatesFromUser from '../pages/DonatesFromUser';
 import CreateNewItem from '../pages/CreateNewItem';
 import SearchByNameOrAuthorPage from '../pages/SearchByName';
 import DonateToLibrary from '../pages/DonateToLibrary';
+import OverduePage from '../pages/OverduePage';
 
 export const useRoutes = (role: string) => {
   if (role === RolesTypes.READER) {
@@ -50,6 +51,7 @@ export const useRoutes = (role: string) => {
           element={<DonatesFromUser />}
         />
         <Route path={RoutesTypes.CREATE_NEW_ITEM} element={<CreateNewItem />} />
+        <Route path={RoutesTypes.HOME + '/overdue'} element={<OverduePage />} />
       </>
     );
   }

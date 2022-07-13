@@ -58,12 +58,13 @@ const OverdueDonatesWrapper = styled.div`
   column-gap: 18px;
 `;
 
+managerData.sort((a, b) => a.created_at.getTime() - b.created_at.getTime());
+
 const HomePage: FC = () => {
   const { id, userRole } = useAppSelector((state) => state.user);
   const { data, loading } = useGetAllTakenItemsQuery({
     variables: { person_id: id },
   });
-  managerData.sort((a, b) => a.created_at.getTime() - b.created_at.getTime());
 
   if (loading) return <h1>Loading...</h1>;
 
