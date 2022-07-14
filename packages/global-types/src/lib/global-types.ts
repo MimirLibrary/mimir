@@ -127,7 +127,7 @@ export interface IQuery {
     getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
     getMaterialById(id: string): Material | Promise<Material>;
     searchOfMaterials(input: SearchInput): Nullable<Nullable<Material>[]> | Promise<Nullable<Nullable<Material>[]>>;
-    getMaterialByIdentifier(input: SearchOneMaterial): Material | Promise<Material>;
+    getMaterialByIdentifier(input: SearchOneMaterial): Nullable<Material> | Promise<Nullable<Material>>;
     getMessagesByPerson(person_id: string): Nullable<Message>[] | Promise<Nullable<Message>[]>;
     getNotificationsByPerson(person_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
     getNotificationsByMaterial(material_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
@@ -183,7 +183,7 @@ export interface Material {
 
 export interface Message {
     id: string;
-    material_id?: Nullable<number>;
+    material_id: number;
     person_id: number;
     created_at: DateTime;
     person: Person;

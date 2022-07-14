@@ -33,6 +33,7 @@ export const resources = {
       },
       Search: {
         Placeholder: 'Search by book or author',
+        Scan: 'Scan a code',
       },
       Start: {
         ChooseLocation: 'Your current location',
@@ -108,6 +109,9 @@ export const resources = {
         hAgo: 'h ago',
         dAgo: 'd ago',
       },
+      PopUps: {
+        NotFoundByIdentifier: "Sorry, we didn't find a book by this identifier",
+      },
     },
   },
   ru: {
@@ -144,6 +148,7 @@ export const resources = {
       },
       Search: {
         Placeholder: 'Поиск по книге или автору',
+        Scan: 'Сканировать',
       },
       Start: {
         ChooseLocation: 'Ваше текущее местоположение',
@@ -218,6 +223,9 @@ export const resources = {
         CreateNotification: 'Создать уведомление',
         hAgo: 'ч назад',
         dAgo: 'д назад',
+      },
+      PopUps: {
+        NotFoundByIdentifier: 'Упс, мы не нашли книгу с таким идентификатором',
       },
     },
   },

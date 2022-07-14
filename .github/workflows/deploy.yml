@@ -21,7 +21,7 @@ jobs:
         uses: nrwl/nx-set-shas@v2
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: 16
           cache: 'npm'
       - run: npm ci
       - name: Restore NX Cache
@@ -50,7 +50,7 @@ jobs:
         uses: nrwl/nx-set-shas@v2
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: 16
           cache: 'npm'
       - run: npm ci
       - name: Restore NX Cache
@@ -103,7 +103,7 @@ jobs:
         uses: nrwl/nx-set-shas@v2
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: 16
           cache: 'npm'
       - run: npm ci
       - name: Restore NX Cache
@@ -141,7 +141,7 @@ jobs:
         uses: nrwl/nx-set-shas@v2
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: 16
           cache: 'npm'
       - run: npm ci
       - name: Restore NX Cache

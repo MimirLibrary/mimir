@@ -1,5 +1,4 @@
 {
-  "root": "packages/apollo-client",
   "sourceRoot": "packages/apollo-client/src",
   "targets": {
     "build": {

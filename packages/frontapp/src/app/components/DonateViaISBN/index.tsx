@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions, fonts } from '@mimir/ui-kit';
 import { WrapperInput } from '../ClaimOperation';
@@ -51,13 +51,6 @@ const ISBNWrapper = styled.div`
   }
 `;
 
-const StyledButton = styled(Button)`
-  :disabled {
-    background: ${colors.dropdown_gray};
-    cursor: default;
-  }
-`;
-
 const InputStyledMask = styled(InputMask)`
   width: 19rem;
   border: none;
@@ -82,9 +75,9 @@ const InputStyledMask = styled(InputMask)`
 `;
 
 interface IPropsViaISBN {
-  setDataToState: React.Dispatch<React.SetStateAction<IMetaOfMaterial | null>>;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  setDataError: React.Dispatch<React.SetStateAction<Error | null>>;
+  setDataToState: (data: IMetaOfMaterial) => void;
+  setIsLoading: (value: boolean) => void;
+  setDataError: (value: Error | null) => void;
 }
 
 const DonateViaISBN: FC<IPropsViaISBN> = ({
@@ -96,6 +89,14 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
   const [isShowScanner, setIsShowScanner] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
+  let isMounted = true;
+
+  useEffect(() => {
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const conditionToDisabledBtn = !valueOfISBN && valueOfISBN.length <= 13;
   const handelChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValueIsISBN(e.target.value);
@@ -103,19 +104,22 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
+
     dispatch(setIdentifier(valueOfISBN));
-    try {
-      setIsLoading(true);
-      const material = await axios.get(
-        `${process.env['NX_API_METADATA_URL']}/search/${valueOfISBN}`
-      );
-      setDataToState(material.data);
-      setIsLoading(false);
-    } catch (e) {
-      if (e instanceof Error) {
-        setDataError(e);
+    if (isMounted) {
+      try {
+        setIsLoading(true);
+        const material = await axios.get(
+          `${process.env['NX_API_METADATA_URL']}/search/${valueOfISBN}`
+        );
+        setDataToState(material.data);
+        setIsLoading(false);
+      } catch (e) {
+        if (e instanceof Error) {
+          setDataError(e);
+        }
+        setIsLoading(false);
       }
-      setIsLoading(false);
     }
     setValueIsISBN('');
   };
@@ -148,7 +152,7 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
               margin={`0 ${dimensions.xs_2}`}
               onClick={handleShowScanner}
             />
-            <StyledButton
+            <Button
               type="submit"
               value="Find book"
               disabled={conditionToDisabledBtn}

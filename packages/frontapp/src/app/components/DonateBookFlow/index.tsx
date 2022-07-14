@@ -82,6 +82,21 @@ const DonateBookFlow = () => {
     }
   }, [dataOfMaterial]);
 
+  const setDataMaterial = useCallback(
+    (data: IMetaOfMaterial) => {
+      setDataOfMaterial(data);
+    },
+    [dataOfMaterial]
+  );
+
+  const setValueOfLoading = useCallback((value: boolean) => {
+    setIsLoading(value);
+  }, []);
+
+  const setValueOfError = useCallback((value: Error | null) => {
+    setDataOfError(value);
+  }, []);
+
   const handleCloseContentOfDonate = useCallback(() => {
     dispatch(removeIdentifier());
     setDataOfError(null);
@@ -124,9 +139,9 @@ const DonateBookFlow = () => {
         ) : (
           !showEmptyContentDonate && (
             <DonateViaISBN
-              setDataToState={setDataOfMaterial}
-              setIsLoading={setIsLoading}
-              setDataError={setDataOfError}
+              setDataToState={setDataMaterial}
+              setIsLoading={setValueOfLoading}
+              setDataError={setValueOfError}
             />
           )
         )}

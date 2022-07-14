@@ -31,6 +31,7 @@ import { BlockedUsersModule } from '../resources/blocked-users/blocked-users.mod
 import { BlockedUsers } from '../resources/blocked-users/blocked-users.entity';
 import { AuthModule } from '../auth/auth.module';
 
+console.log(__dirname);
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
@@ -45,7 +46,7 @@ import { AuthModule } from '../auth/auth.module';
         Location,
         BlockedUsers,
       ],
-      migrations: [`${__dirname}/packages/apiserver/src/migrations/*.ts`],
+      migrations: [`${__dirname}/migrations/*.js`],
     }),
     MaterialModule,
     StatusModule,
@@ -59,7 +60,7 @@ import { AuthModule } from '../auth/auth.module';
     FileModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      typePaths: ['./packages/apiserver/**/*.graphql'],
+      typePaths: [__dirname + '/**/*.graphql'],
       typeDefs: [...scalarTypeDefs],
       resolvers: [scalarResolvers],
       definitions: {
