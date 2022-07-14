@@ -13,6 +13,7 @@ const WrapperOverdueInstructions = styled.section`
   justify-content: flex-start;
   align-items: flex-start;
   flex-direction: column;
+  margin-bottom: ${dimensions.xl_6};
 `;
 
 const Title = styled.h1`
@@ -30,6 +31,16 @@ const SubTitle = styled.h4`
   color: ${colors.main_black};
 `;
 
+const TitleList = styled.h2`
+  font-weight: 600;
+  font-size: ${dimensions.xl};
+  line-height: ${dimensions.xl_2};
+  color: ${colors.black};
+  margin-bottom: ${dimensions.xl_2};
+`;
+
+const todayList = [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2];
+
 const OverdueList: FC = () => {
   const navigate = useNavigate();
   const goBack = () => {
@@ -45,7 +56,14 @@ const OverdueList: FC = () => {
         <Title>Overdues</Title>
         <SubTitle>The following users have not turned in their books</SubTitle>
       </WrapperOverdueInstructions>
-      <OverdueCard />
+      <TitleList>Today</TitleList>
+      {todayList.map((item) => (
+        <OverdueCard backgroundColor={`${colors.bg_secondary}`} />
+      ))}
+      <TitleList>Earlier</TitleList>
+      {todayList.map((item) => (
+        <OverdueCard backgroundColor={`${colors.bg_fields}`} />
+      ))}
     </Wrapper>
   );
 };

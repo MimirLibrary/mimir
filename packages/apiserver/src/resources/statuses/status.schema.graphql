@@ -17,6 +17,7 @@ input CreateStatusInput {
 extend type Query {
   getStatusesByPerson(person_id: ID!): [Status]!
   getStatusesByMaterial(material_id: ID!): [Status]!
+  getAllStatusesIsOverdue: [Status]!
 }
 
 extend type Mutation {
