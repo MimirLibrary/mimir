@@ -17,7 +17,7 @@ input CreateMessageInput {
 }
 
 extend type Query {
-  getMessagesByPerson(person_id: ID!): [Message]!
+  getMessagesByPerson(person_id: ID!): [Message]
 }
 
 extend type Mutation {

@@ -26,6 +26,23 @@ export const getStatus = (status: string | undefined, date: any) => {
   return 'Overdue';
 };
 
+export const todayCondition = (date: Date) => {
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth() + 1;
+  const currentDay = currentDate.getDate();
+  const dateYear = date.getFullYear();
+  const dateMonthNum = date.getMonth() + 1;
+  const dateDayNum = date.getDate();
+  if (
+    currentYear === dateYear &&
+    currentMonth === dateMonthNum &&
+    currentDay === dateDayNum
+  )
+    return true;
+  else return false;
+};
+
 export const specialParseDate = (date: Date) => {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
@@ -45,7 +62,8 @@ export const specialParseDate = (date: Date) => {
     dateDay = `0${dateDay.toString()}`;
   }
   let returnDate;
-  if (currentDate.getTime() - date.getTime() < 8640000) {
+  console.log(currentDate.getTime() - date.getTime());
+  if (currentDate.getTime() - date.getTime() < 86400000) {
     return `${Math.trunc(
       (currentDate.getTime() - date.getTime()) / 3600000
     )}${t('UserCard.hAgo')}`;

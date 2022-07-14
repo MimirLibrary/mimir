@@ -7,5 +7,5 @@ type BlockedUsers {
 }
 
 extend type Query {
-  getBlocksByPerson(person_id: ID!): [BlockedUsers]!
+  getBlocksByPerson(person_id: ID!): [BlockedUsers]
 }

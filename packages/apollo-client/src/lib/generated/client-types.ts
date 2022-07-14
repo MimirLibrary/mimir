@@ -121,7 +121,7 @@ export type Message = {
   __typename?: 'Message';
   created_at: Scalars['DateTime'];
   id: Scalars['ID'];
-  material: Material;
+  material?: Maybe<Material>;
   material_id?: Maybe<Scalars['Int']>;
   message: Scalars['String'];
   person: Person;
@@ -264,10 +264,10 @@ export type Query = {
   getAllMaterials: Array<Maybe<Material>>;
   getAllPersons: Array<Person>;
   getAllTakenItems: Array<Maybe<Status>>;
-  getBlocksByPerson: Array<Maybe<BlockedUsers>>;
+  getBlocksByPerson?: Maybe<Array<Maybe<BlockedUsers>>>;
   getMaterialById: Material;
-  getMaterialByIdentifier: Material;
-  getMessagesByPerson: Array<Maybe<Message>>;
+  getMaterialByIdentifier?: Maybe<Material>;
+  getMessagesByPerson?: Maybe<Array<Maybe<Message>>>;
   getNotificationsByMaterial: Array<Maybe<Notification>>;
   getNotificationsByPerson: Array<Maybe<Notification>>;
   getOnePerson: Person;

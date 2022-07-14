@@ -11,11 +11,7 @@ import Button from '../Button';
 import { ReactComponent as NotifySvg } from '../../../assets/NoNotification.svg';
 import { ReactComponent as Block } from '../../../assets/Block.svg';
 import ClaimTable from '../ClaimTable';
-import {
-  getDates,
-  specialParseDate,
-} from '../../models/helperFunctions/converTime';
-import { OpenLink } from '../ManagerInfoCard';
+import Notifications from '../Notifications';
 
 const InlineWrapper = styled.div`
   display: flex;
@@ -71,35 +67,6 @@ const Title = styled.h1`
   margin-top: ${dimensions.base_2};
 `;
 
-const Subtitle = styled.h2`
-  margin-top: ${dimensions.xl_2};
-  margin-bottom: ${dimensions.base};
-  font-weight: 600;
-  font-size: ${dimensions.xl};
-`;
-
-interface INotificationsProps {
-  message?: boolean;
-}
-
-const NotificationWrapper = styled.div<INotificationsProps>`
-  width: 100%;
-  row-gap: ${dimensions.xs_2};
-  background-color: ${({ message }) => (message ? '#EFF4FF' : null)};
-  padding: ${dimensions.base};
-  display: flex;
-  align-items: ${({ message }) => (message ? 'center' : null)};
-  flex-direction: ${({ message }) => (message ? 'row' : 'column')};
-  justify-content: ${({ message }) => (message ? 'space-between' : null)};
-`;
-
-const NotificationDescription = styled.p<IDescriptionProps>`
-  text-align: left;
-  font-weight: ${({ small, titlee }) => (titlee ? 600 : small ? 300 : 400)};
-  font-size: ${({ small }) =>
-    small ? `${dimensions.xs}` : `${dimensions.base}`};
-`;
-
 const ButtonsWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -114,12 +81,13 @@ const UserCard = () => {
   const { data: OnePerson, loading } = useGetOnePersonQuery({
     variables: { id: id! },
   });
+  console.log(OnePerson?.getOnePerson);
   const messages = OnePerson?.getOnePerson.messages?.map((message) => {
     return {
       type: 'message',
       created_at: message?.created_at,
-      title: message?.title,
-      description: message?.message,
+      title: message!.title,
+      message: message?.message,
     };
   });
   const states = OnePerson?.getOnePerson.states?.map((state) => {
@@ -127,23 +95,12 @@ const UserCard = () => {
       type: 'block',
       created_at: state?.created_at,
       title: state ? 'User have been ublocked' : 'User have been blocked',
-      description: state?.description,
+      message: state?.description,
     };
   });
 
-  const sortedNotifications = messages
-    ?.concat(states!)
-    ?.sort((a, b) => b?.created_at.getTime() - a?.created_at.getTime());
-  const todayNotifications = sortedNotifications?.filter(
-    (notification) =>
-      getDates(notification.created_at).currentDate ===
-      getDates(notification.created_at).startDate
-  );
-  const earlierNotifications = sortedNotifications?.filter(
-    (notification) =>
-      getDates(notification.created_at).currentDate !==
-      getDates(notification.created_at).startDate
-  );
+  const sortedNotifications = messages?.concat(states!);
+
   const state = OnePerson?.getOnePerson.states?.slice().pop()?.state;
   if (loading) return <h1>{t('Loading')}</h1>;
 
@@ -193,80 +150,7 @@ const UserCard = () => {
         <>
           <Title>{t('UserCard.Notifications')}</Title>
           <Description>{t('UserCard.NotificationsDescription')}</Description>
-          {todayNotifications?.length ? (
-            <>
-              <Subtitle>{t('UserCard.Today')}</Subtitle>
-              {todayNotifications?.map((notification) => (
-                <>
-                  {notification.type === 'message' ? (
-                    <NotificationWrapper message>
-                      <ColumnWrapper>
-                        <NotificationDescription titlee>
-                          {notification.title}
-                        </NotificationDescription>
-                        <NotificationDescription>
-                          {notification.description}
-                        </NotificationDescription>
-                        <NotificationDescription small>
-                          {specialParseDate(new Date(notification.created_at))}
-                        </NotificationDescription>
-                      </ColumnWrapper>
-                      <OpenLink>{t('ManagerInfoCard.Link.Answer')}</OpenLink>
-                    </NotificationWrapper>
-                  ) : (
-                    <NotificationWrapper>
-                      <NotificationDescription>
-                        {notification.title + ' '}
-                        {notification.description
-                          ? t('UserCard.BlockReason') + notification.description
-                          : null}
-                      </NotificationDescription>
-                      <NotificationDescription small>
-                        {specialParseDate(new Date(notification.created_at))}
-                      </NotificationDescription>
-                    </NotificationWrapper>
-                  )}
-                </>
-              ))}
-            </>
-          ) : null}
-          {earlierNotifications?.length ? (
-            <>
-              <Subtitle>{t('UserCard.Earlier')}</Subtitle>
-              {earlierNotifications?.map((notification) => (
-                <>
-                  {notification.type === 'message' ? (
-                    <NotificationWrapper message>
-                      <ColumnWrapper>
-                        <NotificationDescription titlee>
-                          {notification.title}
-                        </NotificationDescription>
-                        <NotificationDescription>
-                          {notification.description}
-                        </NotificationDescription>
-                        <NotificationDescription small>
-                          {specialParseDate(new Date(notification.created_at))}
-                        </NotificationDescription>
-                      </ColumnWrapper>
-                      <OpenLink>{t('ManagerInfoCard.Link.Answer')}</OpenLink>
-                    </NotificationWrapper>
-                  ) : (
-                    <NotificationWrapper>
-                      <NotificationDescription>
-                        {notification.title + ' '}
-                        {notification.description
-                          ? t('UserCard.BlockReason') + notification.description
-                          : null}
-                      </NotificationDescription>
-                      <NotificationDescription small>
-                        {specialParseDate(new Date(notification.created_at))}
-                      </NotificationDescription>
-                    </NotificationWrapper>
-                  )}
-                </>
-              ))}
-            </>
-          ) : null}
+          <Notifications notifications={sortedNotifications}></Notifications>
         </>
       ) : null}
     </div>
