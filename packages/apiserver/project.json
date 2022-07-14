@@ -1,5 +1,4 @@
 {
-  "root": "packages/apiserver",
   "sourceRoot": "packages/apiserver/src",
   "projectType": "application",
   "targets": {

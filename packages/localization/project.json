@@ -1,5 +1,4 @@
 {
-  "root": "packages/localization",
   "sourceRoot": "packages/localization/src",
   "targets": {
     "build": {

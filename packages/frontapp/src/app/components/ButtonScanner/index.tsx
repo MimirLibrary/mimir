@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { ReactComponent as QrIcon } from '../../../assets/Qrcode.svg';
@@ -14,6 +14,9 @@ interface IButtonScanner {
 }
 
 const StyledButtonScanner = styled.button<IStyledButton>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: ${(props) => props.width || `${dimensions.xl_6}`};
   height: ${(props) => props.height || `${dimensions.xl_6}`};
   margin: ${(props) => props.margin || `0`};
