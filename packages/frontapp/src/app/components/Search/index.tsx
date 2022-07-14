@@ -33,7 +33,7 @@ export const InputSearch = styled(Input)`
   }
 `;
 
-export const StyledSearchIcon = styled(SearchIcon)`
+const StyledSearchIcon = styled(SearchIcon)`
   cursor: pointer;
   :hover {
     fill: ${colors.accent_color};

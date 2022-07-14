@@ -3,7 +3,7 @@ import {
   countClaimHistory,
   IClaimHistory,
 } from '../../models/helperFunctions/claimHistory';
-import { InputSearch, StyledSearchIcon, WrapperInput } from '../Search';
+import Search from '../Search';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import emptyList from '../../../assets/EmptyList.svg';
@@ -154,42 +154,18 @@ interface IClaimTable {
 const ClaimTable: FC<IClaimTable> = ({ statuses, name }) => {
   const sortedStatuses = countClaimHistory(statuses).claimHistoryItems;
   const [allItemsActive, setAllItemsActive] = useState<boolean>(true);
-  const [search, setSearch] = useState<string>('');
   const [shownItems, setShownItems] = useState<IClaimHistory[]>(sortedStatuses);
-  const [activeItems, setActiveItems] =
-    useState<IClaimHistory[]>(sortedStatuses);
   const changeList = (all: boolean) => {
     if (all !== allItemsActive)
       if (all) {
         setAllItemsActive(true);
-        setActiveItems(sortedStatuses);
         setShownItems(sortedStatuses);
       } else {
         setAllItemsActive(false);
-        setActiveItems(
-          sortedStatuses.filter((item) => item.status === 'Overdue')
-        );
         setShownItems(
           sortedStatuses.filter((item) => item.status === 'Overdue')
         );
       }
-  };
-  const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-    if (e.target.value) {
-      setShownItems(
-        activeItems.filter((item) => {
-          return (
-            item.material?.author
-              .toLowerCase()
-              .includes(e.target.value.toLowerCase()) ||
-            item.material?.title
-              .toLowerCase()
-              .includes(e.target.value.toLowerCase())
-          );
-        })
-      );
-    } else setShownItems(activeItems);
   };
   const countReturnDate = (created_at: Date) => {
     const day = `${getDates(created_at).returnDate.getDate()}`.padStart(2, '0');
@@ -229,19 +205,7 @@ const ClaimTable: FC<IClaimTable> = ({ statuses, name }) => {
             </SortText>
           </InlineWrapper>
         )}
-        <WrapperInput>
-          <StyledSearchIcon
-            fill={colors.dropdown_gray}
-            width="20"
-            height="20"
-          />
-          <InputSearch
-            type="text"
-            value={search}
-            onChange={handleChangeSearch}
-            placeholder={t('Search.Placeholder')}
-          />
-        </WrapperInput>
+        <Search></Search>
       </HeadWrapper>
       <CardWrapper>
         {statuses?.length ? (
