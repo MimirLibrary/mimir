@@ -112,7 +112,16 @@ export interface CreateStatusInput {
     status: string;
 }
 
+export interface BlockedUsers {
+    id: string;
+    description: string;
+    state: boolean;
+    created_at: DateTime;
+    person: Person;
+}
+
 export interface IQuery {
+    getBlocksByPerson(person_id: string): Nullable<BlockedUsers>[] | Promise<Nullable<BlockedUsers>[]>;
     getAllTakenItems(person_id: number): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getAllLocations(): Nullable<Location>[] | Promise<Nullable<Location>[]>;
     getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
