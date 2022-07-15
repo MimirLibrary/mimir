@@ -5,7 +5,7 @@ import { StatusTypes } from '../../utils/types/statusTypes';
 
 @Injectable()
 export class StatusService {
-  async allOverdueStatuses() {
+  async allOverdueStatuses(location_id: string) {
     const statusesQb = Status.createQueryBuilder('status')
       .select('status.id')
       .distinctOn(['material_id'])
@@ -19,6 +19,8 @@ export class StatusService {
       .leftJoinAndSelect('status.person', 'person')
       .where('status.id IN (:...ids)', { ids })
       .andWhere('person.type = :type', { type: RolesTypes.READER })
+      .andWhere('material.location_id = :location_id', { location_id })
+      .andWhere('person.location_id = :location_id', { location_id })
       .andWhere('status.status IN(:...statuses)', {
         statuses: [StatusTypes.BUSY, StatusTypes.PROLONG],
       })

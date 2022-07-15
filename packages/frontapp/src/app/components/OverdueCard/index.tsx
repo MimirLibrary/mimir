@@ -1,6 +1,11 @@
 import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
+import { GetAllStatusesIsOverdueQueryHookResult } from '@mimir/apollo-client';
+import {
+  getDateOfEarlier,
+  isOverdueToday,
+} from '../../models/helperFunctions/converTime';
 
 type WrapperProps = {
   background: string;
@@ -23,6 +28,7 @@ const Title = styled.h3`
   line-height: ${dimensions.xl};
   color: ${colors.main_black};
   font-weight: 400;
+  margin-bottom: ${dimensions.xs_2};
 `;
 
 const TitleName = styled.h5`
@@ -32,6 +38,7 @@ const TitleName = styled.h5`
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
   margin-right: ${dimensions.base};
+  margin-left: 0.2rem;
 `;
 
 const StyledTime = styled.span`
@@ -55,19 +62,43 @@ const ButtonActive = styled.button`
   }
 `;
 
+interface IOverdueMaterial {
+  __typename?: 'Material' | undefined;
+  id: string;
+  title: string;
+}
+
+interface IOverduePerson {
+  __typename?: 'Person' | undefined;
+  id: string;
+  username: string;
+}
+
+interface IOverdueItem {
+  __typename?: 'Status' | undefined;
+  id: string;
+  created_at: any;
+  material: IOverdueMaterial;
+  person: IOverduePerson;
+}
+
 interface IOverdueCard {
   backgroundColor: string;
+  item: IOverdueItem | null;
 }
 
 const OverdueCard: FC<IOverdueCard> = ({
   backgroundColor = `${colors.bg_secondary}`,
+  item,
 }) => {
   return (
     <Wrapper background={backgroundColor}>
       <WrapperInfo>
-        <Title>"Alice in Wonderland"</Title>
-        <TitleName>Ivan Ivanov</TitleName>
-        <StyledTime>3h ago</StyledTime>
+        <Title>"{item?.material.title}"</Title>
+        <TitleName>{item?.person.username}</TitleName>
+        {isOverdueToday(item?.created_at) ? null : (
+          <StyledTime>{getDateOfEarlier(item?.created_at)}</StyledTime>
+        )}
       </WrapperInfo>
       <ButtonActive>Remind</ButtonActive>
     </Wrapper>

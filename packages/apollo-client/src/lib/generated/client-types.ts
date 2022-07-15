@@ -252,6 +252,7 @@ export type Query = {
   getAllLocations: Array<Maybe<Location>>;
   getAllMaterials: Array<Maybe<Material>>;
   getAllPersons: Array<Maybe<Person>>;
+  getAllStatusesIsOverdue: Array<Maybe<Status>>;
   getAllTakenItems: Array<Maybe<Status>>;
   getMaterialById: Material;
   getMaterialByIdentifier?: Maybe<Material>;
@@ -262,6 +263,11 @@ export type Query = {
   getStatusesByPerson: Array<Maybe<Status>>;
   searchOfMaterials?: Maybe<Array<Maybe<Material>>>;
   welcome: Scalars['String'];
+};
+
+
+export type QueryGetAllStatusesIsOverdueArgs = {
+  location_id: Scalars['String'];
 };
 
 
@@ -472,6 +478,13 @@ export type GetAllPersonsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetAllPersonsQuery = { __typename?: 'Query', getAllPersons: Array<{ __typename?: 'Person', id: string, statuses?: Array<{ __typename?: 'Status', id: string, material_id: number, created_at: any, status: string } | null> | null } | null> };
+
+export type GetAllStatusesIsOverdueQueryVariables = Exact<{
+  location_id: Scalars['String'];
+}>;
+
+
+export type GetAllStatusesIsOverdueQuery = { __typename?: 'Query', getAllStatusesIsOverdue: Array<{ __typename?: 'Status', id: string, created_at: any, material: { __typename?: 'Material', id: string, title: string }, person: { __typename?: 'Person', id: string, username: string } } | null> };
 
 export type GetAllTakenItemsQueryVariables = Exact<{
   person_id: Scalars['Int'];
@@ -1040,6 +1053,50 @@ export function useGetAllPersonsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetAllPersonsQueryHookResult = ReturnType<typeof useGetAllPersonsQuery>;
 export type GetAllPersonsLazyQueryHookResult = ReturnType<typeof useGetAllPersonsLazyQuery>;
 export type GetAllPersonsQueryResult = Apollo.QueryResult<GetAllPersonsQuery, GetAllPersonsQueryVariables>;
+export const GetAllStatusesIsOverdueDocument = gql`
+    query GetAllStatusesIsOverdue($location_id: String!) {
+  getAllStatusesIsOverdue(location_id: $location_id) {
+    id
+    created_at
+    material {
+      id
+      title
+    }
+    person {
+      id
+      username
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAllStatusesIsOverdueQuery__
+ *
+ * To run a query within a React component, call `useGetAllStatusesIsOverdueQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllStatusesIsOverdueQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllStatusesIsOverdueQuery({
+ *   variables: {
+ *      location_id: // value for 'location_id'
+ *   },
+ * });
+ */
+export function useGetAllStatusesIsOverdueQuery(baseOptions: Apollo.QueryHookOptions<GetAllStatusesIsOverdueQuery, GetAllStatusesIsOverdueQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllStatusesIsOverdueQuery, GetAllStatusesIsOverdueQueryVariables>(GetAllStatusesIsOverdueDocument, options);
+      }
+export function useGetAllStatusesIsOverdueLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllStatusesIsOverdueQuery, GetAllStatusesIsOverdueQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllStatusesIsOverdueQuery, GetAllStatusesIsOverdueQueryVariables>(GetAllStatusesIsOverdueDocument, options);
+        }
+export type GetAllStatusesIsOverdueQueryHookResult = ReturnType<typeof useGetAllStatusesIsOverdueQuery>;
+export type GetAllStatusesIsOverdueLazyQueryHookResult = ReturnType<typeof useGetAllStatusesIsOverdueLazyQuery>;
+export type GetAllStatusesIsOverdueQueryResult = Apollo.QueryResult<GetAllStatusesIsOverdueQuery, GetAllStatusesIsOverdueQueryVariables>;
 export const GetAllTakenItemsDocument = gql`
     query GetAllTakenItems($person_id: Int!) {
   getAllTakenItems(person_id: $person_id) {

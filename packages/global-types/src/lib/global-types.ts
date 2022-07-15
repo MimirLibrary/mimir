@@ -125,6 +125,7 @@ export interface IQuery {
     getAllPersons(): Nullable<Person>[] | Promise<Nullable<Person>[]>;
     getStatusesByPerson(person_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getStatusesByMaterial(material_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
+    getAllStatusesIsOverdue(location_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     welcome(): string | Promise<string>;
 }
 

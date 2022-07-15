@@ -47,7 +47,7 @@ export const BackSpan = styled.div`
   cursor: pointer;
 `;
 
-const WrapperLoader = styled.div`
+export const WrapperLoader = styled.div`
   display: flex;
   justify-content: center;
 `;

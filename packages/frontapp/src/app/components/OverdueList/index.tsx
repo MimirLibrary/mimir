@@ -1,10 +1,19 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { ReactComponent as ArrowIcon } from '../../../assets/ArrowUp2.svg';
-import { BackSpan } from '../DonateBookFlow';
+import { BackSpan, WrapperLoader } from '../DonateBookFlow';
 import { useNavigate } from 'react-router-dom';
 import OverdueCard from '../OverdueCard';
+import { useGetAllStatusesIsOverdueQuery } from '@mimir/apollo-client';
+import { Oval } from 'react-loader-spinner';
+import { toast } from 'react-toastify';
+import {
+  getDateOfEarlier,
+  isOverdue,
+  isOverdueToday,
+} from '../../models/helperFunctions/converTime';
+import { useAppSelector } from '../../hooks/useTypedSelector';
 
 const Wrapper = styled.main``;
 
@@ -39,31 +48,85 @@ const TitleList = styled.h2`
   margin-bottom: ${dimensions.xl_2};
 `;
 
-const todayList = [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2];
-
 const OverdueList: FC = () => {
+  const { location } = useAppSelector((state) => state.user);
+  const { data, loading, error } = useGetAllStatusesIsOverdueQuery({
+    variables: { location_id: location.id },
+  });
   const navigate = useNavigate();
   const goBack = () => {
     navigate(-1);
   };
 
+  const todayOverdueList = useMemo(
+    () =>
+      data?.getAllStatusesIsOverdue.filter(
+        (item) =>
+          isOverdueToday(item?.created_at) && !isOverdue(item?.created_at)
+      ),
+    [data]
+  );
+
+  const earlierOverdueList = useMemo(
+    () =>
+      data?.getAllStatusesIsOverdue.filter(
+        (item) =>
+          !isOverdueToday(item?.created_at) && !isOverdue(item?.created_at)
+      ),
+    [data]
+  );
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message);
+    }
+    return;
+  }, [error]);
+
   return (
     <Wrapper>
-      <WrapperOverdueInstructions>
-        <BackSpan onClick={goBack}>
-          <ArrowIcon /> Back
-        </BackSpan>
-        <Title>Overdues</Title>
-        <SubTitle>The following users have not turned in their books</SubTitle>
-      </WrapperOverdueInstructions>
-      <TitleList>Today</TitleList>
-      {todayList.map((item) => (
-        <OverdueCard backgroundColor={`${colors.bg_secondary}`} />
-      ))}
-      <TitleList>Earlier</TitleList>
-      {todayList.map((item) => (
-        <OverdueCard backgroundColor={`${colors.bg_fields}`} />
-      ))}
+      {loading ? (
+        <WrapperLoader>
+          <Oval
+            ariaLabel="loading-indicator"
+            height={100}
+            width={100}
+            strokeWidth={5}
+            strokeWidthSecondary={1}
+            color="blue"
+            secondaryColor="white"
+          />
+        </WrapperLoader>
+      ) : (
+        <>
+          <WrapperOverdueInstructions>
+            <BackSpan onClick={goBack}>
+              <ArrowIcon /> Back
+            </BackSpan>
+            <Title>Overdues</Title>
+            <SubTitle>
+              The following users have not turned in their books
+            </SubTitle>
+          </WrapperOverdueInstructions>
+          <TitleList>Today</TitleList>
+          {todayOverdueList &&
+            todayOverdueList.map((item) => (
+              <OverdueCard
+                key={item?.id}
+                item={item}
+                backgroundColor={`${colors.bg_secondary}`}
+              />
+            ))}
+          <TitleList>Earlier</TitleList>
+          {earlierOverdueList?.map((item) => (
+            <OverdueCard
+              key={item?.id}
+              item={item}
+              backgroundColor={`${colors.bg_fields}`}
+            />
+          ))}
+        </>
+      )}
     </Wrapper>
   );
 };
