@@ -121,7 +121,7 @@ export type Message = {
   __typename?: 'Message';
   created_at: Scalars['DateTime'];
   id: Scalars['ID'];
-  material?: Maybe<Material>;
+  material: Material;
   material_id?: Maybe<Scalars['Int']>;
   message: Scalars['String'];
   person: Person;
