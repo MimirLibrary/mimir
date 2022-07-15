@@ -1,0 +1,35 @@
+query GetOnePerson($id: ID!) {
+  getOnePerson(id: $id) {
+    id
+    username
+    email
+    position
+    avatar
+    statuses {
+      id
+      material_id
+      status
+      created_at
+      material {
+        id
+        picture
+        title
+        author
+        category
+      }
+    }
+    states {
+      state
+      id
+      description
+      created_at
+    }
+    messages {
+      id
+      material_id
+      title
+      message
+      created_at
+    }
+  }
+}

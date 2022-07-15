@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
-import { GoBack, ButtonWrapper } from '../../pages/BookPreview';
-import { ReactComponent as ArrowBack } from '../../../assets/ArrowUp2.svg';
 import { useParams, useNavigate } from 'react-router-dom';
 import BookCard from '../BookCard';
 import { WrapperList } from '../ListBooks';
 import { useSearchParams } from 'react-router-dom';
 import { Material } from '@mimir/apollo-client';
+import BackButton from '../BackButton';
 
 type IMaterial =
   | null
@@ -81,10 +80,7 @@ const BooksByCategory = () => {
 
   return (
     <div>
-      <ButtonWrapper onClick={handleGoBack}>
-        <ArrowBack />
-        <GoBack>Back to all categories</GoBack>
-      </ButtonWrapper>
+      <BackButton />
       {!category ? (
         <WrapperList>
           {filteredData?.length !== 0 ? (

@@ -1,6 +1,8 @@
 query GetAllPersons {
   getAllPersons {
     id
+    username
+    avatar
     statuses {
       id
       material_id
