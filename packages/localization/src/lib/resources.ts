@@ -1,6 +1,7 @@
 export const resources = {
   en: {
     translation: {
+      Back: 'Back',
       Loading: 'Loading...',
       EmptyListItems: {
         Header: 'Shelf for your books and other items',
@@ -78,6 +79,36 @@ export const resources = {
           Donates: 'Was donated by',
         },
       },
+      UserCard: {
+        Position: 'Position:',
+        Table: {
+          AllItems: 'All items',
+          ReturnTill: 'Return till:',
+          ReturnedAt: 'Returned at:',
+          ItemName: 'Item name',
+          Deadline: 'Deadline',
+          State: 'State',
+          Overdue: 'Overdue',
+          Returned: 'Returned',
+          Claim: 'Claim',
+          Prolong: 'Prolong',
+          ShelfOf: 'Shelf of ',
+          BooksAndItems: "'s books and other items",
+        },
+        ClaimList: 'Claim list',
+        ClaimListDescription:
+          'List of all items user have taken for all the time',
+        Notifications: 'Notifications',
+        NotificationsDescription: 'All notifications sent by the user',
+        BlockReason: 'Reason for blocking: ',
+        Today: 'Today',
+        Earlier: 'Earlier',
+        BlockUser: 'Block user',
+        UnblockUser: 'Unblock user',
+        CreateNotification: 'Create notification',
+        hAgo: 'h ago',
+        dAgo: 'd ago',
+      },
       PopUps: {
         NotFoundByIdentifier: "Sorry, we didn't find a book by this identifier",
       },
@@ -85,6 +116,7 @@ export const resources = {
   },
   ru: {
     translation: {
+      Back: 'Назад',
       Loading: 'Загрузка...',
       EmptyListItems: {
         Header: 'Полка для ваших книг и других предметов',
@@ -161,6 +193,36 @@ export const resources = {
           Overdue: 'Просрочил:',
           Donates: 'Пожертвовал:',
         },
+      },
+      UserCard: {
+        Position: 'Должность:',
+        Table: {
+          AllItems: 'Все вещи',
+          ReturnTill: 'Вернуть до:',
+          ReturnedAt: 'Было возвращено:',
+          ItemName: 'Название',
+          Deadline: 'Срок возвращения',
+          State: 'Статус',
+          Overdue: 'Просрочено',
+          Returned: 'Возвращено',
+          Claim: 'На руках',
+          Prolong: 'Продлено',
+          ShelfOf: 'Полка книг и вещей пользователя ',
+          BooksAndItems: '',
+        },
+        ClaimList: 'Список взятых вещей',
+        ClaimListDescription:
+          'Список всех вещей, которые когда-либо брал пользователь',
+        Notifications: 'Уведомления',
+        NotificationsDescription: 'Все уведомления от пользователя',
+        BlockReason: 'Причина блокировки: ',
+        Today: 'Сегодня',
+        Earlier: 'Ранее',
+        BlockUser: 'Заблокировать',
+        UnblockUser: 'Разблокировать',
+        CreateNotification: 'Создать уведомление',
+        hAgo: 'ч назад',
+        dAgo: 'д назад',
       },
       PopUps: {
         NotFoundByIdentifier: 'Упс, мы не нашли книгу с таким идентификатором',

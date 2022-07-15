@@ -1,6 +1,7 @@
 type Person {
   id: ID!
   smg_id: String!
+  position: String!
   type: String!
   username: String!
   email: String!
@@ -10,7 +11,8 @@ type Person {
   statuses: [Status]
   notifications: [Notification]
   location: Location!
-  messages: [Message]!
+  messages: [Message]
+  states: [BlockedUsers]
 }
 
 input CreatePersonInput {
@@ -26,7 +28,7 @@ input UpdatePersonLocationInput {
 
 extend type Query {
   getOnePerson(id: ID!): Person!
-  getAllPersons: [Person]!
+  getAllPersons: [Person!]!
 }
 
 extend type Mutation {

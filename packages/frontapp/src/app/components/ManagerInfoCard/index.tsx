@@ -72,7 +72,7 @@ const WrapperFooter = styled.div`
   bottom: ${dimensions.xs_1};
   justify-content: space-between;
 `;
-const OpenLink = styled.a`
+export const OpenLink = styled.a`
   cursor: pointer;
   font-weight: 500;
   color: ${colors.accent_color};

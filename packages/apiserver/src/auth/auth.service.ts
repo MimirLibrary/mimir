@@ -30,6 +30,7 @@ export class AuthService {
       avatar: result.picture,
       email: result.email,
       username: result.name,
+      position: 'Ruby Developer',
       type: 'Reader',
     });
     await Person.save(newPerson);
