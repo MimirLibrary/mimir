@@ -7,8 +7,9 @@ define(Person, () => {
   person.smg_id = faker.datatype.uuid();
   person.location_id = 2;
   person.type = 'Reader';
+  person.position = 'Fullstack Ruby Developer';
   person.email = 'example@email.com';
   person.username = 'Simple user';
-  person.avatar = null;
+  person.avatar = '';
   return person;
 });
