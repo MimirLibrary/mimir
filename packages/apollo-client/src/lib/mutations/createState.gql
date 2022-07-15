@@ -1,5 +1,5 @@
-mutation CreateState($state:Boolean!, $person_id:Int!){
-  createState(input:{state: $state, person_id: $person_id}){
+mutation CreateState($state: Boolean!, $person_id: Int!) {
+  createState(input: { state: $state, person_id: $person_id }) {
     state
   }
 }

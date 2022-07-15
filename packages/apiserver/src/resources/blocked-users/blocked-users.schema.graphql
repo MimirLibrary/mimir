@@ -11,13 +11,10 @@ input CreateStateInput {
   state: Boolean!
 }
 
-
 extend type Query {
   getBlocksByPerson(person_id: ID!): [BlockedUsers]
 }
 
 extend type Mutation {
-  createState(input: CreateStateInput!):BlockedUsers
+  createState(input: CreateStateInput!): BlockedUsers
 }
-
-
