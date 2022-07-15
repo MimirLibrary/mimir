@@ -18,7 +18,7 @@ services:
       - ./nginx/conf:/etc/nginx/conf.d/:ro
       - ./certbot/www:/var/www/certbot/:ro
       - ./certbot/conf/:/etc/letsencrypt/:ro
-        #- /srv/www:/usr/share/nginx/html:ro
+      - /srv/www:/usr/share/nginx/html:ro
 
   certbot:
     image: certbot/certbot:latest
