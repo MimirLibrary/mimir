@@ -7,10 +7,8 @@ export const refreshTokenLink = setContext(async () => {
 
   if (!expiry_date || !refresh_token) return {};
 
-  const currentGMTTimestamp =
-    Date.now() - Math.abs(new Date(Date.now()).getTimezoneOffset()) * 60000;
-
-  if (currentGMTTimestamp > parseInt(expiry_date)) {
+  if (Date.now() > parseInt(expiry_date)) {
+    console.log('refresh_token was updated');
     const { data } = await axios.post<{
       access_token: string;
       id_token: string;

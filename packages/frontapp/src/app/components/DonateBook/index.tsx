@@ -1,13 +1,9 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { colors, dimensions } from '@mimir/ui-kit';
-import { ReactComponent as PhotoIcon } from '../../../assets/Photo.svg';
-import {
-  GetMaterialByIdentifierQuery,
-  useDonateBookMutation,
-} from '@mimir/apollo-client';
+import { useDonateBookMutation } from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import Button from '../Button';
 import Modal from '../Modal';
@@ -15,9 +11,8 @@ import SuccessMessage from '../SuccessMessage';
 import AskManagerForm from '../AskManagerForm';
 import ErrorMessage from '../ErrorMessge';
 import { RolesTypes } from '@mimir/global-types';
-import { useAppDispatch } from '../../hooks/useTypedDispatch';
-import { removeIdentifier } from '../../store/slices/identifierSlice';
-import FielUpload from '../FielUpload';
+import FileUpload from '../FielUpload';
+import { IMetaOfMaterial } from '../../types/metadata';
 
 const WrapperDonate = styled.section`
   background-color: ${colors.bg_secondary};
@@ -171,7 +166,7 @@ interface IDataOfBook {
 }
 
 interface IPropsDonateBook {
-  data?: GetMaterialByIdentifierQuery;
+  data?: IMetaOfMaterial | null;
   onHideContent: () => void;
 }
 const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
@@ -183,7 +178,6 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
   const [description, setDescription] = useState<string>('');
   const [isAskManager, setIsAskManager] = useState<boolean>(false);
   const [sendManagerSuccess, setSendManagerSuccess] = useState<boolean>(false);
-  const dispatch = useAppDispatch();
 
   const [dataOfBook, setDataOfBook] = useState<IDataOfBook>({
     author: '',
@@ -197,7 +191,6 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
     !dataOfBook.author ||
     !dataOfBook.title ||
     !dataOfBook.genre ||
-    !identifier ||
     !description;
 
   const deleteFile = async (fileName: string) => {
@@ -230,13 +223,13 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
 
   useEffect(() => {
     if (data) {
-      const { author, title, picture, category } = data.getMaterialByIdentifier;
       setDataOfBook({
-        title,
-        genre: category,
-        author,
+        title: data.material.title,
+        genre: data.material.meta.series,
+        author: data.material.authors.map((item) => item.name).join('/'),
       });
-      if (picture) setPictureOfCover(picture);
+      setDescription(data.material.description);
+      if (data.material.cover) setPictureOfCover(data.material.cover);
     }
   }, []);
 
@@ -247,12 +240,6 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
       });
     }
   }, [error]);
-
-  useEffect(() => {
-    return () => {
-      dispatch(removeIdentifier());
-    };
-  }, []);
 
   useEffect(() => {
     const operationWithFiles = async () => {
@@ -316,7 +303,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
           description,
           category: genre,
           location_id: Number(location.id),
-          id_type: 'ISBN',
+          id_type: data?.idType || 'ISBN',
           role: userRole,
           is_donated: true,
         },
@@ -338,7 +325,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
           <WrapperMainInfo>
             <WrapperWithoutButtons>
               <div>
-                <FielUpload
+                <FileUpload
                   file={file}
                   handleChangeFile={handleChangeFile}
                   pictureOfCover={pictureOfCover}
@@ -447,4 +434,4 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
   );
 };
 
-export default DonateBook;
+export default React.memo(DonateBook);

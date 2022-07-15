@@ -1,5 +1,4 @@
 {
-  "root": "packages/global-types",
   "sourceRoot": "packages/global-types/src",
   "targets": {
     "build": {

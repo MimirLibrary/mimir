@@ -29,13 +29,14 @@ import { FileModule } from '../file/file.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { AuthModule } from '../auth/auth.module';
 
+console.log(__dirname);
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     TypeOrmModule.forRoot({
       ...typeorm,
       entities: [Person, Material, Status, Notification, Message, Location],
-      migrations: [`${__dirname}/packages/apiserver/src/migrations/*.ts`],
+      migrations: [`${__dirname}/migrations/*.js`],
     }),
     MaterialModule,
     StatusModule,
@@ -48,7 +49,7 @@ import { AuthModule } from '../auth/auth.module';
     FileModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      typePaths: ['./packages/apiserver/**/*.graphql'],
+      typePaths: [__dirname + '/**/*.graphql'],
       typeDefs: [...scalarTypeDefs],
       resolvers: [scalarResolvers],
       definitions: {

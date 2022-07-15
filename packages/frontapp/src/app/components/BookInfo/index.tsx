@@ -35,7 +35,7 @@ import { useAppSelector } from '../../hooks/useTypedSelector';
 import ErrorMessage from '../ErrorMessge';
 import AskManagerForm from '../AskManagerForm';
 import { WrapperInput } from '../Search';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { RolesTypes } from '@mimir/global-types';
 export const BookHolder = styled.div`
   width: 100%;
@@ -284,6 +284,7 @@ const BookInfo: FC<IBookInfoProps> = ({
     refetchQueries: [GetNotificationsByPersonDocument],
   });
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [statusText, setStatusText] = useState<string>('');
   const [isShowClaimModal, setIsShowClaimModal] = useState<boolean>(false);
   const [isShowAskManger, setIsShowAskManager] = useState<boolean>(false);
@@ -366,6 +367,7 @@ const BookInfo: FC<IBookInfoProps> = ({
     });
 
     setValueIsISBN('');
+    setIsShowClaimModal(false);
     setIsMaterialTakenByCurrentUser(true);
   };
 
@@ -430,6 +432,11 @@ const BookInfo: FC<IBookInfoProps> = ({
     setEditing(false);
   };
   useEffect(() => {
+    if (searchParams.has('claimModal') && currentStatus === 'Free') {
+      const claimModal = searchParams.get('claimModal')!;
+      setIsShowClaimModal(true);
+      setValueIsISBN(claimModal);
+    }
     const authors = allMaterials?.getAllMaterials?.map((item) => {
       return item?.author;
     });
@@ -439,6 +446,7 @@ const BookInfo: FC<IBookInfoProps> = ({
     setAuthorsDropDown([...new Set(authors)]);
     setCategoriesDropDown([...new Set(categories)]);
   }, []);
+
   useEffect(() => {
     if (infoOfProlong?.prolongClaimPeriod.__typename === 'Status') {
       setIsSuccessExtend(true);
@@ -448,7 +456,6 @@ const BookInfo: FC<IBookInfoProps> = ({
   }, [infoOfProlong]);
 
   useEffect(() => {
-    setIsShowClaimModal(false);
     if (data?.claimBook.__typename === 'Status') {
       setIsShowSuccessClaim(true);
     } else if (data?.claimBook.__typename === 'Error') {
@@ -545,11 +552,7 @@ const BookInfo: FC<IBookInfoProps> = ({
       <BookHolder>
         <ShortDescriptionWrapper>
           <WrapperInfo>
-            <BookImage
-              src={
-                (src && `${process.env['NX_API_ROOT_URL']}/${src}`) || bookImage
-              }
-            />
+            <BookImage src={src || bookImage} />
             <ShortDescription>
               {editing ? (
                 <>

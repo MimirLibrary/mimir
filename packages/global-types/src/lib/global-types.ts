@@ -43,11 +43,6 @@ export interface RemoveMaterialInput {
     type: string;
 }
 
-export interface SearchOneMaterial {
-    identifier: string;
-    location_id: number;
-}
-
 export interface UpdateMaterialInput {
     identifier?: Nullable<string>;
     id_type?: Nullable<string>;
@@ -59,6 +54,11 @@ export interface UpdateMaterialInput {
     category?: Nullable<string>;
     updated_at: DateTime;
     description?: Nullable<string>;
+}
+
+export interface SearchOneMaterial {
+    identifier: string;
+    location_id: number;
 }
 
 export interface DonateBookInput {
@@ -121,7 +121,7 @@ export interface IQuery {
     getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
     getMaterialById(id: string): Material | Promise<Material>;
     searchOfMaterials(input: SearchInput): Nullable<Nullable<Material>[]> | Promise<Nullable<Nullable<Material>[]>>;
-    getMaterialByIdentifier(input: SearchOneMaterial): Material | Promise<Material>;
+    getMaterialByIdentifier(input: SearchOneMaterial): Nullable<Material> | Promise<Nullable<Material>>;
     getNotificationsByPerson(person_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
     getNotificationsByMaterial(material_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
     getOnePerson(id: string): Person | Promise<Person>;
