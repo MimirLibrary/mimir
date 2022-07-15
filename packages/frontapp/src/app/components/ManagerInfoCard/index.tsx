@@ -59,7 +59,7 @@ const FieldDescription = styled.p`
 `;
 
 const InlineFieldDescription = styled(FieldDescription)`
-  width: 90%;
+  max-width: 80%;
   order: 0;
   flex-grow: 0;
 `;
@@ -90,6 +90,11 @@ const InlineOpenLink = styled(OpenLink)`
   order: 1;
   flex-grow: 0;
   text-align: center;
+  @media (max-width: ${dimensions.tablet_width}) {
+    position: static;
+    display: block;
+    text-align: center;
+  }
 `;
 
 const FieldWrapper = styled.div`
@@ -107,7 +112,7 @@ const FieldWrapper = styled.div`
 `;
 const InlineWrapper = styled.div`
   display: flex;
-  flex-direction: row;
+  justify-content: space-between;
 `;
 
 interface IFieldOpenLinkProps {
