@@ -46,6 +46,7 @@ const ButtonContainer = styled.button<IButtonProps>`
         : warning
         ? colors.problem_red
         : colors.hover_color};
+
     border: 2px solid
       ${({ transparent, secondary, warning }) =>
         warning

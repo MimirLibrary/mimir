@@ -62,7 +62,6 @@ export const specialParseDate = (date: Date) => {
     dateDay = `0${dateDay.toString()}`;
   }
   let returnDate;
-  console.log(currentDate.getTime() - date.getTime());
   if (currentDate.getTime() - date.getTime() < 86400000) {
     return `${Math.trunc(
       (currentDate.getTime() - date.getTime()) / 3600000

@@ -1,6 +1,6 @@
 import { isOverdue } from './converTime';
 import { IMaterial } from '../../components/ListBooks';
-import { StatusTypes } from '../../../../../apiserver/src/utils/types/statusTypes';
+import { StatusTypes } from '../../../../../global-types/src/lib/statusTypes';
 
 export interface IClaimHistory {
   material_id: number | string;
