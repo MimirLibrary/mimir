@@ -2,7 +2,11 @@ import BackButton from '../BackButton';
 import { useParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
-import { useGetOnePersonQuery } from '@mimir/apollo-client';
+import {
+  GetOnePersonDocument,
+  useCreateStateMutation,
+  useGetOnePersonQuery,
+} from '@mimir/apollo-client';
 import { mockData } from '../UserList/mockData';
 import { t } from 'i18next';
 import { IClaimHistory } from '../../models/helperFunctions/claimHistory';
@@ -81,7 +85,9 @@ const UserCard = () => {
   const { data: OnePerson, loading } = useGetOnePersonQuery({
     variables: { id: id! },
   });
-  console.log(OnePerson?.getOnePerson);
+  const [setState] = useCreateStateMutation({
+    refetchQueries: [GetOnePersonDocument],
+  });
   const messages = OnePerson?.getOnePerson.messages?.map((message) => {
     return {
       type: 'message',
@@ -94,7 +100,7 @@ const UserCard = () => {
     return {
       type: 'block',
       created_at: state?.created_at,
-      title: state ? 'User have been ublocked' : 'User have been blocked',
+      title: state ? 'User have been unblocked' : 'User have been blocked',
       message: state?.description,
     };
   });
@@ -131,13 +137,38 @@ const UserCard = () => {
             svgComponent={<NotifySvg />}
             transparent
           ></Button>
-          <Button
-            value={t('UserCard.BlockUser')}
-            secondary
-            warning
-            transparent
-            svgComponent={<Block />}
-          ></Button>
+          {state ? (
+            <Button
+              value={t('UserCard.UnblockUser')}
+              secondary
+              warning
+              onClick={async () => {
+                await setState({
+                  variables: {
+                    person_id: Number(OnePerson?.getOnePerson.id),
+                    state: false,
+                  },
+                });
+              }}
+              svgComponent={<Block />}
+            ></Button>
+          ) : (
+            <Button
+              value={t('UserCard.BlockUser')}
+              secondary
+              warning
+              transparent
+              onClick={async () => {
+                await setState({
+                  variables: {
+                    person_id: Number(OnePerson?.getOnePerson.id),
+                    state: true,
+                  },
+                });
+              }}
+              svgComponent={<Block />}
+            ></Button>
+          )}
         </ButtonsWrapper>
       </CardWrapper>
       <Title>{t('UserCard.ClaimList')}</Title>

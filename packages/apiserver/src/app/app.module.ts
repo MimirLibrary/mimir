@@ -46,7 +46,8 @@ console.log(__dirname);
         Location,
         BlockedUsers,
       ],
-      migrations: [`${__dirname}/migrations/*.js`],
+      migrations: [`${__dirname}/packages/apiserver/src/migrations/*.ts`],
+      //migrations: [`${__dirname}/migrations/*.js`],
     }),
     MaterialModule,
     StatusModule,
@@ -60,7 +61,8 @@ console.log(__dirname);
     FileModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      typePaths: [__dirname + '/**/*.graphql'],
+      //typePaths: [__dirname + '/**/*.graphql'],
+      typePaths: ['./packages/apiserver/**/*.graphql'],
       typeDefs: [...scalarTypeDefs],
       resolvers: [scalarResolvers],
       definitions: {

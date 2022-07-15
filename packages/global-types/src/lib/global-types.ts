@@ -7,6 +7,11 @@
 
 /* tslint:disable */
 /* eslint-disable */
+export interface CreateStateInput {
+    person_id: number;
+    state: boolean;
+}
+
 export interface BookInput {
     identifier: string;
     person_id: number;
@@ -114,7 +119,7 @@ export interface CreateStatusInput {
 
 export interface BlockedUsers {
     id: string;
-    description: string;
+    description?: Nullable<string>;
     state: boolean;
     created_at: DateTime;
     person: Person;
@@ -139,6 +144,7 @@ export interface IQuery {
 }
 
 export interface IMutation {
+    createState(input: CreateStateInput): Nullable<BlockedUsers> | Promise<Nullable<BlockedUsers>>;
     claimBook(input?: Nullable<BookInput>): BookUnionResult | Promise<BookUnionResult>;
     returnItem(input?: Nullable<BookInput>): BookUnionResult | Promise<BookUnionResult>;
     prolongClaimPeriod(input?: Nullable<ProlongTimeInput>): BookUnionResult | Promise<BookUnionResult>;
@@ -183,7 +189,7 @@ export interface Material {
 
 export interface Message {
     id: string;
-    material_id: number;
+    material_id?: Nullable<number>;
     person_id: number;
     created_at: DateTime;
     person: Person;

@@ -10,7 +10,6 @@ import { Status } from './status.entity';
 import { BadRequestException, UseGuards } from '@nestjs/common';
 import { CreateStatusInput } from '@mimir/global-types';
 import { AuthGuard } from '../../auth/auth.guard';
-import { Person } from '../persons/person.entity';
 import { Material } from '../materials/material.entity';
 
 @Resolver('Status')

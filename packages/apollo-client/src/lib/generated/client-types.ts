@@ -65,6 +65,11 @@ export type CreatePersonInput = {
   type: Scalars['String'];
 };
 
+export type CreateStateInput = {
+  person_id: Scalars['Int'];
+  state: Scalars['Boolean'];
+};
+
 export type CreateStatusInput = {
   material_id: Scalars['Int'];
   person_id: Scalars['Int'];
@@ -121,7 +126,7 @@ export type Message = {
   __typename?: 'Message';
   created_at: Scalars['DateTime'];
   id: Scalars['ID'];
-  material?: Maybe<Material>;
+  material: Material;
   material_id?: Maybe<Scalars['Int']>;
   message: Scalars['String'];
   person: Person;
@@ -139,6 +144,7 @@ export type Mutation = {
   createMessageForManager: MessageUnionResult;
   createNotification?: Maybe<Notification>;
   createPerson: Person;
+  createState?: Maybe<BlockedUsers>;
   createStatus: Status;
   donateBook: Material;
   prolongClaimPeriod: BookUnionResult;
@@ -178,6 +184,11 @@ export type MutationCreateNotificationArgs = {
 
 export type MutationCreatePersonArgs = {
   input: CreatePersonInput;
+};
+
+
+export type MutationCreateStateArgs = {
+  input: CreateStateInput;
 };
 
 
@@ -409,6 +420,14 @@ export type CreateNotificationMutationVariables = Exact<{
 
 
 export type CreateNotificationMutation = { __typename?: 'Mutation', createNotification?: { __typename?: 'Notification', id: string } | null };
+
+export type CreateStateMutationVariables = Exact<{
+  state: Scalars['Boolean'];
+  person_id: Scalars['Int'];
+}>;
+
+
+export type CreateStateMutation = { __typename?: 'Mutation', createState?: { __typename?: 'BlockedUsers', state: boolean } | null };
 
 export type DonateBookMutationVariables = Exact<{
   person_id: Scalars['Int'];
@@ -658,6 +677,40 @@ export function useCreateNotificationMutation(baseOptions?: Apollo.MutationHookO
 export type CreateNotificationMutationHookResult = ReturnType<typeof useCreateNotificationMutation>;
 export type CreateNotificationMutationResult = Apollo.MutationResult<CreateNotificationMutation>;
 export type CreateNotificationMutationOptions = Apollo.BaseMutationOptions<CreateNotificationMutation, CreateNotificationMutationVariables>;
+export const CreateStateDocument = gql`
+    mutation CreateState($state: Boolean!, $person_id: Int!) {
+  createState(input: {state: $state, person_id: $person_id}) {
+    state
+  }
+}
+    `;
+export type CreateStateMutationFn = Apollo.MutationFunction<CreateStateMutation, CreateStateMutationVariables>;
+
+/**
+ * __useCreateStateMutation__
+ *
+ * To run a mutation, you first call `useCreateStateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateStateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createStateMutation, { data, loading, error }] = useCreateStateMutation({
+ *   variables: {
+ *      state: // value for 'state'
+ *      person_id: // value for 'person_id'
+ *   },
+ * });
+ */
+export function useCreateStateMutation(baseOptions?: Apollo.MutationHookOptions<CreateStateMutation, CreateStateMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateStateMutation, CreateStateMutationVariables>(CreateStateDocument, options);
+      }
+export type CreateStateMutationHookResult = ReturnType<typeof useCreateStateMutation>;
+export type CreateStateMutationResult = Apollo.MutationResult<CreateStateMutation>;
+export type CreateStateMutationOptions = Apollo.BaseMutationOptions<CreateStateMutation, CreateStateMutationVariables>;
 export const DonateBookDocument = gql`
     mutation DonateBook($person_id: Int!, $location_id: Int!, $identifier: String!, $id_type: String!, $type: String!, $title: String!, $author: String!, $category: String!, $description: String, $picture: String, $role: String!) {
   donateBook(
