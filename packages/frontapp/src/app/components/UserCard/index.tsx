@@ -81,7 +81,6 @@ const UserCard = () => {
   const { data: OnePerson, loading } = useGetOnePersonQuery({
     variables: { id: id! },
   });
-  console.log(OnePerson?.getOnePerson);
   const messages = OnePerson?.getOnePerson.messages?.map((message) => {
     return {
       type: 'message',
@@ -94,7 +93,7 @@ const UserCard = () => {
     return {
       type: 'block',
       created_at: state?.created_at,
-      title: state ? 'User have been ublocked' : 'User have been blocked',
+      title: state ? 'User have been unblocked' : 'User have been blocked',
       message: state?.description,
     };
   });
