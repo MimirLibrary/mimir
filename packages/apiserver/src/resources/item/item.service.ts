@@ -70,6 +70,9 @@ export class ItemService {
   async return(returnBookInput: BookInput) {
     return this.claimOrReturnOperations(returnBookInput, StatusTypes.FREE);
   }
+  async reject(returnBookInput: BookInput) {
+    return this.claimOrReturnOperations(returnBookInput, StatusTypes.REJECTED);
+  }
 
   async getAllTakenItems(person_id: number) {
     const statusesQb = Status.createQueryBuilder('status')

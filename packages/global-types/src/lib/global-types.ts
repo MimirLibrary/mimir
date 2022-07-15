@@ -34,6 +34,7 @@ export interface CreateMaterialInput {
     picture?: Nullable<string>;
     author: string;
     category: string;
+    description: string;
 }
 
 export interface RemoveMaterialInput {
@@ -57,6 +58,7 @@ export interface UpdateMaterialInput {
     author?: Nullable<string>;
     category?: Nullable<string>;
     updated_at: DateTime;
+    description?: Nullable<string>;
 }
 
 export interface DonateBookInput {
@@ -71,6 +73,7 @@ export interface DonateBookInput {
     picture?: Nullable<string>;
     person_id: number;
     role: string;
+    is_donated: boolean;
 }
 
 export interface SearchInput {
@@ -131,6 +134,7 @@ export interface IQuery {
 export interface IMutation {
     claimBook(input?: Nullable<BookInput>): BookUnionResult | Promise<BookUnionResult>;
     returnItem(input?: Nullable<BookInput>): BookUnionResult | Promise<BookUnionResult>;
+    rejectItem(input?: Nullable<BookInput>): BookUnionResult | Promise<BookUnionResult>;
     prolongClaimPeriod(input?: Nullable<ProlongTimeInput>): BookUnionResult | Promise<BookUnionResult>;
     createLocation(input: CreateLocationInput): Nullable<Location> | Promise<Nullable<Location>>;
     removeLocation(input: RemoveLocationInput): Nullable<Location> | Promise<Nullable<Location>>;
@@ -169,6 +173,8 @@ export interface Material {
     statuses: Nullable<Status>[];
     notifications: Nullable<Notification>[];
     messages: Nullable<Message>[];
+    description: string;
+    is_donated: boolean;
 }
 
 export interface Message {

@@ -44,4 +44,10 @@ export class ItemResolver {
   async returnItem(@Args('input') returnBookInput: BookInput) {
     return this.itemService.return(returnBookInput);
   }
+
+  @Mutation(() => Status)
+  @UseGuards(AuthGuard)
+  async rejectItem(@Args('input') returnBookInput: BookInput) {
+    return this.itemService.reject(returnBookInput);
+  }
 }

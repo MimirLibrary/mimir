@@ -9,6 +9,7 @@ query GetMaterialById($id: ID!) {
     created_at
     updated_at
     location_id
+    description
     type
     statuses {
       id

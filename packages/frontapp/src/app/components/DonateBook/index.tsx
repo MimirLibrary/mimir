@@ -318,6 +318,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
           location_id: Number(location.id),
           id_type: 'ISBN',
           role: userRole,
+          is_donated: true,
         },
       });
     } catch (e) {

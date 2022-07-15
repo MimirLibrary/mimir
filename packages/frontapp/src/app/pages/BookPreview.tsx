@@ -12,6 +12,7 @@ import {
 import { ReactComponent as ScrollButtonRight } from '../../assets/ArrowButtonRight.svg';
 import { ReactComponent as ScrollButtonLeft } from '../../assets/ArrowButtonLeft.svg';
 import { ReactComponent as ArrowBack } from '../../assets/ArrowUp2.svg';
+import DonatInfo from '../components/DonatInfo';
 
 export const GoBack = styled.a`
   font-weight: 600;
@@ -45,8 +46,11 @@ const SuggestionText = styled.h3`
   color: ${colors.main_black};
   flex: 1;
 `;
+type BookPreviewProps = {
+  donat?: boolean;
+};
 
-const BookPreview = () => {
+const BookPreview = ({ donat }: BookPreviewProps) => {
   const { item_id } = useParams();
   const navigate = useNavigate();
   const { id } = useAppSelector((state) => state.user);
@@ -69,34 +73,56 @@ const BookPreview = () => {
         <ArrowBack />
         <GoBack>Back</GoBack>
       </ButtonWrapper>
-      {data?.getMaterialById && (
-        <BookInfo
-          person_id={id}
-          identifier={data.getMaterialById.identifier}
-          src={data?.getMaterialById.picture}
-          title={data?.getMaterialById.title}
-          author={data?.getMaterialById.author}
-          category={data?.getMaterialById.category}
-          statusInfo={lastStatusAnotherPerson}
-          created_at={lastStatusAnotherPerson?.created_at}
-          material_id={parseInt(data.getMaterialById.id)}
-          description=""
-          updated_at={data?.getMaterialById?.updated_at}
-          type={data?.getMaterialById?.type}
-          location_id={data?.getMaterialById?.location_id}
-        />
+      {donat ? (
+        data?.getMaterialById && (
+          <DonatInfo
+            person_id={id}
+            identifier={data.getMaterialById.identifier}
+            src={data?.getMaterialById.picture}
+            title={data?.getMaterialById.title}
+            author={data?.getMaterialById.author}
+            category={data?.getMaterialById.category}
+            statusInfo={lastStatusAnotherPerson}
+            created_at={lastStatusAnotherPerson?.created_at}
+            material_id={parseInt(data.getMaterialById.id)}
+            description={data?.getMaterialById.description}
+            updated_at={data?.getMaterialById?.updated_at}
+            type={data?.getMaterialById?.type}
+            location_id={data?.getMaterialById?.location_id}
+          />
+        )
+      ) : (
+        <>
+          {data?.getMaterialById && (
+            <BookInfo
+              person_id={id}
+              identifier={data.getMaterialById.identifier}
+              src={data?.getMaterialById.picture}
+              title={data?.getMaterialById.title}
+              author={data?.getMaterialById.author}
+              category={data?.getMaterialById.category}
+              statusInfo={lastStatusAnotherPerson}
+              created_at={lastStatusAnotherPerson?.created_at}
+              material_id={parseInt(data.getMaterialById.id)}
+              description={data?.getMaterialById.description}
+              updated_at={data?.getMaterialById?.updated_at}
+              type={data?.getMaterialById?.type}
+              location_id={data?.getMaterialById?.location_id}
+            />
+          )}
+          <Suggestions>
+            <SuggestionText>You may also like</SuggestionText>
+            <ButtonGroup>
+              <ScrollButtonLeft />
+              <ScrollButtonRight />
+            </ButtonGroup>
+          </Suggestions>
+          <AllBooksList
+            sortingCategory={data?.getMaterialById.category}
+            items={getAllMaterials?.getAllMaterials}
+          />
+        </>
       )}
-      <Suggestions>
-        <SuggestionText>You may also like</SuggestionText>
-        <ButtonGroup>
-          <ScrollButtonLeft />
-          <ScrollButtonRight />
-        </ButtonGroup>
-      </Suggestions>
-      <AllBooksList
-        sortingCategory={data?.getMaterialById.category}
-        items={getAllMaterials?.getAllMaterials}
-      />
     </>
   );
 };

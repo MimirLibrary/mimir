@@ -20,6 +20,8 @@ export const getStatus = (status: string | undefined, date: any) => {
   if (!status) return null;
   if (status === 'Free') return 'Free';
   if (status === 'Prolong') return 'Prolong';
+  if (status === 'Pending') return 'Pending';
+  if (status === 'Rejected') return 'Rejected';
   if (isOverdue(date)) return 'Busy';
   return 'Overdue';
 };
