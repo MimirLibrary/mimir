@@ -1,0 +1,6 @@
+query GetReasonOfBlock($id: ID!){
+  getReasonOfBlock(person_id: $id){
+    state
+    description
+  }
+}

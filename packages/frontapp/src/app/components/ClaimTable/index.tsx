@@ -8,7 +8,7 @@ import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import emptyList from '../../../assets/EmptyList.svg';
 import bookImage from '../../../assets/MOC-data/BookImage.png';
-import { StatusTypes } from '../../../../../global-types/src/lib/statusTypes';
+import { StatusTypes } from '@mimir/global-types';
 import { getDates } from '../../models/helperFunctions/converTime';
 import { t } from 'i18next';
 

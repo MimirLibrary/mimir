@@ -101,7 +101,7 @@ const UserCard = () => {
       type: 'block',
       created_at: state?.created_at,
       title: state ? 'User have been unblocked' : 'User have been blocked',
-      message: state?.description,
+      message: state?.description ? state?.description : '',
     };
   });
 

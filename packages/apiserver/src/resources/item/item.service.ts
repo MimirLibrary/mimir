@@ -4,7 +4,7 @@ import { BookInput, ProlongTimeInput } from '@mimir/global-types';
 import { Status } from '../statuses/status.entity';
 import { Connection } from 'typeorm';
 import { ErrorBook } from '../../errors';
-import { StatusTypes } from '../../utils/types/statusTypes';
+import { StatusTypes } from '@mimir/global-types';
 import { setTimeToProlong } from '../../utils/helpersFunctions/setTimeToProlong';
 import { config } from '../../config';
 

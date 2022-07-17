@@ -9,11 +9,20 @@ export class BlockedUsersResolver {
   @Query(() => [BlockedUsers])
   @UseGuards(AuthGuard)
   async getBlocksByPerson(@Args('person_id') id: string) {
-    return BlockedUsers.find({ where: { person_id: id } });
+    return await BlockedUsers.find({ where: { person_id: id } });
+  }
+
+  @Query(() => BlockedUsers)
+  // @UseGuards(AuthGuard)
+  async getReasonOfBlock(@Args('person_id') id: string) {
+    return await BlockedUsers.findOne({
+      where: { person_id: id },
+      order: { id: 'DESC' },
+    });
   }
 
   @Mutation(() => BlockedUsers)
-  //  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   async createState(@Args('input') createStateInput: CreateStateInput) {
     try {
       const state = await BlockedUsers.create(createStateInput);

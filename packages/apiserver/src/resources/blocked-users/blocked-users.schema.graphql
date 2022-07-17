@@ -13,6 +13,7 @@ input CreateStateInput {
 
 extend type Query {
   getBlocksByPerson(person_id: ID!): [BlockedUsers]
+  getReasonOfBlock(person_id: ID!): BlockedUsers
 }
 
 extend type Mutation {

@@ -8,7 +8,7 @@ interface IStyleProps {
   active: boolean;
 }
 
-const WrapperModal = styled.div<IStyleProps>`
+export const WrapperModal = styled.div<IStyleProps>`
   height: 100vh;
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.4);
@@ -30,7 +30,7 @@ const StyledCross = styled(Cross)`
   right: 4%;
   top: 5%;
 `;
-const ContentModal = styled.div<IStyleProps>`
+export const ContentModal = styled.div<IStyleProps>`
   padding: ${dimensions.base_2};
   background-color: ${colors.bg_secondary};
   border-radius: ${dimensions.xl_10};

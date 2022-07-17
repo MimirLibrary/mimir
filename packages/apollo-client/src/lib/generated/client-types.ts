@@ -19,7 +19,7 @@ export type Scalars = {
 export type BlockedUsers = {
   __typename?: 'BlockedUsers';
   created_at: Scalars['DateTime'];
-  description: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   person: Person;
   state: Scalars['Boolean'];
@@ -282,6 +282,7 @@ export type Query = {
   getNotificationsByMaterial: Array<Maybe<Notification>>;
   getNotificationsByPerson: Array<Maybe<Notification>>;
   getOnePerson: Person;
+  getReasonOfBlock?: Maybe<BlockedUsers>;
   getStatusesByMaterial: Array<Maybe<Status>>;
   getStatusesByPerson: Array<Maybe<Status>>;
   searchOfMaterials?: Maybe<Array<Maybe<Material>>>;
@@ -326,6 +327,11 @@ export type QueryGetNotificationsByPersonArgs = {
 
 export type QueryGetOnePersonArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryGetReasonOfBlockArgs = {
+  person_id: Scalars['ID'];
 };
 
 
@@ -549,7 +555,14 @@ export type GetOnePersonQueryVariables = Exact<{
 }>;
 
 
-export type GetOnePersonQuery = { __typename?: 'Query', getOnePerson: { __typename?: 'Person', id: string, username: string, email: string, position: string, avatar: string, statuses?: Array<{ __typename?: 'Status', id: string, material_id: number, status: string, created_at: any, material: { __typename?: 'Material', id: string, picture?: string | null, title: string, author: string, category: string } } | null> | null, states?: Array<{ __typename?: 'BlockedUsers', state: boolean, id: string, description: string, created_at: any } | null> | null, messages?: Array<{ __typename?: 'Message', id: string, material_id?: number | null, title: string, message: string, created_at: any } | null> | null } };
+export type GetOnePersonQuery = { __typename?: 'Query', getOnePerson: { __typename?: 'Person', id: string, username: string, email: string, position: string, avatar: string, statuses?: Array<{ __typename?: 'Status', id: string, material_id: number, status: string, created_at: any, material: { __typename?: 'Material', id: string, picture?: string | null, title: string, author: string, category: string } } | null> | null, states?: Array<{ __typename?: 'BlockedUsers', state: boolean, id: string, description?: string | null, created_at: any } | null> | null, messages?: Array<{ __typename?: 'Message', id: string, material_id?: number | null, title: string, message: string, created_at: any } | null> | null } };
+
+export type GetReasonOfBlockQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetReasonOfBlockQuery = { __typename?: 'Query', getReasonOfBlock?: { __typename?: 'BlockedUsers', state: boolean, description?: string | null } | null };
 
 export type SearchOfMaterialsQueryVariables = Exact<{
   search: Scalars['String'];
@@ -1363,6 +1376,42 @@ export function useGetOnePersonLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type GetOnePersonQueryHookResult = ReturnType<typeof useGetOnePersonQuery>;
 export type GetOnePersonLazyQueryHookResult = ReturnType<typeof useGetOnePersonLazyQuery>;
 export type GetOnePersonQueryResult = Apollo.QueryResult<GetOnePersonQuery, GetOnePersonQueryVariables>;
+export const GetReasonOfBlockDocument = gql`
+    query GetReasonOfBlock($id: ID!) {
+  getReasonOfBlock(person_id: $id) {
+    state
+    description
+  }
+}
+    `;
+
+/**
+ * __useGetReasonOfBlockQuery__
+ *
+ * To run a query within a React component, call `useGetReasonOfBlockQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetReasonOfBlockQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetReasonOfBlockQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetReasonOfBlockQuery(baseOptions: Apollo.QueryHookOptions<GetReasonOfBlockQuery, GetReasonOfBlockQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetReasonOfBlockQuery, GetReasonOfBlockQueryVariables>(GetReasonOfBlockDocument, options);
+      }
+export function useGetReasonOfBlockLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetReasonOfBlockQuery, GetReasonOfBlockQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetReasonOfBlockQuery, GetReasonOfBlockQueryVariables>(GetReasonOfBlockDocument, options);
+        }
+export type GetReasonOfBlockQueryHookResult = ReturnType<typeof useGetReasonOfBlockQuery>;
+export type GetReasonOfBlockLazyQueryHookResult = ReturnType<typeof useGetReasonOfBlockLazyQuery>;
+export type GetReasonOfBlockQueryResult = Apollo.QueryResult<GetReasonOfBlockQuery, GetReasonOfBlockQueryVariables>;
 export const SearchOfMaterialsDocument = gql`
     query SearchOfMaterials($search: String!, $location: String!) {
   searchOfMaterials(input: {search: $search, location: $location}) {

@@ -127,6 +127,7 @@ export interface BlockedUsers {
 
 export interface IQuery {
     getBlocksByPerson(person_id: string): Nullable<Nullable<BlockedUsers>[]> | Promise<Nullable<Nullable<BlockedUsers>[]>>;
+    getReasonOfBlock(person_id: string): Nullable<BlockedUsers> | Promise<Nullable<BlockedUsers>>;
     getAllTakenItems(person_id: number): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getAllLocations(): Nullable<Location>[] | Promise<Nullable<Location>[]>;
     getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;

@@ -19,6 +19,10 @@ import { ReactComponent as QRCodeSvg } from '../assets/Qrcode.svg';
 import { t } from 'i18next';
 import Scanner from './components/Scanner';
 import useScanner from './hooks/useScanner';
+import { ContentModal, WrapperModal } from './components/Modal';
+import { useGetReasonOfBlockQuery } from '@mimir/apollo-client';
+import { useAppDispatch } from './hooks/useTypedDispatch';
+import { setUser, updateBlocked } from './store/slices/userSlice';
 
 const WrapperPage = styled.main`
   display: flex;
@@ -67,10 +71,26 @@ const App: FC = () => {
     handleOnCloseScanner,
   } = useScanner();
   const { isAuth } = useAuth();
-  const { userRole } = useAppSelector((state) => state.user);
+  const { userRole, blocked, id } = useAppSelector((state) => state.user);
+  console.log(blocked);
+  const dispatch = useAppDispatch();
   const routes = useRoutes(userRole);
   const [isSidebarActive, setSidebarActive] = useState(false);
-
+  const [blockedState, setBlocked] = useState<boolean>(blocked);
+  const { data, loading } = useGetReasonOfBlockQuery({
+    variables: { id: String(id) },
+  });
+  if (!loading) {
+    console.log(data?.getReasonOfBlock?.state);
+    if (
+      blocked !== data?.getReasonOfBlock?.state &&
+      data?.getReasonOfBlock?.state !== undefined
+    ) {
+      dispatch(updateBlocked(!blocked));
+      setBlocked(!blocked);
+      console.log(blockedState);
+    }
+  }
   const handleOnClickButton = useCallback(() => {
     setIsShowScanner(true);
   }, []);
@@ -110,6 +130,12 @@ const App: FC = () => {
               )}
             </WrapperRoutes>
           </WrapperPage>
+          {console.log(blockedState)}
+          <WrapperModal active={blockedState}>
+            <ContentModal active={blockedState}>
+              <p>lala topola</p>
+            </ContentModal>
+          </WrapperModal>
         </div>
       ) : (
         <Routes>
