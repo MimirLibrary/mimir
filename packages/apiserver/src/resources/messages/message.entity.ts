@@ -22,6 +22,9 @@ export class Message extends BaseEntity {
   person_id: number;
 
   @Column()
+  location_id!: number;
+
+  @Column()
   title!: string;
 
   @Column()

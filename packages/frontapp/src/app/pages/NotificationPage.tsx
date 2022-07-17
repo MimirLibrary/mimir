@@ -1,7 +1,32 @@
-import React from 'react';
+import { useGetAllMessagesQuery } from '@mimir/apollo-client';
+import { useEffect, useState } from 'react';
+import Notifications, { IOneNotification } from '../components/Notifications';
+import { useAppSelector } from '../hooks/useTypedSelector';
 
 const NotificationPage = () => {
-  return <div>Notification</div>;
+  const [notifications, setNotifications] = useState<IOneNotification[]>([]);
+  const {
+    location: { id: location_id },
+  } = useAppSelector((state) => state.user);
+  const { data, loading } = useGetAllMessagesQuery({
+    variables: { location_id: parseInt(location_id) },
+  });
+
+  useEffect(() => {
+    if (!data) return;
+    setNotifications(
+      data.getAllMessages!.map((item) => {
+        return {
+          created_at: item.created_at,
+          message: item.message,
+          user: { id: item.person.id, name: item.person.username },
+          title: item.title,
+        } as IOneNotification;
+      })
+    );
+  }, [loading]);
+
+  return <Notifications notifications={notifications} />;
 };
 
 export default NotificationPage;

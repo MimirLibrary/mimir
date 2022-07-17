@@ -12,6 +12,12 @@ export class MessageResolver {
     return Message.find({ where: { person_id: id } });
   }
 
+  @Query(() => [Message])
+  @UseGuards(AuthGuard)
+  async getAllMessages(@Args('location_id') location_id: number) {
+    return Message.find({ where: { location_id } });
+  }
+
   @ResolveField()
   __resolveType(value) {
     if (value.title) {

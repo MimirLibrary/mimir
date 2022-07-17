@@ -18,6 +18,7 @@ input CreateMessageInput {
 
 extend type Query {
   getMessagesByPerson(person_id: ID!): [Message]
+  getAllMessages(location_id: Int!): [Message!]
 }
 
 extend type Mutation {
