@@ -81,7 +81,7 @@ export interface SearchInput {
 export interface CreateMessageInput {
     title: string;
     message: string;
-    material_id: number;
+    material_id?: Nullable<number>;
     person_id: number;
 }
 
@@ -110,12 +110,6 @@ export interface CreateStatusInput {
     material_id: number;
     person_id: number;
     status: string;
-}
-
-export interface RefreshTokenInput {
-    access_token: string;
-    refresh_token: string;
-    person_id: number;
 }
 
 export interface BlockedUsers {
@@ -160,7 +154,6 @@ export interface IMutation {
     createPerson(input: CreatePersonInput): Person | Promise<Person>;
     updatePersonLocation(input: UpdatePersonLocationInput): Person | Promise<Person>;
     createStatus(input: CreateStatusInput): Status | Promise<Status>;
-    refreshToken(input: RefreshTokenInput): Token | Promise<Token>;
 }
 
 export interface Location {
@@ -233,15 +226,6 @@ export interface Status {
     created_at: DateTime;
     material: Material;
     person: Person;
-}
-
-export interface Token {
-    id: string;
-    access_token: string;
-    refresh_token: string;
-    created_at: DateTime;
-    expires_at: DateTime;
-    person: Nullable<Person>[];
 }
 
 export interface Error {
