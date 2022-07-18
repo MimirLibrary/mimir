@@ -60,7 +60,7 @@ console.log(__dirname);
     FileModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      typePaths: [__dirname + '/**/*.graphql'],
+      typePaths: ['./packages/apiserver/**/*.graphql'],
       typeDefs: [...scalarTypeDefs],
       resolvers: [scalarResolvers],
       definitions: {

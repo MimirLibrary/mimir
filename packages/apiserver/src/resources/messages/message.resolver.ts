@@ -1,10 +1,18 @@
-import { Args, Mutation, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { Message } from './message.entity';
 import { CreateMessageInput } from '@mimir/global-types';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../../auth/auth.guard';
+import { Person } from '../persons/person.entity';
 
-@Resolver('MessageUnionResult')
+@Resolver('Message')
 export class MessageResolver {
   @Query(() => [Message])
   @UseGuards(AuthGuard)
@@ -27,6 +35,12 @@ export class MessageResolver {
       return 'Error';
     }
     return null;
+  }
+
+  @ResolveField(() => Person)
+  async person(@Parent() message: Message) {
+    const { person_id } = message;
+    return Person.findOne({ where: { id: person_id } });
   }
 
   @Mutation(() => Message)

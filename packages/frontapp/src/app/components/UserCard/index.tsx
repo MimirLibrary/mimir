@@ -101,7 +101,6 @@ const UserCard = () => {
 
   const sortedNotifications = messages?.concat(states!);
 
-  const state = OnePerson?.getOnePerson.states?.slice().pop()?.state;
   if (loading) return <h1>{t('Loading')}</h1>;
 
   return (

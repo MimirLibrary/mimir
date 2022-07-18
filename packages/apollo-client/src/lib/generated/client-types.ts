@@ -48,6 +48,7 @@ export type CreateMaterialInput = {
 };
 
 export type CreateMessageInput = {
+  location_id: Scalars['Int'];
   material_id?: InputMaybe<Scalars['Int']>;
   message: Scalars['String'];
   person_id: Scalars['Int'];
@@ -121,6 +122,7 @@ export type Message = {
   __typename?: 'Message';
   created_at: Scalars['DateTime'];
   id: Scalars['ID'];
+  location_id: Scalars['Int'];
   material: Material;
   material_id?: Maybe<Scalars['Int']>;
   message: Scalars['String'];
@@ -129,14 +131,12 @@ export type Message = {
   title: Scalars['String'];
 };
 
-export type MessageUnionResult = Error | Message;
-
 export type Mutation = {
   __typename?: 'Mutation';
   claimBook: BookUnionResult;
   createLocation?: Maybe<Location>;
   createMaterial: Material;
-  createMessageForManager: MessageUnionResult;
+  createMessageForManager: Message;
   createNotification?: Maybe<Notification>;
   createPerson: Person;
   createStatus: Status;
@@ -402,12 +402,13 @@ export type ClaimBookMutation = { __typename?: 'Mutation', claimBook: { __typena
 export type CreateMessageForManagerMutationVariables = Exact<{
   person_id: Scalars['Int'];
   material_id?: InputMaybe<Scalars['Int']>;
+  location_id: Scalars['Int'];
   title: Scalars['String'];
   message: Scalars['String'];
 }>;
 
 
-export type CreateMessageForManagerMutation = { __typename?: 'Mutation', createMessageForManager: { __typename?: 'Error', message: string } | { __typename?: 'Message', message: string, title: string } };
+export type CreateMessageForManagerMutation = { __typename?: 'Mutation', createMessageForManager: { __typename?: 'Message', message: string, title: string } };
 
 export type CreateNotificationMutationVariables = Exact<{
   input: CreateNotificationInput;
@@ -595,17 +596,12 @@ export type ClaimBookMutationHookResult = ReturnType<typeof useClaimBookMutation
 export type ClaimBookMutationResult = Apollo.MutationResult<ClaimBookMutation>;
 export type ClaimBookMutationOptions = Apollo.BaseMutationOptions<ClaimBookMutation, ClaimBookMutationVariables>;
 export const CreateMessageForManagerDocument = gql`
-    mutation CreateMessageForManager($person_id: Int!, $material_id: Int, $title: String!, $message: String!) {
+    mutation CreateMessageForManager($person_id: Int!, $material_id: Int, $location_id: Int!, $title: String!, $message: String!) {
   createMessageForManager(
-    input: {person_id: $person_id, material_id: $material_id, title: $title, message: $message}
+    input: {person_id: $person_id, material_id: $material_id, location_id: $location_id, title: $title, message: $message}
   ) {
-    ... on Message {
-      message
-      title
-    }
-    ... on Error {
-      message
-    }
+    message
+    title
   }
 }
     `;
@@ -626,6 +622,7 @@ export type CreateMessageForManagerMutationFn = Apollo.MutationFunction<CreateMe
  *   variables: {
  *      person_id: // value for 'person_id'
  *      material_id: // value for 'material_id'
+ *      location_id: // value for 'location_id'
  *      title: // value for 'title'
  *      message: // value for 'message'
  *   },

@@ -1,6 +1,5 @@
 import { Args, Mutation, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { BookInput, ProlongTimeInput } from '@mimir/global-types';
-import { Error } from '@mimir/global-types';
 import { ItemService } from './item.service';
 import { Status } from '../statuses/status.entity';
 import { UseGuards } from '@nestjs/common';

@@ -114,6 +114,8 @@ export const resources = {
           MainTitle: 'Notifications',
           MainDescription: 'New notifications are waiting for you',
         },
+        Today: 'Today',
+        Earlier: 'Earlier',
       },
       PopUps: {
         NotFoundByIdentifier: "Sorry, we didn't find a book by this identifier",

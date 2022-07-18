@@ -20,6 +20,7 @@ export interface IOneNotification {
 
 interface INotifications {
   notifications: IOneNotification[];
+  showUserLink?: boolean;
 }
 
 const ColumnWrapper = styled.div`
@@ -37,18 +38,38 @@ const Subtitle = styled.h2`
 
 interface INotificationsProps {
   message?: boolean;
+  today?: boolean;
 }
 
 const NotificationWrapper = styled.div<INotificationsProps>`
   width: 100%;
   row-gap: ${dimensions.xs_2};
-  background-color: ${({ message }) => (message ? '#EFF4FF' : null)};
+  background-color: ${({ message, today }) =>
+    message && today ? '#FFFFFF' : '#EFF4FF'};
   padding: ${dimensions.base};
   display: flex;
   align-items: ${({ message }) => (message ? 'center' : null)};
   flex-direction: ${({ message }) => (message ? 'row' : 'column')};
   justify-content: ${({ message }) => (message ? 'space-between' : null)};
+  border-radius: ${dimensions.xs_1};
+  margin-bottom: ${dimensions.base};
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
 `;
+
+interface IRestyledOpenLinkProps {
+  showUserLink: boolean;
+}
+
+const RestyledOpenLink = styled(OpenLink)<IRestyledOpenLinkProps>`
+  display: ${(props) => (props.showUserLink ? 'inline' : 'none')};
+  margin-right: ${dimensions.xs_2};
+  color: black;
+  text-decoration: none;
+`;
+
 interface IDescriptionProps {
   titlee?: boolean;
   small?: boolean;
@@ -61,7 +82,10 @@ const NotificationDescription = styled.p<IDescriptionProps>`
     small ? `${dimensions.xs}` : `${dimensions.base}`};
 `;
 
-const Notifications: FC<INotifications> = ({ notifications }) => {
+const Notifications: FC<INotifications> = ({
+  notifications,
+  showUserLink = false,
+}) => {
   const sortedNotifications = notifications.sort(
     (a, b) =>
       new Date(b?.created_at).getTime() - new Date(a?.created_at).getTime()
@@ -82,7 +106,7 @@ const Notifications: FC<INotifications> = ({ notifications }) => {
           <Subtitle>{t('Notifications.Today')}</Subtitle>
           {todayNotifications?.map((notification) =>
             notification.type === 'message' ? (
-              <NotificationWrapper message>
+              <NotificationWrapper message today>
                 <ColumnWrapper>
                   <NotificationDescription titlee>
                     {notification.title}
@@ -91,12 +115,12 @@ const Notifications: FC<INotifications> = ({ notifications }) => {
                     {notification.message}
                   </NotificationDescription>
                   <NotificationDescription small>
-                    <OpenLink
+                    <RestyledOpenLink
                       to={`${RoutesTypes.READERS}/${notification.user?.id}`}
+                      showUserLink={showUserLink}
                     >
                       {notification.user?.name}
-                    </OpenLink>
-                    {specialParseDate(new Date(notification.created_at))}
+                    </RestyledOpenLink>
                   </NotificationDescription>
                 </ColumnWrapper>
                 <OpenLink to="#">{t('ManagerInfoCard.Link.Answer')}</OpenLink>
@@ -107,9 +131,6 @@ const Notifications: FC<INotifications> = ({ notifications }) => {
                   {notification.title + ' '}
                   {notification.message &&
                     t('UserCard.BlockReason') + notification.message}
-                </NotificationDescription>
-                <NotificationDescription small>
-                  {specialParseDate(new Date(notification.created_at))}
                 </NotificationDescription>
               </NotificationWrapper>
             )
@@ -130,6 +151,12 @@ const Notifications: FC<INotifications> = ({ notifications }) => {
                     {notification.message}
                   </NotificationDescription>
                   <NotificationDescription small>
+                    <RestyledOpenLink
+                      to={`${RoutesTypes.READERS}/${notification.user?.id}`}
+                      showUserLink={showUserLink}
+                    >
+                      {notification.user?.name}
+                    </RestyledOpenLink>
                     {specialParseDate(new Date(notification.created_at))}
                   </NotificationDescription>
                 </ColumnWrapper>

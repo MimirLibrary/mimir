@@ -21,12 +21,13 @@ const NotificationPage = () => {
           message: item.message,
           user: { id: item.person.id, name: item.person.username },
           title: item.title,
+          type: 'message',
         } as IOneNotification;
       })
     );
   }, [loading]);
 
-  return <Notifications notifications={notifications} />;
+  return <Notifications notifications={notifications} showUserLink />;
 };
 
 export default NotificationPage;
