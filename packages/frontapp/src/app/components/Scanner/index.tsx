@@ -47,7 +47,6 @@ const VideoContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: black;
 
   video {
     /* width: 100%; */
@@ -111,13 +110,11 @@ const ScannerFrame = styled.div`
 
 const ScannerCanvas = styled.canvas`
   display: none;
-  width: 100%;
   margin: auto;
 `;
 
 const ScannerImage = styled.img`
   display: none;
-  width: 100%;
   margin: auto;
 `;
 
@@ -149,7 +146,7 @@ const Scanner: FC<IScannerProps> = memo(
       []
     );
     const barcodeReader = new BrowserMultiFormatReader();
-    const timeout = 1000; // time between frames
+    const timeout = 500; // time between frames
 
     useEffect(() => {
       showScanner();
@@ -164,39 +161,76 @@ const Scanner: FC<IScannerProps> = memo(
       const frameElement =
         document.querySelector<HTMLDivElement>('#scanner-frame')!;
 
-      const constraints: MediaStreamConstraints = {
-        audio: false,
-        video: {
-          facingMode: 'environment',
-        },
-      };
+      const constraints = { video: true };
       const frameSize = dinamicFrameSize(window.innerWidth, window.innerHeight);
 
-      navigator.mediaDevices.getUserMedia(constraints).then(async (stream) => {
+      navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
         videoStream = stream;
 
-        frameElement.style.width = `${frameSize.width}px`;
-        frameElement.style.height = `${frameSize.height}px`;
-        frameElement.style.left = `${
-          (window.innerWidth - frameSize.width) / 2
-        }px`;
-        frameElement.style.top = `${
-          (window.innerHeight - frameSize.height) / 2
-        }px`;
+        // handle play callback
+        videoElement.addEventListener('play', () => {
+          // get video's intrinsic width and height, eg 640x480,
+          // and set canvas to it to match.
 
-        // videoElement.srcObject = stream;
+          const canvasSize = dinamicFrameSize(
+            videoElement.videoWidth,
+            videoElement.videoHeight
+          );
+          console.log(canvasSize);
 
-        // const result = await barcodeReader.decodeOnceFromVideoElement(
-        //   videoElement
-        // );
+          canvasElement.width = canvasSize.width;
+          canvasElement.height = canvasSize.height;
 
-        const result = await barcodeReader.decodeOnceFromStream(
-          stream,
-          videoElement
-        );
+          // set position of orange frame in video
+          frameElement.style.width = `${frameSize.width}px`;
+          frameElement.style.height = `${frameSize.height}px`;
+          frameElement.style.left = `${
+            (window.innerWidth - frameSize.width) / 2
+          }px`;
+          frameElement.style.top = `${
+            (window.innerHeight - frameSize.height) / 2
+          }px`;
 
-        found(result);
+          // start the barcode reader process
+          scanFrame();
+        });
+
+        videoElement.srcObject = stream;
       });
+
+      function scanFrame() {
+        if (videoStream) {
+          // copy the video stream image onto the canvas
+          canvasElement.getContext('2d')!.drawImage(
+            videoElement,
+            // source x, y, w, h:
+            (videoElement.videoWidth - canvasElement.width) / 2,
+            (videoElement.videoHeight - canvasElement.height) / 2,
+            canvasElement.width,
+            canvasElement.height,
+            // dest x, y, w, h:
+            0,
+            0,
+            canvasElement.width,
+            canvasElement.height
+          );
+          // convert the canvas image to an image blob and stick it in an image element
+          canvasElement.toBlob((blob) => {
+            const url = URL.createObjectURL(blob!);
+            // when the image is loaded, feed it to the barcode reader
+            imageElement.onload = async () => {
+              barcodeReader
+                .decodeFromImageUrl(url)
+                .then(found) // calls onDetected with the barcode string
+                .catch(notFound)
+                .finally(() => releaseMemory(imageElement));
+              imageElement.onload = null;
+              setTimeout(scanFrame, timeout); // repeat
+            };
+            imageElement.src = url; // load the image blob
+          });
+        }
+      }
 
       function dinamicFrameSize(
         viewfinderWidth: number,
@@ -217,10 +251,19 @@ const Scanner: FC<IScannerProps> = memo(
       closeScanner();
     }
 
+    function notFound(err: Error) {
+      if (err.name !== 'NotFoundException') {
+        console.error(err);
+      }
+    }
+
+    function releaseMemory(imageElement: HTMLImageElement) {
+      URL.revokeObjectURL(imageElement.src); // release image blob memory
+    }
+
     function closeScanner() {
       if (videoStream) {
-        // stop webcam feed
-        videoStream.getTracks().forEach((track) => track.stop());
+        videoStream.getTracks().forEach((track) => track.stop()); // stop webcam feed
         videoStream = null;
         hideScanner();
         onClose();
