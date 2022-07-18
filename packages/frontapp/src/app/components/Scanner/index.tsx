@@ -160,70 +160,34 @@ const Scanner: FC<IScannerProps> = memo(
       const frameElement =
         document.querySelector<HTMLDivElement>('#scanner-frame')!;
 
-      const constraints = { video: true };
+      const constraints: MediaStreamConstraints = {
+        audio: false,
+        video: {
+          facingMode: 'environment',
+        },
+      };
       const frameSize = dinamicFrameSize(window.innerWidth, window.innerHeight);
 
-      navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+      navigator.mediaDevices.getUserMedia(constraints).then(async (stream) => {
         videoStream = stream;
 
-        // handle play callback
-        videoElement.addEventListener('play', () => {
-          // get video's intrinsic width and height, eg 640x480,
-          // and set canvas to it to match.
-
-          canvasElement.width = frameSize.width;
-          canvasElement.height = frameSize.height;
-
-          // set position of orange frame in video
-          frameElement.style.width = `${frameSize.width}px`;
-          frameElement.style.height = `${frameSize.height}px`;
-          frameElement.style.left = `${
-            (window.innerWidth - frameSize.width) / 2
-          }px`;
-          frameElement.style.top = `${
-            (window.innerHeight - frameSize.height) / 2
-          }px`;
-
-          // start the barcode reader process
-          scanFrame();
-        });
+        frameElement.style.width = `${frameSize.width}px`;
+        frameElement.style.height = `${frameSize.height}px`;
+        frameElement.style.left = `${
+          (window.innerWidth - frameSize.width) / 2
+        }px`;
+        frameElement.style.top = `${
+          (window.innerHeight - frameSize.height) / 2
+        }px`;
 
         videoElement.srcObject = stream;
-      });
 
-      function scanFrame() {
-        if (videoStream) {
-          // copy the video stream image onto the canvas
-          canvasElement.getContext('2d')!.drawImage(
-            videoElement,
-            // source x, y, w, h:
-            (videoElement.videoWidth - frameSize.width) / 2,
-            (videoElement.videoHeight - frameSize.height) / 2,
-            frameSize.width,
-            frameSize.height,
-            // dest x, y, w, h:
-            0,
-            0,
-            canvasElement.width,
-            canvasElement.height
-          );
-          // convert the canvas image to an image blob and stick it in an image element
-          canvasElement.toBlob((blob) => {
-            const url = URL.createObjectURL(blob!);
-            // when the image is loaded, feed it to the barcode reader
-            imageElement.onload = async () => {
-              barcodeReader
-                .decodeFromImageUrl(url)
-                .then(found) // calls onDetected with the barcode string
-                .catch(notFound)
-                .finally(() => releaseMemory(imageElement));
-              imageElement.onload = null;
-              setTimeout(scanFrame, timeout); // repeat
-            };
-            imageElement.src = url; // load the image blob
-          });
-        }
-      }
+        const result = await barcodeReader.decodeOnceFromVideoElement(
+          videoElement
+        );
+
+        found(result);
+      });
 
       function dinamicFrameSize(
         viewfinderWidth: number,
@@ -244,19 +208,10 @@ const Scanner: FC<IScannerProps> = memo(
       closeScanner();
     }
 
-    function notFound(err: Error) {
-      if (err.name !== 'NotFoundException') {
-        console.error(err);
-      }
-    }
-
-    function releaseMemory(imageElement: HTMLImageElement) {
-      URL.revokeObjectURL(imageElement.src); // release image blob memory
-    }
-
     function closeScanner() {
       if (videoStream) {
-        videoStream.getTracks().forEach((track) => track.stop()); // stop webcam feed
+        // stop webcam feed
+        videoStream.getTracks().forEach((track) => track.stop());
         videoStream = null;
         hideScanner();
         onClose();
