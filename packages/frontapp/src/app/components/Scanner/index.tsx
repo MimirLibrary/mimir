@@ -44,11 +44,15 @@ const VideoContainer = styled.div`
   width: 100vw;
   height: 100vh;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
 
   video {
-    width: 100%;
+    /* width: 100%; */
     height: 100%;
-    object-fit: cover;
+    /* object-fit: cover; */
   }
 `;
 
@@ -180,9 +184,14 @@ const Scanner: FC<IScannerProps> = memo(
           (window.innerHeight - frameSize.height) / 2
         }px`;
 
-        videoElement.srcObject = stream;
+        // videoElement.srcObject = stream;
 
-        const result = await barcodeReader.decodeOnceFromVideoElement(
+        // const result = await barcodeReader.decodeOnceFromVideoElement(
+        //   videoElement
+        // );
+
+        const result = await barcodeReader.decodeOnceFromStream(
+          stream,
           videoElement
         );
 
