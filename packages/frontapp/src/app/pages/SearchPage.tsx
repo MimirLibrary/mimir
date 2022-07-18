@@ -41,7 +41,6 @@ const SearchPage = () => {
     });
     setAvailableMaterial(available);
   }, [data]);
-  console.log(availableMaterial);
   const allCategories = availableMaterial?.reduce(
     (acc: any, material: any) => ({
       ...acc,

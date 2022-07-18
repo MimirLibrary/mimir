@@ -1,11 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { Material } from './material.entity';
-import { DonateBookInput, RolesTypes, SearchInput } from '@mimir/global-types';
+import {
+  DonateBookInput,
+  RolesTypes,
+  SearchInput,
+  StatusTypes,
+} from '@mimir/global-types';
 import { FileService } from '../../file/file.service';
 import { Status } from '../statuses/status.entity';
 import { Connection } from 'typeorm';
 import { ErrorBook } from '../../errors';
-import { StatusTypes } from '../../../../global-types/src/lib/statusTypes';
 import { GraphQLError } from 'graphql';
 
 @Injectable()

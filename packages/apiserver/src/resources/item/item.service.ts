@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { Material } from '../materials/material.entity';
-import { BookInput, ProlongTimeInput } from '@mimir/global-types';
+import { BookInput, ProlongTimeInput, StatusTypes } from '@mimir/global-types';
 import { Status } from '../statuses/status.entity';
 import { Connection } from 'typeorm';
 import { ErrorBook } from '../../errors';
-import { StatusTypes } from '../../../../global-types/src/lib/statusTypes';
 import { setTimeToProlong } from '../../utils/helpersFunctions/setTimeToProlong';
 import { config } from '../../config';
 
