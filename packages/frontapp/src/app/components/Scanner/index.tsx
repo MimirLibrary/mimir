@@ -160,8 +160,12 @@ const Scanner: FC<IScannerProps> = memo(
         document.querySelector<HTMLImageElement>('#scanner-image')!;
       const frameElement =
         document.querySelector<HTMLDivElement>('#scanner-frame')!;
-
-      const constraints = { video: true };
+      const constraints: MediaStreamConstraints = {
+        audio: false,
+        video: {
+          facingMode: 'environment',
+        },
+      };
       const frameSize = dinamicFrameSize(window.innerWidth, window.innerHeight);
 
       navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
