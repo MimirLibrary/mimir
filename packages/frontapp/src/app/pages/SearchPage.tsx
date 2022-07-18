@@ -7,6 +7,7 @@ import { ReactComponent as ScrollButtonRight } from '../../assets/ArrowButtonRig
 import { ReactComponent as ScrollButtonLeft } from '../../assets/ArrowButtonLeft.svg';
 import CategoriesList from '../components/CategoriesList';
 import AllBooksList from '../components/AllBooksList';
+import { useAppSelector } from '../hooks/useTypedSelector';
 
 const ContentWrapper = styled.div`
   margin: 3rem 0 ${dimensions.xl_6};
@@ -30,7 +31,10 @@ const Topics = styled.h5`
 `;
 
 const SearchPage = () => {
-  const { data, loading } = useGetAllMaterialsQuery();
+  const { location } = useAppSelector((state) => state.user);
+  const { data, loading } = useGetAllMaterialsQuery({
+    variables: { location_id: location.id },
+  });
   const allCategories = data?.getAllMaterials.reduce(
     (acc, material) => ({
       ...acc,

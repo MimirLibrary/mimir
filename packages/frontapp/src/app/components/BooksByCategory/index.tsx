@@ -7,6 +7,7 @@ import BookCard from '../BookCard';
 import { WrapperList } from '../ListBooks';
 import { useSearchParams } from 'react-router-dom';
 import { Material } from '@mimir/apollo-client';
+import { useAppSelector } from '../../hooks/useTypedSelector';
 
 type IMaterial =
   | null
@@ -18,9 +19,12 @@ type IMaterial =
 
 const BooksByCategory = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { location } = useAppSelector((state) => state.user);
   const { category } = useParams();
   const navigate = useNavigate();
-  const { data, loading } = useGetAllMaterialsQuery();
+  const { data, loading } = useGetAllMaterialsQuery({
+    variables: { location_id: location.id },
+  });
   const handleGoBack = () => {
     navigate('/search');
   };

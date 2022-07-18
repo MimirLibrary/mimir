@@ -28,9 +28,13 @@ export class MaterialResolver {
   constructor(private materialService: MaterialService) {}
 
   @Query(() => [Material])
-  @UseGuards(AuthGuard)
-  async getAllMaterials() {
-    return Material.find();
+  // @UseGuards(AuthGuard)
+  async getAllMaterials(
+    @Args('location_id') location_id: string,
+    @Args('limit') limit: number,
+    @Args('offset') offset: number
+  ) {
+    return this.materialService.allMaterials(location_id, limit, offset);
   }
 
   @Query(() => Material)

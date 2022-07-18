@@ -73,4 +73,14 @@ export class MaterialService {
       await queryRunner.release();
     }
   }
+
+  async allMaterials(location_id: string, limit?: number, offset?: number) {
+    const elements = await Material.createQueryBuilder('material')
+      .where('material.location_id = :location_id', { location_id })
+      .orderBy('material.created_at', 'ASC')
+      .limit(limit)
+      .offset(offset)
+      .getMany();
+    return elements;
+  }
 }

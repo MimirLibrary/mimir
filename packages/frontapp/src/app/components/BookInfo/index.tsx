@@ -268,8 +268,10 @@ const BookInfo: FC<IBookInfoProps> = ({
   type,
   location_id,
 }) => {
-  const { id, userRole } = useAppSelector((state) => state.user);
-  const { data: allMaterials } = useGetAllMaterialsQuery();
+  const { id, userRole, location } = useAppSelector((state) => state.user);
+  const { data: allMaterials } = useGetAllMaterialsQuery({
+    variables: { location_id: location.id },
+  });
   const { data: getNotificationsByPersonData } =
     useGetNotificationsByPersonQuery({
       variables: {

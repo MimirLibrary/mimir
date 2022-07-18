@@ -265,6 +265,13 @@ export type Query = {
 };
 
 
+export type QueryGetAllMaterialsArgs = {
+  limit?: InputMaybe<Scalars['Int']>;
+  location_id: Scalars['String'];
+  offset?: InputMaybe<Scalars['Int']>;
+};
+
+
 export type QueryGetAllTakenItemsArgs = {
   person_id: Scalars['Int'];
 };
@@ -463,10 +470,23 @@ export type GetAllLocationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAllLocationsQuery = { __typename?: 'Query', getAllLocations: Array<{ __typename?: 'Location', id: string, location: string } | null> };
 
-export type GetAllMaterialsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetAllMaterialsQueryVariables = Exact<{
+  location_id: Scalars['String'];
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+}>;
 
 
 export type GetAllMaterialsQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', author: string, category: string, created_at: any, id: string, id_type: string, identifier: string, picture?: string | null, title: string, type: string, updated_at: any, notifications: Array<{ __typename?: 'Notification', material_id: number, person_id: number } | null>, statuses: Array<{ __typename?: 'Status', status: string, person_id: number } | null> } | null> };
+
+export type GetAllMaterialsForManagerQueryVariables = Exact<{
+  location_id: Scalars['String'];
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetAllMaterialsForManagerQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', id: string, title: string, category: string, picture?: string | null, statuses: Array<{ __typename?: 'Status', id: string, created_at: any, status: string, person: { __typename?: 'Person', id: string, username: string } } | null> } | null> };
 
 export type GetAllPersonsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -950,8 +970,8 @@ export type GetAllLocationsQueryHookResult = ReturnType<typeof useGetAllLocation
 export type GetAllLocationsLazyQueryHookResult = ReturnType<typeof useGetAllLocationsLazyQuery>;
 export type GetAllLocationsQueryResult = Apollo.QueryResult<GetAllLocationsQuery, GetAllLocationsQueryVariables>;
 export const GetAllMaterialsDocument = gql`
-    query GetAllMaterials {
-  getAllMaterials {
+    query GetAllMaterials($location_id: String!, $limit: Int, $offset: Int) {
+  getAllMaterials(location_id: $location_id, limit: $limit, offset: $offset) {
     author
     category
     created_at
@@ -986,10 +1006,13 @@ export const GetAllMaterialsDocument = gql`
  * @example
  * const { data, loading, error } = useGetAllMaterialsQuery({
  *   variables: {
+ *      location_id: // value for 'location_id'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
  *   },
  * });
  */
-export function useGetAllMaterialsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>) {
+export function useGetAllMaterialsQuery(baseOptions: Apollo.QueryHookOptions<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>(GetAllMaterialsDocument, options);
       }
@@ -1000,6 +1023,55 @@ export function useGetAllMaterialsLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetAllMaterialsQueryHookResult = ReturnType<typeof useGetAllMaterialsQuery>;
 export type GetAllMaterialsLazyQueryHookResult = ReturnType<typeof useGetAllMaterialsLazyQuery>;
 export type GetAllMaterialsQueryResult = Apollo.QueryResult<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>;
+export const GetAllMaterialsForManagerDocument = gql`
+    query GetAllMaterialsForManager($location_id: String!, $limit: Int, $offset: Int) {
+  getAllMaterials(location_id: $location_id, limit: $limit, offset: $offset) {
+    id
+    title
+    category
+    picture
+    statuses {
+      id
+      created_at
+      status
+      person {
+        id
+        username
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAllMaterialsForManagerQuery__
+ *
+ * To run a query within a React component, call `useGetAllMaterialsForManagerQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllMaterialsForManagerQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllMaterialsForManagerQuery({
+ *   variables: {
+ *      location_id: // value for 'location_id'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useGetAllMaterialsForManagerQuery(baseOptions: Apollo.QueryHookOptions<GetAllMaterialsForManagerQuery, GetAllMaterialsForManagerQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllMaterialsForManagerQuery, GetAllMaterialsForManagerQueryVariables>(GetAllMaterialsForManagerDocument, options);
+      }
+export function useGetAllMaterialsForManagerLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllMaterialsForManagerQuery, GetAllMaterialsForManagerQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllMaterialsForManagerQuery, GetAllMaterialsForManagerQueryVariables>(GetAllMaterialsForManagerDocument, options);
+        }
+export type GetAllMaterialsForManagerQueryHookResult = ReturnType<typeof useGetAllMaterialsForManagerQuery>;
+export type GetAllMaterialsForManagerLazyQueryHookResult = ReturnType<typeof useGetAllMaterialsForManagerLazyQuery>;
+export type GetAllMaterialsForManagerQueryResult = Apollo.QueryResult<GetAllMaterialsForManagerQuery, GetAllMaterialsForManagerQueryVariables>;
 export const GetAllPersonsDocument = gql`
     query GetAllPersons {
   getAllPersons {

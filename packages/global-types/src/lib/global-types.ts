@@ -115,7 +115,7 @@ export interface CreateStatusInput {
 export interface IQuery {
     getAllTakenItems(person_id: number): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getAllLocations(): Nullable<Location>[] | Promise<Nullable<Location>[]>;
-    getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
+    getAllMaterials(location_id: string, limit?: Nullable<number>, offset?: Nullable<number>): Nullable<Material>[] | Promise<Nullable<Material>[]>;
     getMaterialById(id: string): Material | Promise<Material>;
     searchOfMaterials(input: SearchInput): Nullable<Nullable<Material>[]> | Promise<Nullable<Nullable<Material>[]>>;
     getMaterialByIdentifier(input: SearchOneMaterial): Nullable<Material> | Promise<Nullable<Material>>;

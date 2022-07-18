@@ -49,11 +49,13 @@ const SuggestionText = styled.h3`
 const BookPreview = () => {
   const { item_id } = useParams();
   const navigate = useNavigate();
-  const { id } = useAppSelector((state) => state.user);
+  const { id, location } = useAppSelector((state) => state.user);
   const { data, loading } = useGetMaterialByIdQuery({
     variables: { id: item_id! },
   });
-  const { data: getAllMaterials } = useGetAllMaterialsQuery();
+  const { data: getAllMaterials } = useGetAllMaterialsQuery({
+    variables: { location_id: location.id },
+  });
 
   const lastStatusAnotherPerson = data?.getMaterialById.statuses.slice(-1)[0];
 
