@@ -45,7 +45,6 @@ const ISBNWrapper = styled.div`
   align-items: center;
   max-width: 34.5rem;
   width: 100%;
-
   @media (max-width: ${dimensions.tablet_width}) {
     flex-direction: column;
     align-items: start;
@@ -70,15 +69,12 @@ const InputStyledMask = styled(InputMask)`
   color: ${colors.main_black};
   font-family: ${fonts.primary}, sans-serif;
   margin-right: 0.12rem;
-
   @media (max-width: ${dimensions.tablet_width}) {
     margin-left: -${dimensions.xl};
   }
-
   @media (max-width: ${dimensions.phone_width}) {
     width: 70%;
   }
-
   ::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
@@ -168,7 +164,7 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
                 type="submit"
                 value="Find book"
                 disabled={conditionToDisabledBtn}
-              />{' '}
+              />
             </MobileInline>
           </ISBNWrapper>
         </form>
