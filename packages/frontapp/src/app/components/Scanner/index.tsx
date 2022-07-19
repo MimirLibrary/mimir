@@ -44,11 +44,14 @@ const VideoContainer = styled.div`
   width: 100vw;
   height: 100vh;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   video {
-    width: 100%;
+    /* width: 100%; */
     height: 100%;
-    object-fit: cover;
+    /* object-fit: cover; */
   }
 `;
 
@@ -107,13 +110,11 @@ const ScannerFrame = styled.div`
 
 const ScannerCanvas = styled.canvas`
   display: none;
-  width: 100%;
   margin: auto;
 `;
 
 const ScannerImage = styled.img`
   display: none;
-  width: 100%;
   margin: auto;
 `;
 
@@ -145,7 +146,7 @@ const Scanner: FC<IScannerProps> = memo(
       []
     );
     const barcodeReader = new BrowserMultiFormatReader();
-    const timeout = 1000; // time between frames
+    const timeout = 500; // time between frames
 
     useEffect(() => {
       showScanner();
@@ -159,8 +160,12 @@ const Scanner: FC<IScannerProps> = memo(
         document.querySelector<HTMLImageElement>('#scanner-image')!;
       const frameElement =
         document.querySelector<HTMLDivElement>('#scanner-frame')!;
-
-      const constraints = { video: true };
+      const constraints: MediaStreamConstraints = {
+        audio: false,
+        video: {
+          facingMode: 'environment',
+        },
+      };
       const frameSize = dinamicFrameSize(window.innerWidth, window.innerHeight);
 
       navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
@@ -171,8 +176,13 @@ const Scanner: FC<IScannerProps> = memo(
           // get video's intrinsic width and height, eg 640x480,
           // and set canvas to it to match.
 
-          canvasElement.width = frameSize.width;
-          canvasElement.height = frameSize.height;
+          const canvasSize = dinamicFrameSize(
+            videoElement.videoWidth,
+            videoElement.videoHeight
+          );
+
+          canvasElement.width = canvasSize.width;
+          canvasElement.height = canvasSize.height;
 
           // set position of orange frame in video
           frameElement.style.width = `${frameSize.width}px`;
@@ -197,10 +207,10 @@ const Scanner: FC<IScannerProps> = memo(
           canvasElement.getContext('2d')!.drawImage(
             videoElement,
             // source x, y, w, h:
-            (videoElement.videoWidth - frameSize.width) / 2,
-            (videoElement.videoHeight - frameSize.height) / 2,
-            frameSize.width,
-            frameSize.height,
+            (videoElement.videoWidth - canvasElement.width) / 2,
+            (videoElement.videoHeight - canvasElement.height) / 2,
+            canvasElement.width,
+            canvasElement.height,
             // dest x, y, w, h:
             0,
             0,
@@ -229,7 +239,7 @@ const Scanner: FC<IScannerProps> = memo(
         viewfinderWidth: number,
         viewfinderHeight: number
       ) {
-        const minEdgePercentage = 0.8; // 80%
+        const minEdgePercentage = 0.7; // 70%
         const minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
         const size = Math.floor(minEdgeSize * minEdgePercentage);
         return {

@@ -110,7 +110,8 @@ export const resources = {
         dAgo: 'd ago',
       },
       PopUps: {
-        NotFoundByIdentifier: "Sorry, we didn't find a book by this identifier",
+        NotFoundByIdentifier:
+          "Sorry, we didn't find a book with that identifier",
       },
     },
   },
