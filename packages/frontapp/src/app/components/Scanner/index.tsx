@@ -180,7 +180,6 @@ const Scanner: FC<IScannerProps> = memo(
             videoElement.videoWidth,
             videoElement.videoHeight
           );
-          console.log(canvasSize);
 
           canvasElement.width = canvasSize.width;
           canvasElement.height = canvasSize.height;
@@ -240,7 +239,7 @@ const Scanner: FC<IScannerProps> = memo(
         viewfinderWidth: number,
         viewfinderHeight: number
       ) {
-        const minEdgePercentage = 0.8; // 80%
+        const minEdgePercentage = 0.7; // 70%
         const minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
         const size = Math.floor(minEdgeSize * minEdgePercentage);
         return {
