@@ -75,11 +75,12 @@ export class MaterialService {
   }
 
   async allMaterials(location_id: string, limit?: number, offset?: number) {
+    const paginationPage = (offset - 1) * limit;
     const elements = await Material.createQueryBuilder('material')
       .where('material.location_id = :location_id', { location_id })
       .orderBy('material.created_at', 'ASC')
-      .limit(limit)
-      .offset(offset)
+      .limit(limit || null)
+      .offset(paginationPage || null)
       .getMany();
     return elements;
   }

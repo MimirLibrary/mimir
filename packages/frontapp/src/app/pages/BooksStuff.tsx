@@ -5,6 +5,7 @@ import BookCardExtended from '../components/BookCardExtended';
 import { useAppSelector } from '../hooks/useTypedSelector';
 import { useGetAllMaterialsForManagerQuery } from '@mimir/apollo-client';
 import createNewItem from './CreateNewItem';
+import ListAllItems from '../components/ListAllItems';
 
 const WrapperTitle = styled.section`
   margin-top: 3.5rem;
@@ -26,18 +27,6 @@ const SubTitle = styled.h3`
 `;
 
 const BooksStuff = () => {
-  const { location } = useAppSelector((state) => state.user);
-  const { data, fetchMore } = useGetAllMaterialsForManagerQuery({
-    variables: { limit: 10, offset: 0, location_id: location.id },
-  });
-
-  useEffect(() => {
-    fetchMore({
-      variables: { location_id: location.id },
-    });
-  }, []);
-
-  console.log(data);
   return (
     <main>
       <WrapperTitle>
@@ -46,11 +35,7 @@ const BooksStuff = () => {
           List of items in the library. To change something, go to the item card
         </SubTitle>
       </WrapperTitle>
-      <div>
-        {data?.getAllMaterials &&
-          data.getAllMaterials.map((item) => <BookCardExtended />)}
-      </div>
-      <BookCardExtended />
+      <ListAllItems />
     </main>
   );
 };
