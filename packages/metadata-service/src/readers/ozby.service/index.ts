@@ -75,7 +75,7 @@ function readCells(keyEl, valEl) {
     forKey('ISBN', ignore),
     forClass('b-description__more', ignore),
   ];
-  for (let matcher of matchers) {
+  for (const matcher of matchers) {
     const result = matcher(keyEl, valEl);
     if (result) {
       return result;
@@ -117,7 +117,7 @@ export class OzbyService {
       yearPublishedAt: year,
       monthPublishedAt: 0,
       description: $('#truncatedBlock').text().trim(),
-      cover: '',
+      cover: coverEl.attr('src'),
       meta: _.merge(items, {
         sku: /\d+/.exec($('.b-product-title__art').text())[0],
         price: $('.b-product__controls .b-product-control__text_main')
