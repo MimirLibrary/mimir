@@ -3,6 +3,7 @@ export const resources = {
     translation: {
       Back: 'Back',
       Loading: 'Loading...',
+      Cancel: 'Cancel',
       EmptyListItems: {
         Header: 'Shelf for your books and other items',
         Description:
@@ -112,12 +113,29 @@ export const resources = {
       PopUps: {
         NotFoundByIdentifier: "Sorry, we didn't find a book by this identifier",
       },
+      Block: {
+        Warning: 'Warning!',
+        YBlock: 'Yes, block',
+        YUnblock: 'Yes, unblock',
+        SureUnblock: 'Are you sure you want to unblock the user ',
+        SureBlock: 'Are you sure you want to block the user ',
+        InLibrary: ' in library?',
+        BlockUser: 'Block user',
+        Reason: 'Specify the reason for the block. User will be able to see it',
+        TooManyDebts: 'Too many debts',
+        Fired: 'The user has been fired',
+        Other: 'Other reason',
+        FullOther: 'Other reason (specify in message)',
+        Opps: 'Opps! Your page has been blocked',
+        ReasonForBlock: 'Reason for blocking:',
+      },
     },
   },
   ru: {
     translation: {
       Back: 'Назад',
       Loading: 'Загрузка...',
+      Cancel: 'Закрыть',
       EmptyListItems: {
         Header: 'Полка для ваших книг и других предметов',
         Description:
@@ -226,6 +244,22 @@ export const resources = {
       },
       PopUps: {
         NotFoundByIdentifier: 'Упс, мы не нашли книгу с таким идентификатором',
+      },
+      Block: {
+        Warning: 'Внимание!',
+        YBlock: 'Да, заблокировать',
+        YUnblock: 'Да, разблокировать',
+        SureUnblock: 'Вы уверены, что хотите разблокировать пользователя ',
+        SureBlock: 'Вы уверены, что хотите заблокировать пользователя ',
+        InLibrary: ' в библиотеке?',
+        BlockUser: 'Заблокировать пользователя',
+        Reason: 'Опишите причину блокировки. Пользователь увидит её',
+        TooManyDebts: 'Слишком много долгов',
+        Fired: 'Пользователь был уволен',
+        Other: 'Другая причина',
+        FullOther: 'Другая причина (опишите в сообщении)',
+        Opps: 'Упс! Ваша страница заблокирована',
+        ReasonForBlock: 'Причина блокировки:',
       },
     },
   },

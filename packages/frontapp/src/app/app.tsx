@@ -22,7 +22,9 @@ import useScanner from './hooks/useScanner';
 import { ContentModal, WrapperModal } from './components/Modal';
 import { useGetReasonOfBlockQuery } from '@mimir/apollo-client';
 import { useAppDispatch } from './hooks/useTypedDispatch';
-import { setUser, updateBlocked } from './store/slices/userSlice';
+import { updateBlocked } from './store/slices/userSlice';
+import { ReactComponent as SadMimir } from '../assets/SadMimir.svg';
+import { Description } from './components/UserCard';
 
 const WrapperPage = styled.main`
   display: flex;
@@ -63,6 +65,24 @@ const StyledButton = styled(Button)`
   }
 `;
 
+const SadMimirImage = styled(SadMimir)`
+  width: 128px;
+`;
+
+const ModalWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: ${dimensions.base};
+  margin: ${dimensions.base_2};
+`;
+
+const InlineWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  column-gap: 4px;
+`;
+
 const App: FC = () => {
   const {
     isShowScanner,
@@ -72,7 +92,7 @@ const App: FC = () => {
   } = useScanner();
   const { isAuth } = useAuth();
   const { userRole, blocked, id } = useAppSelector((state) => state.user);
-  console.log(blocked);
+
   const dispatch = useAppDispatch();
   const routes = useRoutes(userRole);
   const [isSidebarActive, setSidebarActive] = useState(false);
@@ -81,16 +101,17 @@ const App: FC = () => {
     variables: { id: String(id) },
   });
   if (!loading) {
-    console.log(data?.getReasonOfBlock?.state);
     if (
       blocked !== data?.getReasonOfBlock?.state &&
       data?.getReasonOfBlock?.state !== undefined
     ) {
       dispatch(updateBlocked(!blocked));
       setBlocked(!blocked);
-      console.log(blockedState);
     }
+    console.log(data?.getReasonOfBlock?.description);
+    // setDescription(data?.getReasonOfBlock?.description || "")
   }
+
   const handleOnClickButton = useCallback(() => {
     setIsShowScanner(true);
   }, []);
@@ -130,10 +151,22 @@ const App: FC = () => {
               )}
             </WrapperRoutes>
           </WrapperPage>
-          {console.log(blockedState)}
           <WrapperModal active={blockedState}>
             <ContentModal active={blockedState}>
-              <p>lala topola</p>
+              <ModalWrapper>
+                <Description bold titlee>
+                  {t('Block.Opps')}
+                </Description>
+                {data?.getReasonOfBlock?.description ? (
+                  <InlineWrapper>
+                    <Description bold>{t('Block.ReasonForBlock')}</Description>
+                    <Description>
+                      {data?.getReasonOfBlock?.description}
+                    </Description>
+                  </InlineWrapper>
+                ) : null}
+                <SadMimirImage />
+              </ModalWrapper>
             </ContentModal>
           </WrapperModal>
         </div>

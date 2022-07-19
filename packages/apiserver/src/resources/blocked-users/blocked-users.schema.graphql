@@ -9,6 +9,7 @@ type BlockedUsers {
 input CreateStateInput {
   person_id: Int!
   state: Boolean!
+  description:String
 }
 
 extend type Query {

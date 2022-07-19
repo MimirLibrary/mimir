@@ -10,6 +10,7 @@
 export interface CreateStateInput {
     person_id: number;
     state: boolean;
+    description?: Nullable<string>;
 }
 
 export interface BookInput {

@@ -511,6 +511,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "description",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "person_id",
             "description": null,
             "type": {

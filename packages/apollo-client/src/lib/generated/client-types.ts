@@ -66,6 +66,7 @@ export type CreatePersonInput = {
 };
 
 export type CreateStateInput = {
+  description?: InputMaybe<Scalars['String']>;
   person_id: Scalars['Int'];
   state: Scalars['Boolean'];
 };
@@ -430,6 +431,7 @@ export type CreateNotificationMutation = { __typename?: 'Mutation', createNotifi
 export type CreateStateMutationVariables = Exact<{
   state: Scalars['Boolean'];
   person_id: Scalars['Int'];
+  description?: InputMaybe<Scalars['String']>;
 }>;
 
 
@@ -691,8 +693,10 @@ export type CreateNotificationMutationHookResult = ReturnType<typeof useCreateNo
 export type CreateNotificationMutationResult = Apollo.MutationResult<CreateNotificationMutation>;
 export type CreateNotificationMutationOptions = Apollo.BaseMutationOptions<CreateNotificationMutation, CreateNotificationMutationVariables>;
 export const CreateStateDocument = gql`
-    mutation CreateState($state: Boolean!, $person_id: Int!) {
-  createState(input: {state: $state, person_id: $person_id}) {
+    mutation CreateState($state: Boolean!, $person_id: Int!, $description: String) {
+  createState(
+    input: {state: $state, person_id: $person_id, description: $description}
+  ) {
     state
   }
 }
@@ -714,6 +718,7 @@ export type CreateStateMutationFn = Apollo.MutationFunction<CreateStateMutation,
  *   variables: {
  *      state: // value for 'state'
  *      person_id: // value for 'person_id'
+ *      description: // value for 'description'
  *   },
  * });
  */

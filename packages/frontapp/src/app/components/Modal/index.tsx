@@ -31,7 +31,7 @@ const StyledCross = styled(Cross)`
   top: 5%;
 `;
 export const ContentModal = styled.div<IStyleProps>`
-  padding: ${dimensions.base_2};
+  padding: ${dimensions.base_3};
   background-color: ${colors.bg_secondary};
   border-radius: ${dimensions.xl_10};
   transform: ${(props) => (props.active ? 'scale(1)' : 'scale(0)')};
