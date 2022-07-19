@@ -37,6 +37,8 @@ const SubTitle = styled.p`
 
 const WrapperInputStyled = styled(WrapperInput)`
   margin: 0;
+  @media (max-width: ${dimensions.tablet_width}) {
+  }
 `;
 const ISBNWrapper = styled.div`
   display: flex;
@@ -48,6 +50,15 @@ const ISBNWrapper = styled.div`
     flex-direction: column;
     align-items: start;
     justify-content: start;
+  }
+`;
+
+const MobileInline = styled.div`
+  display: flex;
+  width: 100%;
+  @media (max-width: ${dimensions.tablet_width}) {
+    flex-direction: row-reverse;
+    margin-top: ${dimensions.base};
   }
 `;
 
@@ -147,16 +158,18 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
                 placeholder="Enter ISBN"
               />
             </WrapperInputStyled>
-            <ButtonScanner
-              type="button"
-              margin={`0 ${dimensions.xs_2}`}
-              onClick={handleShowScanner}
-            />
-            <Button
-              type="submit"
-              value="Find book"
-              disabled={conditionToDisabledBtn}
-            />
+            <MobileInline>
+              <ButtonScanner
+                type="button"
+                margin={`0 ${dimensions.xs_2}`}
+                onClick={handleShowScanner}
+              />
+              <Button
+                type="submit"
+                value="Find book"
+                disabled={conditionToDisabledBtn}
+              />{' '}
+            </MobileInline>
           </ISBNWrapper>
         </form>
       </Wrapper>

@@ -19,6 +19,7 @@ import { ReactComponent as QRCodeSvg } from '../assets/Qrcode.svg';
 import { t } from 'i18next';
 import Scanner from './components/Scanner';
 import useScanner from './hooks/useScanner';
+import { RoutesTypes } from '../utils/routes';
 
 const WrapperPage = styled.main`
   display: flex;
@@ -37,8 +38,11 @@ const WrapperRoutes = styled.div`
     padding: ${dimensions.xs_1};
   }
 `;
+interface IStyledButton {
+  show: boolean;
+}
 
-const StyledButton = styled(Button)`
+const StyledButton = styled(Button)<IStyledButton>`
   height: 56px;
   width: 197px;
   position: absolute;
@@ -52,7 +56,7 @@ const StyledButton = styled(Button)`
     bottom: ${dimensions.base};
     height: ${dimensions.base_3};
     width: ${dimensions.base_3};
-
+    display: ${({ show }) => (show ? 'inline' : 'none')};
     span {
       display: none;
     }
@@ -101,6 +105,9 @@ const App: FC = () => {
                 svgComponent={<QRCodeSvg />}
                 value={t('Search.Scan')}
                 onClick={handleOnClickButton}
+                show={
+                  !(window.location.pathname === RoutesTypes.DONATE_TO_LIBRARY)
+                }
               />
               {isShowScanner && (
                 <Scanner
