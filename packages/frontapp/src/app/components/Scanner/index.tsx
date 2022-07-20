@@ -160,8 +160,8 @@ const Scanner: FC<IScannerProps> = memo(
         audio: false,
         video: {
           facingMode: 'environment',
-          width: 2880,
-          height: 1800,
+          width: 4096,
+          height: 2160,
         },
       };
       const frameSize = dinamicFrameSize(window.innerWidth, window.innerHeight);
