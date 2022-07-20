@@ -108,8 +108,6 @@ const App: FC = () => {
       dispatch(updateBlocked(!blocked));
       setBlocked(!blocked);
     }
-    console.log(data?.getReasonOfBlock?.description);
-    // setDescription(data?.getReasonOfBlock?.description || "")
   }
 
   const handleOnClickButton = useCallback(() => {
