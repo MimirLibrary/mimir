@@ -11,7 +11,7 @@ import {
 } from '@mimir/apollo-client';
 import { ReactComponent as ScrollButtonRight } from '../../assets/ArrowButtonRight.svg';
 import { ReactComponent as ScrollButtonLeft } from '../../assets/ArrowButtonLeft.svg';
-import DonatInfo from '../components/DonatInfo';
+import DonateInfo from '../components/DonateInfo';
 import BackButton from '../components/BackButton';
 
 export const ButtonGroup = styled.div`
@@ -35,10 +35,10 @@ const SuggestionText = styled.h3`
   flex: 1;
 `;
 type BookPreviewProps = {
-  donat?: boolean;
+  donate?: boolean;
 };
 
-const BookPreview = ({ donat }: BookPreviewProps) => {
+const BookPreview = ({ donate }: BookPreviewProps) => {
   const { item_id } = useParams();
   const { id } = useAppSelector((state) => state.user);
   const { data, loading } = useGetMaterialByIdQuery({
@@ -53,9 +53,9 @@ const BookPreview = ({ donat }: BookPreviewProps) => {
   return (
     <>
       <BackButton />
-      {donat ? (
+      {donate ? (
         data?.getMaterialById && (
-          <DonatInfo
+          <DonateInfo
             person_id={id}
             identifier={data.getMaterialById.identifier}
             src={data?.getMaterialById.picture}

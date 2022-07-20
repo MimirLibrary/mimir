@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { dimensions, colors } from '@mimir/ui-kit';
 import { TitleInfo, SubTitle, WrapperInfo } from '../components/DonateBookFlow';
 import { BookHolder } from '../components/BookInfo';
-import OneDonatee from '../components/OneDonatedBookPreview';
+import OneDonator from '../components/OneDonatedBookPreview';
 import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
 
 interface TitleProps {
@@ -55,16 +55,16 @@ const DonatesFromUser = () => {
           <Column flex={1}>State</Column>
         </ColumnHeader>
         {pendingDonates &&
-          pendingDonates?.map((donat: any, index: number) => (
-            <OneDonatee
-              identifier={donat.identifier}
-              title={donat.title}
-              statuses={donat.statuses}
-              key={donat.identifier}
-              id={donat.id}
+          pendingDonates?.map((donate: any, index: number) => (
+            <OneDonator
+              identifier={donate.identifier}
+              title={donate.title}
+              statuses={donate.statuses}
+              key={donate.identifier}
+              id={donate.id}
               index={index}
-              picture={donat.picture}
-              description={donat.description}
+              picture={donate.picture}
+              description={donate.description}
             />
           ))}
       </BookHolder>

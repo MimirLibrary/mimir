@@ -41,7 +41,7 @@ export const useRoutes = (role: string) => {
         />
         <Route
           path={`${RoutesTypes.BOOK_PREVIEW}/:item_id`}
-          element={<BookPreview donat={false} />}
+          element={<BookPreview donate={false} />}
         />
         <Route
           path={`${RoutesTypes.CATEGORY}/:category`}
@@ -63,8 +63,8 @@ export const useRoutes = (role: string) => {
           element={<DonatesFromUser />}
         />
         <Route
-          path={`${RoutesTypes.DONAT_PREVIEW}/:item_id`}
-          element={<BookPreview donat={true} />}
+          path={`${RoutesTypes.DONATE_PREVIEW}/:item_id`}
+          element={<BookPreview donate={true} />}
         />
         <Route path={RoutesTypes.CREATE_NEW_ITEM} element={<CreateNewItem />} />
       </>

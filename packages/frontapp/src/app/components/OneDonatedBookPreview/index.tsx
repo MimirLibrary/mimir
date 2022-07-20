@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import {
   useGetOnePersonQuery,
@@ -11,7 +11,11 @@ import Button from '../Button';
 import { useNavigate } from 'react-router-dom';
 import { dimensions, colors } from '@mimir/ui-kit';
 
-interface OneDonateeProps {
+interface BackgroundProps {
+  GrayBackground?: boolean;
+}
+
+interface OneDonatorProps {
   title: string;
   identifier: string;
   statuses: any;
@@ -31,10 +35,12 @@ const BookImage = styled.img`
   }
 `;
 
-const DonateWrapper = styled.div`
+const DonateWrapper = styled.div<BackgroundProps>`
   display: flex;
   justify-content: center;
   position: relative;
+  background-color: ${({ GrayBackground }) =>
+    !GrayBackground ? colors.light_gray : colors.bg_secondary};
   padding: ${dimensions.base} ${dimensions.xl_2};
   @media (max-width: ${dimensions.phone_width}) {
     padding: 5px;
@@ -107,7 +113,7 @@ const WrapperBtn = styled.div`
   flex: 1;
   width: 150px;
 `;
-const OneDonatee = ({
+const OneDonator = ({
   id,
   identifier,
   picture,
@@ -115,21 +121,21 @@ const OneDonatee = ({
   description,
   statuses,
   index,
-}: OneDonateeProps) => {
+}: OneDonatorProps) => {
   const [returnBook] = useReturnBookMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
-  const acceptBook = async (identifier: string, donatee: number) => {
+  const acceptBook = async (identifier: string, donator: number) => {
     await returnBook({
       variables: {
-        person_id: donatee,
+        person_id: donator,
         identifier: identifier,
       },
     });
   };
   const navigate = useNavigate();
   const handleRedirect = (item_id: number) => {
-    navigate(`/donat/${item_id}`);
+    navigate(`/donate/${item_id}`);
   };
   const lastStatus = statuses.slice(-1)[0];
   const GrayBackground = index % 2 === 0;
@@ -139,13 +145,7 @@ const OneDonatee = ({
     },
   });
   return (
-    <DonateWrapper
-      style={
-        !GrayBackground
-          ? { backgroundColor: `${colors.light_gray}` }
-          : { backgroundColor: `${colors.bg_secondary}` }
-      }
-    >
+    <DonateWrapper GrayBackground={GrayBackground}>
       <FlexContainer onClick={() => handleRedirect(id)}>
         <BookImage
           src={
@@ -175,4 +175,4 @@ const OneDonatee = ({
   );
 };
 
-export default OneDonatee;
+export default OneDonator;
