@@ -109,7 +109,6 @@
     "@prisma/client": "^4.0.0",
     "@react-oauth/google": "^0.2.6",
     "@reduxjs/toolkit": "^1.8.0",
-    "@zxing/browser": "^0.1.1",
     "apollo": "^2.33.10",
     "apollo-server-express": "^3.6.6",
     "axios": "^0.27.2",

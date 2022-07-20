@@ -144,7 +144,7 @@ const Scanner: FC<IScannerProps> = memo(
       () => document.querySelector('#scanner')!,
       []
     );
-    const timeout = 800;
+    const timeout = 30;
 
     useEffect(() => {
       showScanner();
@@ -213,7 +213,8 @@ const Scanner: FC<IScannerProps> = memo(
             canvasElement.height
           );
           const res = await scanImageData(imgData);
-          found(res.pop()?.decode());
+          console.log(res[0]?.decode());
+          found(res[0]?.decode());
           setTimeout(scanFrame, timeout); // repeat
         }
       }
@@ -222,7 +223,7 @@ const Scanner: FC<IScannerProps> = memo(
         viewfinderWidth: number,
         viewfinderHeight: number
       ) {
-        const minEdgePercentage = 0.7; // 70%
+        const minEdgePercentage = 0.82; // 82%
         const minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
         const size = Math.floor(minEdgeSize * minEdgePercentage);
         return {
@@ -276,7 +277,6 @@ const Scanner: FC<IScannerProps> = memo(
           </ScannerFrame>
         </VideoContainer>
         <ScannerCanvas id="scanner-canvas" />
-        <ScannerImage id="scanner-image" />
         <ScannerControls>
           {showInput && (
             <InputMask
