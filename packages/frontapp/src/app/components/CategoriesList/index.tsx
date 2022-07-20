@@ -14,12 +14,15 @@ const CategoriesWrapper = styled.div`
   display: flex;
   gap: ${dimensions.xl_2};
   margin-bottom: 3.5rem;
+  @media (max-width: ${dimensions.tablet_width}) {
+    flex-direction: column;
+  }
 `;
 const Categories = styled.div<IStyledContainerProps>`
   padding: ${dimensions.base_2};
   flex: ${(props) => props.flex};
-  width: 42rem;
-  height: 16rem;
+  max-width: 42rem;
+  min-height: 16rem;
   background-color: ${colors.bg_secondary};
   border-radius: ${dimensions.xs_1};
   top: 13rem;
@@ -28,6 +31,9 @@ const List = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: ${dimensions.xs_2};
+  @media (max-width: ${dimensions.phone_width}) {
+    grid-template-columns: 200px;
+  }
 `;
 const Header = styled.p`
   font-size: 16px;
