@@ -57,6 +57,7 @@
     "@types/jest": "27.0.2",
     "@types/multer": "^1.4.7",
     "@types/node": "16.11.7",
+    "@types/path-browserify": "^1.0.0",
     "@types/react": "17.0.43",
     "@types/react-dom": "17.0.13",
     "@types/react-input-mask": "^3.0.1",
@@ -123,6 +124,7 @@
     "i18next-http-backend": "^1.4.0",
     "lodash": "^4.17.21",
     "metro-config": "0.70.1",
+    "path-browserify": "^1.0.1",
     "pg": "^8.7.3",
     "please-upgrade-node": "^3.2.0",
     "prisma": "^4.0.0",
@@ -141,7 +143,8 @@
     "ts-morph": "^13.0.3",
     "tslib": "^2.0.0",
     "typeorm": "^0.2.45",
-    "typeorm-seeding": "^1.6.1"
+    "typeorm-seeding": "^1.6.1",
+    "zbar.wasm": "^2.1.1"
   },
   "lint-staged": {
     "packages/**/*.{ts,tsx}": [
