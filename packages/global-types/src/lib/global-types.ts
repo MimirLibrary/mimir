@@ -82,6 +82,7 @@ export interface CreateMessageInput {
     title: string;
     message: string;
     material_id?: Nullable<number>;
+    location_id: number;
     person_id: number;
 }
 
@@ -129,6 +130,7 @@ export interface IQuery {
     searchOfMaterials(input: SearchInput): Nullable<Nullable<Material>[]> | Promise<Nullable<Nullable<Material>[]>>;
     getMaterialByIdentifier(input: SearchOneMaterial): Nullable<Material> | Promise<Nullable<Material>>;
     getMessagesByPerson(person_id: string): Nullable<Nullable<Message>[]> | Promise<Nullable<Nullable<Message>[]>>;
+    getAllMessages(location_id: number): Nullable<Message[]> | Promise<Nullable<Message[]>>;
     getNotificationsByPerson(person_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
     getNotificationsByMaterial(material_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
     getOnePerson(id: string): Person | Promise<Person>;
@@ -148,7 +150,7 @@ export interface IMutation {
     removeMaterial(input: RemoveMaterialInput): Material | Promise<Material>;
     updateMaterial(input: UpdateMaterialInput): Material | Promise<Material>;
     donateBook(input: DonateBookInput): Material | Promise<Material>;
-    createMessageForManager(input: CreateMessageInput): MessageUnionResult | Promise<MessageUnionResult>;
+    createMessageForManager(input: CreateMessageInput): Message | Promise<Message>;
     createNotification(input: CreateNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
     removeNotification(input: RemoveNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
     createPerson(input: CreatePersonInput): Person | Promise<Person>;
@@ -183,8 +185,9 @@ export interface Material {
 
 export interface Message {
     id: string;
-    material_id: number;
+    material_id?: Nullable<number>;
     person_id: number;
+    location_id: number;
     created_at: DateTime;
     person: Person;
     material: Material;
@@ -290,5 +293,4 @@ export type Locale = any;
 export type RoutingNumber = any;
 export type AccountNumber = any;
 export type BookUnionResult = Status | Error;
-export type MessageUnionResult = Message | Error;
 type Nullable<T> = T | null;

@@ -109,6 +109,14 @@ export const resources = {
         hAgo: 'h ago',
         dAgo: 'd ago',
       },
+      Notifications: {
+        Managers: {
+          MainTitle: 'Notifications',
+          MainDescription: 'New notifications are waiting for you',
+        },
+        Today: 'Today',
+        Earlier: 'Earlier',
+      },
       PopUps: {
         NotFoundByIdentifier:
           "Sorry, we didn't find a book with that identifier",
@@ -224,6 +232,14 @@ export const resources = {
         CreateNotification: 'Создать уведомление',
         hAgo: 'ч назад',
         dAgo: 'д назад',
+      },
+      Notifications: {
+        Managers: {
+          MainTitle: 'Уведомления',
+          MainDescription: 'Новые уведомления ждут вас',
+        },
+        Today: 'Сегодня',
+        Earlier: 'Ранее',
       },
       PopUps: {
         NotFoundByIdentifier: 'Упс, мы не нашли книгу с таким идентификатором',
