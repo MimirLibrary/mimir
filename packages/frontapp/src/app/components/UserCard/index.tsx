@@ -60,6 +60,7 @@ interface IDescriptionProps {
   titlee?: boolean;
   small?: boolean;
 }
+
 export const Description = styled.p<IDescriptionProps>`
   font-weight: ${({ bold, titlee }) => (bold ? (titlee ? 700 : 500) : 300)};
   font-size: ${({ titlee }) =>
@@ -69,7 +70,7 @@ export const Description = styled.p<IDescriptionProps>`
   margin-bottom: ${({ titlee }) => (titlee ? dimensions.base : null)};
 `;
 
-const Title = styled.h1`
+export const Title = styled.h1`
   font-weight: 700;
   font-size: ${dimensions.xl_2};
   margin-bottom: ${dimensions.base};
@@ -250,13 +251,9 @@ const UserCard = () => {
         statuses={OnePerson?.getOnePerson.statuses as IClaimHistory[]}
         name={OnePerson?.getOnePerson.username as string}
       />
-      {sortedNotifications?.length ? (
-        <>
-          <Title>{t('UserCard.Notifications')}</Title>
-          <Description>{t('UserCard.NotificationsDescription')}</Description>
-          <Notifications notifications={sortedNotifications}></Notifications>
-        </>
-      ) : null}
+      {!!sortedNotifications?.length && (
+        <Notifications notifications={sortedNotifications}></Notifications>
+      )}
       <Modal active={showWarningUnblock} setActive={setShowWarningUnblock}>
         <ErrorMessage
           title={t('Block.Warning')}

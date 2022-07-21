@@ -103,7 +103,10 @@ const AskManagerForm: FC<IPropsAskManagerForm> = ({
   material_id = null,
   setSuccessModal,
 }) => {
-  const { id } = useAppSelector((state) => state.user);
+  const {
+    id,
+    location: { id: location_id },
+  } = useAppSelector((state) => state.user);
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [createMessage, { data }] = useCreateMessageForManagerMutation();
@@ -139,6 +142,7 @@ const AskManagerForm: FC<IPropsAskManagerForm> = ({
           message: description,
           person_id: id,
           material_id,
+          location_id: parseInt(location_id),
         },
       });
     } catch (e) {
