@@ -139,7 +139,7 @@ const Scanner: FC<IScannerProps> = memo(
       () => document.querySelector('#scanner')!,
       []
     );
-    const timeout = 300;
+    const timeout = 500;
 
     useEffect(() => {
       showScanner();
