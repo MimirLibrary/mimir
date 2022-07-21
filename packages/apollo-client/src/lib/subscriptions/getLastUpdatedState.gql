@@ -1,6 +1,0 @@
-subscription GetLastUpdatedState($person_id: ID!) {
-  getLastUpdatedState(person_id: $person_id) {
-    state
-    description
-  }
-}

@@ -2,7 +2,6 @@ mutation CreateState($state: Boolean!, $person_id: Int!, $description: String) {
   createState(
     input: { state: $state, person_id: $person_id, description: $description }
   ) {
-    id
     state
   }
 }
