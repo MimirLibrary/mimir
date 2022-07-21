@@ -16,6 +16,12 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type Author = {
+  __typename?: 'Author';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
 export type BlockedUsers = {
   __typename?: 'BlockedUsers';
   created_at: Scalars['DateTime'];
@@ -90,6 +96,24 @@ export type Error = {
   message: Scalars['String'];
 };
 
+export type IMaterialMeta = {
+  __typename?: 'IMaterialMeta';
+  authors: Array<Maybe<Author>>;
+  cover: Scalars['String'];
+  description: Scalars['String'];
+  meta: Meta;
+  publisher: Publisher;
+  title: Scalars['String'];
+  yearPublishedAt: Scalars['Int'];
+};
+
+export type IMetaOfMaterial = {
+  __typename?: 'IMetaOfMaterial';
+  idType: Scalars['String'];
+  material: IMaterialMeta;
+  value: Scalars['String'];
+};
+
 export type Location = {
   __typename?: 'Location';
   id: Scalars['ID'];
@@ -130,6 +154,19 @@ export type Message = {
 };
 
 export type MessageUnionResult = Error | Message;
+
+export type Meta = {
+  __typename?: 'Meta';
+  ageRestriction: Scalars['String'];
+  coverType: Scalars['String'];
+  dimensions: Scalars['String'];
+  manufacturer: Scalars['String'];
+  mass: Scalars['String'];
+  numberOfPages: Scalars['String'];
+  price: Scalars['String'];
+  series: Scalars['String'];
+  sku: Scalars['String'];
+};
 
 export type Mutation = {
   __typename?: 'Mutation';
@@ -258,6 +295,12 @@ export type ProlongTimeInput = {
   person_id: Scalars['Int'];
 };
 
+export type Publisher = {
+  __typename?: 'Publisher';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
   getAllLocations: Array<Maybe<Location>>;
@@ -266,7 +309,8 @@ export type Query = {
   getAllTakenItems: Array<Maybe<Status>>;
   getBlocksByPerson?: Maybe<Array<Maybe<BlockedUsers>>>;
   getMaterialById: Material;
-  getMaterialByIdentifier?: Maybe<Material>;
+  getMaterialByIdentifier: Material;
+  getMaterialByIdentifierFromMetadata: IMetaOfMaterial;
   getMessagesByPerson?: Maybe<Array<Maybe<Message>>>;
   getNotificationsByMaterial: Array<Maybe<Notification>>;
   getNotificationsByPerson: Array<Maybe<Notification>>;
@@ -295,6 +339,11 @@ export type QueryGetMaterialByIdArgs = {
 
 export type QueryGetMaterialByIdentifierArgs = {
   input: SearchOneMaterial;
+};
+
+
+export type QueryGetMaterialByIdentifierFromMetadataArgs = {
+  identifier: Scalars['String'];
 };
 
 
@@ -345,6 +394,12 @@ export type RemoveMaterialInput = {
 export type RemoveNotificationInput = {
   material_id: Scalars['Int'];
   person_id: Scalars['Int'];
+};
+
+export type ResponseMetadata = {
+  __typename?: 'ResponseMetadata';
+  idType: Scalars['String'];
+  value: Scalars['String'];
 };
 
 export type SearchInput = {
@@ -516,7 +571,14 @@ export type GetMaterialByIdentifierQueryVariables = Exact<{
 }>;
 
 
-export type GetMaterialByIdentifierQuery = { __typename?: 'Query', getMaterialByIdentifier?: { __typename?: 'Material', id: string, picture?: string | null, author: string, title: string, category: string } | null };
+export type GetMaterialByIdentifierQuery = { __typename?: 'Query', getMaterialByIdentifier: { __typename?: 'Material', id: string, picture?: string | null, author: string, title: string, category: string } };
+
+export type GetMaterialFromMetadataQueryVariables = Exact<{
+  identifier: Scalars['String'];
+}>;
+
+
+export type GetMaterialFromMetadataQuery = { __typename?: 'Query', getMaterialByIdentifierFromMetadata: { __typename?: 'IMetaOfMaterial', idType: string, value: string, material: { __typename?: 'IMaterialMeta', title: string, description: string, cover: string, authors: Array<{ __typename?: 'Author', id: string, name: string } | null>, meta: { __typename?: 'Meta', series: string } } } };
 
 export type GetNotificationsByPersonQueryVariables = Exact<{
   person_id: Scalars['Int'];
@@ -1208,6 +1270,54 @@ export function useGetMaterialByIdentifierLazyQuery(baseOptions?: Apollo.LazyQue
 export type GetMaterialByIdentifierQueryHookResult = ReturnType<typeof useGetMaterialByIdentifierQuery>;
 export type GetMaterialByIdentifierLazyQueryHookResult = ReturnType<typeof useGetMaterialByIdentifierLazyQuery>;
 export type GetMaterialByIdentifierQueryResult = Apollo.QueryResult<GetMaterialByIdentifierQuery, GetMaterialByIdentifierQueryVariables>;
+export const GetMaterialFromMetadataDocument = gql`
+    query GetMaterialFromMetadata($identifier: String!) {
+  getMaterialByIdentifierFromMetadata(identifier: $identifier) {
+    idType
+    value
+    material {
+      title
+      description
+      cover
+      authors {
+        id
+        name
+      }
+      meta {
+        series
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetMaterialFromMetadataQuery__
+ *
+ * To run a query within a React component, call `useGetMaterialFromMetadataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMaterialFromMetadataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMaterialFromMetadataQuery({
+ *   variables: {
+ *      identifier: // value for 'identifier'
+ *   },
+ * });
+ */
+export function useGetMaterialFromMetadataQuery(baseOptions: Apollo.QueryHookOptions<GetMaterialFromMetadataQuery, GetMaterialFromMetadataQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMaterialFromMetadataQuery, GetMaterialFromMetadataQueryVariables>(GetMaterialFromMetadataDocument, options);
+      }
+export function useGetMaterialFromMetadataLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMaterialFromMetadataQuery, GetMaterialFromMetadataQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMaterialFromMetadataQuery, GetMaterialFromMetadataQueryVariables>(GetMaterialFromMetadataDocument, options);
+        }
+export type GetMaterialFromMetadataQueryHookResult = ReturnType<typeof useGetMaterialFromMetadataQuery>;
+export type GetMaterialFromMetadataLazyQueryHookResult = ReturnType<typeof useGetMaterialFromMetadataLazyQuery>;
+export type GetMaterialFromMetadataQueryResult = Apollo.QueryResult<GetMaterialFromMetadataQuery, GetMaterialFromMetadataQueryVariables>;
 export const GetNotificationsByPersonDocument = gql`
     query GetNotificationsByPerson($person_id: Int!) {
   getNotificationsByPerson(person_id: $person_id) {

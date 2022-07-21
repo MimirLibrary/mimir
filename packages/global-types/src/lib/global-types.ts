@@ -112,12 +112,6 @@ export interface CreateStatusInput {
     status: string;
 }
 
-export interface RefreshTokenInput {
-    access_token: string;
-    refresh_token: string;
-    person_id: number;
-}
-
 export interface BlockedUsers {
     id: string;
     description: string;
@@ -133,7 +127,8 @@ export interface IQuery {
     getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
     getMaterialById(id: string): Material | Promise<Material>;
     searchOfMaterials(input: SearchInput): Nullable<Nullable<Material>[]> | Promise<Nullable<Nullable<Material>[]>>;
-    getMaterialByIdentifier(input: SearchOneMaterial): Nullable<Material> | Promise<Nullable<Material>>;
+    getMaterialByIdentifier(input: SearchOneMaterial): Material | Promise<Material>;
+    getMaterialByIdentifierFromMetadata(identifier: string): IMetaOfMaterial | Promise<IMetaOfMaterial>;
     getMessagesByPerson(person_id: string): Nullable<Nullable<Message>[]> | Promise<Nullable<Nullable<Message>[]>>;
     getNotificationsByPerson(person_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
     getNotificationsByMaterial(material_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
@@ -160,7 +155,6 @@ export interface IMutation {
     createPerson(input: CreatePersonInput): Person | Promise<Person>;
     updatePersonLocation(input: UpdatePersonLocationInput): Person | Promise<Person>;
     createStatus(input: CreateStatusInput): Status | Promise<Status>;
-    refreshToken(input: RefreshTokenInput): Token | Promise<Token>;
 }
 
 export interface Location {
@@ -186,6 +180,49 @@ export interface Material {
     statuses: Nullable<Status>[];
     notifications: Nullable<Notification>[];
     messages: Nullable<Message>[];
+}
+
+export interface ResponseMetadata {
+    idType: string;
+    value: string;
+}
+
+export interface Author {
+    id: string;
+    name: string;
+}
+
+export interface Publisher {
+    id: string;
+    name: string;
+}
+
+export interface Meta {
+    ageRestriction: string;
+    coverType: string;
+    dimensions: string;
+    manufacturer: string;
+    mass: string;
+    numberOfPages: string;
+    price: string;
+    series: string;
+    sku: string;
+}
+
+export interface IMaterialMeta {
+    authors: Nullable<Author>[];
+    cover: string;
+    description: string;
+    title: string;
+    yearPublishedAt: number;
+    meta: Meta;
+    publisher: Publisher;
+}
+
+export interface IMetaOfMaterial {
+    idType: string;
+    value: string;
+    material: IMaterialMeta;
 }
 
 export interface Message {
@@ -233,15 +270,6 @@ export interface Status {
     created_at: DateTime;
     material: Material;
     person: Person;
-}
-
-export interface Token {
-    id: string;
-    access_token: string;
-    refresh_token: string;
-    created_at: DateTime;
-    expires_at: DateTime;
-    person: Nullable<Person>[];
 }
 
 export interface Error {
