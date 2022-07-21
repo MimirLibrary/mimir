@@ -19,12 +19,7 @@ import { ReactComponent as QRCodeSvg } from '../assets/Qrcode.svg';
 import { t } from 'i18next';
 import Scanner from './components/Scanner';
 import useScanner from './hooks/useScanner';
-import { ContentModal, WrapperModal } from './components/Modal';
-import { useGetReasonOfBlockQuery } from '@mimir/apollo-client';
-import { useAppDispatch } from './hooks/useTypedDispatch';
-import { updateBlocked } from './store/slices/userSlice';
-import { ReactComponent as SadMimir } from '../assets/SadMimir.svg';
-import { Description } from './components/UserCard';
+import BlockPage from './pages/BlockPage';
 
 const WrapperPage = styled.main`
   display: flex;
@@ -65,24 +60,6 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const SadMimirImage = styled(SadMimir)`
-  width: 128px;
-`;
-
-const ModalWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  row-gap: ${dimensions.base};
-  margin: ${dimensions.base_2};
-`;
-
-const InlineWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  column-gap: 4px;
-`;
-
 const App: FC = () => {
   const {
     isShowScanner,
@@ -91,24 +68,9 @@ const App: FC = () => {
     handleOnCloseScanner,
   } = useScanner();
   const { isAuth } = useAuth();
-  const { userRole, blocked, id } = useAppSelector((state) => state.user);
-
-  const dispatch = useAppDispatch();
+  const { userRole, blocked } = useAppSelector((state) => state.user);
   const routes = useRoutes(userRole);
   const [isSidebarActive, setSidebarActive] = useState(false);
-  const [blockedState, setBlocked] = useState<boolean>(blocked);
-  const { data, loading } = useGetReasonOfBlockQuery({
-    variables: { id: String(id) },
-  });
-  if (!loading) {
-    if (
-      blocked !== data?.getReasonOfBlock?.state &&
-      data?.getReasonOfBlock?.state !== undefined
-    ) {
-      dispatch(updateBlocked(!blocked));
-      setBlocked(!blocked);
-    }
-  }
 
   const handleOnClickButton = useCallback(() => {
     setIsShowScanner(true);
@@ -123,50 +85,39 @@ const App: FC = () => {
               isSidebarActive={isSidebarActive}
               setSidebarActive={setSidebarActive}
             />
-            <WrapperRoutes>
-              <SearchWrapper setSidebarActive={setSidebarActive} />
+            {blocked ? (
               <Routes>
-                {routes}
-                <Route path="/notifications" element={<NotificationPage />} />
-                <Route path="*" element={<HomePage />} />
-                <Route path="item/:item_id" element={<BookPreview />} />
-                <Route
-                  path="category/:category"
-                  element={<BooksByCategory />}
-                />
-                <Route path="/category" element={<BooksByCategory />} />
+                <Route path="*" element={<BlockPage />} />
               </Routes>
-              <StyledButton
-                svgComponent={<QRCodeSvg />}
-                value={t('Search.Scan')}
-                onClick={handleOnClickButton}
-              />
-              {isShowScanner && (
-                <Scanner
-                  onDetected={handleOnDetectedScannerRoute}
-                  onClose={handleOnCloseScanner}
+            ) : (
+              <WrapperRoutes>
+                <SearchWrapper setSidebarActive={setSidebarActive} />
+                <Routes>
+                  {routes}
+                  <Route path="/notifications" element={<NotificationPage />} />
+                  <Route path="*" element={<HomePage />} />
+                  <Route path="item/:item_id" element={<BookPreview />} />
+                  <Route
+                    path="category/:category"
+                    element={<BooksByCategory />}
+                  />
+                  <Route path="/category" element={<BooksByCategory />} />
+                  <Route path="/block" element={<BlockPage />} />
+                </Routes>
+                <StyledButton
+                  svgComponent={<QRCodeSvg />}
+                  value={t('Search.Scan')}
+                  onClick={handleOnClickButton}
                 />
-              )}
-            </WrapperRoutes>
+                {isShowScanner && (
+                  <Scanner
+                    onDetected={handleOnDetectedScannerRoute}
+                    onClose={handleOnCloseScanner}
+                  />
+                )}
+              </WrapperRoutes>
+            )}
           </WrapperPage>
-          <WrapperModal active={blockedState}>
-            <ContentModal active={blockedState}>
-              <ModalWrapper>
-                <Description bold titlee>
-                  {t('Block.Opps')}
-                </Description>
-                {data?.getReasonOfBlock?.description ? (
-                  <InlineWrapper>
-                    <Description bold>{t('Block.ReasonForBlock')}</Description>
-                    <Description>
-                      {data?.getReasonOfBlock?.description}
-                    </Description>
-                  </InlineWrapper>
-                ) : null}
-                <SadMimirImage />
-              </ModalWrapper>
-            </ContentModal>
-          </WrapperModal>
         </div>
       ) : (
         <Routes>

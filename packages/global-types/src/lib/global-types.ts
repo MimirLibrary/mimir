@@ -191,7 +191,7 @@ export interface Material {
 
 export interface Message {
     id: string;
-    material_id?: Nullable<number>;
+    material_id: number;
     person_id: number;
     created_at: DateTime;
     person: Person;

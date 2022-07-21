@@ -435,7 +435,7 @@ export type CreateStateMutationVariables = Exact<{
 }>;
 
 
-export type CreateStateMutation = { __typename?: 'Mutation', createState?: { __typename?: 'BlockedUsers', state: boolean } | null };
+export type CreateStateMutation = { __typename?: 'Mutation', createState?: { __typename?: 'BlockedUsers', id: string, state: boolean } | null };
 
 export type DonateBookMutationVariables = Exact<{
   person_id: Scalars['Int'];
@@ -697,6 +697,7 @@ export const CreateStateDocument = gql`
   createState(
     input: {state: $state, person_id: $person_id, description: $description}
   ) {
+    id
     state
   }
 }

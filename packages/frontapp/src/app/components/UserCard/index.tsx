@@ -179,7 +179,7 @@ const UserCard = () => {
     setShowBlockInput(false);
   };
 
-  const ublockSubmit = async () => {
+  const unblockSubmit = async () => {
     await setState({
       variables: {
         person_id: Number(OnePerson?.getOnePerson.id),
@@ -268,7 +268,7 @@ const UserCard = () => {
           titleCancel={t('Cancel')}
           setActive={setShowWarningUnblock}
           titleOption={t('Block.YUnblock')}
-          onSubmitClick={ublockSubmit}
+          onSubmitClick={unblockSubmit}
         />
       </Modal>
       <Modal active={showWarningBlock} setActive={setShowWarningBlock}>
