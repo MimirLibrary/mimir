@@ -112,11 +112,6 @@ const ScannerCanvas = styled.canvas`
   margin: auto;
 `;
 
-const ScannerImage = styled.img`
-  display: none;
-  margin: auto;
-`;
-
 const CloseButton = styled.div`
   display: flex;
   justify-content: center;
@@ -144,7 +139,7 @@ const Scanner: FC<IScannerProps> = memo(
       () => document.querySelector('#scanner')!,
       []
     );
-    const timeout = 30;
+    const timeout = 300;
 
     useEffect(() => {
       showScanner();
@@ -225,7 +220,7 @@ const Scanner: FC<IScannerProps> = memo(
         viewfinderWidth: number,
         viewfinderHeight: number
       ) {
-        const minEdgePercentage = 0.82; // 82%
+        const minEdgePercentage = 0.85; // 85%
         const minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
         const size = Math.floor(minEdgeSize * minEdgePercentage);
         return {
