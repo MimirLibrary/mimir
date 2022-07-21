@@ -40,6 +40,24 @@ export class MaterialResolver {
     return Material.findOneOrFail(id);
   }
 
+  @Query(() => Material)
+  async getMaterialByIdentifier(
+    @Args('input') searchOneMaterial: SearchOneMaterial
+  ) {
+    try {
+      const { identifier, location_id } = searchOneMaterial;
+      const [material] = await Material.find({
+        where: { identifier, location_id },
+      });
+      if (!material) {
+        throw new Error("Material doesn't exist");
+      }
+      return material;
+    } catch (e) {
+      throw new GraphQLError(e.message);
+    }
+  }
+
   @Query(() => [Material])
   @UseGuards(AuthGuard)
   async searchOfMaterials(@Args('input') searchInput: SearchInput) {
