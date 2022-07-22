@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Status } from './status.entity';
 import { RolesTypes } from '@mimir/global-types';
-import { StatusTypes } from '../../utils/types/statusTypes';
+import { StatusTypes } from '@mimir/global-types';
 
 @Injectable()
 export class StatusService {

@@ -1,3 +1,5 @@
+import { t } from 'i18next';
+
 export const periodOfKeeping = 30;
 
 export const getDates = (date: Date) => {

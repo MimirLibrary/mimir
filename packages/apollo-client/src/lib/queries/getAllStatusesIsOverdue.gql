@@ -1,4 +1,4 @@
-query GetAllStatusesIsOverdue($location_id: String!){
+query GetAllStatusesIsOverdue($location_id: String!) {
   getAllStatusesIsOverdue(location_id: $location_id) {
     id
     created_at

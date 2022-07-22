@@ -75,7 +75,7 @@ const WrapperFooter = styled.div`
   bottom: ${dimensions.xs_1};
   justify-content: space-between;
 `;
-const OpenLink = styled.a`
+export const OpenLink = styled(Link)`
   cursor: pointer;
   font-weight: 500;
   color: ${colors.accent_color};
@@ -114,7 +114,7 @@ const InlineWrapper = styled.div`
 `;
 
 interface IFieldOpenLinkProps {
-  secondary?: boolean;
+  secondary?: string;
 }
 const FieldOpenLink = styled(OpenLink)<IFieldOpenLinkProps>`
   font-weight: 400;
@@ -129,10 +129,10 @@ const StyledIcon = styled.img`
   border-radius: 50%;
   border: 2px solid ${colors.bg_secondary};
   position: relative;
-  :nth-child(2) {
+  :nth-of-type(2) {
     left: -16px;
   }
-  :nth-child(3) {
+  :nth-of-type(3) {
     left: -32px;
   }
 `;
@@ -166,11 +166,11 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
                 <InlineFieldDescription>
                   {field.description}
                 </InlineFieldDescription>
-                <InlineOpenLink>
+                <InlineOpenLink to="#">
                   {t('ManagerInfoCard.Link.Answer')}
                 </InlineOpenLink>
               </InlineWrapper>
-              <FieldOpenLink>Ivan Ivanov</FieldOpenLink>
+              <FieldOpenLink to="#">Ivan Ivanov</FieldOpenLink>
             </>
           ) : (
             <>
@@ -179,7 +179,9 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
                 <FieldDescription>
                   {t(`ManagerInfoCard.FieldDescription.${type}`)}
                 </FieldDescription>
-                <FieldOpenLink secondary>Ivan Ivanov</FieldOpenLink>
+                <FieldOpenLink to="#" secondary="true">
+                  Ivan Ivanov
+                </FieldOpenLink>
               </InlineWrapper>
             </>
           )}
@@ -199,7 +201,7 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
             ) : null}
           </InlineWrapper>
         </>
-        <OpenLink onClick={navigateToList}>
+        <OpenLink to={`${RoutesTypes.HOME}/${type.toLowerCase()}`}>
           {t(`ManagerInfoCard.Link.${type}`)}
         </OpenLink>
       </WrapperFooter>

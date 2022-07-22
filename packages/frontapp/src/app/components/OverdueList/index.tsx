@@ -46,6 +46,7 @@ const TitleList = styled.h2`
   line-height: ${dimensions.xl_2};
   color: ${colors.black};
   margin-bottom: ${dimensions.xl_2};
+  margin-top: ${dimensions.xs_2};
 `;
 
 const OverdueList: FC = () => {
@@ -109,22 +110,29 @@ const OverdueList: FC = () => {
             </SubTitle>
           </WrapperOverdueInstructions>
           <TitleList>Today</TitleList>
-          {todayOverdueList &&
+          {todayOverdueList?.length ? (
             todayOverdueList.map((item) => (
               <OverdueCard
                 key={item?.id}
                 item={item}
                 backgroundColor={`${colors.bg_secondary}`}
               />
-            ))}
+            ))
+          ) : (
+            <SubTitle>List is empty</SubTitle>
+          )}
           <TitleList>Earlier</TitleList>
-          {earlierOverdueList?.map((item) => (
-            <OverdueCard
-              key={item?.id}
-              item={item}
-              backgroundColor={`${colors.bg_fields}`}
-            />
-          ))}
+          {earlierOverdueList?.length ? (
+            earlierOverdueList?.map((item) => (
+              <OverdueCard
+                key={item?.id}
+                item={item}
+                backgroundColor={`${colors.bg_fields}`}
+              />
+            ))
+          ) : (
+            <SubTitle>List is empty</SubTitle>
+          )}
         </>
       )}
     </Wrapper>
