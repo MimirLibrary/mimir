@@ -82,6 +82,7 @@ export interface CreateMessageInput {
     title: string;
     message: string;
     material_id?: Nullable<number>;
+    location_id: number;
     person_id: number;
 }
 
@@ -112,17 +113,28 @@ export interface CreateStatusInput {
     status: string;
 }
 
+export interface BlockedUsers {
+    id: string;
+    description: string;
+    state: boolean;
+    created_at: DateTime;
+    person: Person;
+}
+
 export interface IQuery {
+    getBlocksByPerson(person_id: string): Nullable<Nullable<BlockedUsers>[]> | Promise<Nullable<Nullable<BlockedUsers>[]>>;
     getAllTakenItems(person_id: number): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getAllLocations(): Nullable<Location>[] | Promise<Nullable<Location>[]>;
     getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
     getMaterialById(id: string): Material | Promise<Material>;
     searchOfMaterials(input: SearchInput): Nullable<Nullable<Material>[]> | Promise<Nullable<Nullable<Material>[]>>;
     getMaterialByIdentifier(input: SearchOneMaterial): Nullable<Material> | Promise<Nullable<Material>>;
+    getMessagesByPerson(person_id: string): Nullable<Nullable<Message>[]> | Promise<Nullable<Nullable<Message>[]>>;
+    getAllMessages(location_id: number): Nullable<Message[]> | Promise<Nullable<Message[]>>;
     getNotificationsByPerson(person_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
     getNotificationsByMaterial(material_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
     getOnePerson(id: string): Person | Promise<Person>;
-    getAllPersons(): Nullable<Person>[] | Promise<Nullable<Person>[]>;
+    getAllPersons(): Person[] | Promise<Person[]>;
     getStatusesByPerson(person_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getStatusesByMaterial(material_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getAllStatusesIsOverdue(location_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
@@ -139,7 +151,7 @@ export interface IMutation {
     removeMaterial(input: RemoveMaterialInput): Material | Promise<Material>;
     updateMaterial(input: UpdateMaterialInput): Material | Promise<Material>;
     donateBook(input: DonateBookInput): Material | Promise<Material>;
-    createMessageForManager(input: CreateMessageInput): MessageUnionResult | Promise<MessageUnionResult>;
+    createMessageForManager(input: CreateMessageInput): Message | Promise<Message>;
     createNotification(input: CreateNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
     removeNotification(input: RemoveNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
     createPerson(input: CreatePersonInput): Person | Promise<Person>;
@@ -174,8 +186,9 @@ export interface Material {
 
 export interface Message {
     id: string;
-    material_id: number;
+    material_id?: Nullable<number>;
     person_id: number;
+    location_id: number;
     created_at: DateTime;
     person: Person;
     material: Material;
@@ -195,6 +208,7 @@ export interface Notification {
 export interface Person {
     id: string;
     smg_id: string;
+    position: string;
     type: string;
     username: string;
     email: string;
@@ -204,7 +218,8 @@ export interface Person {
     statuses?: Nullable<Nullable<Status>[]>;
     notifications?: Nullable<Nullable<Notification>[]>;
     location: Location;
-    messages: Nullable<Message>[];
+    messages?: Nullable<Nullable<Message>[]>;
+    states?: Nullable<Nullable<BlockedUsers>[]>;
 }
 
 export interface Status {
@@ -279,5 +294,4 @@ export type Locale = any;
 export type RoutingNumber = any;
 export type AccountNumber = any;
 export type BookUnionResult = Status | Error;
-export type MessageUnionResult = Message | Error;
 type Nullable<T> = T | null;

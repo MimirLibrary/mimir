@@ -16,6 +16,15 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type BlockedUsers = {
+  __typename?: 'BlockedUsers';
+  created_at: Scalars['DateTime'];
+  description: Scalars['String'];
+  id: Scalars['ID'];
+  person: Person;
+  state: Scalars['Boolean'];
+};
+
 export type BookInput = {
   identifier: Scalars['String'];
   person_id: Scalars['Int'];
@@ -39,6 +48,7 @@ export type CreateMaterialInput = {
 };
 
 export type CreateMessageInput = {
+  location_id: Scalars['Int'];
   material_id?: InputMaybe<Scalars['Int']>;
   message: Scalars['String'];
   person_id: Scalars['Int'];
@@ -112,22 +122,21 @@ export type Message = {
   __typename?: 'Message';
   created_at: Scalars['DateTime'];
   id: Scalars['ID'];
+  location_id: Scalars['Int'];
   material: Material;
-  material_id: Scalars['Int'];
+  material_id?: Maybe<Scalars['Int']>;
   message: Scalars['String'];
   person: Person;
   person_id: Scalars['Int'];
   title: Scalars['String'];
 };
 
-export type MessageUnionResult = Error | Message;
-
 export type Mutation = {
   __typename?: 'Mutation';
   claimBook: BookUnionResult;
   createLocation?: Maybe<Location>;
   createMaterial: Material;
-  createMessageForManager: MessageUnionResult;
+  createMessageForManager: Message;
   createNotification?: Maybe<Notification>;
   createPerson: Person;
   createStatus: Status;
@@ -234,9 +243,11 @@ export type Person = {
   id: Scalars['ID'];
   location: Location;
   location_id: Scalars['Int'];
-  messages: Array<Maybe<Message>>;
+  messages?: Maybe<Array<Maybe<Message>>>;
   notifications?: Maybe<Array<Maybe<Notification>>>;
+  position: Scalars['String'];
   smg_id: Scalars['String'];
+  states?: Maybe<Array<Maybe<BlockedUsers>>>;
   statuses?: Maybe<Array<Maybe<Status>>>;
   type: Scalars['String'];
   username: Scalars['String'];
@@ -251,11 +262,13 @@ export type Query = {
   __typename?: 'Query';
   getAllLocations: Array<Maybe<Location>>;
   getAllMaterials: Array<Maybe<Material>>;
-  getAllPersons: Array<Maybe<Person>>;
-  getAllStatusesIsOverdue: Array<Maybe<Status>>;
+  getAllMessages?: Maybe<Array<Message>>;
+  getAllPersons: Array<Person>;
   getAllTakenItems: Array<Maybe<Status>>;
+  getBlocksByPerson?: Maybe<Array<Maybe<BlockedUsers>>>;
   getMaterialById: Material;
   getMaterialByIdentifier?: Maybe<Material>;
+  getMessagesByPerson?: Maybe<Array<Maybe<Message>>>;
   getNotificationsByMaterial: Array<Maybe<Notification>>;
   getNotificationsByPerson: Array<Maybe<Notification>>;
   getOnePerson: Person;
@@ -266,13 +279,18 @@ export type Query = {
 };
 
 
-export type QueryGetAllStatusesIsOverdueArgs = {
-  location_id: Scalars['String'];
+export type QueryGetAllMessagesArgs = {
+  location_id: Scalars['Int'];
 };
 
 
 export type QueryGetAllTakenItemsArgs = {
   person_id: Scalars['Int'];
+};
+
+
+export type QueryGetBlocksByPersonArgs = {
+  person_id: Scalars['ID'];
 };
 
 
@@ -283,6 +301,11 @@ export type QueryGetMaterialByIdArgs = {
 
 export type QueryGetMaterialByIdentifierArgs = {
   input: SearchOneMaterial;
+};
+
+
+export type QueryGetMessagesByPersonArgs = {
+  person_id: Scalars['ID'];
 };
 
 
@@ -379,12 +402,13 @@ export type ClaimBookMutation = { __typename?: 'Mutation', claimBook: { __typena
 export type CreateMessageForManagerMutationVariables = Exact<{
   person_id: Scalars['Int'];
   material_id?: InputMaybe<Scalars['Int']>;
+  location_id: Scalars['Int'];
   title: Scalars['String'];
   message: Scalars['String'];
 }>;
 
 
-export type CreateMessageForManagerMutation = { __typename?: 'Mutation', createMessageForManager: { __typename?: 'Error', message: string } | { __typename?: 'Message', message: string, title: string } };
+export type CreateMessageForManagerMutation = { __typename?: 'Mutation', createMessageForManager: { __typename?: 'Message', message: string, title: string } };
 
 export type CreateNotificationMutationVariables = Exact<{
   input: CreateNotificationInput;
@@ -474,17 +498,17 @@ export type GetAllMaterialsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAllMaterialsQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', author: string, category: string, created_at: any, id: string, id_type: string, identifier: string, picture?: string | null, title: string, type: string, updated_at: any, notifications: Array<{ __typename?: 'Notification', material_id: number, person_id: number } | null>, statuses: Array<{ __typename?: 'Status', status: string, person_id: number } | null> } | null> };
 
-export type GetAllPersonsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetAllPersonsQuery = { __typename?: 'Query', getAllPersons: Array<{ __typename?: 'Person', id: string, statuses?: Array<{ __typename?: 'Status', id: string, material_id: number, created_at: any, status: string } | null> | null } | null> };
-
-export type GetAllStatusesIsOverdueQueryVariables = Exact<{
-  location_id: Scalars['String'];
+export type GetAllMessagesQueryVariables = Exact<{
+  location_id: Scalars['Int'];
 }>;
 
 
-export type GetAllStatusesIsOverdueQuery = { __typename?: 'Query', getAllStatusesIsOverdue: Array<{ __typename?: 'Status', id: string, created_at: any, material: { __typename?: 'Material', id: string, title: string }, person: { __typename?: 'Person', id: string, username: string } } | null> };
+export type GetAllMessagesQuery = { __typename?: 'Query', getAllMessages?: Array<{ __typename?: 'Message', id: string, created_at: any, title: string, message: string, person: { __typename?: 'Person', id: string, username: string } }> | null };
+
+export type GetAllPersonsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllPersonsQuery = { __typename?: 'Query', getAllPersons: Array<{ __typename?: 'Person', id: string, username: string, avatar: string, statuses?: Array<{ __typename?: 'Status', id: string, material_id: number, created_at: any, status: string } | null> | null }> };
 
 export type GetAllTakenItemsQueryVariables = Exact<{
   person_id: Scalars['Int'];
@@ -514,6 +538,13 @@ export type GetNotificationsByPersonQueryVariables = Exact<{
 
 
 export type GetNotificationsByPersonQuery = { __typename?: 'Query', getNotificationsByPerson: Array<{ __typename?: 'Notification', id: string, material_id: number, person_id: number } | null> };
+
+export type GetOnePersonQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetOnePersonQuery = { __typename?: 'Query', getOnePerson: { __typename?: 'Person', id: string, username: string, email: string, position: string, avatar: string, statuses?: Array<{ __typename?: 'Status', id: string, material_id: number, status: string, created_at: any, material: { __typename?: 'Material', id: string, picture?: string | null, title: string, author: string, category: string } } | null> | null, states?: Array<{ __typename?: 'BlockedUsers', state: boolean, id: string, description: string, created_at: any } | null> | null, messages?: Array<{ __typename?: 'Message', id: string, material_id?: number | null, title: string, message: string, created_at: any } | null> | null } };
 
 export type SearchOfMaterialsQueryVariables = Exact<{
   search: Scalars['String'];
@@ -565,17 +596,12 @@ export type ClaimBookMutationHookResult = ReturnType<typeof useClaimBookMutation
 export type ClaimBookMutationResult = Apollo.MutationResult<ClaimBookMutation>;
 export type ClaimBookMutationOptions = Apollo.BaseMutationOptions<ClaimBookMutation, ClaimBookMutationVariables>;
 export const CreateMessageForManagerDocument = gql`
-    mutation CreateMessageForManager($person_id: Int!, $material_id: Int, $title: String!, $message: String!) {
+    mutation CreateMessageForManager($person_id: Int!, $material_id: Int, $location_id: Int!, $title: String!, $message: String!) {
   createMessageForManager(
-    input: {person_id: $person_id, material_id: $material_id, title: $title, message: $message}
+    input: {person_id: $person_id, material_id: $material_id, location_id: $location_id, title: $title, message: $message}
   ) {
-    ... on Message {
-      message
-      title
-    }
-    ... on Error {
-      message
-    }
+    message
+    title
   }
 }
     `;
@@ -596,6 +622,7 @@ export type CreateMessageForManagerMutationFn = Apollo.MutationFunction<CreateMe
  *   variables: {
  *      person_id: // value for 'person_id'
  *      material_id: // value for 'material_id'
+ *      location_id: // value for 'location_id'
  *      title: // value for 'title'
  *      message: // value for 'message'
  *   },
@@ -1013,10 +1040,54 @@ export function useGetAllMaterialsLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetAllMaterialsQueryHookResult = ReturnType<typeof useGetAllMaterialsQuery>;
 export type GetAllMaterialsLazyQueryHookResult = ReturnType<typeof useGetAllMaterialsLazyQuery>;
 export type GetAllMaterialsQueryResult = Apollo.QueryResult<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>;
+export const GetAllMessagesDocument = gql`
+    query GetAllMessages($location_id: Int!) {
+  getAllMessages(location_id: $location_id) {
+    id
+    created_at
+    title
+    message
+    person {
+      id
+      username
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAllMessagesQuery__
+ *
+ * To run a query within a React component, call `useGetAllMessagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllMessagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllMessagesQuery({
+ *   variables: {
+ *      location_id: // value for 'location_id'
+ *   },
+ * });
+ */
+export function useGetAllMessagesQuery(baseOptions: Apollo.QueryHookOptions<GetAllMessagesQuery, GetAllMessagesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllMessagesQuery, GetAllMessagesQueryVariables>(GetAllMessagesDocument, options);
+      }
+export function useGetAllMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllMessagesQuery, GetAllMessagesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllMessagesQuery, GetAllMessagesQueryVariables>(GetAllMessagesDocument, options);
+        }
+export type GetAllMessagesQueryHookResult = ReturnType<typeof useGetAllMessagesQuery>;
+export type GetAllMessagesLazyQueryHookResult = ReturnType<typeof useGetAllMessagesLazyQuery>;
+export type GetAllMessagesQueryResult = Apollo.QueryResult<GetAllMessagesQuery, GetAllMessagesQueryVariables>;
 export const GetAllPersonsDocument = gql`
     query GetAllPersons {
   getAllPersons {
     id
+    username
+    avatar
     statuses {
       id
       material_id
@@ -1053,50 +1124,6 @@ export function useGetAllPersonsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetAllPersonsQueryHookResult = ReturnType<typeof useGetAllPersonsQuery>;
 export type GetAllPersonsLazyQueryHookResult = ReturnType<typeof useGetAllPersonsLazyQuery>;
 export type GetAllPersonsQueryResult = Apollo.QueryResult<GetAllPersonsQuery, GetAllPersonsQueryVariables>;
-export const GetAllStatusesIsOverdueDocument = gql`
-    query GetAllStatusesIsOverdue($location_id: String!) {
-  getAllStatusesIsOverdue(location_id: $location_id) {
-    id
-    created_at
-    material {
-      id
-      title
-    }
-    person {
-      id
-      username
-    }
-  }
-}
-    `;
-
-/**
- * __useGetAllStatusesIsOverdueQuery__
- *
- * To run a query within a React component, call `useGetAllStatusesIsOverdueQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAllStatusesIsOverdueQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetAllStatusesIsOverdueQuery({
- *   variables: {
- *      location_id: // value for 'location_id'
- *   },
- * });
- */
-export function useGetAllStatusesIsOverdueQuery(baseOptions: Apollo.QueryHookOptions<GetAllStatusesIsOverdueQuery, GetAllStatusesIsOverdueQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetAllStatusesIsOverdueQuery, GetAllStatusesIsOverdueQueryVariables>(GetAllStatusesIsOverdueDocument, options);
-      }
-export function useGetAllStatusesIsOverdueLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllStatusesIsOverdueQuery, GetAllStatusesIsOverdueQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetAllStatusesIsOverdueQuery, GetAllStatusesIsOverdueQueryVariables>(GetAllStatusesIsOverdueDocument, options);
-        }
-export type GetAllStatusesIsOverdueQueryHookResult = ReturnType<typeof useGetAllStatusesIsOverdueQuery>;
-export type GetAllStatusesIsOverdueLazyQueryHookResult = ReturnType<typeof useGetAllStatusesIsOverdueLazyQuery>;
-export type GetAllStatusesIsOverdueQueryResult = Apollo.QueryResult<GetAllStatusesIsOverdueQuery, GetAllStatusesIsOverdueQueryVariables>;
 export const GetAllTakenItemsDocument = gql`
     query GetAllTakenItems($person_id: Int!) {
   getAllTakenItems(person_id: $person_id) {
@@ -1270,6 +1297,71 @@ export function useGetNotificationsByPersonLazyQuery(baseOptions?: Apollo.LazyQu
 export type GetNotificationsByPersonQueryHookResult = ReturnType<typeof useGetNotificationsByPersonQuery>;
 export type GetNotificationsByPersonLazyQueryHookResult = ReturnType<typeof useGetNotificationsByPersonLazyQuery>;
 export type GetNotificationsByPersonQueryResult = Apollo.QueryResult<GetNotificationsByPersonQuery, GetNotificationsByPersonQueryVariables>;
+export const GetOnePersonDocument = gql`
+    query GetOnePerson($id: ID!) {
+  getOnePerson(id: $id) {
+    id
+    username
+    email
+    position
+    avatar
+    statuses {
+      id
+      material_id
+      status
+      created_at
+      material {
+        id
+        picture
+        title
+        author
+        category
+      }
+    }
+    states {
+      state
+      id
+      description
+      created_at
+    }
+    messages {
+      id
+      material_id
+      title
+      message
+      created_at
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetOnePersonQuery__
+ *
+ * To run a query within a React component, call `useGetOnePersonQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOnePersonQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetOnePersonQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetOnePersonQuery(baseOptions: Apollo.QueryHookOptions<GetOnePersonQuery, GetOnePersonQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetOnePersonQuery, GetOnePersonQueryVariables>(GetOnePersonDocument, options);
+      }
+export function useGetOnePersonLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOnePersonQuery, GetOnePersonQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetOnePersonQuery, GetOnePersonQueryVariables>(GetOnePersonDocument, options);
+        }
+export type GetOnePersonQueryHookResult = ReturnType<typeof useGetOnePersonQuery>;
+export type GetOnePersonLazyQueryHookResult = ReturnType<typeof useGetOnePersonLazyQuery>;
+export type GetOnePersonQueryResult = Apollo.QueryResult<GetOnePersonQuery, GetOnePersonQueryVariables>;
 export const SearchOfMaterialsDocument = gql`
     query SearchOfMaterials($search: String!, $location: String!) {
   searchOfMaterials(input: {search: $search, location: $location}) {

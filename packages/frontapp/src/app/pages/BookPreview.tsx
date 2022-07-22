@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import BookInfo from '../components/BookInfo';
 import AllBooksList from '../components/AllBooksList';
 import styled from '@emotion/styled';
@@ -11,19 +11,7 @@ import {
 } from '@mimir/apollo-client';
 import { ReactComponent as ScrollButtonRight } from '../../assets/ArrowButtonRight.svg';
 import { ReactComponent as ScrollButtonLeft } from '../../assets/ArrowButtonLeft.svg';
-import { ReactComponent as ArrowBack } from '../../assets/ArrowUp2.svg';
-
-export const GoBack = styled.a`
-  font-weight: 600;
-  font-size: ${dimensions.base};
-`;
-
-export const ButtonWrapper = styled.div`
-  margin: 3rem 0 ${dimensions.xl_3} 0;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-`;
+import BackButton from '../components/BackButton';
 
 export const ButtonGroup = styled.div`
   display: flex;
@@ -48,7 +36,6 @@ const SuggestionText = styled.h3`
 
 const BookPreview = () => {
   const { item_id } = useParams();
-  const navigate = useNavigate();
   const { id } = useAppSelector((state) => state.user);
   const { data, loading } = useGetMaterialByIdQuery({
     variables: { id: item_id! },
@@ -57,18 +44,11 @@ const BookPreview = () => {
 
   const lastStatusAnotherPerson = data?.getMaterialById.statuses.slice(-1)[0];
 
-  const handleGoBack = () => {
-    navigate(-1);
-  };
-
   if (loading) return <h1>Loading...</h1>;
 
   return (
     <>
-      <ButtonWrapper onClick={handleGoBack}>
-        <ArrowBack />
-        <GoBack>Back</GoBack>
-      </ButtonWrapper>
+      <BackButton />
       {data?.getMaterialById && (
         <BookInfo
           person_id={id}

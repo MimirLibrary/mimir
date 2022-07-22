@@ -1,11 +1,10 @@
 import { ChangeEvent, FC, memo, useEffect, useMemo } from 'react';
-import { BrowserMultiFormatReader } from '@zxing/browser';
+import { scanImageData } from 'zbar.wasm';
 import styled from '@emotion/styled';
 import { createPortal } from 'react-dom';
 import { colors, dimensions } from '@mimir/ui-kit';
 import InputMask from 'react-input-mask';
 import { ReactComponent as CloseSvg } from '../../../assets/Close.svg';
-import { Result } from '@zxing/library';
 
 export interface IScannerProps {
   onDetected: (code: string) => void;
@@ -44,11 +43,14 @@ const VideoContainer = styled.div`
   width: 100vw;
   height: 100vh;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   video {
-    width: 100%;
+    /* width: 100%; */
     height: 100%;
-    object-fit: cover;
+    /* object-fit: cover; */
   }
 `;
 
@@ -107,13 +109,6 @@ const ScannerFrame = styled.div`
 
 const ScannerCanvas = styled.canvas`
   display: none;
-  width: 100%;
-  margin: auto;
-`;
-
-const ScannerImage = styled.img`
-  display: none;
-  width: 100%;
   margin: auto;
 `;
 
@@ -144,8 +139,7 @@ const Scanner: FC<IScannerProps> = memo(
       () => document.querySelector('#scanner')!,
       []
     );
-    const barcodeReader = new BrowserMultiFormatReader();
-    const timeout = 1000; // time between frames
+    const timeout = 500;
 
     useEffect(() => {
       showScanner();
@@ -155,26 +149,30 @@ const Scanner: FC<IScannerProps> = memo(
       )!;
       const canvasElement =
         document.querySelector<HTMLCanvasElement>('#scanner-canvas')!;
-      const imageElement =
-        document.querySelector<HTMLImageElement>('#scanner-image')!;
       const frameElement =
         document.querySelector<HTMLDivElement>('#scanner-frame')!;
-
-      const constraints = { video: true };
+      const constraints: MediaStreamConstraints = {
+        audio: false,
+        video: {
+          facingMode: 'environment',
+          width: 4096,
+          height: 2160,
+        },
+      };
       const frameSize = dinamicFrameSize(window.innerWidth, window.innerHeight);
 
       navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
         videoStream = stream;
 
-        // handle play callback
         videoElement.addEventListener('play', () => {
-          // get video's intrinsic width and height, eg 640x480,
-          // and set canvas to it to match.
+          const canvasSize = dinamicFrameSize(
+            videoElement.videoWidth,
+            videoElement.videoHeight
+          );
 
-          canvasElement.width = frameSize.width;
-          canvasElement.height = frameSize.height;
+          canvasElement.width = canvasSize.width;
+          canvasElement.height = canvasSize.height;
 
-          // set position of orange frame in video
           frameElement.style.width = `${frameSize.width}px`;
           frameElement.style.height = `${frameSize.height}px`;
           frameElement.style.left = `${
@@ -184,44 +182,37 @@ const Scanner: FC<IScannerProps> = memo(
             (window.innerHeight - frameSize.height) / 2
           }px`;
 
-          // start the barcode reader process
           scanFrame();
         });
 
         videoElement.srcObject = stream;
       });
 
-      function scanFrame() {
+      async function scanFrame() {
         if (videoStream) {
-          // copy the video stream image onto the canvas
-          canvasElement.getContext('2d')!.drawImage(
+          const ctx = canvasElement.getContext('2d')!;
+          ctx.drawImage(
             videoElement,
-            // source x, y, w, h:
-            (videoElement.videoWidth - frameSize.width) / 2,
-            (videoElement.videoHeight - frameSize.height) / 2,
-            frameSize.width,
-            frameSize.height,
-            // dest x, y, w, h:
+            (videoElement.videoWidth - canvasElement.width) / 2,
+            (videoElement.videoHeight - canvasElement.height) / 2,
+            canvasElement.width,
+            canvasElement.height,
             0,
             0,
             canvasElement.width,
             canvasElement.height
           );
-          // convert the canvas image to an image blob and stick it in an image element
-          canvasElement.toBlob((blob) => {
-            const url = URL.createObjectURL(blob!);
-            // when the image is loaded, feed it to the barcode reader
-            imageElement.onload = async () => {
-              barcodeReader
-                .decodeFromImageUrl(url)
-                .then(found) // calls onDetected with the barcode string
-                .catch(notFound)
-                .finally(() => releaseMemory(imageElement));
-              imageElement.onload = null;
-              setTimeout(scanFrame, timeout); // repeat
-            };
-            imageElement.src = url; // load the image blob
-          });
+
+          const imgData = ctx.getImageData(
+            0,
+            0,
+            canvasElement.width,
+            canvasElement.height
+          );
+          const res = await scanImageData(imgData);
+          console.log(res[0]?.decode());
+          found(res[0]?.decode());
+          setTimeout(scanFrame, timeout); // repeat
         }
       }
 
@@ -229,7 +220,7 @@ const Scanner: FC<IScannerProps> = memo(
         viewfinderWidth: number,
         viewfinderHeight: number
       ) {
-        const minEdgePercentage = 0.8; // 80%
+        const minEdgePercentage = 0.85; // 85%
         const minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
         const size = Math.floor(minEdgeSize * minEdgePercentage);
         return {
@@ -239,19 +230,10 @@ const Scanner: FC<IScannerProps> = memo(
       }
     }, []);
 
-    function found(result: Result) {
-      onDetected(result.getText());
+    function found(result?: string) {
+      if (!result) return;
+      onDetected(result);
       closeScanner();
-    }
-
-    function notFound(err: Error) {
-      if (err.name !== 'NotFoundException') {
-        console.error(err);
-      }
-    }
-
-    function releaseMemory(imageElement: HTMLImageElement) {
-      URL.revokeObjectURL(imageElement.src); // release image blob memory
     }
 
     function closeScanner() {
@@ -292,7 +274,6 @@ const Scanner: FC<IScannerProps> = memo(
           </ScannerFrame>
         </VideoContainer>
         <ScannerCanvas id="scanner-canvas" />
-        <ScannerImage id="scanner-image" />
         <ScannerControls>
           {showInput && (
             <InputMask

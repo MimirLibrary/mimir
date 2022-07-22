@@ -2,8 +2,9 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { useGetAllPersonsQuery } from '@mimir/apollo-client';
 import { t } from 'i18next';
-import SingleUser, { IClaimHistory } from './SingleUser';
+import SingleUser from './SingleUser';
 import { dimensions } from '@mimir/ui-kit';
+import { IClaimHistory } from '../../models/helperFunctions/claimHistory';
 
 const ReadersWrapper = styled.div`
   display: flex;
@@ -36,7 +37,6 @@ const Description = styled.p`
 const UserList = () => {
   const { data, loading } = useGetAllPersonsQuery();
   if (loading) return <h1>{t('Loading')}</h1>;
-
   return (
     <ReadersWrapper>
       <Title>{t('Readers.Title')}</Title>
@@ -44,6 +44,8 @@ const UserList = () => {
       <ListWrapper>
         {data?.getAllPersons.map((person) => (
           <SingleUser
+            avatar={person.avatar}
+            name={person.username}
             id={person?.id as string}
             statuses={person?.statuses as IClaimHistory[]}
           />

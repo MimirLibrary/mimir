@@ -5,6 +5,7 @@ import { colors, dimensions } from '@mimir/ui-kit';
 import { t } from 'i18next';
 import { useNavigate } from 'react-router-dom';
 import { RoutesTypes } from '../../../utils/routes';
+import { Link } from 'react-router-dom';
 
 export interface IField {
   title: string;
@@ -128,10 +129,10 @@ const StyledIcon = styled.img`
   border-radius: 50%;
   border: 2px solid ${colors.bg_secondary};
   position: relative;
-  :nth-of-type(2) {
+  :nth-child(2) {
     left: -16px;
   }
-  :nth-of-type(3) {
+  :nth-child(3) {
     left: -32px;
   }
 `;

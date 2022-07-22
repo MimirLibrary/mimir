@@ -9,11 +9,22 @@ services:
       - '5432:5432'
 
   web-srv:
-    image: nginx
+    image: nginx:latest
     ports:
       - '80:80'
+      - '443:443'
+    restart: always
     volumes:
+      - ./nginx/conf:/etc/nginx/conf.d/:ro
+      - ./certbot/www:/var/www/certbot/:ro
+      - ./certbot/conf/:/etc/letsencrypt/:ro
       - /srv/www:/usr/share/nginx/html:ro
+
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/www:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
 
 volumes:
   db:

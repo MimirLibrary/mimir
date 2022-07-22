@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { readFileSync } from 'fs';
 import { DbService } from './db.service';
 import { OzbyService } from './ozby.service';
 
@@ -13,11 +12,11 @@ export class ReaderService {
       console.log('Matched!');
       return existing;
     }
-    const j = require('./ozby.service/snapshots/2022-07-06--1/result.json');
+    // const j = require('./ozby.service/snapshots/2022-07-06--1/result.json');
 
     const content = await this.ozbyReader.readData(isbn);
     const obj = this.ozbyReader.parseData(content);
-    this.db.syncMaterial(isbn, obj);
+    await this.db.syncMaterial(isbn, obj);
     return obj;
   }
 }

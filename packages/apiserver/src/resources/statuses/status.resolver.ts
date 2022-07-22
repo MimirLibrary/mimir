@@ -1,9 +1,18 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { Status } from './status.entity';
 import { BadRequestException, UseGuards } from '@nestjs/common';
 import { CreateStatusInput } from '@mimir/global-types';
 import { AuthGuard } from '../../auth/auth.guard';
 import { StatusService } from './status.service';
+import { Person } from '../persons/person.entity';
+import { Material } from '../materials/material.entity';
 
 @Resolver('Status')
 export class StatusResolver {
@@ -35,5 +44,10 @@ export class StatusResolver {
     } catch (e) {
       throw new BadRequestException();
     }
+  }
+  @ResolveField(() => Material)
+  async material(@Parent() statuses: Status) {
+    const { material_id } = statuses;
+    return Material.findOne({ where: { id: material_id } });
   }
 }

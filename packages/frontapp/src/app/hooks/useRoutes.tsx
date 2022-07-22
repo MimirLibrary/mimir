@@ -13,6 +13,7 @@ import CreateNewItem from '../pages/CreateNewItem';
 import SearchByNameOrAuthorPage from '../pages/SearchByName';
 import DonateToLibrary from '../pages/DonateToLibrary';
 import OverduePage from '../pages/OverduePage';
+import UserCard from '../components/UserCard';
 
 export const useRoutes = (role: string) => {
   if (role === RolesTypes.READER) {
@@ -44,6 +45,7 @@ export const useRoutes = (role: string) => {
       <>
         <Route path={RoutesTypes.HOME} element={<HomePage />} />
         <Route path={RoutesTypes.READERS} element={<Readers />} />
+        <Route path={RoutesTypes.READERS + '/:id'} element={<UserCard />} />
         <Route path={RoutesTypes.BOOKS_STUFF} element={<BooksStuff />} />
         <Route path={RoutesTypes.SETTINGS} element={<SettingsPage />} />
         <Route
