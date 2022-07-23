@@ -394,7 +394,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
           </WrapperMainInfo>
           <WrapperDescription>
             <StyledDescription htmlFor="description">
-              Description
+              Description*
             </StyledDescription>
             <StyledTextArea
               id="description"
