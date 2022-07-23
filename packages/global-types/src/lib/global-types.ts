@@ -7,6 +7,12 @@
 
 /* tslint:disable */
 /* eslint-disable */
+export interface CreateStateInput {
+    person_id: number;
+    state: boolean;
+    description?: Nullable<string>;
+}
+
 export interface BookInput {
     identifier: string;
     person_id: number;
@@ -115,7 +121,7 @@ export interface CreateStatusInput {
 
 export interface BlockedUsers {
     id: string;
-    description: string;
+    description?: Nullable<string>;
     state: boolean;
     created_at: DateTime;
     person: Person;
@@ -123,6 +129,7 @@ export interface BlockedUsers {
 
 export interface IQuery {
     getBlocksByPerson(person_id: string): Nullable<Nullable<BlockedUsers>[]> | Promise<Nullable<Nullable<BlockedUsers>[]>>;
+    getReasonOfBlock(person_id: string): Nullable<BlockedUsers> | Promise<Nullable<BlockedUsers>>;
     getAllTakenItems(person_id: number): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getAllLocations(): Nullable<Location>[] | Promise<Nullable<Location>[]>;
     getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
@@ -141,6 +148,7 @@ export interface IQuery {
 }
 
 export interface IMutation {
+    createState(input: CreateStateInput): Nullable<BlockedUsers> | Promise<Nullable<BlockedUsers>>;
     claimBook(input?: Nullable<BookInput>): BookUnionResult | Promise<BookUnionResult>;
     returnItem(input?: Nullable<BookInput>): BookUnionResult | Promise<BookUnionResult>;
     prolongClaimPeriod(input?: Nullable<ProlongTimeInput>): BookUnionResult | Promise<BookUnionResult>;

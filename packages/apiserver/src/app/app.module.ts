@@ -30,6 +30,9 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { BlockedUsersModule } from '../resources/blocked-users/blocked-users.module';
 import { BlockedUsers } from '../resources/blocked-users/blocked-users.entity';
 import { AuthModule } from '../auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from '../auth/auth.guard';
+import { BlockedUsersGuard } from '../resources/blocked-users/blocked-users.guard';
 
 console.log(__dirname);
 @Module({
@@ -75,6 +78,11 @@ console.log(__dirname);
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, AppResolver],
+  providers: [
+    AppService,
+    AppResolver,
+    { provide: APP_GUARD, useClass: AuthGuard },
+    { provide: APP_GUARD, useClass: BlockedUsersGuard },
+  ],
 })
 export class AppModule {}

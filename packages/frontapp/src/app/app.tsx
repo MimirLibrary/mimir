@@ -19,6 +19,7 @@ import { ReactComponent as QRCodeSvg } from '../assets/Qrcode.svg';
 import { t } from 'i18next';
 import Scanner from './components/Scanner';
 import useScanner from './hooks/useScanner';
+import BlockPage from './pages/BlockPage';
 
 const WrapperPage = styled.main`
   display: flex;
@@ -67,7 +68,7 @@ const App: FC = () => {
     handleOnCloseScanner,
   } = useScanner();
   const { isAuth } = useAuth();
-  const { userRole } = useAppSelector((state) => state.user);
+  const { userRole, blocked } = useAppSelector((state) => state.user);
   const routes = useRoutes(userRole);
   const [isSidebarActive, setSidebarActive] = useState(false);
 
@@ -84,31 +85,38 @@ const App: FC = () => {
               isSidebarActive={isSidebarActive}
               setSidebarActive={setSidebarActive}
             />
-            <WrapperRoutes>
-              <SearchWrapper setSidebarActive={setSidebarActive} />
+            {blocked ? (
               <Routes>
-                {routes}
-                <Route path="/notifications" element={<NotificationPage />} />
-                <Route path="*" element={<HomePage />} />
-                <Route path="item/:item_id" element={<BookPreview />} />
-                <Route
-                  path="category/:category"
-                  element={<BooksByCategory />}
-                />
-                <Route path="/category" element={<BooksByCategory />} />
+                <Route path="*" element={<BlockPage />} />
               </Routes>
-              <StyledButton
-                svgComponent={<QRCodeSvg />}
-                value={t('Search.Scan')}
-                onClick={handleOnClickButton}
-              />
-              {isShowScanner && (
-                <Scanner
-                  onDetected={handleOnDetectedScannerRoute}
-                  onClose={handleOnCloseScanner}
+            ) : (
+              <WrapperRoutes>
+                <SearchWrapper setSidebarActive={setSidebarActive} />
+                <Routes>
+                  {routes}
+                  <Route path="/notifications" element={<NotificationPage />} />
+                  <Route path="*" element={<HomePage />} />
+                  <Route path="item/:item_id" element={<BookPreview />} />
+                  <Route
+                    path="category/:category"
+                    element={<BooksByCategory />}
+                  />
+                  <Route path="/category" element={<BooksByCategory />} />
+                  <Route path="/block" element={<BlockPage />} />
+                </Routes>
+                <StyledButton
+                  svgComponent={<QRCodeSvg />}
+                  value={t('Search.Scan')}
+                  onClick={handleOnClickButton}
                 />
-              )}
-            </WrapperRoutes>
+                {isShowScanner && (
+                  <Scanner
+                    onDetected={handleOnDetectedScannerRoute}
+                    onClose={handleOnCloseScanner}
+                  />
+                )}
+              </WrapperRoutes>
+            )}
           </WrapperPage>
         </div>
       ) : (

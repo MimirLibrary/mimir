@@ -58,7 +58,7 @@ const InputTitle = styled.input`
   }
 `;
 
-const InputDescription = styled.textarea`
+export const InputDescription = styled.textarea`
   width: 100%;
   resize: none;
   height: 11.25rem;
@@ -70,6 +70,7 @@ const InputDescription = styled.textarea`
   font-weight: 300;
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
+  margin-bottom: ${dimensions.base};
   :focus {
     border: 1px solid ${colors.accent_color};
   }
@@ -83,7 +84,6 @@ const WrapperButtons = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-top: ${dimensions.base_2};
   button {
     :first-of-type {
       margin-right: ${dimensions.base};

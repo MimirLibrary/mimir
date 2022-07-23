@@ -71,6 +71,7 @@ interface IPropsErrorMessage {
   message: string | null;
   title: string;
   onClick?: () => void;
+  onSubmitClick?: () => void;
   titleCancel: string;
   activeAskManager?: boolean;
   showContentOfDonate?: () => void;
@@ -86,6 +87,7 @@ const ErrorMessage: FC<IPropsErrorMessage> = ({
   activeAskManager = true,
   showContentOfDonate,
   titleOption,
+  onSubmitClick,
 }) => {
   const closeModal = () => {
     setActive(false);
@@ -107,12 +109,15 @@ const ErrorMessage: FC<IPropsErrorMessage> = ({
           </div>
         </WrapperInfo>
         <WrapperButtons active={activeAskManager}>
-          <StyledButton value={titleOption || 'Ok'} onClick={closeModal} />
+          <StyledButton
+            value={titleOption || 'Ok'}
+            onClick={onSubmitClick ? onSubmitClick : closeModal}
+          />
           {activeAskManager && (
             <StyledButton
               value={titleCancel || 'Cancel'}
               transparent
-              onClick={onClick}
+              onClick={onClick ? onClick : closeModal}
             />
           )}
         </WrapperButtons>
