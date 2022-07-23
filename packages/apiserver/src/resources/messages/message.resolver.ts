@@ -8,20 +8,16 @@ import {
 } from '@nestjs/graphql';
 import { Message } from './message.entity';
 import { CreateMessageInput } from '@mimir/global-types';
-import { UseGuards } from '@nestjs/common';
-import { AuthGuard } from '../../auth/auth.guard';
 import { Person } from '../persons/person.entity';
 
 @Resolver('Message')
 export class MessageResolver {
   @Query(() => [Message])
-  @UseGuards(AuthGuard)
   async getMessagesByPerson(@Args('person_id') id: string) {
     return Message.find({ where: { person_id: id } });
   }
 
   @Query(() => [Message])
-  @UseGuards(AuthGuard)
   async getAllMessages(@Args('location_id') location_id: number) {
     return Message.find({ where: { location_id } });
   }
@@ -44,7 +40,6 @@ export class MessageResolver {
   }
 
   @Mutation(() => Message)
-  @UseGuards(AuthGuard)
   async createMessageForManager(
     @Args('input') createMessageInput: CreateMessageInput
   ) {

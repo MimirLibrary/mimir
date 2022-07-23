@@ -5,7 +5,7 @@ import { FileService } from '../../file/file.service';
 import { Status } from '../statuses/status.entity';
 import { Connection } from 'typeorm';
 import { ErrorBook } from '../../errors';
-import { StatusTypes } from '../../../../global-types/src/lib/statusTypes';
+import { StatusTypes } from '@mimir/global-types';
 import { GraphQLError } from 'graphql';
 
 @Injectable()
