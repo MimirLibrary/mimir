@@ -84,7 +84,6 @@ const WrapperButtons = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  //margin-top: ${dimensions.base_2};
   button {
     :first-of-type {
       margin-right: ${dimensions.base};
