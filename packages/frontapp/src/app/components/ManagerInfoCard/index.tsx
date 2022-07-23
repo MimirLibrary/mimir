@@ -1,8 +1,9 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import { ManagerCardTypes } from './managerCardTypes';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { t } from 'i18next';
+import { Link } from 'react-router-dom';
 
 export interface IField {
   title: string;
@@ -72,7 +73,7 @@ const WrapperFooter = styled.div`
   bottom: ${dimensions.xs_1};
   justify-content: space-between;
 `;
-export const OpenLink = styled.a`
+export const OpenLink = styled(Link)`
   cursor: pointer;
   font-weight: 500;
   color: ${colors.accent_color};
@@ -153,7 +154,7 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
         {t(`ManagerInfoCard.Title.${type}`) + ` — (${fields.length})`}
       </Title>
       <Description>{t(`ManagerInfoCard.Description.${type}`)}</Description>
-      {fields.slice(0, 3).map((field, key) => (
+      {fields.slice(0, 3).map((field) => (
         <FieldWrapper>
           {type === ManagerCardTypes.NOTIFICATIONS ? (
             <>
@@ -162,11 +163,11 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
                 <InlineFieldDescription>
                   {field.description}
                 </InlineFieldDescription>
-                <InlineOpenLink>
+                <InlineOpenLink to="#">
                   {t('ManagerInfoCard.Link.Answer')}
                 </InlineOpenLink>
               </InlineWrapper>
-              <FieldOpenLink>Ivan Ivanov</FieldOpenLink>
+              <FieldOpenLink to="#">Ivan Ivanov</FieldOpenLink>
             </>
           ) : (
             <>
@@ -175,27 +176,26 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
                 <FieldDescription>
                   {t(`ManagerInfoCard.FieldDescription.${type}`)}
                 </FieldDescription>
-                <FieldOpenLink secondary>Ivan Ivanov</FieldOpenLink>
+                <FieldOpenLink to="#" secondary>
+                  Ivan Ivanov
+                </FieldOpenLink>
               </InlineWrapper>
             </>
           )}
         </FieldWrapper>
       ))}
       <WrapperFooter>
-        <>
-          <InlineWrapper>
-            {fields.slice(0, 3).map((field) => (
-              <StyledIcon src={field.img}></StyledIcon>
-            ))}
-            {fields.length > 3 ? (
-              <NotificationDescription>
-                {`+${fields.length - 3} ` +
-                  t(`ManagerInfoCard.Description.More`)}
-              </NotificationDescription>
-            ) : null}
-          </InlineWrapper>
-        </>
-        <OpenLink>{t(`ManagerInfoCard.Link.${type}`)}</OpenLink>
+        <InlineWrapper>
+          {fields.slice(0, 3).map((field) => (
+            <StyledIcon src={field.img}></StyledIcon>
+          ))}
+          {fields.length > 3 ? (
+            <NotificationDescription>
+              {`+${fields.length - 3} ` + t(`ManagerInfoCard.Description.More`)}
+            </NotificationDescription>
+          ) : null}
+        </InlineWrapper>
+        <OpenLink to="#">{t(`ManagerInfoCard.Link.${type}`)}</OpenLink>
       </WrapperFooter>
     </WrapperCard>
   );

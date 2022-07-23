@@ -3,6 +3,7 @@ export const resources = {
     translation: {
       Back: 'Back',
       Loading: 'Loading...',
+      Cancel: 'Cancel',
       EmptyListItems: {
         Header: 'Shelf for your books and other items',
         Description:
@@ -109,9 +110,33 @@ export const resources = {
         hAgo: 'h ago',
         dAgo: 'd ago',
       },
+      Notifications: {
+        Managers: {
+          MainTitle: 'Notifications',
+          MainDescription: 'New notifications are waiting for you',
+        },
+        Today: 'Today',
+        Earlier: 'Earlier',
+      },
       PopUps: {
         NotFoundByIdentifier:
           "Sorry, we didn't find a book with that identifier",
+      },
+      Block: {
+        Warning: 'Warning!',
+        YBlock: 'Yes, block',
+        YUnblock: 'Yes, unblock',
+        SureUnblock: 'Are you sure you want to unblock the user ',
+        SureBlock: 'Are you sure you want to block the user ',
+        InLibrary: ' in library?',
+        BlockUser: 'Block user',
+        Reason: 'Specify the reason for the block. User will be able to see it',
+        TooManyDebts: 'Too many debts',
+        Fired: 'The user has been fired',
+        Other: 'Other reason',
+        FullOther: 'Other reason (specify in message)',
+        Opps: 'Opps! Your page has been blocked',
+        ReasonForBlock: 'Reason for blocking:',
       },
     },
   },
@@ -119,6 +144,7 @@ export const resources = {
     translation: {
       Back: 'Назад',
       Loading: 'Загрузка...',
+      Cancel: 'Закрыть',
       EmptyListItems: {
         Header: 'Полка для ваших книг и других предметов',
         Description:
@@ -225,8 +251,32 @@ export const resources = {
         hAgo: 'ч назад',
         dAgo: 'д назад',
       },
+      Notifications: {
+        Managers: {
+          MainTitle: 'Уведомления',
+          MainDescription: 'Новые уведомления ждут вас',
+        },
+        Today: 'Сегодня',
+        Earlier: 'Ранее',
+      },
       PopUps: {
         NotFoundByIdentifier: 'Упс, мы не нашли книгу с таким идентификатором',
+      },
+      Block: {
+        Warning: 'Внимание!',
+        YBlock: 'Да, заблокировать',
+        YUnblock: 'Да, разблокировать',
+        SureUnblock: 'Вы уверены, что хотите разблокировать пользователя ',
+        SureBlock: 'Вы уверены, что хотите заблокировать пользователя ',
+        InLibrary: ' в библиотеке?',
+        BlockUser: 'Заблокировать пользователя',
+        Reason: 'Опишите причину блокировки. Пользователь увидит её',
+        TooManyDebts: 'Слишком много долгов',
+        Fired: 'Пользователь был уволен',
+        Other: 'Другая причина',
+        FullOther: 'Другая причина (опишите в сообщении)',
+        Opps: 'Упс! Ваша страница заблокирована',
+        ReasonForBlock: 'Причина блокировки:',
       },
     },
   },

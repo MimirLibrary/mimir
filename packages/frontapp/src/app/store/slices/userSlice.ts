@@ -14,6 +14,7 @@ interface IUserState {
   userRole: RolesTypes;
   location: TUserLocation;
   isAuth: boolean;
+  blocked: boolean;
 }
 
 export interface IUserPayload extends IUserState {
@@ -34,6 +35,7 @@ const initialState: IUserState = {
     id: '2',
     value: 'Gomel',
   },
+  blocked: false,
 };
 
 const userSlice = createSlice({
@@ -41,9 +43,8 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state: IUserState, action: PayloadAction<IUserPayload>) => {
-      const { username, avatar, email, location, id, userRole } =
+      const { username, avatar, email, location, id, userRole, blocked } =
         action.payload;
-
       state.location = location;
       state.username = username;
       state.avatar = avatar;
@@ -52,6 +53,10 @@ const userSlice = createSlice({
       state.isAuth = true;
       state.location = location;
       state.userRole = userRole;
+      state.blocked = blocked ? blocked : false;
+    },
+    updateBlocked: (state: IUserState, action: PayloadAction<boolean>) => {
+      state.blocked = action.payload ? action.payload : false;
     },
     updateUserLocation: (
       state: IUserState,
@@ -65,6 +70,7 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUser, updateUserLocation, logout } = userSlice.actions;
+export const { setUser, updateUserLocation, logout, updateBlocked } =
+  userSlice.actions;
 
 export default userSlice.reducer;
