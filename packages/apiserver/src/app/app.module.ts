@@ -81,8 +81,8 @@ console.log(__dirname);
   providers: [
     AppService,
     AppResolver,
-    // { provide: APP_GUARD, useClass: AuthGuard },
-    // { provide: APP_GUARD, useClass: BlockedUsersGuard },
+    { provide: APP_GUARD, useClass: AuthGuard },
+    { provide: APP_GUARD, useClass: BlockedUsersGuard },
   ],
 })
 export class AppModule {}
