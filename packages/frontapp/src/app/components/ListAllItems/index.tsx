@@ -4,10 +4,10 @@ import { useAppSelector } from '../../hooks/useTypedSelector';
 import { useGetAllMaterialsForManagerQuery } from '@mimir/apollo-client';
 import BookCardExtended from '../BookCardExtended';
 import styled from '@emotion/styled';
-import { Oval } from 'react-loader-spinner';
 import { WrapperLoader } from '../DonateBookFlow';
 import { toast } from 'react-toastify';
-import { dimensions } from '@mimir/ui-kit';
+import { colors, dimensions } from '@mimir/ui-kit';
+import Loader from '../Loader';
 
 const StyledWrapperList = styled(WrapperList)`
   grid-template-columns: repeat(auto-fill, 310px);
@@ -33,14 +33,11 @@ const ListAllItems = () => {
     <>
       {loading ? (
         <WrapperLoader>
-          <Oval
-            ariaLabel="loading-indicator"
+          <Loader
             height={100}
             width={100}
+            color={`${colors.accent_color}`}
             strokeWidth={5}
-            strokeWidthSecondary={1}
-            color="blue"
-            secondaryColor="white"
           />
         </WrapperLoader>
       ) : (

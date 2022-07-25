@@ -24,9 +24,7 @@ const BooksByCategory = () => {
   const { data, loading } = useGetAllMaterialsQuery({
     variables: { location_id: location.id },
   });
-  const handleGoBack = () => {
-    navigate('/search');
-  };
+
   const [filteredData, setFilteredData] = useState(data?.getAllMaterials);
 
   useEffect(() => {
@@ -84,10 +82,7 @@ const BooksByCategory = () => {
 
   return (
     <div>
-      <ButtonWrapper onClick={handleGoBack}>
-        <ArrowBack />
-        <GoBack>Back to all categories</GoBack>
-      </ButtonWrapper>
+      <BackButton />
       {!category ? (
         <WrapperList>
           {filteredData?.length !== 0 ? (

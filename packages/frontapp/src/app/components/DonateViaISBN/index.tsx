@@ -10,6 +10,7 @@ import { setIdentifier } from '../../store/slices/identifierSlice';
 import InputMask from 'react-input-mask';
 import axios from 'axios';
 import { IMetaOfMaterial } from '../../types';
+import { GetMaterialFromMetadataQuery } from '@mimir/apollo-client';
 
 const Wrapper = styled.section`
   width: 100%;

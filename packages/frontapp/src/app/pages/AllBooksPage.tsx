@@ -1,10 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
-import BookCardExtended from '../components/BookCardExtended';
-import { useAppSelector } from '../hooks/useTypedSelector';
-import { useGetAllMaterialsForManagerQuery } from '@mimir/apollo-client';
-import createNewItem from './CreateNewItem';
 import ListAllItems from '../components/ListAllItems';
 
 const WrapperTitle = styled.section`
@@ -26,7 +22,7 @@ const SubTitle = styled.h3`
   line-height: ${dimensions.xl};
 `;
 
-const BooksStuff = () => {
+const AllBooksPage = () => {
   return (
     <main>
       <WrapperTitle>
@@ -40,4 +36,4 @@ const BooksStuff = () => {
   );
 };
 
-export default BooksStuff;
+export default AllBooksPage;

@@ -1,8 +1,8 @@
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import src from '../../../assets/MOC-data/BookImage.png';
-import { isOverdue } from '../../models/helperFunctions/converTime';
+import { getCurrentStatus } from '../../models/helperFunctions/getCurrentStatus';
 
 const Wrapper = styled.div`
   background: ${colors.bg_secondary};
@@ -87,7 +87,7 @@ interface IPerson {
   username: string;
 }
 
-interface IStatuses {
+export interface IStatuses {
   __typename?: 'Status' | undefined;
   id: string;
   created_at: any;
@@ -106,29 +106,6 @@ interface IItem {
 
 interface IPropsBookCardExtended {
   item: IItem | null;
-}
-
-function getCurrentStatus(currentStatus: IStatuses | null | undefined) {
-  switch (currentStatus?.status) {
-    case 'Free':
-      return 'on the shelf';
-    case 'Busy' || 'Prolong': {
-      if (isOverdue(currentStatus.created_at)) {
-        return {
-          type: 'Overdue',
-          body: currentStatus?.person.username,
-        };
-      }
-      return {
-        type: 'Busy',
-        body: currentStatus?.person.username,
-      };
-    }
-    case 'Pending':
-      return 'Pending approval';
-    default:
-      return '-';
-  }
 }
 
 const BookCardExtended: FC<IPropsBookCardExtended> = ({ item }) => {

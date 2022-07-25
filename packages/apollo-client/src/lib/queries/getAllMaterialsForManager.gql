@@ -1,4 +1,8 @@
-query GetAllMaterialsForManager($location_id: String!, $limit: Int, $offset: Int) {
+query GetAllMaterialsForManager(
+  $location_id: String!
+  $limit: Int
+  $offset: Int
+) {
   getAllMaterials(location_id: $location_id, limit: $limit, offset: $offset) {
     id
     title
