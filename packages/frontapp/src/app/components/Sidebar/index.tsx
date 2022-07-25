@@ -37,7 +37,7 @@ const Sidebar: FC<IProps> = ({ isSidebarActive, setSidebarActive }) => {
   return (
     <StyledSidebar isSidebarActive={isSidebarActive}>
       <Header setSidebarActive={setSidebarActive} />
-      <Navbar />
+      <Navbar setSidebarActive={setSidebarActive} />
     </StyledSidebar>
   );
 };
