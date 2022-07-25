@@ -1,8 +1,10 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { ManagerCardTypes } from './managerCardTypes';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { t } from 'i18next';
+import { useNavigate } from 'react-router-dom';
+import { RoutesTypes } from '../../../utils/routes';
 import { Link } from 'react-router-dom';
 
 export interface IField {
@@ -60,7 +62,7 @@ const FieldDescription = styled.p`
 `;
 
 const InlineFieldDescription = styled(FieldDescription)`
-  max-width: 80%;
+  width: 90%;
   order: 0;
   flex-grow: 0;
 `;
@@ -91,11 +93,6 @@ const InlineOpenLink = styled(OpenLink)`
   order: 1;
   flex-grow: 0;
   text-align: center;
-  @media (max-width: ${dimensions.tablet_width}) {
-    position: static;
-    display: block;
-    text-align: center;
-  }
 `;
 
 const FieldWrapper = styled.div`
@@ -113,11 +110,11 @@ const FieldWrapper = styled.div`
 `;
 const InlineWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
 `;
 
 interface IFieldOpenLinkProps {
-  secondary?: boolean;
+  secondary?: string;
 }
 const FieldOpenLink = styled(OpenLink)<IFieldOpenLinkProps>`
   font-weight: 400;
@@ -132,10 +129,10 @@ const StyledIcon = styled.img`
   border-radius: 50%;
   border: 2px solid ${colors.bg_secondary};
   position: relative;
-  :nth-child(2) {
+  :nth-of-type(2) {
     left: -16px;
   }
-  :nth-child(3) {
+  :nth-of-type(3) {
     left: -32px;
   }
 `;
@@ -148,14 +145,20 @@ const NotificationDescription = styled(FieldDescription)`
 `;
 
 const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
+  const navigate = useNavigate();
+
+  const navigateToList = () => {
+    navigate(RoutesTypes.HOME + '/' + type.toLowerCase());
+  };
+
   return (
     <WrapperCard>
       <Title>
         {t(`ManagerInfoCard.Title.${type}`) + ` — (${fields.length})`}
       </Title>
       <Description>{t(`ManagerInfoCard.Description.${type}`)}</Description>
-      {fields.slice(0, 3).map((field) => (
-        <FieldWrapper>
+      {fields.slice(0, 3).map((field, key) => (
+        <FieldWrapper key={key + Math.random()}>
           {type === ManagerCardTypes.NOTIFICATIONS ? (
             <>
               <FieldTitle>{field.title}</FieldTitle>
@@ -176,7 +179,7 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
                 <FieldDescription>
                   {t(`ManagerInfoCard.FieldDescription.${type}`)}
                 </FieldDescription>
-                <FieldOpenLink to="#" secondary>
+                <FieldOpenLink to="#" secondary="true">
                   Ivan Ivanov
                 </FieldOpenLink>
               </InlineWrapper>
@@ -185,17 +188,22 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
         </FieldWrapper>
       ))}
       <WrapperFooter>
-        <InlineWrapper>
-          {fields.slice(0, 3).map((field) => (
-            <StyledIcon src={field.img}></StyledIcon>
-          ))}
-          {fields.length > 3 ? (
-            <NotificationDescription>
-              {`+${fields.length - 3} ` + t(`ManagerInfoCard.Description.More`)}
-            </NotificationDescription>
-          ) : null}
-        </InlineWrapper>
-        <OpenLink to="#">{t(`ManagerInfoCard.Link.${type}`)}</OpenLink>
+        <>
+          <InlineWrapper>
+            {fields.slice(0, 3).map((field, index) => (
+              <StyledIcon key={index + Math.random()} src={field.img} />
+            ))}
+            {fields.length > 3 ? (
+              <NotificationDescription>
+                {`+${fields.length - 3} ` +
+                  t(`ManagerInfoCard.Description.More`)}
+              </NotificationDescription>
+            ) : null}
+          </InlineWrapper>
+        </>
+        <OpenLink to={`${RoutesTypes.HOME}/${type.toLowerCase()}`}>
+          {t(`ManagerInfoCard.Link.${type}`)}
+        </OpenLink>
       </WrapperFooter>
     </WrapperCard>
   );
