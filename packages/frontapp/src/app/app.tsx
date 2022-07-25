@@ -21,7 +21,6 @@ import Scanner from './components/Scanner';
 import useScanner from './hooks/useScanner';
 import { RoutesTypes } from '../utils/routes';
 import BlockPage from './pages/BlockPage';
-import { RolesTypes } from '@mimir/global-types';
 
 const WrapperPage = styled.main`
   display: flex;
