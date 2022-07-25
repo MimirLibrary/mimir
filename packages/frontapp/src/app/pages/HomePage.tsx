@@ -33,6 +33,18 @@ const ButtonWrapper = styled.div`
   height: 52px;
   right: 46px;
   top: 40px;
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    margin-top: ${dimensions.xs_2};
+    position: static;
+    width: 160px;
+    height: 40px;
+    button {
+      span {
+        font-size: ${dimensions.xs};
+      }
+    }
+  }
 `;
 
 const Wrapper = styled.div`
@@ -58,12 +70,13 @@ const OverdueDonatesWrapper = styled.div`
   column-gap: 18px;
 `;
 
+managerData.sort((a, b) => a.created_at.getTime() - b.created_at.getTime());
+
 const HomePage: FC = () => {
   const { id, userRole } = useAppSelector((state) => state.user);
   const { data, loading } = useGetAllTakenItemsQuery({
     variables: { person_id: id },
   });
-  managerData.sort((a, b) => a.created_at.getTime() - b.created_at.getTime());
 
   if (loading) return <h1>Loading...</h1>;
 

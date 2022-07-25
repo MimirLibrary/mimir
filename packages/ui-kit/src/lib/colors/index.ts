@@ -15,5 +15,6 @@ export const colors = {
   bg_fields: '#EFF4FF',
   free_book: '#2AA816',
   light_gray: '#F9F9F9',
+  black: '#000000',
   shadow: '0px 10px 70px rgba(26, 30, 214, 0.08)',
 };

@@ -8,10 +8,11 @@ interface IStyleProps {
   active: boolean;
 }
 
-const WrapperModal = styled.div<IStyleProps>`
+export const WrapperModal = styled.div<IStyleProps>`
   height: 100vh;
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.4);
+  overflow-y: auto;
   position: fixed;
   top: 0;
   left: 0;
@@ -22,6 +23,9 @@ const WrapperModal = styled.div<IStyleProps>`
   opacity: ${(props) => (props.active ? '1' : '0')};
   pointer-events: ${(props) => (props.active ? 'all' : 'none')};
   transition: 0.3s;
+  ::-webkit-scrollbar {
+    width: 0;
+  }
 `;
 
 const StyledCross = styled(Cross)`
@@ -30,14 +34,15 @@ const StyledCross = styled(Cross)`
   right: 4%;
   top: 5%;
 `;
-const ContentModal = styled.div<IStyleProps>`
-  padding: ${dimensions.base_2};
+export const ContentModal = styled.div<IStyleProps>`
+  padding: ${dimensions.base_3};
   background-color: ${colors.bg_secondary};
   border-radius: ${dimensions.xl_10};
   transform: ${(props) => (props.active ? 'scale(1)' : 'scale(0)')};
   transition: 0.4s all;
   max-width: ${dimensions.tablet_width};
   width: 100%;
+  margin-top: auto;
 `;
 
 interface IPropsModal {

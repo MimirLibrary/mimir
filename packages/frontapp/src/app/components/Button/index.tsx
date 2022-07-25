@@ -41,7 +41,12 @@ const ButtonContainer = styled.button<IButtonProps>`
 
   &:hover {
     background-color: ${({ transparent, warning }) =>
-      warning || transparent ? colors.bg_secondary : colors.hover_color};
+      (warning && transparent) || transparent
+        ? colors.bg_secondary
+        : warning
+        ? colors.problem_red
+        : colors.hover_color};
+
     border: 2px solid
       ${({ transparent, secondary, warning }) =>
         warning
@@ -54,7 +59,7 @@ const ButtonContainer = styled.button<IButtonProps>`
 
     svg {
       fill: ${({ transparent, secondary, warning }) =>
-        warning
+        warning && transparent
           ? colors.problem_red
           : transparent
           ? secondary
@@ -65,7 +70,7 @@ const ButtonContainer = styled.button<IButtonProps>`
 
     span {
       color: ${({ transparent, secondary, warning }) =>
-        warning
+        warning && transparent
           ? colors.problem_red
           : transparent
           ? secondary

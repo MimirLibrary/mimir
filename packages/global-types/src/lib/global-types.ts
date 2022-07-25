@@ -7,6 +7,12 @@
 
 /* tslint:disable */
 /* eslint-disable */
+export interface CreateStateInput {
+    person_id: number;
+    state: boolean;
+    description?: Nullable<string>;
+}
+
 export interface BookInput {
     identifier: string;
     person_id: number;
@@ -84,7 +90,8 @@ export interface SearchInput {
 export interface CreateMessageInput {
     title: string;
     message: string;
-    material_id: number;
+    material_id?: Nullable<number>;
+    location_id: number;
     person_id: number;
 }
 
@@ -117,7 +124,7 @@ export interface CreateStatusInput {
 
 export interface BlockedUsers {
     id: string;
-    description: string;
+    description?: Nullable<string>;
     state: boolean;
     created_at: DateTime;
     person: Person;
@@ -125,23 +132,28 @@ export interface BlockedUsers {
 
 export interface IQuery {
     getBlocksByPerson(person_id: string): Nullable<Nullable<BlockedUsers>[]> | Promise<Nullable<Nullable<BlockedUsers>[]>>;
+    getReasonOfBlock(person_id: string): Nullable<BlockedUsers> | Promise<Nullable<BlockedUsers>>;
     getAllTakenItems(person_id: number): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getAllLocations(): Nullable<Location>[] | Promise<Nullable<Location>[]>;
     getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
     getMaterialById(id: string): Material | Promise<Material>;
     searchOfMaterials(input: SearchInput): Nullable<Nullable<Material>[]> | Promise<Nullable<Nullable<Material>[]>>;
-    getMaterialByIdentifier(input: SearchOneMaterial): Nullable<Material> | Promise<Nullable<Material>>;
+    getMaterialByIdentifier(input: SearchOneMaterial): Material | Promise<Material>;
+    getMaterialByIdentifierFromMetadata(identifier: string): IMetaOfMaterial | Promise<IMetaOfMaterial>;
     getMessagesByPerson(person_id: string): Nullable<Nullable<Message>[]> | Promise<Nullable<Nullable<Message>[]>>;
+    getAllMessages(location_id: number): Nullable<Message[]> | Promise<Nullable<Message[]>>;
     getNotificationsByPerson(person_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
     getNotificationsByMaterial(material_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
     getOnePerson(id: string): Person | Promise<Person>;
     getAllPersons(): Person[] | Promise<Person[]>;
     getStatusesByPerson(person_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getStatusesByMaterial(material_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
+    getAllStatusesIsOverdue(location_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     welcome(): string | Promise<string>;
 }
 
 export interface IMutation {
+    createState(input: CreateStateInput): Nullable<BlockedUsers> | Promise<Nullable<BlockedUsers>>;
     claimBook(input?: Nullable<BookInput>): BookUnionResult | Promise<BookUnionResult>;
     returnItem(input?: Nullable<BookInput>): BookUnionResult | Promise<BookUnionResult>;
     rejectItem(input?: Nullable<BookInput>): BookUnionResult | Promise<BookUnionResult>;
@@ -152,7 +164,7 @@ export interface IMutation {
     removeMaterial(input: RemoveMaterialInput): Material | Promise<Material>;
     updateMaterial(input: UpdateMaterialInput): Material | Promise<Material>;
     donateBook(input: DonateBookInput): Material | Promise<Material>;
-    createMessageForManager(input: CreateMessageInput): MessageUnionResult | Promise<MessageUnionResult>;
+    createMessageForManager(input: CreateMessageInput): Message | Promise<Message>;
     createNotification(input: CreateNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
     removeNotification(input: RemoveNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
     createPerson(input: CreatePersonInput): Person | Promise<Person>;
@@ -187,10 +199,54 @@ export interface Material {
     is_donated: boolean;
 }
 
+export interface ResponseMetadata {
+    idType: string;
+    value: string;
+}
+
+export interface Author {
+    id: string;
+    name: string;
+}
+
+export interface Publisher {
+    id: string;
+    name: string;
+}
+
+export interface Meta {
+    ageRestriction: string;
+    coverType: string;
+    dimensions: string;
+    manufacturer: string;
+    mass: string;
+    numberOfPages: string;
+    price: string;
+    series: string;
+    sku: string;
+}
+
+export interface IMaterialMeta {
+    authors: Nullable<Author>[];
+    cover: string;
+    description: string;
+    title: string;
+    yearPublishedAt: number;
+    meta: Meta;
+    publisher: Publisher;
+}
+
+export interface IMetaOfMaterial {
+    idType: string;
+    value: string;
+    material: IMaterialMeta;
+}
+
 export interface Message {
     id: string;
-    material_id: number;
+    material_id?: Nullable<number>;
     person_id: number;
+    location_id: number;
     created_at: DateTime;
     person: Person;
     material: Material;
@@ -296,5 +352,4 @@ export type Locale = any;
 export type RoutingNumber = any;
 export type AccountNumber = any;
 export type BookUnionResult = Status | Error;
-export type MessageUnionResult = Message | Error;
 type Nullable<T> = T | null;

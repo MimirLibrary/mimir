@@ -1,6 +1,7 @@
 mutation CreateMessageForManager(
   $person_id: Int!
   $material_id: Int
+  $location_id: Int!
   $title: String!
   $message: String!
 ) {
@@ -8,16 +9,12 @@ mutation CreateMessageForManager(
     input: {
       person_id: $person_id
       material_id: $material_id
+      location_id: $location_id
       title: $title
       message: $message
     }
   ) {
-    ... on Message {
-      message
-      title
-    }
-    ... on Error {
-      message
-    }
+    message
+    title
   }
 }

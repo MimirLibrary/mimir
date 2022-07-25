@@ -14,6 +14,7 @@ import SearchByNameOrAuthorPage from '../pages/SearchByName';
 import DonateToLibrary from '../pages/DonateToLibrary';
 import BookPreview from '../pages/BookPreview';
 import BooksByCategory from '../components/BooksByCategory';
+import OverduePage from '../pages/OverduePage';
 import UserCard from '../components/UserCard';
 
 export const useRoutes = (role: string) => {
@@ -67,6 +68,7 @@ export const useRoutes = (role: string) => {
           element={<BookPreview donate={true} />}
         />
         <Route path={RoutesTypes.CREATE_NEW_ITEM} element={<CreateNewItem />} />
+        <Route path={RoutesTypes.HOME + '/overdue'} element={<OverduePage />} />
       </>
     );
   }
