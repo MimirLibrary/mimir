@@ -21,7 +21,6 @@ import { MaterialService } from './material.service';
 import { BadRequestException } from '@nestjs/common';
 import { Message } from '../messages/message.entity';
 import { GraphQLError } from 'graphql';
-import axios from 'axios';
 
 @Resolver('Material')
 export class MaterialResolver {
