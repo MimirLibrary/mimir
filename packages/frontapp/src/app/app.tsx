@@ -19,6 +19,8 @@ import { ReactComponent as QRCodeSvg } from '../assets/Qrcode.svg';
 import { t } from 'i18next';
 import Scanner from './components/Scanner';
 import useScanner from './hooks/useScanner';
+import { RoutesTypes } from '../utils/routes';
+import BlockPage from './pages/BlockPage';
 import { RolesTypes } from '@mimir/global-types';
 
 const WrapperPage = styled.main`
@@ -38,8 +40,11 @@ const WrapperRoutes = styled.div`
     padding: ${dimensions.xs_1};
   }
 `;
+interface IStyledButton {
+  show: boolean;
+}
 
-const StyledButton = styled(Button)`
+const StyledButton = styled(Button)<IStyledButton>`
   height: 56px;
   width: 197px;
   position: absolute;
@@ -53,7 +58,7 @@ const StyledButton = styled(Button)`
     bottom: ${dimensions.base};
     height: ${dimensions.base_3};
     width: ${dimensions.base_3};
-
+    display: ${({ show }) => (show ? 'inline' : 'none')};
     span {
       display: none;
     }
@@ -68,7 +73,7 @@ const App: FC = () => {
     handleOnCloseScanner,
   } = useScanner();
   const { isAuth } = useAuth();
-  const { userRole } = useAppSelector((state) => state.user);
+  const { userRole, blocked } = useAppSelector((state) => state.user);
   const routes = useRoutes(userRole);
   const [isSidebarActive, setSidebarActive] = useState(false);
 
@@ -85,34 +90,43 @@ const App: FC = () => {
               isSidebarActive={isSidebarActive}
               setSidebarActive={setSidebarActive}
             />
-            <WrapperRoutes>
-              <SearchWrapper setSidebarActive={setSidebarActive} />
+            {blocked ? (
               <Routes>
-                {routes}
-                <Route path="/notifications" element={<NotificationPage />} />
-                <Route path="*" element={<HomePage />} />
-                <Route path="item/:item_id" element={<BookPreview />} />
-                <Route
-                  path="category/:category"
-                  element={<BooksByCategory />}
-                />
-                <Route path="/category" element={<BooksByCategory />} />
+                <Route path="*" element={<BlockPage />} />
               </Routes>
-              {RolesTypes.MANAGER === userRole || (
+            ) : (
+              <WrapperRoutes>
+                <SearchWrapper setSidebarActive={setSidebarActive} />
+                <Routes>
+                  {routes}
+                  <Route path="/notifications" element={<NotificationPage />} />
+                  <Route path="*" element={<HomePage />} />
+                  <Route path="item/:item_id" element={<BookPreview />} />
+                  <Route
+                    path="category/:category"
+                    element={<BooksByCategory />}
+                  />
+                  <Route path="/category" element={<BooksByCategory />} />
+                  <Route path="/block" element={<BlockPage />} />
+                </Routes>
                 <StyledButton
                   svgComponent={<QRCodeSvg />}
                   value={t('Search.Scan')}
                   onClick={handleOnClickButton}
+                  show={
+                    !(
+                      window.location.pathname === RoutesTypes.DONATE_TO_LIBRARY
+                    )
+                  }
                 />
-              )}
-
-              {isShowScanner && (
-                <Scanner
-                  onDetected={handleOnDetectedScannerRoute}
-                  onClose={handleOnCloseScanner}
-                />
-              )}
-            </WrapperRoutes>
+                {isShowScanner && (
+                  <Scanner
+                    onDetected={handleOnDetectedScannerRoute}
+                    onClose={handleOnCloseScanner}
+                  />
+                )}
+              </WrapperRoutes>
+            )}
           </WrapperPage>
         </div>
       ) : (

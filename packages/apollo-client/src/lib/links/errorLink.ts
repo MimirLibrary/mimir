@@ -7,5 +7,10 @@ export const errorLink = onError(({ graphQLErrors }) => {
   ) {
     localStorage.clear();
     window.location.reload();
+  } else if (
+    graphQLErrors &&
+    graphQLErrors[0].message.startsWith('user is blocked')
+  ) {
+    window.location.replace('/block');
   }
 });
