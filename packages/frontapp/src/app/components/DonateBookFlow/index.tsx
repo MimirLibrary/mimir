@@ -41,7 +41,7 @@ const SubTitle = styled.h3`
   line-height: ${dimensions.xl};
 `;
 
-const BackSpan = styled.div`
+export const BackSpan = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -53,7 +53,7 @@ const BackSpan = styled.div`
   cursor: pointer;
 `;
 
-const WrapperLoader = styled.div`
+export const WrapperLoader = styled.div`
   display: flex;
   justify-content: center;
 `;

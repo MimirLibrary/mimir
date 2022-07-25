@@ -2,7 +2,11 @@ import BackButton from '../BackButton';
 import { useParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
-import { useGetOnePersonQuery } from '@mimir/apollo-client';
+import {
+  GetOnePersonDocument,
+  useCreateStateMutation,
+  useGetOnePersonQuery,
+} from '@mimir/apollo-client';
 import { mockData } from '../UserList/mockData';
 import { t } from 'i18next';
 import { IClaimHistory } from '../../models/helperFunctions/claimHistory';
@@ -12,11 +16,16 @@ import { ReactComponent as NotifySvg } from '../../../assets/NoNotification.svg'
 import { ReactComponent as Block } from '../../../assets/Block.svg';
 import ClaimTable from '../ClaimTable';
 import Notifications from '../Notifications';
+import Modal from '../Modal';
+import ErrorMessage from '../ErrorMessge';
+import React, { useState } from 'react';
+import { InputDescription } from '../AskManagerForm';
 
 const InlineWrapper = styled.div`
   display: flex;
   flex-direction: row;
   column-gap: 4px;
+  align-items: center;
 `;
 const ColumnWrapper = styled.div`
   display: flex;
@@ -51,7 +60,8 @@ interface IDescriptionProps {
   titlee?: boolean;
   small?: boolean;
 }
-const Description = styled.p<IDescriptionProps>`
+
+export const Description = styled.p<IDescriptionProps>`
   font-weight: ${({ bold, titlee }) => (bold ? (titlee ? 700 : 500) : 300)};
   font-size: ${({ titlee }) =>
     titlee ? `${dimensions.xl_2}` : `${dimensions.base}`};
@@ -60,7 +70,7 @@ const Description = styled.p<IDescriptionProps>`
   margin-bottom: ${({ titlee }) => (titlee ? dimensions.base : null)};
 `;
 
-const Title = styled.h1`
+export const Title = styled.h1`
   font-weight: 700;
   font-size: ${dimensions.xl_2};
   margin-bottom: ${dimensions.base};
@@ -70,10 +80,36 @@ const Title = styled.h1`
 const ButtonsWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: auto;
   margin-left: auto;
   max-width: 276px;
   width: 100%;
   row-gap: 8px;
+`;
+
+const RadioButton = styled.input`
+  display: flex;
+  margin-left: auto;
+  margin-right: 414px;
+  appearance: none;
+  border: 1px solid ${colors.main_gray};
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  &:checked {
+    background-color: ${colors.accent_color};
+    outline-offset: -5px;
+    outline: 4px solid ${colors.bg_secondary};
+    border-color: ${colors.accent_color};
+  }
+  &:hover {
+    border: 1px solid ${colors.description_gray};
+  }
+`;
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  row-gap: ${dimensions.base};
 `;
 
 const UserCard = () => {
@@ -81,6 +117,14 @@ const UserCard = () => {
   const { data: OnePerson, loading } = useGetOnePersonQuery({
     variables: { id: id! },
   });
+  const [setState] = useCreateStateMutation({
+    refetchQueries: [GetOnePersonDocument],
+  });
+  const [checkedButton, setCheckedButton] = useState<number>(0);
+  const [showWarningBlock, setShowWarningBlock] = useState<boolean>(false);
+  const [showWarningUnblock, setShowWarningUnblock] = useState<boolean>(false);
+  const [showBlockInput, setShowBlockInput] = useState<boolean>(false);
+  const [value, setValue] = useState<string>('');
   const messages = OnePerson?.getOnePerson.messages?.map((message) => {
     return {
       type: 'message',
@@ -93,12 +137,63 @@ const UserCard = () => {
     return {
       type: 'block',
       created_at: state?.created_at,
-      title: state ? 'User have been unblocked' : 'User have been blocked',
-      message: state?.description,
+      title: state?.state
+        ? 'User have been blocked'
+        : 'User have been unblocked',
+      message: state?.description ? state?.description : '',
     };
   });
 
   const sortedNotifications = messages?.concat(states!);
+
+  const handleChangeValue = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setValue(e.target.value);
+  };
+
+  const OpenModal = () => {
+    if (state) {
+      setShowWarningUnblock(true);
+    } else setShowWarningBlock(true);
+  };
+
+  const blockSubmit = async () => {
+    let sendValue = null;
+    switch (checkedButton) {
+      case 1:
+        sendValue = 'Too many debts';
+        break;
+      case 2:
+        sendValue = 'The user has been fired';
+        break;
+      case 3:
+        sendValue = value;
+        break;
+    }
+
+    await setState({
+      variables: {
+        person_id: Number(OnePerson?.getOnePerson.id),
+        state: true,
+        description: sendValue,
+      },
+    });
+    setShowBlockInput(false);
+  };
+
+  const unblockSubmit = async () => {
+    await setState({
+      variables: {
+        person_id: Number(OnePerson?.getOnePerson.id),
+        state: false,
+      },
+    });
+    setShowWarningUnblock(false);
+  };
+
+  const openInput = () => {
+    setShowWarningBlock(false);
+    setShowBlockInput(true);
+  };
 
   const state = OnePerson?.getOnePerson.states?.slice().pop()?.state;
   if (loading) return <h1>{t('Loading')}</h1>;
@@ -130,13 +225,24 @@ const UserCard = () => {
             svgComponent={<NotifySvg />}
             transparent
           ></Button>
-          <Button
-            value={t('UserCard.BlockUser')}
-            secondary
-            warning
-            transparent
-            svgComponent={<Block />}
-          ></Button>
+          {state ? (
+            <Button
+              value={t('UserCard.UnblockUser')}
+              secondary
+              warning
+              onClick={OpenModal}
+              svgComponent={<Block />}
+            ></Button>
+          ) : (
+            <Button
+              value={t('UserCard.BlockUser')}
+              secondary
+              warning
+              transparent
+              onClick={OpenModal}
+              svgComponent={<Block />}
+            ></Button>
+          )}
         </ButtonsWrapper>
       </CardWrapper>
       <Title>{t('UserCard.ClaimList')}</Title>
@@ -145,13 +251,85 @@ const UserCard = () => {
         statuses={OnePerson?.getOnePerson.statuses as IClaimHistory[]}
         name={OnePerson?.getOnePerson.username as string}
       />
-      {sortedNotifications?.length ? (
-        <>
-          <Title>{t('UserCard.Notifications')}</Title>
-          <Description>{t('UserCard.NotificationsDescription')}</Description>
-          <Notifications notifications={sortedNotifications}></Notifications>
-        </>
-      ) : null}
+      {!!sortedNotifications?.length && (
+        <Notifications notifications={sortedNotifications}></Notifications>
+      )}
+      <Modal active={showWarningUnblock} setActive={setShowWarningUnblock}>
+        <ErrorMessage
+          title={t('Block.Warning')}
+          message={
+            t('Block.SureUnblock') +
+            OnePerson?.getOnePerson.username +
+            t('Block.InLibrary')
+          }
+          titleCancel={t('Cancel')}
+          setActive={setShowWarningUnblock}
+          titleOption={t('Block.YUnblock')}
+          onSubmitClick={unblockSubmit}
+        />
+      </Modal>
+      <Modal active={showWarningBlock} setActive={setShowWarningBlock}>
+        <ErrorMessage
+          title={t('Block.Warning')}
+          message={
+            t('Block.SureBlock') +
+            OnePerson?.getOnePerson.username +
+            t('Block.InLibrary')
+          }
+          titleCancel={t('Cancel')}
+          setActive={setShowWarningBlock}
+          titleOption={t('Block.YBlock')}
+          onSubmitClick={openInput}
+        />
+      </Modal>
+      <Modal active={showBlockInput} setActive={setShowBlockInput}>
+        <Form onSubmit={blockSubmit}>
+          <Description bold titlee>
+            {t('Block.BlockUser')}
+          </Description>
+          <Description bold>{t('Block.Reason')}</Description>
+
+          <InlineWrapper>
+            <Description>{t('Block.TooManyDebts')}</Description>
+            <RadioButton
+              type={'radio'}
+              name={'description'}
+              checked={checkedButton === 1}
+              onChange={() => setCheckedButton(1)}
+            />
+          </InlineWrapper>
+          <InlineWrapper>
+            <Description>{t('Block.Fired')}</Description>
+            <RadioButton
+              type={'radio'}
+              name={'description'}
+              checked={checkedButton === 2}
+              onChange={() => setCheckedButton(2)}
+            />
+          </InlineWrapper>
+          <InlineWrapper>
+            <Description>{t('Block.Other')}</Description>
+            <RadioButton
+              type={'radio'}
+              name={'description'}
+              checked={checkedButton === 3}
+              onChange={() => setCheckedButton(3)}
+            />
+          </InlineWrapper>
+
+          <Description bold>{t('Block.FullOther')}</Description>
+          <InputDescription
+            placeholder={'Enter your message'}
+            disabled={checkedButton !== 3}
+            value={value}
+            onChange={handleChangeValue}
+          />
+          <InlineWrapper>
+            <Button value={t('Block.BlockUser')} type={'submit'} />
+            <Button value={t('Cancel')} transparent />
+          </InlineWrapper>
+        </Form>
+      </Modal>
     </div>
   );
 };
