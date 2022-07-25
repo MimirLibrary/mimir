@@ -11,19 +11,7 @@ import {
 } from '@mimir/apollo-client';
 import { ReactComponent as ScrollButtonRight } from '../../assets/ArrowButtonRight.svg';
 import { ReactComponent as ScrollButtonLeft } from '../../assets/ArrowButtonLeft.svg';
-import { ReactComponent as ArrowBack } from '../../assets/ArrowUp2.svg';
-
-export const GoBack = styled.a`
-  font-weight: 600;
-  font-size: ${dimensions.base};
-`;
-
-export const ButtonWrapper = styled.div`
-  margin: 3rem 0 ${dimensions.xl_3} 0;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-`;
+import BackButton from '../components/BackButton';
 
 export const ButtonGroup = styled.div`
   display: flex;
@@ -59,18 +47,11 @@ const BookPreview = () => {
 
   const lastStatusAnotherPerson = data?.getMaterialById.statuses.slice(-1)[0];
 
-  const handleGoBack = () => {
-    navigate(-1);
-  };
-
   if (loading) return <h1>Loading...</h1>;
 
   return (
     <>
-      <ButtonWrapper onClick={handleGoBack}>
-        <ArrowBack />
-        <GoBack>Back</GoBack>
-      </ButtonWrapper>
+      <BackButton />
       {data?.getMaterialById && (
         <BookInfo
           person_id={id}

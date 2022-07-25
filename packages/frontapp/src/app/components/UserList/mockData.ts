@@ -50,4 +50,5 @@ export const mockData1 = [
 
 export const mockData = {
   name: 'Linkis',
+  avatar: Avatarr,
 };

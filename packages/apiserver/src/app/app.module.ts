@@ -27,15 +27,29 @@ import { MessageModule } from '../resources/messages/message.module';
 import { Message } from '../resources/messages/message.entity';
 import { FileModule } from '../file/file.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { BlockedUsersModule } from '../resources/blocked-users/blocked-users.module';
+import { BlockedUsers } from '../resources/blocked-users/blocked-users.entity';
 import { AuthModule } from '../auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from '../auth/auth.guard';
+import { BlockedUsersGuard } from '../resources/blocked-users/blocked-users.guard';
 
+console.log(__dirname);
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     TypeOrmModule.forRoot({
       ...typeorm,
-      entities: [Person, Material, Status, Notification, Message, Location],
-      migrations: [`${__dirname}/packages/apiserver/src/migrations/*.ts`],
+      entities: [
+        Person,
+        Material,
+        Status,
+        Notification,
+        Message,
+        Location,
+        BlockedUsers,
+      ],
+      migrations: [`${__dirname}/migrations/*.js`],
     }),
     MaterialModule,
     StatusModule,
@@ -43,6 +57,7 @@ import { AuthModule } from '../auth/auth.module';
     ItemModule,
     NotificationModule,
     MessageModule,
+    BlockedUsersModule,
     LocationModule,
     AuthModule,
     FileModule,
@@ -63,6 +78,11 @@ import { AuthModule } from '../auth/auth.module';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, AppResolver],
+  providers: [
+    AppService,
+    AppResolver,
+    { provide: APP_GUARD, useClass: AuthGuard },
+    { provide: APP_GUARD, useClass: BlockedUsersGuard },
+  ],
 })
 export class AppModule {}

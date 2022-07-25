@@ -28,7 +28,7 @@ export class MaterialResolver {
   constructor(private materialService: MaterialService) {}
 
   @Query(() => [Material])
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   async getAllMaterials(
     @Args('location_id') location_id: string,
     @Args('limit') limit: number,

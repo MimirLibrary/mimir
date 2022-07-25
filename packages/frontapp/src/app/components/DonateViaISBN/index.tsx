@@ -38,7 +38,6 @@ const SubTitle = styled.p`
 const WrapperInputStyled = styled(WrapperInput)`
   margin: 0;
   @media (max-width: ${dimensions.tablet_width}) {
-    margin-bottom: ${dimensions.base};
   }
 `;
 const ISBNWrapper = styled.div`
@@ -54,6 +53,15 @@ const ISBNWrapper = styled.div`
   }
 `;
 
+const MobileInline = styled.div`
+  display: flex;
+  width: 100%;
+  @media (max-width: ${dimensions.tablet_width}) {
+    flex-direction: row-reverse;
+    margin-top: ${dimensions.base};
+  }
+`;
+
 const InputStyledMask = styled(InputMask)`
   width: 19rem;
   border: none;
@@ -62,15 +70,12 @@ const InputStyledMask = styled(InputMask)`
   color: ${colors.main_black};
   font-family: ${fonts.primary}, sans-serif;
   margin-right: 0.12rem;
-
   @media (max-width: ${dimensions.tablet_width}) {
     margin-left: -${dimensions.xl};
   }
-
   @media (max-width: ${dimensions.phone_width}) {
     width: 70%;
   }
-
   ::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
@@ -90,7 +95,7 @@ const StyledButtonScanner = styled(ButtonScanner)`
 `;
 
 interface IPropsViaISBN {
-  setDataToState: (data: IMetaOfMaterial) => void;
+  setDataToState: (data: GetMaterialFromMetadataQuery | undefined) => void;
   setIsLoading: (value: boolean) => void;
   setDataError: (value: Error | null) => void;
 }
@@ -162,16 +167,18 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
                 placeholder="Enter ISBN"
               />
             </WrapperInputStyled>
-            <StyledButtonScanner
-              type="button"
-              margin={`0 ${dimensions.xs_2}`}
-              onClick={handleShowScanner}
-            />
-            <StyledButton
-              type="submit"
-              value="Find book"
-              disabled={conditionToDisabledBtn}
-            />
+            <MobileInline>
+              <ButtonScanner
+                type="button"
+                margin={`0 ${dimensions.xs_2}`}
+                onClick={handleShowScanner}
+              />
+              <Button
+                type="submit"
+                value="Find book"
+                disabled={conditionToDisabledBtn}
+              />
+            </MobileInline>
           </ISBNWrapper>
         </form>
       </Wrapper>

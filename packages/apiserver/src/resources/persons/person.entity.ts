@@ -12,6 +12,7 @@ import { Notification } from '../notifications/notification.entity';
 import { Status } from '../statuses/status.entity';
 import { Message } from '../messages/message.entity';
 import { Location } from '../locations/location.entity';
+import { BlockedUsers } from '../blocked-users/blocked-users.entity';
 
 @Entity('person')
 export class Person extends BaseEntity {
@@ -22,13 +23,16 @@ export class Person extends BaseEntity {
   smg_id!: string;
 
   @Column()
+  email!: string;
+
+  @Column()
+  position!: string;
+
+  @Column()
   type!: string;
 
   @Column()
   username!: string;
-
-  @Column()
-  email!: string;
 
   @Column({ nullable: true })
   avatar: string;
@@ -47,6 +51,9 @@ export class Person extends BaseEntity {
 
   @OneToMany(() => Message, (message) => message.person)
   message: Message[];
+
+  @OneToMany(() => BlockedUsers, (blockedUsers) => blockedUsers.person)
+  state: BlockedUsers[];
 
   @ManyToOne(() => Location, (location) => location.person)
   @JoinColumn({ name: 'location_id' })

@@ -3,6 +3,9 @@ import styled from '@emotion/styled';
 import { ManagerCardTypes } from './managerCardTypes';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { t } from 'i18next';
+import { useNavigate } from 'react-router-dom';
+import { RoutesTypes } from '../../../utils/routes';
+import { Link } from 'react-router-dom';
 
 export interface IField {
   title: string;
@@ -72,7 +75,7 @@ const WrapperFooter = styled.div`
   bottom: ${dimensions.xs_1};
   justify-content: space-between;
 `;
-const OpenLink = styled.a`
+export const OpenLink = styled(Link)`
   cursor: pointer;
   font-weight: 500;
   color: ${colors.accent_color};
@@ -116,7 +119,7 @@ const InlineWrapper = styled.div`
 `;
 
 interface IFieldOpenLinkProps {
-  secondary?: boolean;
+  secondary?: string;
 }
 const FieldOpenLink = styled(OpenLink)<IFieldOpenLinkProps>`
   font-weight: 400;
@@ -131,10 +134,10 @@ const StyledIcon = styled.img`
   border-radius: 50%;
   border: 2px solid ${colors.bg_secondary};
   position: relative;
-  :nth-child(2) {
+  :nth-of-type(2) {
     left: -16px;
   }
-  :nth-child(3) {
+  :nth-of-type(3) {
     left: -32px;
   }
 `;
@@ -147,6 +150,12 @@ const NotificationDescription = styled(FieldDescription)`
 `;
 
 const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
+  const navigate = useNavigate();
+
+  const navigateToList = () => {
+    navigate(RoutesTypes.HOME + '/' + type.toLowerCase());
+  };
+
   return (
     <WrapperCard>
       <Title>
@@ -154,7 +163,7 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
       </Title>
       <Description>{t(`ManagerInfoCard.Description.${type}`)}</Description>
       {fields.slice(0, 3).map((field, key) => (
-        <FieldWrapper>
+        <FieldWrapper key={key + Math.random()}>
           {type === ManagerCardTypes.NOTIFICATIONS ? (
             <>
               <FieldTitle>{field.title}</FieldTitle>
@@ -162,11 +171,11 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
                 <InlineFieldDescription>
                   {field.description}
                 </InlineFieldDescription>
-                <InlineOpenLink>
+                <InlineOpenLink to="#">
                   {t('ManagerInfoCard.Link.Answer')}
                 </InlineOpenLink>
               </InlineWrapper>
-              <FieldOpenLink>Ivan Ivanov</FieldOpenLink>
+              <FieldOpenLink to="#">Ivan Ivanov</FieldOpenLink>
             </>
           ) : (
             <>
@@ -175,7 +184,9 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
                 <FieldDescription>
                   {t(`ManagerInfoCard.FieldDescription.${type}`)}
                 </FieldDescription>
-                <FieldOpenLink secondary>Ivan Ivanov</FieldOpenLink>
+                <FieldOpenLink to="#" secondary="true">
+                  Ivan Ivanov
+                </FieldOpenLink>
               </InlineWrapper>
             </>
           )}
@@ -184,8 +195,8 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
       <WrapperFooter>
         <>
           <InlineWrapper>
-            {fields.slice(0, 3).map((field) => (
-              <StyledIcon src={field.img}></StyledIcon>
+            {fields.slice(0, 3).map((field, index) => (
+              <StyledIcon key={index + Math.random()} src={field.img} />
             ))}
             {fields.length > 3 ? (
               <NotificationDescription>
@@ -195,7 +206,9 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
             ) : null}
           </InlineWrapper>
         </>
-        <OpenLink>{t(`ManagerInfoCard.Link.${type}`)}</OpenLink>
+        <OpenLink to={`${RoutesTypes.HOME}/${type.toLowerCase()}`}>
+          {t(`ManagerInfoCard.Link.${type}`)}
+        </OpenLink>
       </WrapperFooter>
     </WrapperCard>
   );

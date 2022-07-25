@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { OAuth2Client, UserRefreshClient } from 'google-auth-library';
 import { Person } from '../resources/persons/person.entity';
+import { BlockedUsers } from '../resources/blocked-users/blocked-users.entity';
 
 @Injectable()
 export class AuthService {
@@ -22,14 +23,25 @@ export class AuthService {
         smg_id: result.sub,
       },
     });
-
-    if (person) return { ...tokens, ...person, userRole: person.type };
+    const state = await BlockedUsers.findOne({
+      where: {
+        person_id: person.id,
+      },
+    });
+    if (person)
+      return {
+        ...tokens,
+        ...person,
+        userRole: person.type,
+        blocked: state?.state,
+      };
 
     const newPerson = Person.create({
       smg_id: result.sub,
       avatar: result.picture,
       email: result.email,
       username: result.name,
+      position: 'Ruby Developer',
       type: 'Reader',
     });
     await Person.save(newPerson);

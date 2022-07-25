@@ -6,11 +6,7 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import {
-  BadRequestException,
-  UnauthorizedException,
-  UseGuards,
-} from '@nestjs/common';
+import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { Person } from './person.entity';
 import { Status } from '../statuses/status.entity';
 import { Notification } from '../notifications/notification.entity';
@@ -20,24 +16,21 @@ import {
   UpdatePersonLocationInput,
 } from '@mimir/global-types';
 import { Message } from '../messages/message.entity';
-import { AuthGuard } from '../../auth/auth.guard';
+import { BlockedUsers } from '../blocked-users/blocked-users.entity';
 
 @Resolver('Person')
 export class PersonResolver {
   @Query(() => [Person])
-  @UseGuards(AuthGuard)
   async getAllPersons() {
     return Person.find();
   }
 
   @Query(() => Person)
-  @UseGuards(AuthGuard)
   async getOnePerson(@Args('id') id: number | string) {
     return Person.findOne(id);
   }
 
   @Mutation(() => Person)
-  @UseGuards(AuthGuard)
   async createPerson(@Args('input') createPersonInput: CreatePersonInput) {
     try {
       const { smg_id } = createPersonInput;
@@ -54,7 +47,6 @@ export class PersonResolver {
   }
 
   @Mutation(() => Person)
-  @UseGuards(AuthGuard)
   async updatePersonLocation(
     @Args('input') updatePersonLocationInput: UpdatePersonLocationInput
   ) {
@@ -88,6 +80,12 @@ export class PersonResolver {
   async messages(@Parent() person: Person) {
     const { id } = person;
     return Message.find({ where: { person_id: id } });
+  }
+
+  @ResolveField(() => [BlockedUsers])
+  async states(@Parent() person: Person) {
+    const { id } = person;
+    return BlockedUsers.find({ where: { person_id: id } });
   }
 
   @ResolveField(() => [Location])

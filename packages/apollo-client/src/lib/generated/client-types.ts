@@ -16,6 +16,21 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type Author = {
+  __typename?: 'Author';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+export type BlockedUsers = {
+  __typename?: 'BlockedUsers';
+  created_at: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  person: Person;
+  state: Scalars['Boolean'];
+};
+
 export type BookInput = {
   identifier: Scalars['String'];
   person_id: Scalars['Int'];
@@ -39,6 +54,7 @@ export type CreateMaterialInput = {
 };
 
 export type CreateMessageInput = {
+  location_id: Scalars['Int'];
   material_id?: InputMaybe<Scalars['Int']>;
   message: Scalars['String'];
   person_id: Scalars['Int'];
@@ -54,6 +70,12 @@ export type CreatePersonInput = {
   location_id: Scalars['Int'];
   smg_id: Scalars['String'];
   type: Scalars['String'];
+};
+
+export type CreateStateInput = {
+  description?: InputMaybe<Scalars['String']>;
+  person_id: Scalars['Int'];
+  state: Scalars['Boolean'];
 };
 
 export type CreateStatusInput = {
@@ -79,6 +101,24 @@ export type DonateBookInput = {
 export type Error = {
   __typename?: 'Error';
   message: Scalars['String'];
+};
+
+export type IMaterialMeta = {
+  __typename?: 'IMaterialMeta';
+  authors: Array<Maybe<Author>>;
+  cover: Scalars['String'];
+  description: Scalars['String'];
+  meta: Meta;
+  publisher: Publisher;
+  title: Scalars['String'];
+  yearPublishedAt: Scalars['Int'];
+};
+
+export type IMetaOfMaterial = {
+  __typename?: 'IMetaOfMaterial';
+  idType: Scalars['String'];
+  material: IMaterialMeta;
+  value: Scalars['String'];
 };
 
 export type Location = {
@@ -112,24 +152,37 @@ export type Message = {
   __typename?: 'Message';
   created_at: Scalars['DateTime'];
   id: Scalars['ID'];
+  location_id: Scalars['Int'];
   material: Material;
-  material_id: Scalars['Int'];
+  material_id?: Maybe<Scalars['Int']>;
   message: Scalars['String'];
   person: Person;
   person_id: Scalars['Int'];
   title: Scalars['String'];
 };
 
-export type MessageUnionResult = Error | Message;
+export type Meta = {
+  __typename?: 'Meta';
+  ageRestriction: Scalars['String'];
+  coverType: Scalars['String'];
+  dimensions: Scalars['String'];
+  manufacturer: Scalars['String'];
+  mass: Scalars['String'];
+  numberOfPages: Scalars['String'];
+  price: Scalars['String'];
+  series: Scalars['String'];
+  sku: Scalars['String'];
+};
 
 export type Mutation = {
   __typename?: 'Mutation';
   claimBook: BookUnionResult;
   createLocation?: Maybe<Location>;
   createMaterial: Material;
-  createMessageForManager: MessageUnionResult;
+  createMessageForManager: Message;
   createNotification?: Maybe<Notification>;
   createPerson: Person;
+  createState?: Maybe<BlockedUsers>;
   createStatus: Status;
   donateBook: Material;
   prolongClaimPeriod: BookUnionResult;
@@ -169,6 +222,11 @@ export type MutationCreateNotificationArgs = {
 
 export type MutationCreatePersonArgs = {
   input: CreatePersonInput;
+};
+
+
+export type MutationCreateStateArgs = {
+  input: CreateStateInput;
 };
 
 
@@ -234,9 +292,11 @@ export type Person = {
   id: Scalars['ID'];
   location: Location;
   location_id: Scalars['Int'];
-  messages: Array<Maybe<Message>>;
+  messages?: Maybe<Array<Maybe<Message>>>;
   notifications?: Maybe<Array<Maybe<Notification>>>;
+  position: Scalars['String'];
   smg_id: Scalars['String'];
+  states?: Maybe<Array<Maybe<BlockedUsers>>>;
   statuses?: Maybe<Array<Maybe<Status>>>;
   type: Scalars['String'];
   username: Scalars['String'];
@@ -247,17 +307,29 @@ export type ProlongTimeInput = {
   person_id: Scalars['Int'];
 };
 
+export type Publisher = {
+  __typename?: 'Publisher';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
   getAllLocations: Array<Maybe<Location>>;
   getAllMaterials: Array<Maybe<Material>>;
-  getAllPersons: Array<Maybe<Person>>;
+  getAllMessages?: Maybe<Array<Message>>;
+  getAllPersons: Array<Person>;
+  getAllStatusesIsOverdue: Array<Maybe<Status>>;
   getAllTakenItems: Array<Maybe<Status>>;
+  getBlocksByPerson?: Maybe<Array<Maybe<BlockedUsers>>>;
   getMaterialById: Material;
-  getMaterialByIdentifier?: Maybe<Material>;
+  getMaterialByIdentifier: Material;
+  getMaterialByIdentifierFromMetadata: IMetaOfMaterial;
+  getMessagesByPerson?: Maybe<Array<Maybe<Message>>>;
   getNotificationsByMaterial: Array<Maybe<Notification>>;
   getNotificationsByPerson: Array<Maybe<Notification>>;
   getOnePerson: Person;
+  getReasonOfBlock?: Maybe<BlockedUsers>;
   getStatusesByMaterial: Array<Maybe<Status>>;
   getStatusesByPerson: Array<Maybe<Status>>;
   searchOfMaterials?: Maybe<Array<Maybe<Material>>>;
@@ -265,15 +337,23 @@ export type Query = {
 };
 
 
-export type QueryGetAllMaterialsArgs = {
-  limit?: InputMaybe<Scalars['Int']>;
+export type QueryGetAllMessagesArgs = {
+  location_id: Scalars['Int'];
+};
+
+
+export type QueryGetAllStatusesIsOverdueArgs = {
   location_id: Scalars['String'];
-  offset?: InputMaybe<Scalars['Int']>;
 };
 
 
 export type QueryGetAllTakenItemsArgs = {
   person_id: Scalars['Int'];
+};
+
+
+export type QueryGetBlocksByPersonArgs = {
+  person_id: Scalars['ID'];
 };
 
 
@@ -284,6 +364,16 @@ export type QueryGetMaterialByIdArgs = {
 
 export type QueryGetMaterialByIdentifierArgs = {
   input: SearchOneMaterial;
+};
+
+
+export type QueryGetMaterialByIdentifierFromMetadataArgs = {
+  identifier: Scalars['String'];
+};
+
+
+export type QueryGetMessagesByPersonArgs = {
+  person_id: Scalars['ID'];
 };
 
 
@@ -299,6 +389,11 @@ export type QueryGetNotificationsByPersonArgs = {
 
 export type QueryGetOnePersonArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryGetReasonOfBlockArgs = {
+  person_id: Scalars['ID'];
 };
 
 
@@ -329,6 +424,12 @@ export type RemoveMaterialInput = {
 export type RemoveNotificationInput = {
   material_id: Scalars['Int'];
   person_id: Scalars['Int'];
+};
+
+export type ResponseMetadata = {
+  __typename?: 'ResponseMetadata';
+  idType: Scalars['String'];
+  value: Scalars['String'];
 };
 
 export type SearchInput = {
@@ -380,12 +481,13 @@ export type ClaimBookMutation = { __typename?: 'Mutation', claimBook: { __typena
 export type CreateMessageForManagerMutationVariables = Exact<{
   person_id: Scalars['Int'];
   material_id?: InputMaybe<Scalars['Int']>;
+  location_id: Scalars['Int'];
   title: Scalars['String'];
   message: Scalars['String'];
 }>;
 
 
-export type CreateMessageForManagerMutation = { __typename?: 'Mutation', createMessageForManager: { __typename?: 'Error', message: string } | { __typename?: 'Message', message: string, title: string } };
+export type CreateMessageForManagerMutation = { __typename?: 'Mutation', createMessageForManager: { __typename?: 'Message', message: string, title: string } };
 
 export type CreateNotificationMutationVariables = Exact<{
   input: CreateNotificationInput;
@@ -393,6 +495,15 @@ export type CreateNotificationMutationVariables = Exact<{
 
 
 export type CreateNotificationMutation = { __typename?: 'Mutation', createNotification?: { __typename?: 'Notification', id: string } | null };
+
+export type CreateStateMutationVariables = Exact<{
+  state: Scalars['Boolean'];
+  person_id: Scalars['Int'];
+  description?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type CreateStateMutation = { __typename?: 'Mutation', createState?: { __typename?: 'BlockedUsers', state: boolean } | null };
 
 export type DonateBookMutationVariables = Exact<{
   person_id: Scalars['Int'];
@@ -470,28 +581,29 @@ export type GetAllLocationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAllLocationsQuery = { __typename?: 'Query', getAllLocations: Array<{ __typename?: 'Location', id: string, location: string } | null> };
 
-export type GetAllMaterialsQueryVariables = Exact<{
-  location_id: Scalars['String'];
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-}>;
+export type GetAllMaterialsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetAllMaterialsQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', author: string, category: string, created_at: any, id: string, id_type: string, identifier: string, picture?: string | null, title: string, type: string, updated_at: any, notifications: Array<{ __typename?: 'Notification', material_id: number, person_id: number } | null>, statuses: Array<{ __typename?: 'Status', status: string, person_id: number } | null> } | null> };
 
-export type GetAllMaterialsForManagerQueryVariables = Exact<{
-  location_id: Scalars['String'];
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+export type GetAllMessagesQueryVariables = Exact<{
+  location_id: Scalars['Int'];
 }>;
 
 
-export type GetAllMaterialsForManagerQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', id: string, title: string, category: string, picture?: string | null, statuses: Array<{ __typename?: 'Status', id: string, created_at: any, status: string, person: { __typename?: 'Person', id: string, username: string } } | null> } | null> };
+export type GetAllMessagesQuery = { __typename?: 'Query', getAllMessages?: Array<{ __typename?: 'Message', id: string, created_at: any, title: string, message: string, person: { __typename?: 'Person', id: string, username: string } }> | null };
 
 export type GetAllPersonsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllPersonsQuery = { __typename?: 'Query', getAllPersons: Array<{ __typename?: 'Person', id: string, statuses?: Array<{ __typename?: 'Status', id: string, material_id: number, created_at: any, status: string } | null> | null } | null> };
+export type GetAllPersonsQuery = { __typename?: 'Query', getAllPersons: Array<{ __typename?: 'Person', id: string, username: string, avatar: string, statuses?: Array<{ __typename?: 'Status', id: string, material_id: number, created_at: any, status: string } | null> | null }> };
+
+export type GetAllStatusesIsOverdueQueryVariables = Exact<{
+  location_id: Scalars['String'];
+}>;
+
+
+export type GetAllStatusesIsOverdueQuery = { __typename?: 'Query', getAllStatusesIsOverdue: Array<{ __typename?: 'Status', id: string, created_at: any, material: { __typename?: 'Material', id: string, title: string }, person: { __typename?: 'Person', id: string, username: string } } | null> };
 
 export type GetAllTakenItemsQueryVariables = Exact<{
   person_id: Scalars['Int'];
@@ -513,7 +625,14 @@ export type GetMaterialByIdentifierQueryVariables = Exact<{
 }>;
 
 
-export type GetMaterialByIdentifierQuery = { __typename?: 'Query', getMaterialByIdentifier?: { __typename?: 'Material', id: string, picture?: string | null, author: string, title: string, category: string } | null };
+export type GetMaterialByIdentifierQuery = { __typename?: 'Query', getMaterialByIdentifier: { __typename?: 'Material', id: string, picture?: string | null, author: string, title: string, category: string } };
+
+export type GetMaterialFromMetadataQueryVariables = Exact<{
+  identifier: Scalars['String'];
+}>;
+
+
+export type GetMaterialFromMetadataQuery = { __typename?: 'Query', getMaterialByIdentifierFromMetadata: { __typename?: 'IMetaOfMaterial', idType: string, value: string, material: { __typename?: 'IMaterialMeta', title: string, description: string, cover: string, authors: Array<{ __typename?: 'Author', id: string, name: string } | null>, meta: { __typename?: 'Meta', series: string } } } };
 
 export type GetNotificationsByPersonQueryVariables = Exact<{
   person_id: Scalars['Int'];
@@ -521,6 +640,20 @@ export type GetNotificationsByPersonQueryVariables = Exact<{
 
 
 export type GetNotificationsByPersonQuery = { __typename?: 'Query', getNotificationsByPerson: Array<{ __typename?: 'Notification', id: string, material_id: number, person_id: number } | null> };
+
+export type GetOnePersonQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetOnePersonQuery = { __typename?: 'Query', getOnePerson: { __typename?: 'Person', id: string, username: string, email: string, position: string, avatar: string, statuses?: Array<{ __typename?: 'Status', id: string, material_id: number, status: string, created_at: any, material: { __typename?: 'Material', id: string, picture?: string | null, title: string, author: string, category: string } } | null> | null, states?: Array<{ __typename?: 'BlockedUsers', state: boolean, id: string, description?: string | null, created_at: any } | null> | null, messages?: Array<{ __typename?: 'Message', id: string, material_id?: number | null, title: string, message: string, created_at: any } | null> | null } };
+
+export type GetReasonOfBlockQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetReasonOfBlockQuery = { __typename?: 'Query', getReasonOfBlock?: { __typename?: 'BlockedUsers', state: boolean, description?: string | null } | null };
 
 export type SearchOfMaterialsQueryVariables = Exact<{
   search: Scalars['String'];
@@ -572,17 +705,12 @@ export type ClaimBookMutationHookResult = ReturnType<typeof useClaimBookMutation
 export type ClaimBookMutationResult = Apollo.MutationResult<ClaimBookMutation>;
 export type ClaimBookMutationOptions = Apollo.BaseMutationOptions<ClaimBookMutation, ClaimBookMutationVariables>;
 export const CreateMessageForManagerDocument = gql`
-    mutation CreateMessageForManager($person_id: Int!, $material_id: Int, $title: String!, $message: String!) {
+    mutation CreateMessageForManager($person_id: Int!, $material_id: Int, $location_id: Int!, $title: String!, $message: String!) {
   createMessageForManager(
-    input: {person_id: $person_id, material_id: $material_id, title: $title, message: $message}
+    input: {person_id: $person_id, material_id: $material_id, location_id: $location_id, title: $title, message: $message}
   ) {
-    ... on Message {
-      message
-      title
-    }
-    ... on Error {
-      message
-    }
+    message
+    title
   }
 }
     `;
@@ -603,6 +731,7 @@ export type CreateMessageForManagerMutationFn = Apollo.MutationFunction<CreateMe
  *   variables: {
  *      person_id: // value for 'person_id'
  *      material_id: // value for 'material_id'
+ *      location_id: // value for 'location_id'
  *      title: // value for 'title'
  *      message: // value for 'message'
  *   },
@@ -648,6 +777,43 @@ export function useCreateNotificationMutation(baseOptions?: Apollo.MutationHookO
 export type CreateNotificationMutationHookResult = ReturnType<typeof useCreateNotificationMutation>;
 export type CreateNotificationMutationResult = Apollo.MutationResult<CreateNotificationMutation>;
 export type CreateNotificationMutationOptions = Apollo.BaseMutationOptions<CreateNotificationMutation, CreateNotificationMutationVariables>;
+export const CreateStateDocument = gql`
+    mutation CreateState($state: Boolean!, $person_id: Int!, $description: String) {
+  createState(
+    input: {state: $state, person_id: $person_id, description: $description}
+  ) {
+    state
+  }
+}
+    `;
+export type CreateStateMutationFn = Apollo.MutationFunction<CreateStateMutation, CreateStateMutationVariables>;
+
+/**
+ * __useCreateStateMutation__
+ *
+ * To run a mutation, you first call `useCreateStateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateStateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createStateMutation, { data, loading, error }] = useCreateStateMutation({
+ *   variables: {
+ *      state: // value for 'state'
+ *      person_id: // value for 'person_id'
+ *      description: // value for 'description'
+ *   },
+ * });
+ */
+export function useCreateStateMutation(baseOptions?: Apollo.MutationHookOptions<CreateStateMutation, CreateStateMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateStateMutation, CreateStateMutationVariables>(CreateStateDocument, options);
+      }
+export type CreateStateMutationHookResult = ReturnType<typeof useCreateStateMutation>;
+export type CreateStateMutationResult = Apollo.MutationResult<CreateStateMutation>;
+export type CreateStateMutationOptions = Apollo.BaseMutationOptions<CreateStateMutation, CreateStateMutationVariables>;
 export const DonateBookDocument = gql`
     mutation DonateBook($person_id: Int!, $location_id: Int!, $identifier: String!, $id_type: String!, $type: String!, $title: String!, $author: String!, $category: String!, $description: String, $picture: String, $role: String!) {
   donateBook(
@@ -970,8 +1136,8 @@ export type GetAllLocationsQueryHookResult = ReturnType<typeof useGetAllLocation
 export type GetAllLocationsLazyQueryHookResult = ReturnType<typeof useGetAllLocationsLazyQuery>;
 export type GetAllLocationsQueryResult = Apollo.QueryResult<GetAllLocationsQuery, GetAllLocationsQueryVariables>;
 export const GetAllMaterialsDocument = gql`
-    query GetAllMaterials($location_id: String!, $limit: Int, $offset: Int) {
-  getAllMaterials(location_id: $location_id, limit: $limit, offset: $offset) {
+    query GetAllMaterials {
+  getAllMaterials {
     author
     category
     created_at
@@ -1006,13 +1172,10 @@ export const GetAllMaterialsDocument = gql`
  * @example
  * const { data, loading, error } = useGetAllMaterialsQuery({
  *   variables: {
- *      location_id: // value for 'location_id'
- *      limit: // value for 'limit'
- *      offset: // value for 'offset'
  *   },
  * });
  */
-export function useGetAllMaterialsQuery(baseOptions: Apollo.QueryHookOptions<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>) {
+export function useGetAllMaterialsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>(GetAllMaterialsDocument, options);
       }
@@ -1023,59 +1186,54 @@ export function useGetAllMaterialsLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetAllMaterialsQueryHookResult = ReturnType<typeof useGetAllMaterialsQuery>;
 export type GetAllMaterialsLazyQueryHookResult = ReturnType<typeof useGetAllMaterialsLazyQuery>;
 export type GetAllMaterialsQueryResult = Apollo.QueryResult<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>;
-export const GetAllMaterialsForManagerDocument = gql`
-    query GetAllMaterialsForManager($location_id: String!, $limit: Int, $offset: Int) {
-  getAllMaterials(location_id: $location_id, limit: $limit, offset: $offset) {
+export const GetAllMessagesDocument = gql`
+    query GetAllMessages($location_id: Int!) {
+  getAllMessages(location_id: $location_id) {
     id
+    created_at
     title
-    category
-    picture
-    statuses {
+    message
+    person {
       id
-      created_at
-      status
-      person {
-        id
-        username
-      }
+      username
     }
   }
 }
     `;
 
 /**
- * __useGetAllMaterialsForManagerQuery__
+ * __useGetAllMessagesQuery__
  *
- * To run a query within a React component, call `useGetAllMaterialsForManagerQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAllMaterialsForManagerQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetAllMessagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllMessagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetAllMaterialsForManagerQuery({
+ * const { data, loading, error } = useGetAllMessagesQuery({
  *   variables: {
  *      location_id: // value for 'location_id'
- *      limit: // value for 'limit'
- *      offset: // value for 'offset'
  *   },
  * });
  */
-export function useGetAllMaterialsForManagerQuery(baseOptions: Apollo.QueryHookOptions<GetAllMaterialsForManagerQuery, GetAllMaterialsForManagerQueryVariables>) {
+export function useGetAllMessagesQuery(baseOptions: Apollo.QueryHookOptions<GetAllMessagesQuery, GetAllMessagesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetAllMaterialsForManagerQuery, GetAllMaterialsForManagerQueryVariables>(GetAllMaterialsForManagerDocument, options);
+        return Apollo.useQuery<GetAllMessagesQuery, GetAllMessagesQueryVariables>(GetAllMessagesDocument, options);
       }
-export function useGetAllMaterialsForManagerLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllMaterialsForManagerQuery, GetAllMaterialsForManagerQueryVariables>) {
+export function useGetAllMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllMessagesQuery, GetAllMessagesQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetAllMaterialsForManagerQuery, GetAllMaterialsForManagerQueryVariables>(GetAllMaterialsForManagerDocument, options);
+          return Apollo.useLazyQuery<GetAllMessagesQuery, GetAllMessagesQueryVariables>(GetAllMessagesDocument, options);
         }
-export type GetAllMaterialsForManagerQueryHookResult = ReturnType<typeof useGetAllMaterialsForManagerQuery>;
-export type GetAllMaterialsForManagerLazyQueryHookResult = ReturnType<typeof useGetAllMaterialsForManagerLazyQuery>;
-export type GetAllMaterialsForManagerQueryResult = Apollo.QueryResult<GetAllMaterialsForManagerQuery, GetAllMaterialsForManagerQueryVariables>;
+export type GetAllMessagesQueryHookResult = ReturnType<typeof useGetAllMessagesQuery>;
+export type GetAllMessagesLazyQueryHookResult = ReturnType<typeof useGetAllMessagesLazyQuery>;
+export type GetAllMessagesQueryResult = Apollo.QueryResult<GetAllMessagesQuery, GetAllMessagesQueryVariables>;
 export const GetAllPersonsDocument = gql`
     query GetAllPersons {
   getAllPersons {
     id
+    username
+    avatar
     statuses {
       id
       material_id
@@ -1112,6 +1270,50 @@ export function useGetAllPersonsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetAllPersonsQueryHookResult = ReturnType<typeof useGetAllPersonsQuery>;
 export type GetAllPersonsLazyQueryHookResult = ReturnType<typeof useGetAllPersonsLazyQuery>;
 export type GetAllPersonsQueryResult = Apollo.QueryResult<GetAllPersonsQuery, GetAllPersonsQueryVariables>;
+export const GetAllStatusesIsOverdueDocument = gql`
+    query GetAllStatusesIsOverdue($location_id: String!) {
+  getAllStatusesIsOverdue(location_id: $location_id) {
+    id
+    created_at
+    material {
+      id
+      title
+    }
+    person {
+      id
+      username
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAllStatusesIsOverdueQuery__
+ *
+ * To run a query within a React component, call `useGetAllStatusesIsOverdueQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllStatusesIsOverdueQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllStatusesIsOverdueQuery({
+ *   variables: {
+ *      location_id: // value for 'location_id'
+ *   },
+ * });
+ */
+export function useGetAllStatusesIsOverdueQuery(baseOptions: Apollo.QueryHookOptions<GetAllStatusesIsOverdueQuery, GetAllStatusesIsOverdueQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllStatusesIsOverdueQuery, GetAllStatusesIsOverdueQueryVariables>(GetAllStatusesIsOverdueDocument, options);
+      }
+export function useGetAllStatusesIsOverdueLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllStatusesIsOverdueQuery, GetAllStatusesIsOverdueQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllStatusesIsOverdueQuery, GetAllStatusesIsOverdueQueryVariables>(GetAllStatusesIsOverdueDocument, options);
+        }
+export type GetAllStatusesIsOverdueQueryHookResult = ReturnType<typeof useGetAllStatusesIsOverdueQuery>;
+export type GetAllStatusesIsOverdueLazyQueryHookResult = ReturnType<typeof useGetAllStatusesIsOverdueLazyQuery>;
+export type GetAllStatusesIsOverdueQueryResult = Apollo.QueryResult<GetAllStatusesIsOverdueQuery, GetAllStatusesIsOverdueQueryVariables>;
 export const GetAllTakenItemsDocument = gql`
     query GetAllTakenItems($person_id: Int!) {
   getAllTakenItems(person_id: $person_id) {
@@ -1248,6 +1450,54 @@ export function useGetMaterialByIdentifierLazyQuery(baseOptions?: Apollo.LazyQue
 export type GetMaterialByIdentifierQueryHookResult = ReturnType<typeof useGetMaterialByIdentifierQuery>;
 export type GetMaterialByIdentifierLazyQueryHookResult = ReturnType<typeof useGetMaterialByIdentifierLazyQuery>;
 export type GetMaterialByIdentifierQueryResult = Apollo.QueryResult<GetMaterialByIdentifierQuery, GetMaterialByIdentifierQueryVariables>;
+export const GetMaterialFromMetadataDocument = gql`
+    query GetMaterialFromMetadata($identifier: String!) {
+  getMaterialByIdentifierFromMetadata(identifier: $identifier) {
+    idType
+    value
+    material {
+      title
+      description
+      cover
+      authors {
+        id
+        name
+      }
+      meta {
+        series
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetMaterialFromMetadataQuery__
+ *
+ * To run a query within a React component, call `useGetMaterialFromMetadataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMaterialFromMetadataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMaterialFromMetadataQuery({
+ *   variables: {
+ *      identifier: // value for 'identifier'
+ *   },
+ * });
+ */
+export function useGetMaterialFromMetadataQuery(baseOptions: Apollo.QueryHookOptions<GetMaterialFromMetadataQuery, GetMaterialFromMetadataQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMaterialFromMetadataQuery, GetMaterialFromMetadataQueryVariables>(GetMaterialFromMetadataDocument, options);
+      }
+export function useGetMaterialFromMetadataLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMaterialFromMetadataQuery, GetMaterialFromMetadataQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMaterialFromMetadataQuery, GetMaterialFromMetadataQueryVariables>(GetMaterialFromMetadataDocument, options);
+        }
+export type GetMaterialFromMetadataQueryHookResult = ReturnType<typeof useGetMaterialFromMetadataQuery>;
+export type GetMaterialFromMetadataLazyQueryHookResult = ReturnType<typeof useGetMaterialFromMetadataLazyQuery>;
+export type GetMaterialFromMetadataQueryResult = Apollo.QueryResult<GetMaterialFromMetadataQuery, GetMaterialFromMetadataQueryVariables>;
 export const GetNotificationsByPersonDocument = gql`
     query GetNotificationsByPerson($person_id: Int!) {
   getNotificationsByPerson(person_id: $person_id) {
@@ -1285,6 +1535,107 @@ export function useGetNotificationsByPersonLazyQuery(baseOptions?: Apollo.LazyQu
 export type GetNotificationsByPersonQueryHookResult = ReturnType<typeof useGetNotificationsByPersonQuery>;
 export type GetNotificationsByPersonLazyQueryHookResult = ReturnType<typeof useGetNotificationsByPersonLazyQuery>;
 export type GetNotificationsByPersonQueryResult = Apollo.QueryResult<GetNotificationsByPersonQuery, GetNotificationsByPersonQueryVariables>;
+export const GetOnePersonDocument = gql`
+    query GetOnePerson($id: ID!) {
+  getOnePerson(id: $id) {
+    id
+    username
+    email
+    position
+    avatar
+    statuses {
+      id
+      material_id
+      status
+      created_at
+      material {
+        id
+        picture
+        title
+        author
+        category
+      }
+    }
+    states {
+      state
+      id
+      description
+      created_at
+    }
+    messages {
+      id
+      material_id
+      title
+      message
+      created_at
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetOnePersonQuery__
+ *
+ * To run a query within a React component, call `useGetOnePersonQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOnePersonQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetOnePersonQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetOnePersonQuery(baseOptions: Apollo.QueryHookOptions<GetOnePersonQuery, GetOnePersonQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetOnePersonQuery, GetOnePersonQueryVariables>(GetOnePersonDocument, options);
+      }
+export function useGetOnePersonLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOnePersonQuery, GetOnePersonQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetOnePersonQuery, GetOnePersonQueryVariables>(GetOnePersonDocument, options);
+        }
+export type GetOnePersonQueryHookResult = ReturnType<typeof useGetOnePersonQuery>;
+export type GetOnePersonLazyQueryHookResult = ReturnType<typeof useGetOnePersonLazyQuery>;
+export type GetOnePersonQueryResult = Apollo.QueryResult<GetOnePersonQuery, GetOnePersonQueryVariables>;
+export const GetReasonOfBlockDocument = gql`
+    query GetReasonOfBlock($id: ID!) {
+  getReasonOfBlock(person_id: $id) {
+    state
+    description
+  }
+}
+    `;
+
+/**
+ * __useGetReasonOfBlockQuery__
+ *
+ * To run a query within a React component, call `useGetReasonOfBlockQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetReasonOfBlockQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetReasonOfBlockQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetReasonOfBlockQuery(baseOptions: Apollo.QueryHookOptions<GetReasonOfBlockQuery, GetReasonOfBlockQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetReasonOfBlockQuery, GetReasonOfBlockQueryVariables>(GetReasonOfBlockDocument, options);
+      }
+export function useGetReasonOfBlockLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetReasonOfBlockQuery, GetReasonOfBlockQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetReasonOfBlockQuery, GetReasonOfBlockQueryVariables>(GetReasonOfBlockDocument, options);
+        }
+export type GetReasonOfBlockQueryHookResult = ReturnType<typeof useGetReasonOfBlockQuery>;
+export type GetReasonOfBlockLazyQueryHookResult = ReturnType<typeof useGetReasonOfBlockLazyQuery>;
+export type GetReasonOfBlockQueryResult = Apollo.QueryResult<GetReasonOfBlockQuery, GetReasonOfBlockQueryVariables>;
 export const SearchOfMaterialsDocument = gql`
     query SearchOfMaterials($search: String!, $location: String!) {
   searchOfMaterials(input: {search: $search, location: $location}) {

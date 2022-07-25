@@ -12,9 +12,12 @@ import { CreateStatusInput } from '@mimir/global-types';
 import { AuthGuard } from '../../auth/auth.guard';
 import { Notification } from '../notifications/notification.entity';
 import { Person } from '../persons/person.entity';
+import { StatusService } from './status.service';
+import { Material } from '../materials/material.entity';
 
 @Resolver('Status')
 export class StatusResolver {
+  constructor(private readonly statusService: StatusService) {}
   @Query(() => [Status])
   @UseGuards(AuthGuard)
   async getStatusesByPerson(@Args('person_id') id: string) {
@@ -33,6 +36,11 @@ export class StatusResolver {
     return Person.findOne(person_id);
   }
 
+  @Query(() => [Status])
+  async getAllStatusesIsOverdue(@Args('location_id') location_id: string) {
+    return this.statusService.allOverdueStatuses(location_id);
+  }
+
   @Mutation(() => Status)
   @UseGuards(AuthGuard)
   async createStatus(@Args('input') createStatusInput: CreateStatusInput) {
@@ -43,5 +51,10 @@ export class StatusResolver {
     } catch (e) {
       throw new BadRequestException();
     }
+  }
+  @ResolveField(() => Material)
+  async material(@Parent() statuses: Status) {
+    const { material_id } = statuses;
+    return Material.findOne({ where: { id: material_id } });
   }
 }
