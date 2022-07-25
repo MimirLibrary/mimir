@@ -8,8 +8,11 @@ import Scanner from '../Scanner';
 import { useAppDispatch } from '../../hooks/useTypedDispatch';
 import { setIdentifier } from '../../store/slices/identifierSlice';
 import InputMask from 'react-input-mask';
-import axios from 'axios';
-import { IMetaOfMaterial } from '../../types';
+import {
+  client,
+  GetMaterialFromMetadataDocument,
+  GetMaterialFromMetadataQuery,
+} from '@mimir/apollo-client';
 
 const Wrapper = styled.section`
   width: 100%;
@@ -82,7 +85,7 @@ const InputStyledMask = styled(InputMask)`
 `;
 
 interface IPropsViaISBN {
-  setDataToState: (data: IMetaOfMaterial) => void;
+  setDataToState: (data: GetMaterialFromMetadataQuery | undefined) => void;
   setIsLoading: (value: boolean) => void;
   setDataError: (value: Error | null) => void;
 }
@@ -92,11 +95,10 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
   setIsLoading,
   setDataError,
 }) => {
+  let isMounted = true;
   const [valueOfISBN, setValueIsISBN] = useState<string>('');
   const [isShowScanner, setIsShowScanner] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-
-  let isMounted = true;
 
   useEffect(() => {
     return () => {
@@ -105,7 +107,7 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
   }, []);
 
   const conditionToDisabledBtn = !valueOfISBN && valueOfISBN.length <= 13;
-  const handelChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValueIsISBN(e.target.value);
   };
 
@@ -116,10 +118,11 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
     if (isMounted) {
       try {
         setIsLoading(true);
-        const material = await axios.get(
-          `${process.env['NX_API_METADATA_URL']}/search/${valueOfISBN}`
-        );
-        setDataToState(material.data);
+        const metaDataOfMaterial = await client.query({
+          query: GetMaterialFromMetadataDocument,
+          variables: { identifier: valueOfISBN },
+        });
+        setDataToState(metaDataOfMaterial.data);
         setIsLoading(false);
       } catch (e) {
         if (e instanceof Error) {
@@ -149,7 +152,7 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
               <InputStyledMask
                 mask="999-9-99-999999-9"
                 value={valueOfISBN}
-                onChange={handelChangeInput}
+                onChange={handleChangeInput}
                 required
                 placeholder="Enter ISBN"
               />

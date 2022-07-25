@@ -69,11 +69,55 @@ input SearchInput {
   location: String!
 }
 
+type ResponseMetadata {
+  idType: String!
+  value: String!
+}
+
+type Author {
+  id: ID!
+  name: String!
+}
+
+type Publisher {
+  id: ID!
+  name: String!
+}
+
+type Meta {
+  ageRestriction: String!
+  coverType: String!
+  dimensions: String!
+  manufacturer: String!
+  mass: String!
+  numberOfPages: String!
+  price: String!
+  series: String!
+  sku: String!
+}
+
+type IMaterialMeta {
+  authors: [Author]!
+  cover: String!
+  description: String!
+  title: String!
+  yearPublishedAt: Int!
+  meta: Meta!
+  publisher: Publisher!
+}
+
+type IMetaOfMaterial {
+  idType: String!
+  value: String!
+  material: IMaterialMeta!
+}
+
 extend type Query {
   getAllMaterials: [Material]!
   getMaterialById(id: ID!): Material!
   searchOfMaterials(input: SearchInput!): [Material]
-  getMaterialByIdentifier(input: SearchOneMaterial!): Material
+  getMaterialByIdentifier(input: SearchOneMaterial!): Material!
+  getMaterialByIdentifierFromMetadata(identifier: String!): IMetaOfMaterial!
 }
 
 extend type Mutation {

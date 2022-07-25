@@ -1,12 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { Material } from './material.entity';
-import { DonateBookInput, RolesTypes, SearchInput } from '@mimir/global-types';
+import {
+  DonateBookInput,
+  RolesTypes,
+  SearchInput,
+  SearchOneMaterial,
+} from '@mimir/global-types';
 import { FileService } from '../../file/file.service';
 import { Status } from '../statuses/status.entity';
 import { Connection } from 'typeorm';
 import { ErrorBook } from '../../errors';
 import { StatusTypes } from '@mimir/global-types';
 import { GraphQLError } from 'graphql';
+import axios from 'axios';
 
 @Injectable()
 export class MaterialService {
@@ -46,7 +52,6 @@ export class MaterialService {
       if (isExistMaterial) {
         throw new ErrorBook('This material is already exist!');
       }
-
       const pictureWithIdentifier = this.fileService.moveFileInMainStorage(
         donateBookInput.picture,
         donateBookInput.identifier
@@ -71,6 +76,17 @@ export class MaterialService {
       throw new GraphQLError(e.message);
     } finally {
       await queryRunner.release();
+    }
+  }
+
+  async getMaterialByIdentifierFromMetadata(identifier: string) {
+    try {
+      const responseMetadataService = await axios.get(
+        `${process.env['NX_API_METADATA_URL']}/search/${identifier}`
+      );
+      return responseMetadataService.data;
+    } catch (e) {
+      throw new GraphQLError(e.message);
     }
   }
 }

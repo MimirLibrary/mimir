@@ -45,6 +45,9 @@ export class MaterialResolver {
       const [material] = await Material.find({
         where: { identifier, location_id },
       });
+      if (!material) {
+        throw new Error("Material doesn't exist");
+      }
       return material;
     } catch (e) {
       throw new GraphQLError(e.message);
