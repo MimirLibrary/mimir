@@ -10,13 +10,7 @@ import Modal from '../Modal';
 import ErrorMessage from '../ErrorMessge';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
-import { IMetaOfMaterial } from '../../types';
-import {
-  GetMaterialFromMetadataLazyQueryHookResult,
-  GetMaterialFromMetadataQuery,
-  GetMaterialFromMetadataQueryResult,
-  IMaterialMeta,
-} from '@mimir/apollo-client';
+import { GetMaterialFromMetadataQuery } from '@mimir/apollo-client';
 
 const WrapperInfo = styled.div`
   display: flex;

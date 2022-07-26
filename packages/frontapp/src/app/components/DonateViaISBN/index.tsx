@@ -8,9 +8,11 @@ import Scanner from '../Scanner';
 import { useAppDispatch } from '../../hooks/useTypedDispatch';
 import { setIdentifier } from '../../store/slices/identifierSlice';
 import InputMask from 'react-input-mask';
-import axios from 'axios';
-import { IMetaOfMaterial } from '../../types';
-import { GetMaterialFromMetadataQuery } from '@mimir/apollo-client';
+import {
+  client,
+  GetMaterialFromMetadataDocument,
+  GetMaterialFromMetadataQuery,
+} from '@mimir/apollo-client';
 
 const Wrapper = styled.section`
   width: 100%;
@@ -83,18 +85,6 @@ const InputStyledMask = styled(InputMask)`
   }
 `;
 
-const StyledButton = styled(Button)`
-  @media (max-width: ${dimensions.tablet_width}) {
-    max-width: 12.5rem;
-  }
-`;
-
-const StyledButtonScanner = styled(ButtonScanner)`
-  @media (max-width: ${dimensions.tablet_width}) {
-    display: none;
-  }
-`;
-
 interface IPropsViaISBN {
   setDataToState: (data: GetMaterialFromMetadataQuery | undefined) => void;
   setIsLoading: (value: boolean) => void;
@@ -130,10 +120,11 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
     if (isMounted) {
       try {
         setIsLoading(true);
-        const material = await axios.get(
-          `${process.env['NX_API_METADATA_URL']}/search/${valueOfISBN}`
-        );
-        setDataToState(material.data);
+        const metaDataOfMaterial = await client.query({
+          query: GetMaterialFromMetadataDocument,
+          variables: { identifier: valueOfISBN },
+        });
+        setDataToState(metaDataOfMaterial.data);
         setIsLoading(false);
       } catch (e) {
         if (e instanceof Error) {
@@ -171,7 +162,7 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
             <MobileInline>
               <ButtonScanner
                 type="button"
-                margin={`0 ${dimensions.xs_2}`}
+                margin={`0.25rem ${dimensions.xs_2} 0 `}
                 onClick={handleShowScanner}
               />
               <Button

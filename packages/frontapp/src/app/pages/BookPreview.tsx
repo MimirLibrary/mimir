@@ -36,7 +36,6 @@ const SuggestionText = styled.h3`
 
 const BookPreview = () => {
   const { item_id } = useParams();
-  const navigate = useNavigate();
   const { id, location } = useAppSelector((state) => state.user);
   const { data, loading } = useGetMaterialByIdQuery({
     variables: { id: item_id! },

@@ -28,7 +28,6 @@ export class MaterialResolver {
   constructor(private materialService: MaterialService) {}
 
   @Query(() => [Material])
-  @UseGuards(AuthGuard)
   async getAllMaterials(
     @Args('location_id') location_id: string,
     @Args('limit') limit: number,
@@ -38,7 +37,6 @@ export class MaterialResolver {
   }
 
   @Query(() => Material)
-  @UseGuards(AuthGuard)
   async getMaterialById(@Args('id') id: number | string) {
     return Material.findOneOrFail(id);
   }
@@ -62,19 +60,16 @@ export class MaterialResolver {
   }
 
   @Query(() => [Material])
-  @UseGuards(AuthGuard)
   async searchOfMaterials(@Args('input') searchInput: SearchInput) {
     return this.materialService.search(searchInput);
   }
 
   @Mutation(() => Material)
-  @UseGuards(AuthGuard)
   async donateBook(@Args('input') donateBookInput: DonateBookInput) {
     return this.materialService.donate(donateBookInput);
   }
 
   @Mutation(() => Material)
-  @UseGuards(AuthGuard)
   async createMaterial(
     @Args('input') createMaterialInput: CreateMaterialInput
   ) {
@@ -86,7 +81,6 @@ export class MaterialResolver {
   }
 
   @Mutation(() => Material)
-  @UseGuards(AuthGuard)
   async removeMaterial(
     @Args('input') removeMaterialInput: RemoveMaterialInput
   ) {
@@ -103,7 +97,6 @@ export class MaterialResolver {
     }
   }
   @Mutation(() => Material)
-  @UseGuards(AuthGuard)
   async updateMaterial(
     @Args('input') updateMaterialInput: UpdateMaterialInput
   ) {
