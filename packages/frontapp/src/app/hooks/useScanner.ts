@@ -13,19 +13,21 @@ const useScanner = () => {
 
   const handleOnDetectedScannerRoute = useCallback(
     async (code) => {
-      const {
-        data: { getMaterialByIdentifier },
-      } = await fetchMore({
-        variables: {
-          identifier: code,
-          location_id: parseInt(location.id),
-        },
-      });
-
-      if (!getMaterialByIdentifier)
-        return toast.error(t('PopUps.NotFoundByIdentifier'));
-
-      return navigate(`/item/${getMaterialByIdentifier.id}?claimModal=${code}`);
+      try {
+        const {
+          data: { getMaterialByIdentifier },
+        } = await fetchMore({
+          variables: {
+            identifier: code,
+            location_id: parseInt(location.id),
+          },
+        });
+        return navigate(
+          `/item/${getMaterialByIdentifier.id}?claimModal=${code}`
+        );
+      } catch (e) {
+        toast.error(t('PopUps.NotFoundByIdentifier'));
+      }
     },
     [fetchMore, location.id, navigate]
   );

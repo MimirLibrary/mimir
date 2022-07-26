@@ -119,7 +119,7 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
   }, []);
 
   const conditionToDisabledBtn = !valueOfISBN && valueOfISBN.length <= 13;
-  const handelChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValueIsISBN(e.target.value);
   };
 
@@ -163,7 +163,7 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
               <InputStyledMask
                 mask="999-9-99-999999-9"
                 value={valueOfISBN}
-                onChange={handelChangeInput}
+                onChange={handleChangeInput}
                 required
                 placeholder="Enter ISBN"
               />
