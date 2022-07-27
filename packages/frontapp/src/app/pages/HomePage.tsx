@@ -76,6 +76,7 @@ const HomePage: FC = () => {
   const { id, userRole } = useAppSelector((state) => state.user);
   const { data, loading } = useGetAllTakenItemsQuery({
     variables: { person_id: id },
+    skip: userRole === RolesTypes.MANAGER,
   });
 
   if (loading) return <h1>Loading...</h1>;
