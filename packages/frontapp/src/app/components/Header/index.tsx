@@ -30,13 +30,13 @@ const WrapperForCenter = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 3.2rem;
+  margin-top: 2rem;
 `;
 
 const WrapperHeader = styled.header`
   max-width: 16.5rem;
   width: 100%;
-  margin-bottom: 3.5rem;
+  margin-bottom: 2rem;
 `;
 
 const Header: FC<IProps> = ({ setSidebarActive }) => {

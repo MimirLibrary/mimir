@@ -7,6 +7,7 @@ mutation UpdateMaterial(
   $author: String
   $category: String
   $updated_at: DateTime!
+  $description: String
 ) {
   updateMaterial(
     input: {
@@ -18,6 +19,7 @@ mutation UpdateMaterial(
       author: $author
       category: $category
       updated_at: $updated_at
+      description: $description
     }
   ) {
     identifier
@@ -28,5 +30,6 @@ mutation UpdateMaterial(
     author
     category
     updated_at
+    description
   }
 }

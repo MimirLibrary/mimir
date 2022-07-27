@@ -14,6 +14,8 @@ type Material {
   statuses: [Status]!
   notifications: [Notification]!
   messages: [Message]!
+  description: String!
+  is_donated: Boolean!
 }
 
 input CreateMaterialInput {
@@ -25,6 +27,7 @@ input CreateMaterialInput {
   picture: String
   author: String!
   category: String!
+  description: String!
 }
 
 input RemoveMaterialInput {
@@ -43,6 +46,7 @@ input UpdateMaterialInput {
   author: String
   category: String
   updated_at: DateTime!
+  description: String
 }
 
 input SearchOneMaterial {
@@ -62,6 +66,7 @@ input DonateBookInput {
   picture: String
   person_id: Int!
   role: String!
+  is_donated: Boolean!
 }
 
 input SearchInput {

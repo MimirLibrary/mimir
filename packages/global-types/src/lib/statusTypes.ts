@@ -4,4 +4,5 @@ export enum StatusTypes {
   PROLONG = 'Prolong',
   PENDING = 'Pending',
   SUSPEND = 'SUSPEND',
+  REJECTED = 'Rejected',
 }

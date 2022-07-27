@@ -34,14 +34,10 @@ describe('OzbyService', () => {
       snapshots.map(function (snapshot) {
         const path = `${rootPath}/${snapshot}`;
         const content = fs.readFileSync(`${path}/index.html`);
-        //const result = JSON.parse(
-        //  fs.readFileSync(`${path}/result.json`, 'utf-8')
-        //);
-        //expect(service.parseData(content)).toEqual(result);
-        fs.writeFileSync(
-          `${path}/result.json`,
-          JSON.stringify(service.parseData(content))
+        const result = JSON.parse(
+          fs.readFileSync(`${path}/result.json`, 'utf-8')
         );
+        expect(service.parseData(content)).toEqual(result);
       });
     });
   });

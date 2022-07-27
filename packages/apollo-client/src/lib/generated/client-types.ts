@@ -45,6 +45,7 @@ export type CreateLocationInput = {
 export type CreateMaterialInput = {
   author: Scalars['String'];
   category: Scalars['String'];
+  description: Scalars['String'];
   id_type: Scalars['String'];
   identifier: Scalars['String'];
   location_id: Scalars['Int'];
@@ -90,6 +91,7 @@ export type DonateBookInput = {
   description?: InputMaybe<Scalars['String']>;
   id_type: Scalars['String'];
   identifier: Scalars['String'];
+  is_donated: Scalars['Boolean'];
   location_id: Scalars['Int'];
   person_id: Scalars['Int'];
   picture?: InputMaybe<Scalars['String']>;
@@ -134,9 +136,11 @@ export type Material = {
   author: Scalars['String'];
   category: Scalars['String'];
   created_at: Scalars['DateTime'];
+  description: Scalars['String'];
   id: Scalars['ID'];
   id_type: Scalars['String'];
   identifier: Scalars['String'];
+  is_donated: Scalars['Boolean'];
   location: Location;
   location_id: Scalars['Int'];
   messages: Array<Maybe<Message>>;
@@ -186,6 +190,7 @@ export type Mutation = {
   createStatus: Status;
   donateBook: Material;
   prolongClaimPeriod: BookUnionResult;
+  rejectItem: BookUnionResult;
   removeLocation?: Maybe<Location>;
   removeMaterial: Material;
   removeNotification?: Maybe<Notification>;
@@ -242,6 +247,11 @@ export type MutationDonateBookArgs = {
 
 export type MutationProlongClaimPeriodArgs = {
   input?: InputMaybe<ProlongTimeInput>;
+};
+
+
+export type MutationRejectItemArgs = {
+  input?: InputMaybe<BookInput>;
 };
 
 
@@ -463,6 +473,7 @@ export type Status = {
 export type UpdateMaterialInput = {
   author?: InputMaybe<Scalars['String']>;
   category?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   id_type?: InputMaybe<Scalars['String']>;
   identifier?: InputMaybe<Scalars['String']>;
   location_id?: InputMaybe<Scalars['Int']>;
@@ -524,6 +535,7 @@ export type DonateBookMutationVariables = Exact<{
   description?: InputMaybe<Scalars['String']>;
   picture?: InputMaybe<Scalars['String']>;
   role: Scalars['String'];
+  is_donated: Scalars['Boolean'];
 }>;
 
 
@@ -536,6 +548,14 @@ export type ProlongTimeMutationVariables = Exact<{
 
 
 export type ProlongTimeMutation = { __typename?: 'Mutation', prolongClaimPeriod: { __typename?: 'Error', message: string } | { __typename?: 'Status', created_at: any, status: string } };
+
+export type RejectItemMutationVariables = Exact<{
+  identifier: Scalars['String'];
+  person_id: Scalars['Int'];
+}>;
+
+
+export type RejectItemMutation = { __typename?: 'Mutation', rejectItem: { __typename?: 'Error', message: string } | { __typename?: 'Status', created_at: any, status: string } };
 
 export type RemoveMaterialMutationVariables = Exact<{
   identifier: Scalars['String'];
@@ -570,10 +590,11 @@ export type UpdateMaterialMutationVariables = Exact<{
   author?: InputMaybe<Scalars['String']>;
   category?: InputMaybe<Scalars['String']>;
   updated_at: Scalars['DateTime'];
+  description?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type UpdateMaterialMutation = { __typename?: 'Mutation', updateMaterial: { __typename?: 'Material', identifier: string, id_type: string, type: string, location_id: number, title: string, author: string, category: string, updated_at: any } };
+export type UpdateMaterialMutation = { __typename?: 'Mutation', updateMaterial: { __typename?: 'Material', identifier: string, id_type: string, type: string, location_id: number, title: string, author: string, category: string, updated_at: any, description: string } };
 
 export type UpdatePersonLocationMutationVariables = Exact<{
   location_id: Scalars['Int'];
@@ -595,7 +616,7 @@ export type GetAllMaterialsQueryVariables = Exact<{
 }>;
 
 
-export type GetAllMaterialsQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', author: string, category: string, created_at: any, id: string, id_type: string, identifier: string, picture?: string | null, title: string, type: string, updated_at: any, notifications: Array<{ __typename?: 'Notification', material_id: number, person_id: number } | null>, statuses: Array<{ __typename?: 'Status', status: string, person_id: number } | null> } | null> };
+export type GetAllMaterialsQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', author: string, category: string, created_at: any, id: string, id_type: string, identifier: string, description: string, is_donated: boolean, picture?: string | null, title: string, type: string, updated_at: any, notifications: Array<{ __typename?: 'Notification', material_id: number, person_id: number } | null>, statuses: Array<{ __typename?: 'Status', status: string, person_id: number } | null> } | null> };
 
 export type GetAllMaterialsForManagerQueryVariables = Exact<{
   location_id: Scalars['String'];
@@ -637,7 +658,7 @@ export type GetMaterialByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetMaterialByIdQuery = { __typename?: 'Query', getMaterialById: { __typename?: 'Material', id: string, identifier: string, picture?: string | null, title: string, author: string, category: string, created_at: any, updated_at: any, location_id: number, type: string, statuses: Array<{ __typename?: 'Status', id: string, person_id: number, status: string, created_at: any } | null> } };
+export type GetMaterialByIdQuery = { __typename?: 'Query', getMaterialById: { __typename?: 'Material', id: string, identifier: string, picture?: string | null, title: string, author: string, category: string, created_at: any, updated_at: any, location_id: number, description: string, type: string, statuses: Array<{ __typename?: 'Status', id: string, person_id: number, status: string, created_at: any } | null> } };
 
 export type GetMaterialByIdentifierQueryVariables = Exact<{
   identifier: Scalars['String'];
@@ -835,9 +856,9 @@ export type CreateStateMutationHookResult = ReturnType<typeof useCreateStateMuta
 export type CreateStateMutationResult = Apollo.MutationResult<CreateStateMutation>;
 export type CreateStateMutationOptions = Apollo.BaseMutationOptions<CreateStateMutation, CreateStateMutationVariables>;
 export const DonateBookDocument = gql`
-    mutation DonateBook($person_id: Int!, $location_id: Int!, $identifier: String!, $id_type: String!, $type: String!, $title: String!, $author: String!, $category: String!, $description: String, $picture: String, $role: String!) {
+    mutation DonateBook($person_id: Int!, $location_id: Int!, $identifier: String!, $id_type: String!, $type: String!, $title: String!, $author: String!, $category: String!, $description: String, $picture: String, $role: String!, $is_donated: Boolean!) {
   donateBook(
-    input: {person_id: $person_id, location_id: $location_id, identifier: $identifier, type: $type, author: $author, category: $category, description: $description, id_type: $id_type, picture: $picture, title: $title, role: $role}
+    input: {person_id: $person_id, location_id: $location_id, identifier: $identifier, type: $type, author: $author, category: $category, description: $description, id_type: $id_type, picture: $picture, title: $title, role: $role, is_donated: $is_donated}
   ) {
     title
     picture
@@ -871,6 +892,7 @@ export type DonateBookMutationFn = Apollo.MutationFunction<DonateBookMutation, D
  *      description: // value for 'description'
  *      picture: // value for 'picture'
  *      role: // value for 'role'
+ *      is_donated: // value for 'is_donated'
  *   },
  * });
  */
@@ -921,6 +943,46 @@ export function useProlongTimeMutation(baseOptions?: Apollo.MutationHookOptions<
 export type ProlongTimeMutationHookResult = ReturnType<typeof useProlongTimeMutation>;
 export type ProlongTimeMutationResult = Apollo.MutationResult<ProlongTimeMutation>;
 export type ProlongTimeMutationOptions = Apollo.BaseMutationOptions<ProlongTimeMutation, ProlongTimeMutationVariables>;
+export const RejectItemDocument = gql`
+    mutation RejectItem($identifier: String!, $person_id: Int!) {
+  rejectItem(input: {identifier: $identifier, person_id: $person_id}) {
+    ... on Status {
+      created_at
+      status
+    }
+    ... on Error {
+      message
+    }
+  }
+}
+    `;
+export type RejectItemMutationFn = Apollo.MutationFunction<RejectItemMutation, RejectItemMutationVariables>;
+
+/**
+ * __useRejectItemMutation__
+ *
+ * To run a mutation, you first call `useRejectItemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRejectItemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [rejectItemMutation, { data, loading, error }] = useRejectItemMutation({
+ *   variables: {
+ *      identifier: // value for 'identifier'
+ *      person_id: // value for 'person_id'
+ *   },
+ * });
+ */
+export function useRejectItemMutation(baseOptions?: Apollo.MutationHookOptions<RejectItemMutation, RejectItemMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RejectItemMutation, RejectItemMutationVariables>(RejectItemDocument, options);
+      }
+export type RejectItemMutationHookResult = ReturnType<typeof useRejectItemMutation>;
+export type RejectItemMutationResult = Apollo.MutationResult<RejectItemMutation>;
+export type RejectItemMutationOptions = Apollo.BaseMutationOptions<RejectItemMutation, RejectItemMutationVariables>;
 export const RemoveMaterialDocument = gql`
     mutation RemoveMaterial($identifier: String!, $type: String!, $location_id: Int!) {
   removeMaterial(
@@ -1038,9 +1100,9 @@ export type ReturnBookMutationHookResult = ReturnType<typeof useReturnBookMutati
 export type ReturnBookMutationResult = Apollo.MutationResult<ReturnBookMutation>;
 export type ReturnBookMutationOptions = Apollo.BaseMutationOptions<ReturnBookMutation, ReturnBookMutationVariables>;
 export const UpdateMaterialDocument = gql`
-    mutation UpdateMaterial($identifier: String!, $id_type: String, $type: String, $location_id: Int, $title: String, $author: String, $category: String, $updated_at: DateTime!) {
+    mutation UpdateMaterial($identifier: String!, $id_type: String, $type: String, $location_id: Int, $title: String, $author: String, $category: String, $updated_at: DateTime!, $description: String) {
   updateMaterial(
-    input: {identifier: $identifier, id_type: $id_type, type: $type, location_id: $location_id, title: $title, author: $author, category: $category, updated_at: $updated_at}
+    input: {identifier: $identifier, id_type: $id_type, type: $type, location_id: $location_id, title: $title, author: $author, category: $category, updated_at: $updated_at, description: $description}
   ) {
     identifier
     id_type
@@ -1050,6 +1112,7 @@ export const UpdateMaterialDocument = gql`
     author
     category
     updated_at
+    description
   }
 }
     `;
@@ -1076,6 +1139,7 @@ export type UpdateMaterialMutationFn = Apollo.MutationFunction<UpdateMaterialMut
  *      author: // value for 'author'
  *      category: // value for 'category'
  *      updated_at: // value for 'updated_at'
+ *      description: // value for 'description'
  *   },
  * });
  */
@@ -1164,6 +1228,8 @@ export const GetAllMaterialsDocument = gql`
     id
     id_type
     identifier
+    description
+    is_donated
     notifications {
       material_id
       person_id
@@ -1442,6 +1508,7 @@ export const GetMaterialByIdDocument = gql`
     created_at
     updated_at
     location_id
+    description
     type
     statuses {
       id

@@ -6,6 +6,8 @@ query GetAllMaterials($location_id: String!, $limit: Int, $offset: Int) {
     id
     id_type
     identifier
+    description
+    is_donated
     notifications {
       material_id
       person_id

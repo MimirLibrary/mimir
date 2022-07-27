@@ -34,7 +34,6 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from '../auth/auth.guard';
 import { BlockedUsersGuard } from '../resources/blocked-users/blocked-users.guard';
 
-console.log(__dirname);
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
@@ -63,7 +62,7 @@ console.log(__dirname);
     FileModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      typePaths: ['./packages/apiserver/**/*.graphql'],
+      typePaths: [`${__dirname}/**/*.graphql`],
       typeDefs: [...scalarTypeDefs],
       resolvers: [scalarResolvers],
       definitions: {

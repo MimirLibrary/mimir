@@ -21,7 +21,11 @@ const StyledSidebar = styled.aside<IStyledSidebarProps>`
   max-width: 22rem;
   width: 100%;
   z-index: 1;
-  padding-top: ${dimensions.xl_6};
+  padding-top: ${dimensions.xl_2};
+  overflow-y: auto;
+  ::-webkit-scrollbar {
+    width: 0;
+  }
   @media (max-width: ${dimensions.tablet_width}) {
     position: fixed;
     top: 0;

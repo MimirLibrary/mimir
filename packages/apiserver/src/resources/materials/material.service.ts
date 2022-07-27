@@ -4,13 +4,12 @@ import {
   DonateBookInput,
   RolesTypes,
   SearchInput,
-  SearchOneMaterial,
+  StatusTypes,
 } from '@mimir/global-types';
 import { FileService } from '../../file/file.service';
 import { Status } from '../statuses/status.entity';
 import { Connection } from 'typeorm';
 import { ErrorBook } from '../../errors';
-import { StatusTypes } from '@mimir/global-types';
 import { GraphQLError } from 'graphql';
 import axios from 'axios';
 

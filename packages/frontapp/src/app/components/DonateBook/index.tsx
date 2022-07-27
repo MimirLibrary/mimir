@@ -310,6 +310,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
           location_id: Number(location.id),
           id_type: data?.getMaterialByIdentifierFromMetadata.idType || 'ISBN',
           role: userRole,
+          is_donated: true,
         },
       });
     } catch (e) {
