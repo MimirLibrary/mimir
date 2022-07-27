@@ -10,6 +10,6 @@ export enum RoutesTypes {
   CREATE_NEW_ITEM = '/create-new-item',
   DONATE_TO_LIBRARY = '/donate-to-library',
   DONATE_PREVIEW = '/donate',
-  BOOK_PREVIEW = 'item',
+  BOOK_PREVIEW = '/item',
   CATEGORY = '/category',
 }
