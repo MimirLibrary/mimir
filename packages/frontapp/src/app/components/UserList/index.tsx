@@ -44,6 +44,7 @@ const UserList = () => {
       <ListWrapper>
         {data?.getAllPersons.map((person) => (
           <SingleUser
+            key={person.id}
             avatar={person.avatar}
             name={person.username}
             id={person?.id as string}

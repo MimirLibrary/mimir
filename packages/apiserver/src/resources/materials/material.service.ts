@@ -57,6 +57,7 @@ export class MaterialService {
       );
       const newMaterial = await materialRepository.create({
         ...newMaterialObj,
+        is_donated: donateBookInput.role === RolesTypes.READER,
         picture: pictureWithIdentifier,
       });
       const savedMaterial = await materialRepository.save(newMaterial);
