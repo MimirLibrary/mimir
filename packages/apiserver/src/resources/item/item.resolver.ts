@@ -39,7 +39,6 @@ export class ItemResolver {
   }
 
   @Mutation(() => Status)
-  @UseGuards(AuthGuard)
   async rejectItem(@Args('input') returnBookInput: BookInput) {
     return this.itemService.reject(returnBookInput);
   }
