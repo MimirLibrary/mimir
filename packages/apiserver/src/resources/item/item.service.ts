@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { Material } from '../materials/material.entity';
-import { BookInput, ProlongTimeInput } from '@mimir/global-types';
+import { BookInput, ProlongTimeInput, StatusTypes } from '@mimir/global-types';
 import { Status } from '../statuses/status.entity';
 import { Connection } from 'typeorm';
 import { ErrorBook } from '../../errors';
-import { StatusTypes } from '@mimir/global-types';
 import { setTimeToProlong } from '../../utils/helpersFunctions/setTimeToProlong';
 import { config } from '../../config';
 
@@ -69,6 +68,9 @@ export class ItemService {
 
   async return(returnBookInput: BookInput) {
     return this.claimOrReturnOperations(returnBookInput, StatusTypes.FREE);
+  }
+  async reject(returnBookInput: BookInput) {
+    return this.claimOrReturnOperations(returnBookInput, StatusTypes.REJECTED);
   }
 
   async getAllTakenItems(person_id: number) {

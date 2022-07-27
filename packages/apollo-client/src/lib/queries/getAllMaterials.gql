@@ -6,6 +6,8 @@ query GetAllMaterials {
     id
     id_type
     identifier
+    description
+    is_donated
     notifications {
       material_id
       person_id

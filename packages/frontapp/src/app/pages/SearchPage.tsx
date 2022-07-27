@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { dimensions } from '@mimir/ui-kit';
 import { ButtonGroup } from './BookPreview';
@@ -7,6 +7,7 @@ import { ReactComponent as ScrollButtonRight } from '../../assets/ArrowButtonRig
 import { ReactComponent as ScrollButtonLeft } from '../../assets/ArrowButtonLeft.svg';
 import CategoriesList from '../components/CategoriesList';
 import AllBooksList from '../components/AllBooksList';
+import { getStatus } from '../models/helperFunctions/converTime';
 
 const ContentWrapper = styled.div`
   margin: 3rem 0 ${dimensions.xl_6};
@@ -30,9 +31,18 @@ const Topics = styled.h5`
 `;
 
 const SearchPage = () => {
+  const [availableMaterial, setAvailableMaterial] = useState<any>([]);
   const { data, loading } = useGetAllMaterialsQuery();
-  const allCategories = data?.getAllMaterials.reduce(
-    (acc, material) => ({
+  useEffect(() => {
+    const available = data?.getAllMaterials.filter((material: any) => {
+      const lastStatus = material.statuses.slice(-1)[0];
+      const currentStatus = getStatus(lastStatus?.status, material?.created_at);
+      return currentStatus !== 'Rejected' && currentStatus !== 'Pending';
+    });
+    setAvailableMaterial(available);
+  }, [data]);
+  const allCategories = availableMaterial?.reduce(
+    (acc: any, material: any) => ({
       ...acc,
       [material?.category as string]: acc[material?.category as string]
         ? acc[material?.category as string] + 1
@@ -60,7 +70,7 @@ const SearchPage = () => {
               </TopicNameWrapper>
               <AllBooksList
                 sortingCategory={category}
-                items={data?.getAllMaterials}
+                items={availableMaterial}
               />
             </ContentWrapper>
           );

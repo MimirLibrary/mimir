@@ -18,7 +18,7 @@ import {
   IMaterialMeta,
 } from '@mimir/apollo-client';
 
-const WrapperInfo = styled.div`
+export const WrapperInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -26,7 +26,7 @@ const WrapperInfo = styled.div`
   margin-top: 3.5rem;
 `;
 
-const TitleInfo = styled.h1`
+export const TitleInfo = styled.h1`
   font-weight: 700;
   font-size: ${dimensions.xl};
   line-height: ${dimensions.xl_2};
@@ -34,7 +34,7 @@ const TitleInfo = styled.h1`
   margin-bottom: ${dimensions.base};
 `;
 
-const SubTitle = styled.h3`
+export const SubTitle = styled.h3`
   font-weight: 300;
   font-size: ${dimensions.base};
   color: ${colors.main_black};
