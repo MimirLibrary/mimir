@@ -5,6 +5,7 @@ import { TitleInfo, SubTitle, WrapperInfo } from '../components/DonateBookFlow';
 import { BookHolder } from '../components/BookInfo';
 import OneDonator from '../components/OneDonatedBookPreview';
 import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
+import { useAppSelector } from '../hooks/useTypedSelector';
 
 interface TitleProps {
   flex?: number;
@@ -26,7 +27,10 @@ const Column = styled.h4<TitleProps>`
   }
 `;
 const DonatesFromUser = () => {
-  const { data } = useGetAllMaterialsQuery();
+  const { location } = useAppSelector((state) => state.user);
+  const { data } = useGetAllMaterialsQuery({
+    variables: { location_id: location.id },
+  });
   const [pendingDonates, setPendingDonates] = useState<any>();
   useEffect(() => {
     if (data) {

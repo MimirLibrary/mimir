@@ -62,7 +62,8 @@ import { BlockedUsersGuard } from '../resources/blocked-users/blocked-users.guar
     FileModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      typePaths: [`${__dirname}/**/*.graphql`],
+      // ${__dirname}/**/*.graphql
+      typePaths: ['./packages/apiserver/**/*.graphql'],
       typeDefs: [...scalarTypeDefs],
       resolvers: [scalarResolvers],
       definitions: {
