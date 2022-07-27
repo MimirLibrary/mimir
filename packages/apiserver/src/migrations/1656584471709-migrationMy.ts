@@ -17,7 +17,7 @@ export class migrationMy1656584471709 implements MigrationInterface {
       `CREATE TABLE "notification" ("id" SERIAL NOT NULL, "material_id" integer, "person_id" integer, "created_at" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_705b6c7cdf9b2c2ff7ac7872cb7" PRIMARY KEY ("id"))`
     );
     await queryRunner.query(
-      `CREATE TABLE "material" ("id" SERIAL NOT NULL, "identifier" character varying NOT NULL, "id_type" character varying NOT NULL, "type" character varying NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "picture" character varying, "title" character varying NOT NULL, "category" character varying NOT NULL, "author" character varying NOT NULL, "description" character varying NOT NULL, "is_donated" boolean varying NOT NULL "location_id" integer, CONSTRAINT "PK_0343d0d577f3effc2054cbaca7f" PRIMARY KEY ("id"))`
+      `CREATE TABLE "material" ("id" SERIAL NOT NULL, "identifier" character varying NOT NULL, "id_type" character varying NOT NULL, "type" character varying NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "picture" character varying, "title" character varying NOT NULL, "category" character varying NOT NULL, "author" character varying NOT NULL, "description" character varying NOT NULL, "is_donated" boolean NOT NULL, "location_id" integer, CONSTRAINT "PK_0343d0d577f3effc2054cbaca7f" PRIMARY KEY ("id"))`
     );
     await queryRunner.query(
       `CREATE TABLE "location" ("id" SERIAL NOT NULL, "location" character varying NOT NULL, CONSTRAINT "PK_876d7bdba03c72251ec4c2dc827" PRIMARY KEY ("id"))`
