@@ -7,6 +7,7 @@ import { ReactComponent as ScrollButtonRight } from '../../assets/ArrowButtonRig
 import { ReactComponent as ScrollButtonLeft } from '../../assets/ArrowButtonLeft.svg';
 import CategoriesList from '../components/CategoriesList';
 import AllBooksList from '../components/AllBooksList';
+import { useAppSelector } from '../hooks/useTypedSelector';
 import { getStatus } from '../models/helperFunctions/converTime';
 
 const ContentWrapper = styled.div`
@@ -31,8 +32,11 @@ const Topics = styled.h5`
 `;
 
 const SearchPage = () => {
+  const { location } = useAppSelector((state) => state.user);
   const [availableMaterial, setAvailableMaterial] = useState<any>([]);
-  const { data, loading } = useGetAllMaterialsQuery();
+  const { data, loading } = useGetAllMaterialsQuery({
+    variables: { location_id: location.id },
+  });
   useEffect(() => {
     const available = data?.getAllMaterials.filter((material: any) => {
       const lastStatus = material.statuses.slice(-1)[0];

@@ -1,5 +1,5 @@
-query GetAllMaterials {
-  getAllMaterials {
+query GetAllMaterials($location_id: String!, $limit: Int, $offset: Int) {
+  getAllMaterials(location_id: $location_id, limit: $limit, offset: $offset) {
     author
     category
     created_at

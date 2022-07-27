@@ -19,6 +19,7 @@ import Scanner from './components/Scanner';
 import useScanner from './hooks/useScanner';
 import { RoutesTypes } from '../utils/routes';
 import BlockPage from './pages/BlockPage';
+import { RolesTypes } from '@mimir/global-types';
 
 const WrapperPage = styled.main`
   display: flex;
@@ -100,16 +101,19 @@ const App: FC = () => {
                   <Route path="*" element={<HomePage />} />
                   <Route path="/block" element={<BlockPage />} />
                 </Routes>
-                <StyledButton
-                  svgComponent={<QRCodeSvg />}
-                  value={t('Search.Scan')}
-                  onClick={handleOnClickButton}
-                  show={
-                    !(
-                      window.location.pathname === RoutesTypes.DONATE_TO_LIBRARY
-                    )
-                  }
-                />
+                {userRole !== RolesTypes.MANAGER && (
+                  <StyledButton
+                    svgComponent={<QRCodeSvg />}
+                    value={t('Search.Scan')}
+                    onClick={handleOnClickButton}
+                    show={
+                      !(
+                        window.location.pathname ===
+                        RoutesTypes.DONATE_TO_LIBRARY
+                      )
+                    }
+                  />
+                )}
                 {isShowScanner && (
                   <Scanner
                     onDetected={handleOnDetectedScannerRoute}

@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import BookInfo from '../components/BookInfo';
 import AllBooksList from '../components/AllBooksList';
 import styled from '@emotion/styled';
@@ -40,11 +40,13 @@ type BookPreviewProps = {
 
 const BookPreview = ({ donate }: BookPreviewProps) => {
   const { item_id } = useParams();
-  const { id } = useAppSelector((state) => state.user);
+  const { id, location } = useAppSelector((state) => state.user);
   const { data, loading } = useGetMaterialByIdQuery({
     variables: { id: item_id! },
   });
-  const { data: getAllMaterials } = useGetAllMaterialsQuery();
+  const { data: getAllMaterials } = useGetAllMaterialsQuery({
+    variables: { location_id: location.id },
+  });
 
   const lastStatusAnotherPerson = data?.getMaterialById.statuses.slice(-1)[0];
 

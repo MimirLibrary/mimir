@@ -17,9 +17,7 @@ module.exports = {
     if (rootMain.webpackFinal) {
       config = await rootMain.webpackFinal(config, { configType });
     }
-
     // add your own webpack tweaks if needed
-
     return config;
   },
   typescript: { reactDocgen: false },

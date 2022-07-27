@@ -48,6 +48,7 @@ const ISBNWrapper = styled.div`
   align-items: center;
   max-width: 34.5rem;
   width: 100%;
+
   @media (max-width: ${dimensions.tablet_width}) {
     flex-direction: column;
     align-items: start;
@@ -95,10 +96,11 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
   setIsLoading,
   setDataError,
 }) => {
-  let isMounted = true;
   const [valueOfISBN, setValueIsISBN] = useState<string>('');
   const [isShowScanner, setIsShowScanner] = useState<boolean>(false);
   const dispatch = useAppDispatch();
+
+  let isMounted = true;
 
   useEffect(() => {
     return () => {
@@ -160,7 +162,7 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
             <MobileInline>
               <ButtonScanner
                 type="button"
-                margin={`0 ${dimensions.xs_2}`}
+                margin={`0.25rem ${dimensions.xs_2} 0 `}
                 onClick={handleShowScanner}
               />
               <Button

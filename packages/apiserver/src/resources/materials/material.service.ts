@@ -57,6 +57,7 @@ export class MaterialService {
       );
       const newMaterial = await materialRepository.create({
         ...newMaterialObj,
+        is_donated: donateBookInput.role === RolesTypes.READER,
         picture: pictureWithIdentifier,
       });
       const savedMaterial = await materialRepository.save(newMaterial);
@@ -76,6 +77,17 @@ export class MaterialService {
     } finally {
       await queryRunner.release();
     }
+  }
+
+  async allMaterials(location_id: string, limit?: number, offset?: number) {
+    const paginationPage = (offset - 1) * limit;
+    const elements = await Material.createQueryBuilder('material')
+      .where('material.location_id = :location_id', { location_id })
+      .orderBy('material.created_at', 'ASC')
+      .limit(limit || null)
+      .offset(paginationPage || null)
+      .getMany();
+    return elements;
   }
 
   async getMaterialByIdentifierFromMetadata(identifier: string) {

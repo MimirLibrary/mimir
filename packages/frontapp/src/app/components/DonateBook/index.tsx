@@ -15,6 +15,7 @@ import AskManagerForm from '../AskManagerForm';
 import ErrorMessage from '../ErrorMessge';
 import { RolesTypes } from '@mimir/global-types';
 import FileUpload from '../FielUpload';
+import { api } from '../../axios-api/api';
 
 const WrapperDonate = styled.section`
   background-color: ${colors.bg_secondary};
@@ -198,9 +199,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
   const deleteFile = async (fileName: string) => {
     const onlyFileName = fileName.split('/').pop();
     try {
-      const response = await axios.delete(
-        `${process.env['NX_API_ROOT_URL']}/api/file/delete/${onlyFileName}`
-      );
+      const response = await api.delete(`file/delete/${onlyFileName}`);
       return response.data;
     } catch (e) {
       if (e instanceof Error) {
@@ -211,10 +210,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
 
   const getFile = async (formData: any) => {
     try {
-      const response = await axios.post(
-        `${process.env['NX_API_ROOT_URL']}/api/file/create`,
-        formData
-      );
+      const response = await api.post('file/create', formData);
       setPictureOfCover(response.data);
     } catch (e) {
       if (e instanceof Error) {

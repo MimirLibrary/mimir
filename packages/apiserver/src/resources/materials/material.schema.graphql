@@ -118,7 +118,7 @@ type IMetaOfMaterial {
 }
 
 extend type Query {
-  getAllMaterials: [Material]!
+  getAllMaterials(location_id: String!, limit: Int, offset: Int): [Material]!
   getMaterialById(id: ID!): Material!
   searchOfMaterials(input: SearchInput!): [Material]
   getMaterialByIdentifier(input: SearchOneMaterial!): Material!
