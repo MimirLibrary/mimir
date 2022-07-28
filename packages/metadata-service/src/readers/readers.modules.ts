@@ -4,9 +4,16 @@ import { DbService } from './db.service';
 import { SearchController } from './search.controller';
 import { OzbyService } from './ozby.service';
 import { ReaderService } from './reader.service';
+import { ChitaiGorodService } from './chitai-gorod.service';
 
 @Module({
-  providers: [ReaderService, DbService, OzbyService, PrismaService],
+  providers: [
+    ReaderService,
+    DbService,
+    OzbyService,
+    PrismaService,
+    ChitaiGorodService,
+  ],
   controllers: [SearchController],
 })
 export class ReadersModules {}

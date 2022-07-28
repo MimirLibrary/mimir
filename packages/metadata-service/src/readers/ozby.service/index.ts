@@ -19,7 +19,7 @@ type CoverImage = {
   src: string;
 };
 
-type Bundle = {
+export type Bundle = {
   material: Prisma.MaterialCreateInput;
   authors: Array<Prisma.AuthorCreateInput>;
   publisher: Prisma.PublisherCreateInput;
