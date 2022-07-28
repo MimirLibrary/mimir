@@ -49,6 +49,9 @@ export class Material extends BaseEntity {
   @Column()
   description: string;
 
+  @Column()
+  is_donated: boolean;
+
   @Column({ nullable: true })
   location_id: number;
 

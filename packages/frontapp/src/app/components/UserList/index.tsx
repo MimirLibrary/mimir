@@ -59,6 +59,7 @@ const UserList = () => {
           <SingleUser
             avatar={person?.avatar || Pic}
             name={person?.username || 'a'}
+            key={person?.id}
             id={person?.id as string}
             statuses={person?.statuses as IClaimHistory[]}
           />

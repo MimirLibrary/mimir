@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import BookInfo from '../components/BookInfo';
 import AllBooksList from '../components/AllBooksList';
 import styled from '@emotion/styled';
@@ -11,6 +11,7 @@ import {
 } from '@mimir/apollo-client';
 import { ReactComponent as ScrollButtonRight } from '../../assets/ArrowButtonRight.svg';
 import { ReactComponent as ScrollButtonLeft } from '../../assets/ArrowButtonLeft.svg';
+import DonateInfo from '../components/DonateInfo';
 import BackButton from '../components/BackButton';
 
 export const ButtonGroup = styled.div`
@@ -33,14 +34,19 @@ const SuggestionText = styled.h3`
   color: ${colors.main_black};
   flex: 1;
 `;
+type BookPreviewProps = {
+  donate?: boolean;
+};
 
-const BookPreview = () => {
+const BookPreview = ({ donate }: BookPreviewProps) => {
   const { item_id } = useParams();
-  const { id } = useAppSelector((state) => state.user);
+  const { id, location } = useAppSelector((state) => state.user);
   const { data, loading } = useGetMaterialByIdQuery({
     variables: { id: item_id! },
   });
-  const { data: getAllMaterials } = useGetAllMaterialsQuery();
+  const { data: getAllMaterials } = useGetAllMaterialsQuery({
+    variables: { location_id: location.id },
+  });
 
   const lastStatusAnotherPerson = data?.getMaterialById.statuses.slice(-1)[0];
 
@@ -49,34 +55,56 @@ const BookPreview = () => {
   return (
     <>
       <BackButton />
-      {data?.getMaterialById && (
-        <BookInfo
-          person_id={id}
-          identifier={data.getMaterialById.identifier}
-          src={data?.getMaterialById.picture}
-          title={data?.getMaterialById.title}
-          author={data?.getMaterialById.author}
-          category={data?.getMaterialById.category}
-          statusInfo={lastStatusAnotherPerson}
-          created_at={lastStatusAnotherPerson?.created_at}
-          material_id={parseInt(data.getMaterialById.id)}
-          description=""
-          updated_at={data?.getMaterialById?.updated_at}
-          type={data?.getMaterialById?.type}
-          location_id={data?.getMaterialById?.location_id}
-        />
+      {donate ? (
+        data?.getMaterialById && (
+          <DonateInfo
+            person_id={id}
+            identifier={data.getMaterialById.identifier}
+            src={data?.getMaterialById.picture}
+            title={data?.getMaterialById.title}
+            author={data?.getMaterialById.author}
+            category={data?.getMaterialById.category}
+            statusInfo={lastStatusAnotherPerson}
+            created_at={lastStatusAnotherPerson?.created_at}
+            material_id={parseInt(data.getMaterialById.id)}
+            description={data?.getMaterialById.description}
+            updated_at={data?.getMaterialById?.updated_at}
+            type={data?.getMaterialById?.type}
+            location_id={data?.getMaterialById?.location_id}
+          />
+        )
+      ) : (
+        <>
+          {data?.getMaterialById && (
+            <BookInfo
+              person_id={id}
+              identifier={data.getMaterialById.identifier}
+              src={data?.getMaterialById.picture}
+              title={data?.getMaterialById.title}
+              author={data?.getMaterialById.author}
+              category={data?.getMaterialById.category}
+              statusInfo={lastStatusAnotherPerson}
+              created_at={lastStatusAnotherPerson?.created_at}
+              material_id={parseInt(data.getMaterialById.id)}
+              description={data?.getMaterialById.description}
+              updated_at={data?.getMaterialById?.updated_at}
+              type={data?.getMaterialById?.type}
+              location_id={data?.getMaterialById?.location_id}
+            />
+          )}
+          <Suggestions>
+            <SuggestionText>You may also like</SuggestionText>
+            <ButtonGroup>
+              <ScrollButtonLeft />
+              <ScrollButtonRight />
+            </ButtonGroup>
+          </Suggestions>
+          <AllBooksList
+            sortingCategory={data?.getMaterialById.category}
+            items={getAllMaterials?.getAllMaterials}
+          />
+        </>
       )}
-      <Suggestions>
-        <SuggestionText>You may also like</SuggestionText>
-        <ButtonGroup>
-          <ScrollButtonLeft />
-          <ScrollButtonRight />
-        </ButtonGroup>
-      </Suggestions>
-      <AllBooksList
-        sortingCategory={data?.getMaterialById.category}
-        items={getAllMaterials?.getAllMaterials}
-      />
     </>
   );
 };

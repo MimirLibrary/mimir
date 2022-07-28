@@ -1,12 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { Material } from './material.entity';
-import { DonateBookInput, RolesTypes, SearchInput } from '@mimir/global-types';
+import {
+  DonateBookInput,
+  RolesTypes,
+  SearchInput,
+  StatusTypes,
+} from '@mimir/global-types';
 import { FileService } from '../../file/file.service';
 import { Status } from '../statuses/status.entity';
 import { Connection } from 'typeorm';
 import { ErrorBook } from '../../errors';
-import { StatusTypes } from '@mimir/global-types';
 import { GraphQLError } from 'graphql';
+import axios from 'axios';
 
 @Injectable()
 export class MaterialService {
@@ -46,13 +51,13 @@ export class MaterialService {
       if (isExistMaterial) {
         throw new ErrorBook('This material is already exist!');
       }
-
       const pictureWithIdentifier = this.fileService.moveFileInMainStorage(
         donateBookInput.picture,
         donateBookInput.identifier
       );
       const newMaterial = await materialRepository.create({
         ...newMaterialObj,
+        is_donated: donateBookInput.role === RolesTypes.READER,
         picture: pictureWithIdentifier,
       });
       const savedMaterial = await materialRepository.save(newMaterial);
@@ -71,6 +76,28 @@ export class MaterialService {
       throw new GraphQLError(e.message);
     } finally {
       await queryRunner.release();
+    }
+  }
+
+  async allMaterials(location_id: string, limit?: number, offset?: number) {
+    const paginationPage = (offset - 1) * limit;
+    const elements = await Material.createQueryBuilder('material')
+      .where('material.location_id = :location_id', { location_id })
+      .orderBy('material.created_at', 'ASC')
+      .limit(limit || null)
+      .offset(paginationPage || null)
+      .getMany();
+    return elements;
+  }
+
+  async getMaterialByIdentifierFromMetadata(identifier: string) {
+    try {
+      const responseMetadataService = await axios.get(
+        `${process.env['NX_API_METADATA_URL']}/search/${identifier}`
+      );
+      return responseMetadataService.data;
+    } catch (e) {
+      throw new GraphQLError(e.message);
     }
   }
 }

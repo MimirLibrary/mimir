@@ -37,7 +37,8 @@ import AskManagerForm from '../AskManagerForm';
 import { WrapperInput } from '../Search';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { RolesTypes } from '@mimir/global-types';
-const BookHolder = styled.div`
+export const BookHolder = styled.div`
+  width: 100%;
   top: 11.5rem;
   left: 24.5rem;
   border-radius: ${dimensions.xs_1};
@@ -49,7 +50,7 @@ const BookHolder = styled.div`
   }
 `;
 
-const BookImage = styled.img`
+export const BookImage = styled.img`
   display: inline-block;
   width: 12rem;
   height: 19.5rem;
@@ -59,7 +60,7 @@ const BookImage = styled.img`
   }
 `;
 
-const ShortDescriptionWrapper = styled.div`
+export const ShortDescriptionWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -69,7 +70,7 @@ const ShortDescriptionWrapper = styled.div`
   }
 `;
 
-const ShortDescription = styled.div`
+export const ShortDescription = styled.div`
   width: 100%;
   margin-left: ${dimensions.xl_2};
   @media (max-width: ${dimensions.phone_width}) {
@@ -77,7 +78,7 @@ const ShortDescription = styled.div`
   }
 `;
 
-const TitleBook = styled.h3`
+export const TitleBook = styled.h3`
   font-weight: 700;
   margin-bottom: ${dimensions.base_2};
   font-size: ${dimensions.xl};
@@ -89,7 +90,7 @@ const TitleBook = styled.h3`
   }
 `;
 
-const Topic = styled.p`
+export const Topic = styled.p`
   margin: ${dimensions.xs_2} 0;
   font-weight: 500;
   font-size: ${dimensions.base};
@@ -97,14 +98,14 @@ const Topic = styled.p`
   color: ${colors.main_black};
 `;
 
-const TopicDescription = styled.p`
+export const TopicDescription = styled.p`
   font-weight: 300;
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
   color: ${colors.main_black};
 `;
 
-const LongDescription = styled.div`
+export const LongDescription = styled.div`
   margin-top: ${dimensions.xl_2};
   grid-column: 1 / span 3;
 `;
@@ -119,7 +120,7 @@ const OpenLink = styled.a`
   text-decoration: underline;
 `;
 
-const Description = styled.p`
+export const Description = styled.p`
   font-weight: 300;
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
@@ -131,7 +132,7 @@ const StyledStatus = styled(StyledBookStatus)`
   margin-top: ${dimensions.base};
 `;
 
-const WrapperInfo = styled.div`
+export const WrapperInfo = styled.div`
   display: flex;
   @media (max-width: ${dimensions.phone_width}) {
     flex-direction: column;
@@ -139,10 +140,11 @@ const WrapperInfo = styled.div`
   }
 `;
 
-const WrapperButtons = styled.div`
+export const WrapperButtons = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  gap: 8px;
   max-width: 276px;
   width: 100%;
 `;
@@ -150,7 +152,6 @@ const WrapperButtons = styled.div`
 const StyledButton = styled(Button)`
   max-width: 278px;
   width: 100%;
-  margin-bottom: 8px;
 `;
 
 const StyledInput = styled.input`
@@ -237,7 +238,7 @@ const TextAreaWrapper = styled.div`
   }
 `;
 
-interface IBookInfoProps {
+export interface IBookInfoProps {
   person_id: number | undefined;
   src: string | null | undefined;
   title: string | undefined;
@@ -258,7 +259,7 @@ const BookInfo: FC<IBookInfoProps> = ({
   title = '',
   author = '',
   statusInfo,
-  description = '',
+  description,
   category,
   identifier,
   created_at,
@@ -268,8 +269,10 @@ const BookInfo: FC<IBookInfoProps> = ({
   type,
   location_id,
 }) => {
-  const { id, userRole } = useAppSelector((state) => state.user);
-  const { data: allMaterials } = useGetAllMaterialsQuery();
+  const { id, userRole, location } = useAppSelector((state) => state.user);
+  const { data: allMaterials } = useGetAllMaterialsQuery({
+    variables: { location_id: location.id },
+  });
   const { data: getNotificationsByPersonData } =
     useGetNotificationsByPersonQuery({
       variables: {

@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, Dispatch, SetStateAction } from 'react';
 import NavbarItem from '../NavbarItem';
 import styled from '@emotion/styled';
 import { useAppDispatch } from '../../hooks/useTypedDispatch';
@@ -7,6 +7,9 @@ import { navManagerItemsArray, navReaderItemsArray } from './Items';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import { RolesTypes } from '@mimir/global-types';
 
+interface IProps {
+  setSidebarActive: Dispatch<SetStateAction<boolean>>;
+}
 const NavbarWrapper = styled.nav`
   display: flex;
   flex-direction: column;
@@ -14,10 +17,11 @@ const NavbarWrapper = styled.nav`
   align-items: center;
 `;
 
-const Navbar: FC = () => {
+const Navbar: FC<IProps> = ({ setSidebarActive }) => {
   const { userRole } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const changeActiveTab = (index: number) => {
+    setSidebarActive(false);
     dispatch(setActiveTab(index));
   };
 

@@ -9,6 +9,7 @@ import {
 import { Message } from './message.entity';
 import { CreateMessageInput } from '@mimir/global-types';
 import { Person } from '../persons/person.entity';
+import { GraphQLError } from 'graphql';
 
 @Resolver('Message')
 export class MessageResolver {
@@ -20,17 +21,6 @@ export class MessageResolver {
   @Query(() => [Message])
   async getAllMessages(@Args('location_id') location_id: number) {
     return Message.find({ where: { location_id } });
-  }
-
-  @ResolveField()
-  __resolveType(value) {
-    if (value.title) {
-      return 'Message';
-    }
-    if (value.message) {
-      return 'Error';
-    }
-    return null;
   }
 
   @ResolveField(() => Person)
@@ -47,9 +37,7 @@ export class MessageResolver {
       const message = Message.create(createMessageInput);
       return Message.save(message);
     } catch (e) {
-      return {
-        message: e.message,
-      };
+      throw new GraphQLError(e.message);
     }
   }
 }

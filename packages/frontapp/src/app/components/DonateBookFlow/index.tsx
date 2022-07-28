@@ -10,9 +10,9 @@ import Modal from '../Modal';
 import ErrorMessage from '../ErrorMessge';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
-import { IMetaOfMaterial } from '../../types';
+import { GetMaterialFromMetadataQuery } from '@mimir/apollo-client';
 
-const WrapperInfo = styled.div`
+export const WrapperInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -20,7 +20,7 @@ const WrapperInfo = styled.div`
   margin-top: 3.5rem;
 `;
 
-const TitleInfo = styled.h1`
+export const TitleInfo = styled.h1`
   font-weight: 700;
   font-size: ${dimensions.xl};
   line-height: ${dimensions.xl_2};
@@ -28,14 +28,14 @@ const TitleInfo = styled.h1`
   margin-bottom: ${dimensions.base};
 `;
 
-const SubTitle = styled.h3`
+export const SubTitle = styled.h3`
   font-weight: 300;
   font-size: ${dimensions.base};
   color: ${colors.main_black};
   line-height: ${dimensions.xl};
 `;
 
-const BackSpan = styled.div`
+export const BackSpan = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -47,7 +47,7 @@ const BackSpan = styled.div`
   cursor: pointer;
 `;
 
-const WrapperLoader = styled.div`
+export const WrapperLoader = styled.div`
   display: flex;
   justify-content: center;
 `;
@@ -55,9 +55,9 @@ const WrapperLoader = styled.div`
 const DonateBookFlow = () => {
   const dispatch = useDispatch();
   const { identifier } = useAppSelector((state) => state.identifier);
-  const [dataOfMaterial, setDataOfMaterial] = useState<IMetaOfMaterial | null>(
-    null
-  );
+  const [dataOfMaterial, setDataOfMaterial] = useState<
+    GetMaterialFromMetadataQuery | null | undefined
+  >(null);
   const [dataOfError, setDataOfError] = useState<Error | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isShowError, setIsShowError] = useState<boolean>(false);
@@ -83,7 +83,7 @@ const DonateBookFlow = () => {
   }, [dataOfMaterial]);
 
   const setDataMaterial = useCallback(
-    (data: IMetaOfMaterial) => {
+    (data: GetMaterialFromMetadataQuery | undefined) => {
       setDataOfMaterial(data);
     },
     [dataOfMaterial]

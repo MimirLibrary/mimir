@@ -25,6 +25,7 @@ define(Material, () => {
   material.type = getType(type, 3);
   material.location_id = 2;
   material.description = '';
+  material.is_donated = false;
   material.picture = '';
   return material;
 });

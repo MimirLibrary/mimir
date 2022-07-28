@@ -18,8 +18,10 @@ model Identifier {
   idType     IdentifierType
   hits       Int            @default(1)
   meta       Json
-  materialId Int
-  material   Material       @relation(fields: [materialId], references: [id])
+  materialId Int?
+  material   Material?      @relation(fields: [materialId], references: [id])
+  jobId      Int?           @unique
+  job        Job?           @relation(fields: [jobId], references: [id])
 }
 
 model Author {
@@ -69,9 +71,10 @@ enum JobStatus {
 }
 
 model Job {
-  id         Int       @id @default(autoincrement())
+  id         Int         @id @default(autoincrement())
   startedAt  DateTime
-  finisherAt DateTime
-  status     JobStatus @default(PENDING)
+  finishedAt DateTime
+  status     JobStatus   @default(PENDING)
   meta       Json
+  identifier Identifier?
 }

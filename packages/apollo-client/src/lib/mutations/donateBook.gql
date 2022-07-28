@@ -10,6 +10,7 @@ mutation DonateBook(
   $description: String
   $picture: String
   $role: String!
+  $is_donated: Boolean!
 ) {
   donateBook(
     input: {
@@ -24,6 +25,7 @@ mutation DonateBook(
       picture: $picture
       title: $title
       role: $role
+      is_donated: $is_donated
     }
   ) {
     title

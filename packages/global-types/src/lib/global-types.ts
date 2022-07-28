@@ -40,6 +40,7 @@ export interface CreateMaterialInput {
     picture?: Nullable<string>;
     author: string;
     category: string;
+    description: string;
 }
 
 export interface RemoveMaterialInput {
@@ -58,6 +59,7 @@ export interface UpdateMaterialInput {
     author?: Nullable<string>;
     category?: Nullable<string>;
     updated_at: DateTime;
+    description?: Nullable<string>;
 }
 
 export interface SearchOneMaterial {
@@ -77,6 +79,7 @@ export interface DonateBookInput {
     picture?: Nullable<string>;
     person_id: number;
     role: string;
+    is_donated: boolean;
 }
 
 export interface SearchInput {
@@ -145,10 +148,11 @@ export interface IQuery {
     getReasonOfBlock(person_id: string): Nullable<BlockedUsers> | Promise<Nullable<BlockedUsers>>;
     getAllTakenItems(person_id: number): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getAllLocations(): Nullable<Location>[] | Promise<Nullable<Location>[]>;
-    getAllMaterials(): Nullable<Material>[] | Promise<Nullable<Material>[]>;
+    getAllMaterials(location_id: string, limit?: Nullable<number>, offset?: Nullable<number>): Nullable<Material>[] | Promise<Nullable<Material>[]>;
     getMaterialById(id: string): Material | Promise<Material>;
     searchOfMaterials(input: SearchInput): Nullable<Nullable<Material>[]> | Promise<Nullable<Nullable<Material>[]>>;
-    getMaterialByIdentifier(input: SearchOneMaterial): Nullable<Material> | Promise<Nullable<Material>>;
+    getMaterialByIdentifier(input: SearchOneMaterial): Material | Promise<Material>;
+    getMaterialByIdentifierFromMetadata(identifier: string): IMetaOfMaterial | Promise<IMetaOfMaterial>;
     getMessagesByPerson(person_id: string): Nullable<Nullable<Message>[]> | Promise<Nullable<Nullable<Message>[]>>;
     getAllMessages(location_id: number): Nullable<Message[]> | Promise<Nullable<Message[]>>;
     getNotificationsByPerson(person_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
@@ -157,6 +161,7 @@ export interface IQuery {
     getAllPersons(input: GetAllPersonsInput): Person[] | Promise<Person[]>;
     getStatusesByPerson(person_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getStatusesByMaterial(material_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
+    getAllStatusesIsOverdue(location_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     welcome(): string | Promise<string>;
 }
 
@@ -164,6 +169,7 @@ export interface IMutation {
     createState(input: CreateStateInput): Nullable<BlockedUsers> | Promise<Nullable<BlockedUsers>>;
     claimBook(input?: Nullable<BookInput>): BookUnionResult | Promise<BookUnionResult>;
     returnItem(input?: Nullable<BookInput>): BookUnionResult | Promise<BookUnionResult>;
+    rejectItem(input?: Nullable<BookInput>): BookUnionResult | Promise<BookUnionResult>;
     prolongClaimPeriod(input?: Nullable<ProlongTimeInput>): BookUnionResult | Promise<BookUnionResult>;
     createLocation(input: CreateLocationInput): Nullable<Location> | Promise<Nullable<Location>>;
     removeLocation(input: RemoveLocationInput): Nullable<Location> | Promise<Nullable<Location>>;
@@ -202,6 +208,51 @@ export interface Material {
     statuses: Nullable<Status>[];
     notifications: Nullable<Notification>[];
     messages: Nullable<Message>[];
+    description: string;
+    is_donated: boolean;
+}
+
+export interface ResponseMetadata {
+    idType: string;
+    value: string;
+}
+
+export interface Author {
+    id: string;
+    name: string;
+}
+
+export interface Publisher {
+    id: string;
+    name: string;
+}
+
+export interface Meta {
+    ageRestriction: string;
+    coverType: string;
+    dimensions: string;
+    manufacturer: string;
+    mass: string;
+    numberOfPages: string;
+    price: string;
+    series: string;
+    sku: string;
+}
+
+export interface IMaterialMeta {
+    authors: Nullable<Author>[];
+    cover: string;
+    description: string;
+    title: string;
+    yearPublishedAt: number;
+    meta: Meta;
+    publisher: Publisher;
+}
+
+export interface IMetaOfMaterial {
+    idType: string;
+    value: string;
+    material: IMaterialMeta;
 }
 
 export interface Message {
