@@ -97,6 +97,11 @@ export type Error = {
   message: Scalars['String'];
 };
 
+export type GetAllPersonsInput = {
+  location_id: Scalars['ID'];
+  username?: InputMaybe<WhereArgString>;
+};
+
 export type Location = {
   __typename?: 'Location';
   id: Scalars['ID'];
@@ -297,6 +302,11 @@ export type QueryGetAllMessagesArgs = {
 };
 
 
+export type QueryGetAllPersonsArgs = {
+  input: GetAllPersonsInput;
+};
+
+
 export type QueryGetAllTakenItemsArgs = {
   person_id: Scalars['Int'];
 };
@@ -407,6 +417,14 @@ export type UpdateMaterialInput = {
 export type UpdatePersonLocationInput = {
   location_id: Scalars['Int'];
   person_id: Scalars['Int'];
+};
+
+export type WhereArgString = {
+  contains?: InputMaybe<Scalars['String']>;
+  exact?: InputMaybe<Scalars['String']>;
+  gt?: InputMaybe<Scalars['String']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  lt?: InputMaybe<Scalars['String']>;
 };
 
 export type ClaimBookMutationVariables = Exact<{
@@ -532,7 +550,9 @@ export type GetAllMessagesQueryVariables = Exact<{
 
 export type GetAllMessagesQuery = { __typename?: 'Query', getAllMessages?: Array<{ __typename?: 'Message', id: string, created_at: any, title: string, message: string, person: { __typename?: 'Person', id: string, username: string } }> | null };
 
-export type GetAllPersonsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetAllPersonsQueryVariables = Exact<{
+  input: GetAllPersonsInput;
+}>;
 
 
 export type GetAllPersonsQuery = { __typename?: 'Query', getAllPersons: Array<{ __typename?: 'Person', id: string, username: string, avatar: string, statuses?: Array<{ __typename?: 'Status', id: string, material_id: number, created_at: any, status: string } | null> | null }> };
@@ -1154,8 +1174,8 @@ export type GetAllMessagesQueryHookResult = ReturnType<typeof useGetAllMessagesQ
 export type GetAllMessagesLazyQueryHookResult = ReturnType<typeof useGetAllMessagesLazyQuery>;
 export type GetAllMessagesQueryResult = Apollo.QueryResult<GetAllMessagesQuery, GetAllMessagesQueryVariables>;
 export const GetAllPersonsDocument = gql`
-    query GetAllPersons {
-  getAllPersons {
+    query GetAllPersons($input: GetAllPersonsInput!) {
+  getAllPersons(input: $input) {
     id
     username
     avatar
@@ -1181,10 +1201,11 @@ export const GetAllPersonsDocument = gql`
  * @example
  * const { data, loading, error } = useGetAllPersonsQuery({
  *   variables: {
+ *      input: // value for 'input'
  *   },
  * });
  */
-export function useGetAllPersonsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllPersonsQuery, GetAllPersonsQueryVariables>) {
+export function useGetAllPersonsQuery(baseOptions: Apollo.QueryHookOptions<GetAllPersonsQuery, GetAllPersonsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetAllPersonsQuery, GetAllPersonsQueryVariables>(GetAllPersonsDocument, options);
       }

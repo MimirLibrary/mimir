@@ -13,6 +13,7 @@ import { Notification } from '../notifications/notification.entity';
 import { Location } from '../locations/location.entity';
 import {
   CreatePersonInput,
+  GetAllPersonsInput,
   UpdatePersonLocationInput,
 } from '@mimir/global-types';
 import { Message } from '../messages/message.entity';
@@ -21,8 +22,22 @@ import { BlockedUsers } from '../blocked-users/blocked-users.entity';
 @Resolver('Person')
 export class PersonResolver {
   @Query(() => [Person])
-  async getAllPersons() {
-    return Person.find();
+  async getAllPersons(@Args('input') getAllPersonsInput: GetAllPersonsInput) {
+    const { location_id, username } = getAllPersonsInput;
+    const data = Person.createQueryBuilder('person')
+      .leftJoinAndSelect('person.location', 'location')
+      .where(
+        `person.location_id= :location ${
+          username ? 'AND person.username ILIKE :name' : ''
+        }`,
+        {
+          location: location_id,
+          name: username.contains ? `%${username.contains}%` : '%',
+        }
+      )
+      .orderBy('person.username', 'ASC')
+      .getMany();
+    return data;
   }
 
   @Query(() => Person)
