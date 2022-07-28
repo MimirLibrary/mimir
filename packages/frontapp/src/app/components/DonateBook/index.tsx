@@ -3,7 +3,10 @@ import styled from '@emotion/styled';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { colors, dimensions } from '@mimir/ui-kit';
-import { useDonateBookMutation } from '@mimir/apollo-client';
+import {
+  GetMaterialFromMetadataQuery,
+  useDonateBookMutation,
+} from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import Button from '../Button';
 import Modal from '../Modal';
@@ -12,7 +15,7 @@ import AskManagerForm from '../AskManagerForm';
 import ErrorMessage from '../ErrorMessge';
 import { RolesTypes } from '@mimir/global-types';
 import FileUpload from '../FielUpload';
-import { IMetaOfMaterial } from '../../types/metadata';
+import { api } from '../../axios-api/api';
 
 const WrapperDonate = styled.section`
   background-color: ${colors.bg_secondary};
@@ -166,7 +169,7 @@ interface IDataOfBook {
 }
 
 interface IPropsDonateBook {
-  data?: IMetaOfMaterial | null;
+  data?: GetMaterialFromMetadataQuery | null | undefined;
   onHideContent: () => void;
 }
 const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
@@ -196,9 +199,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
   const deleteFile = async (fileName: string) => {
     const onlyFileName = fileName.split('/').pop();
     try {
-      const response = await axios.delete(
-        `${process.env['NX_API_ROOT_URL']}/api/file/delete/${onlyFileName}`
-      );
+      const response = await api.delete(`file/delete/${onlyFileName}`);
       return response.data;
     } catch (e) {
       if (e instanceof Error) {
@@ -209,10 +210,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
 
   const getFile = async (formData: any) => {
     try {
-      const response = await axios.post(
-        `${process.env['NX_API_ROOT_URL']}/api/file/create`,
-        formData
-      );
+      const response = await api.post('file/create', formData);
       setPictureOfCover(response.data);
     } catch (e) {
       if (e instanceof Error) {
@@ -224,12 +222,19 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
   useEffect(() => {
     if (data) {
       setDataOfBook({
-        title: data.material.title,
-        genre: data.material.meta.series,
-        author: data.material.authors.map((item) => item.name).join('/'),
+        title: data.getMaterialByIdentifierFromMetadata.material.title,
+        genre: data.getMaterialByIdentifierFromMetadata.material.meta.series,
+        author: data.getMaterialByIdentifierFromMetadata.material.authors
+          ?.map((item) => item?.name)
+          .join('/'),
       });
-      setDescription(data.material.description);
-      if (data.material.cover) setPictureOfCover(data.material.cover);
+      setDescription(
+        data.getMaterialByIdentifierFromMetadata.material.description
+      );
+      if (data.getMaterialByIdentifierFromMetadata.material.cover)
+        setPictureOfCover(
+          data.getMaterialByIdentifierFromMetadata.material.cover
+        );
     }
   }, []);
 
@@ -303,8 +308,9 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
           description,
           category: genre,
           location_id: Number(location.id),
-          id_type: data?.idType || 'ISBN',
+          id_type: data?.getMaterialByIdentifierFromMetadata.idType || 'ISBN',
           role: userRole,
+          is_donated: true,
         },
       });
     } catch (e) {
@@ -394,7 +400,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
           </WrapperMainInfo>
           <WrapperDescription>
             <StyledDescription htmlFor="description">
-              Description
+              Description*
             </StyledDescription>
             <StyledTextArea
               id="description"

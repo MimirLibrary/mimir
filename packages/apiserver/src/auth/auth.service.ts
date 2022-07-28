@@ -23,18 +23,20 @@ export class AuthService {
         smg_id: result.sub,
       },
     });
-    const state = await BlockedUsers.findOne({
-      where: {
-        person_id: person.id,
-      },
-    });
-    if (person)
+
+    if (person) {
+      const state = await BlockedUsers.findOne({
+        where: {
+          person_id: person.id,
+        },
+      });
       return {
         ...tokens,
         ...person,
         userRole: person.type,
         blocked: state?.state,
       };
+    }
 
     const newPerson = Person.create({
       smg_id: result.sub,
@@ -46,7 +48,12 @@ export class AuthService {
     });
     await Person.save(newPerson);
 
-    return { ...tokens, ...newPerson, userRole: newPerson.type };
+    return {
+      ...tokens,
+      ...newPerson,
+      userRole: newPerson.type,
+      blocked: false,
+    };
   }
 
   async verifyToken(id_token: string) {

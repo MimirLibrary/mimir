@@ -16,6 +16,12 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type Author = {
+  __typename?: 'Author';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
 export type BlockedUsers = {
   __typename?: 'BlockedUsers';
   created_at: Scalars['DateTime'];
@@ -39,6 +45,7 @@ export type CreateLocationInput = {
 export type CreateMaterialInput = {
   author: Scalars['String'];
   category: Scalars['String'];
+  description: Scalars['String'];
   id_type: Scalars['String'];
   identifier: Scalars['String'];
   location_id: Scalars['Int'];
@@ -84,6 +91,7 @@ export type DonateBookInput = {
   description?: InputMaybe<Scalars['String']>;
   id_type: Scalars['String'];
   identifier: Scalars['String'];
+  is_donated: Scalars['Boolean'];
   location_id: Scalars['Int'];
   person_id: Scalars['Int'];
   picture?: InputMaybe<Scalars['String']>;
@@ -95,6 +103,24 @@ export type DonateBookInput = {
 export type Error = {
   __typename?: 'Error';
   message: Scalars['String'];
+};
+
+export type IMaterialMeta = {
+  __typename?: 'IMaterialMeta';
+  authors: Array<Maybe<Author>>;
+  cover: Scalars['String'];
+  description: Scalars['String'];
+  meta: Meta;
+  publisher: Publisher;
+  title: Scalars['String'];
+  yearPublishedAt: Scalars['Int'];
+};
+
+export type IMetaOfMaterial = {
+  __typename?: 'IMetaOfMaterial';
+  idType: Scalars['String'];
+  material: IMaterialMeta;
+  value: Scalars['String'];
 };
 
 export type Location = {
@@ -110,9 +136,11 @@ export type Material = {
   author: Scalars['String'];
   category: Scalars['String'];
   created_at: Scalars['DateTime'];
+  description: Scalars['String'];
   id: Scalars['ID'];
   id_type: Scalars['String'];
   identifier: Scalars['String'];
+  is_donated: Scalars['Boolean'];
   location: Location;
   location_id: Scalars['Int'];
   messages: Array<Maybe<Message>>;
@@ -137,6 +165,19 @@ export type Message = {
   title: Scalars['String'];
 };
 
+export type Meta = {
+  __typename?: 'Meta';
+  ageRestriction: Scalars['String'];
+  coverType: Scalars['String'];
+  dimensions: Scalars['String'];
+  manufacturer: Scalars['String'];
+  mass: Scalars['String'];
+  numberOfPages: Scalars['String'];
+  price: Scalars['String'];
+  series: Scalars['String'];
+  sku: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   claimBook: BookUnionResult;
@@ -149,6 +190,7 @@ export type Mutation = {
   createStatus: Status;
   donateBook: Material;
   prolongClaimPeriod: BookUnionResult;
+  rejectItem: BookUnionResult;
   removeLocation?: Maybe<Location>;
   removeMaterial: Material;
   removeNotification?: Maybe<Notification>;
@@ -205,6 +247,11 @@ export type MutationDonateBookArgs = {
 
 export type MutationProlongClaimPeriodArgs = {
   input?: InputMaybe<ProlongTimeInput>;
+};
+
+
+export type MutationRejectItemArgs = {
+  input?: InputMaybe<BookInput>;
 };
 
 
@@ -270,16 +317,24 @@ export type ProlongTimeInput = {
   person_id: Scalars['Int'];
 };
 
+export type Publisher = {
+  __typename?: 'Publisher';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
   getAllLocations: Array<Maybe<Location>>;
   getAllMaterials: Array<Maybe<Material>>;
   getAllMessages?: Maybe<Array<Message>>;
   getAllPersons: Array<Person>;
+  getAllStatusesIsOverdue: Array<Maybe<Status>>;
   getAllTakenItems: Array<Maybe<Status>>;
   getBlocksByPerson?: Maybe<Array<Maybe<BlockedUsers>>>;
   getMaterialById: Material;
-  getMaterialByIdentifier?: Maybe<Material>;
+  getMaterialByIdentifier: Material;
+  getMaterialByIdentifierFromMetadata: IMetaOfMaterial;
   getMessagesByPerson?: Maybe<Array<Maybe<Message>>>;
   getNotificationsByMaterial: Array<Maybe<Notification>>;
   getNotificationsByPerson: Array<Maybe<Notification>>;
@@ -292,8 +347,20 @@ export type Query = {
 };
 
 
+export type QueryGetAllMaterialsArgs = {
+  limit?: InputMaybe<Scalars['Int']>;
+  location_id: Scalars['String'];
+  offset?: InputMaybe<Scalars['Int']>;
+};
+
+
 export type QueryGetAllMessagesArgs = {
   location_id: Scalars['Int'];
+};
+
+
+export type QueryGetAllStatusesIsOverdueArgs = {
+  location_id: Scalars['String'];
 };
 
 
@@ -314,6 +381,11 @@ export type QueryGetMaterialByIdArgs = {
 
 export type QueryGetMaterialByIdentifierArgs = {
   input: SearchOneMaterial;
+};
+
+
+export type QueryGetMaterialByIdentifierFromMetadataArgs = {
+  identifier: Scalars['String'];
 };
 
 
@@ -371,6 +443,12 @@ export type RemoveNotificationInput = {
   person_id: Scalars['Int'];
 };
 
+export type ResponseMetadata = {
+  __typename?: 'ResponseMetadata';
+  idType: Scalars['String'];
+  value: Scalars['String'];
+};
+
 export type SearchInput = {
   location: Scalars['String'];
   search: Scalars['String'];
@@ -395,6 +473,7 @@ export type Status = {
 export type UpdateMaterialInput = {
   author?: InputMaybe<Scalars['String']>;
   category?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   id_type?: InputMaybe<Scalars['String']>;
   identifier?: InputMaybe<Scalars['String']>;
   location_id?: InputMaybe<Scalars['Int']>;
@@ -456,6 +535,7 @@ export type DonateBookMutationVariables = Exact<{
   description?: InputMaybe<Scalars['String']>;
   picture?: InputMaybe<Scalars['String']>;
   role: Scalars['String'];
+  is_donated: Scalars['Boolean'];
 }>;
 
 
@@ -468,6 +548,14 @@ export type ProlongTimeMutationVariables = Exact<{
 
 
 export type ProlongTimeMutation = { __typename?: 'Mutation', prolongClaimPeriod: { __typename?: 'Error', message: string } | { __typename?: 'Status', created_at: any, status: string } };
+
+export type RejectItemMutationVariables = Exact<{
+  identifier: Scalars['String'];
+  person_id: Scalars['Int'];
+}>;
+
+
+export type RejectItemMutation = { __typename?: 'Mutation', rejectItem: { __typename?: 'Error', message: string } | { __typename?: 'Status', created_at: any, status: string } };
 
 export type RemoveMaterialMutationVariables = Exact<{
   identifier: Scalars['String'];
@@ -502,10 +590,11 @@ export type UpdateMaterialMutationVariables = Exact<{
   author?: InputMaybe<Scalars['String']>;
   category?: InputMaybe<Scalars['String']>;
   updated_at: Scalars['DateTime'];
+  description?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type UpdateMaterialMutation = { __typename?: 'Mutation', updateMaterial: { __typename?: 'Material', identifier: string, id_type: string, type: string, location_id: number, title: string, author: string, category: string, updated_at: any } };
+export type UpdateMaterialMutation = { __typename?: 'Mutation', updateMaterial: { __typename?: 'Material', identifier: string, id_type: string, type: string, location_id: number, title: string, author: string, category: string, updated_at: any, description: string } };
 
 export type UpdatePersonLocationMutationVariables = Exact<{
   location_id: Scalars['Int'];
@@ -520,10 +609,23 @@ export type GetAllLocationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAllLocationsQuery = { __typename?: 'Query', getAllLocations: Array<{ __typename?: 'Location', id: string, location: string } | null> };
 
-export type GetAllMaterialsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetAllMaterialsQueryVariables = Exact<{
+  location_id: Scalars['String'];
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+}>;
 
 
-export type GetAllMaterialsQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', author: string, category: string, created_at: any, id: string, id_type: string, identifier: string, picture?: string | null, title: string, type: string, updated_at: any, notifications: Array<{ __typename?: 'Notification', material_id: number, person_id: number } | null>, statuses: Array<{ __typename?: 'Status', status: string, person_id: number } | null> } | null> };
+export type GetAllMaterialsQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', author: string, category: string, created_at: any, id: string, id_type: string, identifier: string, description: string, is_donated: boolean, picture?: string | null, title: string, type: string, updated_at: any, notifications: Array<{ __typename?: 'Notification', material_id: number, person_id: number } | null>, statuses: Array<{ __typename?: 'Status', status: string, person_id: number } | null> } | null> };
+
+export type GetAllMaterialsForManagerQueryVariables = Exact<{
+  location_id: Scalars['String'];
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetAllMaterialsForManagerQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', id: string, title: string, category: string, picture?: string | null, statuses: Array<{ __typename?: 'Status', id: string, created_at: any, status: string, person: { __typename?: 'Person', id: string, username: string } } | null> } | null> };
 
 export type GetAllMessagesQueryVariables = Exact<{
   location_id: Scalars['Int'];
@@ -537,6 +639,13 @@ export type GetAllPersonsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAllPersonsQuery = { __typename?: 'Query', getAllPersons: Array<{ __typename?: 'Person', id: string, username: string, avatar: string, statuses?: Array<{ __typename?: 'Status', id: string, material_id: number, created_at: any, status: string } | null> | null }> };
 
+export type GetAllStatusesIsOverdueQueryVariables = Exact<{
+  location_id: Scalars['String'];
+}>;
+
+
+export type GetAllStatusesIsOverdueQuery = { __typename?: 'Query', getAllStatusesIsOverdue: Array<{ __typename?: 'Status', id: string, created_at: any, material: { __typename?: 'Material', id: string, title: string }, person: { __typename?: 'Person', id: string, username: string } } | null> };
+
 export type GetAllTakenItemsQueryVariables = Exact<{
   person_id: Scalars['Int'];
 }>;
@@ -549,7 +658,7 @@ export type GetMaterialByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetMaterialByIdQuery = { __typename?: 'Query', getMaterialById: { __typename?: 'Material', id: string, identifier: string, picture?: string | null, title: string, author: string, category: string, created_at: any, updated_at: any, location_id: number, type: string, statuses: Array<{ __typename?: 'Status', id: string, person_id: number, status: string, created_at: any } | null> } };
+export type GetMaterialByIdQuery = { __typename?: 'Query', getMaterialById: { __typename?: 'Material', id: string, identifier: string, picture?: string | null, title: string, author: string, category: string, created_at: any, updated_at: any, location_id: number, description: string, type: string, statuses: Array<{ __typename?: 'Status', id: string, person_id: number, status: string, created_at: any } | null> } };
 
 export type GetMaterialByIdentifierQueryVariables = Exact<{
   identifier: Scalars['String'];
@@ -557,7 +666,14 @@ export type GetMaterialByIdentifierQueryVariables = Exact<{
 }>;
 
 
-export type GetMaterialByIdentifierQuery = { __typename?: 'Query', getMaterialByIdentifier?: { __typename?: 'Material', id: string, picture?: string | null, author: string, title: string, category: string } | null };
+export type GetMaterialByIdentifierQuery = { __typename?: 'Query', getMaterialByIdentifier: { __typename?: 'Material', id: string, picture?: string | null, author: string, title: string, category: string } };
+
+export type GetMaterialFromMetadataQueryVariables = Exact<{
+  identifier: Scalars['String'];
+}>;
+
+
+export type GetMaterialFromMetadataQuery = { __typename?: 'Query', getMaterialByIdentifierFromMetadata: { __typename?: 'IMetaOfMaterial', idType: string, value: string, material: { __typename?: 'IMaterialMeta', title: string, description: string, cover: string, authors: Array<{ __typename?: 'Author', id: string, name: string } | null>, meta: { __typename?: 'Meta', series: string } } } };
 
 export type GetNotificationsByPersonQueryVariables = Exact<{
   person_id: Scalars['Int'];
@@ -740,9 +856,9 @@ export type CreateStateMutationHookResult = ReturnType<typeof useCreateStateMuta
 export type CreateStateMutationResult = Apollo.MutationResult<CreateStateMutation>;
 export type CreateStateMutationOptions = Apollo.BaseMutationOptions<CreateStateMutation, CreateStateMutationVariables>;
 export const DonateBookDocument = gql`
-    mutation DonateBook($person_id: Int!, $location_id: Int!, $identifier: String!, $id_type: String!, $type: String!, $title: String!, $author: String!, $category: String!, $description: String, $picture: String, $role: String!) {
+    mutation DonateBook($person_id: Int!, $location_id: Int!, $identifier: String!, $id_type: String!, $type: String!, $title: String!, $author: String!, $category: String!, $description: String, $picture: String, $role: String!, $is_donated: Boolean!) {
   donateBook(
-    input: {person_id: $person_id, location_id: $location_id, identifier: $identifier, type: $type, author: $author, category: $category, description: $description, id_type: $id_type, picture: $picture, title: $title, role: $role}
+    input: {person_id: $person_id, location_id: $location_id, identifier: $identifier, type: $type, author: $author, category: $category, description: $description, id_type: $id_type, picture: $picture, title: $title, role: $role, is_donated: $is_donated}
   ) {
     title
     picture
@@ -776,6 +892,7 @@ export type DonateBookMutationFn = Apollo.MutationFunction<DonateBookMutation, D
  *      description: // value for 'description'
  *      picture: // value for 'picture'
  *      role: // value for 'role'
+ *      is_donated: // value for 'is_donated'
  *   },
  * });
  */
@@ -826,6 +943,46 @@ export function useProlongTimeMutation(baseOptions?: Apollo.MutationHookOptions<
 export type ProlongTimeMutationHookResult = ReturnType<typeof useProlongTimeMutation>;
 export type ProlongTimeMutationResult = Apollo.MutationResult<ProlongTimeMutation>;
 export type ProlongTimeMutationOptions = Apollo.BaseMutationOptions<ProlongTimeMutation, ProlongTimeMutationVariables>;
+export const RejectItemDocument = gql`
+    mutation RejectItem($identifier: String!, $person_id: Int!) {
+  rejectItem(input: {identifier: $identifier, person_id: $person_id}) {
+    ... on Status {
+      created_at
+      status
+    }
+    ... on Error {
+      message
+    }
+  }
+}
+    `;
+export type RejectItemMutationFn = Apollo.MutationFunction<RejectItemMutation, RejectItemMutationVariables>;
+
+/**
+ * __useRejectItemMutation__
+ *
+ * To run a mutation, you first call `useRejectItemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRejectItemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [rejectItemMutation, { data, loading, error }] = useRejectItemMutation({
+ *   variables: {
+ *      identifier: // value for 'identifier'
+ *      person_id: // value for 'person_id'
+ *   },
+ * });
+ */
+export function useRejectItemMutation(baseOptions?: Apollo.MutationHookOptions<RejectItemMutation, RejectItemMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RejectItemMutation, RejectItemMutationVariables>(RejectItemDocument, options);
+      }
+export type RejectItemMutationHookResult = ReturnType<typeof useRejectItemMutation>;
+export type RejectItemMutationResult = Apollo.MutationResult<RejectItemMutation>;
+export type RejectItemMutationOptions = Apollo.BaseMutationOptions<RejectItemMutation, RejectItemMutationVariables>;
 export const RemoveMaterialDocument = gql`
     mutation RemoveMaterial($identifier: String!, $type: String!, $location_id: Int!) {
   removeMaterial(
@@ -943,9 +1100,9 @@ export type ReturnBookMutationHookResult = ReturnType<typeof useReturnBookMutati
 export type ReturnBookMutationResult = Apollo.MutationResult<ReturnBookMutation>;
 export type ReturnBookMutationOptions = Apollo.BaseMutationOptions<ReturnBookMutation, ReturnBookMutationVariables>;
 export const UpdateMaterialDocument = gql`
-    mutation UpdateMaterial($identifier: String!, $id_type: String, $type: String, $location_id: Int, $title: String, $author: String, $category: String, $updated_at: DateTime!) {
+    mutation UpdateMaterial($identifier: String!, $id_type: String, $type: String, $location_id: Int, $title: String, $author: String, $category: String, $updated_at: DateTime!, $description: String) {
   updateMaterial(
-    input: {identifier: $identifier, id_type: $id_type, type: $type, location_id: $location_id, title: $title, author: $author, category: $category, updated_at: $updated_at}
+    input: {identifier: $identifier, id_type: $id_type, type: $type, location_id: $location_id, title: $title, author: $author, category: $category, updated_at: $updated_at, description: $description}
   ) {
     identifier
     id_type
@@ -955,6 +1112,7 @@ export const UpdateMaterialDocument = gql`
     author
     category
     updated_at
+    description
   }
 }
     `;
@@ -981,6 +1139,7 @@ export type UpdateMaterialMutationFn = Apollo.MutationFunction<UpdateMaterialMut
  *      author: // value for 'author'
  *      category: // value for 'category'
  *      updated_at: // value for 'updated_at'
+ *      description: // value for 'description'
  *   },
  * });
  */
@@ -1061,14 +1220,16 @@ export type GetAllLocationsQueryHookResult = ReturnType<typeof useGetAllLocation
 export type GetAllLocationsLazyQueryHookResult = ReturnType<typeof useGetAllLocationsLazyQuery>;
 export type GetAllLocationsQueryResult = Apollo.QueryResult<GetAllLocationsQuery, GetAllLocationsQueryVariables>;
 export const GetAllMaterialsDocument = gql`
-    query GetAllMaterials {
-  getAllMaterials {
+    query GetAllMaterials($location_id: String!, $limit: Int, $offset: Int) {
+  getAllMaterials(location_id: $location_id, limit: $limit, offset: $offset) {
     author
     category
     created_at
     id
     id_type
     identifier
+    description
+    is_donated
     notifications {
       material_id
       person_id
@@ -1097,10 +1258,13 @@ export const GetAllMaterialsDocument = gql`
  * @example
  * const { data, loading, error } = useGetAllMaterialsQuery({
  *   variables: {
+ *      location_id: // value for 'location_id'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
  *   },
  * });
  */
-export function useGetAllMaterialsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>) {
+export function useGetAllMaterialsQuery(baseOptions: Apollo.QueryHookOptions<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>(GetAllMaterialsDocument, options);
       }
@@ -1111,6 +1275,55 @@ export function useGetAllMaterialsLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetAllMaterialsQueryHookResult = ReturnType<typeof useGetAllMaterialsQuery>;
 export type GetAllMaterialsLazyQueryHookResult = ReturnType<typeof useGetAllMaterialsLazyQuery>;
 export type GetAllMaterialsQueryResult = Apollo.QueryResult<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>;
+export const GetAllMaterialsForManagerDocument = gql`
+    query GetAllMaterialsForManager($location_id: String!, $limit: Int, $offset: Int) {
+  getAllMaterials(location_id: $location_id, limit: $limit, offset: $offset) {
+    id
+    title
+    category
+    picture
+    statuses {
+      id
+      created_at
+      status
+      person {
+        id
+        username
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAllMaterialsForManagerQuery__
+ *
+ * To run a query within a React component, call `useGetAllMaterialsForManagerQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllMaterialsForManagerQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllMaterialsForManagerQuery({
+ *   variables: {
+ *      location_id: // value for 'location_id'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useGetAllMaterialsForManagerQuery(baseOptions: Apollo.QueryHookOptions<GetAllMaterialsForManagerQuery, GetAllMaterialsForManagerQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllMaterialsForManagerQuery, GetAllMaterialsForManagerQueryVariables>(GetAllMaterialsForManagerDocument, options);
+      }
+export function useGetAllMaterialsForManagerLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllMaterialsForManagerQuery, GetAllMaterialsForManagerQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllMaterialsForManagerQuery, GetAllMaterialsForManagerQueryVariables>(GetAllMaterialsForManagerDocument, options);
+        }
+export type GetAllMaterialsForManagerQueryHookResult = ReturnType<typeof useGetAllMaterialsForManagerQuery>;
+export type GetAllMaterialsForManagerLazyQueryHookResult = ReturnType<typeof useGetAllMaterialsForManagerLazyQuery>;
+export type GetAllMaterialsForManagerQueryResult = Apollo.QueryResult<GetAllMaterialsForManagerQuery, GetAllMaterialsForManagerQueryVariables>;
 export const GetAllMessagesDocument = gql`
     query GetAllMessages($location_id: Int!) {
   getAllMessages(location_id: $location_id) {
@@ -1195,6 +1408,50 @@ export function useGetAllPersonsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetAllPersonsQueryHookResult = ReturnType<typeof useGetAllPersonsQuery>;
 export type GetAllPersonsLazyQueryHookResult = ReturnType<typeof useGetAllPersonsLazyQuery>;
 export type GetAllPersonsQueryResult = Apollo.QueryResult<GetAllPersonsQuery, GetAllPersonsQueryVariables>;
+export const GetAllStatusesIsOverdueDocument = gql`
+    query GetAllStatusesIsOverdue($location_id: String!) {
+  getAllStatusesIsOverdue(location_id: $location_id) {
+    id
+    created_at
+    material {
+      id
+      title
+    }
+    person {
+      id
+      username
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAllStatusesIsOverdueQuery__
+ *
+ * To run a query within a React component, call `useGetAllStatusesIsOverdueQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllStatusesIsOverdueQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllStatusesIsOverdueQuery({
+ *   variables: {
+ *      location_id: // value for 'location_id'
+ *   },
+ * });
+ */
+export function useGetAllStatusesIsOverdueQuery(baseOptions: Apollo.QueryHookOptions<GetAllStatusesIsOverdueQuery, GetAllStatusesIsOverdueQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllStatusesIsOverdueQuery, GetAllStatusesIsOverdueQueryVariables>(GetAllStatusesIsOverdueDocument, options);
+      }
+export function useGetAllStatusesIsOverdueLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllStatusesIsOverdueQuery, GetAllStatusesIsOverdueQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllStatusesIsOverdueQuery, GetAllStatusesIsOverdueQueryVariables>(GetAllStatusesIsOverdueDocument, options);
+        }
+export type GetAllStatusesIsOverdueQueryHookResult = ReturnType<typeof useGetAllStatusesIsOverdueQuery>;
+export type GetAllStatusesIsOverdueLazyQueryHookResult = ReturnType<typeof useGetAllStatusesIsOverdueLazyQuery>;
+export type GetAllStatusesIsOverdueQueryResult = Apollo.QueryResult<GetAllStatusesIsOverdueQuery, GetAllStatusesIsOverdueQueryVariables>;
 export const GetAllTakenItemsDocument = gql`
     query GetAllTakenItems($person_id: Int!) {
   getAllTakenItems(person_id: $person_id) {
@@ -1251,6 +1508,7 @@ export const GetMaterialByIdDocument = gql`
     created_at
     updated_at
     location_id
+    description
     type
     statuses {
       id
@@ -1331,6 +1589,54 @@ export function useGetMaterialByIdentifierLazyQuery(baseOptions?: Apollo.LazyQue
 export type GetMaterialByIdentifierQueryHookResult = ReturnType<typeof useGetMaterialByIdentifierQuery>;
 export type GetMaterialByIdentifierLazyQueryHookResult = ReturnType<typeof useGetMaterialByIdentifierLazyQuery>;
 export type GetMaterialByIdentifierQueryResult = Apollo.QueryResult<GetMaterialByIdentifierQuery, GetMaterialByIdentifierQueryVariables>;
+export const GetMaterialFromMetadataDocument = gql`
+    query GetMaterialFromMetadata($identifier: String!) {
+  getMaterialByIdentifierFromMetadata(identifier: $identifier) {
+    idType
+    value
+    material {
+      title
+      description
+      cover
+      authors {
+        id
+        name
+      }
+      meta {
+        series
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetMaterialFromMetadataQuery__
+ *
+ * To run a query within a React component, call `useGetMaterialFromMetadataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMaterialFromMetadataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMaterialFromMetadataQuery({
+ *   variables: {
+ *      identifier: // value for 'identifier'
+ *   },
+ * });
+ */
+export function useGetMaterialFromMetadataQuery(baseOptions: Apollo.QueryHookOptions<GetMaterialFromMetadataQuery, GetMaterialFromMetadataQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMaterialFromMetadataQuery, GetMaterialFromMetadataQueryVariables>(GetMaterialFromMetadataDocument, options);
+      }
+export function useGetMaterialFromMetadataLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMaterialFromMetadataQuery, GetMaterialFromMetadataQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMaterialFromMetadataQuery, GetMaterialFromMetadataQueryVariables>(GetMaterialFromMetadataDocument, options);
+        }
+export type GetMaterialFromMetadataQueryHookResult = ReturnType<typeof useGetMaterialFromMetadataQuery>;
+export type GetMaterialFromMetadataLazyQueryHookResult = ReturnType<typeof useGetMaterialFromMetadataLazyQuery>;
+export type GetMaterialFromMetadataQueryResult = Apollo.QueryResult<GetMaterialFromMetadataQuery, GetMaterialFromMetadataQueryVariables>;
 export const GetNotificationsByPersonDocument = gql`
     query GetNotificationsByPerson($person_id: Int!) {
   getNotificationsByPerson(person_id: $person_id) {

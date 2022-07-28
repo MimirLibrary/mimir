@@ -8,8 +8,11 @@ import Scanner from '../Scanner';
 import { useAppDispatch } from '../../hooks/useTypedDispatch';
 import { setIdentifier } from '../../store/slices/identifierSlice';
 import InputMask from 'react-input-mask';
-import axios from 'axios';
-import { IMetaOfMaterial } from '../../types';
+import {
+  client,
+  GetMaterialFromMetadataDocument,
+  GetMaterialFromMetadataQuery,
+} from '@mimir/apollo-client';
 
 const Wrapper = styled.section`
   width: 100%;
@@ -38,7 +41,6 @@ const SubTitle = styled.p`
 const WrapperInputStyled = styled(WrapperInput)`
   margin: 0;
   @media (max-width: ${dimensions.tablet_width}) {
-    margin-bottom: ${dimensions.base};
   }
 `;
 const ISBNWrapper = styled.div`
@@ -54,6 +56,15 @@ const ISBNWrapper = styled.div`
   }
 `;
 
+const MobileInline = styled.div`
+  display: flex;
+  width: 100%;
+  @media (max-width: ${dimensions.tablet_width}) {
+    flex-direction: row-reverse;
+    margin-top: ${dimensions.base};
+  }
+`;
+
 const InputStyledMask = styled(InputMask)`
   width: 19rem;
   border: none;
@@ -62,35 +73,20 @@ const InputStyledMask = styled(InputMask)`
   color: ${colors.main_black};
   font-family: ${fonts.primary}, sans-serif;
   margin-right: 0.12rem;
-
   @media (max-width: ${dimensions.tablet_width}) {
     margin-left: -${dimensions.xl};
   }
-
   @media (max-width: ${dimensions.phone_width}) {
     width: 70%;
   }
-
   ::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }
 `;
 
-const StyledButton = styled(Button)`
-  @media (max-width: ${dimensions.tablet_width}) {
-    max-width: 12.5rem;
-  }
-`;
-
-const StyledButtonScanner = styled(ButtonScanner)`
-  @media (max-width: ${dimensions.tablet_width}) {
-    display: none;
-  }
-`;
-
 interface IPropsViaISBN {
-  setDataToState: (data: IMetaOfMaterial) => void;
+  setDataToState: (data: GetMaterialFromMetadataQuery | undefined) => void;
   setIsLoading: (value: boolean) => void;
   setDataError: (value: Error | null) => void;
 }
@@ -113,7 +109,7 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
   }, []);
 
   const conditionToDisabledBtn = !valueOfISBN && valueOfISBN.length <= 13;
-  const handelChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValueIsISBN(e.target.value);
   };
 
@@ -124,10 +120,11 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
     if (isMounted) {
       try {
         setIsLoading(true);
-        const material = await axios.get(
-          `${process.env['NX_API_METADATA_URL']}/search/${valueOfISBN}`
-        );
-        setDataToState(material.data);
+        const metaDataOfMaterial = await client.query({
+          query: GetMaterialFromMetadataDocument,
+          variables: { identifier: valueOfISBN },
+        });
+        setDataToState(metaDataOfMaterial.data);
         setIsLoading(false);
       } catch (e) {
         if (e instanceof Error) {
@@ -157,21 +154,23 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
               <InputStyledMask
                 mask="999-9-99-999999-9"
                 value={valueOfISBN}
-                onChange={handelChangeInput}
+                onChange={handleChangeInput}
                 required
                 placeholder="Enter ISBN"
               />
             </WrapperInputStyled>
-            <StyledButtonScanner
-              type="button"
-              margin={`0 ${dimensions.xs_2}`}
-              onClick={handleShowScanner}
-            />
-            <StyledButton
-              type="submit"
-              value="Find book"
-              disabled={conditionToDisabledBtn}
-            />
+            <MobileInline>
+              <ButtonScanner
+                type="button"
+                margin={`0.25rem ${dimensions.xs_2} 0 `}
+                onClick={handleShowScanner}
+              />
+              <Button
+                type="submit"
+                value="Find book"
+                disabled={conditionToDisabledBtn}
+              />
+            </MobileInline>
           </ISBNWrapper>
         </form>
       </Wrapper>

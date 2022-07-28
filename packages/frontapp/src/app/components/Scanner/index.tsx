@@ -1,5 +1,7 @@
 import { ChangeEvent, FC, memo, useEffect, useMemo } from 'react';
 import { scanImageData } from 'zbar.wasm';
+import { BrowserMultiFormatOneDReader } from '@zxing/browser';
+import { barcode } from './barcode';
 import styled from '@emotion/styled';
 import { createPortal } from 'react-dom';
 import { colors, dimensions } from '@mimir/ui-kit';
@@ -139,10 +141,12 @@ const Scanner: FC<IScannerProps> = memo(
       () => document.querySelector('#scanner')!,
       []
     );
-    const timeout = 500;
+    const timeout = 200;
 
     useEffect(() => {
       showScanner();
+
+      const codeReader = new BrowserMultiFormatOneDReader();
 
       const videoElement = document.querySelector<HTMLVideoElement>(
         '#scanner-video video'
@@ -155,8 +159,8 @@ const Scanner: FC<IScannerProps> = memo(
         audio: false,
         video: {
           facingMode: 'environment',
-          width: 4096,
-          height: 2160,
+          width: 1920,
+          height: 1080,
         },
       };
       const frameSize = dinamicFrameSize(window.innerWidth, window.innerHeight);
@@ -209,9 +213,17 @@ const Scanner: FC<IScannerProps> = memo(
             canvasElement.width,
             canvasElement.height
           );
-          const res = await scanImageData(imgData);
-          console.log(res[0]?.decode());
-          found(res[0]?.decode());
+
+          const zbarRes = await scanImageData(imgData);
+          if (zbarRes.length) return found(zbarRes[0].decode());
+
+          const barcodeRes = barcode(ctx) as unknown as string;
+          if (barcodeRes) return found(barcodeRes);
+
+          try {
+            const zxingRes = codeReader.decodeFromCanvas(canvasElement);
+            return found(zxingRes.getText());
+          } catch (e) {}
           setTimeout(scanFrame, timeout); // repeat
         }
       }

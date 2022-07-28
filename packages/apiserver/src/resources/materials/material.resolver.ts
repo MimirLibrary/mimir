@@ -18,8 +18,9 @@ import {
 } from '@mimir/global-types';
 import { Notification } from '../notifications/notification.entity';
 import { MaterialService } from './material.service';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, UseGuards } from '@nestjs/common';
 import { Message } from '../messages/message.entity';
+import { AuthGuard } from '../../auth/auth.guard';
 import { GraphQLError } from 'graphql';
 
 @Resolver('Material')
@@ -27,8 +28,12 @@ export class MaterialResolver {
   constructor(private materialService: MaterialService) {}
 
   @Query(() => [Material])
-  async getAllMaterials() {
-    return Material.find();
+  async getAllMaterials(
+    @Args('location_id') location_id: string,
+    @Args('limit') limit: number,
+    @Args('offset') offset: number
+  ) {
+    return this.materialService.allMaterials(location_id, limit, offset);
   }
 
   @Query(() => Material)
@@ -45,6 +50,9 @@ export class MaterialResolver {
       const [material] = await Material.find({
         where: { identifier, location_id },
       });
+      if (!material) {
+        throw new Error("Material doesn't exist!");
+      }
       return material;
     } catch (e) {
       throw new GraphQLError(e.message);

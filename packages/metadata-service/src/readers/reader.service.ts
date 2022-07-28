@@ -8,15 +8,37 @@ export class ReaderService {
 
   async lookup(isbn: string) {
     const existing = await this.db.findMaterial(isbn);
+    // Log access action. Don't await
     if (existing !== null) {
-      console.log('Matched!');
-      return existing;
-    }
-    // const j = require('./ozby.service/snapshots/2022-07-06--1/result.json');
+      this.db.logAccess(existing.id);
 
-    const content = await this.ozbyReader.readData(isbn);
-    const obj = this.ozbyReader.parseData(content);
-    await this.db.syncMaterial(isbn, obj);
+      if (existing.material === null) {
+        console.log('The identifier was previously requested, but not found!');
+      } else {
+        console.log('Matched!');
+        return existing;
+      }
+    }
+
+    const startedAt = new Date();
+    let obj = undefined;
+    try {
+      const content = await this.ozbyReader.readData(isbn);
+      obj = this.ozbyReader.parseData(content);
+    } catch (e) {
+      console.error(`Identifier "${isbn}" not found!`);
+    }
+
+    if (obj !== undefined) {
+      // Save item in local DB
+      await this.db.syncMaterial(isbn, obj, startedAt);
+    } else {
+      // Log missing item
+      if (existing === null) {
+        this.db.saveMissingISBN(isbn, startedAt);
+      }
+    }
+
     return obj;
   }
 }

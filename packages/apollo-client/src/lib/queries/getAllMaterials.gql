@@ -1,11 +1,13 @@
-query GetAllMaterials {
-  getAllMaterials {
+query GetAllMaterials($location_id: String!, $limit: Int, $offset: Int) {
+  getAllMaterials(location_id: $location_id, limit: $limit, offset: $offset) {
     author
     category
     created_at
     id
     id_type
     identifier
+    description
+    is_donated
     notifications {
       material_id
       person_id

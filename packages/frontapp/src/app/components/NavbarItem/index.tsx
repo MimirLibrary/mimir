@@ -58,6 +58,12 @@ const StyledLink = styled(Link)<IStyle>`
   :active p {
     color: ${colors.bg_secondary};
   }
+  @media (max-width: ${dimensions.tablet_width}) {
+    ${({ name }) =>
+      name === NavbarItems.LOGOUT && 'position: relative; bottom: 0'};
+    ${({ name }) =>
+      name === NavbarItems.SETTINGS && 'position: relative; bottom: 0;'}
+  }
 `;
 
 const InsideButtonContainer = styled.div`
