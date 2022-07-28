@@ -1,4 +1,4 @@
-query GetAllPersons($input:GetAllPersonsInput!) {
+query GetAllPersons($input: GetAllPersonsInput!) {
   getAllPersons(input: $input) {
     id
     username
