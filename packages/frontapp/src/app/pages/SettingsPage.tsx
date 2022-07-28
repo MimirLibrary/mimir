@@ -4,13 +4,18 @@ import {
   useUpdatePersonLocationMutation,
 } from '@mimir/apollo-client';
 import { colors, dimensions } from '@mimir/ui-kit';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import Dropdown from '../components/Dropdown';
+import Dropdown, { IDropdownOption } from '../components/Dropdown';
 import { TitleArticle } from '../globalUI/TextArticle';
 import { TextBase } from '../globalUI/TextBase';
 import { useAppDispatch } from '../hooks/useTypedDispatch';
 import { useAppSelector } from '../hooks/useTypedSelector';
 import { TUserLocation, updateUserLocation } from '../store/slices/userSlice';
+
+export type TLanguage = {
+  locale: string;
+} & IDropdownOption;
 
 const WrapperSettings = styled.div`
   @media (max-width: ${dimensions.tablet_width}) {
@@ -44,15 +49,26 @@ const RestyledDropdown = styled(Dropdown)`
   max-width: 310px;
 `;
 
+const languages: TLanguage[] = [
+  { locale: 'ru', value: 'RUS' },
+  { locale: 'en', value: 'ENG' },
+];
+
 const SettingsPage = () => {
-  const { t } = useTranslation();
+  const {
+    t,
+    i18n: { changeLanguage, language },
+  } = useTranslation();
   const { data: GetAllLocationsData, loading: GetAllLocationsLoading } =
     useGetAllLocationsQuery();
   const [updatePersonLocationMutate] = useUpdatePersonLocationMutation();
   const { id, location } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
-  const languages = [{ value: 'RUS' }, { value: 'ENG' }];
+  const currentLocaleIndex = useMemo(
+    () => languages.findIndex(({ locale }) => locale === language),
+    [language]
+  );
 
   const handleLocationChange = async (location: TUserLocation) => {
     dispatch(updateUserLocation(location));
@@ -64,14 +80,16 @@ const SettingsPage = () => {
     });
   };
 
+  const handleLanguageChange = ({ locale }: TLanguage) => {
+    changeLanguage(locale);
+    localStorage.setItem('locale', locale);
+  };
+
   return (
     <WrapperSettings>
       <Wrapper>
-        <TitleArticle>Settings</TitleArticle>
-        <TextBase>
-          Make applications as comfortable as possible for yourself! All changes
-          are saved automatically
-        </TextBase>
+        <TitleArticle>{t('Settings.Title')}</TitleArticle>
+        <TextBase>{t('Settings.Desc')}</TextBase>
       </Wrapper>
       <SettingsContainer>
         <SettingsArticle>{t('Settings.Location')}</SettingsArticle>
@@ -89,7 +107,11 @@ const SettingsPage = () => {
           />
         )}
         <SettingsArticle>{t('Settings.Language')}</SettingsArticle>
-        <RestyledDropdown options={[...languages]} initIndex={1} />
+        <RestyledDropdown
+          options={[...languages]}
+          initIndex={currentLocaleIndex}
+          onChange={(option) => handleLanguageChange(option as TLanguage)}
+        />
       </SettingsContainer>
     </WrapperSettings>
   );

@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RolesTypes } from '@mimir/global-types';
+import { IDropdownOption } from '../../components/Dropdown';
 
 export type TUserLocation = {
   id: string;
-  value: string;
-};
+} & IDropdownOption;
 
 interface IUserState {
   id: number;
