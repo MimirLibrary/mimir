@@ -1,21 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { DbService } from './db.service';
 import { OzbyService } from './ozby.service';
-import { ChitaiGorodService } from './chitai-gorod.service';
 
 @Injectable()
 export class ReaderService {
-  constructor(
-    private db: DbService,
-    private ozbyReader: OzbyService,
-    private chitaiGorodService: ChitaiGorodService
-  ) {}
+  constructor(private db: DbService, private ozbyReader: OzbyService) {}
 
   async lookup(isbn: string) {
     const existing = await this.db.findMaterial(isbn);
     // Log access action. Don't await
     if (existing !== null) {
-      await this.db.logAccess(existing.id);
+      this.db.logAccess(existing.id);
 
       if (existing.material === null) {
         console.log('The identifier was previously requested, but not found!');
@@ -27,20 +22,11 @@ export class ReaderService {
 
     const startedAt = new Date();
     let obj = undefined;
-    let content = undefined;
-
-    const arrayOfServices = ['ozbyReader', 'chitaiGorodService'];
-
-    for (let i = 0; i <= arrayOfServices.length; i++) {
-      try {
-        content = await this[arrayOfServices[i]].readData(isbn);
-        if (content) {
-          obj = this[arrayOfServices[i]].parseData(content);
-          break;
-        }
-      } catch (e) {
-        console.error(`Identifier "${isbn}" not found!`);
-      }
+    try {
+      const content = await this.ozbyReader.readData(isbn);
+      obj = this.ozbyReader.parseData(content);
+    } catch (e) {
+      console.error(`Identifier "${isbn}" not found!`);
     }
 
     if (obj !== undefined) {
