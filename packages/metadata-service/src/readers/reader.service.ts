@@ -29,7 +29,7 @@ export class ReaderService {
     let obj = undefined;
     let content = undefined;
 
-    const arrayOfServices = ['chitaiGorodService', 'ozbyReader'];
+    const arrayOfServices = ['ozbyReader', 'chitaiGorodService'];
 
     for (let i = 0; i <= arrayOfServices.length; i++) {
       try {
