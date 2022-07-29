@@ -133,6 +133,7 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
         setIsLoading(false);
       }
     }
+    setValueIsISBN('');
   };
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
