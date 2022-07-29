@@ -70,51 +70,51 @@ input DonateBookInput {
 }
 
 input SearchInput {
-  search: String
-  location: String
+  search: String!
+  location: String!
 }
 
 type ResponseMetadata {
-  idType: String
-  value: String
+  idType: String!
+  value: String!
 }
 
 type Author {
-  id: ID
-  name: String
+  id: ID!
+  name: String!
 }
 
 type Publisher {
-  id: ID
-  name: String
+  id: ID!
+  name: String!
 }
 
 type Meta {
-  ageRestriction: String
-  coverType: String
-  dimensions: String
-  manufacturer: String
-  mass: String
-  numberOfPages: String
-  price: String
-  series: String
-  sku: String
+  ageRestriction: String!
+  coverType: String!
+  dimensions: String!
+  manufacturer: String!
+  mass: String!
+  numberOfPages: String!
+  price: String!
+  series: String!
+  sku: String!
 }
 
 type IMaterialMeta {
-  authors: [Author]
-  cover: String
-  description: String
-  title: String
-  yearPublishedAt: Int
-  meta: Meta
-  publisher: Publisher
+  authors: [Author]!
+  cover: String!
+  description: String!
+  title: String!
+  yearPublishedAt: Int!
+  meta: Meta!
+  publisher: Publisher!
 }
 
 type IMetaOfMaterial {
   idType: String!
   value: String!
-  material: IMaterialMeta
+  material: IMaterialMeta!
 }
 
 extend type Query {
