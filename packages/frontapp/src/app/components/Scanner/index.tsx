@@ -223,7 +223,9 @@ const Scanner: FC<IScannerProps> = memo(
           try {
             const zxingRes = codeReader.decodeFromCanvas(canvasElement);
             return found(zxingRes.getText());
-          } catch (e) {}
+          } catch (e) {
+            console.log(e);
+          }
           setTimeout(scanFrame, timeout); // repeat
         }
       }

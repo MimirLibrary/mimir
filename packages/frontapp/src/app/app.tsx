@@ -20,6 +20,7 @@ import useScanner from './hooks/useScanner';
 import { RoutesTypes } from '../utils/routes';
 import BlockPage from './pages/BlockPage';
 import { RolesTypes } from '@mimir/global-types';
+import { withTranslation } from 'react-i18next';
 
 const WrapperPage = styled.main`
   display: flex;
@@ -135,4 +136,4 @@ const App: FC = () => {
   );
 };
 
-export default App;
+export default withTranslation()(App);
