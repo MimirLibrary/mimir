@@ -83,6 +83,9 @@ export class ItemService {
 
     const ids = (await statusesQb.getRawMany()).map((d) => d.status_id);
 
+    // Skip query if there is no data
+    if (ids.length === 0) return [];
+
     // Despite TypeORM supports subqueries, there are no possibility
     // to map FROM (SELECT ...) to a Status entity type
     // The only way is to split it onto 2 sequential queries
