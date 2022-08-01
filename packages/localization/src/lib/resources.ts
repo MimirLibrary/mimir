@@ -140,6 +140,10 @@ export const resources = {
         Opps: 'Opps! Your page has been blocked',
         ReasonForBlock: 'Reason for blocking:',
       },
+      ClaimHistory: {
+        Title: 'History of your claim',
+        Desc: 'List of items you have taken for all time',
+      },
     },
   },
   ru: {
@@ -281,6 +285,10 @@ export const resources = {
         FullOther: 'Другая причина (опишите в сообщении)',
         Opps: 'Упс! Ваша страница заблокирована',
         ReasonForBlock: 'Причина блокировки:',
+      },
+      ClaimHistory: {
+        Title: 'История взятых вами книг',
+        Desc: 'Список предметов, которые вы взяли за все время',
       },
     },
   },
