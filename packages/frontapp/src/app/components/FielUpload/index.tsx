@@ -38,6 +38,11 @@ const StyledImg = styled.img`
   width: 12.3rem;
   border-radius: ${dimensions.xs_1};
   cursor: pointer;
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    height: 15.5rem;
+    width: 7.3rem;
+  }
 `;
 
 interface IPropsUploadFile {

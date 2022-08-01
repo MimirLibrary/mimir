@@ -113,6 +113,29 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
     setValueIsISBN(e.target.value);
   };
 
+  const handleOnDetectedScanner = async (code: string) => {
+    setValueIsISBN(code);
+    dispatch(setIdentifier(code));
+    if (isMounted) {
+      try {
+        setIsLoading(true);
+        const metaDataOfMaterial = await client.query({
+          query: GetMaterialFromMetadataDocument,
+          variables: { identifier: code },
+        });
+        setDataToState(metaDataOfMaterial.data);
+        setIsLoading(false);
+      } catch (e) {
+        isMounted = false;
+        if (e instanceof Error) {
+          setDataError(e);
+        }
+        setIsLoading(false);
+      }
+    }
+    setValueIsISBN('');
+  };
+
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
@@ -127,6 +150,7 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
         setDataToState(metaDataOfMaterial.data);
         setIsLoading(false);
       } catch (e) {
+        isMounted = false;
         if (e instanceof Error) {
           setDataError(e);
         }
@@ -177,7 +201,7 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
       {isShowScanner && (
         <Scanner
           onDetected={(code) => {
-            setValueIsISBN(code);
+            handleOnDetectedScanner(code);
           }}
           onClose={() => setIsShowScanner(false)}
         />

@@ -42,6 +42,10 @@ export const ContentModal = styled.div<IStyleProps>`
   transition: 0.4s all;
   max-width: ${dimensions.tablet_width};
   width: 100%;
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    margin: 0 ${dimensions.xl_2};
+  }
 `;
 
 interface IPropsModal {
