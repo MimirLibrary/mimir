@@ -41,6 +41,8 @@ export const resources = {
         ChooseLocation: 'Your current location',
       },
       Settings: {
+        Title: 'Settings',
+        Desc: 'Make applications as comfortable as possible for yourself! All changes are saved automatically',
         Location: 'Location',
         Language: 'Language',
         Notification: 'Notification',
@@ -183,6 +185,8 @@ export const resources = {
         ChooseLocation: 'Ваше текущее местоположение',
       },
       Settings: {
+        Title: 'Настройки',
+        Desc: 'Сделайте приложения максимально комфортными для себя! Все изменения сохраняются автоматически',
         Location: 'Местоположение',
         Language: 'Язык',
         Notification: 'Уведомления',
