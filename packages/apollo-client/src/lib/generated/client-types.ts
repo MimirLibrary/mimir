@@ -332,6 +332,7 @@ export type Query = {
   getAllStatusesIsOverdue: Array<Maybe<Status>>;
   getAllTakenItems: Array<Maybe<Status>>;
   getBlocksByPerson?: Maybe<Array<Maybe<BlockedUsers>>>;
+  getItemsForClaimHistory: Array<Maybe<Status>>;
   getMaterialById: Material;
   getMaterialByIdentifier: Material;
   getMaterialByIdentifierFromMetadata: IMetaOfMaterial;
@@ -371,6 +372,11 @@ export type QueryGetAllTakenItemsArgs = {
 
 export type QueryGetBlocksByPersonArgs = {
   person_id: Scalars['ID'];
+};
+
+
+export type QueryGetItemsForClaimHistoryArgs = {
+  person_id: Scalars['Int'];
 };
 
 
@@ -659,6 +665,13 @@ export type GetMaterialByIdQueryVariables = Exact<{
 
 
 export type GetMaterialByIdQuery = { __typename?: 'Query', getMaterialById: { __typename?: 'Material', id: string, identifier: string, picture?: string | null, title: string, author: string, category: string, created_at: any, updated_at: any, location_id: number, description: string, type: string, statuses: Array<{ __typename?: 'Status', id: string, person_id: number, status: string, created_at: any } | null> } };
+
+export type GetItemsForClaimHistoryQueryVariables = Exact<{
+  person_id: Scalars['Int'];
+}>;
+
+
+export type GetItemsForClaimHistoryQuery = { __typename?: 'Query', getItemsForClaimHistory: Array<{ __typename?: 'Status', id: string, status: string, created_at: any, material: { __typename?: 'Material', id: string, picture?: string | null, title: string, author: string, category: string } } | null> };
 
 export type GetMaterialByIdentifierQueryVariables = Exact<{
   identifier: Scalars['String'];
@@ -1547,6 +1560,50 @@ export function useGetMaterialByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetMaterialByIdQueryHookResult = ReturnType<typeof useGetMaterialByIdQuery>;
 export type GetMaterialByIdLazyQueryHookResult = ReturnType<typeof useGetMaterialByIdLazyQuery>;
 export type GetMaterialByIdQueryResult = Apollo.QueryResult<GetMaterialByIdQuery, GetMaterialByIdQueryVariables>;
+export const GetItemsForClaimHistoryDocument = gql`
+    query GetItemsForClaimHistory($person_id: Int!) {
+  getItemsForClaimHistory(person_id: $person_id) {
+    id
+    status
+    created_at
+    material {
+      id
+      picture
+      title
+      author
+      category
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetItemsForClaimHistoryQuery__
+ *
+ * To run a query within a React component, call `useGetItemsForClaimHistoryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetItemsForClaimHistoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetItemsForClaimHistoryQuery({
+ *   variables: {
+ *      person_id: // value for 'person_id'
+ *   },
+ * });
+ */
+export function useGetItemsForClaimHistoryQuery(baseOptions: Apollo.QueryHookOptions<GetItemsForClaimHistoryQuery, GetItemsForClaimHistoryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetItemsForClaimHistoryQuery, GetItemsForClaimHistoryQueryVariables>(GetItemsForClaimHistoryDocument, options);
+      }
+export function useGetItemsForClaimHistoryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetItemsForClaimHistoryQuery, GetItemsForClaimHistoryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetItemsForClaimHistoryQuery, GetItemsForClaimHistoryQueryVariables>(GetItemsForClaimHistoryDocument, options);
+        }
+export type GetItemsForClaimHistoryQueryHookResult = ReturnType<typeof useGetItemsForClaimHistoryQuery>;
+export type GetItemsForClaimHistoryLazyQueryHookResult = ReturnType<typeof useGetItemsForClaimHistoryLazyQuery>;
+export type GetItemsForClaimHistoryQueryResult = Apollo.QueryResult<GetItemsForClaimHistoryQuery, GetItemsForClaimHistoryQueryVariables>;
 export const GetMaterialByIdentifierDocument = gql`
     query GetMaterialByIdentifier($identifier: String!, $location_id: Int!) {
   getMaterialByIdentifier(

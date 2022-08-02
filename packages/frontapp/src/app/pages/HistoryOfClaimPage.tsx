@@ -1,9 +1,12 @@
 import styled from '@emotion/styled';
+import { useGetItemsForClaimHistoryQuery } from '@mimir/apollo-client';
+import { RolesTypes } from '@mimir/global-types';
 import { dimensions } from '@mimir/ui-kit';
 import { useTranslation } from 'react-i18next';
 import BookCard from '../components/BookCard';
 import { TitleArticle } from '../globalUI/TextArticle';
 import { TextBase } from '../globalUI/TextBase';
+import { useAppSelector } from '../hooks/useTypedSelector';
 
 const Wrapper = styled.div`
   padding-top: 3.5rem;
@@ -35,56 +38,31 @@ const List = styled.div`
 
 const HistoryOfClaimPage = () => {
   const { t } = useTranslation();
+  const { id, userRole } = useAppSelector((state) => state.user);
+  const { data, loading } = useGetItemsForClaimHistoryQuery({
+    variables: { person_id: id },
+    skip: userRole === RolesTypes.MANAGER,
+  });
   return (
     <Wrapper>
       <TitleArticle>{t('ClaimHistory.Title')}</TitleArticle>
       <TextBase>{t('ClaimHistory.Desc')}</TextBase>
       <List>
-        <BookCard
-          title="Half Life"
-          author="Morgan Freeman"
-          category="Fantastic"
-        />
-        <BookCard
-          title="Half Life"
-          author="Morgan Freeman"
-          category="Fantastic"
-        />
-        <BookCard
-          title="Half Life"
-          author="Morgan Freeman"
-          category="Fantastic"
-        />
-        <BookCard
-          title="Half Life"
-          author="Morgan Freeman"
-          category="Fantastic"
-        />
-        <BookCard
-          title="Half Life"
-          author="Morgan Freeman"
-          category="Fantastic"
-        />
-        <BookCard
-          title="Half Life"
-          author="Morgan Freeman"
-          category="Fantastic"
-        />
-        <BookCard
-          title="Half Life"
-          author="Morgan Freeman"
-          category="Fantastic"
-        />
-        <BookCard
-          title="Half Life"
-          author="Morgan Freeman"
-          category="Fantastic"
-        />
-        <BookCard
-          title="Half Life"
-          author="Morgan Freeman"
-          category="Fantastic"
-        />
+        {!loading &&
+          data?.getItemsForClaimHistory
+            .map((item) => (
+              <BookCard
+                key={item?.id}
+                id={item?.material?.id}
+                src={item?.material?.picture}
+                title={item?.material.title}
+                author={item?.material.author}
+                category={item?.material.category}
+                date={item?.created_at}
+                status={item?.status}
+              />
+            ))
+            .reverse()}
       </List>
     </Wrapper>
   );
