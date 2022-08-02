@@ -64,6 +64,9 @@ jobs:
         # Generate prisma client
       - run: cd packages/metadata-service && npx prisma generate && cd -
       - run: npx env-cmd -f .staging.env npx nx build apiserver:build:production --parallel --max-parallel=3
+        # TODO use runner
+      - name: Copy package-lock.json
+        run: cp package-lock.json dist/packages/apiserver
       - name: Rsync copy apiserver
         uses: burnett01/rsync-deployments@5.2
         with:
@@ -155,6 +158,9 @@ jobs:
         # Generate prisma client
       - run: cd packages/metadata-service && npx prisma generate && cd -
       - run: npx env-cmd -f .staging.env npx nx build metadata-service:build:production
+        # TODO use runner
+      - name: Copy package-lock.json
+        run: cp package-lock.json dist/packages/metadata-service
       - name: Rsync copy metadata-service
         uses: burnett01/rsync-deployments@5.2
         with:
