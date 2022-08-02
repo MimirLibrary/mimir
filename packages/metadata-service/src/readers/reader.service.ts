@@ -15,7 +15,7 @@ export class ReaderService {
     const existing = await this.db.findMaterial(isbn);
     // Log access action. Don't await
     if (existing !== null) {
-      await this.db.logAccess(existing.id);
+      this.db.logAccess(existing.id);
 
       if (existing.material === null) {
         console.log('The identifier was previously requested, but not found!');

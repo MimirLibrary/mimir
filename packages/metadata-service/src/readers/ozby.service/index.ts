@@ -3,6 +3,7 @@ import { Material, Prisma } from '@prisma/client';
 import cheerio from 'cheerio';
 import * as _ from 'lodash';
 import axios from 'axios';
+import { Bundle } from '../../types';
 
 type Author = {
   name: string;
@@ -17,12 +18,6 @@ type Publisher = {
 type CoverImage = {
   title: string;
   src: string;
-};
-
-export type Bundle = {
-  material: Prisma.MaterialCreateInput;
-  authors: Array<Prisma.AuthorCreateInput>;
-  publisher: Prisma.PublisherCreateInput;
 };
 
 const READER_ID = 'OZBY';

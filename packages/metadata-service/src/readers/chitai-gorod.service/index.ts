@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { Prisma } from '@prisma/client';
-import { Bundle } from '../ozby.service';
+import { Bundle } from '../../types';
 
 @Injectable()
 export class ChitaiGorodService {
@@ -53,18 +53,18 @@ export class ChitaiGorodService {
     )
       ? result.author.map((author) => ({
           name: author,
-          referenceId: this.READER_ID,
+          referenceId: this.READER_ID + ':' + result.name,
           meta: {},
         }))
       : new Array(result.author).map((author) => ({
           name: author,
-          referenceId: this.READER_ID,
+          referenceId: this.READER_ID + ':' + result.name,
           meta: {},
         }));
 
     const publisher: Prisma.PublisherCreateInput = {
       name: result.publisher,
-      referenceId: this.READER_ID,
+      referenceId: this.READER_ID + result.name,
       meta: {},
     };
 
