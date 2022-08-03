@@ -13,17 +13,19 @@ import { Notification } from '../notifications/notification.entity';
 import { Location } from '../locations/location.entity';
 import {
   CreatePersonInput,
-  GetAllPersonsInput,
   UpdatePersonLocationInput,
 } from '@mimir/global-types';
 import { Message } from '../messages/message.entity';
 import { BlockedUsers } from '../blocked-users/blocked-users.entity';
+import { CurrentUserLocation } from '../CurrentUserLocation.decorator';
 
 @Resolver('Person')
 export class PersonResolver {
   @Query(() => [Person])
-  async getAllPersons(@Args('input') getAllPersonsInput: GetAllPersonsInput) {
-    const { location_id, username } = getAllPersonsInput;
+  async getAllPersons(
+    @Args('username') username: string,
+    @CurrentUserLocation() location_id: any
+  ) {
     const data = Person.createQueryBuilder('person')
       .leftJoinAndSelect('person.location', 'location')
       .where(
@@ -32,7 +34,7 @@ export class PersonResolver {
         }`,
         {
           location: location_id,
-          name: username.contains ? `%${username.contains}%` : '%',
+          name: username ? `%${username}%` : '%',
         }
       )
       .orderBy('person.username', 'ASC')

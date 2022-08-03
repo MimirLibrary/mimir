@@ -12,16 +12,12 @@ import { setSearchReaders } from '../../store/slices/readersSlice';
 
 const SearchByUserName = () => {
   const [search, setSearch] = useState<string>('');
-  const { location } = useAppSelector((state) => state.user);
   const debounceSearch = useDebounce<string>(search, 600);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { data } = useGetAllPersonsQuery({
     variables: {
-      input: {
-        location_id: location.id,
-        username: { contains: debounceSearch },
-      },
+      username: debounceSearch,
     },
   });
 

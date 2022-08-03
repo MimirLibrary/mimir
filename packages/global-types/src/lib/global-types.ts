@@ -116,23 +116,10 @@ export interface UpdatePersonLocationInput {
     location_id: number;
 }
 
-export interface GetAllPersonsInput {
-    username?: Nullable<WhereArgString>;
-    location_id: string;
-}
-
 export interface CreateStatusInput {
     material_id: number;
     person_id: number;
     status: string;
-}
-
-export interface WhereArgString {
-    exact?: Nullable<string>;
-    gt?: Nullable<string>;
-    lt?: Nullable<string>;
-    contains?: Nullable<string>;
-    in?: Nullable<Nullable<string>[]>;
 }
 
 export interface BlockedUsers {
@@ -158,7 +145,7 @@ export interface IQuery {
     getNotificationsByPerson(person_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
     getNotificationsByMaterial(material_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
     getOnePerson(id: string): Person | Promise<Person>;
-    getAllPersons(input: GetAllPersonsInput): Person[] | Promise<Person[]>;
+    getAllPersons(username?: Nullable<string>): Person[] | Promise<Person[]>;
     getStatusesByPerson(person_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getStatusesByMaterial(material_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getAllStatusesIsOverdue(location_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;

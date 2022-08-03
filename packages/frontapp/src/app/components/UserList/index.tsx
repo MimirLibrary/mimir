@@ -39,10 +39,7 @@ const Description = styled.p`
 `;
 
 const UserList = () => {
-  const { location } = useAppSelector((state) => state.user);
-  const { data, loading } = useGetAllPersonsQuery({
-    variables: { input: { location_id: location.id } },
-  });
+  const { data, loading } = useGetAllPersonsQuery();
   const dispatch = useAppDispatch();
   useEffect(() => {
     if (data) dispatch(setSearchReaders(data?.getAllPersons));

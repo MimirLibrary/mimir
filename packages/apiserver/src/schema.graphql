@@ -5,13 +5,6 @@ union BookUnionResult = Status | Error
 type Error {
   message: String!
 }
-input WhereArgString {
-  exact: String
-  gt: String
-  lt: String
-  contains: String
-  in: [String]
-}
 
 type Query {
   welcome: String!
