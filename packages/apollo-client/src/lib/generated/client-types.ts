@@ -493,23 +493,6 @@ export type UpdatePersonLocationInput = {
   person_id: Scalars['Int'];
 };
 
-export type WhereArgInt = {
-  exact?: InputMaybe<Scalars['Int']>;
-  gt?: InputMaybe<Scalars['Int']>;
-  gte?: InputMaybe<Scalars['Int']>;
-  in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
-  lt?: InputMaybe<Scalars['Int']>;
-  lte?: InputMaybe<Scalars['Int']>;
-};
-
-export type WhereArgString = {
-  contains?: InputMaybe<Scalars['String']>;
-  exact?: InputMaybe<Scalars['String']>;
-  gt?: InputMaybe<Scalars['String']>;
-  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  lt?: InputMaybe<Scalars['String']>;
-};
-
 export type ClaimBookMutationVariables = Exact<{
   identifier: Scalars['String'];
   person_id: Scalars['Int'];
