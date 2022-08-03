@@ -11,7 +11,7 @@ export class ChitaiGorodService {
   private readonly rootUrlList =
     'https://webapi.chitai-gorod.ru/web/goods/extension/list/';
 
-  async readData(identifier: string) {
+  private async readData(identifier: string) {
     try {
       const resultOfId = await axios.post(this.rootUrlSearch, {
         index: 'goods',
@@ -33,7 +33,7 @@ export class ChitaiGorodService {
     }
   }
 
-  parseData(result): Bundle {
+  private parseData(result): Bundle {
     if (!result) return null;
     const material: Prisma.MaterialCreateInput = {
       title: result.name,
@@ -53,21 +53,26 @@ export class ChitaiGorodService {
     )
       ? result.author.map((author) => ({
           name: author,
-          referenceId: this.READER_ID + ':' + result.name,
+          referenceId: this.READER_ID + ':' + result.book_id,
           meta: {},
         }))
       : new Array(result.author).map((author) => ({
           name: author,
-          referenceId: this.READER_ID + ':' + result.name,
+          referenceId: this.READER_ID + ':' + result.book_id,
           meta: {},
         }));
 
     const publisher: Prisma.PublisherCreateInput = {
       name: result.publisher,
-      referenceId: this.READER_ID + result.name,
+      referenceId: this.READER_ID + ':' + result.book_id,
       meta: {},
     };
 
     return { material, authors, publisher };
+  }
+
+  async getData(isbn: string): Promise<Bundle> {
+    const result = await this.readData(isbn);
+    return this.parseData(result);
   }
 }

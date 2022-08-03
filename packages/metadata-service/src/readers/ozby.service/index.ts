@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Material, Prisma } from '@prisma/client';
 import cheerio from 'cheerio';
 import * as _ from 'lodash';
@@ -83,11 +83,16 @@ function readCells(keyEl, valEl) {
 export class OzbyService {
   readonly rootURL = 'https://oz.by/search/';
 
-  async readData(isbn: string) {
-    return (await axios.get(this.rootURL, { params: { q: isbn } })).data;
+  private async readData(isbn: string) {
+    try {
+      const result = await axios.get(this.rootURL, { params: { q: isbn } });
+      return result.data;
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
   }
 
-  parseData(htmlContent: Buffer | string): Bundle {
+  private parseData(htmlContent): Bundle {
     const $ = cheerio.load(htmlContent);
     const coverEl = $('.b-product-photo__picture-self img').first();
     const publisherEl = $('[itemprop=publisher]');
@@ -147,42 +152,10 @@ export class OzbyService {
     };
 
     return { material, authors, publisher };
+  }
 
-    //return {
-    //  title: $('h1[itemprop=name]').text(),
-    //  cover: {
-    //    src: coverEl.attr('src'),
-    //    title: coverEl.attr('title'),
-    //  },
-    //  publisher: {
-    //    name: publisherEl.text(),
-    //    referenceId: READER_ID + ':' + /\d+/.exec(publisherEl.attr('href'))[0],
-    //  },
-    //  year,
-    //  authors: $('[itemprop=author]')
-    //    .map(function () {
-    //      return {
-    //        name: $(this).find('.b-description__picture-name').text(),
-    //        referenceId: READER_ID + ':' + /\d+/.exec($(this).attr('href'))[0],
-    //      };
-    //    })
-    //    .toArray(),
-    //  description: $('#truncatedBlock').text(),
-    //  meta: _.merge(items, {
-    //    sku: /\d+/.exec($('.b-product-title__art').text())[0],
-    //    price: $('.b-product__controls .b-product-control__text_main')
-    //      .contents()
-    //      .filter(function () {
-    //        return this.nodeType === 3;
-    //      })
-    //      .text()
-    //      .trim(),
-    //    taxonomy: $('span[itemprop=name]')
-    //      .map(function () {
-    //        return $(this).text();
-    //      })
-    //      .toArray(),
-    //  }),
-    //};
+  async getData(isbn: string): Promise<Bundle> {
+    const result = await this.readData(isbn);
+    return this.parseData(result);
   }
 }
