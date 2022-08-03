@@ -6,6 +6,7 @@ import Burger from '../Burger';
 import FiltersButton from '../FiltersButton';
 import { RoutesTypes } from '../../../utils/routes';
 import SearchByUserName from '../SearchByUserName';
+import SearchByBookOrAuthor from '../SearchByBookOrAuthor';
 
 interface IProps {
   setSidebarActive: Dispatch<SetStateAction<boolean>>;
@@ -29,7 +30,7 @@ const SearchWrapper: FC<IProps> = ({ setSidebarActive }) => {
       {window.location.pathname.startsWith(RoutesTypes.READERS) ? (
         <SearchByUserName />
       ) : (
-        <Search />
+        <SearchByBookOrAuthor />
       )}
 
       <FiltersButton />

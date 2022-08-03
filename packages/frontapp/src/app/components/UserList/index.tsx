@@ -9,6 +9,7 @@ import { useAppSelector } from '../../hooks/useTypedSelector';
 import { useAppDispatch } from '../../hooks/useTypedDispatch';
 import { setSearchReaders } from '../../store/slices/readersSlice';
 import Pic from '../../../assets/avatar.jpg';
+import { IReadersState } from '../../types';
 
 const ReadersWrapper = styled.div`
   display: flex;
@@ -41,11 +42,10 @@ const Description = styled.p`
 const UserList = () => {
   const { data, loading } = useGetAllPersonsQuery();
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    if (data) dispatch(setSearchReaders(data?.getAllPersons));
-  }, [data]);
   const { searchReaders } = useAppSelector((state) => state.readers);
-  console.log(searchReaders);
+  useEffect(() => {
+    if (data && !searchReaders) dispatch(setSearchReaders(data?.getAllPersons));
+  }, [data]);
   if (loading) return <h1>{t('Loading')}</h1>;
   return (
     <ReadersWrapper>
@@ -54,8 +54,8 @@ const UserList = () => {
       <ListWrapper>
         {searchReaders?.map((person) => (
           <SingleUser
-            avatar={person?.avatar || Pic}
-            name={person?.username || 'a'}
+            avatar={person!.avatar}
+            name={person!.username}
             key={person?.id}
             id={person?.id as string}
             statuses={person?.statuses as IClaimHistory[]}

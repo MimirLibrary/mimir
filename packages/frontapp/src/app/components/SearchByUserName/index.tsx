@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useAppSelector } from '../../hooks/useTypedSelector';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useAppDispatch } from '../../hooks/useTypedDispatch';
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +6,7 @@ import { useGetAllPersonsQuery } from '@mimir/apollo-client';
 import { RoutesTypes } from '../../../utils/routes';
 import { setActiveTab } from '../../store/slices/tabsSlice';
 import { t } from 'i18next';
-import { InputSearch, StyledSearchIcon, WrapperInput } from '../Search';
+import Search from '../Search';
 import { setSearchReaders } from '../../store/slices/readersSlice';
 
 const SearchByUserName = () => {
@@ -46,20 +45,13 @@ const SearchByUserName = () => {
   };
 
   return (
-    <WrapperInput onKeyPress={redirectToSearchByKey}>
-      <StyledSearchIcon
-        fill="#BDBDBD"
-        width="20"
-        height="20"
-        onClick={redirectToSearchByClick}
-      />
-      <InputSearch
-        type="text"
-        value={search}
-        onChange={handleChangeSearch}
-        placeholder={t('Search.UsernamePlaceholder')}
-      />
-    </WrapperInput>
+    <Search
+      handleChangeSearch={handleChangeSearch}
+      placeholder={t('Search.UsernamePlaceholder')}
+      search={search}
+      redirectToSearchByClick={redirectToSearchByClick}
+      redirectToSearchByKey={redirectToSearchByKey}
+    />
   );
 };
 

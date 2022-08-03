@@ -15,6 +15,6 @@ export const CurrentUserLocation = createParamDecorator(
       .where('person.smg_id= :smg_id', { smg_id: result.sub })
       .orderBy('location.id', 'DESC')
       .getOne();
-    return location.id;
+    return location;
   }
 );

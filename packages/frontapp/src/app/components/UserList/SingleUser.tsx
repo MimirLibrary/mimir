@@ -46,7 +46,7 @@ const Description = styled.p`
 `;
 
 export interface ISingleUser {
-  avatar: string;
+  avatar: string | null | undefined;
   id: string;
   name: string;
   statuses: IClaimHistory[];

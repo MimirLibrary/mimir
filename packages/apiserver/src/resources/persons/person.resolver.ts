@@ -18,28 +18,18 @@ import {
 import { Message } from '../messages/message.entity';
 import { BlockedUsers } from '../blocked-users/blocked-users.entity';
 import { CurrentUserLocation } from '../CurrentUserLocation.decorator';
+import { PersonService } from './person.service';
 
 @Resolver('Person')
 export class PersonResolver {
+  constructor(private personService: PersonService) {}
+
   @Query(() => [Person])
   async getAllPersons(
     @Args('username') username: string,
-    @CurrentUserLocation() location_id: any
+    @CurrentUserLocation() location: any
   ) {
-    const data = Person.createQueryBuilder('person')
-      .leftJoinAndSelect('person.location', 'location')
-      .where(
-        `person.location_id= :location ${
-          username ? 'AND person.username ILIKE :name' : ''
-        }`,
-        {
-          location: location_id,
-          name: username ? `%${username}%` : '%',
-        }
-      )
-      .orderBy('person.username', 'ASC')
-      .getMany();
-    return data;
+    return this.personService.getAllPersons(username, location);
   }
 
   @Query(() => Person)
