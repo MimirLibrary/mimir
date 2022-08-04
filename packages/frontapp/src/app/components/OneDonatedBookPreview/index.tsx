@@ -5,6 +5,7 @@ import {
   GetMaterialByIdDocument,
   GetAllTakenItemsDocument,
   useReturnBookMutation,
+  GetAllMaterialsDocument,
 } from '@mimir/apollo-client';
 import EmptyCover from '../../../assets/MOC-data/EmptyCover.png';
 import Button from '../Button';
@@ -131,6 +132,7 @@ const OneDonator = ({
         person_id: donator,
         identifier: identifier,
       },
+      refetchQueries: [GetAllMaterialsDocument],
     });
   };
   const navigate = useNavigate();
@@ -147,12 +149,7 @@ const OneDonator = ({
   return (
     <DonateWrapper GrayBackground={GrayBackground}>
       <FlexContainer onClick={() => handleRedirect(id)}>
-        <BookImage
-          src={
-            (picture && `${process.env['NX_API_ROOT_URL']}/${picture}`) ||
-            EmptyCover
-          }
-        />
+        <BookImage src={picture || EmptyCover} />
         <Wrapper>
           <Title>{title}</Title>
           <Description> {description || 'no description provided'}</Description>

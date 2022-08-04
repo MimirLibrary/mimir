@@ -9,6 +9,7 @@ query GetAllStatusesIsOverdue($location_id: String!) {
     person {
       id
       username
+      avatar
     }
   }
 }

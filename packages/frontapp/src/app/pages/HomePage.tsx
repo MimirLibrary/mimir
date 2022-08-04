@@ -1,4 +1,6 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useMemo } from 'react';
+import { useAppSelector } from '../hooks/useTypedSelector';
+import ManagerInfoCard from '../components/ManagerInfoCard';
 import InstructionsClaim from '../components/InstructionsClaim';
 import { TitleArticle } from '../globalUI/TextArticle';
 import { TextBase } from '../globalUI/TextBase';
@@ -7,19 +9,19 @@ import ListBooks from '../components/ListBooks';
 import EmptyListItems from '../components/EmptyListItems';
 import { colors, dimensions } from '@mimir/ui-kit';
 import {
+  useGetAllMaterialsForDonateQuery,
+  useGetAllMaterialsQuery,
   useGetAllMessagesQuery,
+  useGetAllStatusesIsOverdueQuery,
   useGetAllTakenItemsQuery,
 } from '@mimir/apollo-client';
-import { useAppSelector } from '../hooks/useTypedSelector';
-import ManagerInfoCard from '../components/ManagerInfoCard';
 import { ManagerCardTypes } from '../components/ManagerInfoCard/managerCardTypes';
 import Button from '../components/Button';
 import { t } from 'i18next';
-import { managerData } from '../models/mockData/managerInfoCard';
-import { RolesTypes } from '@mimir/global-types';
+import { RolesTypes, StatusTypes } from '@mimir/global-types';
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
-import { Message } from '../../../../apiserver/src/resources/messages/message.entity';
+import { isOverdue } from '../models/helperFunctions/converTime';
 
 const WrapperHome = styled.div`
   @media (max-width: ${dimensions.tablet_width}) {
@@ -53,6 +55,12 @@ const ButtonWrapper = styled.div`
   }
 `;
 
+const WrapperLoader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const Wrapper = styled.div`
   margin-top: 3rem;
   margin-bottom: ${dimensions.xl_2};
@@ -76,13 +84,20 @@ const OverdueDonatesWrapper = styled.div`
   column-gap: 18px;
 `;
 
-managerData.sort((a, b) => a.created_at.getTime() - b.created_at.getTime());
-
 const HomePage: FC = () => {
   const { id, userRole, location } = useAppSelector((state) => state.user);
+
   const { data, loading } = useGetAllTakenItemsQuery({
     variables: { person_id: id },
     skip: userRole === RolesTypes.MANAGER,
+  });
+
+  const {
+    data: allMaterialsData,
+    loading: materialsLoading,
+    error: errorMaterials,
+  } = useGetAllMaterialsForDonateQuery({
+    variables: { location_id: location.id },
   });
 
   const {
@@ -96,17 +111,50 @@ const HomePage: FC = () => {
     skip: userRole === RolesTypes.READER,
   });
 
+  const {
+    data: overdueData,
+    loading: overdueLoading,
+    error: errorOverdue,
+  } = useGetAllStatusesIsOverdueQuery({
+    variables: { location_id: location.id },
+    skip: userRole === RolesTypes.READER,
+  });
+
+  const donateList = useMemo(() => {
+    return allMaterialsData?.getAllMaterials.filter(
+      (material) =>
+        material?.statuses[material?.statuses.length - 1]?.status ===
+        StatusTypes.PENDING
+    );
+  }, [allMaterialsData]);
+
+  console.log(donateList);
+
+  const overdueList = useMemo(() => {
+    return overdueData?.getAllStatusesIsOverdue.filter(
+      (item) => !isOverdue(item?.created_at)
+    );
+  }, [overdueData]);
+
   useEffect(() => {
-    if (messagesError && userRole === RolesTypes.MANAGER) {
+    if (messagesError) {
       toast.error(messagesError.message);
+    } else if (errorOverdue) {
+      toast.error(errorOverdue.message);
+    } else {
+      toast.error(errorMaterials?.message);
     }
-  }, [messagesError]);
+    return;
+  }, [messagesError, errorOverdue, errorMaterials]);
 
-  if (loading || messagesLoading)
-    return <Loader height={200} width={200} color={`${colors.accent_color}`} />;
+  if (loading || messagesLoading || overdueLoading || materialsLoading)
+    return (
+      <WrapperLoader>
+        <Loader height={100} width={100} color={`${colors.accent_color}`} />
+      </WrapperLoader>
+    );
 
-  console.log(allMessagesData);
-
+  console.log('render');
   return (
     <WrapperHome>
       {userRole === RolesTypes.READER ? (
@@ -133,17 +181,17 @@ const HomePage: FC = () => {
             <OverdueDonatesWrapper>
               <ManagerInfoCard
                 type={ManagerCardTypes.OVERDUE}
-                fields={managerData}
+                fieldsOverdue={overdueList}
               />
               <ManagerInfoCard
                 type={ManagerCardTypes.DONATES}
-                fields={managerData}
+                fieldsDonate={donateList}
               />
             </OverdueDonatesWrapper>
             <NotificationsWrapper>
               <ManagerInfoCard
                 type={ManagerCardTypes.NOTIFICATIONS}
-                fields={managerData}
+                fieldsNotification={allMessagesData?.getAllMessages}
               />
             </NotificationsWrapper>
           </CardsWrapper>

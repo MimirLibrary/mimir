@@ -6,17 +6,14 @@ import { t } from 'i18next';
 import { useNavigate } from 'react-router-dom';
 import { RoutesTypes } from '../../../utils/routes';
 import { Link } from 'react-router-dom';
-
-export interface IField {
-  title: string;
-  description?: string;
-  person_id: string;
-  img: string;
-}
+import { IField, IOverdueItem } from '../../types';
+import { IMaterialDonate } from '../../types/donateList';
 
 interface IManagerInfoCard {
   type: ManagerCardTypes;
-  fields: IField[];
+  fieldsNotification?: IField[] | null | undefined;
+  fieldsOverdue?: Array<IOverdueItem | null>;
+  fieldsDonate?: Array<IMaterialDonate | null>;
 }
 
 const WrapperCard = styled.div`
@@ -121,11 +118,13 @@ const InlineWrapper = styled.div`
 interface IFieldOpenLinkProps {
   secondary?: string;
 }
-const FieldOpenLink = styled(OpenLink)<IFieldOpenLinkProps>`
+const FieldOpenLink = styled.span<IFieldOpenLinkProps>`
   font-weight: 400;
   width: auto;
   margin-left: 4px;
-  color: ${({ secondary }) => (secondary ? colors.problem_red : null)};
+  text-decoration: underline;
+  color: ${({ secondary }) =>
+    secondary ? colors.problem_red : colors.accent_color};
 `;
 
 const StyledIcon = styled.img`
@@ -149,68 +148,158 @@ const NotificationDescription = styled(FieldDescription)`
   align-self: center;
 `;
 
-const ManagerInfoCard: FC<IManagerInfoCard> = ({ type, fields = [] }) => {
-  const navigate = useNavigate();
-
-  const navigateToList = () => {
-    navigate(RoutesTypes.HOME + '/' + type.toLowerCase());
-  };
-
+const ManagerInfoCard: FC<IManagerInfoCard> = ({
+  type,
+  fieldsNotification,
+  fieldsOverdue,
+  fieldsDonate,
+}) => {
   return (
-    <WrapperCard>
-      <Title>
-        {t(`ManagerInfoCard.Title.${type}`) + ` — (${fields.length})`}
-      </Title>
-      <Description>{t(`ManagerInfoCard.Description.${type}`)}</Description>
-      {fields.slice(0, 3).map((field, key) => (
-        <FieldWrapper key={key + Math.random()}>
-          {type === ManagerCardTypes.NOTIFICATIONS ? (
+    <>
+      {fieldsNotification && (
+        <WrapperCard>
+          <Title>
+            {t(`ManagerInfoCard.Title.${type}`) +
+              ` — (${fieldsNotification?.length})`}
+          </Title>
+          <Description>{t(`ManagerInfoCard.Description.${type}`)}</Description>
+          {fieldsNotification?.slice(0, 3).map((field, key) => (
+            <FieldWrapper key={key + Math.random()}>
+              <>
+                <FieldTitle>{field.title}</FieldTitle>
+                <InlineWrapper>
+                  <InlineFieldDescription>
+                    {field.message}
+                  </InlineFieldDescription>
+                  <InlineOpenLink to="#">
+                    {t('ManagerInfoCard.Link.Answer')}
+                  </InlineOpenLink>
+                </InlineWrapper>
+                <FieldOpenLink>{field.person.username}</FieldOpenLink>
+              </>
+            </FieldWrapper>
+          ))}
+          <WrapperFooter>
             <>
-              <FieldTitle>{field.title}</FieldTitle>
               <InlineWrapper>
-                <InlineFieldDescription>
-                  {field.description}
-                </InlineFieldDescription>
-                <InlineOpenLink to="#">
-                  {t('ManagerInfoCard.Link.Answer')}
-                </InlineOpenLink>
+                {fieldsNotification?.slice(0, 3).map((field) => (
+                  <StyledIcon key={field.id} src={field.person.avatar} />
+                ))}
+                {fieldsNotification.length > 3 ? (
+                  <NotificationDescription>
+                    {`+${fieldsNotification.length - 3} ` +
+                      t(`ManagerInfoCard.Description.More`)}
+                  </NotificationDescription>
+                ) : null}
               </InlineWrapper>
-              <FieldOpenLink to="#">Ivan Ivanov</FieldOpenLink>
             </>
+            <OpenLink to={`/${type.toLowerCase()}`}>
+              {t(`ManagerInfoCard.Link.${type}`)}
+            </OpenLink>
+          </WrapperFooter>
+        </WrapperCard>
+      )}
+      {fieldsOverdue && (
+        <WrapperCard>
+          <Title>
+            {t(`ManagerInfoCard.Title.${type}`) +
+              ` — (${fieldsOverdue?.length})`}
+          </Title>
+          <Description>{t(`ManagerInfoCard.Description.${type}`)}</Description>
+          {!fieldsOverdue.length ? (
+            <div>List is empty</div>
           ) : (
+            fieldsOverdue?.slice(0, 3).map((field) => (
+              <FieldWrapper key={field?.id}>
+                <>
+                  <FieldTitle>{field?.material.title}</FieldTitle>
+                  <InlineWrapper>
+                    <FieldDescription>
+                      {t(`ManagerInfoCard.FieldDescription.${type}`)}
+                    </FieldDescription>
+                    <FieldOpenLink secondary="true">
+                      {field?.person.username}
+                    </FieldOpenLink>
+                  </InlineWrapper>
+                </>
+              </FieldWrapper>
+            ))
+          )}
+          <WrapperFooter>
             <>
-              <FieldTitle>{field.title}</FieldTitle>
               <InlineWrapper>
-                <FieldDescription>
-                  {t(`ManagerInfoCard.FieldDescription.${type}`)}
-                </FieldDescription>
-                <FieldOpenLink to="#" secondary="true">
-                  Ivan Ivanov
-                </FieldOpenLink>
+                {fieldsOverdue?.slice(0, 3).map((field) => (
+                  <StyledIcon key={field?.id} src={field?.person.avatar} />
+                ))}
+                {fieldsOverdue!.length > 3 ? (
+                  <NotificationDescription>
+                    {`+${fieldsOverdue.length - 3}` +
+                      t(`ManagerInfoCard.Description.More`)}
+                  </NotificationDescription>
+                ) : null}
               </InlineWrapper>
             </>
+            <OpenLink to={`home/${type.toLowerCase()}`}>
+              {t(`ManagerInfoCard.Link.${type}`)}
+            </OpenLink>
+          </WrapperFooter>
+        </WrapperCard>
+      )}
+      {fieldsDonate && (
+        <WrapperCard>
+          <Title>
+            {t(`ManagerInfoCard.Title.${type}`) +
+              ` — (${fieldsDonate?.length})`}
+          </Title>
+          <Description>{t(`ManagerInfoCard.Description.${type}`)}</Description>
+          {!fieldsDonate.length ? (
+            <div>List is empty</div>
+          ) : (
+            fieldsDonate?.slice(0, 3).map((field) => (
+              <FieldWrapper key={field?.id}>
+                <>
+                  <FieldTitle>{field?.title}</FieldTitle>
+                  <InlineWrapper>
+                    <FieldDescription>
+                      {t(`ManagerInfoCard.FieldDescription.${type}`)}
+                    </FieldDescription>
+                    <FieldOpenLink secondary="true">
+                      {
+                        field?.statuses[field?.statuses.length - 1]?.person
+                          .username
+                      }
+                    </FieldOpenLink>
+                  </InlineWrapper>
+                </>
+              </FieldWrapper>
+            ))
           )}
-        </FieldWrapper>
-      ))}
-      <WrapperFooter>
-        <>
-          <InlineWrapper>
-            {fields.slice(0, 3).map((field, index) => (
-              <StyledIcon key={index + Math.random()} src={field.img} />
-            ))}
-            {fields.length > 3 ? (
-              <NotificationDescription>
-                {`+${fields.length - 3} ` +
-                  t(`ManagerInfoCard.Description.More`)}
-              </NotificationDescription>
-            ) : null}
-          </InlineWrapper>
-        </>
-        <OpenLink to={`${RoutesTypes.HOME}/${type.toLowerCase()}`}>
-          {t(`ManagerInfoCard.Link.${type}`)}
-        </OpenLink>
-      </WrapperFooter>
-    </WrapperCard>
+          <WrapperFooter>
+            <>
+              <InlineWrapper>
+                {fieldsDonate?.slice(0, 3).map((field) => (
+                  <StyledIcon
+                    key={field?.id}
+                    src={
+                      field?.statuses[field?.statuses.length - 1]?.person.avatar
+                    }
+                  />
+                ))}
+                {fieldsDonate.length > 3 ? (
+                  <NotificationDescription>
+                    {`+${fieldsDonate.length - 3}` +
+                      t(`ManagerInfoCard.Description.More`)}
+                  </NotificationDescription>
+                ) : null}
+              </InlineWrapper>
+            </>
+            <OpenLink to={`${RoutesTypes.DONATES_FROM_USER}`}>
+              {t(`ManagerInfoCard.Link.${type}`)}
+            </OpenLink>
+          </WrapperFooter>
+        </WrapperCard>
+      )}
+    </>
   );
 };
 

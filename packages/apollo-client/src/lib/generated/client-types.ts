@@ -624,6 +624,15 @@ export type GetAllMaterialsQueryVariables = Exact<{
 
 export type GetAllMaterialsQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', author: string, category: string, created_at: any, id: string, id_type: string, identifier: string, description: string, is_donated: boolean, picture?: string | null, title: string, type: string, updated_at: any, notifications: Array<{ __typename?: 'Notification', material_id: number, person_id: number } | null>, statuses: Array<{ __typename?: 'Status', status: string, person_id: number } | null> } | null> };
 
+export type GetAllMaterialsForDonateQueryVariables = Exact<{
+  location_id: Scalars['String'];
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetAllMaterialsForDonateQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', id: string, title: string, statuses: Array<{ __typename?: 'Status', id: string, status: string, person: { __typename?: 'Person', id: string, username: string, avatar: string } } | null> } | null> };
+
 export type GetAllMaterialsForManagerQueryVariables = Exact<{
   location_id: Scalars['String'];
   limit?: InputMaybe<Scalars['Int']>;
@@ -638,7 +647,7 @@ export type GetAllMessagesQueryVariables = Exact<{
 }>;
 
 
-export type GetAllMessagesQuery = { __typename?: 'Query', getAllMessages?: Array<{ __typename?: 'Message', id: string, created_at: any, title: string, message: string, person: { __typename?: 'Person', id: string, username: string } }> | null };
+export type GetAllMessagesQuery = { __typename?: 'Query', getAllMessages?: Array<{ __typename?: 'Message', id: string, created_at: any, title: string, message: string, person_id: number, person: { __typename?: 'Person', id: string, username: string, avatar: string } }> | null };
 
 export type GetAllPersonsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -650,7 +659,7 @@ export type GetAllStatusesIsOverdueQueryVariables = Exact<{
 }>;
 
 
-export type GetAllStatusesIsOverdueQuery = { __typename?: 'Query', getAllStatusesIsOverdue: Array<{ __typename?: 'Status', id: string, created_at: any, material: { __typename?: 'Material', id: string, title: string }, person: { __typename?: 'Person', id: string, username: string } } | null> };
+export type GetAllStatusesIsOverdueQuery = { __typename?: 'Query', getAllStatusesIsOverdue: Array<{ __typename?: 'Status', id: string, created_at: any, material: { __typename?: 'Material', id: string, title: string }, person: { __typename?: 'Person', id: string, username: string, avatar: string } } | null> };
 
 export type GetAllTakenItemsQueryVariables = Exact<{
   person_id: Scalars['Int'];
@@ -1288,6 +1297,53 @@ export function useGetAllMaterialsLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetAllMaterialsQueryHookResult = ReturnType<typeof useGetAllMaterialsQuery>;
 export type GetAllMaterialsLazyQueryHookResult = ReturnType<typeof useGetAllMaterialsLazyQuery>;
 export type GetAllMaterialsQueryResult = Apollo.QueryResult<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>;
+export const GetAllMaterialsForDonateDocument = gql`
+    query GetAllMaterialsForDonate($location_id: String!, $limit: Int, $offset: Int) {
+  getAllMaterials(location_id: $location_id, limit: $limit, offset: $offset) {
+    id
+    title
+    statuses {
+      id
+      status
+      person {
+        id
+        username
+        avatar
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAllMaterialsForDonateQuery__
+ *
+ * To run a query within a React component, call `useGetAllMaterialsForDonateQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllMaterialsForDonateQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllMaterialsForDonateQuery({
+ *   variables: {
+ *      location_id: // value for 'location_id'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useGetAllMaterialsForDonateQuery(baseOptions: Apollo.QueryHookOptions<GetAllMaterialsForDonateQuery, GetAllMaterialsForDonateQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllMaterialsForDonateQuery, GetAllMaterialsForDonateQueryVariables>(GetAllMaterialsForDonateDocument, options);
+      }
+export function useGetAllMaterialsForDonateLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllMaterialsForDonateQuery, GetAllMaterialsForDonateQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllMaterialsForDonateQuery, GetAllMaterialsForDonateQueryVariables>(GetAllMaterialsForDonateDocument, options);
+        }
+export type GetAllMaterialsForDonateQueryHookResult = ReturnType<typeof useGetAllMaterialsForDonateQuery>;
+export type GetAllMaterialsForDonateLazyQueryHookResult = ReturnType<typeof useGetAllMaterialsForDonateLazyQuery>;
+export type GetAllMaterialsForDonateQueryResult = Apollo.QueryResult<GetAllMaterialsForDonateQuery, GetAllMaterialsForDonateQueryVariables>;
 export const GetAllMaterialsForManagerDocument = gql`
     query GetAllMaterialsForManager($location_id: String!, $limit: Int, $offset: Int) {
   getAllMaterials(location_id: $location_id, limit: $limit, offset: $offset) {
@@ -1344,9 +1400,11 @@ export const GetAllMessagesDocument = gql`
     created_at
     title
     message
+    person_id
     person {
       id
       username
+      avatar
     }
   }
 }
@@ -1433,6 +1491,7 @@ export const GetAllStatusesIsOverdueDocument = gql`
     person {
       id
       username
+      avatar
     }
   }
 }
