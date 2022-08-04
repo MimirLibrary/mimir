@@ -1,10 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { DbService } from './db.service';
 import { OzbyService } from './ozby.service';
+import { LabirintService } from './labirint.service';
 
 @Injectable()
 export class ReaderService {
-  constructor(private db: DbService, private ozbyReader: OzbyService) {}
+  constructor(
+    private db: DbService,
+    private ozbyReader: OzbyService,
+    private labirintService: LabirintService
+  ) {}
 
   async lookup(isbn: string) {
     const existing = await this.db.findMaterial(isbn);
