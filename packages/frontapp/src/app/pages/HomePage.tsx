@@ -1,12 +1,15 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import InstructionsClaim from '../components/InstructionsClaim';
 import { TitleArticle } from '../globalUI/TextArticle';
 import { TextBase } from '../globalUI/TextBase';
 import styled from '@emotion/styled';
 import ListBooks from '../components/ListBooks';
 import EmptyListItems from '../components/EmptyListItems';
-import { dimensions } from '@mimir/ui-kit';
-import { useGetAllTakenItemsQuery } from '@mimir/apollo-client';
+import { colors, dimensions } from '@mimir/ui-kit';
+import {
+  useGetAllMessagesQuery,
+  useGetAllTakenItemsQuery,
+} from '@mimir/apollo-client';
 import { useAppSelector } from '../hooks/useTypedSelector';
 import ManagerInfoCard from '../components/ManagerInfoCard';
 import { ManagerCardTypes } from '../components/ManagerInfoCard/managerCardTypes';
@@ -14,6 +17,9 @@ import Button from '../components/Button';
 import { t } from 'i18next';
 import { managerData } from '../models/mockData/managerInfoCard';
 import { RolesTypes } from '@mimir/global-types';
+import { toast } from 'react-toastify';
+import Loader from '../components/Loader';
+import { Message } from '../../../../apiserver/src/resources/messages/message.entity';
 
 const WrapperHome = styled.div`
   @media (max-width: ${dimensions.tablet_width}) {
@@ -73,13 +79,33 @@ const OverdueDonatesWrapper = styled.div`
 managerData.sort((a, b) => a.created_at.getTime() - b.created_at.getTime());
 
 const HomePage: FC = () => {
-  const { id, userRole } = useAppSelector((state) => state.user);
+  const { id, userRole, location } = useAppSelector((state) => state.user);
   const { data, loading } = useGetAllTakenItemsQuery({
     variables: { person_id: id },
     skip: userRole === RolesTypes.MANAGER,
   });
 
-  if (loading) return <h1>Loading...</h1>;
+  const {
+    data: allMessagesData,
+    loading: messagesLoading,
+    error: messagesError,
+  } = useGetAllMessagesQuery({
+    variables: {
+      location_id: parseInt(location.id),
+    },
+    skip: userRole === RolesTypes.READER,
+  });
+
+  useEffect(() => {
+    if (messagesError && userRole === RolesTypes.MANAGER) {
+      toast.error(messagesError.message);
+    }
+  }, [messagesError]);
+
+  if (loading || messagesLoading)
+    return <Loader height={200} width={200} color={`${colors.accent_color}`} />;
+
+  console.log(allMessagesData);
 
   return (
     <WrapperHome>
