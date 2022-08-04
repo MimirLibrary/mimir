@@ -75,7 +75,7 @@ export class DbService {
     });
   }
 
-  async syncMaterial(isbn: string, data: Bundle, startedAt: Date) {
+  async syncMaterial(isbn: string, data, startedAt: Date) {
     return await this.prisma.material.create({
       data: {
         ...data.material,
