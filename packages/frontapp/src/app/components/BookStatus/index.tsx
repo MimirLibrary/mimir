@@ -1,6 +1,8 @@
 import { FC, useEffect, useState } from 'react';
 import { getDates, getStatus } from '../../models/helperFunctions/converTime';
 import { StyledBookStatus } from '../../globalUI/Status';
+import { useLocation } from 'react-router-dom';
+import { RoutesTypes } from '../../../utils/routes';
 
 interface IBookStatusProps {
   status: string | undefined;
@@ -10,10 +12,15 @@ interface IBookStatusProps {
 const BookStatus: FC<IBookStatusProps> = ({ status, date }) => {
   const [statusText, setStatusText] = useState<string>('');
   const currentStatus = getStatus(status, date);
+  const { pathname } = useLocation();
 
   useEffect(() => {
     switch (currentStatus) {
       case 'Free':
+        if (pathname === RoutesTypes.HISTORY_OF_CLAIM) {
+          setStatusText('Returned');
+          break;
+        }
         setStatusText('On the shelf');
         break;
       case 'Busy': {
