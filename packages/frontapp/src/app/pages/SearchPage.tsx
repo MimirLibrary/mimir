@@ -36,6 +36,7 @@ const SearchPage = () => {
   const [availableMaterial, setAvailableMaterial] = useState<any>([]);
   const { data, loading } = useGetAllMaterialsQuery({
     variables: { location_id: location.id },
+    fetchPolicy: 'no-cache',
   });
   useEffect(() => {
     const available = data?.getAllMaterials.filter((material: any) => {
@@ -45,6 +46,7 @@ const SearchPage = () => {
     });
     setAvailableMaterial(available);
   }, [data]);
+
   const allCategories = availableMaterial?.reduce(
     (acc: any, material: any) => ({
       ...acc,
