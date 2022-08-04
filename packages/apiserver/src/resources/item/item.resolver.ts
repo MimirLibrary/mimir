@@ -28,6 +28,11 @@ export class ItemResolver {
     return this.itemService.getAllTakenItems(person_id);
   }
 
+  @Query(() => [Status])
+  async getItemsForClaimHistory(@Args('person_id') person_id: number) {
+    return this.itemService.getItemsForClaimHistory(person_id);
+  }
+
   @Mutation(() => Status)
   async prolongClaimPeriod(@Args('input') prolongInput: ProlongTimeInput) {
     return this.itemService.prolong(prolongInput);

@@ -99,6 +99,28 @@ export class ItemService {
       .getMany();
   }
 
+  async getItemsForClaimHistory(person_id: number) {
+    const statusesQb = Status.createQueryBuilder('status')
+      .select('status.id')
+      .distinctOn(['material_id'])
+      .orderBy('material_id', 'DESC')
+      .where('person_id = :person_id', { person_id })
+      .addOrderBy('status.created_at', 'DESC');
+
+    const ids = (await statusesQb.getRawMany()).map((d) => d.status_id);
+
+    if (ids.length === 0) return [];
+
+    return await Status.createQueryBuilder('status')
+      .leftJoinAndSelect('status.material', 'material')
+      .leftJoinAndSelect('status.person', 'person')
+      .where('status.id IN (:...ids)', { ids })
+      .andWhere('status.status IN(:...statuses)', {
+        statuses: [StatusTypes.FREE, StatusTypes.BUSY, StatusTypes.PROLONG],
+      })
+      .getMany();
+  }
+
   async prolong(prolongTime: ProlongTimeInput) {
     try {
       const { person_id, material_id } = prolongTime;

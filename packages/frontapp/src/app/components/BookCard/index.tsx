@@ -6,13 +6,13 @@ import bookImage from '../../../assets/MOC-data/BookImage.png';
 import { useNavigate } from 'react-router-dom';
 
 export interface IBookCardProps {
-  src: string | null | undefined;
-  title: string | undefined;
-  date: any | undefined;
-  status?: string | undefined;
-  author: string | undefined;
-  category: string | undefined;
-  id: string | undefined;
+  src?: string | null;
+  title?: string;
+  date?: any;
+  status?: string;
+  author?: string;
+  category?: string;
+  id?: string;
 }
 
 const BookCardWrapper = styled.div`
@@ -29,8 +29,8 @@ const BookCardWrapper = styled.div`
 
   @media (max-width: ${dimensions.phone_width}) {
     flex-direction: row;
-    height: 100%;
-    width: 90%;
+    height: min-content;
+    width: 100%;
   }
 `;
 

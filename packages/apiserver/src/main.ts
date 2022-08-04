@@ -8,7 +8,8 @@ import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
 
-import pg from 'pg'; // required for correct package.json generation
+import 'pg'; // required for correct package.json generation
+import 'tslib'; // required for correct package.json generation
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

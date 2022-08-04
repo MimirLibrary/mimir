@@ -23,6 +23,7 @@ const WrapperDonate = styled.section`
   border-radius: ${dimensions.xs_1};
   padding: ${dimensions.base_2};
   margin-top: ${dimensions.xl_2};
+  position: relative;
 `;
 
 const Form = styled.form`
@@ -69,6 +70,13 @@ const WrapperInput = styled.div`
 const WrapperBlockInput = styled.div`
   margin-left: ${dimensions.xl_2};
   width: 100%;
+  @media (max-width: 77rem) {
+    position: relative;
+  }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    position: relative;
+  }
 `;
 
 const StyledInput = styled.input`
@@ -96,6 +104,14 @@ const WrapperMainInfo = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: start;
+
+  @media (max-width: 77rem) {
+    flex-direction: column;
+  }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    flex-direction: column;
+  }
 `;
 
 const WrapperDescription = styled.div`
@@ -133,6 +149,15 @@ const StyledTextArea = styled.textarea`
     color: #bdbdbd;
     font-weight: 300;
   }
+
+  @media (max-width: 77rem) {
+    height: 10.5rem;
+    margin-bottom: 4rem;
+  }
+  @media (max-width: ${dimensions.phone_width}) {
+    height: 10.5rem;
+    margin-bottom: 4rem;
+  }
 `;
 
 const WrapperButtons = styled.div`
@@ -141,6 +166,25 @@ const WrapperButtons = styled.div`
   align-items: flex-end;
   flex-direction: column;
   width: 100%;
+
+  @media (max-width: 77rem) {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    transform: translate(-50%, -50%);
+    padding: 0 ${dimensions.xs_2};
+  }
+  @media (max-width: ${dimensions.phone_width}) {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    flex-direction: row;
+    align-items: center;
+    transform: translate(-50%, -50%);
+  }
 `;
 
 const WrapperWithoutButtons = styled.div`
@@ -159,6 +203,22 @@ const StyledButton = styled(Button)`
   :disabled {
     cursor: auto;
     background-color: ${colors.dropdown_gray};
+  }
+
+  @media (max-width: 77rem) {
+    max-width: 16.875rem;
+    :first-of-type {
+      margin-bottom: 0;
+      margin-right: 1rem;
+    }
+  }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    max-width: 10.875rem;
+    :first-of-type {
+      margin-bottom: 0;
+      margin-right: 1rem;
+    }
   }
 `;
 
