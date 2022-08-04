@@ -1,9 +1,9 @@
 module.exports = {
   apps: [
     {
-      name: 'apisrv',
+      name: 'apiserver',
       script: 'main.js',
-      cwd: '/srv/apisrv',
+      cwd: '/srv/apiserver',
       min_uptime: 3000,
       max_restarts: 3,
     },

@@ -55,6 +55,20 @@
         "jestConfig": "packages/apiserver/jest.config.js",
         "passWithNoTests": true
       }
+    },
+    "deploy": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build"],
+      "options": { },
+      "configurations": {
+        "production": {
+          "commands": [
+            "cp package-lock.json dist/packages/apiserver",
+            "rsync -azvr --delete dist/packages/apiserver root@mimirapp.xyz:/srv/apiserver"
+          ],
+          "parallel": false
+        }
+      }
     }
   },
   "tags": []

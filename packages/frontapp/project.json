@@ -107,6 +107,13 @@
         "host": "0.0.0.0",
         "watch": false
       }
+    },
+    "deploy": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build:production"],
+      "options": {
+        "command": "rsync -avzr --delete dist/packages/frontapp root@mimirapp.xyz:/srv/www"
+      }
     }
   },
   "tags": []
