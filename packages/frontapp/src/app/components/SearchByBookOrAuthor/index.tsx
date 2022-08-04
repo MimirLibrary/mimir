@@ -13,6 +13,7 @@ import { useDebounce } from '../../hooks/useDebounce';
 import { RoutesTypes } from '../../../utils/routes';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import Search from '../Search';
+import { RolesTypes } from '@mimir/global-types';
 
 export const InputSearch = styled(Input)`
   width: 19rem;
@@ -81,6 +82,10 @@ const SearchByBookOrAuthor = () => {
     skip: !search,
   });
 
+  const path = RolesTypes.READER
+    ? `${RoutesTypes.SEARCH}_by_name_or_author`
+    : RoutesTypes.BOOKS_STUFF;
+
   useEffect(() => {
     if (data) {
       dispatch(setSearchMaterials(data?.searchOfMaterials));
@@ -93,14 +98,14 @@ const SearchByBookOrAuthor = () => {
 
   const redirectToSearchByKey = (e: React.KeyboardEvent<HTMLImageElement>) => {
     if (e.key === 'Enter') {
-      navigate(`${RoutesTypes.SEARCH}_by_name_or_author`);
+      navigate(path);
       dispatch(setActiveTab(1));
     }
   };
 
   const redirectToSearchByClick = () => {
     if (search) {
-      navigate(`${RoutesTypes.SEARCH}_by_name_or_author`);
+      navigate(path);
       dispatch(setActiveTab(1));
     }
   };

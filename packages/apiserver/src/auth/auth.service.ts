@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { OAuth2Client, UserRefreshClient } from 'google-auth-library';
 import { Person } from '../resources/persons/person.entity';
 import { BlockedUsers } from '../resources/blocked-users/blocked-users.entity';
+import { RolesTypes } from '@mimir/global-types';
 
 @Injectable()
 export class AuthService {
@@ -44,7 +45,7 @@ export class AuthService {
       email: result.email,
       username: result.name,
       position: 'Ruby Developer',
-      type: 'Reader',
+      type: RolesTypes.READER,
     });
     await Person.save(newPerson);
 
