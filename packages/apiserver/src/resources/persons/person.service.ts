@@ -23,7 +23,7 @@ export class PersonService {
         .orderBy('person.username', 'ASC')
         .getMany();
     } catch (e) {
-      return new BadRequestException();
+      return new BadRequestException(e.message);
     }
   }
 }

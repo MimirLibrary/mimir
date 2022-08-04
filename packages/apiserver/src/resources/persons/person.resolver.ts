@@ -27,7 +27,7 @@ export class PersonResolver {
   @Query(() => [Person])
   async getAllPersons(
     @Args('username') username: string,
-    @CurrentUserLocation() location: any
+    @CurrentUserLocation() location: Location
   ) {
     return this.personService.getAllPersons(username, location);
   }
