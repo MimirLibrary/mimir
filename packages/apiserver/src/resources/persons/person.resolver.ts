@@ -17,12 +17,19 @@ import {
 } from '@mimir/global-types';
 import { Message } from '../messages/message.entity';
 import { BlockedUsers } from '../blocked-users/blocked-users.entity';
+import { CurrentUserLocation } from '../CurrentUserLocation.decorator';
+import { PersonService } from './person.service';
 
 @Resolver('Person')
 export class PersonResolver {
+  constructor(private personService: PersonService) {}
+
   @Query(() => [Person])
-  async getAllPersons() {
-    return Person.find();
+  async getAllPersons(
+    @Args('username') username: string,
+    @CurrentUserLocation() location: Location
+  ) {
+    return this.personService.getAllPersons(username, location);
   }
 
   @Query(() => Person)

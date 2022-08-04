@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions, fonts } from '@mimir/ui-kit';
 import { ReactComponent as SearchIcon } from '../../../assets/Navbar/Search.svg';
@@ -12,6 +12,7 @@ import { setSearchMaterials } from '../../store/slices/materialsSlice';
 import { useDebounce } from '../../hooks/useDebounce';
 import { RoutesTypes } from '../../../utils/routes';
 import { useAppSelector } from '../../hooks/useTypedSelector';
+import Search from '../Search';
 
 export const InputSearch = styled(Input)`
   width: 19rem;
@@ -69,37 +70,50 @@ export const WrapperInput = styled.div`
   }
 `;
 
-interface ISearchParams {
-  handleChangeSearch: (arg0: React.ChangeEvent<HTMLInputElement>) => void;
-  redirectToSearchByKey: (arg0: React.KeyboardEvent<HTMLImageElement>) => void;
-  redirectToSearchByClick: () => void;
-  placeholder: string;
-  search: string;
-}
+const SearchByBookOrAuthor = () => {
+  const [search, setSearch] = useState<string>('');
+  const { location } = useAppSelector((state) => state.user);
+  const debounceSearch = useDebounce<string>(search, 600);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { data } = useSearchOfMaterialsQuery({
+    variables: { search: debounceSearch, location: location?.value },
+    skip: !search,
+  });
 
-const Search: FC<ISearchParams> = ({
-  handleChangeSearch,
-  redirectToSearchByClick,
-  redirectToSearchByKey,
-  placeholder,
-  search,
-}) => {
+  useEffect(() => {
+    if (data) {
+      dispatch(setSearchMaterials(data?.searchOfMaterials));
+    }
+  }, [data]);
+
+  const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+
+  const redirectToSearchByKey = (e: React.KeyboardEvent<HTMLImageElement>) => {
+    if (e.key === 'Enter') {
+      navigate(`${RoutesTypes.SEARCH}_by_name_or_author`);
+      dispatch(setActiveTab(1));
+    }
+  };
+
+  const redirectToSearchByClick = () => {
+    if (search) {
+      navigate(`${RoutesTypes.SEARCH}_by_name_or_author`);
+      dispatch(setActiveTab(1));
+    }
+  };
+
   return (
-    <WrapperInput onKeyPress={redirectToSearchByKey}>
-      <StyledSearchIcon
-        fill={colors.dropdown_gray}
-        width="20"
-        height="20"
-        onClick={redirectToSearchByClick}
-      />
-      <InputSearch
-        type="text"
-        value={search}
-        onChange={handleChangeSearch}
-        placeholder={placeholder}
-      />
-    </WrapperInput>
+    <Search
+      handleChangeSearch={handleChangeSearch}
+      placeholder={t('Search.Placeholder')}
+      search={search}
+      redirectToSearchByClick={redirectToSearchByClick}
+      redirectToSearchByKey={redirectToSearchByKey}
+    />
   );
 };
 
-export default Search;
+export default SearchByBookOrAuthor;

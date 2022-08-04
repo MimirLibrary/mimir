@@ -360,6 +360,11 @@ export type QueryGetAllMessagesArgs = {
 };
 
 
+export type QueryGetAllPersonsArgs = {
+  username?: InputMaybe<Scalars['String']>;
+};
+
+
 export type QueryGetAllStatusesIsOverdueArgs = {
   location_id: Scalars['String'];
 };
@@ -640,7 +645,9 @@ export type GetAllMessagesQueryVariables = Exact<{
 
 export type GetAllMessagesQuery = { __typename?: 'Query', getAllMessages?: Array<{ __typename?: 'Message', id: string, created_at: any, title: string, message: string, person: { __typename?: 'Person', id: string, username: string } }> | null };
 
-export type GetAllPersonsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetAllPersonsQueryVariables = Exact<{
+  username?: InputMaybe<Scalars['String']>;
+}>;
 
 
 export type GetAllPersonsQuery = { __typename?: 'Query', getAllPersons: Array<{ __typename?: 'Person', id: string, username: string, avatar: string, statuses?: Array<{ __typename?: 'Status', id: string, material_id: number, created_at: any, status: string } | null> | null }> };
@@ -1380,8 +1387,8 @@ export type GetAllMessagesQueryHookResult = ReturnType<typeof useGetAllMessagesQ
 export type GetAllMessagesLazyQueryHookResult = ReturnType<typeof useGetAllMessagesLazyQuery>;
 export type GetAllMessagesQueryResult = Apollo.QueryResult<GetAllMessagesQuery, GetAllMessagesQueryVariables>;
 export const GetAllPersonsDocument = gql`
-    query GetAllPersons {
-  getAllPersons {
+    query GetAllPersons($username: String) {
+  getAllPersons(username: $username) {
     id
     username
     avatar
@@ -1407,6 +1414,7 @@ export const GetAllPersonsDocument = gql`
  * @example
  * const { data, loading, error } = useGetAllPersonsQuery({
  *   variables: {
+ *      username: // value for 'username'
  *   },
  * });
  */

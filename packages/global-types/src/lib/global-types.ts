@@ -146,7 +146,7 @@ export interface IQuery {
     getNotificationsByPerson(person_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
     getNotificationsByMaterial(material_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
     getOnePerson(id: string): Person | Promise<Person>;
-    getAllPersons(): Person[] | Promise<Person[]>;
+    getAllPersons(username?: Nullable<string>): Person[] | Promise<Person[]>;
     getStatusesByPerson(person_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getStatusesByMaterial(material_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getAllStatusesIsOverdue(location_id: string): Nullable<Status>[] | Promise<Nullable<Status>[]>;

@@ -3,7 +3,7 @@ import { IMaterial } from '../../components/ListBooks';
 import { StatusTypes } from '@mimir/global-types';
 
 export interface IClaimHistory {
-  material_id: number | string;
+  material_id?: number | string;
   status: string;
   created_at: Date;
   material?: IMaterial;

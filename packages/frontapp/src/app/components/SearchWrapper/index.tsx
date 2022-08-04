@@ -4,6 +4,9 @@ import styled from '@emotion/styled';
 import { dimensions } from '@mimir/ui-kit';
 import Burger from '../Burger';
 import FiltersButton from '../FiltersButton';
+import { RoutesTypes } from '../../../utils/routes';
+import SearchByUserName from '../SearchByUserName';
+import SearchByBookOrAuthor from '../SearchByBookOrAuthor';
 
 interface IProps {
   setSidebarActive: Dispatch<SetStateAction<boolean>>;
@@ -24,7 +27,12 @@ const SearchWrapper: FC<IProps> = ({ setSidebarActive }) => {
   return (
     <StyledSearch>
       <Burger setSidebarActive={setSidebarActive} />
-      <Search />
+      {window.location.pathname.startsWith(RoutesTypes.READERS) ? (
+        <SearchByUserName />
+      ) : (
+        <SearchByBookOrAuthor />
+      )}
+
       <FiltersButton />
     </StyledSearch>
   );

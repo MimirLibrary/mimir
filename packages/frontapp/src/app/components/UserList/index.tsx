@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useGetAllPersonsQuery } from '@mimir/apollo-client';
 import { t } from 'i18next';
 import SingleUser from './SingleUser';
 import { dimensions } from '@mimir/ui-kit';
 import { IClaimHistory } from '../../models/helperFunctions/claimHistory';
+import { useAppSelector } from '../../hooks/useTypedSelector';
+import { useAppDispatch } from '../../hooks/useTypedDispatch';
+import { setSearchReaders } from '../../store/slices/readersSlice';
+import Pic from '../../../assets/avatar.jpg';
+import { IReadersState } from '../../types';
 
 const ReadersWrapper = styled.div`
   display: flex;
@@ -36,17 +41,22 @@ const Description = styled.p`
 
 const UserList = () => {
   const { data, loading } = useGetAllPersonsQuery();
+  const dispatch = useAppDispatch();
+  const { searchReaders } = useAppSelector((state) => state.readers);
+  useEffect(() => {
+    if (data && !searchReaders) dispatch(setSearchReaders(data?.getAllPersons));
+  }, [data]);
   if (loading) return <h1>{t('Loading')}</h1>;
   return (
     <ReadersWrapper>
       <Title>{t('Readers.Title')}</Title>
       <Description>{t('Readers.Description')}</Description>
       <ListWrapper>
-        {data?.getAllPersons.map((person) => (
+        {searchReaders?.map((person) => (
           <SingleUser
-            key={person.id}
-            avatar={person.avatar}
-            name={person.username}
+            avatar={person!.avatar}
+            name={person!.username}
+            key={person?.id}
             id={person?.id as string}
             statuses={person?.statuses as IClaimHistory[]}
           />

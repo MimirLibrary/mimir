@@ -28,7 +28,7 @@ input UpdatePersonLocationInput {
 
 extend type Query {
   getOnePerson(id: ID!): Person!
-  getAllPersons: [Person!]!
+  getAllPersons(username: String): [Person!]!
 }
 
 extend type Mutation {
