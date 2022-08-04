@@ -2,12 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { Prisma } from '@prisma/client';
 import cheerio from 'cheerio';
-
-type Bundle = {
-  material: Prisma.MaterialCreateInput;
-  authors: Array<Prisma.AuthorCreateInput>;
-  publisher: Prisma.PublisherCreateInput;
-};
+import { Bundle } from '../../types';
 
 const READER_ID = 'LABIRINT';
 
@@ -33,18 +28,20 @@ export class LabirintService {
   parseData(result): Bundle {
     const $ = cheerio.load(result, null, false);
     if (cheerio.html($('.search-error'))) {
-      console.log('wrong ISBN');
+      console.log('incorrect ISBN');
       return;
     }
-    const title = $('#product-title').find('h1').text().split(':')[1];
-    const author = $('.authors').first().text().split(':')[1].split(',');
+    const title = $('#product-title').find('h1').text().split(': ')[1];
+    const author = $('.authors').first().text().split(': ')[1].split(',');
     const price = $('.buying-priceold-val-number').text();
-    const about = $('#product-about').text();
+    const about = cheerio.html($('#fullannotation'))
+      ? $('#fullannotation').find('p').text().trim()
+      : $('#product-about').find('p').text().trim();
     const image = $('.book-img-cover').attr('src');
     const publishers = $('.publisher').find('a').text();
     const date = $('.publisher').text().split(',')[1].split('г')[0];
     const genres = $('.thermo-item').text().split('/');
-    const itemId = $('.articul').text().split(':')[1];
+    const itemId = $('.articul').text().split(': ')[1];
     const material: Prisma.MaterialCreateInput = {
       title: title,
       yearPublishedAt: Number(date),
@@ -75,5 +72,10 @@ export class LabirintService {
     };
 
     return { material, authors, publisher };
+  }
+
+  async getData(isbn: string): Promise<Bundle> {
+    const result = await this.readData(isbn);
+    return this.parseData(result);
   }
 }
