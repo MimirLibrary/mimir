@@ -1,19 +1,21 @@
 version: '3.9'
 services:
-  postgres:
+  db:
     image: postgres
-    env_file: .${NODE_ENV}.env
+    env_file: .env
     volumes:
       - db:/var/lib/postgresql/data
     ports:
       - '5432:5432'
 
-  web-srv:
+  websrv:
     image: nginx:latest
     ports:
       - '80:80'
       - '443:443'
     restart: always
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
     volumes:
       - ./nginx/conf:/etc/nginx/conf.d/:ro
       - ./certbot/www:/var/www/certbot/:ro
