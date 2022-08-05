@@ -2,12 +2,12 @@ import { ConnectionOptions } from 'typeorm';
 
 export default {
   type: 'postgres',
-  host: process.env.POSTGRES_HOST as string,
-  port: parseInt(process.env.POSTGRES_PORT as string, 10) as number,
+  host: process.env.DB_HOST as string,
+  port: parseInt(process.env.DB_PORT as string, 10) as number,
   cache: false,
-  username: process.env.POSTGRES_USER as string,
-  password: process.env.POSTGRES_PASSWORD as string,
-  database: process.env.POSTGRES_DB as string,
+  username: process.env.DB_USER as string,
+  password: process.env.DB_PASSWORD as string,
+  database: process.env.DB_NAME as string,
   synchronize: false,
   logging: false,
   entities: ['packages/apiserver/src/**/*.entity.ts'],
