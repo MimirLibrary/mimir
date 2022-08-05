@@ -11,7 +11,7 @@ export class LabirintService {
   private readonly rootUrl = 'https://www.labirint.ru';
   private readonly rootUrlSearch = 'https://www.labirint.ru/search/';
 
-  async readData(identifier: string) {
+  private async readData(identifier: string) {
     try {
       const firstResponse = await axios.get(
         `${this.rootUrlSearch}${identifier}/?stype=0`
@@ -25,7 +25,7 @@ export class LabirintService {
     }
   }
 
-  parseData(result): Bundle {
+  private parseData(result): Bundle {
     const $ = cheerio.load(result, null, false);
     if (cheerio.html($('.search-error'))) {
       console.log('incorrect ISBN');
