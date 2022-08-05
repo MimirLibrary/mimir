@@ -18,6 +18,25 @@ module.exports = {
       config = await rootMain.webpackFinal(config, { configType });
     }
     // add your own webpack tweaks if needed
+    config.module.rules.push({
+      test: /zbar.wasm.bin$/,
+      loader: 'file-loader',
+      type: 'javascript/auto',
+    });
+
+    config.experiments = {
+      ...config.experiments,
+      asyncWebAssembly: true,
+    };
+
+    config.resolve = {
+      ...config.resolve,
+      fallback: {
+        ...config.resolve.fallback,
+        path: require.resolve('path-browserify'),
+        fs: false,
+      },
+    };
     return config;
   },
   typescript: { reactDocgen: false },
