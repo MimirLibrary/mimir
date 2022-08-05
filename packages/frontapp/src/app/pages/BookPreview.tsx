@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import BookInfo from '../components/BookInfo';
 import AllBooksList from '../components/AllBooksList';
 import styled from '@emotion/styled';
@@ -8,11 +8,19 @@ import { colors, dimensions } from '@mimir/ui-kit';
 import {
   useGetMaterialByIdQuery,
   useGetAllMaterialsQuery,
+  useGetAllPersonsLazyQuery,
 } from '@mimir/apollo-client';
 import { ReactComponent as ScrollButtonRight } from '../../assets/ArrowButtonRight.svg';
 import { ReactComponent as ScrollButtonLeft } from '../../assets/ArrowButtonLeft.svg';
 import DonateInfo from '../components/DonateInfo';
 import BackButton from '../components/BackButton';
+import { RolesTypes } from '@mimir/global-types';
+import { TextArticle } from '../globalUI/TextArticle';
+import { TextBase } from '../globalUI/TextBase';
+import Search from '../components/Search';
+import { useTranslation } from 'react-i18next';
+import { useEffect, useState } from 'react';
+import { useDebounce } from '../hooks/useDebounce';
 
 export const ButtonGroup = styled.div`
   display: flex;
@@ -40,15 +48,31 @@ type BookPreviewProps = {
 
 const BookPreview = ({ donate }: BookPreviewProps) => {
   const { item_id } = useParams();
-  const { id, location } = useAppSelector((state) => state.user);
+  const [search, setSearch] = useState<string>('');
+  const debounceSearch = useDebounce<string>(search, 1000);
+  const { t } = useTranslation();
+  const { id, location, userRole } = useAppSelector((state) => state.user);
   const { data, loading } = useGetMaterialByIdQuery({
     variables: { id: item_id! },
   });
   const { data: getAllMaterials } = useGetAllMaterialsQuery({
     variables: { location_id: location.id },
   });
+  const [getAllPersons] = useGetAllPersonsLazyQuery();
 
   const lastStatusAnotherPerson = data?.getMaterialById.statuses.slice(-1)[0];
+
+  const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+
+  useEffect(() => {
+    getAllPersons({
+      variables: {
+        username: debounceSearch,
+      },
+    }).then((res) => console.log(res.data?.getAllPersons));
+  }, [debounceSearch]);
 
   if (loading) return <h1>Loading...</h1>;
 
@@ -92,17 +116,33 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
               location_id={data?.getMaterialById?.location_id}
             />
           )}
-          <Suggestions>
-            <SuggestionText>You may also like</SuggestionText>
-            <ButtonGroup>
-              <ScrollButtonLeft />
-              <ScrollButtonRight />
-            </ButtonGroup>
-          </Suggestions>
-          <AllBooksList
-            sortingCategory={data?.getMaterialById.category}
-            items={getAllMaterials?.getAllMaterials}
-          />
+          {userRole === RolesTypes.READER ? (
+            <>
+              <Suggestions>
+                <SuggestionText>You may also like</SuggestionText>
+                <ButtonGroup>
+                  <ScrollButtonLeft />
+                  <ScrollButtonRight />
+                </ButtonGroup>
+              </Suggestions>
+              <AllBooksList
+                sortingCategory={data?.getMaterialById.category}
+                items={getAllMaterials?.getAllMaterials}
+              />
+            </>
+          ) : (
+            <>
+              <TextArticle>Claim history</TextArticle>
+              <TextBase>
+                List of all items user have taken for all the time
+              </TextBase>
+              <Search
+                handleChangeSearch={handleChangeSearch}
+                placeholder={t('Search.UsernamePlaceholder')}
+                search={search}
+              />
+            </>
+          )}
         </>
       )}
     </>

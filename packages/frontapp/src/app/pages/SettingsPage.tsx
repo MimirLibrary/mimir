@@ -7,7 +7,7 @@ import { colors, dimensions } from '@mimir/ui-kit';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Dropdown, { IDropdownOption } from '../components/Dropdown';
-import { TitleArticle } from '../globalUI/TextArticle';
+import { TextArticle } from '../globalUI/TextArticle';
 import { TextBase } from '../globalUI/TextBase';
 import { useAppDispatch } from '../hooks/useTypedDispatch';
 import { useAppSelector } from '../hooks/useTypedSelector';
@@ -88,7 +88,7 @@ const SettingsPage = () => {
   return (
     <WrapperSettings>
       <Wrapper>
-        <TitleArticle>{t('Settings.Title')}</TitleArticle>
+        <TextArticle>{t('Settings.Title')}</TextArticle>
         <TextBase>{t('Settings.Desc')}</TextBase>
       </Wrapper>
       <SettingsContainer>

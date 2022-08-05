@@ -4,7 +4,7 @@ import { RolesTypes } from '@mimir/global-types';
 import { dimensions } from '@mimir/ui-kit';
 import { useTranslation } from 'react-i18next';
 import BookCard from '../components/BookCard';
-import { TitleArticle } from '../globalUI/TextArticle';
+import { TextArticle } from '../globalUI/TextArticle';
 import { TextBase } from '../globalUI/TextBase';
 import { useAppSelector } from '../hooks/useTypedSelector';
 
@@ -45,7 +45,7 @@ const HistoryOfClaimPage = () => {
   });
   return (
     <Wrapper>
-      <TitleArticle>{t('ClaimHistory.Title')}</TitleArticle>
+      <TextArticle>{t('ClaimHistory.Title')}</TextArticle>
       <TextBase>{t('ClaimHistory.Desc')}</TextBase>
       <List>
         {!loading &&
