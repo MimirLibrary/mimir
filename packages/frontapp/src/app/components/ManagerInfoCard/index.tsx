@@ -1,9 +1,8 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import styled from '@emotion/styled';
 import { ManagerCardTypes } from './managerCardTypes';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { t } from 'i18next';
-import { useNavigate } from 'react-router-dom';
 import { RoutesTypes } from '../../../utils/routes';
 import { Link } from 'react-router-dom';
 import { IField, IOverdueItem } from '../../types';
@@ -11,7 +10,6 @@ import { IMaterialDonate } from '../../types/donateList';
 
 interface IManagerInfoCard {
   type: ManagerCardTypes;
-  fieldsNotification?: IField[] | null | undefined;
   fieldsOverdue?: Array<IOverdueItem | null>;
   fieldsDonate?: Array<IMaterialDonate | null>;
 }
@@ -56,12 +54,6 @@ const FieldDescription = styled.p`
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
   color: ${colors.main_black};
-`;
-
-const InlineFieldDescription = styled(FieldDescription)`
-  max-width: 80%;
-  order: 0;
-  flex-grow: 0;
 `;
 
 const WrapperFooter = styled.div`
@@ -150,55 +142,13 @@ const NotificationDescription = styled(FieldDescription)`
 
 const ManagerInfoCard: FC<IManagerInfoCard> = ({
   type,
-  fieldsNotification,
   fieldsOverdue,
   fieldsDonate,
 }) => {
+  const [isAnswerModal, setIsAnswerModal] = useState<boolean>(false);
+
   return (
     <>
-      {fieldsNotification && (
-        <WrapperCard>
-          <Title>
-            {t(`ManagerInfoCard.Title.${type}`) +
-              ` — (${fieldsNotification?.length})`}
-          </Title>
-          <Description>{t(`ManagerInfoCard.Description.${type}`)}</Description>
-          {fieldsNotification?.slice(0, 3).map((field, key) => (
-            <FieldWrapper key={key + Math.random()}>
-              <>
-                <FieldTitle>{field.title}</FieldTitle>
-                <InlineWrapper>
-                  <InlineFieldDescription>
-                    {field.message}
-                  </InlineFieldDescription>
-                  <InlineOpenLink to="#">
-                    {t('ManagerInfoCard.Link.Answer')}
-                  </InlineOpenLink>
-                </InlineWrapper>
-                <FieldOpenLink>{field.person.username}</FieldOpenLink>
-              </>
-            </FieldWrapper>
-          ))}
-          <WrapperFooter>
-            <>
-              <InlineWrapper>
-                {fieldsNotification?.slice(0, 3).map((field) => (
-                  <StyledIcon key={field.id} src={field.person.avatar} />
-                ))}
-                {fieldsNotification.length > 3 ? (
-                  <NotificationDescription>
-                    {`+${fieldsNotification.length - 3} ` +
-                      t(`ManagerInfoCard.Description.More`)}
-                  </NotificationDescription>
-                ) : null}
-              </InlineWrapper>
-            </>
-            <OpenLink to={`/${type.toLowerCase()}`}>
-              {t(`ManagerInfoCard.Link.${type}`)}
-            </OpenLink>
-          </WrapperFooter>
-        </WrapperCard>
-      )}
       {fieldsOverdue && (
         <WrapperCard>
           <Title>

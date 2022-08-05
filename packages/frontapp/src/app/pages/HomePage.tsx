@@ -10,7 +10,6 @@ import EmptyListItems from '../components/EmptyListItems';
 import { colors, dimensions } from '@mimir/ui-kit';
 import {
   useGetAllMaterialsForDonateQuery,
-  useGetAllMaterialsQuery,
   useGetAllMessagesQuery,
   useGetAllStatusesIsOverdueQuery,
   useGetAllTakenItemsQuery,
@@ -22,6 +21,7 @@ import { RolesTypes, StatusTypes } from '@mimir/global-types';
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
 import { isOverdue } from '../models/helperFunctions/converTime';
+import NotificationList from '../components/NotificationList';
 
 const WrapperHome = styled.div`
   @media (max-width: ${dimensions.tablet_width}) {
@@ -128,8 +128,6 @@ const HomePage: FC = () => {
     );
   }, [allMaterialsData]);
 
-  console.log(donateList);
-
   const overdueList = useMemo(() => {
     return overdueData?.getAllStatusesIsOverdue.filter(
       (item) => !isOverdue(item?.created_at)
@@ -154,7 +152,6 @@ const HomePage: FC = () => {
       </WrapperLoader>
     );
 
-  console.log('render');
   return (
     <WrapperHome>
       {userRole === RolesTypes.READER ? (
@@ -189,8 +186,7 @@ const HomePage: FC = () => {
               />
             </OverdueDonatesWrapper>
             <NotificationsWrapper>
-              <ManagerInfoCard
-                type={ManagerCardTypes.NOTIFICATIONS}
+              <NotificationList
                 fieldsNotification={allMessagesData?.getAllMessages}
               />
             </NotificationsWrapper>
