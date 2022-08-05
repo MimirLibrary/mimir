@@ -52,6 +52,20 @@
         "jestConfig": "packages/metadata-service/jest.config.ts",
         "passWithNoTests": true
       }
+    },
+    "deploy": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build"],
+      "options": {},
+      "configurations": {
+        "production": {
+          "commands": [
+            "cp package-lock.json dist/packages/metadata-service",
+            "rsync -azvr --delete --chown=app:app dist/packages/metadata-service/ root@mimirapp.xyz:/srv/metadata"
+          ],
+          "parallel": false
+        }
+      }
     }
   },
   "tags": []
