@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { DbService } from './db.service';
 import { OzbyService } from './ozby.service';
+import { LabirintService } from './labirint.service';
 import { ChitaiGorodService } from './chitai-gorod.service';
 
 @Injectable()
@@ -8,6 +9,7 @@ export class ReaderService {
   constructor(
     private db: DbService,
     private ozbyReader: OzbyService,
+    private labirintService: LabirintService,
     private chitaiGorodService: ChitaiGorodService
   ) {}
 
@@ -32,6 +34,7 @@ export class ReaderService {
       const result = await Promise.any([
         this.chitaiGorodService.getData(isbn),
         this.ozbyReader.getData(isbn),
+        this.labirintService.getData(isbn),
       ]);
       return result;
     } catch (e) {
