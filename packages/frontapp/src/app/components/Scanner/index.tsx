@@ -242,6 +242,10 @@ const Scanner: FC<IScannerProps> = memo(
           height: size,
         };
       }
+
+      return () => {
+        closeScanner();
+      };
     }, []);
 
     function found(result?: string) {
