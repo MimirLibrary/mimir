@@ -59,7 +59,7 @@
     "deploy": {
       "executor": "nx:run-commands",
       "dependsOn": ["build"],
-      "options": { },
+      "options": {},
       "configurations": {
         "production": {
           "commands": [
