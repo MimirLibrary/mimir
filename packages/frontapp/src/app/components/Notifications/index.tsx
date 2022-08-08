@@ -11,6 +11,8 @@ import { RoutesTypes } from '../../../utils/routes';
 import { Description, Title } from '../UserCard';
 import AnswerToUser from '../AnswerToUser';
 import Modal from '../Modal';
+import { useAppSelector } from '../../hooks/useTypedSelector';
+import { RolesTypes } from '@mimir/global-types';
 
 export interface IOneNotification {
   id: string | undefined;
@@ -106,6 +108,11 @@ const NotificationDescription = styled.p<IDescriptionProps>`
     small ? `${dimensions.xs}` : `${dimensions.base}`};
 `;
 
+interface IDataOfMessage {
+  id: string | undefined;
+  person_id: string | undefined;
+}
+
 const answers = [
   'You have missed the due date for your book. Return it as soon as possible or contact the manager in room 35',
   'We have accepted your donation to the library! Thank you!',
@@ -116,8 +123,11 @@ const Notifications: FC<INotifications> = ({
   notifications,
   showUserLink = false,
 }) => {
+  const { userRole } = useAppSelector((state) => state.user);
   const [isAnswerModal, setIsAnswerModal] = useState<boolean>(false);
-  const [personId, setPersonId] = useState<string | null>(null);
+  const [dataOfMessage, setDataOfMessage] = useState<IDataOfMessage | null>(
+    null
+  );
   const sortedNotifications = notifications.sort(
     (a, b) =>
       new Date(b?.created_at).getTime() - new Date(a?.created_at).getTime()
@@ -130,12 +140,11 @@ const Notifications: FC<INotifications> = ({
   );
 
   const handleAnswerModal = useCallback(
-    (id: string) => {
-      console.log('123423');
-      setPersonId(id);
+    (dataOfMessage: IDataOfMessage) => {
+      setDataOfMessage(dataOfMessage);
       setIsAnswerModal(true);
     },
-    [personId]
+    [dataOfMessage]
   );
 
   const handleClose = useCallback(() => {
@@ -168,11 +177,18 @@ const Notifications: FC<INotifications> = ({
                     </RestyledOpenLink>
                   </NotificationDescription>
                 </ColumnWrapper>
-                <ButtonAnswer
-                  onClick={() => handleAnswerModal(notification.user!.id)}
-                >
-                  {t('ManagerInfoCard.Link.Answer')}
-                </ButtonAnswer>
+                {userRole !== RolesTypes.READER && (
+                  <ButtonAnswer
+                    onClick={() =>
+                      handleAnswerModal({
+                        id: notification.id,
+                        person_id: notification.user?.id,
+                      })
+                    }
+                  >
+                    {t('ManagerInfoCard.Link.Answer')}
+                  </ButtonAnswer>
+                )}
               </NotificationWrapper>
             ) : (
               <NotificationWrapper>
@@ -209,11 +225,18 @@ const Notifications: FC<INotifications> = ({
                     {specialParseDate(new Date(notification.created_at))}
                   </NotificationDescription>
                 </ColumnWrapper>
-                <ButtonAnswer
-                  onClick={() => handleAnswerModal(notification.user!.id)}
-                >
-                  {t('ManagerInfoCard.Link.Answer')}
-                </ButtonAnswer>
+                {userRole !== RolesTypes.READER && (
+                  <ButtonAnswer
+                    onClick={() =>
+                      handleAnswerModal({
+                        id: notification.id,
+                        person_id: notification.user?.id,
+                      })
+                    }
+                  >
+                    {t('ManagerInfoCard.Link.Answer')}
+                  </ButtonAnswer>
+                )}
               </NotificationWrapper>
             ) : (
               <NotificationWrapper>
@@ -233,7 +256,12 @@ const Notifications: FC<INotifications> = ({
       )}
       <Modal active={isAnswerModal} setActive={setIsAnswerModal}>
         {isAnswerModal && (
-          <AnswerToUser id={personId} answers={answers} close={handleClose} />
+          <AnswerToUser
+            id={dataOfMessage?.id}
+            person_id={dataOfMessage?.person_id}
+            answers={answers}
+            close={handleClose}
+          />
         )}
       </Modal>
     </>

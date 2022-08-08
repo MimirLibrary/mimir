@@ -3,6 +3,13 @@ import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import Button from '../Button';
 import { ButtonWrapper } from '../BackButton';
+import { useMutation } from '@apollo/client';
+import {
+  GetAllMessagesDocument,
+  useCreateAnswerNotificationMutation,
+} from '@mimir/apollo-client';
+import { toast } from 'react-toastify';
+import { t } from 'i18next';
 
 interface IAnswer {
   active: boolean;
@@ -98,7 +105,8 @@ const ButtonWrapperStyled = styled(ButtonWrapper)`
 `;
 
 interface IAnswerToUser {
-  id: string | null;
+  id: string | null | undefined;
+  person_id: string | null | undefined;
   answers: Array<string>;
   close: () => void;
 }
@@ -107,26 +115,16 @@ interface IAnswerState {
   answer: string;
 }
 
-const AnswerToUser: FC<IAnswerToUser> = ({ id, answers, close }) => {
+const AnswerToUser: FC<IAnswerToUser> = ({ id, answers, close, person_id }) => {
   const [currentAnswer, setCurrentAnswer] = useState<IAnswerState | null>(null);
   const [message, setMessage] = useState('');
+  const [createNotification, { error }] = useCreateAnswerNotificationMutation({
+    refetchQueries: [GetAllMessagesDocument],
+  });
 
-  const handleAnswers = (answer: IAnswerState) => {
-    setMessage('');
-    setCurrentAnswer(answer);
-  };
-
-  const handleChangeMessage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage(e.target.value);
-  };
-
-  const handleClickTextArea = () => {
-    setCurrentAnswer(null);
-  };
-
-  const sendNotification = async () => {
-    return;
-  };
+  useEffect(() => {
+    if (error) toast.error(error.message);
+  }, [error]);
 
   useEffect(() => {
     return () => {
@@ -135,10 +133,35 @@ const AnswerToUser: FC<IAnswerToUser> = ({ id, answers, close }) => {
     };
   }, []);
 
+  const handleAnswers = (answer: IAnswerState) => {
+    setMessage('');
+    setCurrentAnswer(answer);
+  };
+  const handleChangeMessage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value);
+  };
+  const handleClickTextArea = () => {
+    setCurrentAnswer(null);
+  };
+  const sendNotification = async () => {
+    try {
+      const answerMessage = currentAnswer?.answer || message;
+      const createNotificationObj = {
+        id: Number(id),
+        person_id: Number(person_id),
+        message: answerMessage,
+      };
+      await createNotification({ variables: { input: createNotificationObj } });
+      close();
+    } catch (e) {
+      if (e instanceof Error) toast.error(e.message);
+    }
+  };
+
   return (
     <Wrapper>
-      <Title>Reply to notification</Title>
-      <TitleList>Choose a ready-made message or write your own:</TitleList>
+      <Title>{t('AnswerModal.Title')}</Title>
+      <TitleList>{t('AnswerModal.SubTitle')}</TitleList>
       <WrapperListAnswers>
         {answers &&
           answers.map((answer, index) => (
@@ -151,7 +174,7 @@ const AnswerToUser: FC<IAnswerToUser> = ({ id, answers, close }) => {
             </Answer>
           ))}
       </WrapperListAnswers>
-      <TitleList>Own message:</TitleList>
+      <TitleList>{t('AnswerModal.DescMessage')}</TitleList>
       <TextField
         placeholder="Enter your message"
         value={message}
@@ -160,12 +183,12 @@ const AnswerToUser: FC<IAnswerToUser> = ({ id, answers, close }) => {
       />
       <ButtonWrapperStyled>
         <Button
-          value="Send notification"
+          value={t('AnswerModal.SendBtn')}
           type="button"
           onClick={sendNotification}
           disabled={!(currentAnswer || message)}
         />
-        <Button value="Cancel" type="button" transparent onClick={close} />
+        <Button value={t('Cancel')} type="button" transparent onClick={close} />
       </ButtonWrapperStyled>
     </Wrapper>
   );

@@ -1,11 +1,11 @@
 import React, { FC, useCallback, useState } from 'react';
+import AnswerToUser from '../AnswerToUser';
 import { t } from 'i18next';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { Link } from 'react-router-dom';
 import { IField } from '../../types';
 import Modal from '../Modal';
-import AnswerToUser from '../AnswerToUser';
 
 const WrapperCard = styled.div`
   display: flex;
@@ -156,16 +156,23 @@ interface NotificationList {
   fieldsNotification: IField[] | null | undefined;
 }
 
+interface IDataOfMessage {
+  id: string;
+  person_id: string;
+}
+
 const NotificationList: FC<NotificationList> = ({ fieldsNotification }) => {
   const [isAnswerModal, setIsAnswerModal] = useState<boolean>(false);
-  const [personId, setPersonId] = useState<string | null>(null);
+  const [dataOfMessage, setDataOfMessage] = useState<IDataOfMessage | null>(
+    null
+  );
 
   const handleAnswerModal = useCallback(
-    (id: string) => {
-      setPersonId(id);
+    (dataOfMessage: IDataOfMessage) => {
+      setDataOfMessage(dataOfMessage);
       setIsAnswerModal(true);
     },
-    [personId]
+    [dataOfMessage]
   );
 
   const handleClose = useCallback(() => {
@@ -192,7 +199,12 @@ const NotificationList: FC<NotificationList> = ({ fieldsNotification }) => {
                     {field.message}
                   </InlineFieldDescription>
                   <ButtonAnswer
-                    onClick={() => handleAnswerModal(field.person.id)}
+                    onClick={() =>
+                      handleAnswerModal({
+                        id: field.id,
+                        person_id: field.person.id,
+                      })
+                    }
                   >
                     {t('ManagerInfoCard.Link.Answer')}
                   </ButtonAnswer>
@@ -223,7 +235,12 @@ const NotificationList: FC<NotificationList> = ({ fieldsNotification }) => {
       )}
       <Modal active={isAnswerModal} setActive={setIsAnswerModal}>
         {isAnswerModal && (
-          <AnswerToUser id={personId} answers={answers} close={handleClose} />
+          <AnswerToUser
+            id={dataOfMessage?.id}
+            person_id={dataOfMessage?.person_id}
+            answers={answers}
+            close={handleClose}
+          />
         )}
       </Modal>
     </>

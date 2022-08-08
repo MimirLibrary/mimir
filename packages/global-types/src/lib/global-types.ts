@@ -95,6 +95,12 @@ export interface CreateMessageInput {
     person_id: number;
 }
 
+export interface CreateAnswerNotification {
+    id: number;
+    person_id: number;
+    message: string;
+}
+
 export interface CreateNotificationInput {
     material_id: number;
     person_id: number;
@@ -140,7 +146,7 @@ export interface IQuery {
     getMaterialById(id: string): Material | Promise<Material>;
     searchOfMaterials(input: SearchInput): Nullable<Nullable<Material>[]> | Promise<Nullable<Nullable<Material>[]>>;
     getMaterialByIdentifier(input: SearchOneMaterial): Material | Promise<Material>;
-    getMaterialByIdentifierFromMetadata(identifier: string): IMetaOfMaterial | Promise<IMetaOfMaterial>;
+    getMaterialByIdentifierFromMetadata(identifier: string): Nullable<IMetaOfMaterial> | Promise<Nullable<IMetaOfMaterial>>;
     getMessagesByPerson(person_id: string): Nullable<Nullable<Message>[]> | Promise<Nullable<Nullable<Message>[]>>;
     getAllMessages(location_id: number): Nullable<Message[]> | Promise<Nullable<Message[]>>;
     getNotificationsByPerson(person_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
@@ -168,6 +174,7 @@ export interface IMutation {
     createMessageForManager(input: CreateMessageInput): Message | Promise<Message>;
     createNotification(input: CreateNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
     removeNotification(input: RemoveNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
+    createAnswerNotification(input: CreateAnswerNotification): Notification | Promise<Notification>;
     createPerson(input: CreatePersonInput): Person | Promise<Person>;
     updatePersonLocation(input: UpdatePersonLocationInput): Person | Promise<Person>;
     createStatus(input: CreateStatusInput): Status | Promise<Status>;
@@ -206,41 +213,41 @@ export interface ResponseMetadata {
 }
 
 export interface Author {
-    id: string;
-    name: string;
+    id?: Nullable<string>;
+    name?: Nullable<string>;
 }
 
 export interface Publisher {
-    id: string;
-    name: string;
+    id?: Nullable<string>;
+    name?: Nullable<string>;
 }
 
 export interface Meta {
-    ageRestriction: string;
-    coverType: string;
-    dimensions: string;
-    manufacturer: string;
-    mass: string;
-    numberOfPages: string;
-    price: string;
-    series: string;
-    sku: string;
+    ageRestriction?: Nullable<string>;
+    coverType?: Nullable<string>;
+    dimensions?: Nullable<string>;
+    manufacturer?: Nullable<string>;
+    mass?: Nullable<string>;
+    numberOfPages?: Nullable<string>;
+    price?: Nullable<string>;
+    series?: Nullable<string>;
+    sku?: Nullable<string>;
 }
 
 export interface IMaterialMeta {
-    authors: Nullable<Author>[];
-    cover: string;
-    description: string;
-    title: string;
-    yearPublishedAt: number;
-    meta: Meta;
-    publisher: Publisher;
+    authors?: Nullable<Nullable<Author>[]>;
+    cover?: Nullable<string>;
+    description?: Nullable<string>;
+    title?: Nullable<string>;
+    yearPublishedAt?: Nullable<number>;
+    meta?: Nullable<Meta>;
+    publisher?: Nullable<Publisher>;
 }
 
 export interface IMetaOfMaterial {
-    idType: string;
-    value: string;
-    material: IMaterialMeta;
+    idType?: Nullable<string>;
+    value?: Nullable<string>;
+    material?: Nullable<IMaterialMeta>;
 }
 
 export interface Message {
@@ -257,11 +264,12 @@ export interface Message {
 
 export interface Notification {
     id: string;
-    material_id: number;
+    material_id?: Nullable<number>;
     person_id: number;
     created_at: DateTime;
     person: Person;
-    material: Material;
+    material?: Nullable<Material>;
+    message?: Nullable<string>;
 }
 
 export interface Person {

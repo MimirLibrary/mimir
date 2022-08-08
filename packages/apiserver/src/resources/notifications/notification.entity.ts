@@ -16,6 +16,9 @@ export class Notification extends BaseEntity {
   id!: number;
 
   @Column({ nullable: true })
+  message: string;
+
+  @Column({ nullable: true })
   material_id: number;
 
   @Column({ nullable: true })
@@ -23,7 +26,7 @@ export class Notification extends BaseEntity {
 
   @ManyToOne(() => Material, (material) => material.notification)
   @JoinColumn({ name: 'material_id' })
-  material!: Material;
+  material: Material;
 
   @ManyToOne(() => Person, (person) => person.notification)
   @JoinColumn({ name: 'person_id' })

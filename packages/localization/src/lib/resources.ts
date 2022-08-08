@@ -144,6 +144,12 @@ export const resources = {
         Title: 'History of your claim',
         Desc: 'List of items you have taken for all time',
       },
+      AnswerModal: {
+        Title: 'Reply to notification',
+        SubTitle: 'Choose a ready-made message or write your own:',
+        DescMessage: 'Own message:',
+        SendBtn: 'Send notification',
+      },
     },
   },
   ru: {
@@ -289,6 +295,12 @@ export const resources = {
       ClaimHistory: {
         Title: 'История взятых вами книг',
         Desc: 'Список предметов, которые вы взяли за все время',
+      },
+      AnswerModal: {
+        Title: 'Ответить на уведомление',
+        SubTitle: 'Выберите готовое сообщение или напишите свое собственное:',
+        DescMessage: 'Собственное сообщение:',
+        SendBtn: 'Отправить уведомление',
       },
     },
   },

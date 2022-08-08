@@ -2,9 +2,12 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Notification } from './notification.entity';
 import { BadRequestException } from '@nestjs/common';
 import {
+  CreateAnswerNotification,
   CreateNotificationInput,
   RemoveNotificationInput,
 } from '@mimir/global-types';
+import { GraphQLError } from 'graphql';
+import { Message } from '../messages/message.entity';
 
 @Resolver('Notification')
 export class NotificationResolver {
@@ -33,6 +36,20 @@ export class NotificationResolver {
       return notification;
     } catch (e) {
       throw new BadRequestException();
+    }
+  }
+
+  @Mutation(() => Notification)
+  async createAnswerNotification(
+    @Args('input') createAnswerNotification: CreateAnswerNotification
+  ) {
+    try {
+      await Message.delete(createAnswerNotification.id);
+      const { id, ...createNotification } = createAnswerNotification;
+      const notification = Notification.create(createNotification);
+      return Notification.save(notification);
+    } catch (e) {
+      throw new GraphQLError(e.message);
     }
   }
 
