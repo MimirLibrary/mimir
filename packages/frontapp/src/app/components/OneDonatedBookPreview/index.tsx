@@ -1,16 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
-import {
-  useGetOnePersonQuery,
-  GetMaterialByIdDocument,
-  GetAllTakenItemsDocument,
-  useReturnBookMutation,
-} from '@mimir/apollo-client';
+import { useGetOnePersonQuery } from '@mimir/apollo-client';
 import EmptyCover from '../../../assets/MOC-data/EmptyCover.png';
 import Button from '../Button';
 import { useNavigate } from 'react-router-dom';
 import { dimensions, colors } from '@mimir/ui-kit';
-
+import { AcceptDonate } from '../AcceptRejectModals';
 interface BackgroundProps {
   GrayBackground?: boolean;
 }
@@ -122,17 +117,7 @@ const OneDonator = ({
   statuses,
   index,
 }: OneDonatorProps) => {
-  const [returnBook] = useReturnBookMutation({
-    refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
-  });
-  const acceptBook = async (identifier: string, donator: number) => {
-    await returnBook({
-      variables: {
-        person_id: donator,
-        identifier: identifier,
-      },
-    });
-  };
+  const [accept, setAccept] = useState(false);
   const navigate = useNavigate();
   const handleRedirect = (item_id: number) => {
     navigate(`/donate/${item_id}`);
@@ -145,33 +130,42 @@ const OneDonator = ({
     },
   });
   return (
-    <DonateWrapper GrayBackground={GrayBackground}>
-      <FlexContainer onClick={() => handleRedirect(id)}>
-        <BookImage
-          src={
-            (picture && `${process.env['NX_API_ROOT_URL']}/${picture}`) ||
-            EmptyCover
-          }
-        />
-        <Wrapper>
-          <Title>{title}</Title>
-          <Description> {description || 'no description provided'}</Description>
-        </Wrapper>
-      </FlexContainer>
-      <DonateeName>
-        {personName ? personName?.getOnePerson.username : 'unknown'}
-      </DonateeName>
-      <WrapperBtn>
-        {lastStatus.status === 'Pending' && (
-          <Button
-            onClick={() => acceptBook(identifier, lastStatus.person_id)}
-            value="Accept"
+    <>
+      <DonateWrapper GrayBackground={GrayBackground}>
+        <FlexContainer onClick={() => handleRedirect(id)}>
+          <BookImage
+            src={
+              (picture && `${process.env['NX_API_ROOT_URL']}/${picture}`) ||
+              EmptyCover
+            }
           />
-        )}
-        {lastStatus.status === 'Free' && <Accepted>Accepted</Accepted>}
-        {lastStatus.status === 'Rejected' && <Rejected>Rejected</Rejected>}
-      </WrapperBtn>
-    </DonateWrapper>
+          <Wrapper>
+            <Title>{title}</Title>
+            <Description>
+              {' '}
+              {description || 'no description provided'}
+            </Description>
+          </Wrapper>
+        </FlexContainer>
+        <DonateeName>
+          {personName ? personName?.getOnePerson.username : 'unknown'}
+        </DonateeName>
+        <WrapperBtn>
+          {lastStatus.status === 'Pending' && (
+            <Button onClick={() => setAccept(true)} value="Accept" />
+          )}
+          {lastStatus.status === 'Free' && <Accepted>Accepted</Accepted>}
+          {lastStatus.status === 'Rejected' && <Rejected>Rejected</Rejected>}
+        </WrapperBtn>
+      </DonateWrapper>
+      <AcceptDonate
+        active={accept}
+        setActive={setAccept}
+        title={title}
+        statusInfo={lastStatus}
+        identifier={identifier}
+      />
+    </>
   );
 };
 
