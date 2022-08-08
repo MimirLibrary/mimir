@@ -21,6 +21,7 @@ import Search from '../components/Search';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import { useDebounce } from '../hooks/useDebounce';
+import Table from '../globalUI/Table';
 
 export const ButtonGroup = styled.div`
   display: flex;
@@ -42,6 +43,11 @@ const SuggestionText = styled.h3`
   color: ${colors.main_black};
   flex: 1;
 `;
+
+const SearchWrapper = styled.div`
+  margin: ${dimensions.xl_2} 0 ${dimensions.base};
+`;
+
 type BookPreviewProps = {
   donate?: boolean;
 };
@@ -136,11 +142,14 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
               <TextBase>
                 List of all items user have taken for all the time
               </TextBase>
-              <Search
-                handleChangeSearch={handleChangeSearch}
-                placeholder={t('Search.UsernamePlaceholder')}
-                search={search}
-              />
+              <SearchWrapper>
+                <Search
+                  handleChangeSearch={handleChangeSearch}
+                  placeholder={t('Search.UsernamePlaceholder')}
+                  search={search}
+                />
+              </SearchWrapper>
+              <Table />
             </>
           )}
         </>
