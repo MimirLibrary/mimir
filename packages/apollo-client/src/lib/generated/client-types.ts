@@ -722,7 +722,7 @@ export type SearchOfMaterialsQueryVariables = Exact<{
 }>;
 
 
-export type SearchOfMaterialsQuery = { __typename?: 'Query', searchOfMaterials?: Array<{ __typename?: 'Material', title: string, created_at: any, picture?: string | null, author: string, category: string, id: string, statuses: Array<{ __typename?: 'Status', id: string, created_at: any, status: string } | null> } | null> | null };
+export type SearchOfMaterialsQuery = { __typename?: 'Query', searchOfMaterials?: Array<{ __typename?: 'Material', title: string, created_at: any, picture?: string | null, author: string, category: string, id: string, statuses: Array<{ __typename?: 'Status', id: string, created_at: any, status: string, person: { __typename?: 'Person', id: string, username: string } } | null> } | null> | null };
 
 
 export const ClaimBookDocument = gql`
@@ -1853,6 +1853,10 @@ export const SearchOfMaterialsDocument = gql`
       id
       created_at
       status
+      person {
+        id
+        username
+      }
     }
   }
 }

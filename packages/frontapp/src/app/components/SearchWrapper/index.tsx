@@ -1,5 +1,4 @@
 import { Dispatch, FC, SetStateAction } from 'react';
-import Search from '../Search';
 import styled from '@emotion/styled';
 import { dimensions } from '@mimir/ui-kit';
 import Burger from '../Burger';

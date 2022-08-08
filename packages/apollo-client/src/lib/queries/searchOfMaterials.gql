@@ -1,4 +1,4 @@
-query SearchOfMaterials($search: String!, $location: String!) {
+query SearchOfMaterials($search: String, $location: String!) {
   searchOfMaterials(input: { search: $search, location: $location }) {
     title
     created_at
@@ -10,6 +10,10 @@ query SearchOfMaterials($search: String!, $location: String!) {
       id
       created_at
       status
+      person {
+        id
+        username
+      }
     }
   }
 }

@@ -1,17 +1,8 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions, fonts } from '@mimir/ui-kit';
 import { ReactComponent as SearchIcon } from '../../../assets/Navbar/Search.svg';
 import Input from '../Input';
-import { t } from 'i18next';
-import { useSearchOfMaterialsQuery } from '@mimir/apollo-client';
-import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../../hooks/useTypedDispatch';
-import { setActiveTab } from '../../store/slices/tabsSlice';
-import { setSearchMaterials } from '../../store/slices/materialsSlice';
-import { useDebounce } from '../../hooks/useDebounce';
-import { RoutesTypes } from '../../../utils/routes';
-import { useAppSelector } from '../../hooks/useTypedSelector';
 
 export const InputSearch = styled(Input)`
   width: 19rem;
