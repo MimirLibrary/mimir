@@ -1,3 +1,4 @@
+import { Fragment, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import BookInfo from '../components/BookInfo';
 import AllBooksList from '../components/AllBooksList';
@@ -19,7 +20,6 @@ import { TextArticle } from '../globalUI/TextArticle';
 import { TextBase } from '../globalUI/TextBase';
 import Search from '../components/Search';
 import { useTranslation } from 'react-i18next';
-import { useEffect, useState } from 'react';
 import { useDebounce } from '../hooks/useDebounce';
 import Table from '../globalUI/Table';
 
@@ -79,6 +79,8 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
       },
     }).then((res) => console.log(res.data?.getAllPersons));
   }, [debounceSearch]);
+
+  const testArr = Array.from({ length: 3 }, (v, k) => k);
 
   if (loading) return <h1>Loading...</h1>;
 
@@ -149,7 +151,15 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
                   search={search}
                 />
               </SearchWrapper>
-              <Table />
+              <Table>
+                {testArr.map((_, i) => (
+                  <Fragment key={i}>
+                    <div>Div 1</div>
+                    <div>Div 2</div>
+                    <div>Div 3</div>
+                  </Fragment>
+                ))}
+              </Table>
             </>
           )}
         </>

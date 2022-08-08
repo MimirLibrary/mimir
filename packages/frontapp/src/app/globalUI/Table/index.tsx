@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, ReactElement } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 
@@ -12,9 +12,34 @@ const TableContainer = styled.div`
 
 const List = styled.div`
   box-sizing: border-box;
-  padding: ${dimensions.base_3} ${dimensions.xl_3} 0 0;
+  padding: 0 ${dimensions.xl} 0 0;
   max-height: 680px;
   position: relative;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    border-radius: 8px;
+    width: 8px;
+  }
+`;
+
+const Item = styled.div`
+  display: flex;
+  box-sizing: border-box;
+  padding: ${dimensions.base};
+  height: 135px;
+
+  &:nth-of-type(2n) {
+    background-color: ${colors.light_gray};
+  }
+
+  & > * {
+    width: 20%;
+
+    &:first-of-type {
+      width: 60%;
+    }
+  }
 `;
 
 const Title = styled.div`
@@ -23,19 +48,22 @@ const Title = styled.div`
   border-radius: ${dimensions.xs_1} ${dimensions.xs_1} 0 0;
   color: white;
   font-weight: 600;
-  padding: ${dimensions.base} ${dimensions.xl_2};
-  position: absolute;
+  padding: ${dimensions.base};
+  position: sticky;
   top: 0;
   left: 0;
   width: 100%;
 
-  > *::first-child {
-    display: flex;
-    flex-grow: 2;
+  & > * {
+    width: 20%;
+
+    &:first-of-type {
+      width: 60%;
+    }
   }
 `;
 
-const Table: FC = () => {
+const Table: FC<{ children: ReactElement[] }> = ({ children }) => {
   return (
     <TableContainer>
       <List>
@@ -44,6 +72,9 @@ const Table: FC = () => {
           <span>Title 2</span>
           <span>Title 3</span>
         </Title>
+        {children.map((row, i) => (
+          <Item key={i}>{row}</Item>
+        ))}
       </List>
     </TableContainer>
   );
