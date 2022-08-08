@@ -1,10 +1,18 @@
 type Notification {
   id: ID!
-  material_id: Int!
+  material_id: Int
   person_id: Int!
   created_at: DateTime!
   person: Person!
-  material: Material!
+  material: Material
+  message: String
+}
+
+
+input CreateAnswerNotification{
+  id: Int!
+  person_id: Int!
+  message: String!
 }
 
 input CreateNotificationInput {
@@ -25,4 +33,5 @@ extend type Query {
 extend type Mutation {
   createNotification(input: CreateNotificationInput!): Notification
   removeNotification(input: RemoveNotificationInput!): Notification
+  createAnswerNotification(input: CreateAnswerNotification!): Notification!
 }

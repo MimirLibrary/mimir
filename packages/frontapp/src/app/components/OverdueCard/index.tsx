@@ -6,6 +6,7 @@ import {
   getDateOfEarlier,
   isOverdueToday,
 } from '../../models/helperFunctions/converTime';
+import { IOverdueItem } from '../../types';
 
 type WrapperProps = {
   background: string;
@@ -61,26 +62,6 @@ const ButtonActive = styled.button`
     color: ${colors.hover_color};
   }
 `;
-
-interface IOverdueMaterial {
-  __typename?: 'Material' | undefined;
-  id: string;
-  title: string;
-}
-
-interface IOverduePerson {
-  __typename?: 'Person' | undefined;
-  id: string;
-  username: string;
-}
-
-interface IOverdueItem {
-  __typename?: 'Status' | undefined;
-  id: string;
-  created_at: any;
-  material: IOverdueMaterial;
-  person: IOverduePerson;
-}
 
 interface IOverdueCard {
   backgroundColor: string;

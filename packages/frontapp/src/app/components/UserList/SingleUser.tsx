@@ -12,7 +12,7 @@ const InfoWrapper = styled.div`
   flex-direction: column;
   margin-left: ${dimensions.base};
   row-gap: ${dimensions.xs_2};
-  > p:first-child {
+  > p:first-of-type {
     margin-bottom: ${dimensions.xs_2};
   }
 `;

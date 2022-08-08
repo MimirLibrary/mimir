@@ -1,0 +1,15 @@
+query GetAllMaterialsForDonate($location_id: String!, $limit: Int, $offset: Int) {
+  getAllMaterials(location_id: $location_id, limit: $limit, offset: $offset) {
+    id
+    title
+    statuses {
+      id
+      status
+      person {
+        id
+        username
+        avatar
+      }
+    }
+  }
+}
