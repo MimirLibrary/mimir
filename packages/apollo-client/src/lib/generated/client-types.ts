@@ -462,7 +462,7 @@ export type ResponseMetadata = {
 
 export type SearchInput = {
   location: Scalars['String'];
-  search: Scalars['String'];
+  search?: InputMaybe<Scalars['String']>;
 };
 
 export type SearchOneMaterial = {
@@ -717,7 +717,7 @@ export type GetReasonOfBlockQueryVariables = Exact<{
 export type GetReasonOfBlockQuery = { __typename?: 'Query', getReasonOfBlock?: { __typename?: 'BlockedUsers', state: boolean, description?: string | null } | null };
 
 export type SearchOfMaterialsQueryVariables = Exact<{
-  search: Scalars['String'];
+  search?: InputMaybe<Scalars['String']>;
   location: Scalars['String'];
 }>;
 
@@ -1841,7 +1841,7 @@ export type GetReasonOfBlockQueryHookResult = ReturnType<typeof useGetReasonOfBl
 export type GetReasonOfBlockLazyQueryHookResult = ReturnType<typeof useGetReasonOfBlockLazyQuery>;
 export type GetReasonOfBlockQueryResult = Apollo.QueryResult<GetReasonOfBlockQuery, GetReasonOfBlockQueryVariables>;
 export const SearchOfMaterialsDocument = gql`
-    query SearchOfMaterials($search: String!, $location: String!) {
+    query SearchOfMaterials($search: String, $location: String!) {
   searchOfMaterials(input: {search: $search, location: $location}) {
     title
     created_at
