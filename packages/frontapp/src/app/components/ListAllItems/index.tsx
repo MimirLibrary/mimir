@@ -39,7 +39,6 @@ const ListAllItems = () => {
       toast.error(error.message);
     }
   }, [error]);
-  console.log(searchMaterials);
   return (
     <>
       {loading ? (
