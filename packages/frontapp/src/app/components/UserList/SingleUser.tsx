@@ -50,6 +50,7 @@ export interface ISingleUser {
   id: string;
   name: string;
   statuses: IClaimHistory[];
+  className?: string;
 }
 
 const SingleUser: FC<ISingleUser> = ({
@@ -57,6 +58,7 @@ const SingleUser: FC<ISingleUser> = ({
   statuses = [],
   name,
   avatar,
+  className,
 }) => {
   const navigate = useNavigate();
   const handleUserRedirect = () => {
@@ -64,7 +66,7 @@ const SingleUser: FC<ISingleUser> = ({
   };
 
   return (
-    <CardWrapper onClick={handleUserRedirect}>
+    <CardWrapper className={className} onClick={handleUserRedirect}>
       <AvatarWrapper>
         <Avatar src={avatar || mockData.avatar} />
       </AvatarWrapper>

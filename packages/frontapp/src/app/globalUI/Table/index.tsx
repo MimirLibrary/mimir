@@ -36,7 +36,7 @@ const Item = styled.div`
   & > * {
     width: 20%;
 
-    &:first-of-type {
+    &:first-child {
       width: 60%;
     }
   }
@@ -57,24 +57,25 @@ const Title = styled.div`
   & > * {
     width: 20%;
 
-    &:first-of-type {
+    &:first-child {
       width: 60%;
     }
   }
 `;
 
-const Table: FC<{ children: ReactElement[] }> = ({ children }) => {
+const Table: FC<{ columnTitles: string[]; rows?: ReactElement[] }> = ({
+  columnTitles,
+  rows,
+}) => {
   return (
     <TableContainer>
       <List>
         <Title>
-          <span>Title 1</span>
-          <span>Title 2</span>
-          <span>Title 3</span>
+          {columnTitles.map((title, i) => (
+            <span key={i}>{title}</span>
+          ))}
         </Title>
-        {children.map((row, i) => (
-          <Item key={i}>{row}</Item>
-        ))}
+        {rows && rows.map((row, i) => <Item key={i}>{row}</Item>)}
       </List>
     </TableContainer>
   );

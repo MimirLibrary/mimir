@@ -716,6 +716,13 @@ export type GetReasonOfBlockQueryVariables = Exact<{
 
 export type GetReasonOfBlockQuery = { __typename?: 'Query', getReasonOfBlock?: { __typename?: 'BlockedUsers', state: boolean, description?: string | null } | null };
 
+export type GetStatusesByMaterialQueryVariables = Exact<{
+  material_id: Scalars['ID'];
+}>;
+
+
+export type GetStatusesByMaterialQuery = { __typename?: 'Query', getStatusesByMaterial: Array<{ __typename?: 'Status', id: string, status: string, created_at: any, person: { __typename?: 'Person', id: string, avatar: string, username: string, statuses?: Array<{ __typename?: 'Status', material_id: number, status: string, created_at: any } | null> | null } } | null> };
+
 export type SearchOfMaterialsQueryVariables = Exact<{
   search: Scalars['String'];
   location: Scalars['String'];
@@ -1840,6 +1847,53 @@ export function useGetReasonOfBlockLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type GetReasonOfBlockQueryHookResult = ReturnType<typeof useGetReasonOfBlockQuery>;
 export type GetReasonOfBlockLazyQueryHookResult = ReturnType<typeof useGetReasonOfBlockLazyQuery>;
 export type GetReasonOfBlockQueryResult = Apollo.QueryResult<GetReasonOfBlockQuery, GetReasonOfBlockQueryVariables>;
+export const GetStatusesByMaterialDocument = gql`
+    query GetStatusesByMaterial($material_id: ID!) {
+  getStatusesByMaterial(material_id: $material_id) {
+    id
+    status
+    created_at
+    person {
+      id
+      avatar
+      username
+      statuses {
+        material_id
+        status
+        created_at
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetStatusesByMaterialQuery__
+ *
+ * To run a query within a React component, call `useGetStatusesByMaterialQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetStatusesByMaterialQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetStatusesByMaterialQuery({
+ *   variables: {
+ *      material_id: // value for 'material_id'
+ *   },
+ * });
+ */
+export function useGetStatusesByMaterialQuery(baseOptions: Apollo.QueryHookOptions<GetStatusesByMaterialQuery, GetStatusesByMaterialQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetStatusesByMaterialQuery, GetStatusesByMaterialQueryVariables>(GetStatusesByMaterialDocument, options);
+      }
+export function useGetStatusesByMaterialLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetStatusesByMaterialQuery, GetStatusesByMaterialQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetStatusesByMaterialQuery, GetStatusesByMaterialQueryVariables>(GetStatusesByMaterialDocument, options);
+        }
+export type GetStatusesByMaterialQueryHookResult = ReturnType<typeof useGetStatusesByMaterialQuery>;
+export type GetStatusesByMaterialLazyQueryHookResult = ReturnType<typeof useGetStatusesByMaterialLazyQuery>;
+export type GetStatusesByMaterialQueryResult = Apollo.QueryResult<GetStatusesByMaterialQuery, GetStatusesByMaterialQueryVariables>;
 export const SearchOfMaterialsDocument = gql`
     query SearchOfMaterials($search: String!, $location: String!) {
   searchOfMaterials(input: {search: $search, location: $location}) {

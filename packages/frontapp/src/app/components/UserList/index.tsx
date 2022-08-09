@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useGetAllPersonsQuery } from '@mimir/apollo-client';
 import { t } from 'i18next';
@@ -8,8 +8,6 @@ import { IClaimHistory } from '../../models/helperFunctions/claimHistory';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import { useAppDispatch } from '../../hooks/useTypedDispatch';
 import { setSearchReaders } from '../../store/slices/readersSlice';
-import Pic from '../../../assets/avatar.jpg';
-import { IReadersState } from '../../types';
 
 const ReadersWrapper = styled.div`
   display: flex;

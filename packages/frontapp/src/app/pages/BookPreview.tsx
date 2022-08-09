@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import BookInfo from '../components/BookInfo';
 import AllBooksList from '../components/AllBooksList';
@@ -9,19 +9,23 @@ import { colors, dimensions } from '@mimir/ui-kit';
 import {
   useGetMaterialByIdQuery,
   useGetAllMaterialsQuery,
-  useGetAllPersonsLazyQuery,
+  useGetStatusesByMaterialLazyQuery,
+  GetStatusesByMaterialQuery,
 } from '@mimir/apollo-client';
 import { ReactComponent as ScrollButtonRight } from '../../assets/ArrowButtonRight.svg';
 import { ReactComponent as ScrollButtonLeft } from '../../assets/ArrowButtonLeft.svg';
 import DonateInfo from '../components/DonateInfo';
 import BackButton from '../components/BackButton';
-import { RolesTypes } from '@mimir/global-types';
+import { RolesTypes, StatusTypes } from '@mimir/global-types';
 import { TextArticle } from '../globalUI/TextArticle';
 import { TextBase } from '../globalUI/TextBase';
 import Search from '../components/Search';
 import { useTranslation } from 'react-i18next';
 import { useDebounce } from '../hooks/useDebounce';
 import Table from '../globalUI/Table';
+import SingleUser from '../components/UserList/SingleUser';
+import { IClaimHistory } from '../models/helperFunctions/claimHistory';
+import { getDates } from '../models/helperFunctions/converTime';
 
 export const ButtonGroup = styled.div`
   display: flex;
@@ -48,23 +52,62 @@ const SearchWrapper = styled.div`
   margin: ${dimensions.xl_2} 0 ${dimensions.base};
 `;
 
+const RestyleSingleUser = styled(SingleUser)`
+  padding: 0;
+  height: auto;
+  background: none;
+  box-shadow: none;
+`;
+
+const FieldsText = styled.p<IFieldsTextProps>`
+  font-weight: 500;
+  font-size: ${dimensions.sm};
+  color: ${({ overdue, returned }) =>
+    overdue
+      ? colors.problem_red
+      : returned
+      ? colors.free_book
+      : colors.accent_color};
+  margin-bottom: ${dimensions.xs_2};
+`;
+
+interface IFieldsTextProps {
+  overdue?: boolean;
+  returned?: boolean;
+}
+
 type BookPreviewProps = {
   donate?: boolean;
 };
 
+const columnTitles = ['User', 'Deadline', 'State'];
+
 const BookPreview = ({ donate }: BookPreviewProps) => {
   const { item_id } = useParams();
   const [search, setSearch] = useState<string>('');
+  const [claimHistory, setClaimHistory] =
+    useState<GetStatusesByMaterialQuery['getStatusesByMaterial']>();
   const debounceSearch = useDebounce<string>(search, 1000);
   const { t } = useTranslation();
   const { id, location, userRole } = useAppSelector((state) => state.user);
   const { data, loading } = useGetMaterialByIdQuery({
     variables: { id: item_id! },
   });
+  const [getStatusesByMaterial] = useGetStatusesByMaterialLazyQuery({
+    variables: {
+      material_id: item_id!,
+    },
+  });
   const { data: getAllMaterials } = useGetAllMaterialsQuery({
     variables: { location_id: location.id },
   });
-  const [getAllPersons] = useGetAllPersonsLazyQuery();
+  const filteredHistory = useMemo(
+    () =>
+      claimHistory?.filter((item) =>
+        item?.person.username.match(new RegExp(debounceSearch, 'i'))
+      ),
+    [claimHistory, debounceSearch]
+  );
 
   const lastStatusAnotherPerson = data?.getMaterialById.statuses.slice(-1)[0];
 
@@ -72,15 +115,24 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
     setSearch(e.target.value);
   };
 
-  useEffect(() => {
-    getAllPersons({
-      variables: {
-        username: debounceSearch,
-      },
-    }).then((res) => console.log(res.data?.getAllPersons));
-  }, [debounceSearch]);
+  const countReturnDate = (created_at: Date) => {
+    const day = `${getDates(created_at).returnDate.getDate()}`.padStart(2, '0');
+    const month = `${getDates(created_at).returnDate.getMonth() + 1}`.padStart(
+      2,
+      '0'
+    );
+    return `${t('UserCard.Table.ReturnTill')} ${day}.${month}`;
+  };
 
-  const testArr = Array.from({ length: 3 }, (v, k) => k);
+  useEffect(() => {
+    getStatusesByMaterial({
+      variables: {
+        material_id: item_id!,
+      },
+    }).then(({ data }) => {
+      setClaimHistory(data?.getStatusesByMaterial);
+    });
+  }, []);
 
   if (loading) return <h1>Loading...</h1>;
 
@@ -151,15 +203,45 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
                   search={search}
                 />
               </SearchWrapper>
-              <Table>
-                {testArr.map((_, i) => (
-                  <Fragment key={i}>
-                    <div>Div 1</div>
-                    <div>Div 2</div>
-                    <div>Div 3</div>
-                  </Fragment>
-                ))}
-              </Table>
+              <Table
+                columnTitles={columnTitles}
+                rows={
+                  filteredHistory &&
+                  filteredHistory
+                    .map((item) => {
+                      if (!item) return <></>;
+                      return (
+                        <Fragment key={item?.id}>
+                          <RestyleSingleUser
+                            avatar={item?.person.avatar}
+                            id={item?.person.id}
+                            name={item?.person.username}
+                            statuses={item?.person.statuses as IClaimHistory[]}
+                          />
+                          <FieldsText>
+                            {countReturnDate(item.created_at)}
+                          </FieldsText>
+                          {item.status === StatusTypes.FREE ? (
+                            <FieldsText returned>
+                              {t('UserCard.Table.Returned')}
+                            </FieldsText>
+                          ) : item.status === 'Overdue' ? (
+                            <FieldsText overdue>
+                              {t('UserCard.Table.Overdue')}
+                            </FieldsText>
+                          ) : (
+                            <FieldsText>
+                              {item.status === StatusTypes.BUSY
+                                ? t('UserCard.Table.Claim')
+                                : t('UserCard.Table.Prolong')}
+                            </FieldsText>
+                          )}
+                        </Fragment>
+                      );
+                    })
+                    .reverse()
+                }
+              ></Table>
             </>
           )}
         </>
