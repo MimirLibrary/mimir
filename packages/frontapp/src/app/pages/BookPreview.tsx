@@ -48,6 +48,10 @@ const SuggestionText = styled.h3`
   flex: 1;
 `;
 
+const ClaimHistoryWrapper = styled.div`
+  margin-top: calc(${dimensions.base_2}*2);
+`;
+
 const SearchWrapper = styled.div`
   margin: ${dimensions.xl_2} 0 ${dimensions.base};
 `;
@@ -191,7 +195,7 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
               />
             </>
           ) : (
-            <>
+            <ClaimHistoryWrapper>
               <TextArticle>Claim history</TextArticle>
               <TextBase>
                 List of all items user have taken for all the time
@@ -242,7 +246,7 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
                     .reverse()
                 }
               ></Table>
-            </>
+            </ClaimHistoryWrapper>
           )}
         </>
       )}
