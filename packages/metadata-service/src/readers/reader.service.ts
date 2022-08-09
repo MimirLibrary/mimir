@@ -3,6 +3,15 @@ import { DbService } from './db.service';
 import { OzbyService } from './ozby.service';
 import { LabirintService } from './labirint.service';
 import { ChitaiGorodService } from './chitai-gorod.service';
+import { Identifier, Material, Author, Publisher } from '@prisma/client';
+
+type ReturnLookUpType = Identifier & {
+  material: Material & {
+    identifiers: Identifier[];
+    authors: Author[];
+    publisher: Publisher;
+  };
+};
 
 @Injectable()
 export class ReaderService {
@@ -13,7 +22,7 @@ export class ReaderService {
     private chitaiGorodService: ChitaiGorodService
   ) {}
 
-  async lookup(isbn: string) {
+  async lookup(isbn: string): Promise<ReturnLookUpType> {
     try {
       const existing = await this.findExistingMaterial(isbn);
       if (existing) return existing;
