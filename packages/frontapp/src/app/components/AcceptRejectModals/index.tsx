@@ -15,13 +15,15 @@ type IDonateProps = {
   title: string | undefined;
   statusInfo: any;
   identifier: string;
+  method: string;
 };
-export const AcceptDonate: FC<IDonateProps> = ({
+const AcceptRejectModals: FC<IDonateProps> = ({
   active,
   setActive,
   title,
   statusInfo,
   identifier,
+  method,
 }) => {
   const [returnBook] = useReturnBookMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
@@ -36,26 +38,6 @@ export const AcceptDonate: FC<IDonateProps> = ({
     });
     setActive(false);
   };
-  return (
-    <Modal active={active} setActive={setActive}>
-      <ErrorMessage
-        title="Warning!"
-        message={`Are you sure you want to add the book "${title}" from the library?`}
-        setActive={setActive}
-        titleCancel="Yes, accept"
-        titleOption="Cancel"
-        onClick={acceptBook}
-      />
-    </Modal>
-  );
-};
-export const RejectDonate: FC<IDonateProps> = ({
-  active,
-  setActive,
-  title,
-  statusInfo,
-  identifier,
-}) => {
   const [rejectItem] = useRejectItemMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
@@ -72,14 +54,27 @@ export const RejectDonate: FC<IDonateProps> = ({
   };
   return (
     <Modal active={active} setActive={setActive}>
-      <ErrorMessage
-        title="Warning!"
-        message={`Are you sure you want to reject the book "${title}" from the library?`}
-        setActive={setActive}
-        titleCancel="Yes, reject"
-        titleOption="Cancel"
-        onClick={rejectBook}
-      />
+      {method === 'reject' ? (
+        <ErrorMessage
+          title="Warning!"
+          message={`Are you sure you want to reject the book "${title}" from the library?`}
+          setActive={setActive}
+          titleCancel="Yes, reject"
+          titleOption="Cancel"
+          onClick={rejectBook}
+        />
+      ) : (
+        <ErrorMessage
+          title="Warning!"
+          message={`Are you sure you want to add the book "${title}" from the library?`}
+          setActive={setActive}
+          titleCancel="Yes, accept"
+          titleOption="Cancel"
+          onClick={acceptBook}
+        />
+      )}
     </Modal>
   );
 };
+
+export default AcceptRejectModals;

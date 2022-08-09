@@ -13,7 +13,7 @@ import {
   Description,
   WrapperButtons,
 } from '../BookInfo';
-import { AcceptDonate, RejectDonate } from '../AcceptRejectModals';
+import AcceptRejectModals from '../AcceptRejectModals';
 import StyledButton from '../Button';
 import EmptyCover from '../../../assets/MOC-data/EmptyCover.png';
 const DonateInfo = ({
@@ -27,8 +27,16 @@ const DonateInfo = ({
   location_id,
   src,
 }: IBookInfoProps) => {
-  const [accept, setAccept] = useState(false);
-  const [reject, setReject] = useState(false);
+  const [active, setActive] = useState(false);
+  const [method, setMethod] = useState('');
+  const onClickReject = () => {
+    setActive(true);
+    setMethod('reject');
+  };
+  const onClickAccept = () => {
+    setActive(true);
+    setMethod('accept');
+  };
   return (
     <>
       <BookHolder>
@@ -52,11 +60,11 @@ const DonateInfo = ({
           </WrapperInfo>
           {statusInfo.status === 'Pending' && (
             <WrapperButtons>
-              <StyledButton value="Accept" onClick={() => setAccept(true)} />
+              <StyledButton value="Accept" onClick={onClickAccept} />
               <StyledButton
                 value="Reject"
                 transparent
-                onClick={() => setReject(true)}
+                onClick={onClickReject}
               />
             </WrapperButtons>
           )}
@@ -66,19 +74,13 @@ const DonateInfo = ({
           <Description>{description}</Description>
         </LongDescription>
       </BookHolder>
-      <AcceptDonate
-        active={accept}
-        setActive={setAccept}
+      <AcceptRejectModals
+        active={active}
+        setActive={setActive}
         title={title}
         statusInfo={statusInfo}
         identifier={identifier}
-      />
-      <RejectDonate
-        active={reject}
-        setActive={setReject}
-        title={title}
-        statusInfo={statusInfo}
-        identifier={identifier}
+        method={method}
       />
     </>
   );

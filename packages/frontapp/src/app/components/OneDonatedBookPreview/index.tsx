@@ -5,7 +5,7 @@ import EmptyCover from '../../../assets/MOC-data/EmptyCover.png';
 import Button from '../Button';
 import { useNavigate } from 'react-router-dom';
 import { dimensions, colors } from '@mimir/ui-kit';
-import { AcceptDonate } from '../AcceptRejectModals';
+import AcceptRejectModals from '../AcceptRejectModals';
 interface BackgroundProps {
   GrayBackground?: boolean;
 }
@@ -68,7 +68,7 @@ const Description = styled.p`
     height: 150px;
   }
 `;
-const DonateeName = styled.p`
+const DonatorName = styled.p`
   font-size: 16px;
   flex: 1;
   color: blue;
@@ -147,9 +147,9 @@ const OneDonator = ({
             </Description>
           </Wrapper>
         </FlexContainer>
-        <DonateeName>
+        <DonatorName>
           {personName ? personName?.getOnePerson.username : 'unknown'}
-        </DonateeName>
+        </DonatorName>
         <WrapperBtn>
           {lastStatus.status === 'Pending' && (
             <Button onClick={() => setAccept(true)} value="Accept" />
@@ -158,12 +158,13 @@ const OneDonator = ({
           {lastStatus.status === 'Rejected' && <Rejected>Rejected</Rejected>}
         </WrapperBtn>
       </DonateWrapper>
-      <AcceptDonate
+      <AcceptRejectModals
         active={accept}
         setActive={setAccept}
         title={title}
         statusInfo={lastStatus}
         identifier={identifier}
+        method="accept"
       />
     </>
   );
