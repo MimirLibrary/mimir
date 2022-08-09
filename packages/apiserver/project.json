@@ -59,12 +59,12 @@
     "deploy": {
       "executor": "nx:run-commands",
       "dependsOn": ["build"],
-      "options": { },
+      "options": {},
       "configurations": {
         "production": {
           "commands": [
             "cp package-lock.json dist/packages/apiserver",
-            "rsync -azvr --delete dist/packages/apiserver root@mimirapp.xyz:/srv/apiserver"
+            "rsync -azvr --delete --chown=app:app dist/packages/apiserver/ root@mimirapp.xyz:/srv/apiserver"
           ],
           "parallel": false
         }

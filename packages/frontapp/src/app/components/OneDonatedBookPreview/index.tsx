@@ -133,12 +133,7 @@ const OneDonator = ({
     <>
       <DonateWrapper GrayBackground={GrayBackground}>
         <FlexContainer onClick={() => handleRedirect(id)}>
-          <BookImage
-            src={
-              (picture && `${process.env['NX_API_ROOT_URL']}/${picture}`) ||
-              EmptyCover
-            }
-          />
+          <BookImage src={picture || EmptyCover} />
           <Wrapper>
             <Title>{title}</Title>
             <Description>

@@ -223,9 +223,9 @@ const StyledButton = styled(Button)`
 `;
 
 interface IDataOfBook {
-  title: string;
-  author: string;
-  genre: string;
+  title: string | null | undefined;
+  author: string | null | undefined;
+  genre: string | null | undefined;
 }
 
 interface IPropsDonateBook {
@@ -238,7 +238,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
   const [file, setFile] = useState<File | null>(null);
   const [pictureOfCover, setPictureOfCover] = useState<string | null>(null);
   const [isSuccess, setSuccess] = useState<boolean>(false);
-  const [description, setDescription] = useState<string>('');
+  const [description, setDescription] = useState<string | undefined | null>('');
   const [isAskManager, setIsAskManager] = useState<boolean>(false);
   const [sendManagerSuccess, setSendManagerSuccess] = useState<boolean>(false);
 
@@ -282,16 +282,17 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
   useEffect(() => {
     if (data) {
       setDataOfBook({
-        title: data.getMaterialByIdentifierFromMetadata.material.title,
-        genre: data.getMaterialByIdentifierFromMetadata.material.meta.series,
-        author: data.getMaterialByIdentifierFromMetadata.material.authors
+        title: data?.getMaterialByIdentifierFromMetadata?.material?.title,
+        genre:
+          data?.getMaterialByIdentifierFromMetadata?.material?.meta?.series,
+        author: data?.getMaterialByIdentifierFromMetadata?.material?.authors
           ?.map((item) => item?.name)
           .join('/'),
       });
       setDescription(
-        data.getMaterialByIdentifierFromMetadata.material.description
+        data?.getMaterialByIdentifierFromMetadata?.material?.description
       );
-      if (data.getMaterialByIdentifierFromMetadata.material.cover)
+      if (data?.getMaterialByIdentifierFromMetadata?.material?.cover)
         setPictureOfCover(
           data.getMaterialByIdentifierFromMetadata.material.cover
         );
@@ -361,14 +362,14 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
         variables: {
           person_id: id,
           picture: pictureOfCover,
-          title,
-          author,
+          title: title!,
+          author: author!,
           identifier,
           type: 'Book',
           description,
-          category: genre,
+          category: genre!,
           location_id: Number(location.id),
-          id_type: data?.getMaterialByIdentifierFromMetadata.idType || 'ISBN',
+          id_type: data?.getMaterialByIdentifierFromMetadata?.idType || 'ISBN',
           role: userRole,
           is_donated: true,
         },
@@ -404,7 +405,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
                       type="text"
                       id="title"
                       name="title"
-                      value={dataOfBook.title}
+                      value={dataOfBook.title || ''}
                       onChange={handleChange}
                       autoComplete="off"
                       placeholder="Enter title"
@@ -418,7 +419,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
                       type="text"
                       id="author"
                       name="author"
-                      value={dataOfBook.author}
+                      value={dataOfBook.author || ''}
                       onChange={handleChange}
                       autoComplete="off"
                       required
@@ -433,7 +434,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
                       type="text"
                       id="genre"
                       name="genre"
-                      value={dataOfBook.genre}
+                      value={dataOfBook.genre || ''}
                       onChange={handleChange}
                       autoComplete="off"
                       required
@@ -464,7 +465,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
             </StyledDescription>
             <StyledTextArea
               id="description"
-              value={description}
+              value={description || ''}
               onChange={handleChangeDescription}
               placeholder="Enter your text"
               required

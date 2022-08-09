@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { t } from 'i18next';
 import {
   specialParseDate,
@@ -6,11 +6,16 @@ import {
 } from '../../models/helperFunctions/converTime';
 import { OpenLink } from '../ManagerInfoCard';
 import styled from '@emotion/styled';
-import { dimensions } from '@mimir/ui-kit';
+import { colors, dimensions } from '@mimir/ui-kit';
 import { RoutesTypes } from '../../../utils/routes';
 import { Description, Title } from '../UserCard';
+import AnswerToUser from '../AnswerToUser';
+import Modal from '../Modal';
+import { useAppSelector } from '../../hooks/useTypedSelector';
+import { RolesTypes } from '@mimir/global-types';
 
 export interface IOneNotification {
+  id: string | undefined;
   type: string;
   created_at: Date;
   title: string;
@@ -60,14 +65,35 @@ const NotificationWrapper = styled.div<INotificationsProps>`
 `;
 
 interface IRestyledOpenLinkProps {
-  showUserLink: boolean;
+  showuserlink: boolean;
 }
 
 const RestyledOpenLink = styled(OpenLink)<IRestyledOpenLinkProps>`
-  display: ${(props) => (props.showUserLink ? 'inline' : 'none')};
+  display: ${(props) => (props.showuserlink ? 'inline' : 'none')};
   margin-right: ${dimensions.xs_2};
   color: black;
   text-decoration: none;
+`;
+
+const ButtonAnswer = styled.button`
+  flex: none;
+  outline: none;
+  border: none;
+  background: transparent;
+  text-decoration: underline;
+  color: ${colors.accent_color};
+  font-size: ${dimensions.base};
+  position: absolute;
+  right: 71px;
+  order: 1;
+  flex-grow: 0;
+  text-align: center;
+  cursor: pointer;
+  @media (max-width: ${dimensions.tablet_width}) {
+    position: static;
+    display: block;
+    text-align: center;
+  }
 `;
 
 interface IDescriptionProps {
@@ -82,10 +108,26 @@ const NotificationDescription = styled.p<IDescriptionProps>`
     small ? `${dimensions.xs}` : `${dimensions.base}`};
 `;
 
+interface IDataOfMessage {
+  id: string | undefined;
+  person_id: string | undefined;
+}
+
+const answers = [
+  'You have missed the due date for your book. Return it as soon as possible or contact the manager in room 35',
+  'We have accepted your donation to the library! Thank you!',
+  "If you don't check out all expired items in the library within a week, you will be banned from the app",
+];
+
 const Notifications: FC<INotifications> = ({
   notifications,
   showUserLink = false,
 }) => {
+  const { userRole } = useAppSelector((state) => state.user);
+  const [isAnswerModal, setIsAnswerModal] = useState<boolean>(false);
+  const [dataOfMessage, setDataOfMessage] = useState<IDataOfMessage | null>(
+    null
+  );
   const sortedNotifications = notifications.sort(
     (a, b) =>
       new Date(b?.created_at).getTime() - new Date(a?.created_at).getTime()
@@ -97,6 +139,18 @@ const Notifications: FC<INotifications> = ({
     (notification) => !todayCondition(new Date(notification.created_at))
   );
 
+  const handleAnswerModal = useCallback(
+    (dataOfMessage: IDataOfMessage) => {
+      setDataOfMessage(dataOfMessage);
+      setIsAnswerModal(true);
+    },
+    [dataOfMessage]
+  );
+
+  const handleClose = useCallback(() => {
+    setIsAnswerModal(false);
+  }, []);
+
   return (
     <>
       <Title>{t('Notifications.Managers.MainTitle')}</Title>
@@ -106,7 +160,7 @@ const Notifications: FC<INotifications> = ({
           <Subtitle>{t('Notifications.Today')}</Subtitle>
           {todayNotifications?.map((notification) =>
             notification.type === 'message' ? (
-              <NotificationWrapper message today>
+              <NotificationWrapper message today key={notification?.user?.id}>
                 <ColumnWrapper>
                   <NotificationDescription titlee>
                     {notification.title}
@@ -117,13 +171,24 @@ const Notifications: FC<INotifications> = ({
                   <NotificationDescription small>
                     <RestyledOpenLink
                       to={`${RoutesTypes.READERS}/${notification.user?.id}`}
-                      showUserLink={showUserLink}
+                      showuserlink={showUserLink}
                     >
                       {notification.user?.name}
                     </RestyledOpenLink>
                   </NotificationDescription>
                 </ColumnWrapper>
-                <OpenLink to="#">{t('ManagerInfoCard.Link.Answer')}</OpenLink>
+                {userRole !== RolesTypes.READER && (
+                  <ButtonAnswer
+                    onClick={() =>
+                      handleAnswerModal({
+                        id: notification.id,
+                        person_id: notification.user?.id,
+                      })
+                    }
+                  >
+                    {t('ManagerInfoCard.Link.Answer')}
+                  </ButtonAnswer>
+                )}
               </NotificationWrapper>
             ) : (
               <NotificationWrapper>
@@ -142,7 +207,7 @@ const Notifications: FC<INotifications> = ({
           <Subtitle>{t('Notifications.Earlier')}</Subtitle>
           {earlierNotifications?.map((notification) =>
             notification.type === 'message' ? (
-              <NotificationWrapper message>
+              <NotificationWrapper message key={notification.id}>
                 <ColumnWrapper>
                   <NotificationDescription titlee>
                     {notification.title}
@@ -153,14 +218,25 @@ const Notifications: FC<INotifications> = ({
                   <NotificationDescription small>
                     <RestyledOpenLink
                       to={`${RoutesTypes.READERS}/${notification.user?.id}`}
-                      showUserLink={showUserLink}
+                      showuserlink={showUserLink}
                     >
                       {notification.user?.name}
                     </RestyledOpenLink>
                     {specialParseDate(new Date(notification.created_at))}
                   </NotificationDescription>
                 </ColumnWrapper>
-                <OpenLink to="#">{t('ManagerInfoCard.Link.Answer')}</OpenLink>
+                {userRole !== RolesTypes.READER && (
+                  <ButtonAnswer
+                    onClick={() =>
+                      handleAnswerModal({
+                        id: notification.id,
+                        person_id: notification.user?.id,
+                      })
+                    }
+                  >
+                    {t('ManagerInfoCard.Link.Answer')}
+                  </ButtonAnswer>
+                )}
               </NotificationWrapper>
             ) : (
               <NotificationWrapper>
@@ -178,6 +254,16 @@ const Notifications: FC<INotifications> = ({
           )}
         </>
       )}
+      <Modal active={isAnswerModal} setActive={setIsAnswerModal}>
+        {isAnswerModal && (
+          <AnswerToUser
+            id={dataOfMessage?.id}
+            person_id={dataOfMessage?.person_id}
+            answers={answers}
+            close={handleClose}
+          />
+        )}
+      </Modal>
     </>
   );
 };

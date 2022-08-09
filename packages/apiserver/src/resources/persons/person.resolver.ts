@@ -64,7 +64,7 @@ export class PersonResolver {
         return new UnauthorizedException("A person didn't found");
       }
       person.location_id = location_id;
-      person.save();
+      await person.save();
       return person;
     } catch (e) {
       return new BadRequestException();

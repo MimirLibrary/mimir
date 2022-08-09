@@ -127,6 +127,7 @@ const UserCard = () => {
   const [value, setValue] = useState<string>('');
   const messages = OnePerson?.getOnePerson.messages?.map((message) => {
     return {
+      id: message?.id,
       type: 'message',
       created_at: message?.created_at,
       title: message!.title,
@@ -135,6 +136,7 @@ const UserCard = () => {
   });
   const states = OnePerson?.getOnePerson.states?.map((state) => {
     return {
+      id: state?.id,
       type: 'block',
       created_at: state?.created_at,
       title: state?.state

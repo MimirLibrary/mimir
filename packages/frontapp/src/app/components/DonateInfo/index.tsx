@@ -23,8 +23,6 @@ const DonateInfo = ({
   category,
   statusInfo,
   identifier,
-  type,
-  location_id,
   src,
 }: IBookInfoProps) => {
   const [active, setActive] = useState(false);
@@ -37,17 +35,13 @@ const DonateInfo = ({
     setActive(true);
     setMethod('accept');
   };
+
   return (
     <>
       <BookHolder>
         <ShortDescriptionWrapper>
           <WrapperInfo>
-            <BookImage
-              src={
-                (src && `${process.env['NX_API_ROOT_URL']}/${src}`) ||
-                EmptyCover
-              }
-            />
+            <BookImage src={src || EmptyCover} />
             <ShortDescription>
               <TitleBook>{title}</TitleBook>
 

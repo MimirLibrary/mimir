@@ -31,6 +31,7 @@ export class FileService {
 
   moveFileInMainStorage(fileName: string | null, identifier: string) {
     if (!fileName) return null;
+    if (/http/.test(fileName.split('//')[0])) return fileName;
     try {
       const onlyFileName = fileName.split('/').pop();
       const filePathToStorage = path.resolve(

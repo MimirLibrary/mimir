@@ -17,6 +17,7 @@ const NotificationPage = () => {
     setNotifications(
       data.getAllMessages!.map((item) => {
         return {
+          id: item.id,
           created_at: item.created_at,
           message: item.message,
           user: { id: item.person.id, name: item.person.username },
