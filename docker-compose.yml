@@ -8,8 +8,8 @@ services:
     ports:
       - '5432:5432'
     environment:
-      - POSTGRES_USER: postgres
-      - POSTGRES_PASSWORD: ${DB_ROOT_PASSWORD}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_ROOT_PASSWORD}
 
   websrv:
     image: nginx:latest
