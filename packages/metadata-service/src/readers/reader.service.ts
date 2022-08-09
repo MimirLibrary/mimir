@@ -14,19 +14,23 @@ export class ReaderService {
   ) {}
 
   async lookup(isbn: string) {
-    const existing = await this.findExistingMaterial(isbn);
-    if (existing) return existing;
+    try {
+      const existing = await this.findExistingMaterial(isbn);
+      if (existing) return existing;
 
-    const startedAt = new Date();
-    const result = await this.getDataFromServices(isbn);
-    if (result) {
-      await this.db.syncMaterial(isbn, result, startedAt);
-    } else {
-      if (!existing) {
-        this.db.saveMissingISBN(isbn, startedAt);
+      const startedAt = new Date();
+      const result = await this.getDataFromServices(isbn);
+      if (result) {
+        await this.db.syncMaterial(isbn, result, startedAt);
+      } else {
+        if (!existing) {
+          this.db.saveMissingISBN(isbn, startedAt);
+        }
       }
+      return this.db.findMaterial(isbn);
+    } catch (e) {
+      console.error('Something went wrong!');
     }
-    return result;
   }
 
   private async getDataFromServices(isbn: string) {
