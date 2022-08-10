@@ -25,7 +25,7 @@ import { useDebounce } from '../hooks/useDebounce';
 import Table from '../globalUI/Table';
 import SingleUser from '../components/UserList/SingleUser';
 import { IClaimHistory } from '../models/helperFunctions/claimHistory';
-import { getDates } from '../models/helperFunctions/converTime';
+import { getDates, isOverdue } from '../models/helperFunctions/converTime';
 
 export const ButtonGroup = styled.div`
   display: flex;
@@ -229,7 +229,7 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
                             <FieldsText returned>
                               {t('UserCard.Table.Returned')}
                             </FieldsText>
-                          ) : item.status === 'Overdue' ? (
+                          ) : isOverdue(item.created_at) ? (
                             <FieldsText overdue>
                               {t('UserCard.Table.Overdue')}
                             </FieldsText>
