@@ -23,10 +23,12 @@ interface OneDonatorProps {
 const BookImage = styled.img`
   display: inline-block;
   height: 10.5rem;
-  width: 8rem;
+  max-width: 8rem;
+  min-width: 8rem;
   @media (max-width: ${dimensions.phone_width}) {
     height: 6rem;
-    width: 5rem;
+    max-width: 5rem;
+    min-width: 5rem;
   }
 `;
 
@@ -94,12 +96,12 @@ const FlexContainer = styled.div`
     flex: 1;
   }
 `;
-const Accepted = styled.p`
+export const Accepted = styled.p`
   font-size: 16px;
   font-weight: 500;
   color: ${colors.main_green};
 `;
-const Rejected = styled.p`
+export const Rejected = styled.p`
   font-size: 16px;
   font-weight: 500;
   color: ${colors.problem_red};

@@ -16,6 +16,7 @@ import {
 import AcceptRejectModals from '../AcceptRejectModals';
 import StyledButton from '../Button';
 import EmptyCover from '../../../assets/MOC-data/EmptyCover.png';
+import { Accepted, Rejected } from '../OneDonatedBookPreview';
 const DonateInfo = ({
   description,
   title,
@@ -62,6 +63,8 @@ const DonateInfo = ({
               />
             </WrapperButtons>
           )}
+          {statusInfo.status === 'Free' && <Accepted>Accepted</Accepted>}
+          {statusInfo.status === 'Rejected' && <Rejected>Rejected</Rejected>}
         </ShortDescriptionWrapper>
         <LongDescription>
           <Topic>Description: </Topic>
