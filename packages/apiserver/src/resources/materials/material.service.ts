@@ -21,12 +21,15 @@ export class MaterialService {
   ) {}
   async search(searchInput: SearchInput) {
     const { search, location } = searchInput;
-    if (!search) return null;
     const data = await Material.createQueryBuilder('material')
       .leftJoinAndSelect('material.location', 'location')
       .where(
-        'location.location = :location ' +
-          'AND (material.title ILIKE :text OR material.author ILIKE :text)',
+        `location.location = :location
+        ${
+          search
+            ? 'AND (material.title ILIKE :text OR material.author ILIKE :text)'
+            : ''
+        }`,
         { location, text: `%${search}%` }
       )
       .getMany();

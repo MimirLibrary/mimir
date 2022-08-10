@@ -1,13 +1,19 @@
 import React, { useEffect } from 'react';
 import { WrapperList } from '../ListBooks';
 import { useAppSelector } from '../../hooks/useTypedSelector';
-import { useGetAllMaterialsForManagerQuery } from '@mimir/apollo-client';
+import {
+  useGetAllMaterialsForManagerQuery,
+  useSearchOfMaterialsQuery,
+} from '@mimir/apollo-client';
 import BookCardExtended from '../BookCardExtended';
 import styled from '@emotion/styled';
 import { WrapperLoader } from '../DonateBookFlow';
 import { toast } from 'react-toastify';
 import { colors, dimensions } from '@mimir/ui-kit';
 import Loader from '../Loader';
+import { setSearchMaterials } from '../../store/slices/materialsSlice';
+import { useAppDispatch } from '../../hooks/useTypedDispatch';
+import { IMaterial } from '../../types';
 
 const StyledWrapperList = styled(WrapperList)`
   grid-template-columns: repeat(auto-fill, 310px);
@@ -22,13 +28,17 @@ const ListAllItems = () => {
   const { data, loading, error } = useGetAllMaterialsForManagerQuery({
     variables: { location_id: location.id },
   });
-
+  const dispatch = useAppDispatch();
+  const { searchMaterials } = useAppSelector((state) => state.materials);
+  useEffect(() => {
+    if (data && !searchMaterials?.length)
+      dispatch(setSearchMaterials(data?.getAllMaterials as IMaterial[]));
+  }, [data]);
   useEffect(() => {
     if (error) {
       toast.error(error.message);
     }
   }, [error]);
-
   return (
     <>
       {loading ? (
@@ -42,10 +52,9 @@ const ListAllItems = () => {
         </WrapperLoader>
       ) : (
         <StyledWrapperList>
-          {data?.getAllMaterials &&
-            data.getAllMaterials.map((item) => (
-              <BookCardExtended key={item?.id} item={item} />
-            ))}
+          {searchMaterials?.map((item) => (
+            <BookCardExtended key={item?.id} item={item} />
+          ))}
         </StyledWrapperList>
       )}
     </>

@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import src from '../../../assets/MOC-data/BookImage.png';
 import { getCurrentStatus } from '../../models/helperFunctions/getCurrentStatus';
+import { IMaterial } from '../../types';
 
 const Wrapper = styled.div`
   background: ${colors.bg_secondary};
@@ -81,31 +82,8 @@ const HistoryBook = styled.p`
   line-height: ${dimensions.base};
 `;
 
-interface IPerson {
-  __typename?: 'Person' | undefined;
-  id: string;
-  username: string;
-}
-
-export interface IStatuses {
-  __typename?: 'Status' | undefined;
-  id: string;
-  created_at: any;
-  status: string;
-  person: IPerson;
-}
-
-interface IItem {
-  __typename?: 'Material' | undefined;
-  id: string;
-  title: string;
-  category: string;
-  picture?: string | null | undefined;
-  statuses: Array<IStatuses | null>;
-}
-
 interface IPropsBookCardExtended {
-  item: IItem | null;
+  item: IMaterial | null;
 }
 
 const BookCardExtended: FC<IPropsBookCardExtended> = ({ item }) => {

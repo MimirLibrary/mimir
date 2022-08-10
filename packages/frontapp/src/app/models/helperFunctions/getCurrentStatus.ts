@@ -1,5 +1,5 @@
 import { isOverdue } from './converTime';
-import { IStatuses } from '../../components/BookCardExtended';
+import { IStatus } from '../../types';
 
 type ResponseGetCurrentStatus = {
   type: string;
@@ -7,7 +7,7 @@ type ResponseGetCurrentStatus = {
 };
 
 export function getCurrentStatus(
-  currentStatus: IStatuses | null | undefined
+  currentStatus: IStatus | null | undefined
 ): string | ResponseGetCurrentStatus {
   switch (currentStatus?.status) {
     case 'Free':
@@ -16,12 +16,12 @@ export function getCurrentStatus(
       if (isOverdue(currentStatus.created_at)) {
         return {
           type: 'Overdue',
-          body: currentStatus?.person.username,
+          body: currentStatus?.person!.username,
         };
       }
       return {
         type: 'Busy',
-        body: currentStatus?.person.username,
+        body: currentStatus?.person!.username,
       };
     }
     case 'Pending':

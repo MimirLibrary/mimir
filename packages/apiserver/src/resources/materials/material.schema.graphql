@@ -70,7 +70,7 @@ input DonateBookInput {
 }
 
 input SearchInput {
-  search: String!
+  search: String
   location: String!
 }
 

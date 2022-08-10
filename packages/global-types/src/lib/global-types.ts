@@ -83,7 +83,7 @@ export interface DonateBookInput {
 }
 
 export interface SearchInput {
-    search: string;
+    search?: Nullable<string>;
     location: string;
 }
 

@@ -13,6 +13,7 @@ export interface IStatus {
   id: string;
   created_at: any;
   status: string;
+  person?: IPerson;
 }
 
 export interface IMaterial {
@@ -25,6 +26,11 @@ export interface IMaterial {
   id: string;
   statuses: Array<IStatus | null>;
 }
+interface IPerson {
+  __typename?: 'Person' | undefined;
+  id: string;
+  username: string;
+}
 
 export interface IMaterialsState {
   searchMaterials: Array<IMaterial | null> | null | undefined;
@@ -32,11 +38,8 @@ export interface IMaterialsState {
 export interface IReader {
   __typename?: 'Person';
   avatar?: string | null;
-  // created_at: any;
   id: string;
-  // location_id: number;
   statuses?: Array<IStatus | null | undefined> | null;
-  // type: Scalars['String'];
   username: string;
 }
 export interface IReadersState {

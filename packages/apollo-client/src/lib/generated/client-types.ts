@@ -475,7 +475,7 @@ export type ResponseMetadata = {
 
 export type SearchInput = {
   location: Scalars['String'];
-  search: Scalars['String'];
+  search?: InputMaybe<Scalars['String']>;
 };
 
 export type SearchOneMaterial = {
@@ -753,12 +753,12 @@ export type GetStatusesByMaterialQueryVariables = Exact<{
 export type GetStatusesByMaterialQuery = { __typename?: 'Query', getStatusesByMaterial: Array<{ __typename?: 'Status', id: string, status: string, created_at: any, person: { __typename?: 'Person', id: string, avatar: string, username: string, statuses?: Array<{ __typename?: 'Status', material_id: number, status: string, created_at: any } | null> | null } } | null> };
 
 export type SearchOfMaterialsQueryVariables = Exact<{
-  search: Scalars['String'];
+  search?: InputMaybe<Scalars['String']>;
   location: Scalars['String'];
 }>;
 
 
-export type SearchOfMaterialsQuery = { __typename?: 'Query', searchOfMaterials?: Array<{ __typename?: 'Material', title: string, created_at: any, picture?: string | null, author: string, category: string, id: string, statuses: Array<{ __typename?: 'Status', id: string, created_at: any, status: string } | null> } | null> | null };
+export type SearchOfMaterialsQuery = { __typename?: 'Query', searchOfMaterials?: Array<{ __typename?: 'Material', title: string, created_at: any, picture?: string | null, author: string, category: string, id: string, statuses: Array<{ __typename?: 'Status', id: string, created_at: any, status: string, person: { __typename?: 'Person', id: string, username: string } } | null> } | null> | null };
 
 
 export const ClaimBookDocument = gql`
@@ -2008,7 +2008,7 @@ export type GetStatusesByMaterialQueryHookResult = ReturnType<typeof useGetStatu
 export type GetStatusesByMaterialLazyQueryHookResult = ReturnType<typeof useGetStatusesByMaterialLazyQuery>;
 export type GetStatusesByMaterialQueryResult = Apollo.QueryResult<GetStatusesByMaterialQuery, GetStatusesByMaterialQueryVariables>;
 export const SearchOfMaterialsDocument = gql`
-    query SearchOfMaterials($search: String!, $location: String!) {
+    query SearchOfMaterials($search: String, $location: String!) {
   searchOfMaterials(input: {search: $search, location: $location}) {
     title
     created_at
@@ -2020,6 +2020,10 @@ export const SearchOfMaterialsDocument = gql`
       id
       created_at
       status
+      person {
+        id
+        username
+      }
     }
   }
 }
