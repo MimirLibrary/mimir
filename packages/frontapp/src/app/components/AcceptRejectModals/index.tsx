@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { Dispatch, FC, SetStateAction } from 'react';
 import Modal from '../Modal';
 import ErrorMessage from '../ErrorMessge';
 import {
@@ -11,7 +11,7 @@ import {
 
 type IDonateProps = {
   active: boolean;
-  setActive: any;
+  setActive: Dispatch<SetStateAction<boolean>>;
   title: string | undefined;
   statusInfo: any;
   identifier: string;

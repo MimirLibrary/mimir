@@ -323,13 +323,15 @@ const BookInfo: FC<IBookInfoProps> = ({
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewTitle(e.target.value);
   };
-  const handleChangeDescription = (e: any) => {
+  const handleChangeDescription = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     setNewDescription(e.target.value);
   };
-  const handleChangeDeadline = (e: any) => {
-    setNewDeadline(e.target.value);
-    e.target.value > 31 && setNewDeadline(31);
-    e.target.value <= 0 && setNewDeadline(1);
+  const handleChangeDeadline = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewDeadline(parseInt(e.target.value));
+    parseInt(e.target.value) > 31 && setNewDeadline(31);
+    parseInt(e.target.value) <= 0 && setNewDeadline(1);
   };
 
   const [claimBook, { data }] = useClaimBookMutation({
