@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { t } from 'i18next';
-import { TitleArticle } from '../../globalUI/TextArticle';
+import { TextArticle } from '../../globalUI/TextArticle';
 import { TextBase } from '../../globalUI/TextBase';
 import Button from '../Button';
 import { ReactComponent as QRCodeSvg } from '../../../assets/Qrcode.svg';
@@ -40,7 +40,7 @@ const InstructionsClaim = () => {
 
   return (
     <WrapperInstructions>
-      <TitleArticle>{t(`InstructionsClaim.Header`)}</TitleArticle>
+      <TextArticle>{t(`InstructionsClaim.Header`)}</TextArticle>
       <StyledTextBase>{t(`InstructionsClaim.Description`)}</StyledTextBase>
       <StyledButton
         svgComponent={<QRCodeSvg />}

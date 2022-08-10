@@ -1,0 +1,17 @@
+query GetStatusesByMaterial($material_id: ID!) {
+  getStatusesByMaterial(material_id: $material_id) {
+    id
+    status
+    created_at
+    person {
+      id
+      avatar
+      username
+      statuses {
+        material_id
+        status
+        created_at
+      }
+    }
+  }
+}

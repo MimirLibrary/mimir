@@ -2,7 +2,7 @@ import { FC, useEffect, useMemo } from 'react';
 import { useAppSelector } from '../hooks/useTypedSelector';
 import ManagerInfoCard from '../components/ManagerInfoCard';
 import InstructionsClaim from '../components/InstructionsClaim';
-import { TitleArticle } from '../globalUI/TextArticle';
+import { TextArticle } from '../globalUI/TextArticle';
 import { TextBase } from '../globalUI/TextBase';
 import styled from '@emotion/styled';
 import ListBooks from '../components/ListBooks';
@@ -160,7 +160,7 @@ const HomePage: FC = () => {
           {data?.getAllTakenItems.length ? (
             <>
               <Wrapper>
-                <TitleArticle>Don't forget to pass</TitleArticle>
+                <TextArticle>Don't forget to pass</TextArticle>
                 <TextBase>List of items you have taken and due dates</TextBase>
               </Wrapper>
               <ListBooks items={data?.getAllTakenItems} />

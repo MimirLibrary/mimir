@@ -71,8 +71,8 @@ export const WrapperInput = styled.div`
 
 interface ISearchParams {
   handleChangeSearch: (arg0: React.ChangeEvent<HTMLInputElement>) => void;
-  redirectToSearchByKey: (arg0: React.KeyboardEvent<HTMLImageElement>) => void;
-  redirectToSearchByClick: () => void;
+  redirectToSearchByKey?: (arg0: React.KeyboardEvent<HTMLImageElement>) => void;
+  redirectToSearchByClick?: () => void;
   placeholder: string;
   search: string;
 }

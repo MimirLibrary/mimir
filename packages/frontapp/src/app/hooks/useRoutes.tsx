@@ -64,6 +64,10 @@ export const useRoutes = (role: string) => {
           element={<DonatesFromUser />}
         />
         <Route
+          path={`${RoutesTypes.BOOK_PREVIEW}/:item_id`}
+          element={<BookPreview donate={false} />}
+        />
+        <Route
           path={`${RoutesTypes.DONATE_PREVIEW}/:item_id`}
           element={<BookPreview donate={true} />}
         />

@@ -1,6 +1,6 @@
 import emptyList from '../../../assets/EmptyList.svg';
 import styled from '@emotion/styled';
-import { TitleArticle } from '../../globalUI/TextArticle';
+import { TextArticle } from '../../globalUI/TextArticle';
 import { TextBase } from '../../globalUI/TextBase';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { t } from 'i18next';
@@ -40,7 +40,7 @@ const WrapperText = styled.div`
   width: 100%;
 `;
 
-const StyleTitle = styled(TitleArticle)`
+const StyleTitle = styled(TextArticle)`
   font-size: ${dimensions.xl};
   margin-bottom: ${dimensions.xs_2};
 `;
