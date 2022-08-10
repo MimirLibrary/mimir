@@ -9,7 +9,7 @@ import CategoriesList from '../components/CategoriesList';
 import AllBooksList from '../components/AllBooksList';
 import { useAppSelector } from '../hooks/useTypedSelector';
 import { getStatus } from '../models/helperFunctions/converTime';
-
+import ErrorType500 from '../components/ErrorType500';
 const ContentWrapper = styled.div`
   margin: 3rem 0 ${dimensions.xl_6};
 `;
@@ -58,7 +58,7 @@ const SearchPage = () => {
   );
 
   if (loading) return <h1>Loading...</h1>;
-
+  if (!data) return <ErrorType500 />;
   return (
     <>
       <MainText>Categories</MainText>

@@ -1,17 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
-import {
-  useGetOnePersonQuery,
-  GetMaterialByIdDocument,
-  GetAllTakenItemsDocument,
-  useReturnBookMutation,
-  GetAllMaterialsDocument,
-} from '@mimir/apollo-client';
+import { useGetOnePersonQuery } from '@mimir/apollo-client';
 import EmptyCover from '../../../assets/MOC-data/EmptyCover.png';
 import Button from '../Button';
 import { useNavigate } from 'react-router-dom';
 import { dimensions, colors } from '@mimir/ui-kit';
-
+import AcceptRejectModals from '../AcceptRejectModals';
 interface BackgroundProps {
   GrayBackground?: boolean;
 }
@@ -29,10 +23,12 @@ interface OneDonatorProps {
 const BookImage = styled.img`
   display: inline-block;
   height: 10.5rem;
-  width: 8rem;
+  max-width: 8rem;
+  min-width: 8rem;
   @media (max-width: ${dimensions.phone_width}) {
     height: 6rem;
-    width: 5rem;
+    max-width: 5rem;
+    min-width: 5rem;
   }
 `;
 
@@ -74,7 +70,7 @@ const Description = styled.p`
     height: 150px;
   }
 `;
-const DonateeName = styled.p`
+const DonatorName = styled.p`
   font-size: 16px;
   flex: 1;
   color: blue;
@@ -100,12 +96,12 @@ const FlexContainer = styled.div`
     flex: 1;
   }
 `;
-const Accepted = styled.p`
+export const Accepted = styled.p`
   font-size: 16px;
   font-weight: 500;
   color: ${colors.main_green};
 `;
-const Rejected = styled.p`
+export const Rejected = styled.p`
   font-size: 16px;
   font-weight: 500;
   color: ${colors.problem_red};
@@ -123,18 +119,7 @@ const OneDonator = ({
   statuses,
   index,
 }: OneDonatorProps) => {
-  const [returnBook] = useReturnBookMutation({
-    refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
-  });
-  const acceptBook = async (identifier: string, donator: number) => {
-    await returnBook({
-      variables: {
-        person_id: donator,
-        identifier: identifier,
-      },
-      refetchQueries: [GetAllMaterialsDocument],
-    });
-  };
+  const [accept, setAccept] = useState(false);
   const navigate = useNavigate();
   const handleRedirect = (item_id: number) => {
     navigate(`/donate/${item_id}`);
@@ -147,28 +132,38 @@ const OneDonator = ({
     },
   });
   return (
-    <DonateWrapper GrayBackground={GrayBackground}>
-      <FlexContainer onClick={() => handleRedirect(id)}>
-        <BookImage src={picture || EmptyCover} />
-        <Wrapper>
-          <Title>{title}</Title>
-          <Description> {description || 'no description provided'}</Description>
-        </Wrapper>
-      </FlexContainer>
-      <DonateeName>
-        {personName ? personName?.getOnePerson.username : 'unknown'}
-      </DonateeName>
-      <WrapperBtn>
-        {lastStatus.status === 'Pending' && (
-          <Button
-            onClick={() => acceptBook(identifier, lastStatus.person_id)}
-            value="Accept"
-          />
-        )}
-        {lastStatus.status === 'Free' && <Accepted>Accepted</Accepted>}
-        {lastStatus.status === 'Rejected' && <Rejected>Rejected</Rejected>}
-      </WrapperBtn>
-    </DonateWrapper>
+    <>
+      <DonateWrapper GrayBackground={GrayBackground}>
+        <FlexContainer onClick={() => handleRedirect(id)}>
+          <BookImage src={picture || EmptyCover} />
+          <Wrapper>
+            <Title>{title}</Title>
+            <Description>
+              {' '}
+              {description || 'no description provided'}
+            </Description>
+          </Wrapper>
+        </FlexContainer>
+        <DonatorName>
+          {personName ? personName?.getOnePerson.username : 'unknown'}
+        </DonatorName>
+        <WrapperBtn>
+          {lastStatus.status === 'Pending' && (
+            <Button onClick={() => setAccept(true)} value="Accept" />
+          )}
+          {lastStatus.status === 'Free' && <Accepted>Accepted</Accepted>}
+          {lastStatus.status === 'Rejected' && <Rejected>Rejected</Rejected>}
+        </WrapperBtn>
+      </DonateWrapper>
+      <AcceptRejectModals
+        active={accept}
+        setActive={setAccept}
+        title={title}
+        statusInfo={lastStatus}
+        identifier={identifier}
+        method="accept"
+      />
+    </>
   );
 };
 
