@@ -18,9 +18,8 @@ import {
 } from '@mimir/global-types';
 import { Notification } from '../notifications/notification.entity';
 import { MaterialService } from './material.service';
-import { BadRequestException, UseGuards } from '@nestjs/common';
+import { BadRequestException } from '@nestjs/common';
 import { Message } from '../messages/message.entity';
-import { AuthGuard } from '../../auth/auth.guard';
 import { GraphQLError } from 'graphql';
 
 @Resolver('Material')

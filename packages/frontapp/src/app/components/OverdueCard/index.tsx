@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
-import { GetAllStatusesIsOverdueQueryHookResult } from '@mimir/apollo-client';
 import {
   getDateOfEarlier,
   isOverdueToday,

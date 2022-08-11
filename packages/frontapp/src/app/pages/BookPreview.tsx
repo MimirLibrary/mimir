@@ -26,6 +26,7 @@ import Table from '../globalUI/Table';
 import SingleUser from '../components/UserList/SingleUser';
 import { IClaimHistory } from '../models/helperFunctions/claimHistory';
 import { getDates, isOverdue } from '../models/helperFunctions/converTime';
+import { IStatus } from '../types';
 
 export const ButtonGroup = styled.div`
   display: flex;
@@ -95,11 +96,11 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
   const { t } = useTranslation();
   const { id, location, userRole } = useAppSelector((state) => state.user);
   const { data, loading } = useGetMaterialByIdQuery({
-    variables: { id: item_id! },
+    variables: { id: item_id || '0' },
   });
   const [getStatusesByMaterial] = useGetStatusesByMaterialLazyQuery({
     variables: {
-      material_id: item_id!,
+      material_id: item_id || '0',
     },
   });
   const { data: getAllMaterials } = useGetAllMaterialsQuery({
@@ -113,7 +114,9 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
     [claimHistory, debounceSearch]
   );
 
-  const lastStatusAnotherPerson = data?.getMaterialById.statuses.slice(-1)[0];
+  const lastStatusAnotherPerson = data?.getMaterialById.statuses.slice(
+    -1
+  )[0] as IStatus;
 
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -131,7 +134,7 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
   useEffect(() => {
     getStatusesByMaterial({
       variables: {
-        material_id: item_id!,
+        material_id: item_id || '0',
       },
     }).then(({ data }) => {
       setClaimHistory(data?.getStatusesByMaterial);
@@ -213,7 +216,7 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
                   filteredHistory &&
                   filteredHistory
                     .map((item) => {
-                      if (!item) return <></>;
+                      if (!item) return <div></div>;
                       return (
                         <Fragment key={item?.id}>
                           <RestyleSingleUser

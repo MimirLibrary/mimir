@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions, fonts } from '@mimir/ui-kit';
 import { WrapperInput } from '../ClaimOperation';
@@ -100,11 +100,11 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
   const [isShowScanner, setIsShowScanner] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
-  let isMounted = true;
+  const isMounted = useRef(true);
 
   useEffect(() => {
     return () => {
-      isMounted = false;
+      isMounted.current = false;
     };
   }, []);
 
@@ -116,7 +116,7 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
   const handleOnDetectedScanner = async (code: string) => {
     setValueIsISBN(code);
     dispatch(setIdentifier(code));
-    if (isMounted) {
+    if (isMounted.current) {
       try {
         setIsLoading(true);
         const metaDataOfMaterial = await client.query({
@@ -126,7 +126,7 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
         setDataToState(metaDataOfMaterial.data);
         setIsLoading(false);
       } catch (e) {
-        isMounted = false;
+        isMounted.current = false;
         if (e instanceof Error) {
           setDataError(e);
         }
@@ -140,7 +140,7 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
     e.preventDefault();
 
     dispatch(setIdentifier(valueOfISBN));
-    if (isMounted) {
+    if (isMounted.current) {
       try {
         setIsLoading(true);
         const metaDataOfMaterial = await client.query({
@@ -150,7 +150,7 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
         setDataToState(metaDataOfMaterial.data);
         setIsLoading(false);
       } catch (e) {
-        isMounted = false;
+        isMounted.current = false;
         if (e instanceof Error) {
           setDataError(e);
         }

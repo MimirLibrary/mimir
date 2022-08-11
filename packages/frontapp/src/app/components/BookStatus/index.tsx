@@ -6,7 +6,7 @@ import { RoutesTypes } from '../../../utils/routes';
 
 interface IBookStatusProps {
   status: string | undefined;
-  date: any;
+  date: Date;
 }
 
 const BookStatus: FC<IBookStatusProps> = ({ status, date }) => {

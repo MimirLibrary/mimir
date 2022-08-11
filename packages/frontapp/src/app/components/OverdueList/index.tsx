@@ -9,7 +9,6 @@ import { useGetAllStatusesIsOverdueQuery } from '@mimir/apollo-client';
 import { Oval } from 'react-loader-spinner';
 import { toast } from 'react-toastify';
 import {
-  getDateOfEarlier,
   isOverdue,
   isOverdueToday,
 } from '../../models/helperFunctions/converTime';

@@ -1,10 +1,7 @@
 import React, { useEffect } from 'react';
 import { WrapperList } from '../ListBooks';
 import { useAppSelector } from '../../hooks/useTypedSelector';
-import {
-  useGetAllMaterialsForManagerQuery,
-  useSearchOfMaterialsQuery,
-} from '@mimir/apollo-client';
+import { useGetAllMaterialsForManagerQuery } from '@mimir/apollo-client';
 import BookCardExtended from '../BookCardExtended';
 import styled from '@emotion/styled';
 import { WrapperLoader } from '../DonateBookFlow';
@@ -39,25 +36,21 @@ const ListAllItems = () => {
       toast.error(error.message);
     }
   }, [error]);
-  return (
-    <>
-      {loading ? (
-        <WrapperLoader>
-          <Loader
-            height={100}
-            width={100}
-            color={`${colors.accent_color}`}
-            strokeWidth={5}
-          />
-        </WrapperLoader>
-      ) : (
-        <StyledWrapperList>
-          {searchMaterials?.map((item) => (
-            <BookCardExtended key={item?.id} item={item} />
-          ))}
-        </StyledWrapperList>
-      )}
-    </>
+  return loading ? (
+    <WrapperLoader>
+      <Loader
+        height={100}
+        width={100}
+        color={`${colors.accent_color}`}
+        strokeWidth={5}
+      />
+    </WrapperLoader>
+  ) : (
+    <StyledWrapperList>
+      {searchMaterials?.map((item) => (
+        <BookCardExtended key={item?.id} item={item} />
+      ))}
+    </StyledWrapperList>
   );
 };
 

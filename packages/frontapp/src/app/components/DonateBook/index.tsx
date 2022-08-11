@@ -1,7 +1,6 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { toast } from 'react-toastify';
-import axios from 'axios';
 import { colors, dimensions } from '@mimir/ui-kit';
 import {
   GetMaterialFromMetadataQuery,
@@ -268,7 +267,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
     }
   };
 
-  const getFile = async (formData: any) => {
+  const getFile = async (formData: FormData) => {
     try {
       const response = await api.post('file/create', formData);
       setPictureOfCover(response.data);
@@ -315,7 +314,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
         await getFile(formData);
       }
       if (pictureOfCover) {
-        formData.append('file', file!);
+        formData.append('file', file || '');
         await deleteFile(pictureOfCover);
         await getFile(formData);
         formData.delete('file');
@@ -362,12 +361,12 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
         variables: {
           person_id: id,
           picture: pictureOfCover,
-          title: title!,
-          author: author!,
+          title: title || '',
+          author: author || '',
           identifier,
           type: 'Book',
           description,
-          category: genre!,
+          category: genre || '',
           location_id: Number(location.id),
           id_type: data?.getMaterialByIdentifierFromMetadata?.idType || 'ISBN',
           role: userRole,

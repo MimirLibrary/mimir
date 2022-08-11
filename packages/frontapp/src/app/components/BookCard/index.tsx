@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 export interface IBookCardProps {
   src?: string | null;
   title?: string;
-  date?: any;
+  date?: Date;
   status?: string;
   author?: string;
   category?: string;
@@ -89,7 +89,7 @@ const BookCard: FC<IBookCardProps> = ({
       <DescriptionWrapper>
         <TitleBook>{title}</TitleBook>
         <DescriptionBook>{category + ' / ' + author}</DescriptionBook>
-        <BookStatus status={status} date={date} />
+        <BookStatus status={status} date={date || new Date()} />
       </DescriptionWrapper>
     </BookCardWrapper>
   );

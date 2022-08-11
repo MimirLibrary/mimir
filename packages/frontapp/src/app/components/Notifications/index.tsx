@@ -18,7 +18,7 @@ export interface IOneNotification {
   id: string | undefined;
   type: string;
   created_at: Date;
-  title: string;
+  title?: string;
   message?: string;
   user?: { id: string; name: string };
 }

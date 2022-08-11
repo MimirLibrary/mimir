@@ -262,6 +262,7 @@ const ClaimTable: FC<IClaimTable> = ({ statuses, name }) => {
                             `${process.env['NX_API_ROOT_URL']}/${status.material?.picture}`) ||
                           bookImage
                         }
+                        alt={''}
                       />
                       <ColumnWrapper>
                         <FieldsText titlee>{status.material?.title}</FieldsText>

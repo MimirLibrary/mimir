@@ -18,7 +18,7 @@ export const getDates = (date: Date) => {
 export const isOverdue = (date: Date) =>
   getDates(date).currentDate >= getDates(date).returnDate;
 
-export const getStatus = (status: string | undefined, date: any) => {
+export const getStatus = (status: string | undefined, date: Date) => {
   if (!status) return null;
   if (status === 'Free') return 'Free';
   if (status === 'Prolong') return 'Prolong';
@@ -48,10 +48,8 @@ export const todayCondition = (date: Date) => {
 export const specialParseDate = (date: Date) => {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth() + 1;
   const currentDay = currentDate.getDate();
   const dateYear = date.getFullYear();
-  const dateMonthNum = date.getMonth() + 1;
   const dateDayNum = date.getDate();
   let dateMonth: number | string = date.getMonth() + 1;
   let dateDay: number | string = date.getDate();

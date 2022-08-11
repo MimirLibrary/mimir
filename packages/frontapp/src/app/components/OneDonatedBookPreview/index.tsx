@@ -6,6 +6,7 @@ import Button from '../Button';
 import { useNavigate } from 'react-router-dom';
 import { dimensions, colors } from '@mimir/ui-kit';
 import AcceptRejectModals from '../AcceptRejectModals';
+import { IStatus } from '../../types';
 interface BackgroundProps {
   GrayBackground?: boolean;
 }
@@ -13,7 +14,7 @@ interface BackgroundProps {
 interface OneDonatorProps {
   title: string;
   identifier: string;
-  statuses: any;
+  statuses: IStatus[];
   id: number;
   index: number;
   picture: string;
@@ -128,7 +129,7 @@ const OneDonator = ({
   const GrayBackground = index % 2 === 0;
   const { data: personName } = useGetOnePersonQuery({
     variables: {
-      id: lastStatus.person_id,
+      id: lastStatus.person?.id || '0',
     },
   });
   return (

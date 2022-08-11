@@ -115,7 +115,7 @@ const Form = styled.form`
 const UserCard = () => {
   const { id } = useParams();
   const { data: OnePerson, loading } = useGetOnePersonQuery({
-    variables: { id: id! },
+    variables: { id: id || '0' },
   });
   const [setState] = useCreateStateMutation({
     refetchQueries: [GetOnePersonDocument],
@@ -130,7 +130,7 @@ const UserCard = () => {
       id: message?.id,
       type: 'message',
       created_at: message?.created_at,
-      title: message!.title,
+      title: message?.title,
       message: message?.message,
     };
   });
@@ -146,7 +146,7 @@ const UserCard = () => {
     };
   });
 
-  const sortedNotifications = messages?.concat(states!);
+  const sortedNotifications = messages?.concat(states || []);
 
   const handleChangeValue = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);

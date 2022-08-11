@@ -1,24 +1,24 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Material, Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import cheerio from 'cheerio';
 import * as _ from 'lodash';
 import axios from 'axios';
 import { Bundle } from '../../types';
 
-type Author = {
-  name: string;
-  referenceId: string;
-};
-
-type Publisher = {
-  name: string;
-  referenceId: string;
-};
-
-type CoverImage = {
-  title: string;
-  src: string;
-};
+// type Author = {
+//   name: string;
+//   referenceId: string;
+// };
+//
+// type Publisher = {
+//   name: string;
+//   referenceId: string;
+// };
+//
+// type CoverImage = {
+//   title: string;
+//   src: string;
+// };
 
 const READER_ID = 'OZBY';
 
@@ -51,7 +51,7 @@ function ignore(valEl) {
 }
 
 function readCells(keyEl, valEl) {
-  const key = keyEl.text();
+  //const key = keyEl.text();
   const matchers = [
     forKey('Название в оригинале', extractTo('originalName')),
     forKey('Год издания', extractTo('year')),

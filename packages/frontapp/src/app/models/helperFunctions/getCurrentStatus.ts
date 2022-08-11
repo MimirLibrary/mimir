@@ -16,12 +16,12 @@ export function getCurrentStatus(
       if (isOverdue(currentStatus.created_at)) {
         return {
           type: 'Overdue',
-          body: currentStatus?.person!.username,
+          body: currentStatus?.person?.username as string,
         };
       }
       return {
         type: 'Busy',
-        body: currentStatus?.person!.username,
+        body: currentStatus?.person?.username as string,
       };
     }
     case 'Pending':

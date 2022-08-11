@@ -47,7 +47,7 @@ export class MaterialService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      const { person_id, ...newMaterialObj } = donateBookInput;
+      const { ...newMaterialObj } = donateBookInput;
       const isExistMaterial = await materialRepository.findOne({
         where: { identifier: donateBookInput.identifier },
       });

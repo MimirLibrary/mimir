@@ -8,7 +8,7 @@ interface IPerson {
 export interface IField {
   __typename?: 'Message' | undefined;
   id: string;
-  created_at: any;
+  created_at: Date;
   title: string;
   message: string;
   description?: string;

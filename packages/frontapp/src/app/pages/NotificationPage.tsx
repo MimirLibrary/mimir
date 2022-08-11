@@ -15,7 +15,7 @@ const NotificationPage = () => {
   useEffect(() => {
     if (!data) return;
     setNotifications(
-      data.getAllMessages!.map((item) => {
+      (data.getAllMessages || []).map((item) => {
         return {
           id: item.id,
           created_at: item.created_at,

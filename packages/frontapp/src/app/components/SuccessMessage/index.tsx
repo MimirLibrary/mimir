@@ -67,7 +67,7 @@ const SuccessMessage: FC<IPropsSuccessClaim> = ({
     }
   };
 
-  const { returnDate } = getDates(created_at!);
+  const { returnDate } = getDates(created_at || new Date());
   const trueFormatReturnDate = parseDate(returnDate);
 
   return (

@@ -1,10 +1,12 @@
+import { IStatus } from '../../types';
+
 export const getLastStatus = (
-  listOfStatuses: Array<any>,
+  listOfStatuses: Array<IStatus>,
   person_id: number
 ) => {
   if (listOfStatuses) {
     const lastStatus = listOfStatuses
-      .filter((item) => item?.person_id === person_id)
+      .filter((item) => parseInt(item?.person?.id as string) === person_id)
       .slice(-1)[0];
     return lastStatus;
   }

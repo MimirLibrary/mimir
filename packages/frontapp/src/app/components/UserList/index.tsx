@@ -52,8 +52,8 @@ const UserList = () => {
       <ListWrapper>
         {searchReaders?.map((person) => (
           <SingleUser
-            avatar={person!.avatar}
-            name={person!.username}
+            avatar={person?.avatar}
+            name={person?.username as string}
             key={person?.id}
             id={person?.id as string}
             statuses={person?.statuses as IClaimHistory[]}

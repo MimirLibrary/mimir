@@ -86,7 +86,7 @@ export const barcode = function (canvasCtx) {
     let count = 0;
 
     for (let i = 0, ii = binary.length; i < ii; i++) {
-      if (binary[i] == current) {
+      if (binary[i] === current) {
         count++;
       } else {
         pixelBars.push(count);
@@ -129,7 +129,7 @@ export const barcode = function (canvasCtx) {
 
     // return if no starting sequence found
 
-    if (startIndex == 0) {
+    if (startIndex === 0) {
       return;
     }
 

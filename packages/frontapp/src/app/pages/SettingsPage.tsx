@@ -34,7 +34,7 @@ const SettingsContainer = styled.div`
   box-sizing: border-box;
   padding: ${dimensions.base_2};
   background-color: ${colors.bg_secondary};
-  box-shadow: 0px 10px 70px rgba(26, 30, 214, 0.08);
+  box-shadow: 0 10px 70px rgba(26, 30, 214, 0.08);
   border-radius: ${dimensions.xs_1};
 `;
 
@@ -96,11 +96,11 @@ const SettingsPage = () => {
         {!GetAllLocationsLoading && !!GetAllLocationsData && (
           <RestyledDropdown
             options={GetAllLocationsData.getAllLocations.map((loc) => ({
-              id: loc!.id,
-              value: loc!.location,
+              id: loc?.id || '0',
+              value: loc?.location || '',
             }))}
             initIndex={GetAllLocationsData.getAllLocations.findIndex((loc) => {
-              if (location) return loc!.id === location.id;
+              if (location) return loc?.id === location.id;
               return 0;
             })}
             onChange={(option) => handleLocationChange(option as TUserLocation)}

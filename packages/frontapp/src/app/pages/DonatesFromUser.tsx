@@ -13,7 +13,7 @@ interface TitleProps {
 
 const ColumnHeader = styled.div`
   display: flex;
-  border-radius: 10px 0px 0px 0px;
+  border-radius: 10px 0 0 0;
   background-color: ${colors.accent_color};
   padding: ${dimensions.xl};
 `;

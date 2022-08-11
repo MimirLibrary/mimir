@@ -214,19 +214,17 @@ const NotificationList: FC<NotificationList> = ({ fieldsNotification }) => {
             </FieldWrapper>
           ))}
           <WrapperFooter>
-            <>
-              <InlineWrapper>
-                {fieldsNotification?.slice(0, 3).map((field) => (
-                  <StyledIcon key={field.id} src={field.person.avatar} />
-                ))}
-                {fieldsNotification!.length > 3 ? (
-                  <NotificationDescription>
-                    {`+${fieldsNotification!.length - 3} ` +
-                      t(`ManagerInfoCard.Description.More`)}
-                  </NotificationDescription>
-                ) : null}
-              </InlineWrapper>
-            </>
+            <InlineWrapper>
+              {fieldsNotification?.slice(0, 3).map((field) => (
+                <StyledIcon key={field.id} src={field.person.avatar} />
+              ))}
+              {fieldsNotification.length || 0 > 3 ? (
+                <NotificationDescription>
+                  {`+${fieldsNotification.length || 0 - 3} ` +
+                    t(`ManagerInfoCard.Description.More`)}
+                </NotificationDescription>
+              ) : null}
+            </InlineWrapper>
             <OpenLink to="/notifications">
               {t(`ManagerInfoCard.Link.Notifications`)}
             </OpenLink>

@@ -39,7 +39,7 @@ const StartPageContainer = styled.div`
   height: 96%;
   background-color: ${colors.bg_secondary};
   border-radius: 1000px 1000px 0 0;
-  box-shadow: 0px 10px 70px rgba(26, 30, 214, 0.08);
+  box-shadow: 0 10px 70px rgba(26, 30, 214, 0.08);
   padding: 0 175px;
 `;
 
@@ -128,7 +128,7 @@ const StartPage: FC = () => {
     await updatePersonLocationMutation({
       variables: {
         location_id: parseInt(location.id),
-        person_id: preparedUserPayload!.id,
+        person_id: preparedUserPayload?.id || 0,
       },
     });
     dispatch(
@@ -151,8 +151,8 @@ const StartPage: FC = () => {
           <RestyledDropdown
             placeholder={t('Start.ChooseLocation')}
             options={GetAllLocationsData.getAllLocations.map((loc) => ({
-              id: loc!.id,
-              value: loc!.location,
+              id: loc?.id || '0',
+              value: loc?.location || '',
             }))}
             onChange={(option) => handleChangeDropdown(option as TUserLocation)}
           />

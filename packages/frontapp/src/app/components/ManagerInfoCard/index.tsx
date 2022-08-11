@@ -1,11 +1,11 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import { ManagerCardTypes } from './managerCardTypes';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { t } from 'i18next';
 import { RoutesTypes } from '../../../utils/routes';
 import { Link } from 'react-router-dom';
-import { IField, IOverdueItem } from '../../types';
+import { IOverdueItem } from '../../types';
 import { IMaterialDonate } from '../../types/donateList';
 
 interface IManagerInfoCard {
@@ -75,20 +75,6 @@ export const OpenLink = styled(Link)`
   text-decoration: underline;
 `;
 
-const InlineOpenLink = styled(OpenLink)`
-  flex: none;
-  position: absolute;
-  right: 71px;
-  order: 1;
-  flex-grow: 0;
-  text-align: center;
-  @media (max-width: ${dimensions.tablet_width}) {
-    position: static;
-    display: block;
-    text-align: center;
-  }
-`;
-
 const FieldWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -145,8 +131,6 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
   fieldsOverdue,
   fieldsDonate,
 }) => {
-  const [isAnswerModal, setIsAnswerModal] = useState<boolean>(false);
-
   return (
     <>
       {fieldsOverdue && (
@@ -176,19 +160,17 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
             ))
           )}
           <WrapperFooter>
-            <>
-              <InlineWrapper>
-                {fieldsOverdue?.slice(0, 3).map((field) => (
-                  <StyledIcon key={field?.id} src={field?.person.avatar} />
-                ))}
-                {fieldsOverdue!.length > 3 ? (
-                  <NotificationDescription>
-                    {`+${fieldsOverdue.length - 3}` +
-                      t(`ManagerInfoCard.Description.More`)}
-                  </NotificationDescription>
-                ) : null}
-              </InlineWrapper>
-            </>
+            <InlineWrapper>
+              {fieldsOverdue?.slice(0, 3).map((field) => (
+                <StyledIcon key={field?.id} src={field?.person.avatar} />
+              ))}
+              {fieldsOverdue.length || 0 > 3 ? (
+                <NotificationDescription>
+                  {`+${fieldsOverdue.length - 3}` +
+                    t(`ManagerInfoCard.Description.More`)}
+                </NotificationDescription>
+              ) : null}
+            </InlineWrapper>
             <OpenLink to={`home/${type.toLowerCase()}`}>
               {t(`ManagerInfoCard.Link.${type}`)}
             </OpenLink>
@@ -225,24 +207,22 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
             ))
           )}
           <WrapperFooter>
-            <>
-              <InlineWrapper>
-                {fieldsDonate?.slice(0, 3).map((field) => (
-                  <StyledIcon
-                    key={field?.id}
-                    src={
-                      field?.statuses[field?.statuses.length - 1]?.person.avatar
-                    }
-                  />
-                ))}
-                {fieldsDonate.length > 3 ? (
-                  <NotificationDescription>
-                    {`+${fieldsDonate.length - 3}` +
-                      t(`ManagerInfoCard.Description.More`)}
-                  </NotificationDescription>
-                ) : null}
-              </InlineWrapper>
-            </>
+            <InlineWrapper>
+              {fieldsDonate?.slice(0, 3).map((field) => (
+                <StyledIcon
+                  key={field?.id}
+                  src={
+                    field?.statuses[field?.statuses.length - 1]?.person.avatar
+                  }
+                />
+              ))}
+              {fieldsDonate.length > 3 ? (
+                <NotificationDescription>
+                  {`+${fieldsDonate.length - 3}` +
+                    t(`ManagerInfoCard.Description.More`)}
+                </NotificationDescription>
+              ) : null}
+            </InlineWrapper>
             <OpenLink to={`${RoutesTypes.DONATES_FROM_USER}`}>
               {t(`ManagerInfoCard.Link.${type}`)}
             </OpenLink>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import BookCard from '../BookCard';
 import { WrapperList } from '../ListBooks';
 import { useSearchParams } from 'react-router-dom';
@@ -17,10 +17,9 @@ type IMaterial =
     >;
 
 const BooksByCategory = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const { location } = useAppSelector((state) => state.user);
   const { category } = useParams();
-  const navigate = useNavigate();
   const { data, loading } = useGetAllMaterialsQuery({
     variables: { location_id: location.id },
   });
@@ -32,7 +31,7 @@ const BooksByCategory = () => {
     const availability = searchParams.getAll('availability');
     const categories = searchParams.getAll('categories');
     const items = searchParams.getAll('items');
-    const sortBy = searchParams.getAll('sortBy');
+    //const sortBy = searchParams.getAll('sortBy');
     let allBooks = data?.getAllMaterials;
     if (authors?.length !== 0) {
       const filter = allBooks?.filter(
@@ -51,14 +50,13 @@ const BooksByCategory = () => {
       const correctItemsArray: string[] = items.map((type: string) =>
         type.slice(0, -1)
       );
-      const filter = allBooks?.filter(
+      allBooks = allBooks?.filter(
         (book: IMaterial) => book && correctItemsArray?.includes(book.type)
       );
-      allBooks = filter;
     }
     if (availability?.length !== 0) {
-      const filter = allBooks?.filter((book: any) => {
-        const lastStatus = book.statuses.slice(-1)[0];
+      const filter = allBooks?.filter((book) => {
+        const lastStatus = book?.statuses.slice(-1)[0];
         if (lastStatus) {
           if (
             lastStatus.status === 'Free' &&

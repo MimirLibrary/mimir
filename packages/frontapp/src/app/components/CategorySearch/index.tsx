@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import styled from '@emotion/styled';
 import { dimensions, colors } from '@mimir/ui-kit';
 import { attributes } from '../FilterAttributes';
@@ -64,7 +64,12 @@ type itemsType = {
   id: number;
   subAttributes: subItemType[];
 };
-const CategorySearch = ({ setActive }: any) => {
+
+interface IProps {
+  setActive: Dispatch<SetStateAction<boolean>>;
+}
+
+const CategorySearch = ({ setActive }: IProps) => {
   const [applyFilters, setApplyFilters] = useState(false);
   const navigate = useNavigate();
   const params: paramsType = {

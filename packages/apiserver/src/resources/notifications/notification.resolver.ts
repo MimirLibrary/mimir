@@ -45,7 +45,7 @@ export class NotificationResolver {
   ) {
     try {
       await Message.delete(createAnswerNotification.id);
-      const { id, ...createNotification } = createAnswerNotification;
+      const { ...createNotification } = createAnswerNotification;
       const notification = Notification.create(createNotification);
       return Notification.save(notification);
     } catch (e) {

@@ -8,12 +8,13 @@ import {
   useRejectItemMutation,
   GetAllMaterialsDocument,
 } from '@mimir/apollo-client';
+import { IStatus } from '../../types';
 
 type IDonateProps = {
   active: boolean;
   setActive: Dispatch<SetStateAction<boolean>>;
   title: string | undefined;
-  statusInfo: any;
+  statusInfo: IStatus;
   identifier: string;
   method: string;
 };
@@ -31,7 +32,7 @@ const AcceptRejectModals: FC<IDonateProps> = ({
   const acceptBook = async () => {
     await returnBook({
       variables: {
-        person_id: statusInfo.person_id,
+        person_id: parseInt(statusInfo.person?.id || '0'),
         identifier,
       },
       refetchQueries: [GetAllMaterialsDocument],
@@ -45,7 +46,7 @@ const AcceptRejectModals: FC<IDonateProps> = ({
   const rejectBook = async () => {
     await rejectItem({
       variables: {
-        person_id: statusInfo.person_id,
+        person_id: parseInt(statusInfo.person?.id || '0'),
         identifier,
       },
       refetchQueries: [GetAllMaterialsDocument],

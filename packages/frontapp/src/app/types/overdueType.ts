@@ -14,7 +14,7 @@ export interface IOverduePerson {
 export interface IOverdueItem {
   __typename?: 'Status' | undefined;
   id: string;
-  created_at: any;
+  created_at: Date;
   material: IOverdueMaterial;
   person: IOverduePerson;
 }

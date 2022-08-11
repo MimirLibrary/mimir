@@ -8,8 +8,7 @@ type Notification {
   message: String
 }
 
-
-input CreateAnswerNotification{
+input CreateAnswerNotification {
   id: Int!
   person_id: Int!
   message: String!

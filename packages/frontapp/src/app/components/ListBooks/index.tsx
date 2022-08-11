@@ -38,7 +38,7 @@ export interface IListBooks {
   id: string;
   __typename?: 'Status' | undefined;
   status: string;
-  created_at: any;
+  created_at: Date;
   material: IMaterial;
 }
 

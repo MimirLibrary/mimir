@@ -1,17 +1,7 @@
-import {
-  BlockedUsers,
-  Location,
-  Maybe,
-  Message,
-  Notification,
-  Scalars,
-  Status,
-} from '@mimir/apollo-client';
-
 export interface IStatus {
   __typename?: 'Status';
   id: string;
-  created_at: any;
+  created_at: Date;
   status: string;
   person?: IPerson;
 }
@@ -19,12 +9,13 @@ export interface IStatus {
 export interface IMaterial {
   __typename?: 'Material';
   title: string;
-  created_at: any;
+  created_at: Date;
   picture?: string | null;
   author: string;
   category: string;
   id: string;
   statuses: Array<IStatus | null>;
+  is_donated?: boolean;
 }
 interface IPerson {
   __typename?: 'Person' | undefined;

@@ -37,6 +37,7 @@ import AskManagerForm from '../AskManagerForm';
 import { WrapperInput } from '../Search';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { RolesTypes } from '@mimir/global-types';
+import { IStatus } from '../../types';
 export const BookHolder = styled.div`
   width: 100%;
   top: 11.5rem;
@@ -44,7 +45,7 @@ export const BookHolder = styled.div`
   border-radius: ${dimensions.xs_1};
   background-color: ${colors.bg_secondary};
   padding: ${dimensions.base_2};
-  box-shadow: 0px 10px 70px rgba(26, 30, 214, 0.08);
+  box-shadow: 0 10px 70px rgba(26, 30, 214, 0.08);
   @media (max-width: ${dimensions.phone_width}) {
     padding-top: ${dimensions.base};
   }
@@ -243,13 +244,13 @@ export interface IBookInfoProps {
   src: string | null | undefined;
   title: string | undefined;
   description: string | undefined;
-  statusInfo: any;
+  statusInfo: IStatus;
   author: string | undefined;
   category: string | undefined;
   identifier: string;
   material_id: number;
-  created_at: any;
-  updated_at: any;
+  created_at: Date;
+  updated_at: Date;
   type: string;
   location_id: number;
 }
@@ -329,15 +330,14 @@ const BookInfo: FC<IBookInfoProps> = ({
     setNewDescription(e.target.value);
   };
   const handleChangeDeadline = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewDeadline(parseInt(e.target.value));
-    parseInt(e.target.value) > 31 && setNewDeadline(31);
-    parseInt(e.target.value) <= 0 && setNewDeadline(1);
+    const value = parseInt(e.target.value);
+    setNewDeadline(value > 31 ? 31 : value <= 0 ? 1 : value);
   };
 
   const [claimBook, { data }] = useClaimBookMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
-  const [returnBook, infoReturnBook] = useReturnBookMutation({
+  const [returnBook] = useReturnBookMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
   const [prolongTime, { data: infoOfProlong }] = useProlongTimeMutation({
@@ -437,7 +437,7 @@ const BookInfo: FC<IBookInfoProps> = ({
   };
   useEffect(() => {
     if (searchParams.has('claimModal') && currentStatus === 'Free') {
-      const claimModal = searchParams.get('claimModal')!;
+      const claimModal = searchParams.get('claimModal') || '';
       setIsShowClaimModal(true);
       setValueIsISBN(claimModal);
     }
@@ -828,7 +828,7 @@ const BookInfo: FC<IBookInfoProps> = ({
         <Modal active={deleteWarning} setActive={setDeleteWarning}>
           <ErrorMessage
             title="Warning"
-            message={`The book "${title}" is now in the possession of a person with Id ${statusInfo?.person_id} .Are you sure you want to delete the book "${title}" from the library permanently?`}
+            message={`The book "${title}" is now in the possession of a person with Id ${statusInfo?.person?.id} .Are you sure you want to delete the book "${title}" from the library permanently?`}
             setActive={setDeleteWarning}
             titleCancel="Cancel"
             titleOption="Yes, delete"

@@ -1,30 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import {
-  Prisma,
-  Identifier,
-  Material,
-  IdentifierType,
-  JobStatus,
-} from '@prisma/client';
+import { Prisma, IdentifierType, JobStatus } from '@prisma/client';
 import { PrismaService } from '../prisma.service';
 
-const materialWithRelations = Prisma.validator<Prisma.MaterialArgs>()({
-  include: {
-    identifiers: true,
-    authors: true,
-    publisher: true,
-  },
-});
+// const materialWithRelations = Prisma.validator<Prisma.MaterialArgs>()({
+//   include: {
+//     identifiers: true,
+//     authors: true,
+//     publisher: true,
+//   },
+// });
 
-type MaterialWithRelations = Prisma.MaterialGetPayload<
-  typeof materialWithRelations
->;
+// type MaterialWithRelations = Prisma.MaterialGetPayload<
+//   typeof materialWithRelations
+// >;
 
-type Bundle = {
-  material: Prisma.MaterialCreateInput;
-  authors: Array<Prisma.AuthorCreateInput>;
-  publisher: Prisma.PublisherCreateInput;
-};
+// type Bundle = {
+//   material: Prisma.MaterialCreateInput;
+//   authors: Array<Prisma.AuthorCreateInput>;
+//   publisher: Prisma.PublisherCreateInput;
+// };
 
 @Injectable()
 export class DbService {
