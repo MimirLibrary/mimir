@@ -1,5 +1,4 @@
 import * as fs from 'fs';
-
 import { Test } from '@nestjs/testing';
 import axios from 'axios';
 
@@ -21,8 +20,8 @@ describe('OzbyService', () => {
   describe('readData', () => {
     it('check url', async () => {
       const isbn = '123';
-      // @ts-ignore
-      axios.get.mockResolvedValue('val');
+
+      (axios.get as jest.Mock).mockResolvedValue('val');
       await service.readData(isbn);
     });
   });
