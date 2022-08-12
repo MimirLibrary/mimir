@@ -76,8 +76,10 @@ const OverdueCard: FC<IOverdueCard> = ({
       <WrapperInfo>
         <Title>"{item?.material.title}"</Title>
         <TitleName>{item?.person.username}</TitleName>
-        {isOverdueToday(item?.created_at) ? null : (
-          <StyledTime>{getDateOfEarlier(item?.created_at)}</StyledTime>
+        {isOverdueToday(item?.created_at || new Date()) ? null : (
+          <StyledTime>
+            {getDateOfEarlier(item?.created_at || new Date())}
+          </StyledTime>
         )}
       </WrapperInfo>
       <ButtonActive>Remind</ButtonActive>
