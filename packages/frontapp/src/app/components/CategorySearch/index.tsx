@@ -6,7 +6,7 @@ import { createSearchParams, useNavigate } from 'react-router-dom';
 import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import { Material } from '@mimir/apollo-client';
-import { getStatus, getDates } from '../../models/helperFunctions/converTime';
+import { getStatus } from '../../models/helperFunctions/converTime';
 const Filters = styled.div`
   font-weight: 700;
   font-size: ${dimensions.xl_2};
