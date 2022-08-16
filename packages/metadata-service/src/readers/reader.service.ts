@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { DbService } from './db.service';
 import { OzbyService } from './ozby.service';
 import { LabirintService } from './labirint.service';
@@ -31,12 +31,12 @@ export class ReaderService {
       const result = await this.getDataFromServices(isbn);
       if (result) {
         await this.db.syncMaterial(isbn, result, startedAt);
+        return this.db.findMaterial(isbn);
       } else {
         if (!existing) {
           this.db.saveMissingISBN(isbn, startedAt);
         }
       }
-      return this.db.findMaterial(isbn);
     } catch (e) {
       console.error('Something went wrong!');
     }
@@ -51,7 +51,8 @@ export class ReaderService {
       ]);
       return result;
     } catch (e) {
-      console.error(`Identifier "${isbn}" not found!`);
+      console.log(`Identifier "${isbn}" not found!`);
+      throw new BadRequestException(`Identifier "${isbn}" not found!`);
     }
   }
 
