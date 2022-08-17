@@ -7,6 +7,10 @@
 
 /* tslint:disable */
 /* eslint-disable */
+export enum Permissions {
+    GRANT_REVOKE_MANAGER = "GRANT_REVOKE_MANAGER"
+}
+
 export interface CreateStateInput {
     person_id: number;
     state: boolean;
@@ -282,6 +286,7 @@ export interface Person {
     avatar: string;
     location_id: number;
     created_at: DateTime;
+    permissions?: Nullable<Nullable<Permissions>[]>;
     statuses?: Nullable<Nullable<Status>[]>;
     notifications?: Nullable<Nullable<Notification>[]>;
     location: Location;

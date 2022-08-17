@@ -307,6 +307,10 @@ export type Notification = {
   person_id: Scalars['Int'];
 };
 
+export enum Permissions {
+  GrantRevokeManager = 'GRANT_REVOKE_MANAGER'
+}
+
 export type Person = {
   __typename?: 'Person';
   avatar: Scalars['String'];

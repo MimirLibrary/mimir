@@ -2459,6 +2459,23 @@
         "possibleTypes": null
       },
       {
+        "kind": "ENUM",
+        "name": "Permissions",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "GRANT_REVOKE_MANAGER",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "Person",
         "description": null,

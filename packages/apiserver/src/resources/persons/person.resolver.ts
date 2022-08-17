@@ -13,6 +13,7 @@ import { Notification } from '../notifications/notification.entity';
 import { Location } from '../locations/location.entity';
 import {
   CreatePersonInput,
+  Permissions,
   UpdatePersonLocationInput,
 } from '@mimir/global-types';
 import { Message } from '../messages/message.entity';
@@ -100,4 +101,10 @@ export class PersonResolver {
     const { location_id } = person;
     return Location.findOne({ where: { id: location_id } });
   }
+
+  // @ResolveField(() => [Permissions])
+  // async permissions(@Parent() person: Person) {
+  //   const { permissions } = person;
+  //   return Person
+  // }
 }
