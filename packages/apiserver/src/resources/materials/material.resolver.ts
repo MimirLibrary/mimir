@@ -133,4 +133,24 @@ export class MaterialResolver {
     const { id } = material;
     return Message.find({ where: { material_id: id } });
   }
+
+  @Query(() => Material)
+  async test(
+    @Args('primary_location_id') primary_location_id: string,
+    @Args('additional_locations_id') additional_locations_id: Array<string>
+  ) {
+    try {
+      const result = await Material.createQueryBuilder('material')
+        .where('material.location_id = :location_id', {
+          location_id: primary_location_id,
+        })
+        .orWhere('material.location_id IN (:...additional_locations_id)', {
+          additional_locations_id,
+        })
+        .getMany();
+      return result;
+    } catch (e) {
+      console.log(e);
+    }
+  }
 }

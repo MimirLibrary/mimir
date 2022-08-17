@@ -147,6 +147,7 @@ export interface IQuery {
     searchOfMaterials(input: SearchInput): Nullable<Nullable<Material>[]> | Promise<Nullable<Nullable<Material>[]>>;
     getMaterialByIdentifier(input: SearchOneMaterial): Material | Promise<Material>;
     getMaterialByIdentifierFromMetadata(identifier: string): Nullable<IMetaOfMaterial> | Promise<Nullable<IMetaOfMaterial>>;
+    test(primary_location_id?: Nullable<string>, additional_locations_id?: Nullable<Nullable<string>[]>): Nullable<Nullable<Material>[]> | Promise<Nullable<Nullable<Material>[]>>;
     getMessagesByPerson(person_id: string): Nullable<Nullable<Message>[]> | Promise<Nullable<Nullable<Message>[]>>;
     getAllMessages(location_id: number): Nullable<Message[]> | Promise<Nullable<Message[]>>;
     getNotificationsByPerson(person_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;

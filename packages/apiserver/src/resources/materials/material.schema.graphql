@@ -123,6 +123,7 @@ extend type Query {
   searchOfMaterials(input: SearchInput!): [Material]
   getMaterialByIdentifier(input: SearchOneMaterial!): Material!
   getMaterialByIdentifierFromMetadata(identifier: String!): IMetaOfMaterial
+  test(primary_location_id: String, additional_locations_id: [String]): [Material]
 }
 
 extend type Mutation {
