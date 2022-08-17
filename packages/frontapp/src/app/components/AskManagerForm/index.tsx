@@ -116,7 +116,7 @@ const AskManagerForm: FC<IPropsAskManagerForm> = ({
       setSuccessModal(true);
     }
     setActive(false);
-  }, [data, setActive, setSuccessModal]);
+  }, [data]);
 
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
