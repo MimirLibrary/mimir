@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useGetOnePersonQuery } from '@mimir/apollo-client';
 import EmptyCover from '../../../assets/MOC-data/EmptyCover.png';
@@ -19,6 +19,9 @@ interface OneDonatorProps {
   index: number;
   picture: string;
   description: string;
+  search: string;
+  setShownId: Dispatch<SetStateAction<number[]>>;
+  shownId: Array<number>;
 }
 
 const BookImage = styled.img`
@@ -119,6 +122,9 @@ const OneDonator = ({
   description,
   statuses,
   index,
+  search,
+  shownId,
+  setShownId,
 }: OneDonatorProps) => {
   const [accept, setAccept] = useState(false);
   const navigate = useNavigate();
@@ -132,6 +138,14 @@ const OneDonator = ({
       id: lastStatus.person?.id || '0',
     },
   });
+  useEffect(() => {
+    if (
+      personName?.getOnePerson.username
+        .toLowerCase()
+        .includes(search.toLowerCase())
+    )
+      setShownId((arr) => [...arr, id]);
+  }, [search]);
   return (
     <>
       <DonateWrapper GrayBackground={GrayBackground}>

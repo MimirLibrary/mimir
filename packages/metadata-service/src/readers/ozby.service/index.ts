@@ -83,7 +83,7 @@ function readCells(keyEl, valEl) {
 export class OzbyService {
   readonly rootURL = 'https://oz.by/search/';
 
-  private async readData(isbn: string) {
+  async readData(isbn: string) {
     try {
       const result = await axios.get(this.rootURL, { params: { q: isbn } });
       return result.data;
@@ -92,7 +92,7 @@ export class OzbyService {
     }
   }
 
-  private parseData(htmlContent): Bundle {
+  parseData(htmlContent): Bundle {
     const $ = cheerio.load(htmlContent);
     const coverEl = $('.b-product-photo__picture-self img').first();
     const publisherEl = $('[itemprop=publisher]');

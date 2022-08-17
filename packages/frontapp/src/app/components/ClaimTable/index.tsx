@@ -124,6 +124,7 @@ interface ISortTextProps {
 }
 
 const SortText = styled.div<ISortTextProps>`
+  cursor: pointer;
   border-bottom: ${({ active }) => (active ? `3px solid` : null)};
   font-size: ${dimensions.base};
   font-weight: 400;

@@ -1,8 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { DbService } from './db.service';
 import { OzbyService } from './ozby.service';
 import { LabirintService } from './labirint.service';
 import { ChitaiGorodService } from './chitai-gorod.service';
+import { Identifier, Material, Author, Publisher } from '@prisma/client';
+
+type ReturnLookUpType = Identifier & {
+  material: Material & {
+    identifiers: Identifier[];
+    authors: Author[];
+    publisher: Publisher;
+  };
+};
 
 @Injectable()
 export class ReaderService {
@@ -13,20 +22,24 @@ export class ReaderService {
     private chitaiGorodService: ChitaiGorodService
   ) {}
 
-  async lookup(isbn: string) {
-    const existing = await this.findExistingMaterial(isbn);
-    if (existing) return existing;
+  async lookup(isbn: string): Promise<ReturnLookUpType> {
+    try {
+      const existing = await this.findExistingMaterial(isbn);
+      if (existing) return existing;
 
-    const startedAt = new Date();
-    const result = await this.getDataFromServices(isbn);
-    if (result) {
-      await this.db.syncMaterial(isbn, result, startedAt);
-    } else {
-      if (!existing) {
-        this.db.saveMissingISBN(isbn, startedAt);
+      const startedAt = new Date();
+      const result = await this.getDataFromServices(isbn);
+      if (result) {
+        await this.db.syncMaterial(isbn, result, startedAt);
+        return this.db.findMaterial(isbn);
+      } else {
+        if (!existing) {
+          this.db.saveMissingISBN(isbn, startedAt);
+        }
       }
+    } catch (e) {
+      console.error('Something went wrong!');
     }
-    return result;
   }
 
   private async getDataFromServices(isbn: string) {
@@ -38,7 +51,8 @@ export class ReaderService {
       ]);
       return result;
     } catch (e) {
-      console.error(`Identifier "${isbn}" not found!`);
+      console.log(`Identifier "${isbn}" not found!`);
+      throw new BadRequestException(`Identifier "${isbn}" not found!`);
     }
   }
 
