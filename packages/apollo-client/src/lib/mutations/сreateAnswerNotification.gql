@@ -1,5 +1,5 @@
-mutation createAnswerNotification($input: CreateAnswerNotification!){
-  createAnswerNotification(input: $input){
+mutation createAnswerNotification($input: CreateAnswerNotification!) {
+  createAnswerNotification(input: $input) {
     id
     message
   }
