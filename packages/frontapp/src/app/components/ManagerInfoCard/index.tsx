@@ -81,7 +81,7 @@ export const OpenLink = styled(Link)`
   text-decoration: underline;
 `;
 
-const FieldWrapper = styled.div`
+export const FieldWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
