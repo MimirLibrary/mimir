@@ -14,6 +14,7 @@ import { Location } from '../locations/location.entity';
 import {
   CreatePersonInput,
   Permissions,
+  RolesTypes,
   UpdatePersonLocationInput,
 } from '@mimir/global-types';
 import { Message } from '../messages/message.entity';
@@ -72,6 +73,24 @@ export class PersonResolver {
     }
   }
 
+  @Mutation(() => Person)
+  async changePersonRole(
+    @Args('person_id') person_id: number,
+    @Args('type') type: string
+  ) {
+    try {
+      const person = await Person.findOne(person_id);
+      if (!person) {
+        return new UnauthorizedException("A person didn't found");
+      }
+      person.type = type;
+      await person.save();
+      return person;
+    } catch (e) {
+      return new BadRequestException();
+    }
+  }
+
   @ResolveField(() => [Status])
   async statuses(@Parent() person: Person) {
     const { id } = person;
@@ -102,9 +121,9 @@ export class PersonResolver {
     return Location.findOne({ where: { id: location_id } });
   }
 
-  // @ResolveField(() => [Permissions])
-  // async permissions(@Parent() person: Person) {
-  //   const { permissions } = person;
-  //   return Person
-  // }
+  @ResolveField(() => [Permissions])
+  async permissions(@Parent() person: Person) {
+    const { permissions } = person;
+    return permissions && permissions.split(',');
+  }
 }

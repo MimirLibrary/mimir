@@ -181,6 +181,7 @@ export interface IMutation {
     createAnswerNotification(input: CreateAnswerNotification): Notification | Promise<Notification>;
     createPerson(input: CreatePersonInput): Person | Promise<Person>;
     updatePersonLocation(input: UpdatePersonLocationInput): Person | Promise<Person>;
+    changePersonRole(person_id: number, type: string): Person | Promise<Person>;
     createStatus(input: CreateStatusInput): Status | Promise<Status>;
 }
 
