@@ -108,9 +108,9 @@ export class MaterialService {
     try {
       return await Material.createQueryBuilder('material')
         .leftJoinAndSelect('material.status', 'status')
-        .where('status.person_id = :person_id AND status.status LIKE :status', {
+        .where('status.person_id = :person_id AND status.status = :status', {
           person_id: id,
-          status: 'Pending',
+          status: StatusTypes.PENDING,
         })
         .orderBy('material.created_at', 'ASC')
         .addOrderBy('status.created_at', 'ASC')
