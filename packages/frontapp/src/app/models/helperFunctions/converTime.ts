@@ -24,7 +24,7 @@ export const getStatus = (status: string | undefined, date: any) => {
   if (status === 'Prolong') return 'Prolong';
   if (status === 'Pending') return 'Pending';
   if (status === 'Rejected') return 'Rejected';
-  if (isOverdue(date)) return 'Busy';
+  if (!isOverdue(date)) return 'Busy';
   return 'Overdue';
 };
 
@@ -112,7 +112,7 @@ export const isOverdueToday = (date: Date): boolean => {
 };
 
 export const getDateOfEarlier = (date: Date): string | null => {
-  if (isOverdue(date)) return null;
+  if (!isOverdue(date)) return null;
   const oneDay = 1000 * 60 * 60 * 24;
   const overdueDate = getDates(date).returnDate.getTime();
   const currentDate = Date.now();

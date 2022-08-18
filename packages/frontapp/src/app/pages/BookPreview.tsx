@@ -229,7 +229,7 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
                             <FieldsText returned>
                               {t('UserCard.Table.Returned')}
                             </FieldsText>
-                          ) : isOverdue(item.created_at) ? (
+                          ) : !isOverdue(item.created_at) ? (
                             <FieldsText overdue>
                               {t('UserCard.Table.Overdue')}
                             </FieldsText>
