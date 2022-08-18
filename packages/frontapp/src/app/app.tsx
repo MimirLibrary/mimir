@@ -95,7 +95,9 @@ const App: FC = () => {
               </Routes>
             ) : (
               <WrapperRoutes>
-                <SearchWrapper setSidebarActive={setSidebarActive} />
+                {window.location.pathname !== RoutesTypes.DONATES_FROM_USER ? (
+                  <SearchWrapper setSidebarActive={setSidebarActive} />
+                ) : null}
                 <Routes>
                   {routes}
                   <Route path="/notifications" element={<NotificationPage />} />
