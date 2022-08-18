@@ -123,7 +123,7 @@ extend type Query {
   searchOfMaterials(input: SearchInput!): [Material]
   getMaterialByIdentifier(input: SearchOneMaterial!): Material!
   getMaterialByIdentifierFromMetadata(identifier: String!): IMetaOfMaterial
-  getAllDonatedMaterialsByPerson(id: ID!):[Material]
+  getAllDonatedMaterialsByPerson(id: ID!): [Material]
 }
 
 extend type Mutation {
