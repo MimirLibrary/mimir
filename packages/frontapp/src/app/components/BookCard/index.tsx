@@ -26,7 +26,7 @@ const BookCardWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-
+  box-shadow: ${colors.shadow};
   @media (max-width: ${dimensions.phone_width}) {
     flex-direction: row;
     height: min-content;
@@ -82,7 +82,6 @@ const BookCard: FC<IBookCardProps> = ({
   const handleItemRedirect = () => {
     navigate(`/item/${id}`);
   };
-
   return (
     <BookCardWrapper onClick={handleItemRedirect}>
       <BookImage src={src || bookImage} />

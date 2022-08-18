@@ -1,8 +1,12 @@
 import { FC, useEffect, useState } from 'react';
 import { getDates, getStatus } from '../../models/helperFunctions/converTime';
-import { StyledBookStatus } from '../../globalUI/Status';
+import {
+  StyledBookStatus,
+  StyledBookStatusWrapper,
+} from '../../globalUI/Status';
 import { useLocation } from 'react-router-dom';
 import { RoutesTypes } from '../../../utils/routes';
+import { StatusTypes } from '@mimir/global-types';
 
 interface IBookStatusProps {
   status: string | undefined;
@@ -16,14 +20,18 @@ const BookStatus: FC<IBookStatusProps> = ({ status, date }) => {
 
   useEffect(() => {
     switch (currentStatus) {
-      case 'Free':
+      case StatusTypes.FREE:
         if (pathname === RoutesTypes.HISTORY_OF_CLAIM) {
           setStatusText('Returned');
           break;
         }
+        if (pathname === RoutesTypes.HISTORY_OF_DONATE) {
+          setStatusText('Received');
+          break;
+        }
         setStatusText('On the shelf');
         break;
-      case 'Busy': {
+      case StatusTypes.BUSY: {
         const day = `${getDates(date).returnDate.getDate()}`.padStart(2, '0');
         const month = `${getDates(date).returnDate.getMonth() + 1}`.padStart(
           2,
@@ -32,7 +40,7 @@ const BookStatus: FC<IBookStatusProps> = ({ status, date }) => {
         setStatusText(`Return till ${day}.${month}`);
         break;
       }
-      case 'Prolong': {
+      case StatusTypes.PROLONG: {
         const day = `${getDates(date).returnDate.getDate()}`.padStart(2, '0');
         const month = `${getDates(date).returnDate.getMonth() + 1}`.padStart(
           2,
@@ -41,8 +49,14 @@ const BookStatus: FC<IBookStatusProps> = ({ status, date }) => {
         setStatusText(`Return till: ${day}.${month}`);
         break;
       }
-      case 'Overdue':
+      case StatusTypes.OVERDUE:
         setStatusText('Overdue');
+        break;
+      case StatusTypes.PENDING:
+        setStatusText('Waiting for a manager');
+        break;
+      case StatusTypes.REJECTED:
+        setStatusText('Rejected');
         break;
       default:
         setStatusText('');
@@ -50,7 +64,9 @@ const BookStatus: FC<IBookStatusProps> = ({ status, date }) => {
     }
   }, [currentStatus]);
   return (
-    <StyledBookStatus status={currentStatus}>{statusText}</StyledBookStatus>
+    <StyledBookStatusWrapper status={currentStatus}>
+      <StyledBookStatus status={currentStatus}>{statusText}</StyledBookStatus>
+    </StyledBookStatusWrapper>
   );
 };
 

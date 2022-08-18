@@ -22,6 +22,8 @@ import { BadRequestException, UseGuards } from '@nestjs/common';
 import { Message } from '../messages/message.entity';
 import { AuthGuard } from '../../auth/auth.guard';
 import { GraphQLError } from 'graphql';
+import { CurrentUserLocation } from '../CurrentUserLocation.decorator';
+import { Location } from '../locations/location.entity';
 
 @Resolver('Material')
 export class MaterialResolver {
@@ -62,6 +64,11 @@ export class MaterialResolver {
   @Query(() => [Material])
   async searchOfMaterials(@Args('input') searchInput: SearchInput) {
     return this.materialService.search(searchInput);
+  }
+
+  @Query(() => [Material])
+  async getAllDonatedMaterialsByPerson(@Args('id') id: number | string) {
+    return this.materialService.getAllDonatedMaterialsByPerson(id);
   }
 
   @Mutation(() => Material)
