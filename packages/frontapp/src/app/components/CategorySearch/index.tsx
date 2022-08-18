@@ -5,7 +5,7 @@ import Button from '../Button';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
-import { Material } from '@mimir/apollo-client';
+import useMaterialFilter from '../../hooks/useMaterialFilter';
 import { getStatus } from '../../models/helperFunctions/converTime';
 const Filters = styled.div`
   font-weight: 700;
@@ -77,6 +77,26 @@ const CategorySearch = ({ setActive }: any) => {
     variables: { location_id: location.id },
     fetchPolicy: 'no-cache',
   });
+
+  const allCategories = useMaterialFilter(availableMaterial, 'category');
+  const allAuthors = useMaterialFilter(availableMaterial, 'author');
+  const allTypes = useMaterialFilter(availableMaterial, 'type');
+  const allAvailability = useMaterialFilter(availableMaterial, 'availability');
+  const allSortBy = {
+    'By date added': undefined,
+    'By date of writing': undefined,
+  };
+
+  const customObjectFilter = (filterName: {
+    [author: string]: number | undefined;
+  }) =>
+    Object.keys(filterName).map((key) => ({
+      title: key,
+      numberOfItems: filterName[key],
+      id: idOfItems++,
+      checked: false,
+    }));
+
   useEffect(() => {
     const available = data?.getAllMaterials.filter((material: any) => {
       const lastStatus = material.statuses.slice(-1)[0];
@@ -85,121 +105,38 @@ const CategorySearch = ({ setActive }: any) => {
     });
     setAvailableMaterial(available);
   }, [data]);
-  const allCategories = availableMaterial?.reduce(
-    (acc: { [category: string]: number }, material: Material) => ({
-      ...acc,
-      [material?.category as string]: acc[material?.category as string]
-        ? acc[material?.category as string] + 1
-        : 1,
-    }),
-    {}
-  );
-  const allAuthors = availableMaterial?.reduce(
-    (acc: { [author: string]: number }, material: Material) => ({
-      ...acc,
-      [material?.author as string]: acc[material?.author as string]
-        ? acc[material?.author as string] + 1
-        : 1,
-    }),
-    {}
-  );
-  const allTypes = availableMaterial?.reduce(
-    (acc: { [type: string]: number }, material: Material) => ({
-      ...acc,
-      [material?.type as string]: acc[material?.type as string]
-        ? acc[material?.type as string] + 1
-        : 1,
-    }),
-    {}
-  );
-  const allAvailability = availableMaterial?.reduce(
-    (acc: { [type: string]: number }, material: Material) => {
-      const lastStatus = material.statuses.slice(-1)[0];
-      const currentStatus = getStatus(lastStatus?.status, material?.created_at);
-      return {
-        ...acc,
-        [currentStatus as string]: acc[currentStatus as string]
-          ? acc[currentStatus as string] + 1
-          : 1,
-      };
-    },
-    {}
-  );
   useEffect(() => {
-    if (allAuthors && allCategories && allTypes) {
+    if (allAuthors && allCategories && allTypes && allAvailability) {
       setAllFilters([
         {
           title: 'Availability',
           inputType: 'checkbox',
           id: 1,
-          subAttributes: Object.keys(allAvailability).map((key) => {
-            return {
-              title: key,
-              numberOfItems: allAvailability[key],
-              id: idOfItems++,
-              checked: false,
-            };
-          }),
+          subAttributes: customObjectFilter(allAvailability),
         },
         {
           title: 'Items',
           inputType: 'radio',
           id: 2,
-          subAttributes: Object.keys(allTypes).map((key) => {
-            return {
-              title: key,
-              numberOfItems: allTypes[key],
-              id: idOfItems++,
-              checked: false,
-            };
-          }),
+          subAttributes: customObjectFilter(allTypes),
         },
         {
           title: 'Categories',
           inputType: 'checkbox',
-
           id: 3,
-          subAttributes: Object.keys(allCategories).map((key) => {
-            return {
-              title: key,
-              numberOfItems: allCategories[key],
-              id: idOfItems++,
-              checked: false,
-            };
-          }),
+          subAttributes: customObjectFilter(allCategories),
         },
         {
           title: 'Authors',
           inputType: 'checkbox',
-
           id: 4,
-          subAttributes: Object.keys(allAuthors).map((key) => {
-            return {
-              title: key,
-              numberOfItems: allAuthors[key],
-              id: idOfItems++,
-              checked: false,
-            };
-          }),
+          subAttributes: customObjectFilter(allAuthors),
         },
         {
           title: 'SortBy',
           inputType: 'radio',
           id: 5,
-          subAttributes: [
-            {
-              title: 'By date added',
-              numberOfItems: undefined,
-              id: 1,
-              checked: false,
-            },
-            {
-              title: 'By date of writing',
-              numberOfItems: undefined,
-              id: 2,
-              checked: false,
-            },
-          ],
+          subAttributes: customObjectFilter(allSortBy),
         },
       ]);
     }
