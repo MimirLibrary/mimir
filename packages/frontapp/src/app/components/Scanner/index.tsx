@@ -296,7 +296,7 @@ const Scanner: FC<IScannerProps> = memo(
           {showInput && (
             <InputMask
               placeholder="Enter ISBN"
-              mask="999-9-99-999999-9"
+              mask="999-9-999-99999-9"
               onChange={handleInputChange}
             >
               <Input />

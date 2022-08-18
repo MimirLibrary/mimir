@@ -159,7 +159,7 @@ const ClaimOperation: FC<IProps> = ({
         <Row>
           <WrapperInput>
             <InputMask
-              mask="999-9-99-999999-9"
+              mask="999-9-999-99999-9"
               value={value}
               onChange={handleChangeISBNInput}
               required

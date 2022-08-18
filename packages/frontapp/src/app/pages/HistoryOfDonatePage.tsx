@@ -13,7 +13,6 @@ const HistoryOfDonatePage = () => {
   const { data, loading } = useGetAllDonatedMaterialsByPersonQuery({
     variables: { id: id.toString() },
   });
-  console.log(data?.getAllDonatedMaterialsByPerson);
   return (
     <Wrapper>
       <TextArticle>{t('DonateHistory.Title')}</TextArticle>
