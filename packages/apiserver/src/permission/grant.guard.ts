@@ -22,7 +22,6 @@ export class GrantGuard implements CanActivate {
       'grants',
       context.getHandler()
     );
-    console.log(grants);
 
     if (!grants) return true;
 
