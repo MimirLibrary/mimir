@@ -51,7 +51,7 @@ input UpdateMaterialInput {
 
 input SearchOneMaterial {
   identifier: String!
-  location_id: Int!
+  locations: [Int!]
 }
 
 input DonateBookInput {
@@ -71,7 +71,7 @@ input DonateBookInput {
 
 input SearchInput {
   search: String
-  location: String!
+  locations: [Int!]
 }
 
 type ResponseMetadata {
@@ -118,12 +118,11 @@ type IMetaOfMaterial {
 }
 
 extend type Query {
-  getAllMaterials(location_id: String!, limit: Int, offset: Int): [Material]!
+  getAllMaterials(locations: [Int!], limit: Int, offset: Int): [Material]!
   getMaterialById(id: ID!): Material!
   searchOfMaterials(input: SearchInput!): [Material]
   getMaterialByIdentifier(input: SearchOneMaterial!): Material!
   getMaterialByIdentifierFromMetadata(identifier: String!): IMetaOfMaterial
-  test(primary_location_id: String, additional_locations_id: [String]): [Material]
 }
 
 extend type Mutation {

@@ -37,8 +37,8 @@ export class StatusResolver {
   }
 
   @Query(() => [Status])
-  async getAllStatusesIsOverdue(@Args('location_id') location_id: string) {
-    return this.statusService.allOverdueStatuses(location_id);
+  async getAllStatusesIsOverdue(@Args('locations') locations: Array<number>) {
+    return this.statusService.allOverdueStatuses(locations);
   }
 
   @Mutation(() => Status)

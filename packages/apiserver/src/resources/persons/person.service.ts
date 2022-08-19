@@ -5,7 +5,7 @@ import { Location } from '../locations/location.entity';
 
 @Injectable()
 export class PersonService {
-  constructor(private connection: Connection) {}
+  constructor() {}
 
   async getAllPersons(username: string, location: Location) {
     try {
