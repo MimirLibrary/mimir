@@ -14,13 +14,13 @@ import { Location } from '../locations/location.entity';
 import {
   CreatePersonInput,
   Permissions,
-  RolesTypes,
   UpdatePersonLocationInput,
 } from '@mimir/global-types';
 import { Message } from '../messages/message.entity';
 import { BlockedUsers } from '../blocked-users/blocked-users.entity';
 import { CurrentUserLocation } from '../CurrentUserLocation.decorator';
 import { PersonService } from './person.service';
+import { Grants } from '../../permission/grant.decorator';
 
 @Resolver('Person')
 export class PersonResolver {
@@ -74,6 +74,7 @@ export class PersonResolver {
   }
 
   @Mutation(() => Person)
+  @Grants(Permissions.GRANT_REVOKE_MANAGER)
   async changePersonRole(
     @Args('person_id') person_id: number,
     @Args('type') type: string

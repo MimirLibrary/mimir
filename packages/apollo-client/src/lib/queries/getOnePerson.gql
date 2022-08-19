@@ -3,6 +3,7 @@ query GetOnePerson($id: ID!) {
     id
     username
     email
+    type
     position
     avatar
     statuses {

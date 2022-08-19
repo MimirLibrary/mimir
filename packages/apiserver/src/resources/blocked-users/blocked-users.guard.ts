@@ -7,7 +7,6 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { Person } from '../persons/person.entity';
 import { BlockedUsers } from './blocked-users.entity';
 
 @Injectable()

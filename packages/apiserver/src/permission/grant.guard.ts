@@ -1,7 +1,6 @@
 import {
   CanActivate,
   ExecutionContext,
-  HttpStatus,
   UnauthorizedException,
   Injectable,
 } from '@nestjs/common';
@@ -19,15 +18,24 @@ export class GrantGuard implements CanActivate {
     const {
       req: { headers },
     } = ctx.getContext();
-    const roles = this.reflector.get<Permissions[]>(
-      'roles',
+    const grants = this.reflector.get<Permissions[]>(
+      'grants',
       context.getHandler()
     );
+    console.log(grants);
 
-    if (!roles) return true;
+    if (!grants) return true;
 
-    const {} = Person.findOne();
+    const bufB64 = Buffer.from(headers['id-token'].split('.')[1], 'base64');
+    const result = JSON.parse(bufB64.toString());
 
-    return true;
+    const { permissions } = await Person.findOne({
+      where: { smg_id: result.sub },
+    });
+
+    if (permissions && grants.every((grant) => permissions.includes(grant)))
+      return true;
+
+    throw new UnauthorizedException("You don't have access");
   }
 }

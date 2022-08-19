@@ -1,0 +1,12 @@
+mutation ChangePersonRole(
+  $person_id: Int!
+  $type: String!
+) {
+  changePersonRole(
+    person_id: $person_id,
+    type: $type
+  ) {
+    id
+    type
+  }
+}
