@@ -54,7 +54,6 @@ export const resources = {
         SingleUser: {
           ClaimHistory: 'Claim history:',
           ClaimNow: 'Claim now:',
-          Overdue: 'Overdue:',
           Item: 'item',
           Items: 'items',
         },
@@ -155,6 +154,16 @@ export const resources = {
         Title: 'History of your donate',
         Desc: 'List of items you have donated to the library',
       },
+      Statuses: {
+        Overdue: 'Overdue',
+        'Free/history-of-claim': 'Returned',
+        'Free/history-of-donate': 'Received',
+        Free: 'On the shelf',
+        Busy: 'Return till: ',
+        Prolong: 'Return till: ',
+        Pending: 'Waiting for a manger',
+        Rejected: 'Rejected',
+      },
     },
   },
   ru: {
@@ -212,7 +221,6 @@ export const resources = {
         SingleUser: {
           ClaimHistory: 'История:',
           ClaimNow: 'На руках:',
-          Overdue: 'Просрочены:',
           Item: 'предмет',
           Items: 'предмета',
         },
@@ -311,6 +319,16 @@ export const resources = {
       DonateHistory: {
         Title: 'История ваших пожертвований',
         Desc: 'Список вещей, пожертвованных вами в библиотеку',
+      },
+      Statuses: {
+        Overdue: 'Просрочено',
+        'Free/history-of-claim': 'Возвращено',
+        'Free/history-of-donate': 'Принято',
+        Free: 'На полке',
+        Busy: 'Вернуть до: ',
+        Prolong: 'Вернуть до: ',
+        Pending: 'В ожидании менеджера',
+        Rejected: 'Отклонено',
       },
     },
   },

@@ -1,4 +1,5 @@
 import { t } from 'i18next';
+import { StatusTypes } from '@mimir/global-types';
 
 export const periodOfKeeping = 30;
 
@@ -20,12 +21,12 @@ export const isOverdue = (date: Date) =>
 
 export const getStatus = (status: string | undefined, date: any) => {
   if (!status) return null;
-  if (status === 'Free') return 'Free';
-  if (status === 'Prolong') return 'Prolong';
-  if (status === 'Pending') return 'Pending';
-  if (status === 'Rejected') return 'Rejected';
-  if (!isOverdue(date)) return 'Busy';
-  return 'Overdue';
+  if (status === StatusTypes.BUSY)
+    if (!isOverdue(date)) return StatusTypes.BUSY;
+    else {
+      return StatusTypes.OVERDUE;
+    }
+  return status;
 };
 
 export const todayCondition = (date: Date) => {
