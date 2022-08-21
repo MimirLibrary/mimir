@@ -5,4 +5,5 @@ export enum StatusTypes {
   PENDING = 'Pending',
   SUSPEND = 'SUSPEND',
   REJECTED = 'Rejected',
+  OVERDUE = 'Overdue',
 }

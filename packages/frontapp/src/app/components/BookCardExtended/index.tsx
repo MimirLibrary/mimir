@@ -4,6 +4,7 @@ import { colors, dimensions } from '@mimir/ui-kit';
 import src from '../../../assets/MOC-data/BookImage.png';
 import { getCurrentStatus } from '../../models/helperFunctions/getCurrentStatus';
 import { IMaterial } from '../../types';
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
   background: ${colors.bg_secondary};
@@ -90,15 +91,17 @@ const BookCardExtended: FC<IPropsBookCardExtended> = ({ item }) => {
   const countOfHistoryClaimed = item?.statuses.filter(
     (elem) => elem?.status === 'Busy'
   ).length;
-
+  const navigate = useNavigate();
   const currenStatusElement = item?.statuses[item?.statuses.length - 1];
   const currentStatus = useMemo(
     () => getCurrentStatus(currenStatusElement),
     [currenStatusElement]
   );
-
+  const handleItemRedirect = () => {
+    navigate(`/item/${item?.id}`);
+  };
   return (
-    <Wrapper>
+    <Wrapper onClick={handleItemRedirect}>
       <WrapperImg>
         <img src={item?.picture || src} alt="book-img" />
       </WrapperImg>

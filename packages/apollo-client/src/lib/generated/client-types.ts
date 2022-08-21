@@ -338,6 +338,7 @@ export type Publisher = {
 
 export type Query = {
   __typename?: 'Query';
+  getAllDonatedMaterialsByPerson?: Maybe<Array<Maybe<Material>>>;
   getAllLocations: Array<Maybe<Location>>;
   getAllMaterials: Array<Maybe<Material>>;
   getAllMessages?: Maybe<Array<Message>>;
@@ -358,6 +359,11 @@ export type Query = {
   getStatusesByPerson: Array<Maybe<Status>>;
   searchOfMaterials?: Maybe<Array<Maybe<Material>>>;
   welcome: Scalars['String'];
+};
+
+
+export type QueryGetAllDonatedMaterialsByPersonArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -634,6 +640,13 @@ export type CreateAnswerNotificationMutationVariables = Exact<{
 
 
 export type CreateAnswerNotificationMutation = { __typename?: 'Mutation', createAnswerNotification: { __typename?: 'Notification', id: string, message?: string | null } };
+
+export type GetAllDonatedMaterialsByPersonQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetAllDonatedMaterialsByPersonQuery = { __typename?: 'Query', getAllDonatedMaterialsByPerson?: Array<{ __typename?: 'Material', id: string, picture?: string | null, title: string, author: string, category: string, statuses: Array<{ __typename?: 'Status', id: string, created_at: any, status: string } | null> } | null> | null };
 
 export type GetAllLocationsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1274,6 +1287,50 @@ export function useCreateAnswerNotificationMutation(baseOptions?: Apollo.Mutatio
 export type CreateAnswerNotificationMutationHookResult = ReturnType<typeof useCreateAnswerNotificationMutation>;
 export type CreateAnswerNotificationMutationResult = Apollo.MutationResult<CreateAnswerNotificationMutation>;
 export type CreateAnswerNotificationMutationOptions = Apollo.BaseMutationOptions<CreateAnswerNotificationMutation, CreateAnswerNotificationMutationVariables>;
+export const GetAllDonatedMaterialsByPersonDocument = gql`
+    query GetAllDonatedMaterialsByPerson($id: ID!) {
+  getAllDonatedMaterialsByPerson(id: $id) {
+    id
+    picture
+    title
+    author
+    category
+    statuses {
+      id
+      created_at
+      status
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAllDonatedMaterialsByPersonQuery__
+ *
+ * To run a query within a React component, call `useGetAllDonatedMaterialsByPersonQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllDonatedMaterialsByPersonQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllDonatedMaterialsByPersonQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetAllDonatedMaterialsByPersonQuery(baseOptions: Apollo.QueryHookOptions<GetAllDonatedMaterialsByPersonQuery, GetAllDonatedMaterialsByPersonQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllDonatedMaterialsByPersonQuery, GetAllDonatedMaterialsByPersonQueryVariables>(GetAllDonatedMaterialsByPersonDocument, options);
+      }
+export function useGetAllDonatedMaterialsByPersonLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllDonatedMaterialsByPersonQuery, GetAllDonatedMaterialsByPersonQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllDonatedMaterialsByPersonQuery, GetAllDonatedMaterialsByPersonQueryVariables>(GetAllDonatedMaterialsByPersonDocument, options);
+        }
+export type GetAllDonatedMaterialsByPersonQueryHookResult = ReturnType<typeof useGetAllDonatedMaterialsByPersonQuery>;
+export type GetAllDonatedMaterialsByPersonLazyQueryHookResult = ReturnType<typeof useGetAllDonatedMaterialsByPersonLazyQuery>;
+export type GetAllDonatedMaterialsByPersonQueryResult = Apollo.QueryResult<GetAllDonatedMaterialsByPersonQuery, GetAllDonatedMaterialsByPersonQueryVariables>;
 export const GetAllLocationsDocument = gql`
     query GetAllLocations {
   getAllLocations {

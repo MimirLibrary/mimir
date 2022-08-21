@@ -11,6 +11,7 @@ import { Status } from '../statuses/status.entity';
 import { Connection } from 'typeorm';
 import { ErrorBook } from '../../errors';
 import { GraphQLError } from 'graphql';
+import { Location } from '../locations/location.entity';
 import axios from 'axios';
 
 @Injectable()
@@ -99,6 +100,21 @@ export class MaterialService {
         `${process.env['NX_API_METADATA_URL']}/search/${identifier}`
       );
       return responseMetadataService.data;
+    } catch (e) {
+      throw new GraphQLError(e.message);
+    }
+  }
+  async getAllDonatedMaterialsByPerson(id: number | string) {
+    try {
+      return await Material.createQueryBuilder('material')
+        .leftJoinAndSelect('material.status', 'status')
+        .where('status.person_id = :person_id AND status.status = :status', {
+          person_id: id,
+          status: StatusTypes.PENDING,
+        })
+        .orderBy('material.created_at', 'ASC')
+        .addOrderBy('status.created_at', 'ASC')
+        .getMany();
     } catch (e) {
       throw new GraphQLError(e.message);
     }

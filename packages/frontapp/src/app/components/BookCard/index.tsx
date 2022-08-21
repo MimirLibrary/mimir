@@ -17,15 +17,18 @@ export interface IBookCardProps {
 
 const BookCardWrapper = styled.div`
   flex-shrink: 0;
-  height: 19.5rem;
   width: 12rem;
   background-color: ${colors.bg_secondary};
   border-radius: ${dimensions.xs};
   padding: ${dimensions.base};
   display: flex;
   flex-direction: column;
-  align-items: center;
   cursor: pointer;
+  box-shadow: ${colors.shadow};
+
+  @media (min-width: ${dimensions.phone_width}) {
+    min-height: 19.5rem;
+  }
 
   @media (max-width: ${dimensions.phone_width}) {
     flex-direction: row;
@@ -44,7 +47,7 @@ const BookImage = styled.img`
   width: 7rem;
   height: 12rem;
   margin-bottom: ${dimensions.xs_2};
-
+  align-self: center;
   @media (max-width: ${dimensions.phone_width}) {
     width: 5rem;
     height: 8rem;
@@ -66,7 +69,7 @@ const DescriptionBook = styled.p`
   font-size: ${dimensions.sm};
   line-height: ${dimensions.base};
   color: ${colors.description_gray};
-  margin: ${dimensions.xs_2} auto;
+  margin: ${dimensions.xs_2} 0;
 `;
 
 const BookCard: FC<IBookCardProps> = ({
@@ -82,7 +85,6 @@ const BookCard: FC<IBookCardProps> = ({
   const handleItemRedirect = () => {
     navigate(`/item/${id}`);
   };
-
   return (
     <BookCardWrapper onClick={handleItemRedirect}>
       <BookImage src={src || bookImage} />
