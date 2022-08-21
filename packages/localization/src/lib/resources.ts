@@ -151,6 +151,10 @@ export const resources = {
         DescMessage: 'Own message:',
         SendBtn: 'Send notification',
       },
+      DonateHistory: {
+        Title: 'History of your donate',
+        Desc: 'List of items you have donated to the library',
+      },
     },
   },
   ru: {
@@ -303,6 +307,10 @@ export const resources = {
         SubTitle: 'Выберите готовое сообщение или напишите свое собственное:',
         DescMessage: 'Собственное сообщение:',
         SendBtn: 'Отправить уведомление',
+      },
+      DonateHistory: {
+        Title: 'История ваших пожертвований',
+        Desc: 'Список вещей, пожертвованных вами в библиотеку',
       },
     },
   },

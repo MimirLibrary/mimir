@@ -8,7 +8,7 @@ import { TextArticle } from '../globalUI/TextArticle';
 import { TextBase } from '../globalUI/TextBase';
 import { useAppSelector } from '../hooks/useTypedSelector';
 
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
   padding-top: 3.5rem;
 
   @media (max-width: ${dimensions.tablet_width}) {
@@ -16,7 +16,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const List = styled.div`
+export const List = styled.div`
   margin-top: ${dimensions.xl_2};
   display: flex;
   flex-wrap: wrap;
