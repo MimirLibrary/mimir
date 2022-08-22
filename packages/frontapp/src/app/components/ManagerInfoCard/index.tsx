@@ -4,7 +4,7 @@ import { ManagerCardTypes } from './managerCardTypes';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { t } from 'i18next';
 import { RoutesTypes } from '../../../utils/routes';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { IField, IOverdueItem } from '../../types';
 import { IMaterialDonate } from '../../types/donateList';
 
@@ -117,7 +117,6 @@ interface IFieldOpenLinkProps {
   secondary?: string;
 }
 export const FieldOpenLink = styled(OpenLink)<IFieldOpenLinkProps>`
-  cursor: pointer;
   font-weight: 400;
   width: auto;
   margin-left: 4px;

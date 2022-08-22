@@ -43,7 +43,6 @@ const HistoryOfClaimPage = () => {
     variables: { person_id: id },
     skip: userRole === RolesTypes.MANAGER,
   });
-  console.log(data);
   return (
     <Wrapper>
       <TextArticle>{t('ClaimHistory.Title')}</TextArticle>
