@@ -5,6 +5,7 @@ import src from '../../../assets/MOC-data/BookImage.png';
 import { getCurrentStatus } from '../../models/helperFunctions/getCurrentStatus';
 import { IMaterial } from '../../types';
 import { useNavigate } from 'react-router-dom';
+import { OpenLink } from '../ManagerInfoCard';
 
 const Wrapper = styled.div`
   background: ${colors.bg_secondary};
@@ -16,6 +17,7 @@ const Wrapper = styled.div`
 `;
 
 const WrapperImg = styled.div`
+  cursor: pointer;
   img {
     width: 72px;
     height: 115px;
@@ -61,8 +63,10 @@ const TitleStatus = styled.span`
   margin-right: 0.2rem;
 `;
 
-const StyledUserName = styled.span<{ type: string }>`
+const StyledUserName = styled(OpenLink)<{ type: string }>`
   text-decoration: underline;
+  font-weight: 300;
+  font-size: ${dimensions.sm};
   color: ${(props) =>
     props.type === 'Overdue' ? colors.problem_red : colors.accent_color};
 `;
@@ -101,8 +105,8 @@ const BookCardExtended: FC<IPropsBookCardExtended> = ({ item }) => {
     navigate(`/item/${item?.id}`);
   };
   return (
-    <Wrapper onClick={handleItemRedirect}>
-      <WrapperImg>
+    <Wrapper>
+      <WrapperImg onClick={handleItemRedirect}>
         <img src={item?.picture || src} alt="book-img" />
       </WrapperImg>
       <WrapperDescription>
@@ -117,7 +121,10 @@ const BookCardExtended: FC<IPropsBookCardExtended> = ({ item }) => {
               <TitleStatus>
                 {currentStatus.type === 'Overdue' ? 'Overdue by' : 'Claimed by'}
               </TitleStatus>
-              <StyledUserName type={currentStatus.type}>
+              <StyledUserName
+                type={currentStatus.type}
+                to={`/readers/${currentStatus.person_id}`}
+              >
                 {currentStatus.body}
               </StyledUserName>
             </>

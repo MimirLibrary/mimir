@@ -20,6 +20,7 @@ import {
   OpenLink,
   FieldDescription,
 } from '../ManagerInfoCard';
+import { useNavigate } from 'react-router-dom';
 
 const InlineFieldDescription = styled(FieldDescription)`
   max-width: 80%;
@@ -68,7 +69,10 @@ const NotificationList: FC<NotificationList> = ({ fieldsNotification }) => {
   const [dataOfMessage, setDataOfMessage] = useState<IDataOfMessage | null>(
     null
   );
-
+  const navigate = useNavigate();
+  const handleUserNavigate = (item: string | number | undefined) => {
+    navigate(`/readers/${item}`);
+  };
   const handleAnswerModal = useCallback(
     (dataOfMessage: IDataOfMessage) => {
       setDataOfMessage(dataOfMessage);
@@ -112,7 +116,9 @@ const NotificationList: FC<NotificationList> = ({ fieldsNotification }) => {
                       {t('ManagerInfoCard.Link.Answer')}
                     </ButtonAnswer>
                   </InlineWrapper>
-                  <FieldOpenLink>{field.person.username}</FieldOpenLink>
+                  <FieldOpenLink to={`/readers/${field.person.id}`}>
+                    {field.person.username}
+                  </FieldOpenLink>
                 </>
               </FieldWrapper>
             ))}

@@ -5,6 +5,7 @@ import { StatusTypes } from '@mimir/global-types';
 type ResponseGetCurrentStatus = {
   type: string;
   body: string;
+  person_id: number | string;
 };
 
 export function getCurrentStatus(
@@ -18,11 +19,13 @@ export function getCurrentStatus(
         return {
           type: StatusTypes.OVERDUE,
           body: currentStatus?.person!.username,
+          person_id: currentStatus?.person!.id,
         };
       }
       return {
         type: StatusTypes.BUSY,
         body: currentStatus?.person!.username,
+        person_id: currentStatus?.person!.id,
       };
     }
     case StatusTypes.PENDING:

@@ -18,9 +18,11 @@ const BookStatus: FC<IBookStatusProps> = ({ status, date }) => {
   const [statusText, setStatusText] = useState<string>('');
   const currentStatus = getStatus(status, date);
   const { pathname } = useLocation();
-
   useEffect(() => {
     switch (currentStatus) {
+      case null:
+        setStatusText('');
+        break;
       case StatusTypes.FREE:
         if (
           pathname === RoutesTypes.HISTORY_OF_CLAIM ||

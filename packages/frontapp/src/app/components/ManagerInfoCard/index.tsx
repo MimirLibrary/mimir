@@ -4,7 +4,7 @@ import { ManagerCardTypes } from './managerCardTypes';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { t } from 'i18next';
 import { RoutesTypes } from '../../../utils/routes';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IField, IOverdueItem } from '../../types';
 import { IMaterialDonate } from '../../types/donateList';
 
@@ -116,7 +116,8 @@ export const InlineWrapper = styled.div`
 interface IFieldOpenLinkProps {
   secondary?: string;
 }
-export const FieldOpenLink = styled.span<IFieldOpenLinkProps>`
+export const FieldOpenLink = styled(OpenLink)<IFieldOpenLinkProps>`
+  cursor: pointer;
   font-weight: 400;
   width: auto;
   margin-left: 4px;
@@ -152,7 +153,6 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
   fieldsDonate,
 }) => {
   const [isAnswerModal, setIsAnswerModal] = useState<boolean>(false);
-
   return (
     <>
       {fieldsOverdue && (
@@ -176,7 +176,10 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
                       <FieldDescription>
                         {t(`ManagerInfoCard.FieldDescription.${type}`)}
                       </FieldDescription>
-                      <FieldOpenLink secondary="true">
+                      <FieldOpenLink
+                        secondary="true"
+                        to={`/readers/${field?.person.id}`}
+                      >
                         {field?.person.username}
                       </FieldOpenLink>
                     </InlineWrapper>
@@ -226,7 +229,12 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
                       <FieldDescription>
                         {t(`ManagerInfoCard.FieldDescription.${type}`)}
                       </FieldDescription>
-                      <FieldOpenLink secondary="true">
+                      <FieldOpenLink
+                        secondary="true"
+                        to={`/readers/${
+                          field?.statuses[field?.statuses.length - 1]?.person.id
+                        }`}
+                      >
                         {
                           field?.statuses[field?.statuses.length - 1]?.person
                             .username
