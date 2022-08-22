@@ -15,6 +15,7 @@ interface IUserState {
   location: TUserLocation;
   isAuth: boolean;
   blocked: boolean;
+  locations: Array<TUserLocation>;
 }
 
 export interface IUserPayload extends IUserState {
@@ -36,6 +37,7 @@ const initialState: IUserState = {
     value: 'Gomel',
   },
   blocked: false,
+  locations: [],
 };
 
 const userSlice = createSlice({
@@ -67,10 +69,24 @@ const userSlice = createSlice({
     logout: (state: IUserState) => {
       state.isAuth = false;
     },
+    addLocation: (state: IUserState, action: PayloadAction<TUserLocation>) => {
+      state.locations.push(action.payload);
+    },
+    removeLocation: (state: IUserState, action: PayloadAction<string>) => {
+      state.locations = state.locations.filter(
+        (loc) => loc.id !== action.payload
+      );
+    },
   },
 });
 
-export const { setUser, updateUserLocation, logout, updateBlocked } =
-  userSlice.actions;
+export const {
+  setUser,
+  updateUserLocation,
+  logout,
+  updateBlocked,
+  addLocation,
+  removeLocation,
+} = userSlice.actions;
 
 export default userSlice.reducer;

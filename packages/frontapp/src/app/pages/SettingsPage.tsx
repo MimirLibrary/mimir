@@ -4,14 +4,20 @@ import {
   useUpdatePersonLocationMutation,
 } from '@mimir/apollo-client';
 import { colors, dimensions } from '@mimir/ui-kit';
-import { useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Dropdown, { IDropdownOption } from '../components/Dropdown';
 import { TextArticle } from '../globalUI/TextArticle';
 import { TextBase } from '../globalUI/TextBase';
 import { useAppDispatch } from '../hooks/useTypedDispatch';
 import { useAppSelector } from '../hooks/useTypedSelector';
-import { TUserLocation, updateUserLocation } from '../store/slices/userSlice';
+import {
+  addLocation,
+  removeLocation,
+  TUserLocation,
+  updateUserLocation,
+} from '../store/slices/userSlice';
+import DropDownLocation from '../components/DropdownLocation';
 
 export type TLanguage = {
   locale: string;
@@ -49,6 +55,11 @@ const RestyledDropdown = styled(Dropdown)`
   max-width: 310px;
 `;
 
+const StyledDropDownLocation = styled(DropDownLocation)`
+  margin: ${dimensions.base} 0 ${dimensions.xl_2};
+  max-width: 310px;
+`;
+
 const languages: TLanguage[] = [
   { locale: 'ru', value: 'RUS' },
   { locale: 'en', value: 'ENG' },
@@ -64,6 +75,7 @@ const SettingsPage = () => {
   const [updatePersonLocationMutate] = useUpdatePersonLocationMutation();
   const { id, location } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
+  const [isCheck, setIsCheck] = useState<boolean>(false);
 
   const currentLocaleIndex = useMemo(
     () => languages.findIndex(({ locale }) => locale === language),
@@ -85,6 +97,37 @@ const SettingsPage = () => {
     localStorage.setItem('locale', locale);
   };
 
+  // const handleChangeLocation = useCallback((
+  //   e: React.ChangeEvent<HTMLInputElement>,
+  //   option: IDropdownOption
+  // ) => {
+  //   let result = []
+  //   if (e.target.checked) {
+  //     result.push(option);
+  //   }
+  //   result = result.filter((loc) => loc.value === option.value);
+  //   console.log(result);
+  // }, [};
+
+  const handleChangeLocation = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>, option: TUserLocation) => {
+      if (e.target.checked) {
+        dispatch(addLocation(option));
+      } else {
+        dispatch(removeLocation(option.id));
+      }
+    },
+    []
+  );
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    option: TUserLocation
+  ) => {
+    setIsCheck(e.target.checked);
+    if (e.target.checked) {
+    }
+  };
   return (
     <WrapperSettings>
       <Wrapper>
@@ -93,19 +136,30 @@ const SettingsPage = () => {
       </Wrapper>
       <SettingsContainer>
         <SettingsArticle>{t('Settings.Location')}</SettingsArticle>
+        {/*{!GetAllLocationsLoading && !!GetAllLocationsData && (*/}
+        {/*  <RestyledDropdown*/}
+        {/*    options={GetAllLocationsData.getAllLocations.map((loc) => ({*/}
+        {/*      id: loc!.id,*/}
+        {/*      value: loc!.location,*/}
+        {/*    }))}*/}
+        {/*    initIndex={GetAllLocationsData.getAllLocations.findIndex((loc) => {*/}
+        {/*      if (location) return loc!.id === location.id;*/}
+        {/*      return 0;*/}
+        {/*    })}*/}
+        {/*    onChange={(option) => handleLocationChange(option as TUserLocation)}*/}
+        {/*  />*/}
+        {/*)}*/}
         {!GetAllLocationsLoading && !!GetAllLocationsData && (
-          <RestyledDropdown
+          <StyledDropDownLocation
             options={GetAllLocationsData.getAllLocations.map((loc) => ({
               id: loc!.id,
               value: loc!.location,
             }))}
-            initIndex={GetAllLocationsData.getAllLocations.findIndex((loc) => {
-              if (location) return loc!.id === location.id;
-              return 0;
-            })}
-            onChange={(option) => handleLocationChange(option as TUserLocation)}
+            handleChangeLocations={handleChangeLocation}
+            placeholder="Please choose your locations"
           />
         )}
+
         <SettingsArticle>{t('Settings.Language')}</SettingsArticle>
         <RestyledDropdown
           options={[...languages]}
