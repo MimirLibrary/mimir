@@ -101,6 +101,8 @@ const StartPage: FC = () => {
           code,
         }
       );
+
+      console.log('data', data);
       localStorage.setItem('access_token', data.access_token);
       localStorage.setItem('id_token', data.id_token);
       localStorage.setItem('expiry_date', data.expiry_date.toString());
@@ -119,6 +121,7 @@ const StartPage: FC = () => {
         return history('/home');
       }
 
+      console.log('trigger');
       setPreparedUserPayload({ ...data, location: { id: '0', value: '' } });
       setIsSignUp(true);
     },
@@ -140,6 +143,8 @@ const StartPage: FC = () => {
     );
     history('/home');
   };
+
+  console.log('isSignUp', isSignUp);
 
   return (
     <StartPageBackground>

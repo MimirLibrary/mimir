@@ -14,6 +14,7 @@ import {
   isOverdueToday,
 } from '../../models/helperFunctions/converTime';
 import { useAppSelector } from '../../hooks/useTypedSelector';
+import { locationIds } from '../../store/slices/userSlice';
 
 const Wrapper = styled.main``;
 
@@ -50,9 +51,9 @@ const TitleList = styled.h2`
 `;
 
 const OverdueList: FC = () => {
-  const { location } = useAppSelector((state) => state.user);
+  const locations = useAppSelector(locationIds);
   const { data, loading, error } = useGetAllStatusesIsOverdueQuery({
-    variables: { location_id: location.id },
+    variables: { locations },
   });
   const navigate = useNavigate();
   const goBack = () => {
@@ -63,7 +64,7 @@ const OverdueList: FC = () => {
     () =>
       data?.getAllStatusesIsOverdue.filter(
         (item) =>
-          isOverdueToday(item?.created_at) && !isOverdue(item?.created_at)
+          isOverdueToday(item?.created_at) && isOverdue(item?.created_at)
       ),
     [data]
   );
@@ -72,7 +73,7 @@ const OverdueList: FC = () => {
     () =>
       data?.getAllStatusesIsOverdue.filter(
         (item) =>
-          !isOverdueToday(item?.created_at) && !isOverdue(item?.created_at)
+          !isOverdueToday(item?.created_at) && isOverdue(item?.created_at)
       ),
     [data]
   );

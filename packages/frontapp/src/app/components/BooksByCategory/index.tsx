@@ -7,6 +7,7 @@ import { useSearchParams } from 'react-router-dom';
 import { Material } from '@mimir/apollo-client';
 import BackButton from '../BackButton';
 import { useAppSelector } from '../../hooks/useTypedSelector';
+import { locationIds } from '../../store/slices/userSlice';
 
 type IMaterial =
   | null
@@ -18,11 +19,11 @@ type IMaterial =
 
 const BooksByCategory = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { location } = useAppSelector((state) => state.user);
+  const locations = useAppSelector(locationIds);
   const { category } = useParams();
   const navigate = useNavigate();
   const { data, loading } = useGetAllMaterialsQuery({
-    variables: { location_id: location.id },
+    variables: { locations },
   });
 
   const [filteredData, setFilteredData] = useState(data?.getAllMaterials);

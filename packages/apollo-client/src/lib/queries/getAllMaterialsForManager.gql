@@ -1,9 +1,9 @@
 query GetAllMaterialsForManager(
-  $location_id: String!
+  $locations: [Int!]
   $limit: Int
   $offset: Int
 ) {
-  getAllMaterials(location_id: $location_id, limit: $limit, offset: $offset) {
+  getAllMaterials(locations:  $locations, limit: $limit, offset: $offset) {
     id
     title
     category

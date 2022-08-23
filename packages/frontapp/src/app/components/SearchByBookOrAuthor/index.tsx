@@ -8,15 +8,16 @@ import { setSearchMaterials } from '../../store/slices/materialsSlice';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import Search from '../Search';
+import { locationIds } from '../../store/slices/userSlice';
 
 const SearchByBookOrAuthor: FC<{ path: string }> = ({ path }) => {
   const [search, setSearch] = useState<string>('');
-  const { location } = useAppSelector((state) => state.user);
+  const locations = useAppSelector(locationIds);
   const debounceSearch = useDebounce<string>(search, 600);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { data } = useSearchOfMaterialsQuery({
-    variables: { search: debounceSearch, location: location?.value },
+    variables: { search: debounceSearch, locations },
   });
 
   useEffect(() => {

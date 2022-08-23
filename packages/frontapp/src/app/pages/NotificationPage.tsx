@@ -2,14 +2,13 @@ import { useGetAllMessagesQuery } from '@mimir/apollo-client';
 import { useEffect, useState } from 'react';
 import Notifications, { IOneNotification } from '../components/Notifications';
 import { useAppSelector } from '../hooks/useTypedSelector';
+import { locationIds } from '../store/slices/userSlice';
 
 const NotificationPage = () => {
   const [notifications, setNotifications] = useState<IOneNotification[]>([]);
-  const {
-    location: { id: location_id },
-  } = useAppSelector((state) => state.user);
+  const locations = useAppSelector(locationIds);
   const { data, loading } = useGetAllMessagesQuery({
-    variables: { location_id: parseInt(location_id) },
+    variables: { locations },
   });
 
   useEffect(() => {

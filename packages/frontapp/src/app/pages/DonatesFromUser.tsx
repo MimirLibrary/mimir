@@ -6,6 +6,7 @@ import { BookHolder } from '../components/BookInfo';
 import OneDonator from '../components/OneDonatedBookPreview';
 import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
 import { useAppSelector } from '../hooks/useTypedSelector';
+import { locationIds } from '../store/slices/userSlice';
 
 interface TitleProps {
   flex?: number;
@@ -27,9 +28,9 @@ const Column = styled.h4<TitleProps>`
   }
 `;
 const DonatesFromUser = () => {
-  const { location } = useAppSelector((state) => state.user);
+  const locations = useAppSelector(locationIds);
   const { data } = useGetAllMaterialsQuery({
-    variables: { location_id: location.id },
+    variables: { locations },
   });
   const [pendingDonates, setPendingDonates] = useState<any>();
   useEffect(() => {

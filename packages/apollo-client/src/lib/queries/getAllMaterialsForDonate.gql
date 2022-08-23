@@ -1,5 +1,5 @@
-query GetAllMaterialsForDonate($location_id: String!, $limit: Int, $offset: Int) {
-  getAllMaterials(location_id: $location_id, limit: $limit, offset: $offset) {
+query GetAllMaterialsForDonate($locations: [Int!], $limit: Int, $offset: Int) {
+  getAllMaterials(locations: $locations, limit: $limit, offset: $offset) {
     id
     title
     statuses {

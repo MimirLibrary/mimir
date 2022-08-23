@@ -1,6 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RolesTypes } from '@mimir/global-types';
 import { IDropdownOption } from '../../components/Dropdown';
+import { RootState } from '../index';
 
 export type TUserLocation = {
   id: string;
@@ -23,6 +24,7 @@ export interface IUserPayload extends IUserState {
   id_token: string;
   refresh_token: string;
   expiry_date: number;
+  // location: TUserLocation;
 }
 
 const initialState: IUserState = {
@@ -47,15 +49,15 @@ const userSlice = createSlice({
     setUser: (state: IUserState, action: PayloadAction<IUserPayload>) => {
       const { username, avatar, email, location, id, userRole, blocked } =
         action.payload;
-      state.location = location;
+      state.locations.push(location);
       state.username = username;
       state.avatar = avatar;
       state.email = email;
       state.id = id;
       state.isAuth = true;
-      state.location = location;
       state.userRole = userRole;
       state.blocked = blocked ? blocked : false;
+      state.location = location;
     },
     updateBlocked: (state: IUserState, action: PayloadAction<boolean>) => {
       state.blocked = action.payload ? action.payload : false;
@@ -64,7 +66,8 @@ const userSlice = createSlice({
       state: IUserState,
       action: PayloadAction<TUserLocation>
     ) => {
-      state.location = action.payload;
+      // state.location = action.payload;
+      state.locations.push(action.payload);
     },
     logout: (state: IUserState) => {
       state.isAuth = false;
@@ -88,5 +91,11 @@ export const {
   addLocation,
   removeLocation,
 } = userSlice.actions;
+
+const selectLocations = (state: RootState) => state.user.locations;
+
+export const locationIds = createSelector(selectLocations, (locations) => {
+  return locations.map((loc) => +loc.id);
+});
 
 export default userSlice.reducer;

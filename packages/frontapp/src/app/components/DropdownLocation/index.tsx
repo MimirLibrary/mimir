@@ -2,10 +2,9 @@ import React, { FC, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { ReactComponent as SvgArrow } from '../../../assets/Arrow.svg';
-import { IDropdownOption } from '../Dropdown';
-import useOnClickOutside from '../../hooks/useOnClickOutside';
 import { TUserLocation } from '../../store/slices/userSlice';
 import { useAppSelector } from '../../hooks/useTypedSelector';
+import useOnClickOutside from '../../hooks/useOnClickOutside';
 
 const DropdownContainer = styled.div`
   user-select: none;
@@ -107,6 +106,7 @@ const WrapperOption = styled.div`
 const WrapperDropDown = styled.div`
   position: relative;
   max-width: 310px;
+  margin: ${dimensions.base} 0 ${dimensions.xl_2} 0;
 `;
 
 interface IDropDownLocation {
@@ -127,26 +127,27 @@ const DropDownLocation: FC<IDropDownLocation> = ({
   const [showOptionList, setShowOptionList] = useState(false);
   const locations = useAppSelector((state) => state.user.locations);
 
+  useOnClickOutside(ref, () => setShowOptionList(false));
+
   const handleChangeOptionList = () => {
     setShowOptionList((prev) => !prev);
   };
 
-  console.log('locations', locations);
-  //
   const isChecked = (id: string): boolean => {
-    const elem = locations.find((item) => item.id === id);
-    if (elem) return true;
+    if (!locations.length) return false;
+    const currentLocation = locations.find((item) => item.id === id);
+    if (currentLocation) return true;
     return false;
   };
 
   return (
     <WrapperDropDown>
-      <DropdownContainer onClick={handleChangeOptionList} ref={ref}>
+      <DropdownContainer onClick={handleChangeOptionList}>
         {placeholder}
         <SvgArrow />
       </DropdownContainer>
       {showOptionList && (
-        <OptionListWrapper>
+        <OptionListWrapper ref={ref}>
           <OptionList>
             {options.map((option) => (
               <WrapperOption key={option.value}>

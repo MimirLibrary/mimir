@@ -37,6 +37,7 @@ import AskManagerForm from '../AskManagerForm';
 import { WrapperInput } from '../Search';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { RolesTypes } from '@mimir/global-types';
+import { locationIds } from '../../store/slices/userSlice';
 export const BookHolder = styled.div`
   width: 100%;
   top: 11.5rem;
@@ -269,9 +270,10 @@ const BookInfo: FC<IBookInfoProps> = ({
   type,
   location_id,
 }) => {
-  const { id, userRole, location } = useAppSelector((state) => state.user);
+  const { id, userRole } = useAppSelector((state) => state.user);
+  const locations = useAppSelector(locationIds);
   const { data: allMaterials } = useGetAllMaterialsQuery({
-    variables: { location_id: location.id },
+    variables: { locations },
   });
   const { data: getNotificationsByPersonData } =
     useGetNotificationsByPersonQuery({

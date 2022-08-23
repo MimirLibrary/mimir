@@ -75,7 +75,6 @@ const SettingsPage = () => {
   const [updatePersonLocationMutate] = useUpdatePersonLocationMutation();
   const { id, location } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
-  const [isCheck, setIsCheck] = useState<boolean>(false);
 
   const currentLocaleIndex = useMemo(
     () => languages.findIndex(({ locale }) => locale === language),
@@ -120,14 +119,6 @@ const SettingsPage = () => {
     []
   );
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    option: TUserLocation
-  ) => {
-    setIsCheck(e.target.checked);
-    if (e.target.checked) {
-    }
-  };
   return (
     <WrapperSettings>
       <Wrapper>
