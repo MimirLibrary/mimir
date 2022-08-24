@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { toast } from 'react-toastify';
-import axios from 'axios';
+
 import { colors, dimensions } from '@mimir/ui-kit';
 import {
   GetMaterialFromMetadataQuery,
@@ -233,7 +233,7 @@ interface IPropsDonateBook {
   onHideContent: () => void;
 }
 const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
-  const { id, location, userRole } = useAppSelector((state) => state.user);
+  const { id, userRole } = useAppSelector((state) => state.user);
   const { identifier } = useAppSelector((state) => state.identifier);
   const [file, setFile] = useState<File | null>(null);
   const [pictureOfCover, setPictureOfCover] = useState<string | null>(null);
@@ -368,7 +368,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
           type: 'Book',
           description,
           category: genre!,
-          location_id: Number(location.id),
+          location_id: 1, //TODO Create Dropdown List for choose location
           id_type: data?.getMaterialByIdentifierFromMetadata?.idType || 'ISBN',
           role: userRole,
           is_donated: true,

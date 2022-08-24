@@ -11,8 +11,8 @@ import { useNavigate } from 'react-router-dom';
 import { colors, dimensions, fonts } from '@mimir/ui-kit';
 import Dropdown from '../components/Dropdown';
 import {
+  useAddPersonLocationMutation,
   useGetAllLocationsQuery,
-  useUpdatePersonLocationMutation,
 } from '@mimir/apollo-client';
 import { useGoogleLogin } from '@react-oauth/google';
 import { ReactComponent as GoogleSvg } from '../../assets/google.svg';
@@ -88,7 +88,7 @@ const StartPage: FC = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const { data: GetAllLocationsData, loading: GetAllLocationsLoading } =
     useGetAllLocationsQuery();
-  const [updatePersonLocationMutation] = useUpdatePersonLocationMutation();
+  const [addPersonLocation] = useAddPersonLocationMutation();
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const history = useNavigate();
@@ -102,7 +102,6 @@ const StartPage: FC = () => {
         }
       );
 
-      console.log('data', data);
       localStorage.setItem('access_token', data.access_token);
       localStorage.setItem('id_token', data.id_token);
       localStorage.setItem('expiry_date', data.expiry_date.toString());
@@ -121,14 +120,14 @@ const StartPage: FC = () => {
         return history('/home');
       }
 
-      console.log('trigger');
       setPreparedUserPayload({ ...data, location: { id: '0', value: '' } });
       setIsSignUp(true);
     },
   });
 
   const handleChangeDropdown = async (location: TUserLocation) => {
-    await updatePersonLocationMutation({
+    console.log(location.id);
+    await addPersonLocation({
       variables: {
         location_id: parseInt(location.id),
         person_id: preparedUserPayload!.id,
@@ -143,8 +142,6 @@ const StartPage: FC = () => {
     );
     history('/home');
   };
-
-  console.log('isSignUp', isSignUp);
 
   return (
     <StartPageBackground>

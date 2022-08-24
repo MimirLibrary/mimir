@@ -116,15 +116,17 @@ interface IDropDownLocation {
     e: React.ChangeEvent<HTMLInputElement>,
     option: TUserLocation
   ) => void;
+  isDisabled: boolean;
 }
 
 const DropDownLocation: FC<IDropDownLocation> = ({
   options,
   placeholder,
   handleChangeLocations,
+  isDisabled,
 }) => {
   const ref = useRef<any>();
-  const [showOptionList, setShowOptionList] = useState(false);
+  const [showOptionList, setShowOptionList] = useState<boolean>(false);
   const locations = useAppSelector((state) => state.user.locations);
 
   useOnClickOutside(ref, () => setShowOptionList(false));
@@ -136,8 +138,7 @@ const DropDownLocation: FC<IDropDownLocation> = ({
   const isChecked = (id: string): boolean => {
     if (!locations.length) return false;
     const currentLocation = locations.find((item) => item.id === id);
-    if (currentLocation) return true;
-    return false;
+    return !!currentLocation;
   };
 
   return (
@@ -155,6 +156,7 @@ const DropDownLocation: FC<IDropDownLocation> = ({
                 <CheckBox
                   type="checkbox"
                   checked={isChecked(option.id)}
+                  disabled={isDisabled}
                   onChange={(e) => handleChangeLocations(e, option)}
                 />
               </WrapperOption>

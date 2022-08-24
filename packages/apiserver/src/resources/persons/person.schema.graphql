@@ -21,6 +21,7 @@ input CreatePersonInput {
   type: String!
 }
 
+
 input UpdatePersonLocationInput {
   person_id: Int!
   location_id: Int!
@@ -28,10 +29,11 @@ input UpdatePersonLocationInput {
 
 extend type Query {
   getOnePerson(id: ID!): Person!
-  getAllPersons(username: String): [Person!]!
+  getAllPersons(username: String, locations: [Int!]): [Person!]!
 }
 
 extend type Mutation {
   createPerson(input: CreatePersonInput!): Person!
-  updatePersonLocation(input: UpdatePersonLocationInput!): Person!
+  addPersonLocation(input: UpdatePersonLocationInput!): Person!
+  removePersonLocation(input: UpdatePersonLocationInput!): Person!
 }

@@ -61,7 +61,6 @@ export type CreateMaterialInput = {
 };
 
 export type CreateMessageInput = {
-  location_id: Scalars['Int'];
   material_id?: InputMaybe<Scalars['Int']>;
   message: Scalars['String'];
   person_id: Scalars['Int'];
@@ -162,7 +161,6 @@ export type Message = {
   __typename?: 'Message';
   created_at: Scalars['DateTime'];
   id: Scalars['ID'];
-  location_id: Scalars['Int'];
   material: Material;
   material_id?: Maybe<Scalars['Int']>;
   message: Scalars['String'];
@@ -186,6 +184,7 @@ export type Meta = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addPersonLocation: Person;
   claimBook: BookUnionResult;
   createAnswerNotification: Notification;
   createLocation?: Maybe<Location>;
@@ -201,9 +200,14 @@ export type Mutation = {
   removeLocation?: Maybe<Location>;
   removeMaterial: Material;
   removeNotification?: Maybe<Notification>;
+  removePersonLocation: Person;
   returnItem: BookUnionResult;
   updateMaterial: Material;
-  updatePersonLocation: Person;
+};
+
+
+export type MutationAddPersonLocationArgs = {
+  input: UpdatePersonLocationInput;
 };
 
 
@@ -282,6 +286,11 @@ export type MutationRemoveNotificationArgs = {
 };
 
 
+export type MutationRemovePersonLocationArgs = {
+  input: UpdatePersonLocationInput;
+};
+
+
 export type MutationReturnItemArgs = {
   input?: InputMaybe<BookInput>;
 };
@@ -289,11 +298,6 @@ export type MutationReturnItemArgs = {
 
 export type MutationUpdateMaterialArgs = {
   input: UpdateMaterialInput;
-};
-
-
-export type MutationUpdatePersonLocationArgs = {
-  input: UpdatePersonLocationInput;
 };
 
 export type Notification = {
@@ -368,12 +372,8 @@ export type QueryGetAllMaterialsArgs = {
 };
 
 
-export type QueryGetAllMessagesArgs = {
-  locations?: InputMaybe<Array<Scalars['Int']>>;
-};
-
-
 export type QueryGetAllPersonsArgs = {
+  locations?: InputMaybe<Array<Scalars['Int']>>;
   username?: InputMaybe<Scalars['String']>;
 };
 
@@ -512,6 +512,14 @@ export type UpdatePersonLocationInput = {
   person_id: Scalars['Int'];
 };
 
+export type AddPersonLocationMutationVariables = Exact<{
+  location_id: Scalars['Int'];
+  person_id: Scalars['Int'];
+}>;
+
+
+export type AddPersonLocationMutation = { __typename?: 'Mutation', addPersonLocation: { __typename?: 'Person', id: string } };
+
 export type ClaimBookMutationVariables = Exact<{
   identifier: Scalars['String'];
   person_id: Scalars['Int'];
@@ -523,7 +531,6 @@ export type ClaimBookMutation = { __typename?: 'Mutation', claimBook: { __typena
 export type CreateMessageForManagerMutationVariables = Exact<{
   person_id: Scalars['Int'];
   material_id?: InputMaybe<Scalars['Int']>;
-  location_id: Scalars['Int'];
   title: Scalars['String'];
   message: Scalars['String'];
 }>;
@@ -597,6 +604,14 @@ export type RemoveNotificationMutationVariables = Exact<{
 
 export type RemoveNotificationMutation = { __typename?: 'Mutation', removeNotification?: { __typename?: 'Notification', id: string } | null };
 
+export type RemovePersonLocationMutationVariables = Exact<{
+  location_id: Scalars['Int'];
+  person_id: Scalars['Int'];
+}>;
+
+
+export type RemovePersonLocationMutation = { __typename?: 'Mutation', removePersonLocation: { __typename?: 'Person', id: string, smg_id: string } };
+
 export type ReturnBookMutationVariables = Exact<{
   identifier: Scalars['String'];
   person_id: Scalars['Int'];
@@ -619,14 +634,6 @@ export type UpdateMaterialMutationVariables = Exact<{
 
 
 export type UpdateMaterialMutation = { __typename?: 'Mutation', updateMaterial: { __typename?: 'Material', identifier: string, id_type: string, type: string, location_id: number, title: string, author: string, category: string, updated_at: any, description: string } };
-
-export type UpdatePersonLocationMutationVariables = Exact<{
-  location_id: Scalars['Int'];
-  person_id: Scalars['Int'];
-}>;
-
-
-export type UpdatePersonLocationMutation = { __typename?: 'Mutation', updatePersonLocation: { __typename?: 'Person', location_id: number } };
 
 export type CreateAnswerNotificationMutationVariables = Exact<{
   input: CreateAnswerNotification;
@@ -667,15 +674,14 @@ export type GetAllMaterialsForManagerQueryVariables = Exact<{
 
 export type GetAllMaterialsForManagerQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', id: string, title: string, category: string, picture?: string | null, statuses: Array<{ __typename?: 'Status', id: string, created_at: any, status: string, person: { __typename?: 'Person', id: string, username: string } } | null> } | null> };
 
-export type GetAllMessagesQueryVariables = Exact<{
-  locations?: InputMaybe<Array<Scalars['Int']> | Scalars['Int']>;
-}>;
+export type GetAllMessagesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetAllMessagesQuery = { __typename?: 'Query', getAllMessages?: Array<{ __typename?: 'Message', id: string, created_at: any, title: string, message: string, person_id: number, person: { __typename?: 'Person', id: string, username: string, avatar: string } }> | null };
 
 export type GetAllPersonsQueryVariables = Exact<{
   username?: InputMaybe<Scalars['String']>;
+  locations?: InputMaybe<Array<Scalars['Int']> | Scalars['Int']>;
 }>;
 
 
@@ -761,6 +767,40 @@ export type SearchOfMaterialsQueryVariables = Exact<{
 export type SearchOfMaterialsQuery = { __typename?: 'Query', searchOfMaterials?: Array<{ __typename?: 'Material', title: string, created_at: any, picture?: string | null, author: string, category: string, id: string, statuses: Array<{ __typename?: 'Status', id: string, created_at: any, status: string, person: { __typename?: 'Person', id: string, username: string } } | null> } | null> | null };
 
 
+export const AddPersonLocationDocument = gql`
+    mutation addPersonLocation($location_id: Int!, $person_id: Int!) {
+  addPersonLocation(input: {location_id: $location_id, person_id: $person_id}) {
+    id
+  }
+}
+    `;
+export type AddPersonLocationMutationFn = Apollo.MutationFunction<AddPersonLocationMutation, AddPersonLocationMutationVariables>;
+
+/**
+ * __useAddPersonLocationMutation__
+ *
+ * To run a mutation, you first call `useAddPersonLocationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddPersonLocationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addPersonLocationMutation, { data, loading, error }] = useAddPersonLocationMutation({
+ *   variables: {
+ *      location_id: // value for 'location_id'
+ *      person_id: // value for 'person_id'
+ *   },
+ * });
+ */
+export function useAddPersonLocationMutation(baseOptions?: Apollo.MutationHookOptions<AddPersonLocationMutation, AddPersonLocationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddPersonLocationMutation, AddPersonLocationMutationVariables>(AddPersonLocationDocument, options);
+      }
+export type AddPersonLocationMutationHookResult = ReturnType<typeof useAddPersonLocationMutation>;
+export type AddPersonLocationMutationResult = Apollo.MutationResult<AddPersonLocationMutation>;
+export type AddPersonLocationMutationOptions = Apollo.BaseMutationOptions<AddPersonLocationMutation, AddPersonLocationMutationVariables>;
 export const ClaimBookDocument = gql`
     mutation ClaimBook($identifier: String!, $person_id: Int!) {
   claimBook(input: {identifier: $identifier, person_id: $person_id}) {
@@ -802,9 +842,9 @@ export type ClaimBookMutationHookResult = ReturnType<typeof useClaimBookMutation
 export type ClaimBookMutationResult = Apollo.MutationResult<ClaimBookMutation>;
 export type ClaimBookMutationOptions = Apollo.BaseMutationOptions<ClaimBookMutation, ClaimBookMutationVariables>;
 export const CreateMessageForManagerDocument = gql`
-    mutation CreateMessageForManager($person_id: Int!, $material_id: Int, $location_id: Int!, $title: String!, $message: String!) {
+    mutation CreateMessageForManager($person_id: Int!, $material_id: Int, $title: String!, $message: String!) {
   createMessageForManager(
-    input: {person_id: $person_id, material_id: $material_id, location_id: $location_id, title: $title, message: $message}
+    input: {person_id: $person_id, material_id: $material_id, title: $title, message: $message}
   ) {
     message
     title
@@ -828,7 +868,6 @@ export type CreateMessageForManagerMutationFn = Apollo.MutationFunction<CreateMe
  *   variables: {
  *      person_id: // value for 'person_id'
  *      material_id: // value for 'material_id'
- *      location_id: // value for 'location_id'
  *      title: // value for 'title'
  *      message: // value for 'message'
  *   },
@@ -1115,6 +1154,41 @@ export function useRemoveNotificationMutation(baseOptions?: Apollo.MutationHookO
 export type RemoveNotificationMutationHookResult = ReturnType<typeof useRemoveNotificationMutation>;
 export type RemoveNotificationMutationResult = Apollo.MutationResult<RemoveNotificationMutation>;
 export type RemoveNotificationMutationOptions = Apollo.BaseMutationOptions<RemoveNotificationMutation, RemoveNotificationMutationVariables>;
+export const RemovePersonLocationDocument = gql`
+    mutation removePersonLocation($location_id: Int!, $person_id: Int!) {
+  removePersonLocation(input: {location_id: $location_id, person_id: $person_id}) {
+    id
+    smg_id
+  }
+}
+    `;
+export type RemovePersonLocationMutationFn = Apollo.MutationFunction<RemovePersonLocationMutation, RemovePersonLocationMutationVariables>;
+
+/**
+ * __useRemovePersonLocationMutation__
+ *
+ * To run a mutation, you first call `useRemovePersonLocationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemovePersonLocationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removePersonLocationMutation, { data, loading, error }] = useRemovePersonLocationMutation({
+ *   variables: {
+ *      location_id: // value for 'location_id'
+ *      person_id: // value for 'person_id'
+ *   },
+ * });
+ */
+export function useRemovePersonLocationMutation(baseOptions?: Apollo.MutationHookOptions<RemovePersonLocationMutation, RemovePersonLocationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemovePersonLocationMutation, RemovePersonLocationMutationVariables>(RemovePersonLocationDocument, options);
+      }
+export type RemovePersonLocationMutationHookResult = ReturnType<typeof useRemovePersonLocationMutation>;
+export type RemovePersonLocationMutationResult = Apollo.MutationResult<RemovePersonLocationMutation>;
+export type RemovePersonLocationMutationOptions = Apollo.BaseMutationOptions<RemovePersonLocationMutation, RemovePersonLocationMutationVariables>;
 export const ReturnBookDocument = gql`
     mutation ReturnBook($identifier: String!, $person_id: Int!) {
   returnItem(input: {identifier: $identifier, person_id: $person_id}) {
@@ -1206,40 +1280,6 @@ export function useUpdateMaterialMutation(baseOptions?: Apollo.MutationHookOptio
 export type UpdateMaterialMutationHookResult = ReturnType<typeof useUpdateMaterialMutation>;
 export type UpdateMaterialMutationResult = Apollo.MutationResult<UpdateMaterialMutation>;
 export type UpdateMaterialMutationOptions = Apollo.BaseMutationOptions<UpdateMaterialMutation, UpdateMaterialMutationVariables>;
-export const UpdatePersonLocationDocument = gql`
-    mutation UpdatePersonLocation($location_id: Int!, $person_id: Int!) {
-  updatePersonLocation(input: {location_id: $location_id, person_id: $person_id}) {
-    location_id
-  }
-}
-    `;
-export type UpdatePersonLocationMutationFn = Apollo.MutationFunction<UpdatePersonLocationMutation, UpdatePersonLocationMutationVariables>;
-
-/**
- * __useUpdatePersonLocationMutation__
- *
- * To run a mutation, you first call `useUpdatePersonLocationMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdatePersonLocationMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updatePersonLocationMutation, { data, loading, error }] = useUpdatePersonLocationMutation({
- *   variables: {
- *      location_id: // value for 'location_id'
- *      person_id: // value for 'person_id'
- *   },
- * });
- */
-export function useUpdatePersonLocationMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePersonLocationMutation, UpdatePersonLocationMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdatePersonLocationMutation, UpdatePersonLocationMutationVariables>(UpdatePersonLocationDocument, options);
-      }
-export type UpdatePersonLocationMutationHookResult = ReturnType<typeof useUpdatePersonLocationMutation>;
-export type UpdatePersonLocationMutationResult = Apollo.MutationResult<UpdatePersonLocationMutation>;
-export type UpdatePersonLocationMutationOptions = Apollo.BaseMutationOptions<UpdatePersonLocationMutation, UpdatePersonLocationMutationVariables>;
 export const CreateAnswerNotificationDocument = gql`
     mutation createAnswerNotification($input: CreateAnswerNotification!) {
   createAnswerNotification(input: $input) {
@@ -1462,8 +1502,8 @@ export type GetAllMaterialsForManagerQueryHookResult = ReturnType<typeof useGetA
 export type GetAllMaterialsForManagerLazyQueryHookResult = ReturnType<typeof useGetAllMaterialsForManagerLazyQuery>;
 export type GetAllMaterialsForManagerQueryResult = Apollo.QueryResult<GetAllMaterialsForManagerQuery, GetAllMaterialsForManagerQueryVariables>;
 export const GetAllMessagesDocument = gql`
-    query GetAllMessages($locations: [Int!]) {
-  getAllMessages(locations: $locations) {
+    query GetAllMessages {
+  getAllMessages {
     id
     created_at
     title
@@ -1490,7 +1530,6 @@ export const GetAllMessagesDocument = gql`
  * @example
  * const { data, loading, error } = useGetAllMessagesQuery({
  *   variables: {
- *      locations: // value for 'locations'
  *   },
  * });
  */
@@ -1506,8 +1545,8 @@ export type GetAllMessagesQueryHookResult = ReturnType<typeof useGetAllMessagesQ
 export type GetAllMessagesLazyQueryHookResult = ReturnType<typeof useGetAllMessagesLazyQuery>;
 export type GetAllMessagesQueryResult = Apollo.QueryResult<GetAllMessagesQuery, GetAllMessagesQueryVariables>;
 export const GetAllPersonsDocument = gql`
-    query GetAllPersons($username: String) {
-  getAllPersons(username: $username) {
+    query GetAllPersons($username: String, $locations: [Int!]) {
+  getAllPersons(username: $username, locations: $locations) {
     id
     username
     avatar
@@ -1534,6 +1573,7 @@ export const GetAllPersonsDocument = gql`
  * const { data, loading, error } = useGetAllPersonsQuery({
  *   variables: {
  *      username: // value for 'username'
+ *      locations: // value for 'locations'
  *   },
  * });
  */

@@ -7,6 +7,8 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { Notification } from '../notifications/notification.entity';
 import { Status } from '../statuses/status.entity';
@@ -37,9 +39,6 @@ export class Person extends BaseEntity {
   @Column({ nullable: true })
   avatar: string;
 
-  @Column({ nullable: true })
-  location_id: number;
-
   @CreateDateColumn()
   created_at!: Date;
 
@@ -55,7 +54,17 @@ export class Person extends BaseEntity {
   @OneToMany(() => BlockedUsers, (blockedUsers) => blockedUsers.person)
   state: BlockedUsers[];
 
-  @ManyToOne(() => Location, (location) => location.person)
-  @JoinColumn({ name: 'location_id' })
-  location: Location;
+  @ManyToMany(() => Location, (location) => location.person, { cascade: true })
+  @JoinTable({
+    name: 'person_location',
+    joinColumn: {
+      name: 'person_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'location_id',
+      referencedColumnName: 'id',
+    },
+  })
+  location: Location[];
 }

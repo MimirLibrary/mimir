@@ -4,12 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useAppSelector } from './useTypedSelector';
 import { t } from 'i18next';
+import { locationIds } from '../store/slices/userSlice';
 
 const useScanner = () => {
   const navigate = useNavigate();
   const { fetchMore } = useGetMaterialByIdentifierQuery({ skip: true });
   const [isShowScanner, setIsShowScanner] = useState(false);
-  const { location } = useAppSelector((state) => state.user);
+  const locations = useAppSelector(locationIds);
 
   const handleOnDetectedScannerRoute = useCallback(
     async (code) => {
@@ -19,7 +20,7 @@ const useScanner = () => {
         } = await fetchMore({
           variables: {
             identifier: code,
-            location_id: parseInt(location.id),
+            locations: locations,
           },
         });
         return navigate(
@@ -29,7 +30,7 @@ const useScanner = () => {
         toast.error(t('PopUps.NotFoundByIdentifier'));
       }
     },
-    [fetchMore, location.id, navigate]
+    [fetchMore, locations, navigate]
   );
 
   const handleOnCloseScanner = useCallback(() => {

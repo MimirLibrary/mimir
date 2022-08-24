@@ -19,12 +19,8 @@ export class MessageResolver {
   }
 
   @Query(() => [Message])
-  async getAllMessages(@Args('locations') locations: Array<number>) {
-    return Message.createQueryBuilder('message')
-      .where('message.location_id IN (:...locations)', {
-        locations,
-      })
-      .getMany();
+  async getAllMessages() {
+    return Message.find();
   }
 
   @ResolveField(() => Person)

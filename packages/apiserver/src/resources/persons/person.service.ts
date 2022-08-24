@@ -1,25 +1,23 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Connection } from 'typeorm';
 import { Person } from './person.entity';
-import { Location } from '../locations/location.entity';
 
 @Injectable()
 export class PersonService {
-  constructor() {}
-
-  async getAllPersons(username: string, location: Location) {
+  async getAllPersons(username: string, locations: Array<number>) {
     try {
       return await Person.createQueryBuilder('person')
         .leftJoinAndSelect('person.location', 'location')
-        .where(
-          `person.location_id= :location ${
-            username ? 'AND person.username ILIKE :name' : ''
-          }`,
-          {
-            location: location.id,
-            name: `%${username}%`,
-          }
-        )
+        // .where(
+        //   `person.location_id= :location ${
+        //     username ? 'AND person.username ILIKE :name' : ''
+        //   }`,
+        //   {
+        //     location: location.id,
+        //     name: `%${username}%`,
+        //   }
+        // )
+        .where('person.username ILIKE :name', { name: `%${username}%` })
+        .andWhere('location.id IN (:...locations)', { locations })
         .orderBy('person.username', 'ASC')
         .getMany();
     } catch (e) {

@@ -14,16 +14,18 @@ export class StatusService {
 
     const ids = (await statusesQb.getRawMany()).map((d) => d.status_id);
 
-    return Status.createQueryBuilder('status')
-      .leftJoinAndSelect('status.material', 'material')
-      .leftJoinAndSelect('status.person', 'person')
-      .where('status.id IN (:...ids)', { ids })
-      .andWhere('person.type = :type', { type: RolesTypes.READER })
-      .andWhere('material.location_id IN (:...locations)', { locations })
-      .andWhere('person.location_id IN (:...locations)', { locations })
-      .andWhere('status.status IN(:...statuses)', {
-        statuses: [StatusTypes.BUSY, StatusTypes.PROLONG],
-      })
-      .getMany();
+    return (
+      Status.createQueryBuilder('status')
+        .leftJoinAndSelect('status.material', 'material')
+        .leftJoinAndSelect('status.person', 'person')
+        .where('status.id IN (:...ids)', { ids })
+        .andWhere('person.type = :type', { type: RolesTypes.READER })
+        .andWhere('material.location_id IN (:...locations)', { locations })
+        // .andWhere('person.location.location.id IN (:...locations)', { locations })
+        .andWhere('status.status IN(:...statuses)', {
+          statuses: [StatusTypes.BUSY, StatusTypes.PROLONG],
+        })
+        .getMany()
+    );
   }
 }

@@ -13,7 +13,6 @@ interface IUserState {
   avatar: string;
   email: string;
   userRole: RolesTypes;
-  location: TUserLocation;
   isAuth: boolean;
   blocked: boolean;
   locations: Array<TUserLocation>;
@@ -24,7 +23,7 @@ export interface IUserPayload extends IUserState {
   id_token: string;
   refresh_token: string;
   expiry_date: number;
-  // location: TUserLocation;
+  location: TUserLocation;
 }
 
 const initialState: IUserState = {
@@ -34,10 +33,6 @@ const initialState: IUserState = {
   avatar: '',
   email: 'example@email.com',
   userRole: RolesTypes.READER,
-  location: {
-    id: '2',
-    value: 'Gomel',
-  },
   blocked: false,
   locations: [],
 };
@@ -57,18 +52,17 @@ const userSlice = createSlice({
       state.isAuth = true;
       state.userRole = userRole;
       state.blocked = blocked ? blocked : false;
-      state.location = location;
     },
     updateBlocked: (state: IUserState, action: PayloadAction<boolean>) => {
       state.blocked = action.payload ? action.payload : false;
     },
-    updateUserLocation: (
-      state: IUserState,
-      action: PayloadAction<TUserLocation>
-    ) => {
-      // state.location = action.payload;
-      state.locations.push(action.payload);
-    },
+    // updateUserLocation: (
+    //   state: IUserState,
+    //   action: PayloadAction<TUserLocation>
+    // ) => {
+    //   // state.location = action.payload;
+    //   state.locations.push(action.payload);
+    // },
     logout: (state: IUserState) => {
       state.isAuth = false;
     },
@@ -83,14 +77,8 @@ const userSlice = createSlice({
   },
 });
 
-export const {
-  setUser,
-  updateUserLocation,
-  logout,
-  updateBlocked,
-  addLocation,
-  removeLocation,
-} = userSlice.actions;
+export const { setUser, logout, updateBlocked, addLocation, removeLocation } =
+  userSlice.actions;
 
 const selectLocations = (state: RootState) => state.user.locations;
 

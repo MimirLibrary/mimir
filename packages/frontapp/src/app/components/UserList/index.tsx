@@ -8,6 +8,7 @@ import { IClaimHistory } from '../../models/helperFunctions/claimHistory';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import { useAppDispatch } from '../../hooks/useTypedDispatch';
 import { setSearchReaders } from '../../store/slices/readersSlice';
+import { locationIds } from '../../store/slices/userSlice';
 
 const ReadersWrapper = styled.div`
   display: flex;
@@ -38,7 +39,10 @@ const Description = styled.p`
 `;
 
 const UserList = () => {
-  const { data, loading } = useGetAllPersonsQuery();
+  const locations = useAppSelector(locationIds);
+  const { data, loading } = useGetAllPersonsQuery({
+    variables: { locations: locations },
+  });
   const dispatch = useAppDispatch();
   const { searchReaders } = useAppSelector((state) => state.readers);
   useEffect(() => {

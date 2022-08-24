@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
 import {
+  useAddPersonLocationMutation,
   useGetAllLocationsQuery,
-  useUpdatePersonLocationMutation,
+  useRemovePersonLocationMutation,
 } from '@mimir/apollo-client';
 import { colors, dimensions } from '@mimir/ui-kit';
 import React, { useCallback, useMemo, useState } from 'react';
@@ -15,7 +16,6 @@ import {
   addLocation,
   removeLocation,
   TUserLocation,
-  updateUserLocation,
 } from '../store/slices/userSlice';
 import DropDownLocation from '../components/DropdownLocation';
 
@@ -72,8 +72,11 @@ const SettingsPage = () => {
   } = useTranslation();
   const { data: GetAllLocationsData, loading: GetAllLocationsLoading } =
     useGetAllLocationsQuery();
-  const [updatePersonLocationMutate] = useUpdatePersonLocationMutation();
-  const { id, location } = useAppSelector((state) => state.user);
+  const [addPersonLocation] = useAddPersonLocationMutation();
+  const [removePersonLocation] = useRemovePersonLocationMutation();
+  const { id } = useAppSelector((state) => state.user);
+  const { locations } = useAppSelector((state) => state.user);
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
   const currentLocaleIndex = useMemo(
@@ -81,42 +84,32 @@ const SettingsPage = () => {
     [language]
   );
 
-  const handleLocationChange = async (location: TUserLocation) => {
-    dispatch(updateUserLocation(location));
-    await updatePersonLocationMutate({
-      variables: {
-        location_id: parseInt(location.id),
-        person_id: id,
-      },
-    });
-  };
-
   const handleLanguageChange = ({ locale }: TLanguage) => {
     changeLanguage(locale);
     localStorage.setItem('locale', locale);
   };
 
-  // const handleChangeLocation = useCallback((
-  //   e: React.ChangeEvent<HTMLInputElement>,
-  //   option: IDropdownOption
-  // ) => {
-  //   let result = []
-  //   if (e.target.checked) {
-  //     result.push(option);
-  //   }
-  //   result = result.filter((loc) => loc.value === option.value);
-  //   console.log(result);
-  // }, [};
-
   const handleChangeLocation = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>, option: TUserLocation) => {
+    async (e: React.ChangeEvent<HTMLInputElement>, option: TUserLocation) => {
       if (e.target.checked) {
+        await addPersonLocation({
+          variables: {
+            location_id: +option.id,
+            person_id: id,
+          },
+        });
         dispatch(addLocation(option));
       } else {
+        await removePersonLocation({
+          variables: {
+            location_id: +option.id,
+            person_id: id,
+          },
+        });
         dispatch(removeLocation(option.id));
       }
     },
-    []
+    [id]
   );
 
   return (
@@ -127,19 +120,6 @@ const SettingsPage = () => {
       </Wrapper>
       <SettingsContainer>
         <SettingsArticle>{t('Settings.Location')}</SettingsArticle>
-        {/*{!GetAllLocationsLoading && !!GetAllLocationsData && (*/}
-        {/*  <RestyledDropdown*/}
-        {/*    options={GetAllLocationsData.getAllLocations.map((loc) => ({*/}
-        {/*      id: loc!.id,*/}
-        {/*      value: loc!.location,*/}
-        {/*    }))}*/}
-        {/*    initIndex={GetAllLocationsData.getAllLocations.findIndex((loc) => {*/}
-        {/*      if (location) return loc!.id === location.id;*/}
-        {/*      return 0;*/}
-        {/*    })}*/}
-        {/*    onChange={(option) => handleLocationChange(option as TUserLocation)}*/}
-        {/*  />*/}
-        {/*)}*/}
         {!GetAllLocationsLoading && !!GetAllLocationsData && (
           <StyledDropDownLocation
             options={GetAllLocationsData.getAllLocations.map((loc) => ({
@@ -147,6 +127,7 @@ const SettingsPage = () => {
               value: loc!.location,
             }))}
             handleChangeLocations={handleChangeLocation}
+            isDisabled={isDisabled}
             placeholder="Please choose your locations"
           />
         )}
