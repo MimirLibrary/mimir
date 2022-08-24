@@ -3,6 +3,7 @@
   "projects": {
     "apiserver": "packages/apiserver",
     "apollo-client": "packages/apollo-client",
+    "email-service": "packages/email-service",
     "frontapp": "packages/frontapp",
     "frontapp-e2e": "packages/frontapp-e2e",
     "global-types": "packages/global-types",
