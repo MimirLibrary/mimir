@@ -3,9 +3,10 @@ import { colors } from '@mimir/ui-kit';
 import { FC } from 'react';
 import { ReactComponent as Filter } from '../../../assets/Filter.svg';
 import CategorySearch from '../CategorySearch';
+import UserSearch from '../UserSearch';
 import Modal from '../Modal';
 import { useState } from 'react';
-
+import { useLocation } from 'react-router-dom';
 interface IProps {
   active: boolean;
 }
@@ -18,6 +19,7 @@ const StyledButton = styled.button<IProps>`
 `;
 
 const FiltersButton: FC = () => {
+  const location = useLocation();
   const [active, setActive] = useState(false);
   return (
     <>
@@ -25,7 +27,11 @@ const FiltersButton: FC = () => {
         <Filter />
       </StyledButton>
       <Modal active={active} setActive={setActive}>
-        <CategorySearch setActive={setActive} />
+        {location.pathname === '/readers' ? (
+          <UserSearch setActive={setActive} />
+        ) : (
+          <CategorySearch setActive={setActive} />
+        )}
       </Modal>
     </>
   );

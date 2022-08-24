@@ -5,17 +5,17 @@ import { attributes } from '../FilterAttributes';
 import Button from '../Button';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 
-const Filters = styled.div`
+export const Filters = styled.div`
   font-weight: 700;
   font-size: ${dimensions.xl_2};
   margin-bottom: ${dimensions.base_2};
 `;
-const Title = styled.h3`
+export const Title = styled.h3`
   font-weight: 700;
   font-size: ${dimensions.base};
   margin-bottom: ${dimensions.lg};
 `;
-const AttributeWrapper = styled.div`
+export const AttributeWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   row-gap: ${dimensions.xs_2};
@@ -25,7 +25,7 @@ const AttributeWrapper = styled.div`
   margin-bottom: ${dimensions.xl_2};
 `;
 
-const OneCategory = styled.div`
+export const OneCategory = styled.div`
   display: flex;
   gap: ${dimensions.xs_2};
   cursor: pointer;
@@ -40,13 +40,13 @@ const SeeMoreButton = styled.p`
   cursor: pointer;
 `;
 
-const ButtonWrapper = styled.div`
+export const ButtonWrapper = styled.div`
   display: flex;
   justify-content: space-around;
   gap: ${dimensions.base};
 `;
 
-const StyledCheckBox = styled.input`
+export const StyledCheckBox = styled.input`
   width: ${dimensions.lg};
   height: ${dimensions.lg};
 `;
