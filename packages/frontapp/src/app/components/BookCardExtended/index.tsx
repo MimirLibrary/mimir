@@ -6,6 +6,7 @@ import { getCurrentStatus } from '../../models/helperFunctions/getCurrentStatus'
 import { IMaterial } from '../../types';
 import { useNavigate } from 'react-router-dom';
 import { OpenLink } from '../ManagerInfoCard';
+import { RoutesTypes } from '../../../utils/routes';
 
 const Wrapper = styled.div`
   background: ${colors.bg_secondary};
@@ -123,7 +124,7 @@ const BookCardExtended: FC<IPropsBookCardExtended> = ({ item }) => {
               </TitleStatus>
               <StyledUserName
                 type={currentStatus.type}
-                to={`/readers/${currentStatus.person_id}`}
+                to={`${RoutesTypes.READERS}/${currentStatus.person_id}`}
               >
                 {currentStatus.body}
               </StyledUserName>

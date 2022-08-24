@@ -22,10 +22,7 @@ export const isOverdue = (date: Date) =>
 export const getStatus = (status: string | undefined, date: any) => {
   if (!status) return null;
   if (status === StatusTypes.BUSY)
-    if (!isOverdue(date)) return StatusTypes.BUSY;
-    else {
-      return StatusTypes.OVERDUE;
-    }
+    return !isOverdue(date) ? StatusTypes.BUSY : StatusTypes.OVERDUE;
   return status;
 };
 

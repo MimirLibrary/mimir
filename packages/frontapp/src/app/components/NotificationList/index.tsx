@@ -20,6 +20,7 @@ import {
   OpenLink,
   FieldDescription,
 } from '../ManagerInfoCard';
+import { RoutesTypes } from '../../../utils/routes';
 
 const InlineFieldDescription = styled(FieldDescription)`
   max-width: 80%;
@@ -111,7 +112,9 @@ const NotificationList: FC<NotificationList> = ({ fieldsNotification }) => {
                       {t('ManagerInfoCard.Link.Answer')}
                     </ButtonAnswer>
                   </InlineWrapper>
-                  <FieldOpenLink to={`/readers/${field.person.id}`}>
+                  <FieldOpenLink
+                    to={`${RoutesTypes.READERS}/${field.person.id}`}
+                  >
                     {field.person.username}
                   </FieldOpenLink>
                 </>

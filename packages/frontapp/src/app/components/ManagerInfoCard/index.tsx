@@ -177,7 +177,7 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
                       </FieldDescription>
                       <FieldOpenLink
                         secondary="true"
-                        to={`/readers/${field?.person.id}`}
+                        to={`${RoutesTypes.READERS}/${field?.person.id}`}
                       >
                         {field?.person.username}
                       </FieldOpenLink>
@@ -230,7 +230,7 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
                       </FieldDescription>
                       <FieldOpenLink
                         secondary="true"
-                        to={`/readers/${
+                        to={`${RoutesTypes.READERS}/${
                           field?.statuses[field?.statuses.length - 1]?.person.id
                         }`}
                       >
