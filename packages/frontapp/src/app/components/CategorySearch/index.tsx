@@ -69,6 +69,7 @@ type itemsType = {
 };
 const CategorySearch = ({ setActive }: any) => {
   let idOfItems = 0;
+  const numberOfInitialItems = 7; // number of items to show before clicked ShowMore
   const [showMore, setShowMore] = useState(false);
   const [allFilters, setAllFilters] = useState<itemsType[]>([]);
   const { location } = useAppSelector((state) => state.user);
@@ -203,28 +204,30 @@ const CategorySearch = ({ setActive }: any) => {
         <div key={item.id}>
           <Title>{item.title}</Title>
           <AttributeWrapper>
-            {item.subAttributes.slice(0, 7).map((attribute) => (
-              <OneCategory key={attribute.id}>
-                {attribute.title}{' '}
-                {attribute.numberOfItems && `- ${attribute.numberOfItems}`}
-                <StyledCheckBox
-                  type={item.inputType}
-                  name={item.title.toLowerCase()}
-                  value={attribute.title}
-                  onChange={(e) =>
-                    radioBtnHandler(
-                      item.subAttributes,
-                      item.inputType,
-                      e.target.value
-                    )
-                  }
-                  onMouseDown={() => checkBoxHandler(attribute)}
-                />
-              </OneCategory>
-            ))}
+            {item.subAttributes
+              .slice(0, numberOfInitialItems)
+              .map((attribute) => (
+                <OneCategory key={attribute.id}>
+                  {attribute.title}{' '}
+                  {attribute.numberOfItems && `- ${attribute.numberOfItems}`}
+                  <StyledCheckBox
+                    type={item.inputType}
+                    name={item.title.toLowerCase()}
+                    value={attribute.title}
+                    onChange={(e) =>
+                      radioBtnHandler(
+                        item.subAttributes,
+                        item.inputType,
+                        e.target.value
+                      )
+                    }
+                    onMouseDown={() => checkBoxHandler(attribute)}
+                  />
+                </OneCategory>
+              ))}
             {showMore &&
               item.subAttributes
-                .slice(7, item.subAttributes.length)
+                .slice(numberOfInitialItems, item.subAttributes.length)
                 .map((attribute) => (
                   <OneCategory key={attribute.id}>
                     {attribute.title}{' '}
@@ -244,7 +247,7 @@ const CategorySearch = ({ setActive }: any) => {
                     />
                   </OneCategory>
                 ))}
-            {item.subAttributes.length > 7 && (
+            {item.subAttributes.length > numberOfInitialItems && (
               <SeeMoreButton onClick={() => setShowMore(!showMore)}>
                 {showMore ? 'see less' : 'see more'}
               </SeeMoreButton>
