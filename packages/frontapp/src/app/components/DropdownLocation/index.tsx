@@ -1,4 +1,4 @@
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, useMemo, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { ReactComponent as SvgArrow } from '../../../assets/Arrow.svg';
@@ -42,6 +42,14 @@ const DropdownContainer = styled.div`
     margin-left: ${dimensions.base};
     pointer-events: none;
   }
+
+  span {
+    display: inline-block;
+    width: 80%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `;
 
 const OptionListWrapper = styled.div`
@@ -49,12 +57,10 @@ const OptionListWrapper = styled.div`
   overflow: hidden;
   margin-top: ${dimensions.xs_2};
   background-color: ${colors.bg_secondary};
-  //top: ${dimensions.base};
   width: 100%;
   border-radius: ${dimensions.xs_1};
   box-shadow: 0px 10px 70px #1a1ed614;
   position: absolute;
-  //left: 0;
   z-index: 1;
   padding: 0 ${dimensions.xl};
 `;
@@ -111,25 +117,25 @@ const WrapperDropDown = styled.div`
 
 interface IDropDownLocation {
   options: TUserLocation[];
-  placeholder: string;
   handleChangeLocations: (
     e: React.ChangeEvent<HTMLInputElement>,
     option: TUserLocation
   ) => void;
-  isDisabled: boolean;
 }
 
 const DropDownLocation: FC<IDropDownLocation> = ({
   options,
-  placeholder,
   handleChangeLocations,
-  isDisabled,
 }) => {
   const ref = useRef<any>();
   const [showOptionList, setShowOptionList] = useState<boolean>(false);
   const locations = useAppSelector((state) => state.user.locations);
-
   useOnClickOutside(ref, () => setShowOptionList(false));
+
+  const locationsName = useMemo(
+    () => locations.map((loc) => loc.value),
+    [locations]
+  );
 
   const handleChangeOptionList = () => {
     setShowOptionList((prev) => !prev);
@@ -141,22 +147,28 @@ const DropDownLocation: FC<IDropDownLocation> = ({
     return !!currentLocation;
   };
 
+  const isDisabled = (index: number): boolean => {
+    if (locations.length > 1) return false;
+    const currentLoc = locations.find((item) => +item.id === index + 1);
+    return !!(locations.length === 1 && currentLoc);
+  };
+
   return (
-    <WrapperDropDown>
+    <WrapperDropDown ref={ref}>
       <DropdownContainer onClick={handleChangeOptionList}>
-        {placeholder}
+        <span>{locationsName && locationsName.join(' / ')}</span>
         <SvgArrow />
       </DropdownContainer>
       {showOptionList && (
-        <OptionListWrapper ref={ref}>
+        <OptionListWrapper>
           <OptionList>
-            {options.map((option) => (
+            {options.map((option, index) => (
               <WrapperOption key={option.value}>
                 <label>{option.value}</label>
                 <CheckBox
                   type="checkbox"
+                  disabled={isDisabled(index)}
                   checked={isChecked(option.id)}
-                  disabled={isDisabled}
                   onChange={(e) => handleChangeLocations(e, option)}
                 />
               </WrapperOption>

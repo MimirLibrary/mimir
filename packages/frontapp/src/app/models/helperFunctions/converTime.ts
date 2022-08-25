@@ -24,7 +24,7 @@ export const getStatus = (status: string | undefined, date: any) => {
   if (status === 'Prolong') return 'Prolong';
   if (status === 'Pending') return 'Pending';
   if (status === 'Rejected') return 'Rejected';
-  if (isOverdue(date)) return 'Busy';
+  if (!isOverdue(date)) return 'Busy';
   return 'Overdue';
 };
 

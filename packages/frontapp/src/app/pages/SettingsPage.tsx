@@ -5,7 +5,7 @@ import {
   useRemovePersonLocationMutation,
 } from '@mimir/apollo-client';
 import { colors, dimensions } from '@mimir/ui-kit';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Dropdown, { IDropdownOption } from '../components/Dropdown';
 import { TextArticle } from '../globalUI/TextArticle';
@@ -75,8 +75,6 @@ const SettingsPage = () => {
   const [addPersonLocation] = useAddPersonLocationMutation();
   const [removePersonLocation] = useRemovePersonLocationMutation();
   const { id } = useAppSelector((state) => state.user);
-  const { locations } = useAppSelector((state) => state.user);
-  const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
   const currentLocaleIndex = useMemo(
@@ -127,8 +125,6 @@ const SettingsPage = () => {
               value: loc!.location,
             }))}
             handleChangeLocations={handleChangeLocation}
-            isDisabled={isDisabled}
-            placeholder="Please choose your locations"
           />
         )}
 

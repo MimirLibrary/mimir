@@ -18,12 +18,19 @@ interface IUserState {
   locations: Array<TUserLocation>;
 }
 
-export interface IUserPayload extends IUserState {
+export interface IUserPayload {
+  id: number;
+  username: string;
+  avatar: string;
+  email: string;
+  userRole: RolesTypes;
+  isAuth: boolean;
+  blocked: boolean;
   access_token: string;
   id_token: string;
   refresh_token: string;
   expiry_date: number;
-  location: TUserLocation;
+  location: Array<TUserLocation> | TUserLocation;
 }
 
 const initialState: IUserState = {
@@ -44,7 +51,9 @@ const userSlice = createSlice({
     setUser: (state: IUserState, action: PayloadAction<IUserPayload>) => {
       const { username, avatar, email, location, id, userRole, blocked } =
         action.payload;
-      state.locations.push(location);
+      Array.isArray(location)
+        ? (state.locations = location)
+        : state.locations.push(location);
       state.username = username;
       state.avatar = avatar;
       state.email = email;
@@ -56,13 +65,6 @@ const userSlice = createSlice({
     updateBlocked: (state: IUserState, action: PayloadAction<boolean>) => {
       state.blocked = action.payload ? action.payload : false;
     },
-    // updateUserLocation: (
-    //   state: IUserState,
-    //   action: PayloadAction<TUserLocation>
-    // ) => {
-    //   // state.location = action.payload;
-    //   state.locations.push(action.payload);
-    // },
     logout: (state: IUserState) => {
       state.isAuth = false;
     },
