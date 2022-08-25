@@ -63,7 +63,7 @@ const SingleUser: FC<ISingleUser> = ({
 }) => {
   const navigate = useNavigate();
   const handleUserRedirect = () => {
-    navigate(`/${RoutesTypes.READERS}/${id}`);
+    navigate(`${RoutesTypes.READERS}/${id}`);
   };
 
   return (
