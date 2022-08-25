@@ -33,15 +33,6 @@ export class MaterialService {
         }`,
         { text: `%${search}%` }
       )
-      // .where(
-      //   `location.location = :location
-      // ${
-      //   search
-      //     ? 'AND (material.title ILIKE :text OR material.author ILIKE :text)'
-      //     : ''
-      // }`,
-      //   { location, text: `%${search}%` }
-      // )
       .getMany();
 
     return data.sort((a, b) =>
