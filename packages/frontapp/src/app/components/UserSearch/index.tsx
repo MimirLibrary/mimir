@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 import { filterItems } from './filterItems';
+import { RoutesTypes } from '../../../utils/routes';
 import Button from '../Button';
 import {
   AttributeWrapper,
@@ -34,7 +35,7 @@ const UserSearch = ({ setActive }: any) => {
       item?.subAttributes.forEach((subItem) => (subItem.checked = false))
     );
     setActive(false);
-    navigate('/readers');
+    navigate(RoutesTypes.READERS);
   };
   const radioBtnHandler = (
     attributes: Attribute[],
@@ -69,7 +70,7 @@ const UserSearch = ({ setActive }: any) => {
   useEffect(() => {
     if (applyFilters) {
       navigate({
-        pathname: '/readers',
+        pathname: RoutesTypes.READERS,
         search: `?${createSearchParams(params)}`,
       });
       setActive(false);

@@ -7,6 +7,7 @@ import UserSearch from '../UserSearch';
 import Modal from '../Modal';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { RoutesTypes } from '../../../utils/routes';
 interface IProps {
   active: boolean;
 }
@@ -27,7 +28,7 @@ const FiltersButton: FC = () => {
         <Filter />
       </StyledButton>
       <Modal active={active} setActive={setActive}>
-        {location.pathname === '/readers' ? (
+        {location.pathname === RoutesTypes.READERS ? (
           <UserSearch setActive={setActive} />
         ) : (
           <CategorySearch setActive={setActive} />
