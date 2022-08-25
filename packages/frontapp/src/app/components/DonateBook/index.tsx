@@ -16,6 +16,7 @@ import ErrorMessage from '../ErrorMessge';
 import { RolesTypes } from '@mimir/global-types';
 import FileUpload from '../FielUpload';
 import { api } from '../../axios-api/api';
+import { listOfGenres } from '../ListOfGenres';
 
 const WrapperDonate = styled.section`
   background-color: ${colors.bg_secondary};
@@ -219,6 +220,23 @@ const StyledButton = styled(Button)`
       margin-bottom: 0;
       margin-right: 1rem;
     }
+  }
+`;
+export const Select = styled.select`
+  width: 100%;
+  font-size: 14px;
+  border: none;
+  border: 0.5px solid #bdbdbd;
+  border-radius: ${dimensions.xl_3};
+  padding: 10px 0 10px ${dimensions.xs_1};
+  margin-bottom: ${dimensions.base};
+  background: ${colors.bg_secondary};
+  :hover {
+    border: 0.5px solid ${colors.accent_color};
+  }
+
+  :focus {
+    border: 0.5px solid ${colors.accent_color};
   }
 `;
 
@@ -429,18 +447,12 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
                 </WrapperStyledInput>
                 <WrapperStyledInput>
                   <Label htmlFor="genre">Genre*</Label>
-                  <WrapperInput>
-                    <StyledInput
-                      type="text"
-                      id="genre"
-                      name="genre"
-                      value={dataOfBook.genre || ''}
-                      onChange={handleChange}
-                      autoComplete="off"
-                      required
-                      placeholder="Enter genre"
-                    />
-                  </WrapperInput>
+
+                  <Select>
+                    {listOfGenres.map((genre) => (
+                      <option value={genre.id}>{genre.name}</option>
+                    ))}
+                  </Select>
                 </WrapperStyledInput>
               </WrapperBlockInput>
             </WrapperWithoutButtons>

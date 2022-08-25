@@ -17,6 +17,8 @@ import {
 } from '../../models/helperFunctions/converTime';
 import { StyledBookStatus } from '../../globalUI/Status';
 import SuccessMessage from '../SuccessMessage';
+import { listOfGenres } from '../ListOfGenres';
+import { Select } from '../DonateBook';
 import {
   GetAllTakenItemsDocument,
   GetMaterialByIdDocument,
@@ -193,13 +195,6 @@ const TitleHolder = styled.p`
   font-size: ${dimensions.base};
   margin-bottom: ${dimensions.xs};
 `;
-
-const StyledSelect = styled.select`
-  border: none;
-  outline: none;
-  width: 95%;
-  color: ${colors.main_black};
-`;
 const StyledTextArea = styled.textarea`
   border: none;
   outline: none;
@@ -311,17 +306,14 @@ const BookInfo: FC<IBookInfoProps> = ({
   );
   const [newDeadline, setNewDeadline] = useState(periodOfKeeping);
   const [deleteWarning, setDeleteWarning] = useState(false);
-  const [authorsDropDown, setAuthorsDropDown] = useState<
-    (string | undefined)[] | undefined
-  >();
-  const [categoriesDropDown, setCategoriesDropDown] = useState<
-    (string | undefined)[] | undefined
-  >();
   const [isMaterialTakenByCurrentUser, setIsMaterialTakenByCurrentUser] =
     useState(false);
 
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewTitle(e.target.value);
+  };
+  const handleChangeAuthor = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewAuthor(e.target.value);
   };
   const handleChangeDescription = (e: any) => {
     setNewDescription(e.target.value);
@@ -439,14 +431,6 @@ const BookInfo: FC<IBookInfoProps> = ({
       setIsShowClaimModal(true);
       setValueIsISBN(claimModal);
     }
-    const authors = allMaterials?.getAllMaterials?.map((item) => {
-      return item?.author;
-    });
-    const categories = allMaterials?.getAllMaterials?.map((item) => {
-      return item?.category;
-    });
-    setAuthorsDropDown([...new Set(authors)]);
-    setCategoriesDropDown([...new Set(categories)]);
   }, []);
 
   useEffect(() => {
@@ -577,20 +561,16 @@ const BookInfo: FC<IBookInfoProps> = ({
                 <>
                   <br />
                   <TitleHolder>Genre </TitleHolder>
-                  <WrapperInput>
-                    <StyledSelect
-                      name="categories"
-                      onChange={(e) => {
-                        setNewCategory(e.target.value);
-                      }}
-                    >
-                      {categoriesDropDown?.map(
-                        (category: string | undefined) => (
-                          <option value={category}>{category}</option>
-                        )
-                      )}
-                    </StyledSelect>
-                  </WrapperInput>
+                  <Select
+                    name="categories"
+                    onChange={(e) => {
+                      setNewCategory(e.target.value);
+                    }}
+                  >
+                    {listOfGenres?.map((category) => (
+                      <option value={category.id}>{category.name}</option>
+                    ))}
+                  </Select>
                 </>
               ) : (
                 <TopicDescription>
@@ -602,16 +582,11 @@ const BookInfo: FC<IBookInfoProps> = ({
                   <br />
                   <TitleHolder>Author </TitleHolder>
                   <WrapperInput>
-                    <StyledSelect
-                      name="authors"
-                      onChange={(e) => {
-                        setNewAuthor(e.target.value);
-                      }}
-                    >
-                      {authorsDropDown?.map((author: string | undefined) => (
-                        <option value={author}>{author}</option>
-                      ))}
-                    </StyledSelect>
+                    <StyledInput
+                      type="text"
+                      value={newAuthor}
+                      onChange={handleChangeAuthor}
+                    />
                   </WrapperInput>
                 </>
               ) : (
