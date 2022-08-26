@@ -14,7 +14,7 @@ interface IManagerInfoCard {
   fieldsDonate?: Array<IMaterialDonate | null>;
 }
 
-const WrapperCard = styled.div`
+export const WrapperCard = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -27,28 +27,28 @@ const WrapperCard = styled.div`
     ${dimensions.xl_2};
 `;
 
-const Title = styled.p`
+export const Title = styled.p`
   font-weight: 700;
   font-size: ${dimensions.xl_2};
   line-height: ${dimensions.xl_3};
   color: ${colors.main_black};
 `;
 
-const FieldTitle = styled.p`
+export const FieldTitle = styled.p`
   font-weight: 600;
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
   color: ${colors.main_black};
 `;
 
-const Description = styled.p`
+export const Description = styled.p`
   font-weight: 300;
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl_2};
   color: ${colors.main_black};
 `;
 
-const FieldDescription = styled.p`
+export const FieldDescription = styled.p`
   display: flex;
   font-weight: 400;
   font-size: ${dimensions.base};
@@ -56,7 +56,7 @@ const FieldDescription = styled.p`
   color: ${colors.main_black};
 `;
 
-const WrapperFooter = styled.div`
+export const WrapperFooter = styled.div`
   order: 4;
   flex-grow: 0;
   display: flex;
@@ -89,7 +89,7 @@ const InlineOpenLink = styled(OpenLink)`
   }
 `;
 
-const FieldWrapper = styled.div`
+export const FieldWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -102,7 +102,7 @@ const FieldWrapper = styled.div`
   background: ${colors.bg_fields};
   border-radius: ${dimensions.xs_1};
 `;
-const InlineWrapper = styled.div`
+export const InlineWrapper = styled.div`
   display: flex;
   justify-content: space-between;
 `;
@@ -110,7 +110,7 @@ const InlineWrapper = styled.div`
 interface IFieldOpenLinkProps {
   secondary?: string;
 }
-const FieldOpenLink = styled.span<IFieldOpenLinkProps>`
+export const FieldOpenLink = styled(OpenLink)<IFieldOpenLinkProps>`
   font-weight: 400;
   width: auto;
   margin-left: 4px;
@@ -119,7 +119,13 @@ const FieldOpenLink = styled.span<IFieldOpenLinkProps>`
     secondary ? colors.problem_red : colors.accent_color};
 `;
 
-const StyledIcon = styled.img`
+export const ColumnWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  row-gap: ${dimensions.xs_2};
+`;
+
+export const StyledIcon = styled.img`
   width: ${dimensions.base_3};
   height: ${dimensions.base_3};
   border-radius: 50%;
@@ -132,7 +138,7 @@ const StyledIcon = styled.img`
     left: -32px;
   }
 `;
-const NotificationDescription = styled(FieldDescription)`
+export const NotificationDescription = styled(FieldDescription)`
   position: relative;
   font-weight: 500;
   font-size: ${dimensions.sm};
@@ -166,7 +172,10 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
                     <FieldDescription>
                       {t(`ManagerInfoCard.FieldDescription.${type}`)}
                     </FieldDescription>
-                    <FieldOpenLink secondary="true">
+                    <FieldOpenLink
+                      secondary="true"
+                      to={`${RoutesTypes.READERS}/${field?.person.id}`}
+                    >
                       {field?.person.username}
                     </FieldOpenLink>
                   </InlineWrapper>
@@ -212,7 +221,12 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
                     <FieldDescription>
                       {t(`ManagerInfoCard.FieldDescription.${type}`)}
                     </FieldDescription>
-                    <FieldOpenLink secondary="true">
+                    <FieldOpenLink
+                      secondary="true"
+                      to={`${RoutesTypes.READERS}/${
+                        field?.statuses[field?.statuses.length - 1]?.person.id
+                      }`}
+                    >
                       {
                         field?.statuses[field?.statuses.length - 1]?.person
                           .username

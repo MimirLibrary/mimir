@@ -22,7 +22,6 @@ input CreatePersonInput {
   type: String!
 }
 
-
 input UpdatePersonLocationInput {
   person_id: Int!
   location_id: Int!

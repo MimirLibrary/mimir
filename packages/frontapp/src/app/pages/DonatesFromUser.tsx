@@ -6,7 +6,6 @@ import { BookHolder } from '../components/BookInfo';
 import OneDonator from '../components/OneDonatedBookPreview';
 import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
 import { useAppSelector } from '../hooks/useTypedSelector';
-import { locationIds } from '../store/slices/userSlice';
 import {
   InputSearch,
   StyledSearchIcon,
@@ -14,14 +13,20 @@ import {
 } from '../components/Search';
 import { t } from 'i18next';
 import { IMaterial } from '../types';
+import { locationIds } from '../store/slices/userSlice';
 
 interface TitleProps {
   flex?: number;
 }
 
+const WrapperSearch = styled(WrapperInput)`
+  position: relative;
+  top: -3.5rem;
+`;
+
 const ColumnHeader = styled.div`
   display: flex;
-  border-radius: 10px 0px 0px 0px;
+  border-radius: 10px 10px 0px 0px;
   background-color: ${colors.accent_color};
   padding: ${dimensions.xl};
 `;
@@ -39,21 +44,47 @@ const DonatesFromUser = () => {
   const { data } = useGetAllMaterialsQuery({
     variables: { locations },
   });
+  const [search, setSearch] = useState<string>('');
   const [pendingDonates, setPendingDonates] = useState<any>();
+  const [shownItems, setShownItems] = useState<any>();
+  const [shownId, setShownId] = useState<Array<number>>([]);
   useEffect(() => {
     if (data) {
       const pendingDonates = data.getAllMaterials.filter((material: any) => {
         return material.is_donated === true;
       });
       setPendingDonates(pendingDonates);
+      setShownItems(pendingDonates);
     }
     return () => {
       setPendingDonates(undefined);
+      setShownItems(undefined);
     };
   }, [data]);
+  const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setShownId([]);
+    setShownItems(pendingDonates);
+    setSearch(e.target.value);
+  };
+  useEffect(() => {
+    setShownItems(
+      pendingDonates?.filter((item: any) =>
+        shownId.includes(item.id || !shownId.length)
+      )
+    );
+  }, [shownId]);
 
   return (
     <WrapperInfo>
+      <WrapperSearch>
+        <StyledSearchIcon fill={colors.dropdown_gray} width="20" height="20" />
+        <InputSearch
+          type="text"
+          value={search}
+          onChange={handleChangeSearch}
+          placeholder={t('Search.UsernamePlaceholder')}
+        />
+      </WrapperSearch>
       <TitleInfo>Donates from user</TitleInfo>
       <SubTitle>
         Items brought to the library by users. Confirm them so that they appear
@@ -66,19 +97,24 @@ const DonatesFromUser = () => {
           <Column flex={1}>User name</Column>
           <Column flex={1}>State</Column>
         </ColumnHeader>
-        {pendingDonates &&
-          pendingDonates?.map((donate: any, index: number) => (
-            <OneDonator
-              identifier={donate.identifier}
-              title={donate.title}
-              statuses={donate.statuses}
-              key={donate.identifier}
-              id={donate.id}
-              index={index}
-              picture={donate.picture}
-              description={donate.description}
-            />
-          ))}
+        {shownItems &&
+          shownItems?.map((donate: any, index: number) => {
+            return (
+              <OneDonator
+                search={search}
+                setShownId={setShownId}
+                shownId={shownId}
+                identifier={donate.identifier}
+                title={donate.title}
+                statuses={donate.statuses}
+                key={donate.identifier}
+                id={donate.id}
+                index={index}
+                picture={donate.picture}
+                description={donate.description}
+              />
+            );
+          })}
       </BookHolder>
     </WrapperInfo>
   );
