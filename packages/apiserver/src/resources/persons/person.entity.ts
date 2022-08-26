@@ -13,6 +13,7 @@ import { Status } from '../statuses/status.entity';
 import { Message } from '../messages/message.entity';
 import { Location } from '../locations/location.entity';
 import { BlockedUsers } from '../blocked-users/blocked-users.entity';
+import { Permissions } from '@mimir/global-types';
 
 @Entity('person')
 export class Person extends BaseEntity {
@@ -39,6 +40,9 @@ export class Person extends BaseEntity {
 
   @Column({ nullable: true })
   location_id: number;
+
+  @Column({ nullable: true })
+  permissions: string;
 
   @CreateDateColumn()
   created_at!: Date;
