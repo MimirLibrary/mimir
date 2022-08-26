@@ -6,9 +6,9 @@ export class AppService {
   transporter: ReturnType<typeof createTransport>;
 
   constructor() {
+    console.log(process.env.NODE_ENV);
     this.transporter = createTransport({
-      host:
-        process.env.NODE_ENV === 'local' ? 'smtp.mimirapp.xyz' : 'localhost',
+      host: 'localhost',
     });
   }
 
@@ -21,8 +21,8 @@ export class AppService {
       await this.transporter.sendMail({
         from: '"Mimir App" <app@mimirapp.xyz>',
         to: receivers.join(', '),
-        subject: 'Overdue List | Mimir App',
-        text: 'Is it works?',
+        subject: 'Overdue books | Mimir App',
+        text: 'Test message',
       });
       return true;
     } catch (error) {
