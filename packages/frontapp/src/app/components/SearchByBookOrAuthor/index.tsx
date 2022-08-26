@@ -18,6 +18,7 @@ const SearchByBookOrAuthor: FC<{ path: string }> = ({ path }) => {
   const navigate = useNavigate();
   const { data } = useSearchOfMaterialsQuery({
     variables: { search: debounceSearch, locations },
+    skip: !debounceSearch,
   });
 
   useEffect(() => {

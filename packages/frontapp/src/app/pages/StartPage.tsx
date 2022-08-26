@@ -101,7 +101,6 @@ const StartPage: FC = () => {
         }
       );
 
-      console.log(data);
       localStorage.setItem('access_token', data.access_token);
       localStorage.setItem('id_token', data.id_token);
       localStorage.setItem('expiry_date', data.expiry_date.toString());
@@ -109,9 +108,9 @@ const StartPage: FC = () => {
 
       if (data.location && Array.isArray(data.location)) {
         const transformLocations = data.location.map((loc: any) => ({
-          id: String(loc.id) as string,
-          value: loc.location as string,
-        })) as TUserLocation[];
+          id: String(loc.id),
+          value: loc.location,
+        }));
         dispatch(
           setUser({ ...data, location: transformLocations, isAuth: true })
         );

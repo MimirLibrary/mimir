@@ -5,6 +5,7 @@ import { ReactComponent as SvgArrow } from '../../../assets/Arrow.svg';
 import { TUserLocation } from '../../store/slices/userSlice';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import useOnClickOutside from '../../hooks/useOnClickOutside';
+import Loader from '../Loader';
 
 const DropdownContainer = styled.div`
   user-select: none;
@@ -115,19 +116,33 @@ const WrapperDropDown = styled.div`
   margin: ${dimensions.base} 0 ${dimensions.xl_2} 0;
 `;
 
+const WrapperLoader = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: ${dimensions.base} 0;
+`;
+
+interface ILoading {
+  addLoading: boolean;
+  removeLoading: boolean;
+}
+
 interface IDropDownLocation {
   options: TUserLocation[];
   handleChangeLocations: (
     e: React.ChangeEvent<HTMLInputElement>,
     option: TUserLocation
   ) => void;
+  loading?: ILoading;
 }
 
 const DropDownLocation: FC<IDropDownLocation> = ({
   options,
   handleChangeLocations,
+  loading,
 }) => {
-  const ref = useRef<any>();
+  const ref = useRef<HTMLDivElement>(null);
   const [showOptionList, setShowOptionList] = useState<boolean>(false);
   const locations = useAppSelector((state) => state.user.locations);
   useOnClickOutside(ref, () => setShowOptionList(false));
@@ -161,19 +176,26 @@ const DropDownLocation: FC<IDropDownLocation> = ({
       </DropdownContainer>
       {showOptionList && (
         <OptionListWrapper>
-          <OptionList>
-            {options.map((option, index) => (
-              <WrapperOption key={option.value}>
-                <label>{option.value}</label>
-                <CheckBox
-                  type="checkbox"
-                  disabled={isDisabled(index)}
-                  checked={isChecked(option.id)}
-                  onChange={(e) => handleChangeLocations(e, option)}
-                />
-              </WrapperOption>
-            ))}
-          </OptionList>
+          {loading?.addLoading || loading?.removeLoading ? (
+            <WrapperLoader>
+              <Loader width={50} height={50} color={`${colors.accent_color}`} />
+            </WrapperLoader>
+          ) : (
+            <OptionList>
+              {options &&
+                options.map((option, index) => (
+                  <WrapperOption key={option.value}>
+                    <label>{option.value}</label>
+                    <CheckBox
+                      type="checkbox"
+                      disabled={isDisabled(index)}
+                      checked={isChecked(option.id)}
+                      onChange={(e) => handleChangeLocations(e, option)}
+                    />
+                  </WrapperOption>
+                ))}
+            </OptionList>
+          )}
         </OptionListWrapper>
       )}
     </WrapperDropDown>

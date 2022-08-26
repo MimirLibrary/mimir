@@ -48,6 +48,13 @@ const SettingsArticle = styled.h4`
   color: ${colors.main_black};
   line-height: ${dimensions.xl};
   font-weight: 600;
+  span {
+    font-weight: 400;
+    font-size: ${dimensions.base};
+    line-height: ${dimensions.xl};
+    color: ${colors.main_black};
+    margin-top: ${dimensions.base};
+  }
 `;
 
 const RestyledDropdown = styled(Dropdown)`
@@ -72,8 +79,10 @@ const SettingsPage = () => {
   } = useTranslation();
   const { data: GetAllLocationsData, loading: GetAllLocationsLoading } =
     useGetAllLocationsQuery();
-  const [addPersonLocation] = useAddPersonLocationMutation();
-  const [removePersonLocation] = useRemovePersonLocationMutation();
+  const [addPersonLocation, { loading: addLoading }] =
+    useAddPersonLocationMutation();
+  const [removePersonLocation, { loading: removeLoading }] =
+    useRemovePersonLocationMutation();
   const { id } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
@@ -117,7 +126,9 @@ const SettingsPage = () => {
         <TextBase>{t('Settings.Desc')}</TextBase>
       </Wrapper>
       <SettingsContainer>
-        <SettingsArticle>{t('Settings.Location')}</SettingsArticle>
+        <SettingsArticle>
+          {t('Settings.Locations')} <span>({t('Settings.Several')})</span>
+        </SettingsArticle>
         {!GetAllLocationsLoading && !!GetAllLocationsData && (
           <StyledDropDownLocation
             options={GetAllLocationsData.getAllLocations.map((loc) => ({
@@ -125,6 +136,7 @@ const SettingsPage = () => {
               value: loc!.location,
             }))}
             handleChangeLocations={handleChangeLocation}
+            loading={{ addLoading, removeLoading }}
           />
         )}
 

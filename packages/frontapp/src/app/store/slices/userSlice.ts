@@ -66,6 +66,7 @@ const userSlice = createSlice({
       state.blocked = action.payload ? action.payload : false;
     },
     logout: (state: IUserState) => {
+      state.locations = [];
       state.isAuth = false;
     },
     addLocation: (state: IUserState, action: PayloadAction<TUserLocation>) => {

@@ -22,6 +22,7 @@ const SearchByUserName = () => {
       username: debounceSearch,
       locations,
     },
+    skip: !debounceSearch,
   });
 
   useEffect(() => {
