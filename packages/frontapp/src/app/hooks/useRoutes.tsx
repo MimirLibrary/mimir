@@ -58,6 +58,11 @@ export const useRoutes = (role: string) => {
         <Route path={RoutesTypes.READERS} element={<Readers />} />
         <Route path={RoutesTypes.READERS + '/:id'} element={<UserCard />} />
         <Route path={RoutesTypes.BOOKS_STUFF} element={<AllBooksPage />} />
+        <Route
+          path={`${RoutesTypes.CATEGORY}/:category`}
+          element={<BooksByCategory />}
+        />
+        <Route path={RoutesTypes.CATEGORY} element={<BooksByCategory />} />
         <Route path={RoutesTypes.SETTINGS} element={<SettingsPage />} />
         <Route
           path={RoutesTypes.DONATES_FROM_USER}

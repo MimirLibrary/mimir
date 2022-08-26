@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import {
   GetOnePersonDocument,
+  useChangePersonRoleMutation,
   useCreateStateMutation,
   useGetOnePersonQuery,
 } from '@mimir/apollo-client';
@@ -20,6 +21,8 @@ import Modal from '../Modal';
 import ErrorMessage from '../ErrorMessge';
 import React, { useState } from 'react';
 import { InputDescription } from '../AskManagerForm';
+import { RolesTypes } from '@mimir/global-types';
+import { toast } from 'react-toastify';
 
 const InlineWrapper = styled.div`
   display: flex;
@@ -96,16 +99,19 @@ const RadioButton = styled.input`
   border-radius: 50%;
   width: 24px;
   height: 24px;
+
   &:checked {
     background-color: ${colors.accent_color};
     outline-offset: -5px;
     outline: 4px solid ${colors.bg_secondary};
     border-color: ${colors.accent_color};
   }
+
   &:hover {
     border: 1px solid ${colors.description_gray};
   }
 `;
+
 const Form = styled.form`
   display: flex;
   flex-direction: column;
@@ -118,6 +124,9 @@ const UserCard = () => {
     variables: { id: id! },
   });
   const [setState] = useCreateStateMutation({
+    refetchQueries: [GetOnePersonDocument],
+  });
+  const [changePersonRole] = useChangePersonRoleMutation({
     refetchQueries: [GetOnePersonDocument],
   });
   const [checkedButton, setCheckedButton] = useState<number>(0);
@@ -150,6 +159,21 @@ const UserCard = () => {
 
   const handleChangeValue = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);
+  };
+
+  const handleChangePersonRoleClick = async () => {
+    if (typeof id === 'undefined') return;
+    const newType =
+      OnePerson?.getOnePerson.type === RolesTypes.READER
+        ? RolesTypes.MANAGER
+        : RolesTypes.READER;
+    try {
+      await changePersonRole({
+        variables: { person_id: parseInt(id), type: newType },
+      });
+    } catch (e) {
+      toast.error((e as Error).message);
+    }
   };
 
   const OpenModal = () => {
@@ -245,6 +269,15 @@ const UserCard = () => {
               svgComponent={<Block />}
             ></Button>
           )}
+          <Button
+            value={
+              OnePerson?.getOnePerson.type === RolesTypes.READER
+                ? t('UserCard.MakeManager')
+                : t('UserCard.MakeReader')
+            }
+            transparent
+            onClick={handleChangePersonRoleClick}
+          />
         </ButtonsWrapper>
       </CardWrapper>
       <Title>{t('UserCard.ClaimList')}</Title>

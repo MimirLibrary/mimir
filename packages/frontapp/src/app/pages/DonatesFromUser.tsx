@@ -7,6 +7,13 @@ import OneDonator from '../components/OneDonatedBookPreview';
 import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
 import { useAppSelector } from '../hooks/useTypedSelector';
 import { locationIds } from '../store/slices/userSlice';
+import {
+  InputSearch,
+  StyledSearchIcon,
+  WrapperInput,
+} from '../components/Search';
+import { t } from 'i18next';
+import { IMaterial } from '../types';
 
 interface TitleProps {
   flex?: number;

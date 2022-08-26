@@ -18,7 +18,7 @@ export const countClaimHistory = (statuses: IClaimHistory[] = []) => {
       status.status === StatusTypes.BUSY ||
       status.status === StatusTypes.PROLONG
     ) {
-      if (isOverdue(status.created_at)) busyItems.push(status);
+      if (!isOverdue(status.created_at)) busyItems.push(status);
       else busyItems.push({ ...status, status: 'Overdue' });
     } else if (status.status === StatusTypes.FREE) {
       freeItems.push(status);

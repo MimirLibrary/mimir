@@ -33,6 +33,7 @@ import { AuthModule } from '../auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from '../auth/auth.guard';
 import { BlockedUsersGuard } from '../resources/blocked-users/blocked-users.guard';
+import { GrantGuard } from '../permission/grant.guard';
 
 @Module({
   imports: [
@@ -82,6 +83,7 @@ import { BlockedUsersGuard } from '../resources/blocked-users/blocked-users.guar
     AppResolver,
     { provide: APP_GUARD, useClass: AuthGuard },
     { provide: APP_GUARD, useClass: BlockedUsersGuard },
+    { provide: APP_GUARD, useClass: GrantGuard },
   ],
 })
 export class AppModule {}

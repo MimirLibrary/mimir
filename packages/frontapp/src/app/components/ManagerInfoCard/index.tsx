@@ -145,6 +145,7 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
   fieldsOverdue,
   fieldsDonate,
 }) => {
+  const [isAnswerModal, setIsAnswerModal] = useState<boolean>(false);
   return (
     <>
       {fieldsOverdue && (
