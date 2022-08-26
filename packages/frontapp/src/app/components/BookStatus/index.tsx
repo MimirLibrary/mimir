@@ -7,6 +7,7 @@ import {
 import { useLocation } from 'react-router-dom';
 import { RoutesTypes } from '../../../utils/routes';
 import { StatusTypes } from '@mimir/global-types';
+import { t } from 'i18next';
 
 interface IBookStatusProps {
   status: string | undefined;
@@ -17,19 +18,17 @@ const BookStatus: FC<IBookStatusProps> = ({ status, date }) => {
   const [statusText, setStatusText] = useState<string>('');
   const currentStatus = getStatus(status, date);
   const { pathname } = useLocation();
-
   useEffect(() => {
     switch (currentStatus) {
+      case null:
+        setStatusText('');
+        break;
       case StatusTypes.FREE:
-        if (pathname === RoutesTypes.HISTORY_OF_CLAIM) {
-          setStatusText('Returned');
-          break;
-        }
-        if (pathname === RoutesTypes.HISTORY_OF_DONATE) {
-          setStatusText('Received');
-          break;
-        }
-        setStatusText('On the shelf');
+        if (
+          pathname === RoutesTypes.HISTORY_OF_CLAIM ||
+          pathname === RoutesTypes.HISTORY_OF_DONATE
+        )
+          setStatusText(t(`Statuses.${currentStatus + pathname}`));
         break;
       case StatusTypes.BUSY: {
         const day = `${getDates(date).returnDate.getDate()}`.padStart(2, '0');
@@ -37,7 +36,7 @@ const BookStatus: FC<IBookStatusProps> = ({ status, date }) => {
           2,
           '0'
         );
-        setStatusText(`Return till ${day}.${month}`);
+        setStatusText(t(`Statuses.${currentStatus}`) + `${day}.${month}`);
         break;
       }
       case StatusTypes.PROLONG: {
@@ -46,20 +45,11 @@ const BookStatus: FC<IBookStatusProps> = ({ status, date }) => {
           2,
           '0'
         );
-        setStatusText(`Return till: ${day}.${month}`);
+        setStatusText(t(`Statuses.${currentStatus}`) + `${day}.${month}`);
         break;
       }
-      case StatusTypes.OVERDUE:
-        setStatusText('Overdue');
-        break;
-      case StatusTypes.PENDING:
-        setStatusText('Waiting for a manager');
-        break;
-      case StatusTypes.REJECTED:
-        setStatusText('Rejected');
-        break;
       default:
-        setStatusText('');
+        setStatusText(t(`Statuses.${currentStatus}`));
         break;
     }
   }, [currentStatus]);

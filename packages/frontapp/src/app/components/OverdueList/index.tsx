@@ -63,7 +63,7 @@ const OverdueList: FC = () => {
     () =>
       data?.getAllStatusesIsOverdue.filter(
         (item) =>
-          isOverdueToday(item?.created_at) && !isOverdue(item?.created_at)
+          isOverdueToday(item?.created_at) && isOverdue(item?.created_at)
       ),
     [data]
   );
@@ -72,7 +72,7 @@ const OverdueList: FC = () => {
     () =>
       data?.getAllStatusesIsOverdue.filter(
         (item) =>
-          !isOverdueToday(item?.created_at) && !isOverdue(item?.created_at)
+          !isOverdueToday(item?.created_at) && isOverdue(item?.created_at)
       ),
     [data]
   );

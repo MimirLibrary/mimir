@@ -129,8 +129,8 @@ const HomePage: FC = () => {
   }, [allMaterialsData]);
 
   const overdueList = useMemo(() => {
-    return overdueData?.getAllStatusesIsOverdue.filter(
-      (item) => !isOverdue(item?.created_at)
+    return overdueData?.getAllStatusesIsOverdue.filter((item) =>
+      isOverdue(item?.created_at)
     );
   }, [overdueData]);
 
