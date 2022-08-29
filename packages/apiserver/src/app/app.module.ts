@@ -34,6 +34,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from '../auth/auth.guard';
 import { BlockedUsersGuard } from '../resources/blocked-users/blocked-users.guard';
 import { GrantGuard } from '../permission/grant.guard';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -76,6 +77,7 @@ import { GrantGuard } from '../permission/grant.guard';
     ServeStaticModule.forRoot({
       rootPath: resolve(process.cwd(), 'storage'),
     }),
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [
