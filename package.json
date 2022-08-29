@@ -125,7 +125,7 @@
     "i18next-http-backend": "^1.4.0",
     "lodash": "^4.17.21",
     "metro-config": "0.70.1",
-    "nodemailer": "^6.7.8",
+    "nodemailer": "6.7.8",
     "path-browserify": "^1.0.1",
     "pg": "^8.7.3",
     "please-upgrade-node": "^3.2.0",
