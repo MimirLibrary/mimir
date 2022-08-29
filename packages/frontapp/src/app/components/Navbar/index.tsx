@@ -8,7 +8,7 @@ import { useAppSelector } from '../../hooks/useTypedSelector';
 import { RolesTypes } from '@mimir/global-types';
 
 interface IProps {
-  setSidebarActive: Dispatch<SetStateAction<boolean>>;
+  hideSidebar: () => void;
 }
 const NavbarWrapper = styled.nav`
   display: flex;
@@ -17,11 +17,11 @@ const NavbarWrapper = styled.nav`
   align-items: center;
 `;
 
-const Navbar: FC<IProps> = ({ setSidebarActive }) => {
+const Navbar: FC<IProps> = ({ hideSidebar }) => {
   const { userRole } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const changeActiveTab = (index: number) => {
-    setSidebarActive(false);
+    hideSidebar();
     dispatch(setActiveTab(index));
   };
 

@@ -8,7 +8,7 @@ import { useAppSelector } from '../../hooks/useTypedSelector';
 import ClosedButton from '../ClosedButton';
 
 interface IProps {
-  setSidebarActive: Dispatch<SetStateAction<boolean>>;
+  hideSidebar: () => void;
 }
 
 const WrapperTitle = styled.div`
@@ -39,14 +39,14 @@ const WrapperHeader = styled.header`
   margin-bottom: 2rem;
 `;
 
-const Header: FC<IProps> = ({ setSidebarActive }) => {
+const Header: FC<IProps> = ({ hideSidebar }) => {
   const { username, email, avatar } = useAppSelector((state) => state.user);
   return (
     <WrapperHeader>
       <WrapperTitle>
         <TitleProject title="Mimir" />
         <NotificationIcon active={true} />
-        <ClosedButton setSidebarActive={setSidebarActive} />
+        <ClosedButton hideSidebar={hideSidebar} />
       </WrapperTitle>
       <WrapperForCenter>
         <WrapperUserInfo>

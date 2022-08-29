@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction } from 'react';
+import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import Navbar from '../Navbar';
 import Header from '../Header';
@@ -6,7 +6,7 @@ import { colors, dimensions } from '@mimir/ui-kit';
 
 interface IProps {
   isSidebarActive: boolean;
-  setSidebarActive: Dispatch<SetStateAction<boolean>>;
+  hideSidebar: () => void;
 }
 
 interface IStyledSidebarProps {
@@ -37,13 +37,13 @@ const StyledSidebar = styled.aside<IStyledSidebarProps>`
   }
 `;
 
-const Sidebar: FC<IProps> = ({ isSidebarActive, setSidebarActive }) => {
+const Sidebar: FC<IProps> = ({ isSidebarActive, hideSidebar }) => {
   return (
     <StyledSidebar isSidebarActive={isSidebarActive}>
-      <Header setSidebarActive={setSidebarActive} />
-      <Navbar setSidebarActive={setSidebarActive} />
+      <Header hideSidebar={hideSidebar} />
+      <Navbar hideSidebar={hideSidebar} />
     </StyledSidebar>
   );
 };
 
-export default Sidebar;
+export default React.memo(Sidebar);

@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction } from 'react';
+import { Dispatch, FC, SetStateAction, useCallback } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 
@@ -29,14 +29,10 @@ const StyledClosedButton = styled.div`
 `;
 
 interface IProps {
-  setSidebarActive: Dispatch<SetStateAction<boolean>>;
+  hideSidebar: () => void;
 }
 
-const ClosedButton: FC<IProps> = ({ setSidebarActive }) => {
-  const hideSidebar = () => {
-    setSidebarActive(false);
-  };
-
+const ClosedButton: FC<IProps> = ({ hideSidebar }) => {
   return (
     <StyledClosedButton onClick={hideSidebar}>
       <span></span>
