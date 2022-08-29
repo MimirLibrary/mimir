@@ -166,6 +166,10 @@ export const resources = {
         Pending: 'Waiting for a manger',
         Rejected: 'Rejected',
       },
+      BookClaimHistory: {
+        Title: 'Claim history',
+        Desc: 'List of users who bought this item',
+      },
     },
   },
   ru: {
@@ -333,6 +337,10 @@ export const resources = {
         Prolong: 'Вернуть до: ',
         Pending: 'В ожидании менеджера',
         Rejected: 'Отклонено',
+      },
+      BookClaimHistory: {
+        Title: 'История действий',
+        Desc: 'Список пользователей, взаимодействовавших с книгой',
       },
     },
   },
