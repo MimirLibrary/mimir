@@ -6,7 +6,6 @@ export class AppService {
   transporter: ReturnType<typeof createTransport>;
 
   constructor() {
-    console.log(process.env.NODE_ENV);
     this.transporter = createTransport({
       host: 'localhost',
     });
