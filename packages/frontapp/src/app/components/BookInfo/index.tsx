@@ -39,6 +39,7 @@ import AskManagerForm from '../AskManagerForm';
 import { WrapperInput } from '../Search';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { RolesTypes } from '@mimir/global-types';
+import Dropdown, { IDropdownOption } from '../Dropdown';
 export const BookHolder = styled.div`
   width: 100%;
   top: 11.5rem;
@@ -324,6 +325,10 @@ const BookInfo: FC<IBookInfoProps> = ({
     e.target.value <= 0 && setNewDeadline(1);
   };
 
+  const handleChangeCategory = (option: IDropdownOption) => {
+    setNewCategory(option.value);
+  };
+
   const [claimBook, { data }] = useClaimBookMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
@@ -561,16 +566,11 @@ const BookInfo: FC<IBookInfoProps> = ({
                 <>
                   <br />
                   <TitleHolder>Genre </TitleHolder>
-                  <Select
-                    name="categories"
-                    onChange={(e) => {
-                      setNewCategory(e.target.value);
-                    }}
-                  >
-                    {listOfGenres?.map((category) => (
-                      <option value={category.id}>{category.name}</option>
-                    ))}
-                  </Select>
+                  <Dropdown
+                    options={listOfGenres}
+                    onChange={handleChangeCategory}
+                    placeholder="Enter genre"
+                  />
                 </>
               ) : (
                 <TopicDescription>

@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { toast } from 'react-toastify';
-import axios from 'axios';
+import Dropdown, { IDropdownOption } from '../Dropdown';
 import { colors, dimensions } from '@mimir/ui-kit';
 import {
   GetMaterialFromMetadataQuery,
@@ -362,6 +362,10 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
     setDataOfBook({ ...dataOfBook, [name]: value });
   };
 
+  const handleChangeGenre = (option: IDropdownOption) => {
+    setDataOfBook({ ...dataOfBook, genre: option.value });
+  };
+
   const handleChangeDescription = (
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -445,15 +449,12 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
                     />
                   </WrapperInput>
                 </WrapperStyledInput>
-                <WrapperStyledInput>
-                  <Label htmlFor="genre">Genre*</Label>
-
-                  <Select>
-                    {listOfGenres.map((genre) => (
-                      <option value={genre.id}>{genre.name}</option>
-                    ))}
-                  </Select>
-                </WrapperStyledInput>
+                <Label htmlFor="genre">Genre*</Label>
+                <Dropdown
+                  options={listOfGenres}
+                  onChange={handleChangeGenre}
+                  placeholder="Enter genre"
+                />
               </WrapperBlockInput>
             </WrapperWithoutButtons>
             <WrapperButtons>

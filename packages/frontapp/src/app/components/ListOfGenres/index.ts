@@ -1,74 +1,74 @@
 export const listOfGenres = [
   {
     id: 1,
-    name: 'Science Fiction',
+    value: 'Science Fiction',
   },
   {
     id: 2,
-    name: 'Fantasy',
+    value: 'Fantasy',
   },
   {
     id: 3,
-    name: 'Comics & Graphic Novels',
+    value: 'Comics & Graphic Novels',
   },
   {
     id: 4,
-    name: 'Classics',
+    value: 'Classics',
   },
   {
     id: 5,
-    name: 'Development',
+    value: 'Development',
   },
   {
     id: 6,
-    name: 'Biography',
+    value: 'Biography',
   },
   {
     id: 7,
-    name: 'Busines',
+    value: 'Busines',
   },
   {
     id: 8,
-    name: "Children's",
+    value: "Children's",
   },
   {
     id: 9,
-    name: 'Crime',
+    value: 'Crime',
   },
   {
     id: 10,
-    name: 'History',
+    value: 'History',
   },
   {
     id: 11,
-    name: 'Horror',
+    value: 'Horror',
   },
   {
     id: 12,
-    name: 'Poetry',
+    value: 'Poetry',
   },
   {
     id: 13,
-    name: 'Psychology',
+    value: 'Psychology',
   },
   {
     id: 14,
-    name: 'Philosophy',
+    value: 'Philosophy',
   },
   {
     id: 15,
-    name: 'Religion',
+    value: 'Religion',
   },
   {
     id: 16,
-    name: 'Romance',
+    value: 'Romance',
   },
   {
     id: 17,
-    name: 'Art',
+    value: 'Art',
   },
   {
     id: 18,
-    name: 'Other',
+    value: 'Other',
   },
 ];
