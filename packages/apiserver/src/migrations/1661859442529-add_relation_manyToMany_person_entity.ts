@@ -1,7 +1,9 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class migrationMy1661331839993 implements MigrationInterface {
-  name = 'migrationMy1661331839993';
+export class addRelationManyToManyPersonEntity1661859442529
+  implements MigrationInterface
+{
+  name = 'addRelationManyToManyPersonEntity1661859442529';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
@@ -16,7 +18,7 @@ export class migrationMy1661331839993 implements MigrationInterface {
     await queryRunner.query(
       `CREATE INDEX "IDX_739a99e55e67f905784126d982" ON "person_location" ("location_id") `
     );
-    await queryRunner.query(`ALTER TABLE "message" DROP COLUMN "location_id"`);
+    await queryRunner.query(`ALTER TABLE "person" DROP COLUMN "location_id"`);
     await queryRunner.query(
       `ALTER TABLE "person_location" ADD CONSTRAINT "FK_9449dce8c9905e055364cb32b08" FOREIGN KEY ("person_id") REFERENCES "person"("id") ON DELETE CASCADE ON UPDATE CASCADE`
     );
@@ -32,9 +34,7 @@ export class migrationMy1661331839993 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "person_location" DROP CONSTRAINT "FK_9449dce8c9905e055364cb32b08"`
     );
-    await queryRunner.query(
-      `ALTER TABLE "message" ADD "location_id" integer NOT NULL`
-    );
+    await queryRunner.query(`ALTER TABLE "person" ADD "location_id" integer`);
     await queryRunner.query(
       `DROP INDEX "public"."IDX_739a99e55e67f905784126d982"`
     );
