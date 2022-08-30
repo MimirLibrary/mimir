@@ -18,7 +18,6 @@ import {
 import { StyledBookStatus } from '../../globalUI/Status';
 import SuccessMessage from '../SuccessMessage';
 import { listOfGenres } from '../ListOfGenres';
-import { Select } from '../DonateBook';
 import {
   GetAllTakenItemsDocument,
   GetMaterialByIdDocument,

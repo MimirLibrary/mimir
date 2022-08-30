@@ -222,23 +222,6 @@ const StyledButton = styled(Button)`
     }
   }
 `;
-export const Select = styled.select`
-  width: 100%;
-  font-size: 14px;
-  border: none;
-  border: 0.5px solid #bdbdbd;
-  border-radius: ${dimensions.xl_3};
-  padding: 10px 0 10px ${dimensions.xs_1};
-  margin-bottom: ${dimensions.base};
-  background: ${colors.bg_secondary};
-  :hover {
-    border: 0.5px solid ${colors.accent_color};
-  }
-
-  :focus {
-    border: 0.5px solid ${colors.accent_color};
-  }
-`;
 
 interface IDataOfBook {
   title: string | null | undefined;
