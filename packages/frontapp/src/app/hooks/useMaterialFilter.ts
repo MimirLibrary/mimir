@@ -1,6 +1,8 @@
 import { GetAllMaterialsQuery } from '@mimir/apollo-client';
 import { getStatus } from '../models/helperFunctions/converTime';
+
 type FilterObjectType = { [author: string]: number };
+
 const useMaterialFilter = (
   availableMaterial: GetAllMaterialsQuery['getAllMaterials'],
   filterName: string

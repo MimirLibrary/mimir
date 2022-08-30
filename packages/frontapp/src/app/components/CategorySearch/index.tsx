@@ -7,16 +7,19 @@ import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import useMaterialFilter from '../../hooks/useMaterialFilter';
 import { getStatus } from '../../models/helperFunctions/converTime';
+
 const Filters = styled.div`
   font-weight: 700;
   font-size: ${dimensions.xl_2};
   margin-bottom: ${dimensions.base_2};
 `;
+
 const Title = styled.h3`
   font-weight: 700;
   font-size: ${dimensions.base};
   margin-bottom: ${dimensions.lg};
 `;
+
 const AttributeWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -52,21 +55,25 @@ const StyledCheckBox = styled.input`
   width: ${dimensions.lg};
   height: ${dimensions.lg};
 `;
+
 type paramsType = {
   [key: string]: string[];
 };
+
 type subItemType = {
   title: string;
   id: number;
   checked: boolean;
-  numberOfItems: number | undefined;
+  numberOfItems?: number;
 };
+
 type itemsType = {
   title: string;
   inputType: string;
   id: number;
   subAttributes: subItemType[];
 };
+
 const CategorySearch = ({ setActive }: any) => {
   let idOfItems = 0;
   const numberOfInitialItems = 7; // number of items to show before clicked ShowMore
@@ -98,6 +105,41 @@ const CategorySearch = ({ setActive }: any) => {
       checked: false,
     }));
 
+  const FilteringObjects = () => {
+    setAllFilters([
+      {
+        title: 'Availability',
+        inputType: 'checkbox',
+        id: 1,
+        subAttributes: customObjectFilter(allAvailability),
+      },
+      {
+        title: 'Items',
+        inputType: 'radio',
+        id: 2,
+        subAttributes: customObjectFilter(allTypes),
+      },
+      {
+        title: 'Categories',
+        inputType: 'checkbox',
+        id: 3,
+        subAttributes: customObjectFilter(allCategories),
+      },
+      {
+        title: 'Authors',
+        inputType: 'checkbox',
+        id: 4,
+        subAttributes: customObjectFilter(allAuthors),
+      },
+      {
+        title: 'SortBy',
+        inputType: 'radio',
+        id: 5,
+        subAttributes: customObjectFilter(allSortBy),
+      },
+    ]);
+  };
+
   useEffect(() => {
     const available = data?.getAllMaterials.filter((material: any) => {
       const lastStatus = material.statuses.slice(-1)[0];
@@ -106,40 +148,10 @@ const CategorySearch = ({ setActive }: any) => {
     });
     setAvailableMaterial(available);
   }, [data]);
+
   useEffect(() => {
     if (allAuthors && allCategories && allTypes && allAvailability) {
-      setAllFilters([
-        {
-          title: 'Availability',
-          inputType: 'checkbox',
-          id: 1,
-          subAttributes: customObjectFilter(allAvailability),
-        },
-        {
-          title: 'Items',
-          inputType: 'radio',
-          id: 2,
-          subAttributes: customObjectFilter(allTypes),
-        },
-        {
-          title: 'Categories',
-          inputType: 'checkbox',
-          id: 3,
-          subAttributes: customObjectFilter(allCategories),
-        },
-        {
-          title: 'Authors',
-          inputType: 'checkbox',
-          id: 4,
-          subAttributes: customObjectFilter(allAuthors),
-        },
-        {
-          title: 'SortBy',
-          inputType: 'radio',
-          id: 5,
-          subAttributes: customObjectFilter(allSortBy),
-        },
-      ]);
+      FilteringObjects();
     }
   }, [availableMaterial]);
 
