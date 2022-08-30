@@ -15,7 +15,6 @@ export class AppController {
 
   @Post('/send-email')
   async sendEmail(@Body() email: IEmail, @Res() res: Response) {
-    console.log(email);
     if (!validateEmail(email)) return res.status(404).send();
     queueScheduler.schedule(() => this.appService.sendEmail(email));
     res.status(200).send();
