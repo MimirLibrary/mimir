@@ -1,9 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { createTransport } from 'nodemailer';
 
+export interface IEmail {
+  from: string;
+  to: string;
+  subject: string;
+  html: string;
+}
+
 @Injectable()
 export class AppService {
-  transporter: ReturnType<typeof createTransport>;
+  private transporter: ReturnType<typeof createTransport>;
 
   constructor() {
     this.transporter = createTransport({
@@ -15,18 +22,11 @@ export class AppService {
     return { message: 'Welcome to email-service!' };
   }
 
-  async sendOverdueNotify(receivers: string[]): Promise<boolean> {
+  async sendEmail(email: IEmail) {
     try {
-      await this.transporter.sendMail({
-        from: '"Mimir App" <app@mimirapp.xyz>',
-        to: receivers.join(', '),
-        subject: 'Overdue books | Mimir App',
-        text: 'Test message',
-      });
-      return true;
+      await this.transporter.sendMail(email);
     } catch (error) {
       console.log(error);
-      return false;
     }
   }
 }
