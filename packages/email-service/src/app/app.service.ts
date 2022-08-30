@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { createTransport } from 'nodemailer';
+import { Logger } from '@nestjs/common';
 
 export interface IEmail {
   from: string;
@@ -18,15 +19,11 @@ export class AppService {
     });
   }
 
-  getData(): { message: string } {
-    return { message: 'Welcome to email-service!' };
-  }
-
   async sendEmail(email: IEmail) {
     try {
       await this.transporter.sendMail(email);
     } catch (error) {
-      console.log(error);
+      Logger.log(error);
     }
   }
 }

@@ -1,13 +1,15 @@
 import { IEmail } from '../app/app.service';
 
-const emailKeys = ['from', 'to', 'subject', 'html'];
+const defaultEmailKeys = ['from', 'to', 'subject', 'html'];
 
 export const validateEmail = (email: IEmail) => {
+  const emailKeys = Object.keys(email);
   if (
-    Object.keys(email).some((value) => !emailKeys.includes(value)) ||
+    emailKeys.some((value) => !emailKeys.includes(value)) ||
     Object.values(email).some(
       (value) => typeof value !== 'string' || !value.length
-    )
+    ) ||
+    emailKeys.length !== defaultEmailKeys.length
   ) {
     return false;
   }

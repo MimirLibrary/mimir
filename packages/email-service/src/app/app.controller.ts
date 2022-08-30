@@ -1,17 +1,12 @@
-import { Body, Controller, Get, Post, Res } from '@nestjs/common';
+import { Body, Controller, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { queueScheduler } from 'rxjs';
-import { validateEmail } from '../validators/email';
+import { validateEmail } from '../validators/validateEmail';
 import { AppService, IEmail } from './app.service';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
-
-  @Get()
-  getData() {
-    return this.appService.getData();
-  }
 
   @Post('/send-email')
   async sendEmail(@Body() email: IEmail, @Res() res: Response) {
