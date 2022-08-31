@@ -17,7 +17,7 @@ import {
 } from '../../models/helperFunctions/converTime';
 import { StyledBookStatus } from '../../globalUI/Status';
 import SuccessMessage from '../SuccessMessage';
-import { listOfGenres } from '../ListOfGenres';
+import { listOfGenres } from '../../../assets/SearchConsts';
 import {
   GetAllTakenItemsDocument,
   GetMaterialByIdDocument,

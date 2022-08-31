@@ -16,7 +16,7 @@ import ErrorMessage from '../ErrorMessge';
 import { RolesTypes } from '@mimir/global-types';
 import FileUpload from '../FielUpload';
 import { api } from '../../axios-api/api';
-import { listOfGenres } from '../ListOfGenres';
+import { listOfGenres } from '../../../assets/SearchConsts';
 
 const WrapperDonate = styled.section`
   background-color: ${colors.bg_secondary};
