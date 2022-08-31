@@ -1,16 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Dispatch, SetStateAction, FC } from 'react';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 import { filterItems } from './filterItems';
 import { RoutesTypes } from '../../../utils/routes';
-import Button from '../Button';
-import {
-  AttributeWrapper,
-  ButtonWrapper,
-  Filters,
-  OneCategory,
-  StyledCheckBox,
-  Title,
-} from '../CategorySearch';
+import SearchModal from '../SeachModal';
+
 type FilterType = {
   title: string;
   inputType: string;
@@ -18,12 +11,18 @@ type FilterType = {
   id: number;
   subAttributes: Attribute[];
 };
+
 type Attribute = {
   title: string;
   id: number;
   checked: boolean;
 };
-const UserSearch = ({ setActive }: any) => {
+
+interface IProps {
+  setActive: Dispatch<SetStateAction<boolean>>;
+}
+
+const UserSearch: FC<IProps> = ({ setActive }) => {
   const [applyFilters, setApplyFilters] = useState(false);
   const navigate = useNavigate();
   const params: { [key: string]: string[] } = {
@@ -78,43 +77,13 @@ const UserSearch = ({ setActive }: any) => {
     setApplyFilters(false);
   }, [applyFilters]);
   return (
-    <form>
-      <Filters>Filters</Filters>
-      {filterItems.map((item) => (
-        <div key={item.id}>
-          <Title>{item.title}</Title>
-          <AttributeWrapper>
-            {item.subAttributes.map((attribute) => (
-              <OneCategory key={attribute.id}>
-                {attribute.title}
-                <StyledCheckBox
-                  type={item.inputType}
-                  name={item.title.toLowerCase()}
-                  value={attribute.title}
-                  onChange={(e) =>
-                    radioBtnHandler(
-                      item.subAttributes,
-                      item.inputType,
-                      e.target.value
-                    )
-                  }
-                  onMouseDown={() => checkBoxHandler(attribute)}
-                />
-              </OneCategory>
-            ))}
-          </AttributeWrapper>
-        </div>
-      ))}
-      <ButtonWrapper>
-        <Button value="Apply filters" onClick={() => setApplyFilters(true)} />
-        <Button
-          type="reset"
-          transparent
-          value="Reset all filters"
-          onClick={handleResetClick}
-        />
-      </ButtonWrapper>
-    </form>
+    <SearchModal
+      attributes={filterItems}
+      radioBtnHandler={radioBtnHandler}
+      checkBoxHandler={checkBoxHandler}
+      setApplyFilters={setApplyFilters}
+      handleResetClick={handleResetClick}
+    />
   );
 };
 

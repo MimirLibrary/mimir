@@ -40,17 +40,19 @@ const Description = styled.p`
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
 `;
+
 interface IProps {
   itemsTaken?: string[];
   sortBy?: string[];
 }
-type minMaxType = {
+
+type MinMaxType = {
   min: number;
   max: number;
 };
 
 const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
-  const [minMax, setMinMax] = useState<minMaxType[]>([]);
+  const [minMax, setMinMax] = useState<MinMaxType[]>([]);
   const { data, loading } = useGetAllPersonsQuery();
   const dispatch = useAppDispatch();
   const { searchReaders } = useAppSelector((state) => state.readers);
