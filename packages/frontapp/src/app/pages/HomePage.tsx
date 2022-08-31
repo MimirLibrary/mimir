@@ -107,6 +107,7 @@ const HomePage: FC = () => {
     error: messagesError,
   } = useGetAllMessagesQuery({
     skip: userRole === RolesTypes.READER,
+    variables: { location_id: locations[0] },
   });
 
   const {

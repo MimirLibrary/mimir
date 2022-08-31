@@ -46,7 +46,8 @@ const UserList = () => {
   const dispatch = useAppDispatch();
   const { searchReaders } = useAppSelector((state) => state.readers);
   useEffect(() => {
-    if (data && !searchReaders) dispatch(setSearchReaders(data?.getAllPersons));
+    if (data && !searchReaders?.length)
+      dispatch(setSearchReaders(data?.getAllPersons));
   }, [data]);
   if (loading) return <h1>{t('Loading')}</h1>;
   return (

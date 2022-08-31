@@ -6,12 +6,11 @@ type Person {
   username: String!
   email: String!
   avatar: String!
-  location_id: Int!
   created_at: DateTime!
   permissions: [Permissions]
   statuses: [Status]
   notifications: [Notification]
-  location: Location!
+  location: [Location!]
   messages: [Message]
   states: [BlockedUsers]
 }

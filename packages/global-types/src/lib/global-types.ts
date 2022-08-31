@@ -96,6 +96,7 @@ export interface CreateMessageInput {
     message: string;
     material_id?: Nullable<number>;
     person_id: number;
+    location_id: number;
 }
 
 export interface CreateAnswerNotification {
@@ -152,7 +153,7 @@ export interface IQuery {
     getMaterialByIdentifierFromMetadata(identifier: string): Nullable<IMetaOfMaterial> | Promise<Nullable<IMetaOfMaterial>>;
     getAllDonatedMaterialsByPerson(id: string): Nullable<Nullable<Material>[]> | Promise<Nullable<Nullable<Material>[]>>;
     getMessagesByPerson(person_id: string): Nullable<Nullable<Message>[]> | Promise<Nullable<Nullable<Message>[]>>;
-    getAllMessages(): Nullable<Message[]> | Promise<Nullable<Message[]>>;
+    getAllMessages(location_id: number): Nullable<Message[]> | Promise<Nullable<Message[]>>;
     getNotificationsByPerson(person_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
     getNotificationsByMaterial(material_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
     getOnePerson(id: string): Person | Promise<Person>;
@@ -265,6 +266,7 @@ export interface Message {
     material: Material;
     title: string;
     message: string;
+    location_id: number;
 }
 
 export interface Notification {
@@ -285,12 +287,11 @@ export interface Person {
     username: string;
     email: string;
     avatar: string;
-    location_id: number;
     created_at: DateTime;
     permissions?: Nullable<Nullable<Permissions>[]>;
     statuses?: Nullable<Nullable<Status>[]>;
     notifications?: Nullable<Nullable<Notification>[]>;
-    location: Location;
+    location?: Nullable<Location[]>;
     messages?: Nullable<Nullable<Message>[]>;
     states?: Nullable<Nullable<BlockedUsers>[]>;
 }

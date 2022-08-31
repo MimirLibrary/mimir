@@ -7,6 +7,7 @@ type Message {
   material: Material!
   title: String!
   message: String!
+  location_id: Int!
 }
 
 input CreateMessageInput {
@@ -14,11 +15,12 @@ input CreateMessageInput {
   message: String!
   material_id: Int
   person_id: Int!
+  location_id: Int!
 }
 
 extend type Query {
   getMessagesByPerson(person_id: ID!): [Message]
-  getAllMessages: [Message!]
+  getAllMessages(location_id: Int!): [Message!]
 }
 
 extend type Mutation {

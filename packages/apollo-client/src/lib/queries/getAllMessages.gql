@@ -1,5 +1,5 @@
-query GetAllMessages {
-  getAllMessages {
+query GetAllMessages($location_id: Int!) {
+  getAllMessages(location_id: $location_id) {
     id
     created_at
     title

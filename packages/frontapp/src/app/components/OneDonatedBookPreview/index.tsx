@@ -131,8 +131,6 @@ const OneDonator = ({
     navigate(`/donate/${item_id}`);
   };
   const lastStatus = statuses.slice(-1)[0];
-  console.log(statuses);
-  console.log(lastStatus);
   const GrayBackground = index % 2 === 0;
   const { data: personName } = useGetOnePersonQuery({
     variables: {

@@ -5,8 +5,6 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
-  ManyToOne,
-  JoinColumn,
   ManyToMany,
   JoinTable,
 } from 'typeorm';
@@ -15,7 +13,6 @@ import { Status } from '../statuses/status.entity';
 import { Message } from '../messages/message.entity';
 import { Location } from '../locations/location.entity';
 import { BlockedUsers } from '../blocked-users/blocked-users.entity';
-import { Permissions } from '@mimir/global-types';
 
 @Entity('person')
 export class Person extends BaseEntity {

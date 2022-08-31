@@ -4,6 +4,8 @@ import Button from '../Button';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import { useCreateMessageForManagerMutation } from '@mimir/apollo-client';
+import Dropdown, { IDropdownOption } from '../Dropdown';
+import { TUserLocation } from '../../store/slices/userSlice';
 
 const Wrapper = styled.div`
   display: flex;
@@ -91,21 +93,40 @@ const WrapperButtons = styled.div`
   }
 `;
 
+const WrapperLocation = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`;
+
+const RestyledDropdown = styled(Dropdown)`
+  max-width: 50%;
+  width: 100%;
+  margin-left: ${dimensions.xs_2};
+  margin-bottom: 0.5rem;
+  padding: 1.6rem 1rem;
+  border: 1px solid ${colors.gray_additional};
+`;
+
 interface IPropsAskManagerForm {
   setActive: React.Dispatch<React.SetStateAction<boolean>>;
   setSuccessModal: React.Dispatch<React.SetStateAction<boolean>>;
   material_id?: number | null;
+  location_id?: number;
 }
 
 const AskManagerForm: FC<IPropsAskManagerForm> = ({
   setActive,
   material_id = null,
   setSuccessModal,
+  location_id,
 }) => {
-  const { id } = useAppSelector((state) => state.user);
+  const { id, locations } = useAppSelector((state) => state.user);
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [createMessage, { data }] = useCreateMessageForManagerMutation();
+  const [location, setLocation] = useState<null | number>(null);
 
   useEffect(() => {
     if (data?.createMessageForManager.__typename === 'Message') {
@@ -125,6 +146,10 @@ const AskManagerForm: FC<IPropsAskManagerForm> = ({
     setDescription(e.target.value);
   };
 
+  const handleChangeOption = (option: TUserLocation) => {
+    setLocation(parseInt(option.id));
+  };
+
   const closeModal = () => {
     setActive(false);
   };
@@ -138,6 +163,7 @@ const AskManagerForm: FC<IPropsAskManagerForm> = ({
           message: description,
           person_id: id,
           material_id,
+          location_id: location_id || location!,
         },
       });
     } catch (e) {
@@ -152,12 +178,21 @@ const AskManagerForm: FC<IPropsAskManagerForm> = ({
       <Title>Ask manager</Title>
       <SubTitle>Tell us the reason for your request</SubTitle>
       <Form onSubmit={onSubmit}>
-        <InputTitle
-          placeholder="Title"
-          value={title}
-          onChange={handleChangeTitle}
-          required
-        />
+        <WrapperLocation>
+          <InputTitle
+            placeholder="Title"
+            value={title}
+            onChange={handleChangeTitle}
+            required
+          />
+          {!location_id && (
+            <RestyledDropdown
+              options={locations}
+              placeholder="Choose your location"
+              onChange={(option) => handleChangeOption(option as TUserLocation)}
+            />
+          )}
+        </WrapperLocation>
         <InputDescription
           placeholder="Description"
           value={description}
@@ -165,7 +200,11 @@ const AskManagerForm: FC<IPropsAskManagerForm> = ({
           required
         />
         <WrapperButtons>
-          <Button value="Ok" type="submit" />
+          <Button
+            value="Ok"
+            type="submit"
+            disabled={!(location_id || location)}
+          />
           <Button value="Cancel" transparent onClick={closeModal} />
         </WrapperButtons>
       </Form>

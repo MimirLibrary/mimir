@@ -61,6 +61,7 @@ export type CreateMaterialInput = {
 };
 
 export type CreateMessageInput = {
+  location_id: Scalars['Int'];
   material_id?: InputMaybe<Scalars['Int']>;
   message: Scalars['String'];
   person_id: Scalars['Int'];
@@ -161,6 +162,7 @@ export type Message = {
   __typename?: 'Message';
   created_at: Scalars['DateTime'];
   id: Scalars['ID'];
+  location_id: Scalars['Int'];
   material: Material;
   material_id?: Maybe<Scalars['Int']>;
   message: Scalars['String'];
@@ -328,8 +330,7 @@ export type Person = {
   created_at: Scalars['DateTime'];
   email: Scalars['String'];
   id: Scalars['ID'];
-  location: Location;
-  location_id: Scalars['Int'];
+  location?: Maybe<Array<Location>>;
   messages?: Maybe<Array<Maybe<Message>>>;
   notifications?: Maybe<Array<Maybe<Notification>>>;
   permissions?: Maybe<Array<Maybe<Permissions>>>;
@@ -387,6 +388,11 @@ export type QueryGetAllMaterialsArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   locations?: InputMaybe<Array<Scalars['Int']>>;
   offset?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryGetAllMessagesArgs = {
+  location_id: Scalars['Int'];
 };
 
 
@@ -559,6 +565,7 @@ export type CreateMessageForManagerMutationVariables = Exact<{
   material_id?: InputMaybe<Scalars['Int']>;
   title: Scalars['String'];
   message: Scalars['String'];
+  location_id: Scalars['Int'];
 }>;
 
 
@@ -707,7 +714,9 @@ export type GetAllMaterialsForManagerQueryVariables = Exact<{
 
 export type GetAllMaterialsForManagerQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', id: string, title: string, category: string, picture?: string | null, statuses: Array<{ __typename?: 'Status', id: string, created_at: any, status: string, person: { __typename?: 'Person', id: string, username: string } } | null> } | null> };
 
-export type GetAllMessagesQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetAllMessagesQueryVariables = Exact<{
+  location_id: Scalars['Int'];
+}>;
 
 
 export type GetAllMessagesQuery = { __typename?: 'Query', getAllMessages?: Array<{ __typename?: 'Message', id: string, created_at: any, title: string, message: string, person_id: number, person: { __typename?: 'Person', id: string, username: string, avatar: string } }> | null };
@@ -910,9 +919,9 @@ export type ClaimBookMutationHookResult = ReturnType<typeof useClaimBookMutation
 export type ClaimBookMutationResult = Apollo.MutationResult<ClaimBookMutation>;
 export type ClaimBookMutationOptions = Apollo.BaseMutationOptions<ClaimBookMutation, ClaimBookMutationVariables>;
 export const CreateMessageForManagerDocument = gql`
-    mutation CreateMessageForManager($person_id: Int!, $material_id: Int, $title: String!, $message: String!) {
+    mutation CreateMessageForManager($person_id: Int!, $material_id: Int, $title: String!, $message: String!, $location_id: Int!) {
   createMessageForManager(
-    input: {person_id: $person_id, material_id: $material_id, title: $title, message: $message}
+    input: {person_id: $person_id, material_id: $material_id, title: $title, message: $message, location_id: $location_id}
   ) {
     message
     title
@@ -938,6 +947,7 @@ export type CreateMessageForManagerMutationFn = Apollo.MutationFunction<CreateMe
  *      material_id: // value for 'material_id'
  *      title: // value for 'title'
  *      message: // value for 'message'
+ *      location_id: // value for 'location_id'
  *   },
  * });
  */
@@ -1614,8 +1624,8 @@ export type GetAllMaterialsForManagerQueryHookResult = ReturnType<typeof useGetA
 export type GetAllMaterialsForManagerLazyQueryHookResult = ReturnType<typeof useGetAllMaterialsForManagerLazyQuery>;
 export type GetAllMaterialsForManagerQueryResult = Apollo.QueryResult<GetAllMaterialsForManagerQuery, GetAllMaterialsForManagerQueryVariables>;
 export const GetAllMessagesDocument = gql`
-    query GetAllMessages {
-  getAllMessages {
+    query GetAllMessages($location_id: Int!) {
+  getAllMessages(location_id: $location_id) {
     id
     created_at
     title
@@ -1642,10 +1652,11 @@ export const GetAllMessagesDocument = gql`
  * @example
  * const { data, loading, error } = useGetAllMessagesQuery({
  *   variables: {
+ *      location_id: // value for 'location_id'
  *   },
  * });
  */
-export function useGetAllMessagesQuery(baseOptions?: Apollo.QueryHookOptions<GetAllMessagesQuery, GetAllMessagesQueryVariables>) {
+export function useGetAllMessagesQuery(baseOptions: Apollo.QueryHookOptions<GetAllMessagesQuery, GetAllMessagesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetAllMessagesQuery, GetAllMessagesQueryVariables>(GetAllMessagesDocument, options);
       }

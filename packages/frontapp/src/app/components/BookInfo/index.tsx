@@ -799,6 +799,7 @@ const BookInfo: FC<IBookInfoProps> = ({
           setActive={setIsShowAskManager}
           setSuccessModal={setIsShowWindowReportedToManager}
           material_id={material_id}
+          location_id={location_id}
         />
       </Modal>
       <Modal

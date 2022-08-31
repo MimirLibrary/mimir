@@ -11,7 +11,6 @@ import { Status } from '../statuses/status.entity';
 import { Connection } from 'typeorm';
 import { ErrorBook } from '../../errors';
 import { GraphQLError } from 'graphql';
-import { Location } from '../locations/location.entity';
 import axios from 'axios';
 
 @Injectable()
@@ -23,7 +22,6 @@ export class MaterialService {
   async search(searchInput: SearchInput) {
     const { search, locations } = searchInput;
     if (!search) return [];
-    console.log(search, locations);
     const data = await Material.createQueryBuilder('material')
       .where('material.location_id IN (:...locations)', { locations })
       .andWhere(

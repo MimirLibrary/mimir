@@ -100,8 +100,8 @@ const OptionList = styled.div`
 `;
 
 const CheckBox = styled.input`
-  width: 24px;
-  height: 24px;
+  width: ${dimensions.xl_2};
+  height: ${dimensions.xl_2};
 `;
 const WrapperOption = styled.div`
   display: flex;

@@ -1,7 +1,6 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { toast } from 'react-toastify';
-
 import { colors, dimensions } from '@mimir/ui-kit';
 import {
   GetMaterialFromMetadataQuery,
@@ -240,9 +239,8 @@ interface IPropsDonateBook {
   onHideContent: () => void;
 }
 const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
-  const { id, userRole } = useAppSelector((state) => state.user);
+  const { id, userRole, locations } = useAppSelector((state) => state.user);
   const { identifier } = useAppSelector((state) => state.identifier);
-  const { locations } = useAppSelector((state) => state.user);
   const [file, setFile] = useState<File | null>(null);
   const [pictureOfCover, setPictureOfCover] = useState<string | null>(null);
   const [isSuccess, setSuccess] = useState<boolean>(false);

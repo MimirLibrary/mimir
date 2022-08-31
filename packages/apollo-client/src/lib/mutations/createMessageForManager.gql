@@ -3,6 +3,7 @@ mutation CreateMessageForManager(
   $material_id: Int
   $title: String!
   $message: String!
+  $location_id: Int!
 ) {
   createMessageForManager(
     input: {
@@ -10,6 +11,7 @@ mutation CreateMessageForManager(
       material_id: $material_id
       title: $title
       message: $message
+      location_id: $location_id
     }
   ) {
     message

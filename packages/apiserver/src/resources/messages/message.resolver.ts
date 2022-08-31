@@ -19,8 +19,8 @@ export class MessageResolver {
   }
 
   @Query(() => [Message])
-  async getAllMessages() {
-    return Message.find();
+  async getAllMessages(@Args('location_id') location_id: number) {
+    return Message.find({ where: { location_id } });
   }
 
   @ResolveField(() => Person)
