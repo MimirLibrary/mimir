@@ -2,7 +2,7 @@ import { useState, useEffect, Dispatch, SetStateAction, FC } from 'react';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 import { filterItems } from './filterItems';
 import { RoutesTypes } from '../../../utils/routes';
-import SearchModal from '../SeachModal';
+import SearchModal from '../SearchModal';
 
 type FilterType = {
   title: string;

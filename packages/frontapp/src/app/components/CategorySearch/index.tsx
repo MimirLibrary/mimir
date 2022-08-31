@@ -1,6 +1,6 @@
 import { useState, useEffect, Dispatch, SetStateAction, FC } from 'react';
 import { attributes } from '../FilterAttributes';
-import SearchModal, { ItemsType, SubItemType } from '../SeachModal';
+import SearchModal, { ItemsType, SubItemType } from '../SearchModal';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 
 type paramsType = {
