@@ -22,18 +22,20 @@ export class AuthGuard implements CanActivate {
       'allowUnauthorizedRequest',
       context.getHandler()
     );
-    if (!allowUnauthorizedRequest) {
-      if (!headers.authorization || !headers['id-token'])
-        throw new HttpException(
-          'Necessary tokens are not provided',
-          HttpStatus.BAD_REQUEST
-        );
 
-      if (headers['id-token'] === 'null')
-        throw new HttpException('id-token is null', HttpStatus.BAD_REQUEST);
+    if (allowUnauthorizedRequest) return true;
 
-      await this.AuthService.verifyToken(headers['id-token']);
-    }
+    if (!headers.authorization || !headers['id-token'])
+      throw new HttpException(
+        'Necessary tokens are not provided',
+        HttpStatus.BAD_REQUEST
+      );
+
+    if (headers['id-token'] === 'null')
+      throw new HttpException('id-token is null', HttpStatus.BAD_REQUEST);
+
+    await this.AuthService.verifyToken(headers['id-token']);
+
     return true;
   }
 }

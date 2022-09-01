@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { dimensions, colors } from '@mimir/ui-kit';
-import { Dispatch, FC, SetStateAction } from 'react';
+import { Dispatch, FC, SetStateAction, useState } from 'react';
 import Button from '../Button';
 
 const Filters = styled.div`
@@ -63,6 +63,7 @@ export type SubItemType = {
   title: string;
   id: number;
   checked: boolean;
+  numberOfItems?: number;
 };
 
 interface IProps {
@@ -84,6 +85,8 @@ const SearchModal: FC<IProps> = ({
   radioBtnHandler,
   checkBoxHandler,
 }) => {
+  const numberOfInitialItems = 7; // number of items to show before clicked ShowMore
+  const [showMore, setShowMore] = useState(false);
   return (
     <form>
       <Filters>Filters</Filters>
@@ -111,6 +114,33 @@ const SearchModal: FC<IProps> = ({
             ))}
             {item.subAttributes.length > 7 && (
               <SeeMoreButton>SEE MORE </SeeMoreButton>
+            )}
+            {showMore &&
+              item.subAttributes
+                .slice(numberOfInitialItems, item.subAttributes.length)
+                .map((attribute: SubItemType) => (
+                  <OneCategory key={attribute.id}>
+                    {attribute.title}{' '}
+                    {attribute.numberOfItems && `- ${attribute.numberOfItems}`}
+                    <StyledCheckBox
+                      type={item.inputType}
+                      name={item.title.toLowerCase()}
+                      value={attribute.title}
+                      onChange={(e) =>
+                        radioBtnHandler(
+                          item.subAttributes,
+                          item.inputType,
+                          e.target.value
+                        )
+                      }
+                      onMouseDown={() => checkBoxHandler(attribute)}
+                    />
+                  </OneCategory>
+                ))}
+            {item.subAttributes.length > numberOfInitialItems && (
+              <SeeMoreButton onClick={() => setShowMore(!showMore)}>
+                {showMore ? 'see less' : 'see more'}
+              </SeeMoreButton>
             )}
           </AttributeWrapper>
         </div>

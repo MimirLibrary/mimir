@@ -186,6 +186,7 @@ export type Meta = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  changePersonRole: Person;
   claimBook: BookUnionResult;
   createAnswerNotification: Notification;
   createLocation?: Maybe<Location>;
@@ -204,6 +205,12 @@ export type Mutation = {
   returnItem: BookUnionResult;
   updateMaterial: Material;
   updatePersonLocation: Person;
+};
+
+
+export type MutationChangePersonRoleArgs = {
+  person_id: Scalars['Int'];
+  type: Scalars['String'];
 };
 
 
@@ -307,6 +314,10 @@ export type Notification = {
   person_id: Scalars['Int'];
 };
 
+export enum Permissions {
+  GrantRevokeManager = 'GRANT_REVOKE_MANAGER'
+}
+
 export type Person = {
   __typename?: 'Person';
   avatar: Scalars['String'];
@@ -317,6 +328,7 @@ export type Person = {
   location_id: Scalars['Int'];
   messages?: Maybe<Array<Maybe<Message>>>;
   notifications?: Maybe<Array<Maybe<Notification>>>;
+  permissions?: Maybe<Array<Maybe<Permissions>>>;
   position: Scalars['String'];
   smg_id: Scalars['String'];
   states?: Maybe<Array<Maybe<BlockedUsers>>>;
@@ -338,6 +350,7 @@ export type Publisher = {
 
 export type Query = {
   __typename?: 'Query';
+  getAllDonatedMaterialsByPerson?: Maybe<Array<Maybe<Material>>>;
   getAllLocations: Array<Maybe<Location>>;
   getAllMaterials: Array<Maybe<Material>>;
   getAllMessages?: Maybe<Array<Message>>;
@@ -358,6 +371,11 @@ export type Query = {
   getStatusesByPerson: Array<Maybe<Status>>;
   searchOfMaterials?: Maybe<Array<Maybe<Material>>>;
   welcome: Scalars['String'];
+};
+
+
+export type QueryGetAllDonatedMaterialsByPersonArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -512,6 +530,14 @@ export type UpdatePersonLocationInput = {
   person_id: Scalars['Int'];
 };
 
+export type ChangePersonRoleMutationVariables = Exact<{
+  person_id: Scalars['Int'];
+  type: Scalars['String'];
+}>;
+
+
+export type ChangePersonRoleMutation = { __typename?: 'Mutation', changePersonRole: { __typename?: 'Person', id: string, type: string } };
+
 export type ClaimBookMutationVariables = Exact<{
   identifier: Scalars['String'];
   person_id: Scalars['Int'];
@@ -635,6 +661,13 @@ export type CreateAnswerNotificationMutationVariables = Exact<{
 
 export type CreateAnswerNotificationMutation = { __typename?: 'Mutation', createAnswerNotification: { __typename?: 'Notification', id: string, message?: string | null } };
 
+export type GetAllDonatedMaterialsByPersonQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetAllDonatedMaterialsByPersonQuery = { __typename?: 'Query', getAllDonatedMaterialsByPerson?: Array<{ __typename?: 'Material', id: string, picture?: string | null, title: string, author: string, category: string, statuses: Array<{ __typename?: 'Status', id: string, created_at: any, status: string } | null> } | null> | null };
+
 export type GetAllLocationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -736,7 +769,7 @@ export type GetOnePersonQueryVariables = Exact<{
 }>;
 
 
-export type GetOnePersonQuery = { __typename?: 'Query', getOnePerson: { __typename?: 'Person', id: string, username: string, email: string, position: string, avatar: string, statuses?: Array<{ __typename?: 'Status', id: string, material_id: number, status: string, created_at: any, material: { __typename?: 'Material', id: string, picture?: string | null, title: string, author: string, category: string } } | null> | null, states?: Array<{ __typename?: 'BlockedUsers', state: boolean, id: string, description?: string | null, created_at: any } | null> | null, messages?: Array<{ __typename?: 'Message', id: string, material_id?: number | null, title: string, message: string, created_at: any } | null> | null } };
+export type GetOnePersonQuery = { __typename?: 'Query', getOnePerson: { __typename?: 'Person', id: string, username: string, email: string, type: string, position: string, avatar: string, statuses?: Array<{ __typename?: 'Status', id: string, material_id: number, status: string, created_at: any, material: { __typename?: 'Material', id: string, picture?: string | null, title: string, author: string, category: string } } | null> | null, states?: Array<{ __typename?: 'BlockedUsers', state: boolean, id: string, description?: string | null, created_at: any } | null> | null, messages?: Array<{ __typename?: 'Message', id: string, material_id?: number | null, title: string, message: string, created_at: any } | null> | null } };
 
 export type GetReasonOfBlockQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -761,6 +794,41 @@ export type SearchOfMaterialsQueryVariables = Exact<{
 export type SearchOfMaterialsQuery = { __typename?: 'Query', searchOfMaterials?: Array<{ __typename?: 'Material', title: string, created_at: any, picture?: string | null, author: string, category: string, id: string, statuses: Array<{ __typename?: 'Status', id: string, created_at: any, status: string, person: { __typename?: 'Person', id: string, username: string } } | null> } | null> | null };
 
 
+export const ChangePersonRoleDocument = gql`
+    mutation ChangePersonRole($person_id: Int!, $type: String!) {
+  changePersonRole(person_id: $person_id, type: $type) {
+    id
+    type
+  }
+}
+    `;
+export type ChangePersonRoleMutationFn = Apollo.MutationFunction<ChangePersonRoleMutation, ChangePersonRoleMutationVariables>;
+
+/**
+ * __useChangePersonRoleMutation__
+ *
+ * To run a mutation, you first call `useChangePersonRoleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangePersonRoleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changePersonRoleMutation, { data, loading, error }] = useChangePersonRoleMutation({
+ *   variables: {
+ *      person_id: // value for 'person_id'
+ *      type: // value for 'type'
+ *   },
+ * });
+ */
+export function useChangePersonRoleMutation(baseOptions?: Apollo.MutationHookOptions<ChangePersonRoleMutation, ChangePersonRoleMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ChangePersonRoleMutation, ChangePersonRoleMutationVariables>(ChangePersonRoleDocument, options);
+      }
+export type ChangePersonRoleMutationHookResult = ReturnType<typeof useChangePersonRoleMutation>;
+export type ChangePersonRoleMutationResult = Apollo.MutationResult<ChangePersonRoleMutation>;
+export type ChangePersonRoleMutationOptions = Apollo.BaseMutationOptions<ChangePersonRoleMutation, ChangePersonRoleMutationVariables>;
 export const ClaimBookDocument = gql`
     mutation ClaimBook($identifier: String!, $person_id: Int!) {
   claimBook(input: {identifier: $identifier, person_id: $person_id}) {
@@ -1274,6 +1342,50 @@ export function useCreateAnswerNotificationMutation(baseOptions?: Apollo.Mutatio
 export type CreateAnswerNotificationMutationHookResult = ReturnType<typeof useCreateAnswerNotificationMutation>;
 export type CreateAnswerNotificationMutationResult = Apollo.MutationResult<CreateAnswerNotificationMutation>;
 export type CreateAnswerNotificationMutationOptions = Apollo.BaseMutationOptions<CreateAnswerNotificationMutation, CreateAnswerNotificationMutationVariables>;
+export const GetAllDonatedMaterialsByPersonDocument = gql`
+    query GetAllDonatedMaterialsByPerson($id: ID!) {
+  getAllDonatedMaterialsByPerson(id: $id) {
+    id
+    picture
+    title
+    author
+    category
+    statuses {
+      id
+      created_at
+      status
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAllDonatedMaterialsByPersonQuery__
+ *
+ * To run a query within a React component, call `useGetAllDonatedMaterialsByPersonQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllDonatedMaterialsByPersonQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllDonatedMaterialsByPersonQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetAllDonatedMaterialsByPersonQuery(baseOptions: Apollo.QueryHookOptions<GetAllDonatedMaterialsByPersonQuery, GetAllDonatedMaterialsByPersonQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllDonatedMaterialsByPersonQuery, GetAllDonatedMaterialsByPersonQueryVariables>(GetAllDonatedMaterialsByPersonDocument, options);
+      }
+export function useGetAllDonatedMaterialsByPersonLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllDonatedMaterialsByPersonQuery, GetAllDonatedMaterialsByPersonQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllDonatedMaterialsByPersonQuery, GetAllDonatedMaterialsByPersonQueryVariables>(GetAllDonatedMaterialsByPersonDocument, options);
+        }
+export type GetAllDonatedMaterialsByPersonQueryHookResult = ReturnType<typeof useGetAllDonatedMaterialsByPersonQuery>;
+export type GetAllDonatedMaterialsByPersonLazyQueryHookResult = ReturnType<typeof useGetAllDonatedMaterialsByPersonLazyQuery>;
+export type GetAllDonatedMaterialsByPersonQueryResult = Apollo.QueryResult<GetAllDonatedMaterialsByPersonQuery, GetAllDonatedMaterialsByPersonQueryVariables>;
 export const GetAllLocationsDocument = gql`
     query GetAllLocations {
   getAllLocations {
@@ -1865,6 +1977,7 @@ export const GetOnePersonDocument = gql`
     id
     username
     email
+    type
     position
     avatar
     statuses {

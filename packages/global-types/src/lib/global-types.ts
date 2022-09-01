@@ -7,6 +7,10 @@
 
 /* tslint:disable */
 /* eslint-disable */
+export enum Permissions {
+    GRANT_REVOKE_MANAGER = "GRANT_REVOKE_MANAGER"
+}
+
 export interface CreateStateInput {
     person_id: number;
     state: boolean;
@@ -147,6 +151,7 @@ export interface IQuery {
     searchOfMaterials(input: SearchInput): Nullable<Nullable<Material>[]> | Promise<Nullable<Nullable<Material>[]>>;
     getMaterialByIdentifier(input: SearchOneMaterial): Material | Promise<Material>;
     getMaterialByIdentifierFromMetadata(identifier: string): Nullable<IMetaOfMaterial> | Promise<Nullable<IMetaOfMaterial>>;
+    getAllDonatedMaterialsByPerson(id: string): Nullable<Nullable<Material>[]> | Promise<Nullable<Nullable<Material>[]>>;
     getMessagesByPerson(person_id: string): Nullable<Nullable<Message>[]> | Promise<Nullable<Nullable<Message>[]>>;
     getAllMessages(location_id: number): Nullable<Message[]> | Promise<Nullable<Message[]>>;
     getNotificationsByPerson(person_id: number): Nullable<Notification>[] | Promise<Nullable<Notification>[]>;
@@ -177,6 +182,7 @@ export interface IMutation {
     createAnswerNotification(input: CreateAnswerNotification): Notification | Promise<Notification>;
     createPerson(input: CreatePersonInput): Person | Promise<Person>;
     updatePersonLocation(input: UpdatePersonLocationInput): Person | Promise<Person>;
+    changePersonRole(person_id: number, type: string): Person | Promise<Person>;
     createStatus(input: CreateStatusInput): Status | Promise<Status>;
 }
 
@@ -282,6 +288,7 @@ export interface Person {
     avatar: string;
     location_id: number;
     created_at: DateTime;
+    permissions?: Nullable<Nullable<Permissions>[]>;
     statuses?: Nullable<Nullable<Status>[]>;
     notifications?: Nullable<Nullable<Notification>[]>;
     location: Location;
