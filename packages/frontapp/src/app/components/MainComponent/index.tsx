@@ -1,4 +1,4 @@
-import React, { FC, SetStateAction, useCallback } from 'react';
+import { FC, useCallback, memo } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import BlockPage from '../../pages/BlockPage';
 import { RoutesTypes } from '../../../utils/routes';
@@ -15,7 +15,6 @@ import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import Button from '../Button';
 import { useRoutes } from '../../hooks/useRoutes';
-import StartPage from '../../pages/StartPage';
 
 const WrapperRoutes = styled.div`
   width: calc(100% - 22rem);
@@ -109,4 +108,4 @@ const MainComponent: FC<IPropsMainComponent> = ({ showSidebar }) => {
   );
 };
 
-export default React.memo(MainComponent);
+export default memo(MainComponent);

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC, memo } from 'react';
 import styled from '@emotion/styled';
 import Navbar from '../Navbar';
 import Header from '../Header';
@@ -46,4 +46,4 @@ const Sidebar: FC<IProps> = ({ isSidebarActive, hideSidebar }) => {
   );
 };
 
-export default React.memo(Sidebar);
+export default memo(Sidebar);

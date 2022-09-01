@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC, memo } from 'react';
 import styled from '@emotion/styled';
 import { ReactComponent as Notification } from '../../../assets/Notification.svg';
 import { ReactComponent as NoNotification } from '../../../assets/NoNotification.svg';
@@ -36,4 +36,4 @@ const NotificationIcon: FC<IProps> = ({ active }) => {
   );
 };
 
-export default React.memo(NotificationIcon, () => false);
+export default memo(NotificationIcon);

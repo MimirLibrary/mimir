@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC, memo } from 'react';
 import styled from '@emotion/styled';
 import { dimensions } from '@mimir/ui-kit';
 import Burger from '../Burger';
@@ -26,7 +26,6 @@ const StyledSearch = styled.div`
 
 const SearchWrapper: FC<IProps> = ({ showSidebar }) => {
   const { userRole } = useAppSelector((state) => state.user);
-  console.log(window.location.pathname.startsWith(RoutesTypes.READERS));
   return (
     <StyledSearch>
       <Burger showSidebar={showSidebar} />
@@ -47,4 +46,4 @@ const SearchWrapper: FC<IProps> = ({ showSidebar }) => {
   );
 };
 
-export default React.memo(SearchWrapper);
+export default memo(SearchWrapper);

@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import StartPage from './pages/StartPage';
 import Sidebar from './components/Sidebar';
 import { Route, Routes } from 'react-router-dom';
