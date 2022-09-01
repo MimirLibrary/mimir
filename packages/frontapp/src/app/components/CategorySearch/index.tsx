@@ -1,20 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { dimensions, colors } from '@mimir/ui-kit';
-import { attributes } from '../FilterAttributes';
 import Button from '../Button';
 import { createSearchParams, useNavigate } from 'react-router-dom';
+import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
+import { useAppSelector } from '../../hooks/useTypedSelector';
+import useMaterialFilter from '../../hooks/useMaterialFilter';
+import { getStatus } from '../../models/helperFunctions/converTime';
 
 const Filters = styled.div`
   font-weight: 700;
   font-size: ${dimensions.xl_2};
   margin-bottom: ${dimensions.base_2};
 `;
+
 const Title = styled.h3`
   font-weight: 700;
   font-size: ${dimensions.base};
   margin-bottom: ${dimensions.lg};
 `;
+
 const AttributeWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -50,21 +55,106 @@ const StyledCheckBox = styled.input`
   width: ${dimensions.lg};
   height: ${dimensions.lg};
 `;
+
 type paramsType = {
   [key: string]: string[];
 };
+
 type subItemType = {
   title: string;
   id: number;
   checked: boolean;
+  numberOfItems?: number;
 };
+
 type itemsType = {
   title: string;
   inputType: string;
   id: number;
   subAttributes: subItemType[];
 };
+
 const CategorySearch = ({ setActive }: any) => {
+  let idOfItems = 0;
+  const numberOfInitialItems = 7; // number of items to show before clicked ShowMore
+  const [showMore, setShowMore] = useState(false);
+  const [allFilters, setAllFilters] = useState<itemsType[]>([]);
+  const { location } = useAppSelector((state) => state.user);
+  const [availableMaterial, setAvailableMaterial] = useState<any>([]);
+  const { data } = useGetAllMaterialsQuery({
+    variables: { location_id: location.id },
+    fetchPolicy: 'no-cache',
+  });
+
+  const allCategories = useMaterialFilter(availableMaterial, 'category');
+  const allAuthors = useMaterialFilter(availableMaterial, 'author');
+  const allTypes = useMaterialFilter(availableMaterial, 'type');
+  const allAvailability = useMaterialFilter(availableMaterial, 'availability');
+  const allSortBy = {
+    'By date added': undefined,
+    'By date of writing': undefined,
+  };
+
+  const customObjectFilter = (filterName: {
+    [author: string]: number | undefined;
+  }) =>
+    Object.keys(filterName).map((key) => ({
+      title: key,
+      numberOfItems: filterName[key],
+      id: idOfItems++,
+      checked: false,
+    }));
+
+  const FilteringObjects = () => {
+    setAllFilters([
+      {
+        title: 'Availability',
+        inputType: 'checkbox',
+        id: 1,
+        subAttributes: customObjectFilter(allAvailability),
+      },
+      {
+        title: 'Items',
+        inputType: 'radio',
+        id: 2,
+        subAttributes: customObjectFilter(allTypes),
+      },
+      {
+        title: 'Categories',
+        inputType: 'checkbox',
+        id: 3,
+        subAttributes: customObjectFilter(allCategories),
+      },
+      {
+        title: 'Authors',
+        inputType: 'checkbox',
+        id: 4,
+        subAttributes: customObjectFilter(allAuthors),
+      },
+      {
+        title: 'SortBy',
+        inputType: 'radio',
+        id: 5,
+        subAttributes: customObjectFilter(allSortBy),
+      },
+    ]);
+  };
+
+  useEffect(() => {
+    const available = data?.getAllMaterials.filter((material: any) => {
+      const lastStatus = material.statuses.slice(-1)[0];
+      const currentStatus = getStatus(lastStatus?.status, material?.created_at);
+      return currentStatus !== 'Rejected' && currentStatus !== 'Pending';
+    });
+    setAvailableMaterial(available);
+  }, [data]);
+
+  useEffect(() => {
+    if (allAuthors && allCategories && allTypes && allAvailability) {
+      FilteringObjects();
+    }
+  }, [availableMaterial]);
+
   const [applyFilters, setApplyFilters] = useState(false);
   const navigate = useNavigate();
   const params: paramsType = {
@@ -76,7 +166,7 @@ const CategorySearch = ({ setActive }: any) => {
   };
 
   const handleResetClick = () => {
-    attributes?.map((item: itemsType) =>
+    allFilters?.map((item: itemsType) =>
       item?.subAttributes.forEach(
         (subItem: subItemType) => (subItem.checked = false)
       )
@@ -100,7 +190,7 @@ const CategorySearch = ({ setActive }: any) => {
     (attribute.checked = !attribute.checked);
 
   useEffect(() => {
-    attributes?.map((item: itemsType) =>
+    allFilters?.map((item: itemsType) =>
       item?.subAttributes.map(
         (subItem: subItemType) =>
           subItem.checked &&
@@ -122,30 +212,57 @@ const CategorySearch = ({ setActive }: any) => {
   return (
     <form>
       <Filters>Filters</Filters>
-      {attributes.map((item) => (
+      {allFilters?.map((item) => (
         <div key={item.id}>
           <Title>{item.title}</Title>
           <AttributeWrapper>
-            {item.subAttributes.slice(0, 7).map((attribute) => (
-              <OneCategory key={attribute.id}>
-                {attribute.title}
-                <StyledCheckBox
-                  type={item.inputType}
-                  name={item.title.toLowerCase()}
-                  value={attribute.title}
-                  onChange={(e) =>
-                    radioBtnHandler(
-                      item.subAttributes,
-                      item.inputType,
-                      e.target.value
-                    )
-                  }
-                  onMouseDown={() => checkBoxHandler(attribute)}
-                />
-              </OneCategory>
-            ))}
-            {item.subAttributes.length > 7 && (
-              <SeeMoreButton>SEE MORE </SeeMoreButton>
+            {item.subAttributes
+              .slice(0, numberOfInitialItems)
+              .map((attribute) => (
+                <OneCategory key={attribute.id}>
+                  {attribute.title}{' '}
+                  {attribute.numberOfItems && `- ${attribute.numberOfItems}`}
+                  <StyledCheckBox
+                    type={item.inputType}
+                    name={item.title.toLowerCase()}
+                    value={attribute.title}
+                    onChange={(e) =>
+                      radioBtnHandler(
+                        item.subAttributes,
+                        item.inputType,
+                        e.target.value
+                      )
+                    }
+                    onMouseDown={() => checkBoxHandler(attribute)}
+                  />
+                </OneCategory>
+              ))}
+            {showMore &&
+              item.subAttributes
+                .slice(numberOfInitialItems, item.subAttributes.length)
+                .map((attribute) => (
+                  <OneCategory key={attribute.id}>
+                    {attribute.title}{' '}
+                    {attribute.numberOfItems && `- ${attribute.numberOfItems}`}
+                    <StyledCheckBox
+                      type={item.inputType}
+                      name={item.title.toLowerCase()}
+                      value={attribute.title}
+                      onChange={(e) =>
+                        radioBtnHandler(
+                          item.subAttributes,
+                          item.inputType,
+                          e.target.value
+                        )
+                      }
+                      onMouseDown={() => checkBoxHandler(attribute)}
+                    />
+                  </OneCategory>
+                ))}
+            {item.subAttributes.length > numberOfInitialItems && (
+              <SeeMoreButton onClick={() => setShowMore(!showMore)}>
+                {showMore ? 'see less' : 'see more'}
+              </SeeMoreButton>
             )}
           </AttributeWrapper>
         </div>
