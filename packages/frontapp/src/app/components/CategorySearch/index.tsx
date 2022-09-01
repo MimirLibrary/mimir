@@ -7,22 +7,8 @@ import useMaterialFilter from '../../hooks/useMaterialFilter';
 import { getStatus } from '../../models/helperFunctions/converTime';
 import { GetAllMaterialsQuery } from '@mimir/apollo-client';
 
-type paramsType = {
+type ParamsType = {
   [key: string]: string[];
-};
-
-type subItemType = {
-  title: string;
-  id: number;
-  checked: boolean;
-  numberOfItems?: number;
-};
-
-type itemsType = {
-  title: string;
-  inputType: string;
-  id: number;
-  subAttributes: subItemType[];
 };
 
 interface IProps {
@@ -31,7 +17,7 @@ interface IProps {
 
 const CategorySearch: FC<IProps> = ({ setActive }) => {
   let idOfItems = 0;
-  const [allFilters, setAllFilters] = useState<itemsType[]>([]);
+  const [allFilters, setAllFilters] = useState<ItemsType[]>([]);
   const { location } = useAppSelector((state) => state.user);
   const [availableMaterial, setAvailableMaterial] = useState<
     GetAllMaterialsQuery['getAllMaterials']
@@ -112,7 +98,7 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
 
   const [applyFilters, setApplyFilters] = useState(false);
   const navigate = useNavigate();
-  const params: paramsType = {
+  const params: ParamsType = {
     availability: [],
     items: [],
     categories: [],
