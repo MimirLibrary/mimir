@@ -81,9 +81,9 @@ import { GrantGuard } from '../permission/grant.guard';
   providers: [
     AppService,
     AppResolver,
-    // { provide: APP_GUARD, useClass: AuthGuard },
-    // { provide: APP_GUARD, useClass: BlockedUsersGuard },
-    // { provide: APP_GUARD, useClass: GrantGuard },
+    { provide: APP_GUARD, useClass: AuthGuard },
+    { provide: APP_GUARD, useClass: BlockedUsersGuard },
+    { provide: APP_GUARD, useClass: GrantGuard },
   ],
 })
 export class AppModule {}
