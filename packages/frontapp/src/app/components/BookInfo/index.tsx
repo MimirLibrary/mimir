@@ -7,6 +7,8 @@ import { ReactComponent as Edit } from '../../../assets/Edit.svg';
 import { ReactComponent as Remove } from '../../../assets/Remove.svg';
 import { ReactComponent as EnableNotifySvg } from '../../../assets/NoNotification.svg';
 import { ReactComponent as CancelNotifySvg } from '../../../assets/CancelNotification.svg';
+import { Status } from '@mimir/apollo-client';
+import { DateTime } from '@mimir/global-types';
 import Button from '../Button';
 import ClaimOperation from '../ClaimOperation';
 import Modal from '../Modal';
@@ -27,7 +29,6 @@ import {
   useReturnBookMutation,
   useRemoveMaterialMutation,
   useUpdateMaterialMutation,
-  useGetAllMaterialsQuery,
   useGetNotificationsByPersonQuery,
   useCreateNotificationMutation,
   useRemoveNotificationMutation,
@@ -233,18 +234,20 @@ const TextAreaWrapper = styled.div`
   }
 `;
 
+type StatusType = Pick<Status, 'id' | 'person_id' | 'created_at' | 'status'>;
+
 export interface IBookInfoProps {
   person_id: number | undefined;
   src: string | null | undefined;
   title: string | undefined;
   description: string | undefined;
-  statusInfo: any;
+  statusInfo?: StatusType | null;
   author: string | undefined;
   category: string | undefined;
   identifier: string;
   material_id: number;
-  created_at: any;
-  updated_at: any;
+  created_at: DateTime;
+  updated_at: DateTime;
   type: string;
   location_id: number;
 }
@@ -265,9 +268,6 @@ const BookInfo: FC<IBookInfoProps> = ({
   location_id,
 }) => {
   const { id, userRole, location } = useAppSelector((state) => state.user);
-  const { data: allMaterials } = useGetAllMaterialsQuery({
-    variables: { location_id: location.id },
-  });
   const { data: getNotificationsByPersonData } =
     useGetNotificationsByPersonQuery({
       variables: {
