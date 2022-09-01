@@ -186,6 +186,7 @@ export type Meta = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  changePersonRole: Person;
   claimBook: BookUnionResult;
   createAnswerNotification: Notification;
   createLocation?: Maybe<Location>;
@@ -204,6 +205,12 @@ export type Mutation = {
   returnItem: BookUnionResult;
   updateMaterial: Material;
   updatePersonLocation: Person;
+};
+
+
+export type MutationChangePersonRoleArgs = {
+  person_id: Scalars['Int'];
+  type: Scalars['String'];
 };
 
 
@@ -307,6 +314,10 @@ export type Notification = {
   person_id: Scalars['Int'];
 };
 
+export enum Permissions {
+  GrantRevokeManager = 'GRANT_REVOKE_MANAGER'
+}
+
 export type Person = {
   __typename?: 'Person';
   avatar: Scalars['String'];
@@ -317,6 +328,7 @@ export type Person = {
   location_id: Scalars['Int'];
   messages?: Maybe<Array<Maybe<Message>>>;
   notifications?: Maybe<Array<Maybe<Notification>>>;
+  permissions?: Maybe<Array<Maybe<Permissions>>>;
   position: Scalars['String'];
   smg_id: Scalars['String'];
   states?: Maybe<Array<Maybe<BlockedUsers>>>;
@@ -517,6 +529,14 @@ export type UpdatePersonLocationInput = {
   location_id: Scalars['Int'];
   person_id: Scalars['Int'];
 };
+
+export type ChangePersonRoleMutationVariables = Exact<{
+  person_id: Scalars['Int'];
+  type: Scalars['String'];
+}>;
+
+
+export type ChangePersonRoleMutation = { __typename?: 'Mutation', changePersonRole: { __typename?: 'Person', id: string, type: string } };
 
 export type ClaimBookMutationVariables = Exact<{
   identifier: Scalars['String'];
@@ -749,7 +769,7 @@ export type GetOnePersonQueryVariables = Exact<{
 }>;
 
 
-export type GetOnePersonQuery = { __typename?: 'Query', getOnePerson: { __typename?: 'Person', id: string, username: string, email: string, position: string, avatar: string, statuses?: Array<{ __typename?: 'Status', id: string, material_id: number, status: string, created_at: any, material: { __typename?: 'Material', id: string, picture?: string | null, title: string, author: string, category: string } } | null> | null, states?: Array<{ __typename?: 'BlockedUsers', state: boolean, id: string, description?: string | null, created_at: any } | null> | null, messages?: Array<{ __typename?: 'Message', id: string, material_id?: number | null, title: string, message: string, created_at: any } | null> | null } };
+export type GetOnePersonQuery = { __typename?: 'Query', getOnePerson: { __typename?: 'Person', id: string, username: string, email: string, type: string, position: string, avatar: string, statuses?: Array<{ __typename?: 'Status', id: string, material_id: number, status: string, created_at: any, material: { __typename?: 'Material', id: string, picture?: string | null, title: string, author: string, category: string } } | null> | null, states?: Array<{ __typename?: 'BlockedUsers', state: boolean, id: string, description?: string | null, created_at: any } | null> | null, messages?: Array<{ __typename?: 'Message', id: string, material_id?: number | null, title: string, message: string, created_at: any } | null> | null } };
 
 export type GetReasonOfBlockQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -774,6 +794,41 @@ export type SearchOfMaterialsQueryVariables = Exact<{
 export type SearchOfMaterialsQuery = { __typename?: 'Query', searchOfMaterials?: Array<{ __typename?: 'Material', title: string, created_at: any, picture?: string | null, author: string, category: string, id: string, statuses: Array<{ __typename?: 'Status', id: string, created_at: any, status: string, person: { __typename?: 'Person', id: string, username: string } } | null> } | null> | null };
 
 
+export const ChangePersonRoleDocument = gql`
+    mutation ChangePersonRole($person_id: Int!, $type: String!) {
+  changePersonRole(person_id: $person_id, type: $type) {
+    id
+    type
+  }
+}
+    `;
+export type ChangePersonRoleMutationFn = Apollo.MutationFunction<ChangePersonRoleMutation, ChangePersonRoleMutationVariables>;
+
+/**
+ * __useChangePersonRoleMutation__
+ *
+ * To run a mutation, you first call `useChangePersonRoleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangePersonRoleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changePersonRoleMutation, { data, loading, error }] = useChangePersonRoleMutation({
+ *   variables: {
+ *      person_id: // value for 'person_id'
+ *      type: // value for 'type'
+ *   },
+ * });
+ */
+export function useChangePersonRoleMutation(baseOptions?: Apollo.MutationHookOptions<ChangePersonRoleMutation, ChangePersonRoleMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ChangePersonRoleMutation, ChangePersonRoleMutationVariables>(ChangePersonRoleDocument, options);
+      }
+export type ChangePersonRoleMutationHookResult = ReturnType<typeof useChangePersonRoleMutation>;
+export type ChangePersonRoleMutationResult = Apollo.MutationResult<ChangePersonRoleMutation>;
+export type ChangePersonRoleMutationOptions = Apollo.BaseMutationOptions<ChangePersonRoleMutation, ChangePersonRoleMutationVariables>;
 export const ClaimBookDocument = gql`
     mutation ClaimBook($identifier: String!, $person_id: Int!) {
   claimBook(input: {identifier: $identifier, person_id: $person_id}) {
@@ -1922,6 +1977,7 @@ export const GetOnePersonDocument = gql`
     id
     username
     email
+    type
     position
     avatar
     statuses {

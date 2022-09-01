@@ -235,7 +235,6 @@ const TextAreaWrapper = styled.div`
 `;
 
 type StatusType = Pick<Status, 'id' | 'person_id' | 'created_at' | 'status'>;
-
 export interface IBookInfoProps {
   person_id: number | undefined;
   src: string | null | undefined;
@@ -331,7 +330,7 @@ const BookInfo: FC<IBookInfoProps> = ({
   const [claimBook, { data }] = useClaimBookMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
-  const [returnBook, infoReturnBook] = useReturnBookMutation({
+  const [returnBook] = useReturnBookMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
   const [prolongTime, { data: infoOfProlong }] = useProlongTimeMutation({

@@ -71,7 +71,7 @@ const ClaimHistory: FC<IClaimList> = ({ statuses }) => {
         {claims.overdue ? (
           <>
             <Description bold warning>
-              {t('Readers.SingleUser.Overdue')}
+              {t('Statuses.Overdue') + ': '}
             </Description>
             <Description>
               {claims.overdue}
@@ -82,7 +82,7 @@ const ClaimHistory: FC<IClaimList> = ({ statuses }) => {
           </>
         ) : (
           <>
-            <Description bold>{t('Readers.SingleUser.Overdue')}</Description>
+            <Description bold>{t('Statuses.Overdue') + ': '}</Description>
             <Description>-</Description>
           </>
         )}

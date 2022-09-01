@@ -116,7 +116,7 @@ export const InlineWrapper = styled.div`
 interface IFieldOpenLinkProps {
   secondary?: string;
 }
-export const FieldOpenLink = styled.span<IFieldOpenLinkProps>`
+export const FieldOpenLink = styled(OpenLink)<IFieldOpenLinkProps>`
   font-weight: 400;
   width: auto;
   margin-left: 4px;
@@ -152,7 +152,6 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
   fieldsDonate,
 }) => {
   const [isAnswerModal, setIsAnswerModal] = useState<boolean>(false);
-
   return (
     <>
       {fieldsOverdue && (
@@ -176,7 +175,10 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
                       <FieldDescription>
                         {t(`ManagerInfoCard.FieldDescription.${type}`)}
                       </FieldDescription>
-                      <FieldOpenLink secondary="true">
+                      <FieldOpenLink
+                        secondary="true"
+                        to={`${RoutesTypes.READERS}/${field?.person.id}`}
+                      >
                         {field?.person.username}
                       </FieldOpenLink>
                     </InlineWrapper>
@@ -226,7 +228,12 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
                       <FieldDescription>
                         {t(`ManagerInfoCard.FieldDescription.${type}`)}
                       </FieldDescription>
-                      <FieldOpenLink secondary="true">
+                      <FieldOpenLink
+                        secondary="true"
+                        to={`${RoutesTypes.READERS}/${
+                          field?.statuses[field?.statuses.length - 1]?.person.id
+                        }`}
+                      >
                         {
                           field?.statuses[field?.statuses.length - 1]?.person
                             .username

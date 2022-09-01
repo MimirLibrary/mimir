@@ -8,6 +8,7 @@ type Person {
   avatar: String!
   location_id: Int!
   created_at: DateTime!
+  permissions: [Permissions]
   statuses: [Status]
   notifications: [Notification]
   location: Location!
@@ -34,4 +35,5 @@ extend type Query {
 extend type Mutation {
   createPerson(input: CreatePersonInput!): Person!
   updatePersonLocation(input: UpdatePersonLocationInput!): Person!
+  changePersonRole(person_id: Int!, type: String!): Person!
 }

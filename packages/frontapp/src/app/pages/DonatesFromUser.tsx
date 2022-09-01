@@ -42,6 +42,7 @@ const DonatesFromUser = () => {
   const { location } = useAppSelector((state) => state.user);
   const { data } = useGetAllMaterialsQuery({
     variables: { location_id: location.id },
+    fetchPolicy: 'no-cache',
   });
   const [search, setSearch] = useState<string>('');
   const [pendingDonates, setPendingDonates] = useState<any>();

@@ -5,15 +5,16 @@ import { ReactComponent as CryingMimir } from '../../../assets/CryingMimir.svg';
 import { WrapperInfo } from '../DonateBookFlow';
 import { BookHolder } from '../BookInfo';
 const StyledHeader = styled.h1`
-  font-size: ${dimensions.base_3};
+  font-size: ${dimensions.xl_4};
 `;
 const StyledSubHeader = styled.h2`
   margin-top: ${dimensions.base};
   font-weight: 300;
+  line-height: 1.5;
   font-size: ${dimensions.base};
 `;
 const StyledDiv = styled.div`
-  flex: 1;
+  width: 40rem;
 `;
 const StyledWrapper = styled.div`
   display: flex;
@@ -26,9 +27,11 @@ const ErrorType500 = () => {
       <BookHolder>
         <StyledWrapper>
           <StyledDiv>
-            <StyledHeader>OOOPS SORRY SOMETHING WENT WRONG!</StyledHeader>
+            <StyledHeader>OOPS SORRY!</StyledHeader>
+            <StyledHeader> SOMETHING WENT WRONG!</StyledHeader>
             <StyledSubHeader>
-              It seems the action failed. Please try again later
+              It seems the action failed. Please try again later <br /> We will
+              try to fix this error
             </StyledSubHeader>
           </StyledDiv>
           <CryingMimir />

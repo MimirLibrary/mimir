@@ -13,12 +13,14 @@ import { Notification } from '../notifications/notification.entity';
 import { Location } from '../locations/location.entity';
 import {
   CreatePersonInput,
+  Permissions,
   UpdatePersonLocationInput,
 } from '@mimir/global-types';
 import { Message } from '../messages/message.entity';
 import { BlockedUsers } from '../blocked-users/blocked-users.entity';
 import { CurrentUserLocation } from '../CurrentUserLocation.decorator';
 import { PersonService } from './person.service';
+import { Grants } from '../../permission/grant.decorator';
 
 @Resolver('Person')
 export class PersonResolver {
@@ -71,6 +73,25 @@ export class PersonResolver {
     }
   }
 
+  @Mutation(() => Person)
+  @Grants(Permissions.GRANT_REVOKE_MANAGER)
+  async changePersonRole(
+    @Args('person_id') person_id: number,
+    @Args('type') type: string
+  ) {
+    try {
+      const person = await Person.findOne(person_id);
+      if (!person) {
+        return new UnauthorizedException("A person didn't found");
+      }
+      person.type = type;
+      await person.save();
+      return person;
+    } catch (e) {
+      return new BadRequestException();
+    }
+  }
+
   @ResolveField(() => [Status])
   async statuses(@Parent() person: Person) {
     const { id } = person;
@@ -99,5 +120,11 @@ export class PersonResolver {
   async location(@Parent() person: Person) {
     const { location_id } = person;
     return Location.findOne({ where: { id: location_id } });
+  }
+
+  @ResolveField(() => [Permissions])
+  async permissions(@Parent() person: Person) {
+    const { permissions } = person;
+    return permissions && permissions.split(',');
   }
 }
