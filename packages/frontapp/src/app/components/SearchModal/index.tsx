@@ -90,13 +90,14 @@ const SearchModal: FC<IProps> = ({
   return (
     <form>
       <Filters>Filters</Filters>
-      {attributes.map((item: any) => (
+      {attributes.map((item: ItemsType) => (
         <div key={item.id}>
           <Title>{item.title}</Title>
           <AttributeWrapper>
-            {item.subAttributes.slice(0, 7).map((attribute: any) => (
+            {item.subAttributes.slice(0, 7).map((attribute: SubItemType) => (
               <OneCategory key={attribute.id}>
                 {attribute.title}
+                {attribute.numberOfItems && <> - {attribute.numberOfItems}</>}
                 <StyledCheckBox
                   type={item.inputType}
                   name={item.title.toLowerCase()}
