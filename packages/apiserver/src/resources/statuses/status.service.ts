@@ -5,7 +5,7 @@ import { StatusTypes } from '@mimir/global-types';
 
 @Injectable()
 export class StatusService {
-  async allOverdueStatuses(location_id: string) {
+  async allOverdueStatuses(locations: Array<number>) {
     const statusesQb = Status.createQueryBuilder('status')
       .select('status.id')
       .distinctOn(['material_id'])
@@ -19,8 +19,7 @@ export class StatusService {
       .leftJoinAndSelect('status.person', 'person')
       .where('status.id IN (:...ids)', { ids })
       .andWhere('person.type = :type', { type: RolesTypes.READER })
-      .andWhere('material.location_id = :location_id', { location_id })
-      .andWhere('person.location_id = :location_id', { location_id })
+      .andWhere('material.location_id IN (:...locations)', { locations })
       .andWhere('status.status IN(:...statuses)', {
         statuses: [StatusTypes.BUSY, StatusTypes.PROLONG],
       })

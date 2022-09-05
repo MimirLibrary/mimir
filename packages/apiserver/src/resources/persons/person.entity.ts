@@ -5,15 +5,14 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
-  ManyToOne,
-  JoinColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { Notification } from '../notifications/notification.entity';
 import { Status } from '../statuses/status.entity';
 import { Message } from '../messages/message.entity';
 import { Location } from '../locations/location.entity';
 import { BlockedUsers } from '../blocked-users/blocked-users.entity';
-import { Permissions } from '@mimir/global-types';
 
 @Entity('person')
 export class Person extends BaseEntity {
@@ -39,9 +38,6 @@ export class Person extends BaseEntity {
   avatar: string;
 
   @Column({ nullable: true })
-  location_id: number;
-
-  @Column({ nullable: true })
   permissions: string;
 
   @CreateDateColumn()
@@ -59,7 +55,17 @@ export class Person extends BaseEntity {
   @OneToMany(() => BlockedUsers, (blockedUsers) => blockedUsers.person)
   state: BlockedUsers[];
 
-  @ManyToOne(() => Location, (location) => location.person)
-  @JoinColumn({ name: 'location_id' })
-  location: Location;
+  @ManyToMany(() => Location, (location) => location.person, { cascade: true })
+  @JoinTable({
+    name: 'person_location',
+    joinColumn: {
+      name: 'person_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'location_id',
+      referencedColumnName: 'id',
+    },
+  })
+  location: Location[];
 }

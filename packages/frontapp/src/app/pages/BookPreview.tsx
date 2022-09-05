@@ -26,6 +26,7 @@ import Table from '../globalUI/Table';
 import SingleUser from '../components/UserList/SingleUser';
 import { IClaimHistory } from '../models/helperFunctions/claimHistory';
 import { getDates, isOverdue } from '../models/helperFunctions/converTime';
+import { locationIds } from '../store/slices/userSlice';
 
 export const ButtonGroup = styled.div`
   display: flex;
@@ -93,7 +94,8 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
     useState<GetStatusesByMaterialQuery['getStatusesByMaterial']>();
   const debounceSearch = useDebounce<string>(search, 1000);
   const { t } = useTranslation();
-  const { id, location, userRole } = useAppSelector((state) => state.user);
+  const { id, userRole } = useAppSelector((state) => state.user);
+  const locations = useAppSelector(locationIds);
   const { data, loading } = useGetMaterialByIdQuery({
     variables: { id: item_id! },
   });
@@ -103,7 +105,7 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
     },
   });
   const { data: getAllMaterials } = useGetAllMaterialsQuery({
-    variables: { location_id: location.id },
+    variables: { locations },
   });
   const filteredHistory = useMemo(
     () =>

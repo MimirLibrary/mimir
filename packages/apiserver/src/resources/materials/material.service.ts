@@ -11,7 +11,6 @@ import { Status } from '../statuses/status.entity';
 import { Connection } from 'typeorm';
 import { ErrorBook } from '../../errors';
 import { GraphQLError } from 'graphql';
-import { Location } from '../locations/location.entity';
 import axios from 'axios';
 
 @Injectable()
@@ -21,19 +20,20 @@ export class MaterialService {
     private connection: Connection
   ) {}
   async search(searchInput: SearchInput) {
-    const { search, location } = searchInput;
+    const { search, locations } = searchInput;
+    if (!search) return [];
     const data = await Material.createQueryBuilder('material')
-      .leftJoinAndSelect('material.location', 'location')
-      .where(
-        `location.location = :location
-        ${
+      .where('material.location_id IN (:...locations)', { locations })
+      .andWhere(
+        `${
           search
-            ? 'AND (material.title ILIKE :text OR material.author ILIKE :text)'
+            ? '(material.title ILIKE :text OR material.author ILIKE :text)'
             : ''
         }`,
-        { location, text: `%${search}%` }
+        { text: `%${search}%` }
       )
       .getMany();
+
     return data.sort((a, b) =>
       a.title.toLowerCase().localeCompare(b.title.toLowerCase())
     );
@@ -83,10 +83,14 @@ export class MaterialService {
     }
   }
 
-  async allMaterials(location_id: string, limit?: number, offset?: number) {
+  async allMaterials(
+    locations: Array<number>,
+    limit?: number,
+    offset?: number
+  ) {
     const paginationPage = (offset - 1) * limit;
     const elements = await Material.createQueryBuilder('material')
-      .where('material.location_id = :location_id', { location_id })
+      .where('material.location_id IN (:...locations)', { locations })
       .orderBy('material.created_at', 'ASC')
       .limit(limit || null)
       .offset(paginationPage || null)

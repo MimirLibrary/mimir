@@ -6,7 +6,13 @@ export default {
   title: 'Search',
 } as Meta;
 
-const Template: Story<typeof Search> = () => <Search />;
+const Template: Story<typeof Search> = () => (
+  <Search
+    search="search"
+    handleChangeSearch={() => console.log('Search')}
+    placeholder="search"
+  />
+);
 
 export const Primary = Template.bind({});
 Primary.args = {};

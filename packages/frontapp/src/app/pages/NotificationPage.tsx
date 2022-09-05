@@ -5,11 +5,12 @@ import { useAppSelector } from '../hooks/useTypedSelector';
 
 const NotificationPage = () => {
   const [notifications, setNotifications] = useState<IOneNotification[]>([]);
-  const {
-    location: { id: location_id },
-  } = useAppSelector((state) => state.user);
+  const { locations } = useAppSelector((state) => state.user);
+  console.log(locations[0].id);
   const { data, loading } = useGetAllMessagesQuery({
-    variables: { location_id: parseInt(location_id) },
+    variables: {
+      location_id: parseInt(locations[0].id),
+    },
   });
 
   useEffect(() => {

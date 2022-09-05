@@ -7,6 +7,7 @@ import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import useMaterialFilter from '../../hooks/useMaterialFilter';
 import { getStatus } from '../../models/helperFunctions/converTime';
+import { locationIds } from '../../store/slices/userSlice';
 
 const Filters = styled.div`
   font-weight: 700;
@@ -79,10 +80,10 @@ const CategorySearch = ({ setActive }: any) => {
   const numberOfInitialItems = 7; // number of items to show before clicked ShowMore
   const [showMore, setShowMore] = useState(false);
   const [allFilters, setAllFilters] = useState<itemsType[]>([]);
-  const { location } = useAppSelector((state) => state.user);
+  const locations = useAppSelector(locationIds);
   const [availableMaterial, setAvailableMaterial] = useState<any>([]);
   const { data } = useGetAllMaterialsQuery({
-    variables: { location_id: location.id },
+    variables: { locations },
     fetchPolicy: 'no-cache',
   });
 
