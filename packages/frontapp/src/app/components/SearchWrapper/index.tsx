@@ -29,7 +29,7 @@ const SearchWrapper: FC<IProps> = ({ showSidebar }) => {
   return (
     <StyledSearch>
       <Burger showSidebar={showSidebar} />
-      {!window.location.pathname.startsWith(RoutesTypes.READERS) ? (
+      {window.location.pathname.startsWith(RoutesTypes.READERS) ? (
         <SearchByUserName />
       ) : (
         <SearchByBookOrAuthor
