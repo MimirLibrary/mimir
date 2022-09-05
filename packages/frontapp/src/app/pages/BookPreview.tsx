@@ -198,10 +198,8 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
             </>
           ) : (
             <ClaimHistoryWrapper>
-              <TextArticle>Claim history</TextArticle>
-              <TextBase>
-                List of all items user have taken for all the time
-              </TextBase>
+              <TextArticle>{t('BookClaimHistory.Title')}</TextArticle>
+              <TextBase>{t('BookClaimHistory.Desc')}</TextBase>
               <SearchWrapper>
                 <Search
                   handleChangeSearch={handleChangeSearch}
@@ -239,7 +237,11 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
                             <FieldsText>
                               {item.status === StatusTypes.BUSY
                                 ? t('UserCard.Table.Claim')
-                                : t('UserCard.Table.Prolong')}
+                                : item.status === StatusTypes.PROLONG
+                                ? t('UserCard.Table.Prolong')
+                                : item.status === StatusTypes.PENDING
+                                ? t('Statuses.Pending')
+                                : t('Statuses.Rejected')}
                             </FieldsText>
                           )}
                         </Fragment>
