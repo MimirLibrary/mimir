@@ -27,12 +27,6 @@ export const WrapperCard = styled.div`
     ${dimensions.xl_2};
 `;
 
-export const ColumnWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  row-gap: ${dimensions.xs_2};
-`;
-
 export const Title = styled.p`
   font-weight: 700;
   font-size: ${dimensions.xl_2};
@@ -116,13 +110,19 @@ export const InlineWrapper = styled.div`
 interface IFieldOpenLinkProps {
   secondary?: string;
 }
-export const FieldOpenLink = styled.span<IFieldOpenLinkProps>`
+export const FieldOpenLink = styled(OpenLink)<IFieldOpenLinkProps>`
   font-weight: 400;
   width: auto;
   margin-left: 4px;
   text-decoration: underline;
   color: ${({ secondary }) =>
     secondary ? colors.problem_red : colors.accent_color};
+`;
+
+export const ColumnWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  row-gap: ${dimensions.xs_2};
 `;
 
 export const StyledIcon = styled.img`
@@ -152,39 +152,37 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
   fieldsDonate,
 }) => {
   const [isAnswerModal, setIsAnswerModal] = useState<boolean>(false);
-
   return (
     <>
       {fieldsOverdue && (
         <WrapperCard>
-          <ColumnWrapper>
-            <Title>
-              {t(`ManagerInfoCard.Title.${type}`) +
-                ` — (${fieldsOverdue?.length})`}
-            </Title>
-            <Description>
-              {t(`ManagerInfoCard.Description.${type}`)}
-            </Description>
-            {!fieldsOverdue.length ? (
-              <div>List is empty</div>
-            ) : (
-              fieldsOverdue?.slice(0, 3).map((field) => (
-                <FieldWrapper key={field?.id}>
-                  <>
-                    <FieldTitle>{field?.material.title}</FieldTitle>
-                    <InlineWrapper>
-                      <FieldDescription>
-                        {t(`ManagerInfoCard.FieldDescription.${type}`)}
-                      </FieldDescription>
-                      <FieldOpenLink secondary="true">
-                        {field?.person.username}
-                      </FieldOpenLink>
-                    </InlineWrapper>
-                  </>
-                </FieldWrapper>
-              ))
-            )}
-          </ColumnWrapper>
+          <Title>
+            {t(`ManagerInfoCard.Title.${type}`) +
+              ` — (${fieldsOverdue?.length})`}
+          </Title>
+          <Description>{t(`ManagerInfoCard.Description.${type}`)}</Description>
+          {!fieldsOverdue.length ? (
+            <div>List is empty</div>
+          ) : (
+            fieldsOverdue?.slice(0, 3).map((field) => (
+              <FieldWrapper key={field?.id}>
+                <>
+                  <FieldTitle>{field?.material.title}</FieldTitle>
+                  <InlineWrapper>
+                    <FieldDescription>
+                      {t(`ManagerInfoCard.FieldDescription.${type}`)}
+                    </FieldDescription>
+                    <FieldOpenLink
+                      secondary="true"
+                      to={`${RoutesTypes.READERS}/${field?.person.id}`}
+                    >
+                      {field?.person.username}
+                    </FieldOpenLink>
+                  </InlineWrapper>
+                </>
+              </FieldWrapper>
+            ))
+          )}
           <WrapperFooter>
             <>
               <InlineWrapper>
@@ -207,37 +205,38 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
       )}
       {fieldsDonate && (
         <WrapperCard>
-          <ColumnWrapper>
-            <Title>
-              {t(`ManagerInfoCard.Title.${type}`) +
-                ` — (${fieldsDonate?.length})`}
-            </Title>
-            <Description>
-              {t(`ManagerInfoCard.Description.${type}`)}
-            </Description>
-            {!fieldsDonate.length ? (
-              <div>List is empty</div>
-            ) : (
-              fieldsDonate?.slice(0, 3).map((field) => (
-                <FieldWrapper key={field?.id}>
-                  <>
-                    <FieldTitle>{field?.title}</FieldTitle>
-                    <InlineWrapper>
-                      <FieldDescription>
-                        {t(`ManagerInfoCard.FieldDescription.${type}`)}
-                      </FieldDescription>
-                      <FieldOpenLink secondary="true">
-                        {
-                          field?.statuses[field?.statuses.length - 1]?.person
-                            .username
-                        }
-                      </FieldOpenLink>
-                    </InlineWrapper>
-                  </>
-                </FieldWrapper>
-              ))
-            )}
-          </ColumnWrapper>
+          <Title>
+            {t(`ManagerInfoCard.Title.${type}`) +
+              ` — (${fieldsDonate?.length})`}
+          </Title>
+          <Description>{t(`ManagerInfoCard.Description.${type}`)}</Description>
+          {!fieldsDonate.length ? (
+            <div>List is empty</div>
+          ) : (
+            fieldsDonate?.slice(0, 3).map((field) => (
+              <FieldWrapper key={field?.id}>
+                <>
+                  <FieldTitle>{field?.title}</FieldTitle>
+                  <InlineWrapper>
+                    <FieldDescription>
+                      {t(`ManagerInfoCard.FieldDescription.${type}`)}
+                    </FieldDescription>
+                    <FieldOpenLink
+                      secondary="true"
+                      to={`${RoutesTypes.READERS}/${
+                        field?.statuses[field?.statuses.length - 1]?.person.id
+                      }`}
+                    >
+                      {
+                        field?.statuses[field?.statuses.length - 1]?.person
+                          .username
+                      }
+                    </FieldOpenLink>
+                  </InlineWrapper>
+                </>
+              </FieldWrapper>
+            ))
+          )}
           <WrapperFooter>
             <>
               <InlineWrapper>

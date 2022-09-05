@@ -1,5 +1,5 @@
-query GetAllPersons($username: String) {
-  getAllPersons(username: $username) {
+query GetAllPersons($username: String, $locations: [Int!]) {
+  getAllPersons(username: $username, locations: $locations) {
     id
     username
     avatar

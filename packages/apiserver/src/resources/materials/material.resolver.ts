@@ -18,9 +18,8 @@ import {
 } from '@mimir/global-types';
 import { Notification } from '../notifications/notification.entity';
 import { MaterialService } from './material.service';
-import { BadRequestException, UseGuards } from '@nestjs/common';
+import { BadRequestException } from '@nestjs/common';
 import { Message } from '../messages/message.entity';
-import { AuthGuard } from '../../auth/auth.guard';
 import { GraphQLError } from 'graphql';
 import { CurrentUserLocation } from '../CurrentUserLocation.decorator';
 import { Location } from '../locations/location.entity';
@@ -31,11 +30,11 @@ export class MaterialResolver {
 
   @Query(() => [Material])
   async getAllMaterials(
-    @Args('location_id') location_id: string,
+    @Args('locations') locations: Array<number>,
     @Args('limit') limit: number,
     @Args('offset') offset: number
   ) {
-    return this.materialService.allMaterials(location_id, limit, offset);
+    return this.materialService.allMaterials(locations, limit, offset);
   }
 
   @Query(() => Material)
@@ -48,10 +47,11 @@ export class MaterialResolver {
     @Args('input') searchOneMaterial: SearchOneMaterial
   ) {
     try {
-      const { identifier, location_id } = searchOneMaterial;
-      const [material] = await Material.find({
-        where: { identifier, location_id },
-      });
+      const { identifier, locations } = searchOneMaterial;
+      const material = await Material.createQueryBuilder('material')
+        .where('material.identifier = :identifier', { identifier })
+        .andWhere('material.location_id IN (:...locations)', { locations })
+        .getOne();
       if (!material) {
         throw new Error("Material doesn't exist!");
       }

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import BookCard from '../BookCard';
 import { WrapperList } from '../ListBooks';
 import { useSearchParams } from 'react-router-dom';
 import { Material } from '@mimir/apollo-client';
 import BackButton from '../BackButton';
 import { useAppSelector } from '../../hooks/useTypedSelector';
+import { locationIds } from '../../store/slices/userSlice';
+import ErrorType500 from '../ErrorType500';
 
 type IMaterial =
   | null
@@ -17,12 +19,11 @@ type IMaterial =
     >;
 
 const BooksByCategory = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { location } = useAppSelector((state) => state.user);
+  const locations = useAppSelector(locationIds);
+  const [searchParams] = useSearchParams();
   const { category } = useParams();
-  const navigate = useNavigate();
   const { data, loading } = useGetAllMaterialsQuery({
-    variables: { location_id: location.id },
+    variables: { locations },
   });
 
   const [filteredData, setFilteredData] = useState(data?.getAllMaterials);
@@ -60,16 +61,7 @@ const BooksByCategory = () => {
       const filter = allBooks?.filter((book: any) => {
         const lastStatus = book.statuses.slice(-1)[0];
         if (lastStatus) {
-          if (
-            lastStatus.status === 'Free' &&
-            availability.includes('On the Shelf')
-          )
-            return true;
-        } else if (
-          lastStatus === undefined &&
-          availability.includes('Will be available this week')
-        ) {
-          return true;
+          return availability.includes(lastStatus.status);
         }
         return false;
       });
@@ -79,6 +71,7 @@ const BooksByCategory = () => {
   }, [searchParams]);
 
   if (loading) return <h1>Loading...</h1>;
+  if (!data) return <ErrorType500 />;
 
   return (
     <div>

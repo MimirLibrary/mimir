@@ -1,5 +1,5 @@
-query GetAllStatusesIsOverdue($location_id: String!) {
-  getAllStatusesIsOverdue(location_id: $location_id) {
+query GetAllStatusesIsOverdue($locations: [Int!]) {
+  getAllStatusesIsOverdue(locations: $locations) {
     id
     created_at
     material {

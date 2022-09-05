@@ -2,6 +2,7 @@ import {
   BaseEntity,
   Column,
   Entity,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -16,7 +17,7 @@ export class Location extends BaseEntity {
   @Column()
   location!: string;
 
-  @OneToMany(() => Person, (person) => person.location)
+  @ManyToMany(() => Person, (person) => person.location)
   person: Person[];
 
   @OneToMany(() => Material, (material) => material.location)

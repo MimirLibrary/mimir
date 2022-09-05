@@ -6,11 +6,11 @@ type Person {
   username: String!
   email: String!
   avatar: String!
-  location_id: Int!
   created_at: DateTime!
+  permissions: [Permissions]
   statuses: [Status]
   notifications: [Notification]
-  location: Location!
+  location: [Location!]
   messages: [Message]
   states: [BlockedUsers]
 }
@@ -28,10 +28,12 @@ input UpdatePersonLocationInput {
 
 extend type Query {
   getOnePerson(id: ID!): Person!
-  getAllPersons(username: String): [Person!]!
+  getAllPersons(username: String, locations: [Int!]): [Person!]!
 }
 
 extend type Mutation {
   createPerson(input: CreatePersonInput!): Person!
-  updatePersonLocation(input: UpdatePersonLocationInput!): Person!
+  addPersonLocation(input: UpdatePersonLocationInput!): Person!
+  removePersonLocation(input: UpdatePersonLocationInput!): Person!
+  changePersonRole(person_id: Int!, type: String!): Person!
 }

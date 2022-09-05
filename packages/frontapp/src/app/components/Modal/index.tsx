@@ -25,6 +25,7 @@ export const WrapperModal = styled.div<IStyleProps>`
   transition: 0.3s;
   ::-webkit-scrollbar {
     width: 0;
+    height: 0;
   }
 `;
 
@@ -42,9 +43,10 @@ export const ContentModal = styled.div<IStyleProps>`
   transition: 0.4s all;
   max-width: ${dimensions.tablet_width};
   width: 100%;
+  margin-top: 3em;
 
   @media (max-width: ${dimensions.tablet_width}) {
-    margin: 0 ${dimensions.xl_2};
+    margin-top: auto;
   }
 `;
 

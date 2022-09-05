@@ -53,7 +53,7 @@ const DonateInfo = ({
               <TopicDescription>{author}</TopicDescription>
             </ShortDescription>
           </WrapperInfo>
-          {statusInfo.status === 'Pending' && (
+          {statusInfo?.status === 'Pending' && (
             <WrapperButtons>
               <StyledButton value="Accept" onClick={onClickAccept} />
               <StyledButton
@@ -63,8 +63,8 @@ const DonateInfo = ({
               />
             </WrapperButtons>
           )}
-          {statusInfo.status === 'Free' && <Accepted>Accepted</Accepted>}
-          {statusInfo.status === 'Rejected' && <Rejected>Rejected</Rejected>}
+          {statusInfo?.status === 'Free' && <Accepted>Accepted</Accepted>}
+          {statusInfo?.status === 'Rejected' && <Rejected>Rejected</Rejected>}
         </ShortDescriptionWrapper>
         <LongDescription>
           <Topic>Description: </Topic>

@@ -1,5 +1,5 @@
-query SearchOfMaterials($search: String, $location: String!) {
-  searchOfMaterials(input: { search: $search, location: $location }) {
+query SearchOfMaterials($search: String, $locations: [Int!]) {
+  searchOfMaterials(input: { search: $search, locations: $locations }) {
     title
     created_at
     picture

@@ -7,6 +7,8 @@ import { ReactComponent as Edit } from '../../../assets/Edit.svg';
 import { ReactComponent as Remove } from '../../../assets/Remove.svg';
 import { ReactComponent as EnableNotifySvg } from '../../../assets/NoNotification.svg';
 import { ReactComponent as CancelNotifySvg } from '../../../assets/CancelNotification.svg';
+import { Status } from '@mimir/apollo-client';
+import { DateTime } from '@mimir/global-types';
 import Button from '../Button';
 import ClaimOperation from '../ClaimOperation';
 import Modal from '../Modal';
@@ -37,6 +39,7 @@ import AskManagerForm from '../AskManagerForm';
 import { WrapperInput } from '../Search';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { RolesTypes } from '@mimir/global-types';
+import { locationIds } from '../../store/slices/userSlice';
 export const BookHolder = styled.div`
   width: 100%;
   top: 11.5rem;
@@ -238,18 +241,19 @@ const TextAreaWrapper = styled.div`
   }
 `;
 
+type StatusType = Pick<Status, 'id' | 'person_id' | 'created_at' | 'status'>;
 export interface IBookInfoProps {
   person_id: number | undefined;
   src: string | null | undefined;
   title: string | undefined;
   description: string | undefined;
-  statusInfo: any;
+  statusInfo?: StatusType | null;
   author: string | undefined;
   category: string | undefined;
   identifier: string;
   material_id: number;
-  created_at: any;
-  updated_at: any;
+  created_at: DateTime;
+  updated_at: DateTime;
   type: string;
   location_id: number;
 }
@@ -269,9 +273,10 @@ const BookInfo: FC<IBookInfoProps> = ({
   type,
   location_id,
 }) => {
-  const { id, userRole, location } = useAppSelector((state) => state.user);
+  const { id, userRole } = useAppSelector((state) => state.user);
+  const locations = useAppSelector(locationIds);
   const { data: allMaterials } = useGetAllMaterialsQuery({
-    variables: { location_id: location.id },
+    variables: { locations },
   });
   const { data: getNotificationsByPersonData } =
     useGetNotificationsByPersonQuery({
@@ -335,7 +340,7 @@ const BookInfo: FC<IBookInfoProps> = ({
   const [claimBook, { data }] = useClaimBookMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
-  const [returnBook, infoReturnBook] = useReturnBookMutation({
+  const [returnBook] = useReturnBookMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
   const [prolongTime, { data: infoOfProlong }] = useProlongTimeMutation({
@@ -797,6 +802,7 @@ const BookInfo: FC<IBookInfoProps> = ({
           setActive={setIsShowAskManager}
           setSuccessModal={setIsShowWindowReportedToManager}
           material_id={material_id}
+          location_id={location_id}
         />
       </Modal>
       <Modal

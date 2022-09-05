@@ -13,6 +13,7 @@ import {
 } from '../components/Search';
 import { t } from 'i18next';
 import { IMaterial } from '../types';
+import { locationIds } from '../store/slices/userSlice';
 
 interface TitleProps {
   flex?: number;
@@ -39,9 +40,10 @@ const Column = styled.h4<TitleProps>`
   }
 `;
 const DonatesFromUser = () => {
-  const { location } = useAppSelector((state) => state.user);
+  const locations = useAppSelector(locationIds);
   const { data } = useGetAllMaterialsQuery({
-    variables: { location_id: location.id },
+    variables: { locations },
+    fetchPolicy: 'no-cache',
   });
   const [search, setSearch] = useState<string>('');
   const [pendingDonates, setPendingDonates] = useState<any>();
