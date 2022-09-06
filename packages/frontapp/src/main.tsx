@@ -13,6 +13,7 @@ import './index.css';
 import { ApolloProvider } from '@apollo/client';
 import { client } from '@mimir/apollo-client';
 import '@mimir/localization';
+import ErrorBoundary from './app/components/ErrorBoundary';
 
 ReactDOM.render(
   <StrictMode>
@@ -22,7 +23,9 @@ ReactDOM.render(
           <PersistGate loading={null} persistor={persist}>
             <ThemeProvider theme={theme}>
               <BrowserRouter>
-                <App />
+                <ErrorBoundary>
+                  <App />
+                </ErrorBoundary>
               </BrowserRouter>
             </ThemeProvider>
           </PersistGate>
