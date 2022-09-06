@@ -1,0 +1,116 @@
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title></title>
+        <style>
+        body {
+            color: #333333;
+        }
+        .backgroundImage{
+            position:absolute;
+            width:100%;
+        }
+
+        .wrapper {
+            margin:0 15%;
+            position:relative;
+            top:200px;
+            background-color: #eee;
+            box-shadow: 0px 10px 70px rgba(26, 30, 214, 0.08);
+            opacity:0.9;
+            border-radius: 16px;
+            display: flex;
+            border-bottom: 20px solid #1A1ED6;
+            flex-direction: column;
+            padding: 32px;
+            padding-bottom: 0;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .header {
+            font-style: normal;
+            font-weight: 800;
+            font-size: 20px;
+            line-height: 24px;
+        }
+
+        .description {
+            font-style: normal;
+            font-weight: 300;
+            font-size: 15px;
+            line-height: 18px;
+            text-align: center;
+
+        }
+
+        .imageWrapper {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: fit-content;
+            margin: 20px auto 40px;
+            text-align: start;
+
+        }
+
+        .image {
+            max-width: 115px;
+            max-height: 189px;
+        }
+
+        .bookTitle {
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 17px;
+        }
+        .bookGenre{
+            font-weight: 300;
+        }
+
+        .button {
+            background: #1A1ED6;
+            border-radius: 30px;
+            width: 119px;
+            height: 37px;
+            margin: auto;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 17px;
+            border:none;
+        }
+        .mimir{
+            font-family: 'Montserrat';
+            color:#1A1ED6;
+            text-align: end;
+            font-size: 18px;
+        }
+    </style>
+  </head>
+  
+  <body>
+    <div class='main'>
+      <img src='../assets/books.png' alt='bookshelf' class='backgroundImage' />
+      <div class='wrapper'>
+        <h1 class='header'>Whoops! It looks like you forgot to return the book</h1>
+        <p class='description'>A friendly reminder that you need to return the "{{bookName}}"
+          book as soon as possible or extend the term of the borrowing</p>
+        {{#each Book}}
+          <div class='imageWrapper'>
+            <img src='{{image}}' alt='book' class='image' />
+            <p class='bookTitle'>{{bookName}}</p>
+            <p class='bookGenre'>
+              {{genre}}
+            </p>
+          </div>
+        {{/each}}
+        <button class='button'>Go to app</button>
+        <p class='mimir'>MIMIR</p>
+      </div>
+    </div>
+  </body>
+
+</html>
