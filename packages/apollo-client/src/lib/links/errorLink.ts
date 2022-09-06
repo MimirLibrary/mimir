@@ -3,7 +3,6 @@ import { onError } from '@apollo/client/link/error';
 export const errorLink = onError(({ graphQLErrors }) => {
   const userInfo = JSON.parse(localStorage.getItem('persist:root')!).user;
   const userLocation = JSON.parse(userInfo).location;
-  console.log(userLocation, graphQLErrors);
   if (graphQLErrors && !Array.isArray(userLocation)) {
     localStorage.removeItem('persist:root');
     window.location.reload();
