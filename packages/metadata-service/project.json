@@ -61,7 +61,7 @@
         "production": {
           "commands": [
             "cp package-lock.json dist/packages/metadata-service",
-            "rsync -azvr --delete --chown=app:app dist/packages/metadata-service/ root@mimirapp.xyz:/srv/metadata"
+            "rsync -azvr --exclude=node_modules/ --delete --chown=app:app dist/packages/metadata-service/ root@mimirapp.xyz:/srv/metadata"
           ],
           "parallel": false
         }

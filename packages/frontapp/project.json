@@ -110,9 +110,12 @@
     },
     "deploy": {
       "executor": "nx:run-commands",
-      "dependsOn": ["build:production"],
-      "options": {
-        "command": "rsync -avzr --delete dist/packages/frontapp root@mimirapp.xyz:/srv/www"
+      "dependsOn": ["build"],
+      "options": {},
+      "configurations": {
+        "production": {
+            "command": "rsync -avzr --delete dist/packages/frontapp/ root@mimirapp.xyz:/srv/www"
+        }
       }
     }
   },
