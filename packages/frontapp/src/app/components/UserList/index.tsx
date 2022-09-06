@@ -12,6 +12,7 @@ import { useAppSelector } from '../../hooks/useTypedSelector';
 import { useAppDispatch } from '../../hooks/useTypedDispatch';
 import { setSearchReaders } from '../../store/slices/readersSlice';
 import { IReader } from '../../types';
+import { locationIds } from '../../store/slices/userSlice';
 
 const ReadersWrapper = styled.div`
   display: flex;
@@ -52,8 +53,11 @@ type MinMaxType = {
 };
 
 const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
+  const locations = useAppSelector(locationIds);
   const [minMax, setMinMax] = useState<MinMaxType[]>([]);
-  const { data, loading } = useGetAllPersonsQuery();
+  const { data, loading } = useGetAllPersonsQuery({
+    variables: { locations: locations },
+  });
   const dispatch = useAppDispatch();
   const { searchReaders } = useAppSelector((state) => state.readers);
   const getClaims = (person: IReader | null) =>
@@ -116,7 +120,8 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
     filterCategories(itemsTaken);
   }, [itemsTaken]);
   useEffect(() => {
-    if (data && !searchReaders) dispatch(setSearchReaders(data?.getAllPersons));
+    if (data && !searchReaders?.length)
+      dispatch(setSearchReaders(data?.getAllPersons));
   }, [data]);
   if (loading) return <h1>{t('Loading')}</h1>;
   return (

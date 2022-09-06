@@ -23,6 +23,7 @@ export class AuthService {
       where: {
         smg_id: result.sub,
       },
+      relations: ['location'],
     });
 
     if (person) {

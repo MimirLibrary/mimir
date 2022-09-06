@@ -11,6 +11,7 @@ import { useAppSelector } from '../hooks/useTypedSelector';
 import { getStatus } from '../models/helperFunctions/converTime';
 import ErrorType500 from '../components/ErrorType500';
 import useMaterialFilter from '../hooks/useMaterialFilter';
+import { locationIds } from '../store/slices/userSlice';
 const ContentWrapper = styled.div`
   margin: 3rem 0 ${dimensions.xl_6};
 `;
@@ -33,10 +34,10 @@ const Topics = styled.h5`
 `;
 
 const SearchPage = () => {
-  const { location } = useAppSelector((state) => state.user);
+  const locations = useAppSelector(locationIds);
   const [availableMaterial, setAvailableMaterial] = useState<any>([]);
   const { data, loading } = useGetAllMaterialsQuery({
-    variables: { location_id: location.id },
+    variables: { locations },
     fetchPolicy: 'no-cache',
   });
   useEffect(() => {

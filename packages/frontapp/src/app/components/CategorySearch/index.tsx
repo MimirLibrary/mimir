@@ -6,6 +6,7 @@ import { useAppSelector } from '../../hooks/useTypedSelector';
 import useMaterialFilter from '../../hooks/useMaterialFilter';
 import { getStatus } from '../../models/helperFunctions/converTime';
 import { GetAllMaterialsQuery } from '@mimir/apollo-client';
+import { locationIds } from '../../store/slices/userSlice';
 
 type ParamsType = {
   [key: string]: string[];
@@ -18,12 +19,12 @@ interface IProps {
 const CategorySearch: FC<IProps> = ({ setActive }) => {
   let idOfItems = 0;
   const [allFilters, setAllFilters] = useState<ItemsType[]>([]);
-  const { location } = useAppSelector((state) => state.user);
+  const locations = useAppSelector(locationIds);
   const [availableMaterial, setAvailableMaterial] = useState<
     GetAllMaterialsQuery['getAllMaterials']
   >([]);
   const { data } = useGetAllMaterialsQuery({
-    variables: { location_id: location.id },
+    variables: { locations },
     fetchPolicy: 'no-cache',
   });
 

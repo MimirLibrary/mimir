@@ -6,5 +6,5 @@ export const TextBase = styled.p`
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
   color: ${colors.main_black};
-  margin-top: ${dimensions.base}; ;
+  margin-top: ${dimensions.base};
 `;

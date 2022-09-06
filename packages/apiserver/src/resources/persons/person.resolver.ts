@@ -18,7 +18,6 @@ import {
 } from '@mimir/global-types';
 import { Message } from '../messages/message.entity';
 import { BlockedUsers } from '../blocked-users/blocked-users.entity';
-import { CurrentUserLocation } from '../CurrentUserLocation.decorator';
 import { PersonService } from './person.service';
 import { Grants } from '../../permission/grant.decorator';
 
@@ -29,9 +28,9 @@ export class PersonResolver {
   @Query(() => [Person])
   async getAllPersons(
     @Args('username') username: string,
-    @CurrentUserLocation() location: Location
+    @Args('locations') locations: Array<number>
   ) {
-    return this.personService.getAllPersons(username, location);
+    return this.personService.getAllPersons(username, locations);
   }
 
   @Query(() => Person)
@@ -56,18 +55,40 @@ export class PersonResolver {
   }
 
   @Mutation(() => Person)
-  async updatePersonLocation(
+  async addPersonLocation(
     @Args('input') updatePersonLocationInput: UpdatePersonLocationInput
   ) {
     try {
       const { location_id, person_id } = updatePersonLocationInput;
-      const person = await Person.findOne(person_id);
+      const person = await Person.findOne(person_id, {
+        relations: ['location'],
+      });
       if (!person) {
         return new UnauthorizedException("A person didn't found");
       }
-      person.location_id = location_id;
-      await person.save();
-      return person;
+      const location = await Location.findOne(location_id);
+      const personLocation = await Location.findOne(location);
+      person.location.push(personLocation);
+      return Person.save(person);
+    } catch (e) {
+      return new BadRequestException();
+    }
+  }
+
+  @Mutation(() => Person)
+  async removePersonLocation(
+    @Args('input') updatePersonLocationInput: UpdatePersonLocationInput
+  ) {
+    try {
+      const { location_id, person_id } = updatePersonLocationInput;
+      const person = await Person.findOne(person_id, {
+        relations: ['location'],
+      });
+      if (!person) {
+        return new UnauthorizedException("A person didn't found");
+      }
+      person.location = person.location.filter((loc) => loc.id !== location_id);
+      return Person.save(person);
     } catch (e) {
       return new BadRequestException();
     }
@@ -114,12 +135,6 @@ export class PersonResolver {
   async states(@Parent() person: Person) {
     const { id } = person;
     return BlockedUsers.find({ where: { person_id: id } });
-  }
-
-  @ResolveField(() => [Location])
-  async location(@Parent() person: Person) {
-    const { location_id } = person;
-    return Location.findOne({ where: { id: location_id } });
   }
 
   @ResolveField(() => [Permissions])
