@@ -12,3 +12,5 @@ export const rootReducer = combineReducers({
   identifier: identifierReducer,
   readers: readerReducer,
 });
+
+export type RootReducer = ReturnType<typeof rootReducer>;

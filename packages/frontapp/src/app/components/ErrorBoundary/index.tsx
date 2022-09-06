@@ -23,11 +23,19 @@ class ErrorBoundary extends Component<Props, IStateError> {
     return { error: true };
   }
 
-  public override componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  private updateLocalStorage() {
     storage.removeItem('persist:root');
     this.props.dispatch(logout());
     localStorage.clear();
     location.reload();
+  }
+
+  public override componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    const userInfo = JSON.parse(localStorage.getItem('persist:root')!).user;
+    const userLocation = JSON.parse(userInfo).location;
+    if (!Array.isArray(userLocation)) {
+      this.updateLocalStorage();
+    }
   }
 
   public override render() {
