@@ -1,0 +1,8 @@
+mutation removePersonLocation($location_id: Int!, $person_id: Int!) {
+  removePersonLocation(
+    input: { location_id: $location_id, person_id: $person_id }
+  ) {
+    id
+    smg_id
+  }
+}

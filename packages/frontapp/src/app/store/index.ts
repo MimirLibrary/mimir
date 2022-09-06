@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { rootReducer } from './rootReducer';
+import { RootReducer, rootReducer } from './rootReducer';
 import {
   persistStore,
   persistReducer,
@@ -18,7 +18,10 @@ const persistConfig = {
   whitelist: ['tabs', 'user'],
 };
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const persistedReducer = persistReducer<RootReducer>(
+  persistConfig,
+  rootReducer
+);
 
 export const store = configureStore({
   reducer: persistedReducer,

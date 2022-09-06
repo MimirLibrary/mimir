@@ -17,6 +17,7 @@ import { RolesTypes } from '@mimir/global-types';
 import FileUpload from '../FielUpload';
 import { api } from '../../axios-api/api';
 import { listOfGenres } from '../../../assets/SearchConsts';
+import { TUserLocation } from '../../store/slices/userSlice';
 
 const WrapperDonate = styled.section`
   background-color: ${colors.bg_secondary};
@@ -113,6 +114,11 @@ const WrapperMainInfo = styled.div`
   @media (max-width: ${dimensions.phone_width}) {
     flex-direction: column;
   }
+`;
+
+const StyledDropdown = styled(Dropdown)`
+  max-width: 300px;
+  width: 100%;
 `;
 
 const WrapperDescription = styled.div`
@@ -234,7 +240,7 @@ interface IPropsDonateBook {
   onHideContent: () => void;
 }
 const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
-  const { id, location, userRole } = useAppSelector((state) => state.user);
+  const { id, userRole, locations } = useAppSelector((state) => state.user);
   const { identifier } = useAppSelector((state) => state.identifier);
   const [file, setFile] = useState<File | null>(null);
   const [pictureOfCover, setPictureOfCover] = useState<string | null>(null);
@@ -242,6 +248,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
   const [description, setDescription] = useState<string | undefined | null>('');
   const [isAskManager, setIsAskManager] = useState<boolean>(false);
   const [sendManagerSuccess, setSendManagerSuccess] = useState<boolean>(false);
+  const [locationId, setLocationId] = useState<null | number>(null);
 
   const [dataOfBook, setDataOfBook] = useState<IDataOfBook>({
     author: '',
@@ -255,7 +262,8 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
     !dataOfBook.author ||
     !dataOfBook.title ||
     !dataOfBook.genre ||
-    !description;
+    !description ||
+    !locationId;
 
   const deleteFile = async (fileName: string) => {
     const onlyFileName = fileName.split('/').pop();
@@ -340,6 +348,10 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
     [file]
   );
 
+  const handleChangeLocation = (option: TUserLocation) => {
+    setLocationId(Number(option.id));
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setDataOfBook({ ...dataOfBook, [name]: value });
@@ -373,7 +385,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
           type: 'Book',
           description,
           category: genre!,
-          location_id: Number(location.id),
+          location_id: locationId!,
           id_type: data?.getMaterialByIdentifierFromMetadata?.idType || 'ISBN',
           role: userRole,
           is_donated: true,
@@ -386,6 +398,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
       setFile(null);
       setDescription('');
       setDataOfBook({ genre: '', title: '', author: '' });
+      setLocationId(null);
     }
   };
 
@@ -437,6 +450,14 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
                   options={listOfGenres}
                   onChange={handleChangeGenre}
                   placeholder="Enter genre"
+                />
+                <Label htmlFor="location">Location*</Label>
+                <StyledDropdown
+                  options={locations}
+                  onChange={(option) =>
+                    handleChangeLocation(option as TUserLocation)
+                  }
+                  placeholder="Choose your location"
                 />
               </WrapperBlockInput>
             </WrapperWithoutButtons>

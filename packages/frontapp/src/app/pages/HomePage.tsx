@@ -22,6 +22,7 @@ import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
 import { isOverdue } from '../models/helperFunctions/converTime';
 import NotificationList from '../components/NotificationList';
+import { locationIds } from '../store/slices/userSlice';
 
 const WrapperHome = styled.div`
   @media (max-width: ${dimensions.tablet_width}) {
@@ -85,8 +86,8 @@ const OverdueDonatesWrapper = styled.div`
 `;
 
 const HomePage: FC = () => {
-  const { id, userRole, location } = useAppSelector((state) => state.user);
-
+  const { id, userRole } = useAppSelector((state) => state.user);
+  const locations = useAppSelector(locationIds);
   const { data, loading } = useGetAllTakenItemsQuery({
     variables: { person_id: id },
     skip: userRole === RolesTypes.MANAGER,
@@ -97,7 +98,7 @@ const HomePage: FC = () => {
     loading: materialsLoading,
     error: errorMaterials,
   } = useGetAllMaterialsForDonateQuery({
-    variables: { location_id: location.id },
+    variables: { locations },
   });
 
   const {
@@ -105,10 +106,8 @@ const HomePage: FC = () => {
     loading: messagesLoading,
     error: messagesError,
   } = useGetAllMessagesQuery({
-    variables: {
-      location_id: parseInt(location.id),
-    },
     skip: userRole === RolesTypes.READER,
+    variables: { location_id: locations[0] },
   });
 
   const {
@@ -116,7 +115,7 @@ const HomePage: FC = () => {
     loading: overdueLoading,
     error: errorOverdue,
   } = useGetAllStatusesIsOverdueQuery({
-    variables: { location_id: location.id },
+    variables: { locations },
     skip: userRole === RolesTypes.READER,
   });
 

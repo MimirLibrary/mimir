@@ -266,7 +266,7 @@ const BookInfo: FC<IBookInfoProps> = ({
   type,
   location_id,
 }) => {
-  const { id, userRole, location } = useAppSelector((state) => state.user);
+  const { id, userRole } = useAppSelector((state) => state.user);
   const { data: getNotificationsByPersonData } =
     useGetNotificationsByPersonQuery({
       variables: {
@@ -770,6 +770,7 @@ const BookInfo: FC<IBookInfoProps> = ({
           setActive={setIsShowAskManager}
           setSuccessModal={setIsShowWindowReportedToManager}
           material_id={material_id}
+          location_id={location_id}
         />
       </Modal>
       <Modal

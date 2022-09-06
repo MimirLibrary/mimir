@@ -8,16 +8,21 @@ import { setActiveTab } from '../../store/slices/tabsSlice';
 import { t } from 'i18next';
 import Search from '../Search';
 import { setSearchReaders } from '../../store/slices/readersSlice';
+import { useAppSelector } from '../../hooks/useTypedSelector';
+import { locationIds } from '../../store/slices/userSlice';
 
 const SearchByUserName = () => {
   const [search, setSearch] = useState<string>('');
+  const locations = useAppSelector(locationIds);
   const debounceSearch = useDebounce<string>(search, 600);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { data } = useGetAllPersonsQuery({
     variables: {
       username: debounceSearch,
+      locations,
     },
+    skip: !debounceSearch,
   });
 
   useEffect(() => {

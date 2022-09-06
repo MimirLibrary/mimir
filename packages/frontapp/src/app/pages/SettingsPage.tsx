@@ -1,17 +1,23 @@
 import styled from '@emotion/styled';
 import {
+  useAddPersonLocationMutation,
   useGetAllLocationsQuery,
-  useUpdatePersonLocationMutation,
+  useRemovePersonLocationMutation,
 } from '@mimir/apollo-client';
 import { colors, dimensions } from '@mimir/ui-kit';
-import { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Dropdown, { IDropdownOption } from '../components/Dropdown';
 import { TextArticle } from '../globalUI/TextArticle';
 import { TextBase } from '../globalUI/TextBase';
 import { useAppDispatch } from '../hooks/useTypedDispatch';
 import { useAppSelector } from '../hooks/useTypedSelector';
-import { TUserLocation, updateUserLocation } from '../store/slices/userSlice';
+import {
+  addLocation,
+  removeLocation,
+  TUserLocation,
+} from '../store/slices/userSlice';
+import DropDownLocation from '../components/DropdownLocation';
 
 export type TLanguage = {
   locale: string;
@@ -42,9 +48,21 @@ const SettingsArticle = styled.h4`
   color: ${colors.main_black};
   line-height: ${dimensions.xl};
   font-weight: 600;
+  span {
+    font-weight: 400;
+    font-size: ${dimensions.base};
+    line-height: ${dimensions.xl};
+    color: ${colors.main_black};
+    margin-top: ${dimensions.base};
+  }
 `;
 
 const RestyledDropdown = styled(Dropdown)`
+  margin: ${dimensions.base} 0 ${dimensions.xl_2};
+  max-width: 310px;
+`;
+
+const StyledDropDownLocation = styled(DropDownLocation)`
   margin: ${dimensions.base} 0 ${dimensions.xl_2};
   max-width: 310px;
 `;
@@ -61,8 +79,11 @@ const SettingsPage = () => {
   } = useTranslation();
   const { data: GetAllLocationsData, loading: GetAllLocationsLoading } =
     useGetAllLocationsQuery();
-  const [updatePersonLocationMutate] = useUpdatePersonLocationMutation();
-  const { id, location } = useAppSelector((state) => state.user);
+  const [addPersonLocation, { loading: addLoading }] =
+    useAddPersonLocationMutation();
+  const [removePersonLocation, { loading: removeLoading }] =
+    useRemovePersonLocationMutation();
+  const { id } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
   const currentLocaleIndex = useMemo(
@@ -70,20 +91,33 @@ const SettingsPage = () => {
     [language]
   );
 
-  const handleLocationChange = async (location: TUserLocation) => {
-    dispatch(updateUserLocation(location));
-    await updatePersonLocationMutate({
-      variables: {
-        location_id: parseInt(location.id),
-        person_id: id,
-      },
-    });
-  };
-
   const handleLanguageChange = ({ locale }: TLanguage) => {
     changeLanguage(locale);
     localStorage.setItem('locale', locale);
   };
+
+  const handleChangeLocation = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>, option: TUserLocation) => {
+      if (e.target.checked) {
+        await addPersonLocation({
+          variables: {
+            location_id: +option.id,
+            person_id: id,
+          },
+        });
+        dispatch(addLocation(option));
+      } else {
+        await removePersonLocation({
+          variables: {
+            location_id: +option.id,
+            person_id: id,
+          },
+        });
+        dispatch(removeLocation(option.id));
+      }
+    },
+    [id]
+  );
 
   return (
     <WrapperSettings>
@@ -92,20 +126,20 @@ const SettingsPage = () => {
         <TextBase>{t('Settings.Desc')}</TextBase>
       </Wrapper>
       <SettingsContainer>
-        <SettingsArticle>{t('Settings.Location')}</SettingsArticle>
+        <SettingsArticle>
+          {t('Settings.Locations')} <span>({t('Settings.Several')})</span>
+        </SettingsArticle>
         {!GetAllLocationsLoading && !!GetAllLocationsData && (
-          <RestyledDropdown
+          <StyledDropDownLocation
             options={GetAllLocationsData.getAllLocations.map((loc) => ({
               id: loc!.id,
               value: loc!.location,
             }))}
-            initIndex={GetAllLocationsData.getAllLocations.findIndex((loc) => {
-              if (location) return loc!.id === location.id;
-              return 0;
-            })}
-            onChange={(option) => handleLocationChange(option as TUserLocation)}
+            handleChangeLocations={handleChangeLocation}
+            loading={{ addLoading, removeLoading }}
           />
         )}
+
         <SettingsArticle>{t('Settings.Language')}</SettingsArticle>
         <RestyledDropdown
           options={[...languages]}

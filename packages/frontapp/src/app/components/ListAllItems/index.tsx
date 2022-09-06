@@ -14,6 +14,7 @@ import Loader from '../Loader';
 import { setSearchMaterials } from '../../store/slices/materialsSlice';
 import { useAppDispatch } from '../../hooks/useTypedDispatch';
 import { IMaterial } from '../../types';
+import { locationIds } from '../../store/slices/userSlice';
 
 const StyledWrapperList = styled(WrapperList)`
   grid-template-columns: repeat(auto-fill, 310px);
@@ -24,9 +25,10 @@ const StyledWrapperList = styled(WrapperList)`
 `;
 
 const ListAllItems = () => {
-  const { location } = useAppSelector((state) => state.user);
+  const locations = useAppSelector(locationIds);
   const { data, loading, error } = useGetAllMaterialsForManagerQuery({
-    variables: { location_id: location.id },
+    variables: { locations },
+    fetchPolicy: 'no-cache',
   });
   const dispatch = useAppDispatch();
   const { searchMaterials } = useAppSelector((state) => state.materials);
