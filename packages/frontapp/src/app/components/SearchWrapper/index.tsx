@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction } from 'react';
+import { FC, memo } from 'react';
 import styled from '@emotion/styled';
 import { dimensions } from '@mimir/ui-kit';
 import Burger from '../Burger';
@@ -10,7 +10,7 @@ import { RolesTypes } from '@mimir/global-types';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 
 interface IProps {
-  setSidebarActive: Dispatch<SetStateAction<boolean>>;
+  showSidebar: () => void;
 }
 
 const StyledSearch = styled.div`
@@ -24,11 +24,11 @@ const StyledSearch = styled.div`
   }
 `;
 
-const SearchWrapper: FC<IProps> = ({ setSidebarActive }) => {
+const SearchWrapper: FC<IProps> = ({ showSidebar }) => {
   const { userRole } = useAppSelector((state) => state.user);
   return (
     <StyledSearch>
-      <Burger setSidebarActive={setSidebarActive} />
+      <Burger showSidebar={showSidebar} />
       {window.location.pathname.startsWith(RoutesTypes.READERS) ? (
         <SearchByUserName />
       ) : (
@@ -46,4 +46,4 @@ const SearchWrapper: FC<IProps> = ({ setSidebarActive }) => {
   );
 };
 
-export default SearchWrapper;
+export default memo(SearchWrapper);
