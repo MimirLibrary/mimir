@@ -59,6 +59,7 @@ export const resources = {
           Item: 'item',
           Items: 'items',
         },
+        TitleFiltered: 'Results',
       },
       ManagerInfoCard: {
         Title: {
@@ -226,6 +227,7 @@ export const resources = {
       },
       Readers: {
         Title: 'Все пользователи',
+        TitleFiltered: 'Результаты поиска ',
         Description:
           'Для подробной информации и взаимодействия с пользователем, перейдите к его карточке',
         SingleUser: {

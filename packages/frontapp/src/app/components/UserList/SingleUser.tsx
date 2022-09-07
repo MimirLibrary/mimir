@@ -6,6 +6,7 @@ import { colors, dimensions } from '@mimir/ui-kit';
 import { useNavigate } from 'react-router-dom';
 import { IClaimHistory } from '../../models/helperFunctions/claimHistory';
 import ClaimHistory from '../ClaimHistory';
+import { RoutesTypes } from '../../../utils/routes';
 
 const InfoWrapper = styled.div`
   display: flex;
@@ -62,7 +63,7 @@ const SingleUser: FC<ISingleUser> = ({
 }) => {
   const navigate = useNavigate();
   const handleUserRedirect = () => {
-    navigate(`/readers/${id}`);
+    navigate(`${RoutesTypes.READERS}/${id}`);
   };
 
   return (
