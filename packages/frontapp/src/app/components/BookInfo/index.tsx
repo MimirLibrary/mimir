@@ -19,6 +19,7 @@ import {
 } from '../../models/helperFunctions/converTime';
 import { StyledBookStatus } from '../../globalUI/Status';
 import SuccessMessage from '../SuccessMessage';
+import { listOfGenres } from '../../../assets/SearchConsts';
 import {
   GetAllTakenItemsDocument,
   GetMaterialByIdDocument,
@@ -28,7 +29,6 @@ import {
   useReturnBookMutation,
   useRemoveMaterialMutation,
   useUpdateMaterialMutation,
-  useGetAllMaterialsQuery,
   useGetNotificationsByPersonQuery,
   useCreateNotificationMutation,
   useRemoveNotificationMutation,
@@ -39,7 +39,7 @@ import AskManagerForm from '../AskManagerForm';
 import { WrapperInput } from '../Search';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { RolesTypes } from '@mimir/global-types';
-import { locationIds } from '../../store/slices/userSlice';
+import Dropdown, { IDropdownOption } from '../Dropdown';
 export const BookHolder = styled.div`
   width: 100%;
   top: 11.5rem;
@@ -196,13 +196,6 @@ const TitleHolder = styled.p`
   font-size: ${dimensions.base};
   margin-bottom: ${dimensions.xs};
 `;
-
-const StyledSelect = styled.select`
-  border: none;
-  outline: none;
-  width: 95%;
-  color: ${colors.main_black};
-`;
 const StyledTextArea = styled.textarea`
   border: none;
   outline: none;
@@ -274,10 +267,6 @@ const BookInfo: FC<IBookInfoProps> = ({
   location_id,
 }) => {
   const { id, userRole } = useAppSelector((state) => state.user);
-  const locations = useAppSelector(locationIds);
-  const { data: allMaterials } = useGetAllMaterialsQuery({
-    variables: { locations },
-  });
   const { data: getNotificationsByPersonData } =
     useGetNotificationsByPersonQuery({
       variables: {
@@ -316,17 +305,14 @@ const BookInfo: FC<IBookInfoProps> = ({
   );
   const [newDeadline, setNewDeadline] = useState(periodOfKeeping);
   const [deleteWarning, setDeleteWarning] = useState(false);
-  const [authorsDropDown, setAuthorsDropDown] = useState<
-    (string | undefined)[] | undefined
-  >();
-  const [categoriesDropDown, setCategoriesDropDown] = useState<
-    (string | undefined)[] | undefined
-  >();
   const [isMaterialTakenByCurrentUser, setIsMaterialTakenByCurrentUser] =
     useState(false);
 
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewTitle(e.target.value);
+  };
+  const handleChangeAuthor = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewAuthor(e.target.value);
   };
   const handleChangeDescription = (e: any) => {
     setNewDescription(e.target.value);
@@ -335,6 +321,10 @@ const BookInfo: FC<IBookInfoProps> = ({
     setNewDeadline(e.target.value);
     e.target.value > 31 && setNewDeadline(31);
     e.target.value <= 0 && setNewDeadline(1);
+  };
+
+  const handleChangeCategory = (option: IDropdownOption) => {
+    setNewCategory(option.value);
   };
 
   const [claimBook, { data }] = useClaimBookMutation({
@@ -444,14 +434,6 @@ const BookInfo: FC<IBookInfoProps> = ({
       setIsShowClaimModal(true);
       setValueIsISBN(claimModal);
     }
-    const authors = allMaterials?.getAllMaterials?.map((item) => {
-      return item?.author;
-    });
-    const categories = allMaterials?.getAllMaterials?.map((item) => {
-      return item?.category;
-    });
-    setAuthorsDropDown([...new Set(authors)]);
-    setCategoriesDropDown([...new Set(categories)]);
   }, []);
 
   useEffect(() => {
@@ -582,20 +564,11 @@ const BookInfo: FC<IBookInfoProps> = ({
                 <>
                   <br />
                   <TitleHolder>Genre </TitleHolder>
-                  <WrapperInput>
-                    <StyledSelect
-                      name="categories"
-                      onChange={(e) => {
-                        setNewCategory(e.target.value);
-                      }}
-                    >
-                      {categoriesDropDown?.map(
-                        (category: string | undefined) => (
-                          <option value={category}>{category}</option>
-                        )
-                      )}
-                    </StyledSelect>
-                  </WrapperInput>
+                  <Dropdown
+                    options={listOfGenres}
+                    onChange={handleChangeCategory}
+                    placeholder="Enter genre"
+                  />
                 </>
               ) : (
                 <TopicDescription>
@@ -607,16 +580,11 @@ const BookInfo: FC<IBookInfoProps> = ({
                   <br />
                   <TitleHolder>Author </TitleHolder>
                   <WrapperInput>
-                    <StyledSelect
-                      name="authors"
-                      onChange={(e) => {
-                        setNewAuthor(e.target.value);
-                      }}
-                    >
-                      {authorsDropDown?.map((author: string | undefined) => (
-                        <option value={author}>{author}</option>
-                      ))}
-                    </StyledSelect>
+                    <StyledInput
+                      type="text"
+                      value={newAuthor}
+                      onChange={handleChangeAuthor}
+                    />
                   </WrapperInput>
                 </>
               ) : (

@@ -1,6 +1,7 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { toast } from 'react-toastify';
+import Dropdown, { IDropdownOption } from '../Dropdown';
 import { colors, dimensions } from '@mimir/ui-kit';
 import {
   GetMaterialFromMetadataQuery,
@@ -15,7 +16,7 @@ import ErrorMessage from '../ErrorMessge';
 import { RolesTypes } from '@mimir/global-types';
 import FileUpload from '../FielUpload';
 import { api } from '../../axios-api/api';
-import Dropdown from '../Dropdown';
+import { listOfGenres } from '../../../assets/SearchConsts';
 import { TUserLocation } from '../../store/slices/userSlice';
 
 const WrapperDonate = styled.section`
@@ -356,6 +357,10 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
     setDataOfBook({ ...dataOfBook, [name]: value });
   };
 
+  const handleChangeGenre = (option: IDropdownOption) => {
+    setDataOfBook({ ...dataOfBook, genre: option.value });
+  };
+
   const handleChangeDescription = (
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -440,29 +445,20 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
                     />
                   </WrapperInput>
                 </WrapperStyledInput>
-                <WrapperStyledInput>
-                  <Label htmlFor="genre">Genre*</Label>
-                  <WrapperInput>
-                    <StyledInput
-                      type="text"
-                      id="genre"
-                      name="genre"
-                      value={dataOfBook.genre || ''}
-                      onChange={handleChange}
-                      autoComplete="off"
-                      required
-                      placeholder="Enter genre"
-                    />
-                  </WrapperInput>
-                  <Label htmlFor="location">Location*</Label>
-                  <StyledDropdown
-                    options={locations}
-                    onChange={(option) =>
-                      handleChangeLocation(option as TUserLocation)
-                    }
-                    placeholder="Choose your location"
-                  />
-                </WrapperStyledInput>
+                <Label htmlFor="genre">Genre*</Label>
+                <Dropdown
+                  options={listOfGenres}
+                  onChange={handleChangeGenre}
+                  placeholder="Enter genre"
+                />
+                <Label htmlFor="location">Location*</Label>
+                <StyledDropdown
+                  options={locations}
+                  onChange={(option) =>
+                    handleChangeLocation(option as TUserLocation)
+                  }
+                  placeholder="Choose your location"
+                />
               </WrapperBlockInput>
             </WrapperWithoutButtons>
             <WrapperButtons>
