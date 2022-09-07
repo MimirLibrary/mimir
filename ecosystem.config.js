@@ -14,5 +14,12 @@ module.exports = {
       min_uptime: 3000,
       max_restarts: 3,
     },
+    {
+      name: 'email',
+      script: 'main.js',
+      cwd: '/srv/email',
+      min_uptime: 3000,
+      max_restarts: 3,
+    },
   ],
 };
