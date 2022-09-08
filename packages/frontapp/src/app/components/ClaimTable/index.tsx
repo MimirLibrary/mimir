@@ -52,12 +52,12 @@ const StyledTable = styled.table`
   border-collapse: collapse;
   width: 100%;
   height: fit-content;
-  th:nth-child(1) {
+  th:nth-of-type(1) {
     border-radius: 10px 0 0 0;
   }
-  th:nth-child(2) {
+  th:nth-of-type(2) {
   }
-  th:nth-child(3) {
+  th:nth-of-type(3) {
     border-radius: 0 10px 0 0;
   }
   th {
@@ -72,7 +72,7 @@ const StyledTable = styled.table`
     height: 52px;
   }
 
-  tr:nth-child(even) {
+  tr:nth-of-type(even) {
     background-color: ${colors.bg_primary};
   }
 
@@ -248,60 +248,64 @@ const ClaimTable: FC<IClaimTable> = ({ statuses, name }) => {
         {statuses?.length ? (
           <StyledScroll>
             <StyledTable>
-              <tr>
-                <th>{t('UserCard.Table.ItemName')}</th>
-                <th>{t('UserCard.Table.Deadline')}</th>
-                <th>{t('UserCard.Table.State')}</th>
-              </tr>
-              {shownItems?.map((status) => (
+              <tbody>
                 <tr>
-                  <td>
-                    <InlineWrapper>
-                      <img
-                        src={
-                          (status.material?.picture &&
-                            `${process.env['NX_API_ROOT_URL']}/${status.material?.picture}`) ||
-                          bookImage
-                        }
-                      />
-                      <ColumnWrapper>
-                        <FieldsText titlee>{status.material?.title}</FieldsText>
-                        <FieldsText
-                          secondary
-                        >{`${status.material?.category} / ${status.material?.author}`}</FieldsText>
-                      </ColumnWrapper>
-                    </InlineWrapper>
-                  </td>
-                  <td>
-                    {status.status !== StatusTypes.FREE ? (
-                      <FieldsText>
-                        {countReturnDate(status.created_at)}
-                      </FieldsText>
-                    ) : (
-                      <FieldsText returned>
-                        {countReturnedDate(status.created_at)}
-                      </FieldsText>
-                    )}
-                  </td>
-                  <td>
-                    {status.status === StatusTypes.FREE ? (
-                      <FieldsText returned>
-                        {t('UserCard.Table.Returned')}
-                      </FieldsText>
-                    ) : status.status === 'Overdue' ? (
-                      <FieldsText overdue>
-                        {t('UserCard.Table.Overdue')}
-                      </FieldsText>
-                    ) : (
-                      <FieldsText>
-                        {status.status === StatusTypes.BUSY
-                          ? t('UserCard.Table.Claim')
-                          : t('UserCard.Table.Prolong')}
-                      </FieldsText>
-                    )}
-                  </td>
+                  <th>{t('UserCard.Table.ItemName')}</th>
+                  <th>{t('UserCard.Table.Deadline')}</th>
+                  <th>{t('UserCard.Table.State')}</th>
                 </tr>
-              ))}
+                {shownItems?.map((status) => (
+                  <tr key={String(status.created_at)}>
+                    <td>
+                      <InlineWrapper>
+                        <img
+                          src={
+                            (status.material?.picture &&
+                              `${process.env['NX_API_ROOT_URL']}/${status.material?.picture}`) ||
+                            bookImage
+                          }
+                        />
+                        <ColumnWrapper>
+                          <FieldsText titlee>
+                            {status.material?.title}
+                          </FieldsText>
+                          <FieldsText
+                            secondary
+                          >{`${status.material?.category} / ${status.material?.author}`}</FieldsText>
+                        </ColumnWrapper>
+                      </InlineWrapper>
+                    </td>
+                    <td>
+                      {status.status !== StatusTypes.FREE ? (
+                        <FieldsText>
+                          {countReturnDate(status.created_at)}
+                        </FieldsText>
+                      ) : (
+                        <FieldsText returned>
+                          {countReturnedDate(status.created_at)}
+                        </FieldsText>
+                      )}
+                    </td>
+                    <td>
+                      {status.status === StatusTypes.FREE ? (
+                        <FieldsText returned>
+                          {t('UserCard.Table.Returned')}
+                        </FieldsText>
+                      ) : status.status === 'Overdue' ? (
+                        <FieldsText overdue>
+                          {t('UserCard.Table.Overdue')}
+                        </FieldsText>
+                      ) : (
+                        <FieldsText>
+                          {status.status === StatusTypes.BUSY
+                            ? t('UserCard.Table.Claim')
+                            : t('UserCard.Table.Prolong')}
+                        </FieldsText>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
             </StyledTable>
           </StyledScroll>
         ) : (

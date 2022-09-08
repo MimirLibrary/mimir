@@ -57,6 +57,7 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
   const [minMax, setMinMax] = useState<MinMaxType[]>([]);
   const { data, loading } = useGetAllPersonsQuery({
     variables: { locations: locations },
+    fetchPolicy: 'no-cache',
   });
   const dispatch = useAppDispatch();
   const { searchReaders } = useAppSelector((state) => state.readers);
