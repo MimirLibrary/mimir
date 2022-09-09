@@ -165,32 +165,37 @@ const Scanner: FC<IScannerProps> = memo(
       };
       const frameSize = dinamicFrameSize(window.innerWidth, window.innerHeight);
 
-      navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-        videoStream = stream;
+      navigator.mediaDevices
+        .getUserMedia(constraints)
+        .then((stream) => {
+          videoStream = stream;
 
-        videoElement.addEventListener('play', () => {
-          const canvasSize = dinamicFrameSize(
-            videoElement.videoWidth,
-            videoElement.videoHeight
-          );
+          videoElement.addEventListener('play', () => {
+            const canvasSize = dinamicFrameSize(
+              videoElement.videoWidth,
+              videoElement.videoHeight
+            );
 
-          canvasElement.width = canvasSize.width;
-          canvasElement.height = canvasSize.height;
+            canvasElement.width = canvasSize.width;
+            canvasElement.height = canvasSize.height;
 
-          frameElement.style.width = `${frameSize.width}px`;
-          frameElement.style.height = `${frameSize.height}px`;
-          frameElement.style.left = `${
-            (window.innerWidth - frameSize.width) / 2
-          }px`;
-          frameElement.style.top = `${
-            (window.innerHeight - frameSize.height) / 2
-          }px`;
+            frameElement.style.width = `${frameSize.width}px`;
+            frameElement.style.height = `${frameSize.height}px`;
+            frameElement.style.left = `${
+              (window.innerWidth - frameSize.width) / 2
+            }px`;
+            frameElement.style.top = `${
+              (window.innerHeight - frameSize.height) / 2
+            }px`;
 
-          scanFrame();
+            scanFrame();
+          });
+
+          videoElement.srcObject = stream;
+        })
+        .catch((err) => {
+          console.log(err);
         });
-
-        videoElement.srcObject = stream;
-      });
 
       async function scanFrame() {
         if (videoStream) {
@@ -258,6 +263,9 @@ const Scanner: FC<IScannerProps> = memo(
       if (videoStream) {
         videoStream.getTracks().forEach((track) => track.stop()); // stop webcam feed
         videoStream = null;
+        hideScanner();
+        onClose();
+      } else {
         hideScanner();
         onClose();
       }
