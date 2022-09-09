@@ -7,7 +7,6 @@ import { createPortal } from 'react-dom';
 import { colors, dimensions } from '@mimir/ui-kit';
 import InputMask from 'react-input-mask';
 import { ReactComponent as CloseSvg } from '../../../assets/Close.svg';
-import { toast, ToastContainer } from 'react-toastify';
 
 export interface IScannerProps {
   onDetected: (code: string) => void;
