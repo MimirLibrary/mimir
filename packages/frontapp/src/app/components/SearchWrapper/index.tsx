@@ -40,7 +40,6 @@ const SearchWrapper: FC<IProps> = ({ showSidebar }) => {
           }
         />
       )}
-
       <FiltersButton />
     </StyledSearch>
   );

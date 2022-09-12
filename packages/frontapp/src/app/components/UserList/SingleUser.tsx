@@ -33,6 +33,7 @@ const CardWrapper = styled.div`
   padding: ${dimensions.xl_2};
   box-shadow: ${colors.shadow};
   border-radius: ${dimensions.xs_1};
+  cursor: pointer;
 `;
 const AvatarWrapper = styled.div`
   height: 71px;
