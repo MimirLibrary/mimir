@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Person } from './person.entity';
-import { log } from 'util';
 import { RolesTypes } from '@mimir/global-types';
 
 @Injectable()
