@@ -33,6 +33,7 @@ export class Status extends BaseEntity {
   @Column({
     type: 'enum',
     enum: StatusTypes,
+    default: StatusTypes.FREE,
   })
   status!: StatusTypes;
 
