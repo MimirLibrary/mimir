@@ -1,12 +1,14 @@
 {
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/frontapp-e2e/src",
   "projectType": "application",
   "targets": {
     "e2e": {
       "executor": "@nrwl/cypress:cypress",
       "options": {
-        "cypressConfig": "packages/frontapp-e2e/cypress.json",
-        "devServerTarget": "frontapp:serve"
+        "cypressConfig": "packages/frontapp-e2e/cypress.config.ts",
+        "devServerTarget": "frontapp:serve",
+        "testingType": "e2e"
       },
       "configurations": {
         "production": {
