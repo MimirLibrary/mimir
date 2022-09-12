@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { Material } from '../materials/material.entity';
 import { Person } from '../persons/person.entity';
-import { StatusTypes } from '../../../../global-types/src/index';
+import { StatusTypes } from '../../../../global-types/src';
 
 @Entity('status')
 export class Status extends BaseEntity {

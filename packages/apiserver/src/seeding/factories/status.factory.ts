@@ -1,6 +1,6 @@
 import { define } from 'typeorm-seeding';
 import { Status } from '../../resources/statuses/status.entity';
-import { StatusTypes } from '../../../../global-types/src/index';
+import { StatusTypes } from '../../../../global-types/src';
 
 define(Status, () => {
   const ids = [1, 2, 3, 4, 5];
