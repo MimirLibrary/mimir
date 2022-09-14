@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Person } from './person.entity';
+import { RolesTypes } from '@mimir/global-types';
 
 @Injectable()
 export class PersonService {
@@ -10,6 +11,7 @@ export class PersonService {
         .where(`${username ? 'person.username ILIKE :name' : ''}`, {
           name: `%${username}%`,
         })
+        .andWhere('person.type = :type', { type: RolesTypes.READER })
         .andWhere('location.id IN (:...locations)', { locations })
         .orderBy('person.username', 'ASC')
         .getMany();

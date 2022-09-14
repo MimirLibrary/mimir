@@ -57,23 +57,30 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
   const [minMax, setMinMax] = useState<MinMaxType[]>([]);
   const { data, loading } = useGetAllPersonsQuery({
     variables: { locations: locations },
+    fetchPolicy: 'cache-and-network',
   });
+
   const dispatch = useAppDispatch();
+
   const { searchReaders } = useAppSelector((state) => state.readers);
+
   const getClaims = (person: IReader | null) =>
     countClaimHistory(person?.statuses as IClaimHistory[]);
+
   const sortAlphabetically = (
     userFirst: IReader | null,
     userSecond: IReader | null
   ) => {
     return userFirst!.username.localeCompare(userSecond!.username);
   };
+
   const sortByThingsTaken = (
     userFirst: IReader | null,
     userSecond: IReader | null
   ) => {
     return getClaims(userSecond).claimNow - getClaims(userFirst).claimNow;
   };
+
   const sortByThingsOverdue = (
     userFirst: IReader | null,
     userSecond: IReader | null
@@ -115,15 +122,17 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
   useEffect(() => {
     filterUsers(sortBy![0]);
   }, [sortBy]);
+
   useEffect(() => {
     setMinMax([]);
     filterCategories(itemsTaken);
   }, [itemsTaken]);
+
   useEffect(() => {
-    if (data && !searchReaders?.length)
-      dispatch(setSearchReaders(data?.getAllPersons));
+    if (data) dispatch(setSearchReaders(data?.getAllPersons));
   }, [data]);
   if (loading) return <h1>{t('Loading')}</h1>;
+
   return (
     <ReadersWrapper>
       <Title>
