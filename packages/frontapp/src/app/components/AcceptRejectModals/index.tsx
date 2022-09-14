@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import Modal from '../Modal';
 import ErrorMessage from '../ErrorMessge';
 import { Status } from '@mimir/apollo-client';
@@ -9,6 +9,7 @@ import {
   useRejectItemMutation,
   GetAllMaterialsDocument,
 } from '@mimir/apollo-client';
+import { toast } from 'react-toastify';
 
 type IDonateProps = {
   active: boolean;
@@ -29,9 +30,10 @@ const AcceptRejectModals: FC<IDonateProps> = ({
   identifier,
   method,
 }) => {
-  const [returnBook] = useReturnBookMutation({
+  const [returnBook, { error: returnError }] = useReturnBookMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
+
   const acceptBook = async () => {
     await returnBook({
       variables: {
@@ -42,7 +44,8 @@ const AcceptRejectModals: FC<IDonateProps> = ({
     });
     setActive(false);
   };
-  const [rejectItem] = useRejectItemMutation({
+
+  const [rejectItem, { error: rejectError }] = useRejectItemMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
 
@@ -56,6 +59,13 @@ const AcceptRejectModals: FC<IDonateProps> = ({
     });
     setActive(false);
   };
+
+  useEffect(() => {
+    if (rejectError || returnError) {
+      toast.error(rejectError || returnError);
+    }
+  }, [returnError, rejectError]);
+
   return (
     <Modal active={active} setActive={setActive}>
       {method === 'reject' ? (

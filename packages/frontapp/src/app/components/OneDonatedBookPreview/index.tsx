@@ -6,6 +6,7 @@ import Button from '../Button';
 import { useNavigate } from 'react-router-dom';
 import { dimensions, colors } from '@mimir/ui-kit';
 import AcceptRejectModals from '../AcceptRejectModals';
+import { toast } from 'react-toastify';
 interface BackgroundProps {
   GrayBackground?: boolean;
 }
@@ -130,13 +131,21 @@ const OneDonator = ({
   const handleRedirect = (item_id: number) => {
     navigate(`/donate/${item_id}`);
   };
+
   const lastStatus = statuses.slice(-1)[0];
+
   const GrayBackground = index % 2 === 0;
-  const { data: personName } = useGetOnePersonQuery({
+
+  const { data: personName, error } = useGetOnePersonQuery({
     variables: {
       id: lastStatus.person_id,
     },
   });
+
+  useEffect(() => {
+    if (error) toast.error(error.message);
+  }, [error]);
+
   useEffect(() => {
     if (
       personName?.getOnePerson.username
@@ -145,6 +154,7 @@ const OneDonator = ({
     )
       setShownId((arr) => [...arr, id]);
   }, [search]);
+
   return (
     <>
       <DonateWrapper GrayBackground={GrayBackground}>

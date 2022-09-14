@@ -88,7 +88,11 @@ const OverdueDonatesWrapper = styled.div`
 const HomePage: FC = () => {
   const { id, userRole } = useAppSelector((state) => state.user);
   const locations = useAppSelector(locationIds);
-  const { data, loading } = useGetAllTakenItemsQuery({
+  const {
+    data,
+    loading,
+    error: getAllTakenItemsError,
+  } = useGetAllTakenItemsQuery({
     variables: { person_id: id },
     skip: userRole === RolesTypes.MANAGER,
   });
@@ -138,11 +142,13 @@ const HomePage: FC = () => {
       toast.error(messagesError.message);
     } else if (errorOverdue) {
       toast.error(errorOverdue.message);
+    } else if (getAllTakenItemsError) {
+      toast.error(getAllTakenItemsError.message);
     } else {
       toast.error(errorMaterials?.message);
     }
     return;
-  }, [messagesError, errorOverdue, errorMaterials]);
+  }, [messagesError, errorOverdue, errorMaterials, getAllTakenItemsError]);
 
   if (loading || messagesLoading || overdueLoading || materialsLoading)
     return (

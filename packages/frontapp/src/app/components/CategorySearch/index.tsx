@@ -7,6 +7,7 @@ import useMaterialFilter from '../../hooks/useMaterialFilter';
 import { getStatus } from '../../models/helperFunctions/converTime';
 import { GetAllMaterialsQuery } from '@mimir/apollo-client';
 import { locationIds } from '../../store/slices/userSlice';
+import { toast } from 'react-toastify';
 
 type ParamsType = {
   [key: string]: string[];
@@ -23,7 +24,7 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
   const [availableMaterial, setAvailableMaterial] = useState<
     GetAllMaterialsQuery['getAllMaterials']
   >([]);
-  const { data } = useGetAllMaterialsQuery({
+  const { data, error } = useGetAllMaterialsQuery({
     variables: { locations },
     fetchPolicy: 'no-cache',
   });
@@ -36,6 +37,10 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
     'By date added': undefined,
     'By date of writing': undefined,
   };
+
+  useEffect(() => {
+    if (error) toast.error(error.message);
+  }, [error]);
 
   const customObjectFilter = (filterName: {
     [author: string]: number | undefined;

@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import Button from '../Button';
 import { ButtonWrapper } from '../BackButton';
-import { useMutation } from '@apollo/client';
 import {
   GetAllMessagesDocument,
   useCreateAnswerNotificationMutation,

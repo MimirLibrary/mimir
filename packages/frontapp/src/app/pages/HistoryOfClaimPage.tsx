@@ -7,6 +7,8 @@ import BookCard from '../components/BookCard';
 import { TextArticle } from '../globalUI/TextArticle';
 import { TextBase } from '../globalUI/TextBase';
 import { useAppSelector } from '../hooks/useTypedSelector';
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 export const Wrapper = styled.div`
   padding-top: 3.5rem;
@@ -39,10 +41,17 @@ export const List = styled.div`
 const HistoryOfClaimPage = () => {
   const { t } = useTranslation();
   const { id, userRole } = useAppSelector((state) => state.user);
-  const { data, loading } = useGetItemsForClaimHistoryQuery({
+  const { data, loading, error } = useGetItemsForClaimHistoryQuery({
     variables: { person_id: id },
     skip: userRole === RolesTypes.MANAGER,
   });
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message);
+    }
+  }, [error]);
+
   return (
     <Wrapper>
       <TextArticle>{t('ClaimHistory.Title')}</TextArticle>
