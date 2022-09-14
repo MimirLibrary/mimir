@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Material } from '../materials/material.entity';
 import { Person } from '../persons/person.entity';
+import { StatusTypes } from '@mimir/global-types';
 
 @Entity('status')
 export class Status extends BaseEntity {
@@ -29,7 +30,11 @@ export class Status extends BaseEntity {
   @JoinColumn({ name: 'person_id' })
   person!: Person;
 
-  @Column()
+  @Column({
+    type: 'enum',
+    enum: StatusTypes,
+    default: StatusTypes.FREE,
+  })
   status!: string;
 
   @CreateDateColumn()

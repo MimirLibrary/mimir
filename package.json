@@ -11,8 +11,8 @@
     "lint:mobile": "eslint --ext .ts,.tsx apps/mobile --fix",
     "migration:generate": "npm run typeorm:cli -- migration:generate -n migrationMy",
     "migration:run": "npm run typeorm:cli -- migration:run",
-    "typeorm:cli": "ts-node --project ./packages/apiserver/tsconfig.app.json ./node_modules/typeorm/cli --config ./packages/apiserver/src/ormconfig.ts",
-    "seed:run": "ts-node --project ./packages/apiserver/tsconfig.app.json  ./node_modules/typeorm-seeding/dist/cli.js --configName ./packages/apiserver/src/ormconfig.ts seed",
+    "typeorm:cli": "ts-node -r tsconfig-paths/register --project ./packages/apiserver/tsconfig.app.json ./node_modules/typeorm/cli --config ./packages/apiserver/src/ormconfig.ts",
+    "seed:run": "ts-node -r tsconfig-paths/register --project ./packages/apiserver/tsconfig.app.json  ./node_modules/typeorm-seeding/dist/cli.js --configName ./packages/apiserver/src/ormconfig.ts seed",
     "codegen": "graphql-codegen --config codegen.yml",
     "precommit": "lint-staged"
   },
