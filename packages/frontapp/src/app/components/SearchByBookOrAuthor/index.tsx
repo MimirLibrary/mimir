@@ -9,9 +9,12 @@ import { useDebounce } from '../../hooks/useDebounce';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import Search from '../Search';
 import { locationIds } from '../../store/slices/userSlice';
+import SearchSuggestions from '../SearchSuggestions';
 
 const SearchByBookOrAuthor: FC<{ path: string }> = ({ path }) => {
   const [search, setSearch] = useState<string>('');
+  const [isShowListSuggestions, setIsShowListSuggestions] =
+    useState<boolean>(false);
   const locations = useAppSelector(locationIds);
   const debounceSearch = useDebounce<string>(search, 600);
   const dispatch = useAppDispatch();
@@ -26,6 +29,14 @@ const SearchByBookOrAuthor: FC<{ path: string }> = ({ path }) => {
       dispatch(setSearchMaterials(data?.searchOfMaterials));
     }
   }, [data]);
+
+  useEffect(() => {
+    if (search && data?.searchOfMaterials?.length) {
+      setIsShowListSuggestions(true);
+    } else {
+      setIsShowListSuggestions(false);
+    }
+  }, [debounceSearch, data]);
 
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -46,13 +57,18 @@ const SearchByBookOrAuthor: FC<{ path: string }> = ({ path }) => {
   };
 
   return (
-    <Search
-      handleChangeSearch={handleChangeSearch}
-      placeholder={t('Search.Placeholder')}
-      search={search}
-      redirectToSearchByClick={redirectToSearchByClick}
-      redirectToSearchByKey={redirectToSearchByKey}
-    />
+    <>
+      <Search
+        handleChangeSearch={handleChangeSearch}
+        placeholder={t('Search.Placeholder')}
+        search={search}
+        redirectToSearchByClick={redirectToSearchByClick}
+        redirectToSearchByKey={redirectToSearchByKey}
+      />
+      {isShowListSuggestions && (
+        <SearchSuggestions materials={data?.searchOfMaterials} />
+      )}
+    </>
   );
 };
 

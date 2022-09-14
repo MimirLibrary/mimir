@@ -12,7 +12,6 @@ import {
   WrapperInput,
 } from '../components/Search';
 import { t } from 'i18next';
-import { IMaterial } from '../types';
 import { locationIds } from '../store/slices/userSlice';
 
 interface TitleProps {

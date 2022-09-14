@@ -85,6 +85,8 @@ const BookCard: FC<IBookCardProps> = ({
   const handleItemRedirect = () => {
     navigate(`/item/${id}`);
   };
+
+  console.log(status, date);
   return (
     <BookCardWrapper onClick={handleItemRedirect}>
       <BookImage src={src || bookImage} />
