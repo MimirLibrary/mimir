@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { t } from 'i18next';
 import { useSearchOfMaterialsQuery } from '@mimir/apollo-client';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +10,11 @@ import { useAppSelector } from '../../hooks/useTypedSelector';
 import Search from '../Search';
 import { locationIds } from '../../store/slices/userSlice';
 import SearchSuggestions from '../SearchSuggestions';
+import styled from '@emotion/styled';
+
+const Wrapper = styled.div`
+  position: relative;
+`;
 
 const SearchByBookOrAuthor: FC<{ path: string }> = ({ path }) => {
   const [search, setSearch] = useState<string>('');
@@ -38,6 +43,11 @@ const SearchByBookOrAuthor: FC<{ path: string }> = ({ path }) => {
     }
   }, [debounceSearch, data]);
 
+  const removeSuggestionSearchWindow = useCallback(() => {
+    setIsShowListSuggestions(false);
+    setSearch('');
+  }, []);
+
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
@@ -57,7 +67,7 @@ const SearchByBookOrAuthor: FC<{ path: string }> = ({ path }) => {
   };
 
   return (
-    <>
+    <Wrapper>
       <Search
         handleChangeSearch={handleChangeSearch}
         placeholder={t('Search.Placeholder')}
@@ -66,9 +76,12 @@ const SearchByBookOrAuthor: FC<{ path: string }> = ({ path }) => {
         redirectToSearchByKey={redirectToSearchByKey}
       />
       {isShowListSuggestions && (
-        <SearchSuggestions materials={data?.searchOfMaterials} />
+        <SearchSuggestions
+          materials={data?.searchOfMaterials}
+          removeSuggestionSearchWindow={removeSuggestionSearchWindow}
+        />
       )}
-    </>
+    </Wrapper>
   );
 };
 

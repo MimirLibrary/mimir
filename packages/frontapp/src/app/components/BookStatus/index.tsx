@@ -15,20 +15,15 @@ interface IBookStatusProps {
 }
 
 const BookStatus: FC<IBookStatusProps> = ({ status, date }) => {
-  const [statusText, setStatusText] = useState<string>('');
   const currentStatus = getStatus(status, date);
-  const { pathname } = useLocation();
+  const [statusText, setStatusText] = useState<string>('');
   useEffect(() => {
     switch (currentStatus) {
       case null:
         setStatusText('');
         break;
       case StatusTypes.FREE:
-        if (
-          pathname === RoutesTypes.HISTORY_OF_CLAIM ||
-          pathname === RoutesTypes.HISTORY_OF_DONATE
-        )
-          setStatusText(t(`Statuses.${currentStatus + pathname}`));
+        setStatusText('On the shelf');
         break;
       case StatusTypes.BUSY: {
         const day = `${getDates(date).returnDate.getDate()}`.padStart(2, '0');
@@ -53,6 +48,7 @@ const BookStatus: FC<IBookStatusProps> = ({ status, date }) => {
         break;
     }
   }, [currentStatus]);
+
   return (
     <StyledBookStatusWrapper status={currentStatus}>
       <StyledBookStatus status={currentStatus}>{statusText}</StyledBookStatus>

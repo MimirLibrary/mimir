@@ -1,40 +1,20 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
+import bookImage from '../../../assets/MOC-data/BookImage.png';
 import BookStatus from '../BookStatus';
+import { IBookCardProps } from '../BookCard';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
-import bookImage from '../../../assets/MOC-data/BookImage.png';
-import { useNavigate } from 'react-router-dom';
 
-export interface IBookCardProps {
-  src?: string | null;
-  title?: string;
-  date?: any;
-  status?: string;
-  author?: string;
-  category?: string;
-  id?: string;
-}
+type IProps = IBookCardProps & {
+  removeSuggestionSearchWindow: () => void;
+};
 
 const BookCardWrapper = styled.div`
-  flex-shrink: 0;
-  width: 12rem;
-  background-color: ${colors.bg_secondary};
-  border-radius: ${dimensions.xs};
-  padding: ${dimensions.base};
+  width: 100%;
   display: flex;
-  flex-direction: column;
   cursor: pointer;
-  box-shadow: ${colors.shadow};
-
-  @media (min-width: ${dimensions.phone_width}) {
-    min-height: 19.5rem;
-  }
-
-  @media (max-width: ${dimensions.phone_width}) {
-    flex-direction: row;
-    height: min-content;
-    width: 100%;
-  }
+  margin-bottom: ${dimensions.base};
 `;
 
 const DescriptionWrapper = styled.div`
@@ -44,14 +24,14 @@ const DescriptionWrapper = styled.div`
 `;
 
 const BookImage = styled.img`
-  width: 7rem;
-  height: 12rem;
-  margin-bottom: ${dimensions.xs_2};
+  width: 5rem;
+  height: 7.5rem;
   align-self: center;
+  margin-right: ${dimensions.xs_2};
   @media (max-width: ${dimensions.phone_width}) {
-    width: 5rem;
-    height: 8rem;
-    margin-right: ${dimensions.base};
+    width: 3.5rem;
+    height: 4.5rem;
+    margin-right: ${dimensions.xs_1};
   }
 `;
 
@@ -61,6 +41,9 @@ const TitleBook = styled.h3`
   font-size: ${dimensions.sm};
   line-height: ${dimensions.base};
   color: ${colors.main_black};
+  @media (max-width: ${dimensions.phone_width}) {
+    font-size: ${dimensions.xs_1};
+  }
 `;
 
 const DescriptionBook = styled.p`
@@ -70,9 +53,13 @@ const DescriptionBook = styled.p`
   line-height: ${dimensions.base};
   color: ${colors.description_gray};
   margin: ${dimensions.xs_2} 0;
+  @media (max-width: ${dimensions.phone_width}) {
+    font-size: ${dimensions.xs_1};
+  }
 `;
 
-const BookCard: FC<IBookCardProps> = ({
+const SuggestionBookCard: FC<IProps> = ({
+  removeSuggestionSearchWindow,
   src = '',
   title = '',
   author = '',
@@ -84,6 +71,7 @@ const BookCard: FC<IBookCardProps> = ({
   const navigate = useNavigate();
   const handleItemRedirect = () => {
     navigate(`/item/${id}`);
+    removeSuggestionSearchWindow();
   };
 
   return (
@@ -98,4 +86,4 @@ const BookCard: FC<IBookCardProps> = ({
   );
 };
 
-export default BookCard;
+export default SuggestionBookCard;

@@ -54,10 +54,6 @@ export const WrapperInput = styled.div`
   @media (max-width: ${dimensions.tablet_width}) {
     width: 100%;
   }
-
-  @media (max-width: ${dimensions.phone_width}) {
-    width: 70%;
-  }
 `;
 
 interface ISearchParams {
