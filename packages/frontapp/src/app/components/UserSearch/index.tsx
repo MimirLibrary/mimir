@@ -29,6 +29,7 @@ const UserSearch: FC<IProps> = ({ setActive }) => {
     itemstaken: [],
     sortby: [],
   };
+
   const handleResetClick = () => {
     filterItems?.map((item) =>
       item?.subAttributes.forEach((subItem) => (subItem.checked = false))
@@ -36,6 +37,7 @@ const UserSearch: FC<IProps> = ({ setActive }) => {
     setActive(false);
     navigate(RoutesTypes.READERS);
   };
+
   const radioBtnHandler = (
     attributes: Attribute[],
     type: string,
@@ -54,6 +56,7 @@ const UserSearch: FC<IProps> = ({ setActive }) => {
       }
     }
   };
+
   const checkBoxHandler = (attribute: Attribute) =>
     (attribute.checked = !attribute.checked);
 
@@ -66,6 +69,7 @@ const UserSearch: FC<IProps> = ({ setActive }) => {
       )
     );
   });
+
   useEffect(() => {
     if (applyFilters) {
       navigate({
@@ -76,6 +80,7 @@ const UserSearch: FC<IProps> = ({ setActive }) => {
     }
     setApplyFilters(false);
   }, [applyFilters]);
+
   return (
     <SearchModal
       attributes={filterItems}

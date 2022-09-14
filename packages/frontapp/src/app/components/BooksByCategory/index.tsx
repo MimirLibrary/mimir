@@ -9,6 +9,7 @@ import BackButton from '../BackButton';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import { locationIds } from '../../store/slices/userSlice';
 import ErrorType500 from '../ErrorType500';
+import { toast } from 'react-toastify';
 
 type IMaterial =
   | null
@@ -22,11 +23,17 @@ const BooksByCategory = () => {
   const locations = useAppSelector(locationIds);
   const [searchParams] = useSearchParams();
   const { category } = useParams();
-  const { data, loading } = useGetAllMaterialsQuery({
+  const { data, loading, error } = useGetAllMaterialsQuery({
     variables: { locations },
   });
 
   const [filteredData, setFilteredData] = useState(data?.getAllMaterials);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message);
+    }
+  }, [error]);
 
   useEffect(() => {
     const authors = searchParams.getAll('authors');

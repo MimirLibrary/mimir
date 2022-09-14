@@ -27,6 +27,7 @@ import SingleUser from '../components/UserList/SingleUser';
 import { IClaimHistory } from '../models/helperFunctions/claimHistory';
 import { getDates, isOverdue } from '../models/helperFunctions/converTime';
 import { locationIds } from '../store/slices/userSlice';
+import { toast } from 'react-toastify';
 
 export const ButtonGroup = styled.div`
   display: flex;
@@ -96,17 +97,19 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
   const { t } = useTranslation();
   const { id, userRole } = useAppSelector((state) => state.user);
   const locations = useAppSelector(locationIds);
-  const { data, loading } = useGetMaterialByIdQuery({
+  const { data, loading, error } = useGetMaterialByIdQuery({
     variables: { id: item_id! },
   });
-  const [getStatusesByMaterial] = useGetStatusesByMaterialLazyQuery({
-    variables: {
-      material_id: item_id!,
-    },
-  });
-  const { data: getAllMaterials } = useGetAllMaterialsQuery({
-    variables: { locations },
-  });
+  const [getStatusesByMaterial, { error: getStatusesError }] =
+    useGetStatusesByMaterialLazyQuery({
+      variables: {
+        material_id: item_id!,
+      },
+    });
+  const { data: getAllMaterials, error: getAllMaterialsError } =
+    useGetAllMaterialsQuery({
+      variables: { locations },
+    });
   const filteredHistory = useMemo(
     () =>
       claimHistory?.filter((item) =>
@@ -139,6 +142,12 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
       setClaimHistory(data?.getStatusesByMaterial);
     });
   }, []);
+
+  useEffect(() => {
+    if (error || getAllMaterialsError || getStatusesError) {
+      toast.error(error || getAllMaterialsError || getStatusesError);
+    }
+  }, [error]);
 
   if (loading) return <h1>Loading...</h1>;
 

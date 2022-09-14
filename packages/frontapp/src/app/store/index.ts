@@ -11,11 +11,13 @@ import {
   REGISTER,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 
 const persistConfig = {
   key: 'root',
   storage,
   whitelist: ['tabs', 'user'],
+  stateReconciler: autoMergeLevel2,
 };
 
 const persistedReducer = persistReducer<RootReducer>(
