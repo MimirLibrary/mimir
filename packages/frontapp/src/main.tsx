@@ -18,19 +18,19 @@ import ErrorBoundary from './app/components/ErrorBoundary';
 ReactDOM.render(
   <StrictMode>
     <Provider store={store}>
-      <ErrorBoundary>
-        <GoogleOAuthProvider clientId="599384179420-k6tsfpgst2fsgp39iq8cdcb15pdrokih.apps.googleusercontent.com">
-          <ApolloProvider client={client}>
-            <PersistGate loading={null} persistor={persist}>
-              <ThemeProvider theme={theme}>
-                <BrowserRouter>
+      <GoogleOAuthProvider clientId="599384179420-k6tsfpgst2fsgp39iq8cdcb15pdrokih.apps.googleusercontent.com">
+        <ApolloProvider client={client}>
+          <PersistGate loading={null} persistor={persist}>
+            <ThemeProvider theme={theme}>
+              <BrowserRouter>
+                <ErrorBoundary>
                   <App />
-                </BrowserRouter>
-              </ThemeProvider>
-            </PersistGate>
-          </ApolloProvider>
-        </GoogleOAuthProvider>
-      </ErrorBoundary>
+                </ErrorBoundary>
+              </BrowserRouter>
+            </ThemeProvider>
+          </PersistGate>
+        </ApolloProvider>
+      </GoogleOAuthProvider>
     </Provider>
   </StrictMode>,
   document.getElementById('root')

@@ -10,6 +10,7 @@ import Search from '../Search';
 import { setSearchReaders } from '../../store/slices/readersSlice';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import { locationIds } from '../../store/slices/userSlice';
+import { toast } from 'react-toastify';
 
 const SearchByUserName = () => {
   const [search, setSearch] = useState<string>('');
@@ -17,13 +18,17 @@ const SearchByUserName = () => {
   const debounceSearch = useDebounce<string>(search, 600);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { data } = useGetAllPersonsQuery({
+  const { data, error } = useGetAllPersonsQuery({
     variables: {
       username: debounceSearch,
       locations,
     },
     skip: !debounceSearch,
   });
+
+  useEffect(() => {
+    if (error) toast.error(error);
+  }, [error]);
 
   useEffect(() => {
     if (data) {

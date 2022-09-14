@@ -9,6 +9,7 @@ import { useDebounce } from '../../hooks/useDebounce';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import Search from '../Search';
 import { locationIds } from '../../store/slices/userSlice';
+import { toast } from 'react-toastify';
 
 const SearchByBookOrAuthor: FC<{ path: string }> = ({ path }) => {
   const [search, setSearch] = useState<string>('');
@@ -16,10 +17,15 @@ const SearchByBookOrAuthor: FC<{ path: string }> = ({ path }) => {
   const debounceSearch = useDebounce<string>(search, 600);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { data } = useSearchOfMaterialsQuery({
+
+  const { data, error } = useSearchOfMaterialsQuery({
     variables: { search: debounceSearch, locations },
     skip: !debounceSearch,
   });
+
+  useEffect(() => {
+    if (error) toast.error(error.message);
+  }, [error]);
 
   useEffect(() => {
     if (data) {

@@ -13,6 +13,7 @@ import { useAppDispatch } from '../../hooks/useTypedDispatch';
 import { setSearchReaders } from '../../store/slices/readersSlice';
 import { IReader } from '../../types';
 import { locationIds } from '../../store/slices/userSlice';
+import { toast } from 'react-toastify';
 
 const ReadersWrapper = styled.div`
   display: flex;
@@ -55,7 +56,7 @@ type MinMaxType = {
 const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
   const locations = useAppSelector(locationIds);
   const [minMax, setMinMax] = useState<MinMaxType[]>([]);
-  const { data, loading } = useGetAllPersonsQuery({
+  const { data, loading, error } = useGetAllPersonsQuery({
     variables: { locations: locations },
     fetchPolicy: 'cache-and-network',
   });
@@ -131,6 +132,13 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
   useEffect(() => {
     if (data) dispatch(setSearchReaders(data?.getAllPersons));
   }, [data]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message);
+    }
+  }, [error]);
+
   if (loading) return <h1>{t('Loading')}</h1>;
 
   return (

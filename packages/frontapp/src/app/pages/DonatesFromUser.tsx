@@ -14,6 +14,7 @@ import {
 import { t } from 'i18next';
 import { IMaterial } from '../types';
 import { locationIds } from '../store/slices/userSlice';
+import { toast } from 'react-toastify';
 
 interface TitleProps {
   flex?: number;
@@ -41,7 +42,7 @@ const Column = styled.h4<TitleProps>`
 `;
 const DonatesFromUser = () => {
   const locations = useAppSelector(locationIds);
-  const { data } = useGetAllMaterialsQuery({
+  const { data, error } = useGetAllMaterialsQuery({
     variables: { locations },
     fetchPolicy: 'no-cache',
   });
@@ -49,6 +50,7 @@ const DonatesFromUser = () => {
   const [pendingDonates, setPendingDonates] = useState<any>();
   const [shownItems, setShownItems] = useState<any>();
   const [shownId, setShownId] = useState<Array<number>>([]);
+
   useEffect(() => {
     if (data) {
       const pendingDonates = data.getAllMaterials.filter((material: any) => {
@@ -62,11 +64,13 @@ const DonatesFromUser = () => {
       setShownItems(undefined);
     };
   }, [data]);
+
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setShownId([]);
     setShownItems(pendingDonates);
     setSearch(e.target.value);
   };
+
   useEffect(() => {
     setShownItems(
       pendingDonates?.filter((item: any) =>
@@ -74,6 +78,12 @@ const DonatesFromUser = () => {
       )
     );
   }, [shownId]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message);
+    }
+  }, [error]);
 
   return (
     <WrapperInfo>

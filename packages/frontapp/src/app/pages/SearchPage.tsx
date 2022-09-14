@@ -12,6 +12,7 @@ import { getStatus } from '../models/helperFunctions/converTime';
 import ErrorType500 from '../components/ErrorType500';
 import useMaterialFilter from '../hooks/useMaterialFilter';
 import { locationIds } from '../store/slices/userSlice';
+import { toast } from 'react-toastify';
 const ContentWrapper = styled.div`
   margin: 3rem 0 ${dimensions.xl_6};
 `;
@@ -36,7 +37,7 @@ const Topics = styled.h5`
 const SearchPage = () => {
   const locations = useAppSelector(locationIds);
   const [availableMaterial, setAvailableMaterial] = useState<any>([]);
-  const { data, loading } = useGetAllMaterialsQuery({
+  const { data, loading, error } = useGetAllMaterialsQuery({
     variables: { locations },
     fetchPolicy: 'no-cache',
   });
@@ -50,8 +51,17 @@ const SearchPage = () => {
   }, [data]);
 
   const allCategories = useMaterialFilter(availableMaterial, 'category');
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message);
+    }
+  }, [error]);
+
   if (loading) return <h1>Loading...</h1>;
+
   if (!data) return <ErrorType500 />;
+
   return (
     <>
       <MainText>Categories</MainText>
