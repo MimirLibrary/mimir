@@ -1,11 +1,11 @@
 export const migrations = {
   0: (state: any) => {
-    const { location, ...newState } = state;
+    const { location, ...newState } = state.user;
     return {
-      ...newState,
+      ...state,
       user: {
-        ...newState.user,
-        locations: [],
+        ...newState,
+        locations: [location],
       },
     };
   },
