@@ -33,7 +33,7 @@ export interface IUserPayload {
   location: Array<TUserLocation> | TUserLocation;
 }
 
-const initialState: IUserState = {
+export const initialState: IUserState = {
   id: 5,
   isAuth: false,
   username: 'Test UserName',
