@@ -1,5 +1,5 @@
 import { ReactComponent as Home } from '../../../assets/Navbar/Home.svg';
-import { ReactComponent as Search } from '../../../assets/Navbar/Search.svg';
+import { ReactComponent as Library } from '../../../assets/Navbar/Library.svg';
 import { ReactComponent as Book } from '../../../assets/Navbar/Book.svg';
 import { ReactComponent as Donate } from '../../../assets/Navbar/Donate.svg';
 import { ReactComponent as Settings } from '../../../assets/Navbar/Settings.svg';
@@ -14,7 +14,7 @@ import { NavbarItems } from '../../../utils/NavbarItems';
 
 export const navReaderItemsArray = [
   { icon: <Home />, name: NavbarItems.HOME, path: RoutesTypes.HOME },
-  { icon: <Search />, name: NavbarItems.SEARCH, path: RoutesTypes.SEARCH },
+  { icon: <Library />, name: NavbarItems.SEARCH, path: RoutesTypes.SEARCH },
   {
     icon: <DonateToLibrary />,
     name: NavbarItems.DONATE_TO_LIBRARY,
