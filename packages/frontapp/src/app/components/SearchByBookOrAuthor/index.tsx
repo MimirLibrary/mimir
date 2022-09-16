@@ -36,11 +36,7 @@ const SearchByBookOrAuthor: FC<{ path: string }> = ({ path }) => {
   }, [data]);
 
   useEffect(() => {
-    if (search && data?.searchOfMaterials?.length) {
-      setIsShowListSuggestions(true);
-    } else {
-      setIsShowListSuggestions(false);
-    }
+    setIsShowListSuggestions(!!(search && data?.searchOfMaterials?.length));
   }, [debounceSearch, data]);
 
   const removeSuggestionSearchWindow = useCallback(() => {

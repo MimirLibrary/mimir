@@ -28,12 +28,12 @@ const WrapperList = styled.div`
   }
 `;
 
-interface IProps {
+export interface IPropsSearchSuggestions {
   materials: SearchOfMaterialsQuery['searchOfMaterials'];
   removeSuggestionSearchWindow: () => void;
 }
 
-const SearchSuggestions: FC<IProps> = ({
+const SearchSuggestions: FC<IPropsSearchSuggestions> = ({
   materials,
   removeSuggestionSearchWindow,
 }) => {
@@ -41,23 +41,24 @@ const SearchSuggestions: FC<IProps> = ({
 
   useOnClickOutside(ref, removeSuggestionSearchWindow);
 
+  if (!materials || !materials.length) return null;
+
   return (
-    <Wrapper ref={ref}>
+    <Wrapper ref={ref} data-testid="wrapper">
       <WrapperList>
-        {materials &&
-          materials.map((material) => (
-            <SuggestionBookCard
-              key={material?.id}
-              src={material?.picture}
-              id={material?.id}
-              status={material?.statuses.at(-1)?.status}
-              date={material?.statuses.at(-1)?.created_at}
-              title={material?.title}
-              category={material?.category}
-              author={material?.author}
-              removeSuggestionSearchWindow={removeSuggestionSearchWindow}
-            />
-          ))}
+        {materials.map((material) => (
+          <SuggestionBookCard
+            key={material?.id}
+            src={material?.picture}
+            id={material?.id}
+            status={material?.statuses.slice(-1)[0]?.status}
+            date={material?.statuses.slice(-1)[0]?.created_at}
+            title={material?.title}
+            category={material?.category}
+            author={material?.author}
+            removeSuggestionSearchWindow={removeSuggestionSearchWindow}
+          />
+        ))}
       </WrapperList>
     </Wrapper>
   );

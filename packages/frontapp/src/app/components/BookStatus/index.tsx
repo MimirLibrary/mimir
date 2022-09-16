@@ -4,8 +4,6 @@ import {
   StyledBookStatus,
   StyledBookStatusWrapper,
 } from '../../globalUI/Status';
-import { useLocation } from 'react-router-dom';
-import { RoutesTypes } from '../../../utils/routes';
 import { StatusTypes } from '@mimir/global-types';
 import { t } from 'i18next';
 
@@ -23,7 +21,7 @@ const BookStatus: FC<IBookStatusProps> = ({ status, date }) => {
         setStatusText('');
         break;
       case StatusTypes.FREE:
-        setStatusText('On the shelf');
+        setStatusText(t('Statuses.Free'));
         break;
       case StatusTypes.BUSY: {
         const day = `${getDates(date).returnDate.getDate()}`.padStart(2, '0');
