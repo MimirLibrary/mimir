@@ -1,4 +1,4 @@
-import { FC, memo } from 'react';
+import { FC } from 'react';
 import styled from '@emotion/styled';
 import Navbar from '../Navbar';
 import Header from '../Header';
@@ -15,7 +15,7 @@ interface IStyledSidebarProps {
 
 const StyledSidebar = styled.aside<IStyledSidebarProps>`
   position: relative;
-  z-index: 1000;
+  z-index: 1;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -48,4 +48,4 @@ const Sidebar: FC<IProps> = ({ isSidebarActive, hideSidebar }) => {
   );
 };
 
-export default memo(Sidebar);
+export default Sidebar;

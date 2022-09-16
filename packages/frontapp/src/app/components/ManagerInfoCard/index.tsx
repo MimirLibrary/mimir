@@ -27,6 +27,13 @@ export const WrapperCard = styled.div`
   border-radius: ${dimensions.xs_1};
   padding: ${dimensions.xl_2} ${dimensions.xl_2} ${dimensions.xl_3}
     ${dimensions.xl_2};
+  @media (max-width: ${dimensions.tablet_width}) {
+    flex-wrap: wrap;
+    min-height: 467px;
+    :first-of-type {
+      margin-bottom: ${dimensions.xl_3};
+    }
+  }
 `;
 
 export const Title = styled.p`
@@ -178,6 +185,7 @@ const TitleEmpty = styled.h3<{ top: string }>`
   position: relative;
   top: ${(props) => props.top};
   z-index: 1;
+  text-align: center;
 `;
 
 const ManagerInfoCard: FC<IManagerInfoCard> = ({
@@ -202,7 +210,9 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
             <WrapperForEmptyBlock>
               <WrapperCircle />
               <img src={overdue_placeholder} alt="overdue_placeholder" />
-              <TitleEmpty top="45px">Everything seems to be ok</TitleEmpty>
+              <TitleEmpty top="45px">
+                {t('PlaceholderTitle.Overdue')}
+              </TitleEmpty>
             </WrapperForEmptyBlock>
           ) : (
             fieldsOverdue?.slice(0, 3).map((field) => (
@@ -261,7 +271,7 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
             <WrapperForEmptyBlock>
               <WrapperCircle />
               <img src={donate_placeholder} alt="donate_placeholder" />
-              <TitleEmpty top="20px">No donations</TitleEmpty>
+              <TitleEmpty top="20px">{t('PlaceholderTitle.Donate')}</TitleEmpty>
             </WrapperForEmptyBlock>
           ) : (
             fieldsDonate?.slice(0, 3).map((field) => (

@@ -61,15 +61,26 @@ const WrapperForEmptyBlock = styled.div`
     position: relative;
     z-index: 1;
   }
+  @media (max-width: ${dimensions.tablet_width}) {
+    img {
+      height: 15rem;
+      max-width: 15rem;
+    }
+  }
 `;
 
 const WrapperCircle = styled.div`
   border-radius: 50%;
-  height: 410px;
-  max-width: 410px;
+  height: 25.5rem;
+  max-width: 25.5rem;
   width: 100%;
   background-color: #f2f6ff;
   position: absolute;
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    height: 20rem;
+    max-width: 20rem;
+  }
 `;
 
 const TitleEmpty = styled.h3<{ top: string }>`
@@ -80,6 +91,7 @@ const TitleEmpty = styled.h3<{ top: string }>`
   position: relative;
   top: ${(props) => props.top};
   z-index: 1;
+  text-align: center;
 `;
 
 const answers = [
@@ -130,8 +142,8 @@ const NotificationList: FC<NotificationList> = ({ fieldsNotification }) => {
               <WrapperForEmptyBlock>
                 <WrapperCircle />
                 <img src={notification_placeholder} alt="donate_placeholder" />
-                <TitleEmpty top="40px">
-                  There are no notifications for you
+                <TitleEmpty top="50px">
+                  {t('PlaceholderTitle.Notifications')}
                 </TitleEmpty>
               </WrapperForEmptyBlock>
             ) : (
