@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { dimensions, colors } from '@mimir/ui-kit';
 import { Dispatch, FC, SetStateAction, useState } from 'react';
 import Button from '../Button';
-
+import CheckBox from '../CheckBox';
 const Filters = styled.div`
   font-weight: 700;
   font-size: ${dimensions.xl_2};
@@ -26,6 +26,7 @@ const AttributeWrapper = styled.div`
 `;
 
 const OneCategory = styled.div`
+  line-height: 1.5;
   display: flex;
   gap: ${dimensions.xs_2};
   cursor: pointer;
@@ -44,11 +45,6 @@ const ButtonWrapper = styled.div`
   display: flex;
   justify-content: space-around;
   gap: ${dimensions.base};
-`;
-
-const StyledCheckBox = styled.input`
-  width: ${dimensions.lg};
-  height: ${dimensions.lg};
 `;
 
 export type ItemsType = {
@@ -98,7 +94,7 @@ const SearchModal: FC<IProps> = ({
               <OneCategory key={attribute.id}>
                 {attribute.title}
                 {attribute.numberOfItems && <> - {attribute.numberOfItems}</>}
-                <StyledCheckBox
+                <CheckBox
                   type={item.inputType}
                   name={item.title.toLowerCase()}
                   value={attribute.title}
@@ -123,7 +119,7 @@ const SearchModal: FC<IProps> = ({
                   <OneCategory key={attribute.id}>
                     {attribute.title}{' '}
                     {attribute.numberOfItems && `- ${attribute.numberOfItems}`}
-                    <StyledCheckBox
+                    <CheckBox
                       type={item.inputType}
                       name={item.title.toLowerCase()}
                       value={attribute.title}

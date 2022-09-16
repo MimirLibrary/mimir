@@ -6,7 +6,7 @@ import { TUserLocation } from '../../store/slices/userSlice';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import useOnClickOutside from '../../hooks/useOnClickOutside';
 import Loader from '../Loader';
-
+import CheckBox from '../CheckBox';
 const DropdownContainer = styled.div`
   user-select: none;
   cursor: pointer;
@@ -99,10 +99,6 @@ const OptionList = styled.div`
   }
 `;
 
-const CheckBox = styled.input`
-  width: ${dimensions.xl_2};
-  height: ${dimensions.xl_2};
-`;
 const WrapperOption = styled.div`
   display: flex;
   align-items: center;
@@ -187,10 +183,11 @@ const DropDownLocation: FC<IDropDownLocation> = ({
                   <WrapperOption key={option.value}>
                     <label>{option.value}</label>
                     <CheckBox
-                      type="checkbox"
                       disabled={isDisabled(index)}
                       checked={isChecked(option.id)}
-                      onChange={(e) => handleChangeLocations(e, option)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        handleChangeLocations(e, option)
+                      }
                     />
                   </WrapperOption>
                 ))}
