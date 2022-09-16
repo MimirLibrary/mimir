@@ -9,15 +9,19 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
+  createMigrate,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
+import { migrations } from './migrations';
 
 const persistConfig = {
   key: 'root',
+  version: 0,
   storage,
-  whitelist: ['tabs', 'user'],
+  migrate: createMigrate(migrations, { debug: true }),
   stateReconciler: autoMergeLevel2,
+  whitelist: ['tabs', 'user'],
 };
 
 const persistedReducer = persistReducer<RootReducer>(
