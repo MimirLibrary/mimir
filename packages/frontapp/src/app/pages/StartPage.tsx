@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from '@emotion/styled';
 import { useAppDispatch } from '../hooks/useTypedDispatch';
@@ -19,6 +19,7 @@ import { ReactComponent as GoogleSvg } from '../../assets/google.svg';
 import { ReactComponent as LogoSvg } from '../../assets/Mimir.svg';
 import Button from '../components/Button';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const StartPageBackground = styled.div`
   height: 100vh;
@@ -85,8 +86,11 @@ const StartPage: FC = () => {
   const [preparedUserPayload, setPreparedUserPayload] =
     useState<IUserPayload>();
   const [isSignUp, setIsSignUp] = useState(false);
-  const { data: GetAllLocationsData, loading: GetAllLocationsLoading } =
-    useGetAllLocationsQuery();
+  const {
+    data: GetAllLocationsData,
+    loading: GetAllLocationsLoading,
+    error: GetAllLocationsError,
+  } = useGetAllLocationsQuery();
   const [addPersonLocation] = useAddPersonLocationMutation();
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
@@ -138,6 +142,12 @@ const StartPage: FC = () => {
     );
     history('/home');
   };
+
+  useEffect(() => {
+    if (GetAllLocationsError) {
+      toast.error(GetAllLocationsError.message);
+    }
+  }, [GetAllLocationsError]);
 
   return (
     <StartPageBackground>

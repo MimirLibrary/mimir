@@ -6,6 +6,7 @@ import { useAppSelector } from '../../hooks/useTypedSelector';
 import { useCreateMessageForManagerMutation } from '@mimir/apollo-client';
 import Dropdown, { IDropdownOption } from '../Dropdown';
 import { TUserLocation } from '../../store/slices/userSlice';
+import { toast } from 'react-toastify';
 
 const Wrapper = styled.div`
   display: flex;
@@ -167,7 +168,7 @@ const AskManagerForm: FC<IPropsAskManagerForm> = ({
         },
       });
     } catch (e) {
-      console.log(e);
+      if (e instanceof Error) toast.error(e.message);
     }
     setDescription('');
     setTitle('');

@@ -19,7 +19,7 @@ import ClaimTable from '../ClaimTable';
 import Notifications from '../Notifications';
 import Modal from '../Modal';
 import ErrorMessage from '../ErrorMessge';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { InputDescription } from '../AskManagerForm';
 import { RolesTypes } from '@mimir/global-types';
 import { toast } from 'react-toastify';
@@ -120,7 +120,11 @@ const Form = styled.form`
 
 const UserCard = () => {
   const { id } = useParams();
-  const { data: OnePerson, loading } = useGetOnePersonQuery({
+  const {
+    data: OnePerson,
+    loading,
+    error,
+  } = useGetOnePersonQuery({
     variables: { id: id! },
   });
   const [setState] = useCreateStateMutation({
@@ -220,6 +224,10 @@ const UserCard = () => {
     setShowWarningBlock(false);
     setShowBlockInput(true);
   };
+
+  useEffect(() => {
+    if (error) toast.error(error.message);
+  }, [error]);
 
   const state = OnePerson?.getOnePerson.states?.slice().pop()?.state;
   if (loading) return <h1>{t('Loading')}</h1>;

@@ -11,6 +11,7 @@ import Search from '../Search';
 import { locationIds } from '../../store/slices/userSlice';
 import SearchSuggestions from '../SearchSuggestions';
 import styled from '@emotion/styled';
+import { toast } from 'react-toastify';
 
 const Wrapper = styled.div`
   position: relative;
@@ -24,10 +25,15 @@ const SearchByBookOrAuthor: FC<{ path: string }> = ({ path }) => {
   const debounceSearch = useDebounce<string>(search, 600);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { data } = useSearchOfMaterialsQuery({
+
+  const { data, error } = useSearchOfMaterialsQuery({
     variables: { search: debounceSearch, locations },
     skip: !debounceSearch,
   });
+
+  useEffect(() => {
+    if (error) toast.error(error.message);
+  }, [error]);
 
   useEffect(() => {
     if (data) {

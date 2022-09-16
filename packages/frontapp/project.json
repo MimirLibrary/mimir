@@ -114,7 +114,7 @@
       "options": {},
       "configurations": {
         "production": {
-            "command": "rsync -avzr --delete dist/packages/frontapp/ root@mimirapp.xyz:/srv/www"
+          "command": "rsync -avzr --delete dist/packages/frontapp/ root@mimirapp.xyz:/srv/www"
         }
       }
     }

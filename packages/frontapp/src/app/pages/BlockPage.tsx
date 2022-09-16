@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ContentModal, WrapperModal } from '../components/Modal';
 import { Description } from '../components/UserCard';
 import { t } from 'i18next';
@@ -9,6 +9,7 @@ import { useAppDispatch } from '../hooks/useTypedDispatch';
 import { useGetReasonOfBlockQuery } from '@mimir/apollo-client';
 import { updateBlocked } from '../store/slices/userSlice';
 import { useAppSelector } from '../hooks/useTypedSelector';
+import { toast } from 'react-toastify';
 
 const SadMimirImage = styled(SadMimir)`
   width: 128px;
@@ -32,7 +33,7 @@ const BlockPage = () => {
   const { blocked, id } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const [blockedState, setBlocked] = useState<boolean>(blocked);
-  const { data, loading } = useGetReasonOfBlockQuery({
+  const { data, loading, error } = useGetReasonOfBlockQuery({
     variables: { id: String(id) },
   });
   if (!loading) {
@@ -44,6 +45,12 @@ const BlockPage = () => {
       setBlocked(!blocked);
     }
   }
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message);
+    }
+  }, [error]);
 
   return (
     <div>

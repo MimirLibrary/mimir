@@ -5,7 +5,7 @@ import {
   useRemovePersonLocationMutation,
 } from '@mimir/apollo-client';
 import { colors, dimensions } from '@mimir/ui-kit';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Dropdown, { IDropdownOption } from '../components/Dropdown';
 import { TextArticle } from '../globalUI/TextArticle';
@@ -18,6 +18,7 @@ import {
   TUserLocation,
 } from '../store/slices/userSlice';
 import DropDownLocation from '../components/DropdownLocation';
+import { toast } from 'react-toastify';
 
 export type TLanguage = {
   locale: string;
@@ -77,8 +78,11 @@ const SettingsPage = () => {
     t,
     i18n: { changeLanguage, language },
   } = useTranslation();
-  const { data: GetAllLocationsData, loading: GetAllLocationsLoading } =
-    useGetAllLocationsQuery();
+  const {
+    data: GetAllLocationsData,
+    loading: GetAllLocationsLoading,
+    error: GetAllLocationsError,
+  } = useGetAllLocationsQuery();
   const [addPersonLocation, { loading: addLoading }] =
     useAddPersonLocationMutation();
   const [removePersonLocation, { loading: removeLoading }] =
@@ -118,6 +122,12 @@ const SettingsPage = () => {
     },
     [id]
   );
+
+  useEffect(() => {
+    if (GetAllLocationsError) {
+      toast.error(GetAllLocationsError.message);
+    }
+  }, [GetAllLocationsError]);
 
   return (
     <WrapperSettings>

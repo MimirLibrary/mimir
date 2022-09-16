@@ -1,13 +1,8 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
-import { Dispatch } from 'redux';
-import { connect } from 'react-redux';
-import { logout } from '../../store/slices/userSlice';
-import storage from 'redux-persist/lib/storage';
 import ErrorType500 from '../ErrorType500';
 
 interface Props {
   children?: ReactNode;
-  dispatch: Dispatch;
 }
 
 interface IStateError {
@@ -15,27 +10,18 @@ interface IStateError {
 }
 
 class ErrorBoundary extends Component<Props, IStateError> {
-  public override state: IStateError = {
-    error: false,
-  };
+  constructor(props: Props) {
+    super(props);
+    this.state = { error: false };
+  }
 
   static getDerivedStateFromError(error: Error) {
     return { error: true };
   }
 
-  private updateLocalStorage() {
-    storage.removeItem('persist:root');
-    this.props.dispatch(logout());
-    localStorage.clear();
-    location.reload();
-  }
-
   public override componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    const userInfo = JSON.parse(localStorage.getItem('persist:root')!).user;
-    const userLocation = JSON.parse(userInfo).location;
-    if (!Array.isArray(userLocation)) {
-      this.updateLocalStorage();
-    }
+    console.error(error);
+    console.error(errorInfo);
   }
 
   public override render() {
@@ -46,6 +32,4 @@ class ErrorBoundary extends Component<Props, IStateError> {
   }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({ dispatch });
-
-export default connect(null, mapDispatchToProps)(ErrorBoundary);
+export default ErrorBoundary;
