@@ -1,16 +1,15 @@
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import bookImage from '../../../assets/MOC-data/BookImage.png';
 import { useNavigate } from 'react-router-dom';
-import { getDates, getStatus } from '../../models/helperFunctions/converTime';
 import { DateTime } from '@mimir/global-types';
-import { StyledBookStatus } from '../../globalUI/Status';
+import BookStatus from '../BookStatus';
 export interface IBookCardProps {
   src?: string | null;
   title?: string;
   date?: DateTime;
-  status?: any;
+  status?: string;
   author?: string;
   category?: string;
   id?: string;
@@ -36,11 +35,6 @@ const BookCardWrapper = styled.div`
     height: min-content;
     width: 100%;
   }
-`;
-
-const StyledStatus = styled(StyledBookStatus)`
-  font-size: ${dimensions.base};
-  margin-top: ${dimensions.base};
 `;
 
 const DescriptionWrapper = styled.div`
@@ -94,47 +88,14 @@ const BookCard: FC<IBookCardProps> = ({
   const handleItemRedirect = () => {
     navigate(`/item/${id}`);
   };
-  const [statusText, setStatusText] = useState('');
-  const currentStatus = getStatus(status?.status, date);
-  useEffect(() => {
-    console.log(currentStatus);
-    switch (currentStatus) {
-      case 'Free':
-        setStatusText('On the shelf');
-        break;
-      case 'Busy': {
-        const day = `${getDates(date).returnDate.getDate()}`.padStart(2, '0');
-        const month = `${getDates(date).returnDate.getMonth() + 1}`.padStart(
-          2,
-          '0'
-        );
-        setStatusText(`Return till: ${day}.${month}`);
-        break;
-      }
-      case 'Prolong': {
-        const day = `${getDates(date).returnDate.getDate()}`.padStart(2, '0');
-        const month = `${getDates(date).returnDate.getMonth() + 1}`.padStart(
-          2,
-          '0'
-        );
-        setStatusText(`Return till: ${day}.${month}`);
-        break;
-      }
-      case 'Overdue':
-        setStatusText('Overdue');
-        break;
-      default:
-        setStatusText('');
-        break;
-    }
-  }, [currentStatus]);
+
   return (
     <BookCardWrapper onClick={handleItemRedirect}>
       <BookImage src={src || bookImage} />
       <DescriptionWrapper>
         <TitleBook>{title}</TitleBook>
         <DescriptionBook>{category + ' / ' + author}</DescriptionBook>
-        <StyledStatus status={currentStatus}>{statusText}</StyledStatus>
+        <BookStatus status={status} date={date} />
       </DescriptionWrapper>
     </BookCardWrapper>
   );
