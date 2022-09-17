@@ -1,6 +1,6 @@
 export enum NavbarItems {
   HOME = 'Home',
-  SEARCH = 'Search',
+  SEARCH = 'Library',
   HISTORY_OF_CLAIM = 'History of claim',
   HISTORY_OF_DONATE = 'History of donate',
   SETTINGS = 'Settings',

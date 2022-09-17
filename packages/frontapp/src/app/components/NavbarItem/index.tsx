@@ -44,7 +44,7 @@ const StyledLink = styled(Link)<IStyle>`
   }
 
   :hover svg {
-    fill: ${colors.bg_secondary};
+    filter: invert(100%);
   }
 
   :hover p {
@@ -80,8 +80,8 @@ const StyledIcon = styled.div<IStyle>`
     margin-right: ${dimensions.xs_1};
     width: ${dimensions.base_2};
     height: ${dimensions.base_2};
-    fill: ${(props) =>
-      JSON.parse(props.primary) ? colors.bg_secondary : colors.main_black};
+    filter: ${(props) =>
+      JSON.parse(props.primary) ? 'invert(1)' : 'invert(0)'};
   }
 `;
 

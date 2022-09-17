@@ -34,11 +34,11 @@ export interface IUserPayload {
 }
 
 const initialState: IUserState = {
-  id: 5,
+  id: 0,
   isAuth: false,
-  username: 'Test UserName',
+  username: '',
   avatar: '',
-  email: 'example@email.com',
+  email: '',
   userRole: RolesTypes.READER,
   blocked: false,
   locations: [],
@@ -66,6 +66,12 @@ const userSlice = createSlice({
       state.blocked = action.payload ? action.payload : false;
     },
     logout: (state: IUserState) => {
+      state.id = 0;
+      state.username = '';
+      state.email = '';
+      state.avatar = '';
+      state.blocked = false;
+      state.userRole = RolesTypes.READER;
       state.locations = [];
       state.isAuth = false;
     },

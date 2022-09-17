@@ -56,11 +56,8 @@ const BooksByCategory = () => {
       !categories.includes('All') && (allBooks = filter);
     }
     if (items?.length !== 0) {
-      const correctItemsArray: string[] = items.map((type: string) =>
-        type.slice(0, -1)
-      );
       const filter = allBooks?.filter(
-        (book: IMaterial) => book && correctItemsArray?.includes(book.type)
+        (book: IMaterial) => book && items?.includes(book.type)
       );
       allBooks = filter;
     }
