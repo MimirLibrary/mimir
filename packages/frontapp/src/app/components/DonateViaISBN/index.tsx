@@ -13,6 +13,7 @@ import {
   GetMaterialFromMetadataDocument,
   GetMaterialFromMetadataQuery,
 } from '@mimir/apollo-client';
+import { transformISBNcode } from '../../models/helperFunctions/transformISBNcode';
 
 const Wrapper = styled.section`
   width: 100%;
@@ -114,14 +115,14 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
   };
 
   const handleOnDetectedScanner = async (code: string) => {
-    setValueIsISBN(code);
-    dispatch(setIdentifier(code));
+    setValueIsISBN(transformISBNcode(code));
+    dispatch(setIdentifier(transformISBNcode(code)));
     if (isMounted) {
       try {
         setIsLoading(true);
         const metaDataOfMaterial = await client.query({
           query: GetMaterialFromMetadataDocument,
-          variables: { identifier: code },
+          variables: { identifier: transformISBNcode(code) },
         });
         setDataToState(metaDataOfMaterial.data);
         setIsLoading(false);
@@ -139,13 +140,13 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    dispatch(setIdentifier(valueOfISBN));
+    dispatch(setIdentifier(transformISBNcode(valueOfISBN)));
     if (isMounted) {
       try {
         setIsLoading(true);
         const metaDataOfMaterial = await client.query({
           query: GetMaterialFromMetadataDocument,
-          variables: { identifier: valueOfISBN },
+          variables: { identifier: transformISBNcode(valueOfISBN) },
         });
         setDataToState(metaDataOfMaterial.data);
         setIsLoading(false);

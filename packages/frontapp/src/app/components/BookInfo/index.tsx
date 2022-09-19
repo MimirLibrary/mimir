@@ -40,6 +40,7 @@ import { WrapperInput } from '../Search';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { RolesTypes } from '@mimir/global-types';
 import Dropdown, { IDropdownOption } from '../Dropdown';
+import { transformISBNcode } from '../../models/helperFunctions/transformISBNcode';
 export const BookHolder = styled.div`
   width: 100%;
   top: 11.5rem;
@@ -273,12 +274,14 @@ const BookInfo: FC<IBookInfoProps> = ({
         person_id: id,
       },
     });
+
   const [createNotificationMutation] = useCreateNotificationMutation({
     refetchQueries: [GetNotificationsByPersonDocument],
   });
   const [removeNotificationMutation] = useRemoveNotificationMutation({
     refetchQueries: [GetNotificationsByPersonDocument],
   });
+
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [statusText, setStatusText] = useState<string>('');
@@ -359,7 +362,7 @@ const BookInfo: FC<IBookInfoProps> = ({
     await claimBook({
       variables: {
         person_id: id,
-        identifier: valueIsISBN,
+        identifier: transformISBNcode(valueIsISBN),
       },
     });
 
@@ -812,4 +815,4 @@ const BookInfo: FC<IBookInfoProps> = ({
   );
 };
 
-export default React.memo(BookInfo);
+export default BookInfo;

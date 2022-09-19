@@ -90,6 +90,7 @@ export class MaterialService {
   ) {
     const paginationPage = (offset - 1) * limit;
     const elements = await Material.createQueryBuilder('material')
+      .leftJoinAndSelect('material.status', 'status')
       .where('material.location_id IN (:...locations)', { locations })
       .orderBy('material.created_at', 'ASC')
       .limit(limit || null)

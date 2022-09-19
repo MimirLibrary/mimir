@@ -95,6 +95,7 @@ const HomePage: FC = () => {
   } = useGetAllTakenItemsQuery({
     variables: { person_id: id },
     skip: userRole === RolesTypes.MANAGER,
+    fetchPolicy: 'no-cache',
   });
 
   const {
