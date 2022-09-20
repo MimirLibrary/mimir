@@ -18,7 +18,7 @@ const BookStatus: FC<IBookStatusProps> = ({ status, date }) => {
   const bookStatus = useBookStatus(currentStatus, date, pathname);
 
   return (
-    <StyledBookStatusWrapper status={currentStatus}>
+    <StyledBookStatusWrapper status={currentStatus} data-testid="bookStatus">
       <StyledBookStatus status={currentStatus}>{bookStatus}</StyledBookStatus>
     </StyledBookStatusWrapper>
   );
