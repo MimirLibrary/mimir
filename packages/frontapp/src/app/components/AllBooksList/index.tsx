@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import BookCard from '../BookCard';
 import styled from '@emotion/styled';
 import { dimensions } from '@mimir/ui-kit';
-import { Material } from '@mimir/apollo-client';
+import { GetAllMaterialsQuery } from '@mimir/apollo-client';
 const WrapperList = styled.section`
   display: flex;
   gap: ${dimensions.base_2};
@@ -14,13 +14,9 @@ const WrapperList = styled.section`
     height: 0;
   }
 `;
-type IMaterial = Pick<
-  Material,
-  'id' | 'title' | 'author' | 'picture' | 'created_at' | 'category'
->;
 
 interface IAllBooksListProps {
-  items: Array<IMaterial | null> | undefined;
+  items: GetAllMaterialsQuery['getAllMaterials'] | undefined;
   sortingCategory: string | undefined;
 }
 const AllBooksList: FC<IAllBooksListProps> = ({ items, sortingCategory }) => {
@@ -38,6 +34,7 @@ const AllBooksList: FC<IAllBooksListProps> = ({ items, sortingCategory }) => {
                 author={item?.author}
                 category={item?.category}
                 date={item?.created_at}
+                status={item?.statuses.slice(-1)[0]?.status}
               />
             )
         )}

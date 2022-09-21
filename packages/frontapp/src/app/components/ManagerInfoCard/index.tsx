@@ -7,6 +7,8 @@ import { RoutesTypes } from '../../../utils/routes';
 import { Link } from 'react-router-dom';
 import { IField, IOverdueItem } from '../../types';
 import { IMaterialDonate } from '../../types/donateList';
+import overdue_placeholder from '../../../assets/overdue_placeholder.png';
+import donate_placeholder from '../../../assets/donate_placeholder.png';
 
 interface IManagerInfoCard {
   type: ManagerCardTypes;
@@ -25,6 +27,13 @@ export const WrapperCard = styled.div`
   border-radius: ${dimensions.xs_1};
   padding: ${dimensions.xl_2} ${dimensions.xl_2} ${dimensions.xl_3}
     ${dimensions.xl_2};
+  @media (max-width: ${dimensions.tablet_width}) {
+    flex-wrap: wrap;
+    min-height: 467px;
+    :first-of-type {
+      margin-bottom: ${dimensions.xl_3};
+    }
+  }
 `;
 
 export const Title = styled.p`
@@ -146,23 +155,65 @@ export const NotificationDescription = styled(FieldDescription)`
   align-self: center;
 `;
 
+const WrapperForEmptyBlock = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+
+  img {
+    position: relative;
+    z-index: 1;
+  }
+`;
+
+const WrapperCircle = styled.div`
+  border-radius: 50%;
+  height: 270px;
+  max-width: 270px;
+  width: 100%;
+  background-color: #f2f6ff;
+  position: absolute;
+`;
+
+const TitleEmpty = styled.h3<{ top: string }>`
+  font-weight: 700;
+  font-size: ${dimensions.xl};
+  line-height: ${dimensions.xl_2};
+  color: ${colors.main_black};
+  position: relative;
+  top: ${(props) => props.top};
+  z-index: 1;
+  text-align: center;
+`;
+
 const ManagerInfoCard: FC<IManagerInfoCard> = ({
   type,
   fieldsOverdue,
   fieldsDonate,
 }) => {
-  const [isAnswerModal, setIsAnswerModal] = useState<boolean>(false);
   return (
     <>
       {fieldsOverdue && (
         <WrapperCard>
-          <Title>
-            {t(`ManagerInfoCard.Title.${type}`) +
-              ` — (${fieldsOverdue?.length})`}
-          </Title>
-          <Description>{t(`ManagerInfoCard.Description.${type}`)}</Description>
+          <div>
+            <Title>
+              {t(`ManagerInfoCard.Title.${type}`) +
+                ` — (${fieldsOverdue?.length})`}
+            </Title>
+            <Description>
+              {t(`ManagerInfoCard.Description.${type}`)}
+            </Description>
+          </div>
           {!fieldsOverdue.length ? (
-            <div>List is empty</div>
+            <WrapperForEmptyBlock>
+              <WrapperCircle />
+              <img src={overdue_placeholder} alt="overdue_placeholder" />
+              <TitleEmpty top="45px">
+                {t('PlaceholderTitle.Overdue')}
+              </TitleEmpty>
+            </WrapperForEmptyBlock>
           ) : (
             fieldsOverdue?.slice(0, 3).map((field) => (
               <FieldWrapper key={field?.id}>
@@ -197,21 +248,31 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
                 ) : null}
               </InlineWrapper>
             </>
-            <OpenLink to={`home/${type.toLowerCase()}`}>
-              {t(`ManagerInfoCard.Link.${type}`)}
-            </OpenLink>
+            {!!fieldsOverdue.length && (
+              <OpenLink to={`home/${type.toLowerCase()}`}>
+                {t(`ManagerInfoCard.Link.${type}`)}
+              </OpenLink>
+            )}
           </WrapperFooter>
         </WrapperCard>
       )}
       {fieldsDonate && (
         <WrapperCard>
-          <Title>
-            {t(`ManagerInfoCard.Title.${type}`) +
-              ` — (${fieldsDonate?.length})`}
-          </Title>
-          <Description>{t(`ManagerInfoCard.Description.${type}`)}</Description>
+          <div>
+            <Title>
+              {t(`ManagerInfoCard.Title.${type}`) +
+                ` — (${fieldsDonate?.length})`}
+            </Title>
+            <Description>
+              {t(`ManagerInfoCard.Description.${type}`)}
+            </Description>
+          </div>
           {!fieldsDonate.length ? (
-            <div>List is empty</div>
+            <WrapperForEmptyBlock>
+              <WrapperCircle />
+              <img src={donate_placeholder} alt="donate_placeholder" />
+              <TitleEmpty top="20px">{t('PlaceholderTitle.Donate')}</TitleEmpty>
+            </WrapperForEmptyBlock>
           ) : (
             fieldsDonate?.slice(0, 3).map((field) => (
               <FieldWrapper key={field?.id}>
@@ -256,9 +317,11 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
                 ) : null}
               </InlineWrapper>
             </>
-            <OpenLink to={`${RoutesTypes.DONATES_FROM_USER}`}>
-              {t(`ManagerInfoCard.Link.${type}`)}
-            </OpenLink>
+            {!!fieldsDonate.length && (
+              <OpenLink to={`${RoutesTypes.DONATES_FROM_USER}`}>
+                {t(`ManagerInfoCard.Link.${type}`)}
+              </OpenLink>
+            )}
           </WrapperFooter>
         </WrapperCard>
       )}

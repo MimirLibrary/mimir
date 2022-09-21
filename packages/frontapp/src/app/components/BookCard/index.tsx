@@ -1,14 +1,14 @@
 import { FC } from 'react';
-import BookStatus from '../BookStatus';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import bookImage from '../../../assets/MOC-data/BookImage.png';
 import { useNavigate } from 'react-router-dom';
-
+import { DateTime } from '@mimir/global-types';
+import BookStatus from '../BookStatus';
 export interface IBookCardProps {
   src?: string | null;
   title?: string;
-  date?: any;
+  date?: DateTime;
   status?: string;
   author?: string;
   category?: string;
@@ -56,6 +56,9 @@ const BookImage = styled.img`
 `;
 
 const TitleBook = styled.h3`
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
   max-width: 10rem;
   font-weight: 500;
   font-size: ${dimensions.sm};
@@ -85,11 +88,12 @@ const BookCard: FC<IBookCardProps> = ({
   const handleItemRedirect = () => {
     navigate(`/item/${id}`);
   };
+
   return (
-    <BookCardWrapper onClick={handleItemRedirect}>
-      <BookImage src={src || bookImage} />
+    <BookCardWrapper onClick={handleItemRedirect} data-testid="bookCard">
+      <BookImage src={src || bookImage} data-testid="bookImage" />
       <DescriptionWrapper>
-        <TitleBook>{title}</TitleBook>
+        <TitleBook data-testid="bookTitle">{title}</TitleBook>
         <DescriptionBook>{category + ' / ' + author}</DescriptionBook>
         <BookStatus status={status} date={date} />
       </DescriptionWrapper>

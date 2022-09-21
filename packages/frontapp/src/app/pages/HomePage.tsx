@@ -80,9 +80,12 @@ const NotificationsWrapper = styled.div`
 
 const OverdueDonatesWrapper = styled.div`
   display: flex;
-  height: 467px;
+  min-height: 467px;
   flex-direction: row;
   column-gap: 18px;
+  @media (max-width: ${dimensions.tablet_width}) {
+    flex-wrap: wrap;
+  }
 `;
 
 const HomePage: FC = () => {

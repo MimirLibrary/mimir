@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BookCard Component renders correctly, with snapshots 1`] = `
+<div
+  class="css-pzfxll"
+  data-testid="bookCard"
+>
+  <img
+    class="css-1yippde"
+    data-testid="bookImage"
+    src="BookImage.png"
+  />
+  <div
+    class="css-1ddu512"
+  >
+    <h3
+      class="css-1t65b4d"
+      data-testid="bookTitle"
+    >
+      The test book
+    </h3>
+    <p
+      class="css-1fgm40u"
+    >
+      Test / Test
+    </p>
+    <div
+      class="css-752oce"
+      data-testid="bookStatus"
+    >
+      <p
+        class="css-1l5gfrd"
+      >
+        Statuses.Free
+      </p>
+    </div>
+  </div>
+</div>
+`;
