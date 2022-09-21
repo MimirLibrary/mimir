@@ -6,6 +6,7 @@ import { Connection } from 'typeorm';
 import { ErrorBook } from '../../errors';
 import { setTimeToProlong } from '../../utils/helpersFunctions/setTimeToProlong';
 import { config } from '../../config';
+import { normalizeIdentifier } from '@mimir/helper-functions';
 
 @Injectable()
 export class ItemService {
@@ -24,8 +25,9 @@ export class ItemService {
     await queryRunner.startTransaction();
     try {
       const { identifier, person_id } = bookInput;
+      const updateIdentifier = normalizeIdentifier(identifier);
       const material = await materialRepository.findOne({
-        where: { identifier },
+        where: { identifier: updateIdentifier },
       });
       if (!material) {
         throw new ErrorBook('This item is not registered in the library');

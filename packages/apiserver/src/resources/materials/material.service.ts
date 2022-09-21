@@ -12,6 +12,7 @@ import { Connection } from 'typeorm';
 import { ErrorBook } from '../../errors';
 import { GraphQLError } from 'graphql';
 import axios from 'axios';
+import { normalizeIdentifier } from '@mimir/helper-functions';
 
 @Injectable()
 export class MaterialService {
@@ -49,18 +50,20 @@ export class MaterialService {
     await queryRunner.startTransaction();
     try {
       const { person_id, ...newMaterialObj } = donateBookInput;
+      const updateIdentifier = normalizeIdentifier(donateBookInput.identifier);
       const isExistMaterial = await materialRepository.findOne({
-        where: { identifier: donateBookInput.identifier },
+        where: { identifier: updateIdentifier },
       });
       if (isExistMaterial) {
         throw new ErrorBook('This material is already exist!');
       }
       const pictureWithIdentifier = this.fileService.moveFileInMainStorage(
         donateBookInput.picture,
-        donateBookInput.identifier
+        updateIdentifier
       );
       const newMaterial = await materialRepository.create({
         ...newMaterialObj,
+        identifier: updateIdentifier,
         is_donated: donateBookInput.role === RolesTypes.READER,
         picture: pictureWithIdentifier,
       });

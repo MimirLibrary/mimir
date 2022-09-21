@@ -1,0 +1,22 @@
+{
+  "sourceRoot": "packages/helper-functions/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/helper-functions/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/helper-functions"],
+      "options": {
+        "jestConfig": "packages/helper-functions/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  }
+}
