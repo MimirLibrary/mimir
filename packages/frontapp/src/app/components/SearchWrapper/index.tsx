@@ -18,6 +18,7 @@ const StyledSearch = styled.div`
   justify-content: start;
   align-items: center;
   width: 100%;
+  position: relative;
 
   @media (max-width: ${dimensions.tablet_width}) {
     justify-content: space-between;

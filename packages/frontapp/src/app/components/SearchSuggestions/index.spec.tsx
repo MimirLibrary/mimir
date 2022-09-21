@@ -1,0 +1,68 @@
+import { StatusTypes } from '@mimir/global-types';
+import { render, screen } from '@testing-library/react';
+import SearchSuggestions from './index';
+import { SearchOfMaterialsQuery } from '@mimir/apollo-client';
+import '@testing-library/jest-dom';
+import { BrowserRouter } from 'react-router-dom';
+
+const mockListOfMaterials: SearchOfMaterialsQuery['searchOfMaterials'] = [
+  {
+    __typename: 'Material',
+    id: '1',
+    author: 'Robert Stevenson',
+    category: 'Horror',
+    created_at: '2022-09-14T04:22:47.953Z',
+    title: 'Dracula',
+    picture: '',
+    statuses: [
+      {
+        __typename: 'Status',
+        id: '1',
+        status: StatusTypes.FREE,
+        created_at: '2022-09-14T04:22:48.078Z',
+        person: {
+          __typename: 'Person',
+          id: '3',
+          username: 'Ivan Uglovec',
+        },
+      },
+    ],
+  },
+];
+
+describe('SearchSuggestionsComponent', () => {
+  it('render with data', () => {
+    render(
+      <SearchSuggestions
+        materials={mockListOfMaterials}
+        removeSuggestionSearchWindow={() => {}}
+      />,
+      { wrapper: BrowserRouter }
+    );
+    expect(screen.getByTestId('wrapper')).toBeInTheDocument();
+    expect(screen.getByText('Dracula')).toBeInTheDocument();
+    expect(screen.getByText(/Horror/)).toBeInTheDocument();
+  });
+
+  it('render without data', () => {
+    render(
+      <SearchSuggestions
+        materials={[]}
+        removeSuggestionSearchWindow={() => {}}
+      />,
+      { wrapper: BrowserRouter }
+    );
+    expect(screen.queryByTestId('wrapper')).toBeNull();
+  });
+
+  it('render when data is null', () => {
+    render(
+      <SearchSuggestions
+        materials={null}
+        removeSuggestionSearchWindow={() => {}}
+      />,
+      { wrapper: BrowserRouter }
+    );
+    expect(screen.queryByTestId('wrapper')).toBeNull();
+  });
+});

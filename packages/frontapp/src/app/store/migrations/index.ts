@@ -1,4 +1,4 @@
-import {MigrationManifest} from "redux-persist/es/types";
+import { MigrationManifest } from 'redux-persist/es/types';
 
 export const migrations: MigrationManifest = {
   0: (state: any) => {
