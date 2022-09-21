@@ -7,10 +7,9 @@ import { InputSearch, StyledSearchIcon, WrapperInput } from '../Search';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import emptyList from '../../../assets/EmptyList.svg';
-import bookImage from '../../../assets/MOC-data/BookImage.png';
-import { StatusTypes } from '@mimir/global-types';
-import { getDates } from '../../models/helperFunctions/converTime';
+import InlineWrapper from './InlineWrapper';
 import { t } from 'i18next';
+import Item from './Item';
 
 const CardWrapper = styled.div`
   display: flex;
@@ -38,6 +37,7 @@ const EmptyShelfWrapper = styled.div`
     margin-top: ${dimensions.base_2};
   }
 `;
+
 const StyledScroll = styled.div`
   width: 100%;
   display: flex;
@@ -88,35 +88,6 @@ const StyledTable = styled.table`
       width: 90px;
     }
   }
-`;
-const InlineWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-const ColumnWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-interface IFieldsTextProps {
-  overdue?: boolean;
-  returned?: boolean;
-  titlee?: boolean;
-  secondary?: boolean;
-}
-
-const FieldsText = styled.p<IFieldsTextProps>`
-  font-weight: ${({ secondary }) => (secondary ? 300 : 500)};
-  font-size: ${({ titlee }) => (titlee ? dimensions.base : dimensions.sm)};
-  color: ${({ overdue, returned, titlee, secondary }) =>
-    titlee || secondary
-      ? colors.main_black
-      : overdue
-      ? colors.problem_red
-      : returned
-      ? colors.free_book
-      : null};
-  margin-bottom: ${dimensions.xs_2};
 `;
 
 interface ISortTextProps {
@@ -192,22 +163,6 @@ const ClaimTable: FC<IClaimTable> = ({ statuses, name }) => {
       );
     } else setShownItems(activeItems);
   };
-  const countReturnDate = (created_at: Date) => {
-    const day = `${getDates(created_at).returnDate.getDate()}`.padStart(2, '0');
-    const month = `${getDates(created_at).returnDate.getMonth() + 1}`.padStart(
-      2,
-      '0'
-    );
-    return `${t('UserCard.Table.ReturnTill')} ${day}.${month}`;
-  };
-  const countReturnedDate = (created_at: Date) => {
-    const day = `${getDates(created_at).startDate.getDate()}`.padStart(2, '0');
-    const month = `${getDates(created_at).returnDate.getMonth() + 1}`.padStart(
-      2,
-      '0'
-    );
-    return `${t('UserCard.Table.ReturnedAt')} ${day}.${month}`;
-  };
   return (
     <div>
       <HeadWrapper>
@@ -254,57 +209,7 @@ const ClaimTable: FC<IClaimTable> = ({ statuses, name }) => {
                   <th>{t('UserCard.Table.Deadline')}</th>
                   <th>{t('UserCard.Table.State')}</th>
                 </tr>
-                {shownItems?.map((status) => (
-                  <tr key={String(status.created_at)}>
-                    <td>
-                      <InlineWrapper>
-                        <img
-                          src={
-                            (status.material?.picture &&
-                              `${process.env['NX_API_ROOT_URL']}/${status.material?.picture}`) ||
-                            bookImage
-                          }
-                        />
-                        <ColumnWrapper>
-                          <FieldsText titlee>
-                            {status.material?.title}
-                          </FieldsText>
-                          <FieldsText
-                            secondary
-                          >{`${status.material?.category} / ${status.material?.author}`}</FieldsText>
-                        </ColumnWrapper>
-                      </InlineWrapper>
-                    </td>
-                    <td>
-                      {status.status !== StatusTypes.FREE ? (
-                        <FieldsText>
-                          {countReturnDate(status.created_at)}
-                        </FieldsText>
-                      ) : (
-                        <FieldsText returned>
-                          {countReturnedDate(status.created_at)}
-                        </FieldsText>
-                      )}
-                    </td>
-                    <td>
-                      {status.status === StatusTypes.FREE ? (
-                        <FieldsText returned>
-                          {t('UserCard.Table.Returned')}
-                        </FieldsText>
-                      ) : status.status === 'Overdue' ? (
-                        <FieldsText overdue>
-                          {t('UserCard.Table.Overdue')}
-                        </FieldsText>
-                      ) : (
-                        <FieldsText>
-                          {status.status === StatusTypes.BUSY
-                            ? t('UserCard.Table.Claim')
-                            : t('UserCard.Table.Prolong')}
-                        </FieldsText>
-                      )}
-                    </td>
-                  </tr>
-                ))}
+                {shownItems?.map((d) => <Item key={d.material_id} item={d} />)}
               </tbody>
             </StyledTable>
           </StyledScroll>
