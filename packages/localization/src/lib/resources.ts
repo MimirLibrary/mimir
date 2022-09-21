@@ -16,7 +16,7 @@ export const resources = {
       },
       NavbarReader: {
         Home: 'Home',
-        Search: 'Search',
+        Library: 'Library',
         'Donate to the library': 'Donate to the library',
         'History of claim': 'History of claim',
         'History of donate': 'History of donate',
@@ -197,7 +197,7 @@ export const resources = {
       },
       NavbarReader: {
         Home: 'Домой',
-        Search: 'Поиск',
+        Library: 'Библиотека',
         'Donate to the library': 'Пожертвовать библиотеке',
         'History of claim': 'История клеймов',
         'History of donate': 'История донатов',
@@ -207,10 +207,10 @@ export const resources = {
       NavbarManager: {
         Home: 'Домой',
         Readers: 'Читатели',
-        'Books/stuff': 'Книги/предметы',
+        Library: 'Библиотека',
         'Donates from user': 'Донаты от пользователей',
-        'Create new item': 'Создать новый предмет',
-        Setting: 'Настройки',
+        'Add item to library': 'Создать новый предмет',
+        Settings: 'Настройки',
         'Log out': 'Выход',
       },
       Search: {
