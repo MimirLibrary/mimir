@@ -46,4 +46,21 @@ describe('BookCard Component', () => {
     });
     expect(screen.getByTestId('bookImage')).toHaveAttribute('src', bookImage);
   });
+
+  it('renders correctly, with snapshots', () => {
+    render(
+      <BookCard
+        src={bookImage}
+        title="The test book"
+        status="Free"
+        author="Test"
+        category="Test"
+        id="31"
+      />,
+      {
+        wrapper: BrowserRouter,
+      }
+    );
+    expect(screen.getByTestId('bookCard')).toMatchSnapshot();
+  });
 });
