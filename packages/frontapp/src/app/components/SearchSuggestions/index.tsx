@@ -2,7 +2,6 @@ import React, { FC, useRef } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { SearchOfMaterialsQuery } from '@mimir/apollo-client';
-import BookCard from '../BookCard';
 import SuggestionBookCard from '../SuggestionBookCard';
 import useOnClickOutside from '../../hooks/useOnClickOutside';
 
