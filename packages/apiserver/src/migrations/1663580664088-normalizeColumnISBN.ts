@@ -3,22 +3,24 @@ import { Material } from '../resources/materials/material.entity';
 
 export class normalizeColumnISBN1663580664088 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    const materialRepo = await queryRunner.connection.getRepository(Material);
-    const allMaterials = await materialRepo.find();
-    const updateMaterials = allMaterials.map((material) => {
-      if (material.identifier.includes('-')) {
-        const updateMaterial = {
-          ...material,
-          identifier: material.identifier.replaceAll('-', ''),
-        };
-        return materialRepo.save(updateMaterial);
+    const materialRepo = await queryRunner.manager.getRepository(Material);
+    const materialsData = await materialRepo.query(
+      'SELECT id,identifier FROM material'
+    );
+
+    if (!materialsData.length) return;
+
+    const updateMaterials = materialsData.map((item) => {
+      if (item.identifier.includes('-')) {
+        return materialRepo.update(item.id, {
+          identifier: item.identifier.replaceAll('-', ''),
+        });
       }
-      return material;
+      return item;
     });
 
     await Promise.all(updateMaterials);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   public async down(queryRunner: QueryRunner): Promise<void> {}
 }
