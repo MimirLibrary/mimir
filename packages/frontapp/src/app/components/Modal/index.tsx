@@ -27,6 +27,9 @@ export const WrapperModal = styled.div<IStyleProps>`
     width: 0;
     height: 0;
   }
+  @media (max-width: ${dimensions.tablet_width}) {
+    padding: ${dimensions.base};
+  }
 `;
 
 const StyledCross = styled(Cross)`
@@ -44,10 +47,6 @@ export const ContentModal = styled.div<IStyleProps>`
   max-width: ${dimensions.tablet_width};
   width: 100%;
   margin-top: 3em;
-
-  @media (max-width: ${dimensions.tablet_width}) {
-    margin-top: auto;
-  }
 `;
 
 interface IPropsModal {

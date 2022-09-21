@@ -7,6 +7,7 @@
     "frontapp": "packages/frontapp",
     "frontapp-e2e": "packages/frontapp-e2e",
     "global-types": "packages/global-types",
+    "helper-functions": "packages/helper-functions",
     "localization": "packages/localization",
     "metadata-service": "packages/metadata-service",
     "ui-kit": "packages/ui-kit"

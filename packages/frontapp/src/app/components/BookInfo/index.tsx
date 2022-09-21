@@ -273,12 +273,14 @@ const BookInfo: FC<IBookInfoProps> = ({
         person_id: id,
       },
     });
+
   const [createNotificationMutation] = useCreateNotificationMutation({
     refetchQueries: [GetNotificationsByPersonDocument],
   });
   const [removeNotificationMutation] = useRemoveNotificationMutation({
     refetchQueries: [GetNotificationsByPersonDocument],
   });
+
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [isShowClaimModal, setIsShowClaimModal] = useState<boolean>(false);
@@ -777,4 +779,4 @@ const BookInfo: FC<IBookInfoProps> = ({
   );
 };
 
-export default React.memo(BookInfo);
+export default BookInfo;

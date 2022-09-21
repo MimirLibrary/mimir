@@ -21,8 +21,7 @@ import { MaterialService } from './material.service';
 import { BadRequestException } from '@nestjs/common';
 import { Message } from '../messages/message.entity';
 import { GraphQLError } from 'graphql';
-import { CurrentUserLocation } from '../CurrentUserLocation.decorator';
-import { Location } from '../locations/location.entity';
+import { normalizeIdentifier } from '@mimir/helper-functions';
 
 @Resolver('Material')
 export class MaterialResolver {
@@ -48,8 +47,11 @@ export class MaterialResolver {
   ) {
     try {
       const { identifier, locations } = searchOneMaterial;
+      const updateIdentifier = normalizeIdentifier(identifier);
       const material = await Material.createQueryBuilder('material')
-        .where('material.identifier = :identifier', { identifier })
+        .where('material.identifier = :identifier', {
+          identifier: updateIdentifier,
+        })
         .andWhere('material.location_id IN (:...locations)', { locations })
         .getOne();
       if (!material) {
@@ -108,12 +110,13 @@ export class MaterialResolver {
     @Args('input') updateMaterialInput: UpdateMaterialInput
   ) {
     try {
-      const identifier = updateMaterialInput.identifier;
+      const identifier = normalizeIdentifier(updateMaterialInput.identifier);
       const material = await Material.findOne({
         where: { identifier },
       });
       await Material.update(material.id, {
         ...updateMaterialInput,
+        identifier: normalizeIdentifier(identifier),
       });
       return material;
     } catch (e) {
