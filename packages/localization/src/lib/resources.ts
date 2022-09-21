@@ -173,6 +173,11 @@ export const resources = {
         Title: 'Claim history',
         Desc: 'List of users who bought this item',
       },
+      PlaceholderTitle: {
+        Donate: 'No donations',
+        Overdue: 'Everything seems to be ok',
+        Notifications: 'There are no notifications for you',
+      },
     },
   },
   ru: {
@@ -347,6 +352,11 @@ export const resources = {
       BookClaimHistory: {
         Title: 'История действий',
         Desc: 'Список пользователей, взаимодействовавших с книгой',
+      },
+      PlaceholderTitle: {
+        Donate: 'Без пожертвований',
+        Overdue: 'Кажется, все в порядке',
+        Notifications: 'Для вас нет никаких уведомлений',
       },
     },
   },

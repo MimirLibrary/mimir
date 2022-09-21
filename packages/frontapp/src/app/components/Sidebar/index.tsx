@@ -1,4 +1,4 @@
-import { FC, memo } from 'react';
+import { FC } from 'react';
 import styled from '@emotion/styled';
 import Navbar from '../Navbar';
 import Header from '../Header';
@@ -14,13 +14,14 @@ interface IStyledSidebarProps {
 }
 
 const StyledSidebar = styled.aside<IStyledSidebarProps>`
+  position: relative;
+  z-index: 1;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
   max-width: 22rem;
   width: 100%;
-  z-index: 1;
   padding-top: ${dimensions.xl_2};
   overflow-y: auto;
   ::-webkit-scrollbar {
@@ -34,6 +35,7 @@ const StyledSidebar = styled.aside<IStyledSidebarProps>`
     width: 90%;
     transition: all 0.8s;
     height: 100%;
+    z-index: 1000;
   }
 `;
 
@@ -46,4 +48,4 @@ const Sidebar: FC<IProps> = ({ isSidebarActive, hideSidebar }) => {
   );
 };
 
-export default memo(Sidebar);
+export default Sidebar;
