@@ -160,7 +160,7 @@ const Notifications: FC<INotifications> = ({
           <Subtitle>{t('Notifications.Today')}</Subtitle>
           {todayNotifications?.map((notification) =>
             notification.type === 'message' ? (
-              <NotificationWrapper message today key={notification?.user?.id}>
+              <NotificationWrapper message today key={notification?.id}>
                 <ColumnWrapper>
                   <NotificationDescription titlee>
                     {notification.title}

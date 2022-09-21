@@ -129,7 +129,7 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
   ) => {
     if (type === 'radio') {
       attributes[0].title === value
-        ? (attributes[1].checked = false)
+        ? attributes[1] && (attributes[1].checked = false)
         : (attributes[0].checked = false);
     }
   };

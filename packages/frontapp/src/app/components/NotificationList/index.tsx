@@ -21,6 +21,7 @@ import {
   FieldDescription,
 } from '../ManagerInfoCard';
 import { RoutesTypes } from '../../../utils/routes';
+import notification_placeholder from '../../../assets/notification_placeholder.png';
 
 const InlineFieldDescription = styled(FieldDescription)`
   max-width: 80%;
@@ -47,6 +48,50 @@ const ButtonAnswer = styled.button`
     display: block;
     text-align: center;
   }
+`;
+
+const WrapperForEmptyBlock = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  top: 80px;
+  img {
+    position: relative;
+    z-index: 1;
+  }
+  @media (max-width: ${dimensions.tablet_width}) {
+    img {
+      height: 15rem;
+      max-width: 15rem;
+    }
+  }
+`;
+
+const WrapperCircle = styled.div`
+  border-radius: 50%;
+  height: 25.5rem;
+  max-width: 25.5rem;
+  width: 100%;
+  background-color: #f2f6ff;
+  position: absolute;
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    height: 20rem;
+    max-width: 20rem;
+  }
+`;
+
+const TitleEmpty = styled.h3<{ top: string }>`
+  font-weight: 700;
+  font-size: ${dimensions.xl};
+  line-height: ${dimensions.xl_2};
+  color: ${colors.main_black};
+  position: relative;
+  top: ${(props) => props.top};
+  z-index: 1;
+  text-align: center;
 `;
 
 const answers = [
@@ -93,33 +138,43 @@ const NotificationList: FC<NotificationList> = ({ fieldsNotification }) => {
             <Description>
               {t(`ManagerInfoCard.Description.Notifications`)}
             </Description>
-            {fieldsNotification?.slice(0, 3).map((field) => (
-              <FieldWrapper key={field.id}>
-                <>
-                  <FieldTitle>{field.title}</FieldTitle>
-                  <InlineWrapper>
-                    <InlineFieldDescription>
-                      {field.message}
-                    </InlineFieldDescription>
-                    <ButtonAnswer
-                      onClick={() =>
-                        handleAnswerModal({
-                          id: field.id,
-                          person_id: field.person.id,
-                        })
-                      }
+            {!fieldsNotification.length ? (
+              <WrapperForEmptyBlock>
+                <WrapperCircle />
+                <img src={notification_placeholder} alt="donate_placeholder" />
+                <TitleEmpty top="50px">
+                  {t('PlaceholderTitle.Notifications')}
+                </TitleEmpty>
+              </WrapperForEmptyBlock>
+            ) : (
+              fieldsNotification?.slice(0, 3).map((field) => (
+                <FieldWrapper key={field.id}>
+                  <>
+                    <FieldTitle>{field.title}</FieldTitle>
+                    <InlineWrapper>
+                      <InlineFieldDescription>
+                        {field.message}
+                      </InlineFieldDescription>
+                      <ButtonAnswer
+                        onClick={() =>
+                          handleAnswerModal({
+                            id: field.id,
+                            person_id: field.person.id,
+                          })
+                        }
+                      >
+                        {t('ManagerInfoCard.Link.Answer')}
+                      </ButtonAnswer>
+                    </InlineWrapper>
+                    <FieldOpenLink
+                      to={`${RoutesTypes.READERS}/${field.person.id}`}
                     >
-                      {t('ManagerInfoCard.Link.Answer')}
-                    </ButtonAnswer>
-                  </InlineWrapper>
-                  <FieldOpenLink
-                    to={`${RoutesTypes.READERS}/${field.person.id}`}
-                  >
-                    {field.person.username}
-                  </FieldOpenLink>
-                </>
-              </FieldWrapper>
-            ))}
+                      {field.person.username}
+                    </FieldOpenLink>
+                  </>
+                </FieldWrapper>
+              ))
+            )}
           </ColumnWrapper>
           <WrapperFooter>
             <>
@@ -135,9 +190,11 @@ const NotificationList: FC<NotificationList> = ({ fieldsNotification }) => {
                 ) : null}
               </InlineWrapper>
             </>
-            <OpenLink to="/notifications">
-              {t(`ManagerInfoCard.Link.Notifications`)}
-            </OpenLink>
+            {!!fieldsNotification.length && (
+              <OpenLink to="/notifications">
+                {t(`ManagerInfoCard.Link.Notifications`)}
+              </OpenLink>
+            )}
           </WrapperFooter>
         </WrapperCard>
       )}

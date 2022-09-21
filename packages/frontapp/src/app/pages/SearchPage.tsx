@@ -60,7 +60,7 @@ const SearchPage = () => {
 
   if (loading) return <h1>Loading...</h1>;
 
-  if (!data) return <ErrorType500 />;
+  if (!data || data.getAllMaterials.length === 0) return <ErrorType500 />;
 
   return (
     <>

@@ -55,6 +55,7 @@ const DropdownContainer = styled.div`
 
   &.show-options {
     svg {
+      transform: rotate(180deg);
       fill: ${colors.accent_color};
     }
   }

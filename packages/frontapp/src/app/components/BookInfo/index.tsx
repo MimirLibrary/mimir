@@ -17,7 +17,6 @@ import {
   getStatus,
   periodOfKeeping,
 } from '../../models/helperFunctions/converTime';
-import { StyledBookStatus } from '../../globalUI/Status';
 import SuccessMessage from '../SuccessMessage';
 import { listOfGenres } from '../../../assets/SearchConsts';
 import {
@@ -40,6 +39,7 @@ import { WrapperInput } from '../Search';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { RolesTypes } from '@mimir/global-types';
 import Dropdown, { IDropdownOption } from '../Dropdown';
+import BookStatus from '../BookStatus';
 
 export const BookHolder = styled.div`
   width: 100%;
@@ -131,7 +131,7 @@ export const Description = styled.p`
   color: ${colors.main_black};
 `;
 
-const StyledStatus = styled(StyledBookStatus)`
+const StyledStatus = styled.div`
   font-size: ${dimensions.base};
   margin-top: ${dimensions.base};
 `;
@@ -282,7 +282,6 @@ const BookInfo: FC<IBookInfoProps> = ({
   });
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [statusText, setStatusText] = useState<string>('');
   const [isShowClaimModal, setIsShowClaimModal] = useState<boolean>(false);
   const [isShowAskManger, setIsShowAskManager] = useState<boolean>(false);
   const [isShowSuccessClaim, setIsShowSuccessClaim] = useState<boolean>(false);
@@ -454,42 +453,6 @@ const BookInfo: FC<IBookInfoProps> = ({
   }, [data]);
 
   useEffect(() => {
-    switch (currentStatus) {
-      case 'Free':
-        setStatusText('On the shelf');
-        break;
-      case 'Busy': {
-        const day = `${getDates(created_at).returnDate.getDate()}`.padStart(
-          2,
-          '0'
-        );
-        const month = `${
-          getDates(created_at).returnDate.getMonth() + 1
-        }`.padStart(2, '0');
-        setStatusText(`Return till: ${day}.${month}`);
-        break;
-      }
-      case 'Prolong': {
-        const day = `${getDates(created_at).returnDate.getDate()}`.padStart(
-          2,
-          '0'
-        );
-        const month = `${
-          getDates(created_at).returnDate.getMonth() + 1
-        }`.padStart(2, '0');
-        setStatusText(`Return till: ${day}.${month}`);
-        break;
-      }
-      case 'Overdue':
-        setStatusText('Overdue');
-        break;
-      default:
-        setStatusText('');
-        break;
-    }
-  }, [currentStatus]);
-
-  useEffect(() => {
     if (!getNotificationsByPersonData) return;
 
     if (
@@ -595,7 +558,9 @@ const BookInfo: FC<IBookInfoProps> = ({
                 </>
               )}
               {userRole === RolesTypes.READER ? (
-                <StyledStatus status={currentStatus}>{statusText}</StyledStatus>
+                <StyledStatus>
+                  <BookStatus status={statusInfo?.status} date={created_at} />
+                </StyledStatus>
               ) : editing ? (
                 <>
                   <br />
