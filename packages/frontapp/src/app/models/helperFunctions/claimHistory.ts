@@ -4,6 +4,7 @@ import { StatusTypes } from '@mimir/global-types';
 
 export interface IClaimHistory {
   material_id?: number | string;
+  // FIXME Change to StatusTypes
   status: string;
   created_at: Date;
   material?: IMaterial;
@@ -19,7 +20,7 @@ export const countClaimHistory = (statuses: IClaimHistory[] = []) => {
       status.status === StatusTypes.PROLONG
     ) {
       if (!isOverdue(status.created_at)) busyItems.push(status);
-      else busyItems.push({ ...status, status: 'Overdue' });
+      else busyItems.push({ ...status, status: StatusTypes.OVERDUE });
     } else if (status.status === StatusTypes.FREE) {
       freeItems.push(status);
     }
