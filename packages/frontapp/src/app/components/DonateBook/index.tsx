@@ -57,7 +57,7 @@ const WrapperInput = styled.div`
   border: 0.5px solid #bdbdbd;
   border-radius: ${dimensions.xl_3};
   padding: 10px 0 10px ${dimensions.xs_1};
-  margin-bottom: ${dimensions.base};
+  margin-bottom: ${dimensions.xs_2};
   background: ${colors.bg_secondary};
 
   :hover {
@@ -119,6 +119,7 @@ const WrapperMainInfo = styled.div`
 const StyledDropdown = styled(Dropdown)`
   max-width: 300px;
   width: 100%;
+  margin-bottom: ${dimensions.xs_2};
 `;
 
 const WrapperDescription = styled.div`
@@ -446,7 +447,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
                   </WrapperInput>
                 </WrapperStyledInput>
                 <Label htmlFor="genre">Genre*</Label>
-                <Dropdown
+                <StyledDropdown
                   options={listOfGenres}
                   onChange={handleChangeGenre}
                   placeholder="Enter genre"

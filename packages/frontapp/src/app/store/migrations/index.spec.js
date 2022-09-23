@@ -2,6 +2,7 @@ import { migrations } from './index';
 
 describe('reduxMigrations', () => {
   const getInitialState = () => ({
+    _persist: {version: -1, rehydrated: false},
     tabs: 0,
     user: {
       id: 13,
@@ -34,7 +35,6 @@ describe('reduxMigrations', () => {
 
     it('should handle invalid state', () => {
       const oldUserState = getInitialState();
-      // @ts-ignore
       delete oldUserState.user.location;
 
       const newState = migrate(oldUserState);
@@ -70,9 +70,7 @@ describe('reduxMigrations', () => {
       .sort()
       .map((d) => migrations[d]);
     const finalState = getInitialState();
-    // @ts-ignore
     delete finalState.user.location;
-    // @ts-ignore
     finalState.user.locations = [{ id: '2', value: 'Gomel' }];
 
     it('applies all migrations', () => {

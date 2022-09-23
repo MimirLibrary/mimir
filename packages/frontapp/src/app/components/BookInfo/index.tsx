@@ -40,6 +40,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { RolesTypes } from '@mimir/global-types';
 import Dropdown, { IDropdownOption } from '../Dropdown';
 import BookStatus from '../BookStatus';
+
 export const BookHolder = styled.div`
   width: 100%;
   top: 11.5rem;
@@ -273,12 +274,14 @@ const BookInfo: FC<IBookInfoProps> = ({
         person_id: id,
       },
     });
+
   const [createNotificationMutation] = useCreateNotificationMutation({
     refetchQueries: [GetNotificationsByPersonDocument],
   });
   const [removeNotificationMutation] = useRemoveNotificationMutation({
     refetchQueries: [GetNotificationsByPersonDocument],
   });
+
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [isShowClaimModal, setIsShowClaimModal] = useState<boolean>(false);
@@ -777,4 +780,4 @@ const BookInfo: FC<IBookInfoProps> = ({
   );
 };
 
-export default React.memo(BookInfo);
+export default BookInfo;
