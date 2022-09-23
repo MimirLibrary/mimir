@@ -1,39 +1,19 @@
-import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { screen } from '@testing-library/react';
+import { render } from '../../../helpers/customRender';
 import bookImage from '../../../assets/MOC-data/BookImage.png';
 import BookCard from './index';
 import { useTranslation } from 'react-i18next';
-
-jest.mock('react-i18next', () => ({
-  // this mock makes sure any components using the translate hook can use it without a warning being shown
-  useTranslation: () => {
-    return {
-      t: (str: string | null) => str,
-      i18n: {
-        changeLanguage: () =>
-          new Promise(() => {
-            return;
-          }),
-      },
-    };
-  },
-}));
 
 describe('BookCard Component', () => {
   const { t } = useTranslation();
 
   it('should render correctly', () => {
-    render(<BookCard src={bookImage} />, {
-      wrapper: BrowserRouter,
-    });
+    render(<BookCard src={bookImage} />);
     expect(screen.getByTestId('bookCard')).toBeInTheDocument();
   });
 
   it('always render Book Status', () => {
-    render(<BookCard src={bookImage} status="Free" />, {
-      wrapper: BrowserRouter,
-    });
+    render(<BookCard src={bookImage} status="Free" />);
     expect(screen.getByTestId('bookStatus')).toBeInTheDocument();
     expect(screen.getByTestId('bookStatus')).toHaveTextContent(
       t('Statuses.Free')
@@ -41,9 +21,7 @@ describe('BookCard Component', () => {
   });
 
   it('if the picture is not given, use the default one', () => {
-    render(<BookCard />, {
-      wrapper: BrowserRouter,
-    });
+    render(<BookCard />);
     expect(screen.getByTestId('bookImage')).toHaveAttribute('src', bookImage);
   });
 
@@ -56,10 +34,7 @@ describe('BookCard Component', () => {
         author="Test"
         category="Test"
         id="31"
-      />,
-      {
-        wrapper: BrowserRouter,
-      }
+      />
     );
     expect(screen.getByTestId('bookCard')).toMatchSnapshot();
   });
