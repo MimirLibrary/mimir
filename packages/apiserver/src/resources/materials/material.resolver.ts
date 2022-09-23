@@ -38,7 +38,7 @@ export class MaterialResolver {
 
   @Query(() => Material)
   async getMaterialById(@Args('id') id: number | string) {
-    return Material.findOneOrFail(id);
+    return Material.findOneOrFail(id, { relations: ['location'] });
   }
 
   @Query(() => Material)

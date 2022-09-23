@@ -1,13 +1,17 @@
 import styled from '@emotion/styled';
 import bookImage from '../../../assets/MOC-data/BookImage.png';
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { ReactComponent as Claim } from '../../../assets/claim.svg';
 import { ReactComponent as Edit } from '../../../assets/Edit.svg';
 import { ReactComponent as Remove } from '../../../assets/Remove.svg';
 import { ReactComponent as EnableNotifySvg } from '../../../assets/NoNotification.svg';
 import { ReactComponent as CancelNotifySvg } from '../../../assets/CancelNotification.svg';
-import { Status } from '@mimir/apollo-client';
+import {
+  GetMaterialByIdQueryResult,
+  Status,
+  useGetAllLocationsQuery,
+} from '@mimir/apollo-client';
 import { DateTime } from '@mimir/global-types';
 import Button from '../Button';
 import ClaimOperation from '../ClaimOperation';
@@ -40,6 +44,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { RolesTypes } from '@mimir/global-types';
 import Dropdown, { IDropdownOption } from '../Dropdown';
 import BookStatus from '../BookStatus';
+import { toast } from 'react-toastify';
+import { TUserLocation } from '../../store/slices/userSlice';
 
 export const BookHolder = styled.div`
   width: 100%;
@@ -84,7 +90,7 @@ export const ShortDescription = styled.div`
 
 export const TitleBook = styled.h3`
   font-weight: 700;
-  margin-bottom: ${dimensions.base_2};
+  margin-bottom: ${dimensions.xl_2};
   font-size: ${dimensions.xl};
   line-height: ${dimensions.xl_2};
   color: ${colors.main_black};
@@ -95,7 +101,7 @@ export const TitleBook = styled.h3`
 `;
 
 export const Topic = styled.p`
-  margin: ${dimensions.xs_2} 0;
+  margin: ${dimensions.base} 0 ${dimensions.xs_2} 0;
   font-weight: 500;
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
@@ -133,7 +139,6 @@ export const Description = styled.p`
 
 const StyledStatus = styled.div`
   font-size: ${dimensions.base};
-  margin-top: ${dimensions.base};
 `;
 
 export const WrapperInfo = styled.div`
@@ -235,7 +240,23 @@ const TextAreaWrapper = styled.div`
   }
 `;
 
+const RestyledDropdown = styled(Dropdown)`
+  margin-top: ${dimensions.xs_2};
+  max-width: 21.5rem;
+  width: 100%;
+`;
+
+const WrapperDropDown = styled.div`
+  margin-top: ${dimensions.base};
+  width: 21.5rem;
+`;
+
 type StatusType = Pick<Status, 'id' | 'person_id' | 'created_at' | 'status'>;
+type Location = {
+  __typename?: 'Location' | undefined;
+  id: string;
+  location: string;
+};
 export interface IBookInfoProps {
   person_id: number | undefined;
   src: string | null | undefined;
@@ -249,7 +270,7 @@ export interface IBookInfoProps {
   created_at: DateTime;
   updated_at: DateTime;
   type: string;
-  location_id: number;
+  location: Location;
 }
 
 const BookInfo: FC<IBookInfoProps> = ({
@@ -265,9 +286,17 @@ const BookInfo: FC<IBookInfoProps> = ({
   material_id,
   person_id,
   type,
-  location_id,
+  location,
 }) => {
   const { id, userRole } = useAppSelector((state) => state.user);
+  const {
+    data: allLocations,
+    error: errorLocations,
+    loading: loadingLocations,
+  } = useGetAllLocationsQuery({
+    skip: userRole === RolesTypes.READER,
+  });
+
   const { data: getNotificationsByPersonData } =
     useGetNotificationsByPersonQuery({
       variables: {
@@ -300,6 +329,7 @@ const BookInfo: FC<IBookInfoProps> = ({
   const [newTitle, setNewTitle] = useState(title);
   const [newAuthor, setNewAuthor] = useState(author);
   const [newCategory, setNewCategory] = useState(category);
+  const [newLocation, setNewLocation] = useState<Location>(location);
   const [newDescription, setNewDescription] = useState(
     description
       ? description
@@ -381,6 +411,17 @@ const BookInfo: FC<IBookInfoProps> = ({
     setIsSuccessReturn(true);
   };
 
+  const currentLocationIndex = useMemo(
+    () =>
+      allLocations?.getAllLocations.findIndex((loc) => loc!.id === location.id),
+    [allLocations]
+  );
+
+  const currentGenreIndex = useMemo(
+    () => listOfGenres.findIndex((genre) => genre.value === category),
+    [category, listOfGenres]
+  );
+
   const prolongPeriod = async () => {
     await prolongTime({
       variables: {
@@ -395,7 +436,7 @@ const BookInfo: FC<IBookInfoProps> = ({
       variables: {
         identifier: identifier,
         type: type,
-        location_id: location_id,
+        location_id: Number(newLocation.id),
         title: newTitle,
         author: newAuthor,
         category: newCategory,
@@ -410,7 +451,7 @@ const BookInfo: FC<IBookInfoProps> = ({
       variables: {
         identifier: identifier,
         type: type,
-        location_id: location_id,
+        location_id: Number(location.id),
       },
     });
     navigate('/search');
@@ -437,6 +478,12 @@ const BookInfo: FC<IBookInfoProps> = ({
       setValueIsISBN(claimModal);
     }
   }, []);
+
+  useEffect(() => {
+    if (errorLocations) {
+      toast.error(errorLocations.message);
+    }
+  }, [errorLocations]);
 
   useEffect(() => {
     if (infoOfProlong?.prolongClaimPeriod.__typename === 'Status') {
@@ -477,6 +524,14 @@ const BookInfo: FC<IBookInfoProps> = ({
   const showClaimModal = useCallback(() => {
     setIsShowClaimModal(true);
   }, []);
+
+  const handleChangeDropdown = (option: TUserLocation) => {
+    const newLocation = {
+      id: option.id,
+      location: option.value,
+    };
+    setNewLocation(newLocation);
+  };
 
   const handleEnableNotifyButton = async () => {
     await createNotificationMutation({
@@ -527,15 +582,15 @@ const BookInfo: FC<IBookInfoProps> = ({
               {userRole === RolesTypes.READER ? (
                 <OpenLink>{category || 'Genres of book'}</OpenLink>
               ) : editing ? (
-                <>
-                  <br />
+                <WrapperDropDown>
                   <TitleHolder>Genre </TitleHolder>
-                  <Dropdown
+                  <RestyledDropdown
                     options={listOfGenres}
+                    initIndex={currentGenreIndex}
                     onChange={handleChangeCategory}
                     placeholder="Enter genre"
                   />
-                </>
+                </WrapperDropDown>
               ) : (
                 <TopicDescription>
                   {category || 'Genres of book'}
@@ -559,10 +614,35 @@ const BookInfo: FC<IBookInfoProps> = ({
                   <TopicDescription>{author || 'Author Name'}</TopicDescription>
                 </>
               )}
+              <>
+                {editing ? (
+                  <WrapperDropDown>
+                    <TitleHolder>Location </TitleHolder>
+                    <RestyledDropdown
+                      options={allLocations!.getAllLocations.map((loc) => ({
+                        id: loc!.id,
+                        value: loc!.location,
+                      }))}
+                      initIndex={currentLocationIndex}
+                      onChange={(option) =>
+                        handleChangeDropdown(option as TUserLocation)
+                      }
+                    />
+                  </WrapperDropDown>
+                ) : (
+                  <>
+                    <Topic>Location: </Topic>
+                    <TopicDescription>{location.location}</TopicDescription>
+                  </>
+                )}
+              </>
               {userRole === RolesTypes.READER ? (
-                <StyledStatus>
-                  <BookStatus status={statusInfo?.status} date={created_at} />
-                </StyledStatus>
+                <>
+                  <Topic>State: </Topic>
+                  <StyledStatus>
+                    <BookStatus status={statusInfo?.status} date={created_at} />
+                  </StyledStatus>
+                </>
               ) : editing ? (
                 <>
                   <br />
@@ -738,7 +818,7 @@ const BookInfo: FC<IBookInfoProps> = ({
           setActive={setIsShowAskManager}
           setSuccessModal={setIsShowWindowReportedToManager}
           material_id={material_id}
-          location_id={location_id}
+          location_id={Number(location.id)}
         />
       </Modal>
       <Modal

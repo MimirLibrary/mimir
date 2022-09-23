@@ -36,7 +36,7 @@ const Item = styled.div`
   & > * {
     width: 20%;
 
-    &:first-child {
+    &:first-of-type {
       width: 60%;
     }
   }
@@ -57,7 +57,7 @@ const Title = styled.div`
   & > * {
     width: 20%;
 
-    &:first-child {
+    &:first-of-type {
       width: 60%;
     }
   }
