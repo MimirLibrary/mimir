@@ -28,6 +28,7 @@
     "@babel/preset-flow": "^7.16.7",
     "@babel/preset-typescript": "7.12.13",
     "@emotion/babel-plugin": "11.7.2",
+    "@emotion/jest": "^11.10.0",
     "@faker-js/faker": "^6.3.1",
     "@graphql-codegen/cli": "^2.6.2",
     "@graphql-codegen/introspection": "^2.1.1",

@@ -1,35 +1,144 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`BookCard Component renders correctly, with snapshots 1`] = `
+.emotion-0 {
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  width: 12rem;
+  background-color: #FFFFFF;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  cursor: pointer;
+  box-shadow: 0px 10px 70px rgba(26, 30, 214, 0.08);
+}
+
+@media (min-width: 26.25rem) {
+  .emotion-0 {
+    min-height: 19.5rem;
+  }
+}
+
+@media (max-width: 26.25rem) {
+  .emotion-0 {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    height: -webkit-min-content;
+    height: -moz-min-content;
+    height: min-content;
+    width: 100%;
+  }
+}
+
+.emotion-1 {
+  width: 7rem;
+  height: 12rem;
+  margin-bottom: 0.5rem;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+@media (max-width: 26.25rem) {
+  .emotion-1 {
+    width: 5rem;
+    height: 8rem;
+    margin-right: 1rem;
+  }
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  -webkit-justify-content: start;
+  justify-content: start;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.emotion-3 {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 10rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1rem;
+  color: #333333;
+}
+
+.emotion-4 {
+  max-width: 10rem;
+  font-weight: 300;
+  font-size: 0.875rem;
+  line-height: 1rem;
+  color: #4F4F4F;
+  margin: 0.5rem 0;
+}
+
+@media (max-width: 26.25rem) {
+  .emotion-5 {
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    padding: 0 4px;
+    text-align: center;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 4px;
+    border-color: #2AA816;
+  }
+}
+
+.emotion-6 {
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1rem;
+  color: #2AA816;
+}
+
 <div
-  class="css-pzfxll"
+  class="emotion-0"
   data-testid="bookCard"
 >
   <img
-    class="css-1yippde"
+    class="emotion-1"
     data-testid="bookImage"
     src="BookImage.png"
   />
   <div
-    class="css-1ddu512"
+    class="emotion-2"
   >
     <h3
-      class="css-1t65b4d"
+      class="emotion-3"
       data-testid="bookTitle"
     >
       The test book
     </h3>
     <p
-      class="css-1fgm40u"
+      class="emotion-4"
     >
       Test / Test
     </p>
     <div
-      class="css-752oce"
+      class="emotion-5"
       data-testid="bookStatus"
     >
       <p
-        class="css-1l5gfrd"
+        class="emotion-6"
       >
         Statuses.Free
       </p>
