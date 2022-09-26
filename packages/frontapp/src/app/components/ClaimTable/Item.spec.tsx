@@ -1,8 +1,8 @@
-import '@testing-library/jest-dom';
 import defaultImage from '../../../assets/MOC-data/BookImage.png';
 import { IClaimHistory } from '../../models/helperFunctions/claimHistory';
 import { StatusTypes } from '@mimir/global-types';
-import { render, screen } from '@testing-library/react';
+import { render } from '../../../helpers/customRender';
+import { screen } from '@testing-library/react';
 import Item from './Item';
 
 describe('ClaimTable.Item', () => {

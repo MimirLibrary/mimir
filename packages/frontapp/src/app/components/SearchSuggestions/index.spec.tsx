@@ -1,5 +1,6 @@
 import { StatusTypes } from '@mimir/global-types';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { render } from '../../../helpers/customRender';
 import SearchSuggestions from './index';
 import { SearchOfMaterialsQuery } from '@mimir/apollo-client';
 import '@testing-library/jest-dom';
@@ -36,8 +37,7 @@ describe('SearchSuggestionsComponent', () => {
       <SearchSuggestions
         materials={mockListOfMaterials}
         removeSuggestionSearchWindow={() => {}}
-      />,
-      { wrapper: BrowserRouter }
+      />
     );
     expect(screen.getByTestId('wrapper')).toBeInTheDocument();
     expect(screen.getByText('Dracula')).toBeInTheDocument();
@@ -49,8 +49,7 @@ describe('SearchSuggestionsComponent', () => {
       <SearchSuggestions
         materials={[]}
         removeSuggestionSearchWindow={() => {}}
-      />,
-      { wrapper: BrowserRouter }
+      />
     );
     expect(screen.queryByTestId('wrapper')).toBeNull();
   });
@@ -60,8 +59,7 @@ describe('SearchSuggestionsComponent', () => {
       <SearchSuggestions
         materials={null}
         removeSuggestionSearchWindow={() => {}}
-      />,
-      { wrapper: BrowserRouter }
+      />
     );
     expect(screen.queryByTestId('wrapper')).toBeNull();
   });
