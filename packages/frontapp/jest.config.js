@@ -8,4 +8,7 @@ module.exports = {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/packages/frontapp',
   snapshotSerializers: ['@emotion/jest/serializer'],
+  collectCoverage: true,
+  collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
+  coverageReporters: ['text'],
 };
