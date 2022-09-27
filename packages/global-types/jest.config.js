@@ -11,7 +11,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/packages/global-types',
-  collectCoverage: true,
-  collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
-  coverageReporters: ['text'],
+  coverageReporters: ['text', 'html'],
 };
