@@ -534,6 +534,7 @@ const BookInfo: FC<IBookInfoProps> = ({
                     options={listOfGenres}
                     onChange={handleChangeCategory}
                     placeholder="Enter genre"
+                    value={category}
                   />
                 </>
               ) : (
