@@ -71,7 +71,11 @@ const SingleUser: FC<ISingleUser> = ({
   };
 
   return (
-    <CardWrapper className={className} onClick={handleUserRedirect}>
+    <CardWrapper
+      className={className}
+      onClick={handleUserRedirect}
+      data-testid="single-user"
+    >
       <AvatarWrapper>
         <Avatar src={avatar || mockData.avatar} />
       </AvatarWrapper>

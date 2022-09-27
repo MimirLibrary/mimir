@@ -4,8 +4,7 @@ import { StatusTypes } from '@mimir/global-types';
 
 export interface IClaimHistory {
   material_id?: number | string;
-  // FIXME Change to StatusTypes
-  status: string;
+  status: StatusTypes;
   created_at: Date;
   material?: IMaterial;
 }
