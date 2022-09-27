@@ -7,6 +7,7 @@ import useOnClickOutside from '../../hooks/useOnClickOutside';
 export interface IDropdownOption {
   [k: string]: unknown;
   value: string;
+  label?: string;
 }
 
 export interface IDropdownProps {
@@ -19,7 +20,11 @@ export interface IDropdownProps {
    */
   options: IDropdownOption[];
   /**
-   * Select an option instead placeholder.
+   * Default selected option (by value)
+   */
+  value?: string;
+  /**
+   * select an option instead placeholder.
    */
   initIndex?: number;
   /**
@@ -123,6 +128,7 @@ const OptionList = styled.div`
 const Dropdown: FC<IDropdownProps> = ({
   placeholder,
   options,
+  value,
   initIndex = -1,
   className,
   onChange,
@@ -131,13 +137,18 @@ const Dropdown: FC<IDropdownProps> = ({
   useOnClickOutside(containerRef, () => {
     setShowOptionList(false);
   });
-  const [selectedOptionIndex, setSelectedOptionIndex] =
-    useState<number>(initIndex);
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(() => {
+    let optionIndex = -1;
+    if (value !== undefined) {
+      optionIndex = options.findIndex((d) => d.value === value);
+    }
+    return optionIndex > -1 ? optionIndex : initIndex;
+  });
   const [showOptionList, setShowOptionList] = useState(false);
 
   const handleDropdownClick = (event: MouseEvent) => {
     if (event.target !== event.currentTarget) return;
-    setShowOptionList(true);
+    setShowOptionList((val) => !val);
   };
 
   const handleOptionClick = (index: number) => {
@@ -149,6 +160,7 @@ const Dropdown: FC<IDropdownProps> = ({
 
   return (
     <DropdownContainer
+      role="listbox"
       ref={containerRef}
       className={`${selectedOptionIndex < 0 ? 'placeholder' : ''} ${
         showOptionList ? 'show-options' : ''
@@ -160,11 +172,12 @@ const Dropdown: FC<IDropdownProps> = ({
         : placeholder}
       <SvgArrow />
       {showOptionList && (
-        <OptionListWrapper>
+        <OptionListWrapper data-testid="options">
           <OptionList>
             {options.map((option, index) => (
               <span
                 key={index}
+                role="option"
                 onClick={() => {
                   handleOptionClick(index);
                 }}
