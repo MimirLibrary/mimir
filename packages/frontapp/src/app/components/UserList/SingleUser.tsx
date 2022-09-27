@@ -31,9 +31,12 @@ const CardWrapper = styled.div`
   margin: 0 0 ${dimensions.xl};
   height: 151px;
   padding: ${dimensions.xl_2};
-  box-shadow: ${colors.shadow};
   border-radius: ${dimensions.xs_1};
+  transition: box-shadow 0.3s;
   cursor: pointer;
+  :hover {
+    box-shadow: 0px -4px 64px rgba(24, 39, 75, 0.12);
+  }
 `;
 const AvatarWrapper = styled.div`
   height: 71px;

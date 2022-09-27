@@ -7,18 +7,23 @@ import { IMaterial } from '../../types';
 import { useNavigate } from 'react-router-dom';
 import { OpenLink } from '../ManagerInfoCard';
 import { RoutesTypes } from '../../../utils/routes';
+import { StatusTypes } from '@mimir/global-types';
 
 const Wrapper = styled.div`
   background: ${colors.bg_secondary};
   border-radius: ${dimensions.xs_1};
+  transition: box-shadow 0.3s;
   padding: ${dimensions.xl_2};
   display: flex;
   max-width: 300px;
   width: 100%;
+  cursor: pointer;
+  :hover {
+    box-shadow: 0px -4px 64px rgba(24, 39, 75, 0.12);
+  }
 `;
 
 const WrapperImg = styled.div`
-  cursor: pointer;
   img {
     width: 72px;
     height: 115px;
@@ -94,7 +99,7 @@ interface IPropsBookCardExtended {
 
 const BookCardExtended: FC<IPropsBookCardExtended> = ({ item }) => {
   const countOfHistoryClaimed = item?.statuses.filter(
-    (elem) => elem?.status === 'Busy'
+    (elem) => elem?.status === StatusTypes.BUSY
   ).length;
   const navigate = useNavigate();
   const currenStatusElement = item?.statuses[item?.statuses.length - 1];
@@ -106,8 +111,8 @@ const BookCardExtended: FC<IPropsBookCardExtended> = ({ item }) => {
     navigate(`/item/${item?.id}`);
   };
   return (
-    <Wrapper>
-      <WrapperImg onClick={handleItemRedirect}>
+    <Wrapper onClick={handleItemRedirect}>
+      <WrapperImg>
         <img src={item?.picture || src} alt="book-img" />
       </WrapperImg>
       <WrapperDescription>
