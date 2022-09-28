@@ -3,16 +3,18 @@ import {
   IBookInfoProps,
   BookHolder,
   ShortDescriptionWrapper,
-  BookImage,
-  TitleBook,
   Topic,
-  ShortDescription,
-  TopicDescription,
-  WrapperInfo,
   LongDescription,
   Description,
   WrapperButtons,
 } from '../BookInfo';
+import {
+  ShortDescription,
+  TopicDescription,
+  WrapperInfo,
+  TitleBook,
+  BookImage,
+} from '../BookInfo/DescriptionBook';
 import AcceptRejectModals from '../AcceptRejectModals';
 import StyledButton from '../Button';
 import EmptyCover from '../../../assets/MOC-data/EmptyCover.png';

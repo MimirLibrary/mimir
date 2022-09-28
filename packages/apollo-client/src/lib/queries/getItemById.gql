@@ -8,7 +8,6 @@ query GetMaterialById($id: ID!) {
     category
     created_at
     updated_at
-    location_id
     description
     type
     statuses {
@@ -16,6 +15,10 @@ query GetMaterialById($id: ID!) {
       person_id
       status
       created_at
+    }
+    location {
+      id
+      location
     }
   }
 }
