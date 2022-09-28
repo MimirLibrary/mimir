@@ -10,7 +10,6 @@ import { colors, dimensions } from '@mimir/ui-kit';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import Dropdown, { IDropdownOption } from '../Dropdown';
 import { useGetAllLocationsQuery } from '@mimir/apollo-client';
-import { periodOfKeeping } from '../../models/helperFunctions/converTime';
 import { INewData, Location, OpenLink, TitleHolder, Topic } from './index';
 import { toast } from 'react-toastify';
 
@@ -169,7 +168,7 @@ const DescriptionBook: FC<IDescriptionBook> = ({
   );
 
   return (
-    <WrapperInfo>
+    <WrapperInfo data-testid="description-book">
       <BookImage src={src || bookImage} />
       <ShortDescription>
         {editing ? (

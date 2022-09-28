@@ -83,4 +83,30 @@ describe('render DescriptionBook component', () => {
     expect(screen.queryByText('Ivan Uglovets')).toBeNull();
     expect(screen.queryByText('Gomel')).toBeNull();
   });
+
+  it('renders correctly with snapshots', () => {
+    const handleChangeSomeData = jest.fn();
+    jest.spyOn(reactHooks, 'useSelector').mockReturnValue(RolesTypes.READER);
+    render(
+      <MockedProvider mocks={[locationMock]} addTypename={false}>
+        <DescriptionBook
+          title="Dracula"
+          author="Ivan Uglovets"
+          editing={false}
+          category="Fantasy"
+          location={{ id: '2', location: 'Gomel' }}
+          date={new Date('2022-09-21T08:29:24.221Z')}
+          status="Free"
+          src=""
+          newTitleAndAuthor={{ newAuthor: 'Ivan', newTitle: 'Spider-Man' }}
+          newDeadline={31}
+          handleChangeAuthorAndTitle={handleChangeSomeData}
+          handleChangeDeadline={handleChangeSomeData}
+          handleChangeLocation={handleChangeSomeData}
+          handleChangeNewGenre={handleChangeSomeData}
+        />
+      </MockedProvider>
+    );
+    expect(screen.getByTestId('description-book')).toMatchSnapshot();
+  });
 });
