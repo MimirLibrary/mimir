@@ -26,21 +26,26 @@ const StyledWrapperList = styled(WrapperList)`
 
 const ListAllItems = () => {
   const locations = useAppSelector(locationIds);
+  const { searchMaterials } = useAppSelector((state) => state.materials);
+
   const { data, loading, error } = useGetAllMaterialsForManagerQuery({
     variables: { locations },
     fetchPolicy: 'no-cache',
   });
+
   const dispatch = useAppDispatch();
-  const { searchMaterials } = useAppSelector((state) => state.materials);
+
   useEffect(() => {
-    if (data && !searchMaterials?.length)
+    if (data)
       dispatch(setSearchMaterials(data?.getAllMaterials as IMaterial[]));
   }, [data]);
+
   useEffect(() => {
     if (error) {
       toast.error(error.message);
     }
   }, [error]);
+
   return (
     <>
       {loading ? (

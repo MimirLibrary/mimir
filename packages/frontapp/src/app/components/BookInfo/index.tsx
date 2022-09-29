@@ -6,7 +6,11 @@ import { ReactComponent as Edit } from '../../../assets/Edit.svg';
 import { ReactComponent as Remove } from '../../../assets/Remove.svg';
 import { ReactComponent as EnableNotifySvg } from '../../../assets/NoNotification.svg';
 import { ReactComponent as CancelNotifySvg } from '../../../assets/CancelNotification.svg';
-import { Status } from '@mimir/apollo-client';
+import {
+  GetAllMaterialsDocument,
+  GetAllMaterialsForManagerDocument,
+  Status,
+} from '@mimir/apollo-client';
 import { DateTime } from '@mimir/global-types';
 import Button from '../Button';
 import ClaimOperation from '../ClaimOperation';
@@ -255,7 +259,10 @@ const BookInfo: FC<IBookInfoProps> = ({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
   const [removeMaterial] = useRemoveMaterialMutation({
-    refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
+    refetchQueries: [
+      GetMaterialByIdDocument,
+      GetAllMaterialsForManagerDocument,
+    ],
   });
   const [updateMaterial] = useUpdateMaterialMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
@@ -359,8 +366,7 @@ const BookInfo: FC<IBookInfoProps> = ({
         location_id: Number(location.id),
       },
     });
-    navigate('/search');
-    window.location.reload();
+    navigate('/books-stuff');
   };
   const handleEditBtn = () => setEditing(true);
   const handleDeleteBtn = () => setDeleteWarning(true);
