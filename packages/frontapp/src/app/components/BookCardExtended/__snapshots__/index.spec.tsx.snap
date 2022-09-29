@@ -1,0 +1,140 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render BookCardExtended correctly render with status is free 1`] = `
+.emotion-0 {
+  background: #FFFFFF;
+  border-radius: 0.625rem;
+  -webkit-transition: box-shadow 0.3s;
+  transition: box-shadow 0.3s;
+  padding: 1.5rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  max-width: 300px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.emotion-0:hover {
+  box-shadow: 0px -4px 64px rgba(24, 39, 75, 0.12);
+}
+
+.emotion-1 img {
+  width: 72px;
+  height: 115px;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  -webkit-justify-content: flex-start;
+  justify-content: flex-start;
+  margin-left: 1rem;
+}
+
+.emotion-3 {
+  font-weight: 500;
+  font-size: 1rem;
+  color: #333333;
+  line-height: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.emotion-4 {
+  font-weight: 300;
+  font-size: 0.875rem;
+  color: #4F4F4F;
+  line-height: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.emotion-5 {
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: #333333;
+  line-height: 1rem;
+}
+
+.emotion-6 {
+  font-weight: 300;
+  font-size: 0.875rem;
+  color: #333333;
+  line-height: 1rem;
+  margin-bottom: 0.25rem;
+  margin-right: 0.2rem;
+}
+
+.emotion-7 {
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: #333333;
+  line-height: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.emotion-8 {
+  font-weight: 300;
+  font-size: 0.875rem;
+  color: #333333;
+  line-height: 1rem;
+}
+
+<div
+  class="emotion-0"
+  data-testid="book-card-extended"
+>
+  <div
+    class="emotion-1"
+  >
+    <img
+      alt="book-img"
+      src="BookImage.png"
+    />
+  </div>
+  <div
+    class="emotion-2"
+  >
+    <h4
+      class="emotion-3"
+    >
+      Dracula
+    </h4>
+    <p
+      class="emotion-4"
+    >
+      Horror
+    </p>
+    <p
+      class="emotion-5"
+    >
+      State:
+    </p>
+    <span
+      class="emotion-6"
+    >
+      on the shelf
+    </span>
+    <p
+      class="emotion-7"
+    >
+      Claim history:
+    </p>
+    <p
+      class="emotion-8"
+    >
+      was claimed 
+      0
+       times
+    </p>
+  </div>
+</div>
+`;

@@ -1,0 +1,174 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render SingleUserCard component renders correctly, with snapshots 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  background: #FFFFFF;
+  width: 320px;
+  margin: 0 0 1.25rem;
+  height: 151px;
+  padding: 1.5rem;
+  border-radius: 0.625rem;
+  -webkit-transition: box-shadow 0.3s;
+  transition: box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.emotion-0:hover {
+  box-shadow: 0px -4px 64px rgba(24, 39, 75, 0.12);
+}
+
+.emotion-1 {
+  height: 71px;
+  width: 71px;
+  border-radius: 50%;
+}
+
+.emotion-2 {
+  max-height: 7rem;
+  max-width: 7rem;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  margin-left: 1rem;
+  row-gap: 0.5rem;
+}
+
+.emotion-3>p:first-of-type {
+  margin-bottom: 0.5rem;
+}
+
+.emotion-4 {
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.25rem;
+}
+
+.emotion-5 {
+  font-size: 0.875rem;
+  row-gap: 4px;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  row-gap: inherit;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-column-gap: 4px;
+  column-gap: 4px;
+}
+
+.emotion-8 {
+  font-weight: 500;
+  font-size: inherit;
+  line-height: 1.25rem;
+}
+
+.emotion-9 {
+  font-weight: 300;
+  font-size: inherit;
+  line-height: 1.25rem;
+}
+
+<div
+  class="emotion-0"
+  data-testid="single-user"
+>
+  <div
+    class="emotion-1"
+  >
+    <div>
+      <img
+        alt="avatar"
+        class="emotion-2"
+        src="avatar.jpg"
+      />
+    </div>
+  </div>
+  <div
+    class="emotion-3"
+  >
+    <p
+      class="emotion-4"
+    >
+      Test
+    </p>
+    <div
+      class="emotion-5"
+    >
+      <div
+        class="emotion-6"
+      >
+        <div
+          class="emotion-7"
+        >
+          <p
+            class="emotion-8"
+          />
+          <p
+            class="emotion-9"
+          >
+            -
+          </p>
+        </div>
+        <div
+          class="emotion-7"
+        >
+          <p
+            class="emotion-8"
+          />
+          <p
+            class="emotion-9"
+          >
+            -
+          </p>
+        </div>
+        <div
+          class="emotion-7"
+        >
+          <p
+            class="emotion-8"
+          >
+            undefined: 
+          </p>
+          <p
+            class="emotion-9"
+          >
+            -
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

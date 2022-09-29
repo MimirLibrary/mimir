@@ -17,7 +17,12 @@ exports[`BookCard Component renders correctly, with snapshots 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   cursor: pointer;
-  box-shadow: 0px 10px 70px rgba(26, 30, 214, 0.08);
+  -webkit-transition: box-shadow 0.3s;
+  transition: box-shadow 0.3s;
+}
+
+.emotion-0:hover {
+  box-shadow: 0px -4px 64px rgba(24, 39, 75, 0.12);
 }
 
 @media (min-width: 26.25rem) {
