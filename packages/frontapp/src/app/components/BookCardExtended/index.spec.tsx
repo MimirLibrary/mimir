@@ -6,7 +6,7 @@ import { screen } from '@testing-library/react';
 
 describe('render BookCardExtended', () => {
   it('correctly render with status is free', () => {
-    const mockItem: IMaterial | null = {
+    const mockItem: IMaterial = {
       author: 'Ivan',
       category: 'Horror',
       title: 'Dracula',
@@ -36,7 +36,7 @@ describe('render BookCardExtended', () => {
   });
 
   it('correctly render with status is Busy', () => {
-    const mockItem: IMaterial | null = {
+    const mockItem: IMaterial = {
       author: 'Ivan',
       category: 'Horror',
       title: 'Dracula',
