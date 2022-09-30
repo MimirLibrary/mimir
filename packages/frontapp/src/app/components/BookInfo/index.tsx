@@ -7,7 +7,6 @@ import { ReactComponent as Remove } from '../../../assets/Remove.svg';
 import { ReactComponent as EnableNotifySvg } from '../../../assets/NoNotification.svg';
 import { ReactComponent as CancelNotifySvg } from '../../../assets/CancelNotification.svg';
 import {
-  GetAllMaterialsDocument,
   GetAllMaterialsForManagerDocument,
   Status,
 } from '@mimir/apollo-client';
@@ -21,7 +20,6 @@ import {
   periodOfKeeping,
 } from '../../models/helperFunctions/converTime';
 import SuccessMessage from '../SuccessMessage';
-import { listOfGenres } from '../../../assets/SearchConsts';
 import {
   GetAllTakenItemsDocument,
   GetMaterialByIdDocument,
@@ -156,6 +154,7 @@ export const Topic = styled.p`
 `;
 
 type StatusType = Pick<Status, 'id' | 'person_id' | 'created_at' | 'status'>;
+
 export type Location = {
   __typename?: 'Location' | undefined;
   id: string;
@@ -352,6 +351,7 @@ const BookInfo: FC<IBookInfoProps> = ({
         title: newDescriptionData.newTitle,
         author: newDescriptionData.newAuthor,
         category: newCategory,
+        description: newDescription,
         updated_at: getDates(updated_at).currentDate,
       },
     });
@@ -647,7 +647,7 @@ const BookInfo: FC<IBookInfoProps> = ({
             setActive={setDeleteWarning}
             titleCancel="Cancel"
             titleOption="Yes, delete"
-            onClick={deleteItem}
+            onSubmitClick={deleteItem}
           />
         </Modal>
       ) : (
@@ -658,7 +658,7 @@ const BookInfo: FC<IBookInfoProps> = ({
             setActive={setDeleteWarning}
             titleCancel="Cancel"
             titleOption="Yes, delete"
-            onClick={deleteItem}
+            onSubmitClick={deleteItem}
           />
         </Modal>
       )}
