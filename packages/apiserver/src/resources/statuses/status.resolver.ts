@@ -27,7 +27,18 @@ export class StatusResolver {
   @Query(() => [Status])
   @UseGuards(AuthGuard)
   async getStatusesByMaterial(@Args('material_id') id: string) {
-    return Status.find({ where: { material_id: id } });
+    const statuses = await Status.find({ where: { material_id: id } });
+    if (statuses.length === 0) {
+      await this.createStatus({
+        material_id: parseInt(id),
+        person_id: 1,
+        status: 'Free',
+      });
+      const newStatuses = await Status.find({ where: { material_id: id } });
+      return newStatuses;
+    } else {
+      return statuses;
+    }
   }
 
   @ResolveField(() => Person)
