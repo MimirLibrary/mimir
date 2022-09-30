@@ -748,7 +748,7 @@ export type GetMaterialByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetMaterialByIdQuery = { __typename?: 'Query', getMaterialById: { __typename?: 'Material', id: string, identifier: string, picture?: string | null, title: string, author: string, category: string, created_at: any, updated_at: any, location_id: number, description: string, type: string, statuses: Array<{ __typename?: 'Status', id: string, person_id: number, status: string, created_at: any } | null> } };
+export type GetMaterialByIdQuery = { __typename?: 'Query', getMaterialById: { __typename?: 'Material', id: string, identifier: string, picture?: string | null, title: string, author: string, category: string, created_at: any, updated_at: any, description: string, type: string, statuses: Array<{ __typename?: 'Status', id: string, person_id: number, status: string, created_at: any } | null>, location: { __typename?: 'Location', id: string, location: string } } };
 
 export type GetItemsForClaimHistoryQueryVariables = Exact<{
   person_id: Scalars['Int'];
@@ -1811,7 +1811,6 @@ export const GetMaterialByIdDocument = gql`
     category
     created_at
     updated_at
-    location_id
     description
     type
     statuses {
@@ -1819,6 +1818,10 @@ export const GetMaterialByIdDocument = gql`
       person_id
       status
       created_at
+    }
+    location {
+      id
+      location
     }
   }
 }

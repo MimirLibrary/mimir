@@ -169,7 +169,7 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
             description={data?.getMaterialById.description}
             updated_at={data?.getMaterialById?.updated_at}
             type={data?.getMaterialById?.type}
-            location_id={data?.getMaterialById?.location_id}
+            location={data?.getMaterialById.location}
           />
         )
       ) : (
@@ -188,7 +188,7 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
               description={data?.getMaterialById.description}
               updated_at={data?.getMaterialById?.updated_at}
               type={data?.getMaterialById?.type}
-              location_id={data?.getMaterialById?.location_id}
+              location={data.getMaterialById.location}
             />
           )}
           {userRole === RolesTypes.READER ? (

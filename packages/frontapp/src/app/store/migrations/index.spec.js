@@ -2,7 +2,7 @@ import { migrations } from './index';
 
 describe('reduxMigrations', () => {
   const getInitialState = () => ({
-    _persist: {version: -1, rehydrated: false},
+    _persist: { version: -1, rehydrated: false },
     tabs: 0,
     user: {
       id: 13,

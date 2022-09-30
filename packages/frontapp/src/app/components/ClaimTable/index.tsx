@@ -209,7 +209,9 @@ const ClaimTable: FC<IClaimTable> = ({ statuses, name }) => {
                   <th>{t('UserCard.Table.Deadline')}</th>
                   <th>{t('UserCard.Table.State')}</th>
                 </tr>
-                {shownItems?.map((d) => <Item key={d.material_id} item={d} />)}
+                {shownItems?.map((d) => (
+                  <Item key={d.material_id} item={d} />
+                ))}
               </tbody>
             </StyledTable>
           </StyledScroll>

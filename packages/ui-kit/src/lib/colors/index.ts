@@ -1,7 +1,7 @@
 export const colors = {
   accent_color: '#1A1ED6',
-  hover_color: '#14168F',
-  pressed_color: '#07097B',
+  hover_color: '#1A1DB1',
+  pressed_color: '#0A0D95',
   gray_additional: '#E0E0E0',
   main_gray: '#828282',
   dropdown_gray: '#BDBDBD',

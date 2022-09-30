@@ -118,6 +118,12 @@ const Form = styled.form`
   row-gap: ${dimensions.base};
 `;
 
+const StyledButton = styled(Button)`
+  :hover {
+    border-color: ${colors.hover_color};
+  }
+`;
+
 const UserCard = () => {
   const { id } = useParams();
   const {
@@ -254,11 +260,11 @@ const UserCard = () => {
           />
         </DescriptionWrapper>
         <ButtonsWrapper>
-          <Button
+          <StyledButton
             value={t('UserCard.CreateNotification')}
             svgComponent={<NotifySvg />}
             transparent
-          ></Button>
+          ></StyledButton>
           {state ? (
             <Button
               value={t('UserCard.UnblockUser')}
@@ -277,7 +283,7 @@ const UserCard = () => {
               svgComponent={<Block />}
             ></Button>
           )}
-          <Button
+          <StyledButton
             value={
               OnePerson?.getOnePerson.type === RolesTypes.READER
                 ? t('UserCard.MakeManager')

@@ -1,3 +1,4 @@
+import 'cross-fetch/polyfill';
 import { ApolloClient, from, InMemoryCache } from '@apollo/client';
 import { authLink } from './links/authLink';
 import { errorLink } from './links/errorLink';

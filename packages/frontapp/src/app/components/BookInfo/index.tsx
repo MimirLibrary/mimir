@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import bookImage from '../../../assets/MOC-data/BookImage.png';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { ReactComponent as Claim } from '../../../assets/claim.svg';
@@ -35,11 +34,11 @@ import {
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import ErrorMessage from '../ErrorMessge';
 import AskManagerForm from '../AskManagerForm';
-import { WrapperInput } from '../Search';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { RolesTypes } from '@mimir/global-types';
-import Dropdown, { IDropdownOption } from '../Dropdown';
-import BookStatus from '../BookStatus';
+import { IDropdownOption } from '../Dropdown';
+import { TUserLocation } from '../../store/slices/userSlice';
+import DescriptionBook from './DescriptionBook';
 
 export const BookHolder = styled.div`
   width: 100%;
@@ -54,16 +53,6 @@ export const BookHolder = styled.div`
   }
 `;
 
-export const BookImage = styled.img`
-  display: inline-block;
-  width: 12rem;
-  height: 19.5rem;
-  border-radius: 10px;
-  @media (max-width: ${dimensions.phone_width}) {
-    margin-right: ${dimensions.base};
-  }
-`;
-
 export const ShortDescriptionWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -74,54 +63,9 @@ export const ShortDescriptionWrapper = styled.div`
   }
 `;
 
-export const ShortDescription = styled.div`
-  width: 100%;
-  margin-left: ${dimensions.xl_2};
-  @media (max-width: ${dimensions.phone_width}) {
-    margin: 0;
-  }
-`;
-
-export const TitleBook = styled.h3`
-  font-weight: 700;
-  margin-bottom: ${dimensions.base_2};
-  font-size: ${dimensions.xl};
-  line-height: ${dimensions.xl_2};
-  color: ${colors.main_black};
-  @media (max-width: ${dimensions.phone_width}) {
-    margin-bottom: 0;
-    margin-top: ${dimensions.base};
-  }
-`;
-
-export const Topic = styled.p`
-  margin: ${dimensions.xs_2} 0;
-  font-weight: 500;
-  font-size: ${dimensions.base};
-  line-height: ${dimensions.xl};
-  color: ${colors.main_black};
-`;
-
-export const TopicDescription = styled.p`
-  font-weight: 300;
-  font-size: ${dimensions.base};
-  line-height: ${dimensions.xl};
-  color: ${colors.main_black};
-`;
-
 export const LongDescription = styled.div`
   margin-top: ${dimensions.xl_2};
   grid-column: 1 / span 3;
-`;
-
-const OpenLink = styled.a`
-  cursor: pointer;
-  margin: ${dimensions.xs_2} 0;
-  font-weight: 300;
-  color: ${colors.accent_color};
-  font-size: ${dimensions.base};
-  line-height: ${dimensions.xl};
-  text-decoration: underline;
 `;
 
 export const Description = styled.p`
@@ -129,19 +73,6 @@ export const Description = styled.p`
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
   color: ${colors.main_black};
-`;
-
-const StyledStatus = styled.div`
-  font-size: ${dimensions.base};
-  margin-top: ${dimensions.base};
-`;
-
-export const WrapperInfo = styled.div`
-  display: flex;
-  @media (max-width: ${dimensions.phone_width}) {
-    flex-direction: column;
-    align-items: center;
-  }
 `;
 
 export const WrapperButtons = styled.div`
@@ -158,45 +89,12 @@ const StyledButton = styled(Button)`
   width: 100%;
 `;
 
-const StyledInput = styled.input`
-  width: 19rem;
-  border: none;
-  outline: none;
-  margin-left: ${dimensions.xs_2};
-  color: ${colors.main_black};
-  margin-right: 0.12rem;
-`;
-const StyledInputDeadline = styled.input`
-  border: 0.5px solid #bdbdbd;
-  border-radius: ${dimensions.xl_3};
-  padding: 10px 0;
-  width: 3.7rem;
-  outline: none;
-  padding-left: ${dimensions.xl};
-  background: ${colors.bg_secondary};
-  :hover {
-    border: 0.5px solid ${colors.accent_color};
-  }
-  :focus {
-    border: 0.5px solid ${colors.accent_color};
-  }
-  @media (max-width: ${dimensions.tablet_width}) {
-    width: 100%;
-  }
-  @media (max-width: ${dimensions.phone_width}) {
-    width: 70%;
-  }
-  ::-webkit-inner-spin-button,
-  ::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-`;
-const TitleHolder = styled.p`
+export const TitleHolder = styled.p`
   font-weight: 700;
   font-size: ${dimensions.base};
   margin-bottom: ${dimensions.xs};
 `;
+
 const StyledTextArea = styled.textarea`
   border: none;
   outline: none;
@@ -235,7 +133,36 @@ const TextAreaWrapper = styled.div`
   }
 `;
 
+export const OpenLink = styled.a`
+  cursor: pointer;
+  margin: ${dimensions.xs_2} 0;
+  font-weight: 300;
+  color: ${colors.accent_color};
+  font-size: ${dimensions.base};
+  line-height: ${dimensions.xl};
+  text-decoration: underline;
+`;
+
+export const Topic = styled.p`
+  margin: ${dimensions.base} 0 ${dimensions.xs_2} 0;
+  font-weight: 500;
+  font-size: ${dimensions.base};
+  line-height: ${dimensions.xl};
+  color: ${colors.main_black};
+`;
+
 type StatusType = Pick<Status, 'id' | 'person_id' | 'created_at' | 'status'>;
+export type Location = {
+  __typename?: 'Location' | undefined;
+  id: string;
+  location: string;
+};
+
+export interface INewData {
+  newTitle: string;
+  newAuthor: string;
+}
+
 export interface IBookInfoProps {
   person_id: number | undefined;
   src: string | null | undefined;
@@ -249,7 +176,7 @@ export interface IBookInfoProps {
   created_at: DateTime;
   updated_at: DateTime;
   type: string;
-  location_id: number;
+  location: Location;
 }
 
 const BookInfo: FC<IBookInfoProps> = ({
@@ -265,9 +192,10 @@ const BookInfo: FC<IBookInfoProps> = ({
   material_id,
   person_id,
   type,
-  location_id,
+  location,
 }) => {
   const { id, userRole } = useAppSelector((state) => state.user);
+
   const { data: getNotificationsByPersonData } =
     useGetNotificationsByPersonQuery({
       variables: {
@@ -297,36 +225,24 @@ const BookInfo: FC<IBookInfoProps> = ({
     useState<boolean>(false);
   const [valueIsISBN, setValueIsISBN] = useState<string>('');
   const [editing, setEditing] = useState<boolean>(false);
-  const [newTitle, setNewTitle] = useState(title);
-  const [newAuthor, setNewAuthor] = useState(author);
+
   const [newCategory, setNewCategory] = useState(category);
-  const [newDescription, setNewDescription] = useState(
-    description
-      ? description
-      : ' Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi impedit aliquid alias consequuntur! Totam sequi expedita sunt dolor obcaecati, iusto ducimus? Beatae ea, commodi ab repellat, corporis atque quasi, tempore sunt modi similique soluta nemo hic necessitatibus esse accusantium omnis neque rerum. Placeat tempore, fugiat unde consequuntur dolor tempora ducimus.'
-  );
+  const [newLocation, setNewLocation] = useState<Location>(location);
   const [newDeadline, setNewDeadline] = useState(periodOfKeeping);
+  const [newDescriptionData, setNewDescriptionData] = useState<INewData>({
+    newAuthor: author,
+    newTitle: title,
+  });
+
+  const [newDescription, setNewDescription] = useState(description || '');
   const [deleteWarning, setDeleteWarning] = useState(false);
   const [isMaterialTakenByCurrentUser, setIsMaterialTakenByCurrentUser] =
     useState(false);
 
-  const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewTitle(e.target.value);
-  };
-  const handleChangeAuthor = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewAuthor(e.target.value);
-  };
-  const handleChangeDescription = (e: any) => {
+  const handleChangeDescription = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     setNewDescription(e.target.value);
-  };
-  const handleChangeDeadline = (e: any) => {
-    setNewDeadline(e.target.value);
-    e.target.value > 31 && setNewDeadline(31);
-    e.target.value <= 0 && setNewDeadline(1);
-  };
-
-  const handleChangeCategory = (option: IDropdownOption) => {
-    setNewCategory(option.value);
   };
 
   const [claimBook, { data }] = useClaimBookMutation({
@@ -345,18 +261,49 @@ const BookInfo: FC<IBookInfoProps> = ({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
   const currentStatus = getStatus(statusInfo?.status, created_at);
+
   const dateConditionOfClaiming =
     data?.claimBook.__typename === 'Status' ? data.claimBook.created_at : null;
+
   const dateConditionOfExtending =
     infoOfProlong?.prolongClaimPeriod.__typename === 'Status'
       ? infoOfProlong?.prolongClaimPeriod.created_at
       : null;
+
   const errorConditionOfClaiming =
     data?.claimBook.__typename === 'Error' ? data.claimBook.message : null;
   const errorConditionOfExtending =
     infoOfProlong?.prolongClaimPeriod.__typename === 'Error'
       ? infoOfProlong?.prolongClaimPeriod.message
       : null;
+
+  const handleChangeNewDescriptionData = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setNewDescriptionData({
+      ...newDescriptionData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleChangeCategory = (option: IDropdownOption) => {
+    setNewCategory(option.value);
+  };
+
+  const handleChangeLocation = (option: TUserLocation) => {
+    const newLocation = {
+      id: option.id,
+      location: option.value,
+    };
+    setNewLocation(newLocation);
+  };
+
+  const handleChangeDeadline = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewDeadline(Number(e.target.value));
+    Number(e.target.value) > 31 && setNewDeadline(31);
+    Number(e.target.value) <= 0 && setNewDeadline(1);
+  };
+
   const claim = async () => {
     await claimBook({
       variables: {
@@ -364,7 +311,6 @@ const BookInfo: FC<IBookInfoProps> = ({
         identifier: valueIsISBN,
       },
     });
-
     setValueIsISBN('');
     setIsShowClaimModal(false);
     setIsMaterialTakenByCurrentUser(true);
@@ -395,9 +341,9 @@ const BookInfo: FC<IBookInfoProps> = ({
       variables: {
         identifier: identifier,
         type: type,
-        location_id: location_id,
-        title: newTitle,
-        author: newAuthor,
+        location_id: Number(newLocation.id),
+        title: newDescriptionData.newTitle,
+        author: newDescriptionData.newAuthor,
         category: newCategory,
         updated_at: getDates(updated_at).currentDate,
       },
@@ -410,7 +356,7 @@ const BookInfo: FC<IBookInfoProps> = ({
       variables: {
         identifier: identifier,
         type: type,
-        location_id: location_id,
+        location_id: Number(location.id),
       },
     });
     navigate('/search');
@@ -420,16 +366,15 @@ const BookInfo: FC<IBookInfoProps> = ({
   const handleDeleteBtn = () => setDeleteWarning(true);
 
   const discardChanges = () => {
-    setNewTitle(title);
-    setNewAuthor(author);
+    setNewDescriptionData({
+      newAuthor: author,
+      newTitle: title,
+    });
     setNewCategory(category);
-    setNewDescription(
-      description
-        ? description
-        : ' Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi impedit aliquid alias consequuntur! Totam sequi expedita sunt dolor obcaecati, iusto ducimus? Beatae ea, commodi ab repellat, corporis atque quasi, tempore sunt modi similique soluta nemo hic necessitatibus esse accusantium omnis neque rerum. Placeat tempore, fugiat unde consequuntur dolor tempora ducimus.'
-    );
+    setNewDescription(description ? description : ' ');
     setEditing(false);
   };
+
   useEffect(() => {
     if (searchParams.has('claimModal') && currentStatus === 'Free') {
       const claimModal = searchParams.get('claimModal')!;
@@ -506,84 +451,22 @@ const BookInfo: FC<IBookInfoProps> = ({
     <>
       <BookHolder>
         <ShortDescriptionWrapper>
-          <WrapperInfo>
-            <BookImage src={src || bookImage} />
-            <ShortDescription>
-              {editing ? (
-                <>
-                  <TitleHolder>Name </TitleHolder>
-                  <WrapperInput>
-                    <StyledInput
-                      type="text"
-                      value={newTitle}
-                      onChange={handleChangeTitle}
-                    />
-                  </WrapperInput>
-                </>
-              ) : (
-                <TitleBook>{title || 'Book Title'}</TitleBook>
-              )}
-              {!editing && <Topic>Genre: </Topic>}
-              {userRole === RolesTypes.READER ? (
-                <OpenLink>{category || 'Genres of book'}</OpenLink>
-              ) : editing ? (
-                <>
-                  <br />
-                  <TitleHolder>Genre </TitleHolder>
-                  <Dropdown
-                    options={listOfGenres}
-                    onChange={handleChangeCategory}
-                    placeholder="Enter genre"
-                  />
-                </>
-              ) : (
-                <TopicDescription>
-                  {category || 'Genres of book'}
-                </TopicDescription>
-              )}
-              {editing ? (
-                <>
-                  <br />
-                  <TitleHolder>Author </TitleHolder>
-                  <WrapperInput>
-                    <StyledInput
-                      type="text"
-                      value={newAuthor}
-                      onChange={handleChangeAuthor}
-                    />
-                  </WrapperInput>
-                </>
-              ) : (
-                <>
-                  <Topic>Author: </Topic>
-                  <TopicDescription>{author || 'Author Name'}</TopicDescription>
-                </>
-              )}
-              {userRole === RolesTypes.READER ? (
-                <StyledStatus>
-                  <BookStatus status={statusInfo?.status} date={created_at} />
-                </StyledStatus>
-              ) : editing ? (
-                <>
-                  <br />
-                  <TitleHolder>Deadline </TitleHolder>
-                  <StyledInputDeadline
-                    value={newDeadline}
-                    type="number"
-                    onChange={handleChangeDeadline}
-                    min="1"
-                    max="31"
-                  />{' '}
-                  days
-                </>
-              ) : (
-                <>
-                  <Topic>Deadline: </Topic>
-                  <TopicDescription>{newDeadline + ' days'}</TopicDescription>
-                </>
-              )}
-            </ShortDescription>
-          </WrapperInfo>
+          <DescriptionBook
+            title={title}
+            author={author}
+            category={category}
+            date={created_at}
+            editing={editing}
+            location={location}
+            src={src}
+            status={statusInfo?.status}
+            newDeadline={newDeadline}
+            newTitleAndAuthor={newDescriptionData}
+            handleChangeDeadline={handleChangeDeadline}
+            handleChangeLocation={handleChangeLocation}
+            handleChangeAuthorAndTitle={handleChangeNewDescriptionData}
+            handleChangeNewGenre={handleChangeCategory}
+          />
           {userRole === RolesTypes.READER ? (
             <>
               {person_id === id ? (
@@ -670,10 +553,7 @@ const BookInfo: FC<IBookInfoProps> = ({
         ) : (
           <LongDescription>
             <Topic>Description: </Topic>
-            <Description>
-              {description ||
-                ' Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sequi impedit aliquid alias consequuntur! Totam sequi expedita sunt dolor obcaecati, iusto ducimus? Beatae ea, commodi ab repellat, corporis atque quasi, tempore sunt modi similique soluta nemo hic necessitatibus esse accusantium omnis neque rerum. Placeat tempore, fugiat unde consequuntur dolor tempora ducimus.'}
-            </Description>
+            <Description>{description || ''}</Description>
             {userRole === RolesTypes.READER ? (
               <OpenLink>see full description</OpenLink>
             ) : null}
@@ -738,7 +618,7 @@ const BookInfo: FC<IBookInfoProps> = ({
           setActive={setIsShowAskManager}
           setSuccessModal={setIsShowWindowReportedToManager}
           material_id={material_id}
-          location_id={location_id}
+          location_id={Number(location.id)}
         />
       </Modal>
       <Modal
