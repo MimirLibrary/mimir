@@ -74,6 +74,11 @@ interface IProps {
   handleResetClick?: () => void;
 }
 
+interface showMoreStats {
+  Authors: boolean;
+  Categories: boolean;
+}
+
 const SearchModal: FC<IProps> = ({
   handleResetClick,
   setApplyFilters,
@@ -82,7 +87,16 @@ const SearchModal: FC<IProps> = ({
   checkBoxHandler,
 }) => {
   const numberOfInitialItems = 7; // number of items to show before clicked ShowMore
-  const [showMore, setShowMore] = useState(false);
+  const [showMore, setShowMore] = useState<showMoreStats>({
+    Authors: false,
+    Categories: false,
+  });
+  const seeMoreHandler = (category: string) => {
+    setShowMore((prev) => ({
+      ...prev,
+      [category]: !prev[category as keyof showMoreStats],
+    }));
+  };
   return (
     <form>
       <Filters>Filters</Filters>
@@ -109,10 +123,7 @@ const SearchModal: FC<IProps> = ({
                 />
               </OneCategory>
             ))}
-            {item.subAttributes.length > 7 && (
-              <SeeMoreButton>SEE MORE </SeeMoreButton>
-            )}
-            {showMore &&
+            {showMore[item.title as keyof showMoreStats] &&
               item.subAttributes
                 .slice(numberOfInitialItems, item.subAttributes.length)
                 .map((attribute: SubItemType) => (
@@ -135,8 +146,10 @@ const SearchModal: FC<IProps> = ({
                   </OneCategory>
                 ))}
             {item.subAttributes.length > numberOfInitialItems && (
-              <SeeMoreButton onClick={() => setShowMore(!showMore)}>
-                {showMore ? 'see less' : 'see more'}
+              <SeeMoreButton onClick={() => seeMoreHandler(item.title)}>
+                {showMore[item.title as keyof showMoreStats]
+                  ? 'see less'
+                  : 'see more'}
               </SeeMoreButton>
             )}
           </AttributeWrapper>
