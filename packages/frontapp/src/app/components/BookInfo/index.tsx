@@ -6,7 +6,10 @@ import { ReactComponent as Edit } from '../../../assets/Edit.svg';
 import { ReactComponent as Remove } from '../../../assets/Remove.svg';
 import { ReactComponent as EnableNotifySvg } from '../../../assets/NoNotification.svg';
 import { ReactComponent as CancelNotifySvg } from '../../../assets/CancelNotification.svg';
-import { Status } from '@mimir/apollo-client';
+import {
+  GetAllMaterialsForManagerDocument,
+  Status,
+} from '@mimir/apollo-client';
 import { DateTime } from '@mimir/global-types';
 import Button from '../Button';
 import ClaimOperation from '../ClaimOperation';
@@ -17,7 +20,6 @@ import {
   periodOfKeeping,
 } from '../../models/helperFunctions/converTime';
 import SuccessMessage from '../SuccessMessage';
-import { listOfGenres } from '../../../assets/SearchConsts';
 import {
   GetAllTakenItemsDocument,
   GetMaterialByIdDocument,
@@ -152,6 +154,7 @@ export const Topic = styled.p`
 `;
 
 type StatusType = Pick<Status, 'id' | 'person_id' | 'created_at' | 'status'>;
+
 export type Location = {
   __typename?: 'Location' | undefined;
   id: string;
@@ -255,7 +258,10 @@ const BookInfo: FC<IBookInfoProps> = ({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
   const [removeMaterial] = useRemoveMaterialMutation({
-    refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
+    refetchQueries: [
+      GetMaterialByIdDocument,
+      GetAllMaterialsForManagerDocument,
+    ],
   });
   const [updateMaterial] = useUpdateMaterialMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
@@ -345,6 +351,7 @@ const BookInfo: FC<IBookInfoProps> = ({
         title: newDescriptionData.newTitle,
         author: newDescriptionData.newAuthor,
         category: newCategory,
+        description: newDescription,
         updated_at: getDates(updated_at).currentDate,
       },
     });
@@ -359,8 +366,7 @@ const BookInfo: FC<IBookInfoProps> = ({
         location_id: Number(location.id),
       },
     });
-    navigate('/search');
-    window.location.reload();
+    navigate('/books-stuff');
   };
   const handleEditBtn = () => setEditing(true);
   const handleDeleteBtn = () => setDeleteWarning(true);
@@ -641,7 +647,7 @@ const BookInfo: FC<IBookInfoProps> = ({
             setActive={setDeleteWarning}
             titleCancel="Cancel"
             titleOption="Yes, delete"
-            onClick={deleteItem}
+            onSubmitClick={deleteItem}
           />
         </Modal>
       ) : (
@@ -652,7 +658,7 @@ const BookInfo: FC<IBookInfoProps> = ({
             setActive={setDeleteWarning}
             titleCancel="Cancel"
             titleOption="Yes, delete"
-            onClick={deleteItem}
+            onSubmitClick={deleteItem}
           />
         </Modal>
       )}

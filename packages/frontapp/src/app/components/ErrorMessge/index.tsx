@@ -117,7 +117,7 @@ const ErrorMessage: FC<IPropsErrorMessage> = ({
             <StyledButton
               value={titleCancel || 'Cancel'}
               transparent
-              onClick={onClick ? onClick : closeModal}
+              onClick={onClick || closeModal}
             />
           )}
         </WrapperButtons>
