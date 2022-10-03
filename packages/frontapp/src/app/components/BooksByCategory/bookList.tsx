@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import BookCard from '../BookCard';
 import { WrapperList } from '../ListBooks';
 import { Material } from '@mimir/apollo-client';
-import BackButton from '../BackButton';
+import Tags from './tags';
 
 export type IMaterial = Pick<
   Material,
@@ -27,8 +27,27 @@ const BookList: FC<IBookList> = ({ allData, searchParams }) => {
   const items = searchParams.getAll('items');
   const sortBy = searchParams.getAll('sortby');
   const [filteredData, setFilteredData] = useState<IMaterial[]>([]);
+  const [allFilters, setAllFilters] = useState<string[]>([
+    ...authors,
+    ...availability,
+    ...categories,
+    ...items,
+    ...sortBy,
+  ]);
 
   useEffect(() => {
+    setAllFilters([
+      ...authors,
+      ...availability,
+      ...categories,
+      ...items,
+      ...sortBy,
+    ]);
+
+    if (searchParams.toString() === '') {
+      setFilteredData([]);
+      return;
+    }
     let allBooks = allData;
     if (authors.length !== 0) {
       const filter = allBooks.filter(
@@ -73,8 +92,8 @@ const BookList: FC<IBookList> = ({ allData, searchParams }) => {
   }, [searchParams]);
 
   return (
-    <div>
-      <BackButton />
+    <>
+      <Tags chosenTags={allFilters} numOfResults={filteredData.length} />
       <WrapperList>
         {filteredData.length !== 0 ? (
           filteredData.map((material: IMaterial) => (
@@ -93,7 +112,7 @@ const BookList: FC<IBookList> = ({ allData, searchParams }) => {
           <h3>Nothing was found</h3>
         )}
       </WrapperList>
-    </div>
+    </>
   );
 };
 

@@ -6,6 +6,7 @@ import { locationIds } from '../../store/slices/userSlice';
 import ErrorType500 from '../ErrorType500';
 import { toast } from 'react-toastify';
 import BookList, { IMaterial } from './bookList';
+import BackButton from '../BackButton';
 
 const BooksByCategory = () => {
   const locations = useAppSelector(locationIds);
@@ -21,14 +22,17 @@ const BooksByCategory = () => {
   }, [error]);
 
   if (loading) return <h1>Loading...</h1>;
-  if (!data) return <ErrorType500 />;
+  if (!data || data.getAllMaterials.length === 0) return <ErrorType500 />;
 
   return (
     data && (
-      <BookList
-        allData={data.getAllMaterials as IMaterial[]}
-        searchParams={searchParams}
-      />
+      <>
+        <BackButton />
+        <BookList
+          allData={data.getAllMaterials as IMaterial[]}
+          searchParams={searchParams}
+        />
+      </>
     )
   );
 };
