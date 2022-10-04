@@ -283,11 +283,15 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
           {!fieldsDonate.length ? (
             <WrapperForEmptyBlock>
               <WrapperCircle />
-              <img src={donate_placeholder} alt="donate_placeholder" />
+              <img
+                src={donate_placeholder}
+                alt="donate_placeholder"
+                data-testid="donate-placeholder"
+              />
               <TitleEmpty top="20px">{t('PlaceholderTitle.Donate')}</TitleEmpty>
             </WrapperForEmptyBlock>
           ) : (
-            <WrapperList>
+            <WrapperList data-testid="items-list">
               {fieldsDonate?.slice(0, 3).map((field) => (
                 <FieldWrapper key={field?.id}>
                   <FieldTitle>{field?.title}</FieldTitle>
