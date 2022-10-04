@@ -6,6 +6,7 @@ import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../Button';
 import { RoutesTypes } from '../../../utils/routes';
+import { useTranslation } from 'react-i18next';
 
 const WrapperInfo = styled.div`
   display: flex;
@@ -90,6 +91,7 @@ interface IErrorTypeProps {
 }
 
 const ErrorType500: FC<IErrorTypeProps> = ({ clearErrors }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const redirectToHome = () => {
@@ -104,14 +106,11 @@ const ErrorType500: FC<IErrorTypeProps> = ({ clearErrors }) => {
           <WrapperDesc>
             <Title>MIMIR</Title>
             <StyledDiv>
-              <StyledHeader>OOPS SORRY!</StyledHeader>
-              <StyledHeader> SOMETHING WENT WRONG!</StyledHeader>
-              <StyledSubHeader>
-                It seems the action failed. Please try again later <br /> We
-                will try to fix this error
-              </StyledSubHeader>
+              <StyledHeader>{t('ErrorType.MainHeader')}</StyledHeader>
+              <StyledHeader>{t('ErrorType.SecondaryHeader')}</StyledHeader>
+              <StyledSubHeader>{t('ErrorType.Description')}</StyledSubHeader>
               <StyledButton
-                value="Go back home"
+                value={t('ErrorType.TitleButton')}
                 onClick={redirectToHome}
                 svgComponent={<ArrowLeft />}
               />
