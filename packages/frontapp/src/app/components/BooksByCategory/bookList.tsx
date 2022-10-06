@@ -1,20 +1,17 @@
 import React, { FC, useEffect, useState } from 'react';
 import BookCard from '../BookCard';
 import { WrapperList } from '../ListBooks';
-import { Material } from '@mimir/apollo-client';
+import { Material, Status } from '@mimir/apollo-client';
 import Tags from './tags';
 
+type IStatus = Omit<
+  Status,
+  'person' | 'material' | 'id' | 'material_id' | 'created_at'
+>;
 export type IMaterial = Pick<
   Material,
-  | 'id'
-  | 'title'
-  | 'author'
-  | 'type'
-  | 'picture'
-  | 'created_at'
-  | 'category'
-  | 'statuses'
->;
+  'id' | 'title' | 'author' | 'type' | 'picture' | 'created_at' | 'category'
+> & { statuses: IStatus[] };
 
 interface IBookList {
   allData: IMaterial[];
@@ -92,7 +89,7 @@ const BookList: FC<IBookList> = ({ allData, searchParams }) => {
   }, [searchParams]);
 
   return (
-    <>
+    <div data-testid="bookList">
       <Tags chosenTags={allFilters} numOfResults={filteredData.length} />
       <WrapperList>
         {filteredData.length !== 0 ? (
@@ -112,7 +109,7 @@ const BookList: FC<IBookList> = ({ allData, searchParams }) => {
           <h3>Nothing was found</h3>
         )}
       </WrapperList>
-    </>
+    </div>
   );
 };
 
