@@ -75,8 +75,8 @@ interface IProps {
 }
 
 interface showMoreStats {
-  Authors: boolean;
-  Categories: boolean;
+  authors: boolean;
+  categories: boolean;
 }
 
 const SearchModal: FC<IProps> = ({
@@ -88,13 +88,13 @@ const SearchModal: FC<IProps> = ({
 }) => {
   const numberOfInitialItems = 7; // number of items to show before clicked ShowMore
   const [showMore, setShowMore] = useState<showMoreStats>({
-    Authors: false,
-    Categories: false,
+    authors: false,
+    categories: false,
   });
   const seeMoreHandler = (category: string) => {
     setShowMore((prev) => ({
       ...prev,
-      [category]: !prev[category as keyof showMoreStats],
+      [category]: !prev[category.toLowerCase() as keyof showMoreStats],
     }));
   };
   return (
@@ -123,7 +123,7 @@ const SearchModal: FC<IProps> = ({
                 />
               </OneCategory>
             ))}
-            {showMore[item.title as keyof showMoreStats] &&
+            {showMore[item.title.toLowerCase() as keyof showMoreStats] &&
               item.subAttributes
                 .slice(numberOfInitialItems, item.subAttributes.length)
                 .map((attribute: SubItemType) => (
@@ -147,7 +147,7 @@ const SearchModal: FC<IProps> = ({
                 ))}
             {item.subAttributes.length > numberOfInitialItems && (
               <SeeMoreButton onClick={() => seeMoreHandler(item.title)}>
-                {showMore[item.title as keyof showMoreStats]
+                {showMore[item.title.toLowerCase() as keyof showMoreStats]
                   ? 'see less'
                   : 'see more'}
               </SeeMoreButton>
