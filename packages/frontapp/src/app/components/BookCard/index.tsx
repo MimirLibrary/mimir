@@ -27,7 +27,8 @@ const BookCardWrapper = styled.div`
   transition: box-shadow 0.3s;
 
   :hover {
-    box-shadow: 0px -4px 64px rgba(24, 39, 75, 0.12);
+    box-shadow: 0px 6px 14px -6px rgba(24, 39, 75, 0.08),
+      0px 10px 32px -4px rgba(24, 39, 75, 0.08);
   }
   @media (min-width: ${dimensions.phone_width}) {
     min-height: 19.5rem;
