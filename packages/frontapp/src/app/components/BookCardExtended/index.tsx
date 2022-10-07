@@ -113,43 +113,41 @@ const BookCardExtended: FC<IPropsBookCardExtended> = ({ item }) => {
   };
 
   return (
-    <>
-      {item && (
-        <Wrapper onClick={handleItemRedirect} data-testid="book-card-extended">
-          <WrapperImg>
-            <img src={item?.picture || src} alt="book-img" />
-          </WrapperImg>
-          <WrapperDescription>
-            <Title>{item?.title}</Title>
-            <TitleGenre>{item?.category}</TitleGenre>
-            <TitleState>State:</TitleState>
-            <TitleStatus>
-              {typeof currentStatus === 'string' ? (
-                currentStatus
-              ) : (
-                <>
-                  <TitleStatus>
-                    {currentStatus.type === 'Overdue'
-                      ? 'Overdue by'
-                      : 'Claimed by'}
-                  </TitleStatus>
-                  <StyledUserName
-                    type={currentStatus.type}
-                    to={`${RoutesTypes.READERS}/${currentStatus.person_id}`}
-                  >
-                    {currentStatus.body}
-                  </StyledUserName>
-                </>
-              )}
-            </TitleStatus>
-            <TitleClaimHistory>Claim history:</TitleClaimHistory>
-            <HistoryBook>
-              was claimed {countOfHistoryClaimed || 0} times
-            </HistoryBook>
-          </WrapperDescription>
-        </Wrapper>
-      )}
-    </>
+    item && (
+      <Wrapper onClick={handleItemRedirect} data-testid="book-card-extended">
+        <WrapperImg>
+          <img src={item?.picture || src} alt="book-img" />
+        </WrapperImg>
+        <WrapperDescription>
+          <Title>{item?.title}</Title>
+          <TitleGenre>{item?.category}</TitleGenre>
+          <TitleState>State:</TitleState>
+          <TitleStatus>
+            {typeof currentStatus === 'string' ? (
+              currentStatus
+            ) : (
+              <>
+                <TitleStatus>
+                  {currentStatus.type === 'Overdue'
+                    ? 'Overdue by'
+                    : 'Claimed by'}
+                </TitleStatus>
+                <StyledUserName
+                  type={currentStatus.type}
+                  to={`${RoutesTypes.READERS}/${currentStatus.person_id}`}
+                >
+                  {currentStatus.body}
+                </StyledUserName>
+              </>
+            )}
+          </TitleStatus>
+          <TitleClaimHistory>Claim history:</TitleClaimHistory>
+          <HistoryBook>
+            was claimed {countOfHistoryClaimed || 0} times
+          </HistoryBook>
+        </WrapperDescription>
+      </Wrapper>
+    )
   );
 };
 

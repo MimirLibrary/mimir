@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import bookImage from '../../../assets/MOC-data/BookImage.png';
 import { WrapperInput } from '../Search';
 import { RolesTypes } from '@mimir/global-types';
