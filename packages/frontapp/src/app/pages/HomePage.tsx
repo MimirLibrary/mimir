@@ -107,6 +107,7 @@ const HomePage: FC = () => {
     error: errorMaterials,
   } = useGetAllMaterialsForDonateQuery({
     variables: { locations },
+    fetchPolicy: 'no-cache',
   });
 
   const {
@@ -125,6 +126,7 @@ const HomePage: FC = () => {
   } = useGetAllStatusesIsOverdueQuery({
     variables: { locations },
     skip: userRole === RolesTypes.READER,
+    fetchPolicy: 'no-cache',
   });
 
   const donateList = useMemo(() => {
