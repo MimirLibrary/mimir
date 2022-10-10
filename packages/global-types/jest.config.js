@@ -1,7 +1,7 @@
 module.exports = {
   displayName: 'global-types',
   preset: '../../jest.preset.js',
-  globals: {
+   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
     },
