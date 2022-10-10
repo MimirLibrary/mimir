@@ -4,7 +4,7 @@ import Button from '../Button';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import { useCreateMessageForManagerMutation } from '@mimir/apollo-client';
-import Dropdown, { IDropdownOption } from '../Dropdown';
+import Dropdown from '../Dropdown';
 import { TUserLocation } from '../../store/slices/userSlice';
 import { toast } from 'react-toastify';
 

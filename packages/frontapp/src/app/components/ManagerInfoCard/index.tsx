@@ -110,6 +110,10 @@ export const FieldWrapper = styled.div`
   gap: ${dimensions.xs_2};
   background: ${colors.bg_fields};
   border-radius: ${dimensions.xs_1};
+  margin-top: ${dimensions.xs_2};
+  :first-of-type {
+    margin-top: 0;
+  }
 `;
 export const InlineWrapper = styled.div`
   display: flex;
@@ -188,6 +192,15 @@ const TitleEmpty = styled.h3<{ top: string }>`
   text-align: center;
 `;
 
+const WrapperList = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: start;
+  height: 100%;
+  flex-direction: column;
+  margin-top: ${dimensions.base};
+`;
+
 const ManagerInfoCard: FC<IManagerInfoCard> = ({
   type,
   fieldsOverdue,
@@ -215,9 +228,9 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
               </TitleEmpty>
             </WrapperForEmptyBlock>
           ) : (
-            fieldsOverdue?.slice(0, 3).map((field) => (
-              <FieldWrapper key={field?.id}>
-                <>
+            <WrapperList>
+              {fieldsOverdue?.slice(0, 3).map((field) => (
+                <FieldWrapper key={field?.id}>
                   <FieldTitle>{field?.material.title}</FieldTitle>
                   <InlineWrapper>
                     <FieldDescription>
@@ -230,9 +243,9 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
                       {field?.person.username}
                     </FieldOpenLink>
                   </InlineWrapper>
-                </>
-              </FieldWrapper>
-            ))
+                </FieldWrapper>
+              ))}
+            </WrapperList>
           )}
           <WrapperFooter>
             <>
@@ -270,13 +283,17 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
           {!fieldsDonate.length ? (
             <WrapperForEmptyBlock>
               <WrapperCircle />
-              <img src={donate_placeholder} alt="donate_placeholder" />
+              <img
+                src={donate_placeholder}
+                alt="donate_placeholder"
+                data-testid="donate-placeholder"
+              />
               <TitleEmpty top="20px">{t('PlaceholderTitle.Donate')}</TitleEmpty>
             </WrapperForEmptyBlock>
           ) : (
-            fieldsDonate?.slice(0, 3).map((field) => (
-              <FieldWrapper key={field?.id}>
-                <>
+            <WrapperList data-testid="items-list">
+              {fieldsDonate?.slice(0, 3).map((field) => (
+                <FieldWrapper key={field?.id}>
                   <FieldTitle>{field?.title}</FieldTitle>
                   <InlineWrapper>
                     <FieldDescription>
@@ -294,9 +311,9 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
                       }
                     </FieldOpenLink>
                   </InlineWrapper>
-                </>
-              </FieldWrapper>
-            ))
+                </FieldWrapper>
+              ))}
+            </WrapperList>
           )}
           <WrapperFooter>
             <>

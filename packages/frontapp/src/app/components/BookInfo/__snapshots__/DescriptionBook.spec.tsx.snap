@@ -68,10 +68,48 @@ exports[`render DescriptionBook component renders correctly with snapshots 1`] =
 }
 
 .emotion-5 {
+  cursor: pointer;
+  margin: 0.5rem 0;
+  font-weight: 300;
+  color: #1A1ED6;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+}
+
+.emotion-7 {
   font-weight: 300;
   font-size: 1rem;
   line-height: 1.25rem;
   color: #333333;
+}
+
+.emotion-11 {
+  font-size: 1rem;
+}
+
+@media (max-width: 26.25rem) {
+  .emotion-12 {
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    padding: 0 4px;
+    border-radius: 4px;
+  }
+}
+
+.emotion-13 {
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1rem;
+  color: #2AA816;
+}
+
+@media (max-width: 26.25rem) {
+  .emotion-13 {
+    font-size: 0.625rem;
+  }
 }
 
 <div
@@ -95,18 +133,18 @@ exports[`render DescriptionBook component renders correctly with snapshots 1`] =
     >
       Genre: 
     </p>
-    <p
+    <a
       class="emotion-5"
     >
       Fantasy
-    </p>
+    </a>
     <p
       class="emotion-4"
     >
       Author: 
     </p>
     <p
-      class="emotion-5"
+      class="emotion-7"
     >
       Ivan Uglovets
     </p>
@@ -116,20 +154,29 @@ exports[`render DescriptionBook component renders correctly with snapshots 1`] =
       Location: 
     </p>
     <p
-      class="emotion-5"
+      class="emotion-7"
     >
       Gomel
     </p>
     <p
       class="emotion-4"
     >
-      Deadline: 
+      State: 
     </p>
-    <p
-      class="emotion-5"
+    <div
+      class="emotion-11"
     >
-      31 days
-    </p>
+      <div
+        class="emotion-12"
+        data-testid="bookStatus"
+      >
+        <p
+          class="emotion-13"
+        >
+          Statuses.Free
+        </p>
+      </div>
+    </div>
   </div>
 </div>
 `;
