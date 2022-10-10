@@ -1,3 +1,8 @@
 const nxPreset = require('@nrwl/jest/preset');
 
-module.exports = { ...nxPreset };
+module.exports = {
+  ...nxPreset,
+  transformIgnorePatterns: [
+    'node_modules/(?!(react-native|my-project|redux-persist)/)',
+  ],
+};

@@ -19,6 +19,12 @@ class ErrorBoundary extends Component<Props, IStateError> {
     return { error: true };
   }
 
+  clearErrors = () => {
+    this.setState({
+      error: false,
+    });
+  };
+
   public override componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error(error);
     console.error(errorInfo);
@@ -26,7 +32,7 @@ class ErrorBoundary extends Component<Props, IStateError> {
 
   public override render() {
     if (this.state.error) {
-      return <ErrorType500 />;
+      return <ErrorType500 clearErrors={this.clearErrors} />;
     }
     return this.props.children;
   }

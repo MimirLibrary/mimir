@@ -178,6 +178,13 @@ export const resources = {
         Overdue: 'Everything seems to be ok',
         Notifications: 'There are no notifications for you',
       },
+      ErrorType: {
+        MainHeader: 'OOPS SORRY!',
+        SecondaryHeader: 'SOMETHING WENT WRONG!',
+        Description:
+          'It seems the action failed. Please try again later  We will try to fix this error',
+        TitleButton: 'Go back home',
+      },
     },
   },
   ru: {
@@ -357,6 +364,13 @@ export const resources = {
         Donate: 'Без пожертвований',
         Overdue: 'Кажется, все в порядке',
         Notifications: 'Для вас нет никаких уведомлений',
+      },
+      ErrorType: {
+        MainHeader: 'ОЙ, ИЗВИНИТЕ!',
+        SecondaryHeader: 'ЧТО-ТО ПОШЛО НЕ ТАК!',
+        Description:
+          'Похоже, что действие не удалось. Пожалуйста, повторите попытку позже. Мы постараемся исправить эту ошибку',
+        TitleButton: 'Возвращайтесь на главную',
       },
     },
   },
