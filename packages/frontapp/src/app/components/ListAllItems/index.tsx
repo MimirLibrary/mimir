@@ -1,10 +1,7 @@
 import React, { useEffect } from 'react';
 import { WrapperList } from '../ListBooks';
 import { useAppSelector } from '../../hooks/useTypedSelector';
-import {
-  useGetAllMaterialsForManagerQuery,
-  useSearchOfMaterialsQuery,
-} from '@mimir/apollo-client';
+import { useGetAllMaterialsForManagerQuery } from '@mimir/apollo-client';
 import BookCardExtended from '../BookCardExtended';
 import styled from '@emotion/styled';
 import { WrapperLoader } from '../DonateBookFlow';
@@ -17,6 +14,7 @@ import { IMaterial } from '../../types';
 import { locationIds } from '../../store/slices/userSlice';
 
 const StyledWrapperList = styled(WrapperList)`
+  padding: ${dimensions.xs_2} 0;
   grid-template-columns: repeat(auto-fill, 310px);
   margin-top: ${dimensions.xl_2};
   @media (max-width: ${dimensions.tablet_width}) {
