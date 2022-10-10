@@ -48,7 +48,7 @@ interface IProps {
 const Tags: FC<IProps> = ({ chosenTags, numOfResults }) => {
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
-  let str = '';
+  let searchString = '';
   //intexes for mapping
   let indexes = 0;
   const onCrossClick = (tag: string) => {
@@ -56,12 +56,14 @@ const Tags: FC<IProps> = ({ chosenTags, numOfResults }) => {
     searchParams.forEach((value, key) => {
       if (value === tag) {
         //removing tag from url
-        const SP = new URLSearchParams(tag).toString().slice(0, -1);
-        const newStr = searchParams.toString().replace(`${key}=${SP}`, '');
-        str = newStr;
+        const searchArg = new URLSearchParams(tag).toString().slice(0, -1);
+        const searchParamsAsString = searchParams
+          .toString()
+          .replace(`${key}=${searchArg}`, '');
+        searchString = searchParamsAsString;
       }
     });
-    setSearchParams(str);
+    setSearchParams(searchString);
   };
   return (
     <Wrapper>
