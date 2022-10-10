@@ -66,7 +66,7 @@ const Tags: FC<IProps> = ({ chosenTags, numOfResults }) => {
     setSearchParams(searchString);
   };
   return (
-    <Wrapper>
+    <Wrapper data-testid="tags">
       <Header>
         {t('Readers.TitleFiltered')} - {numOfResults}
       </Header>
