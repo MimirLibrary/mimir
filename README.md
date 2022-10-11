@@ -11,8 +11,10 @@ This project was generated using [Nx](https://nx.dev).
 ## How to run
 
 1. Install dependencies `npm i`
-2. Run database: `docker-compose up -d postgres`
-3. Run backend and frontend together: `nx run-many --target serve --projects apiserver,frontapp`
+2. Run database: `docker-compose --env-file ./.local.env up -d db`
+3. Run migrations `npm run migration:run`
+4. Run db seeds `npm run seed:run`
+5. Run backend and frontend together: `nx run-many --target serve --projects apiserver,frontapp`
 
 [App](http://localhost:4200/)
 [GraphQL Playground](http://localhost:3333/graphql)
