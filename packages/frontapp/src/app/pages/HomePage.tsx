@@ -68,7 +68,7 @@ const Wrapper = styled.div`
 `;
 
 const CardsWrapper = styled.div`
-  padding-top: 58px;
+  padding: 58px 0 ${dimensions.xl_3};
   display: flex;
   flex-direction: column;
   row-gap: 30px;
