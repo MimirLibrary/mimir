@@ -79,6 +79,11 @@ export type CreatePersonInput = {
   type: Scalars['String'];
 };
 
+export type CreateSimpleNotification = {
+  message: Scalars['String'];
+  person_id: Scalars['Int'];
+};
+
 export type CreateStateInput = {
   description?: InputMaybe<Scalars['String']>;
   person_id: Scalars['Int'];
@@ -195,6 +200,7 @@ export type Mutation = {
   createMessageForManager: Message;
   createNotification?: Maybe<Notification>;
   createPerson: Person;
+  createSimpleNotification: Notification;
   createState?: Maybe<BlockedUsers>;
   createStatus: Status;
   donateBook: Material;
@@ -252,6 +258,11 @@ export type MutationCreateNotificationArgs = {
 
 export type MutationCreatePersonArgs = {
   input: CreatePersonInput;
+};
+
+
+export type MutationCreateSimpleNotificationArgs = {
+  input?: InputMaybe<CreateSimpleNotification>;
 };
 
 
@@ -577,6 +588,13 @@ export type CreateNotificationMutationVariables = Exact<{
 
 
 export type CreateNotificationMutation = { __typename?: 'Mutation', createNotification?: { __typename?: 'Notification', id: string } | null };
+
+export type CreateSimpleNotificationMutationVariables = Exact<{
+  input: CreateSimpleNotification;
+}>;
+
+
+export type CreateSimpleNotificationMutation = { __typename?: 'Mutation', createSimpleNotification: { __typename?: 'Notification', id: string, message?: string | null } };
 
 export type CreateStateMutationVariables = Exact<{
   state: Scalars['Boolean'];
@@ -991,6 +1009,40 @@ export function useCreateNotificationMutation(baseOptions?: Apollo.MutationHookO
 export type CreateNotificationMutationHookResult = ReturnType<typeof useCreateNotificationMutation>;
 export type CreateNotificationMutationResult = Apollo.MutationResult<CreateNotificationMutation>;
 export type CreateNotificationMutationOptions = Apollo.BaseMutationOptions<CreateNotificationMutation, CreateNotificationMutationVariables>;
+export const CreateSimpleNotificationDocument = gql`
+    mutation createSimpleNotification($input: CreateSimpleNotification!) {
+  createSimpleNotification(input: $input) {
+    id
+    message
+  }
+}
+    `;
+export type CreateSimpleNotificationMutationFn = Apollo.MutationFunction<CreateSimpleNotificationMutation, CreateSimpleNotificationMutationVariables>;
+
+/**
+ * __useCreateSimpleNotificationMutation__
+ *
+ * To run a mutation, you first call `useCreateSimpleNotificationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateSimpleNotificationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createSimpleNotificationMutation, { data, loading, error }] = useCreateSimpleNotificationMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateSimpleNotificationMutation(baseOptions?: Apollo.MutationHookOptions<CreateSimpleNotificationMutation, CreateSimpleNotificationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateSimpleNotificationMutation, CreateSimpleNotificationMutationVariables>(CreateSimpleNotificationDocument, options);
+      }
+export type CreateSimpleNotificationMutationHookResult = ReturnType<typeof useCreateSimpleNotificationMutation>;
+export type CreateSimpleNotificationMutationResult = Apollo.MutationResult<CreateSimpleNotificationMutation>;
+export type CreateSimpleNotificationMutationOptions = Apollo.BaseMutationOptions<CreateSimpleNotificationMutation, CreateSimpleNotificationMutationVariables>;
 export const CreateStateDocument = gql`
     mutation CreateState($state: Boolean!, $person_id: Int!, $description: String) {
   createState(

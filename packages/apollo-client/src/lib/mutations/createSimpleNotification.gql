@@ -1,0 +1,6 @@
+mutation createSimpleNotification($input: CreateSimpleNotification!) {
+  createSimpleNotification(input: $input) {
+    id
+    message
+  }
+}
