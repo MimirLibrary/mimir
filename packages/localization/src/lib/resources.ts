@@ -112,6 +112,14 @@ export const resources = {
         BlockUser: 'Block user',
         UnblockUser: 'Unblock user',
         CreateNotification: 'Create notification',
+        NotificationAnswers: {
+          MissedDate:
+            'You have missed the due date for your book. Return it as soon as possible or contact the manager.',
+          AcceptedDonation:
+            'We have accepted your donation to the library! Thank you!',
+          Banned:
+            "If you don't check out all expired items in the library within a week, you will be banned from the app",
+        },
         MakeManager: 'Make manager',
         MakeReader: 'Make reader',
         hAgo: 'h ago',
@@ -150,7 +158,8 @@ export const resources = {
         Desc: 'List of items you have taken for all time',
       },
       AnswerModal: {
-        Title: 'Reply to notification',
+        TitleReply: 'Reply to notification',
+        TitleCreate: 'Create notification',
         SubTitle: 'Choose a ready-made message or write your own:',
         DescMessage: 'Own message:',
         SendBtn: 'Send notification',
@@ -300,6 +309,14 @@ export const resources = {
         BlockUser: 'Заблокировать',
         UnblockUser: 'Разблокировать',
         CreateNotification: 'Создать уведомление',
+        NotificationAnswers: {
+          MissedDate:
+            'Вы пропустили срок сдачи книги. Верните его как можно скорее или свяжитесь с менеджером.',
+          AcceptedDonation:
+            'Мы приняли ваше пожертвование в пользу библиотеки! Благодарю вас!',
+          Banned:
+            'Если вы не изучите все просроченные книги в библиотеке в течение недели, вы будете заблокированы в приложении.',
+        },
         MakeManager: 'Сделать менеджером',
         MakeReader: 'Сделать читателем',
         hAgo: 'ч назад',
@@ -337,7 +354,8 @@ export const resources = {
         Desc: 'Список предметов, которые вы взяли за все время',
       },
       AnswerModal: {
-        Title: 'Ответить на уведомление',
+        TitleReply: 'Ответить на уведомление',
+        TitleCreate: 'Создать уведомление',
         SubTitle: 'Выберите готовое сообщение или напишите свое собственное:',
         DescMessage: 'Собственное сообщение:',
         SendBtn: 'Отправить уведомление',
