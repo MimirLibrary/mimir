@@ -23,6 +23,8 @@ import React, { useEffect, useState } from 'react';
 import { InputDescription } from '../AskManagerForm';
 import { RolesTypes } from '@mimir/global-types';
 import { toast } from 'react-toastify';
+import AnswerToUser from '../AnswerToUser';
+import { nanoid } from '@reduxjs/toolkit';
 
 const InlineWrapper = styled.div`
   display: flex;
@@ -143,6 +145,7 @@ const UserCard = () => {
   const [showWarningBlock, setShowWarningBlock] = useState<boolean>(false);
   const [showWarningUnblock, setShowWarningUnblock] = useState<boolean>(false);
   const [showBlockInput, setShowBlockInput] = useState<boolean>(false);
+  const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
   const [value, setValue] = useState<string>('');
   const messages = OnePerson?.getOnePerson.messages?.map((message) => {
     return {
@@ -184,6 +187,10 @@ const UserCard = () => {
     } catch (e) {
       toast.error((e as Error).message);
     }
+  };
+
+  const openNotificationModal = () => {
+    setIsNotificationModalOpen(true);
   };
 
   const OpenModal = () => {
@@ -235,13 +242,19 @@ const UserCard = () => {
     if (error) toast.error(error.message);
   }, [error]);
 
+  const READY_MADE_ANSWERS = [
+    t('UserCard.NotificationAnswers.MissedDate'),
+    t('UserCard.NotificationAnswers.AcceptedDonation'),
+    t('UserCard.NotificationAnswers.Banned'),
+  ];
+
   const state = OnePerson?.getOnePerson.states?.slice().pop()?.state;
   if (loading) return <h1>{t('Loading')}</h1>;
 
   return (
     <div style={{ marginBottom: '138px' }}>
       <BackButton />
-      <CardWrapper>
+      <CardWrapper data-testid="user-card">
         <Avatar src={OnePerson?.getOnePerson.avatar || mockData.avatar} />
         <DescriptionWrapper>
           <Description bold titlee>
@@ -261,7 +274,9 @@ const UserCard = () => {
         </DescriptionWrapper>
         <ButtonsWrapper>
           <StyledButton
+            data-testid="notification-btn"
             value={t('UserCard.CreateNotification')}
+            onClick={openNotificationModal}
             svgComponent={<NotifySvg />}
             transparent
           ></StyledButton>
@@ -303,6 +318,17 @@ const UserCard = () => {
       {!!sortedNotifications?.length && (
         <Notifications notifications={sortedNotifications}></Notifications>
       )}
+      <Modal
+        active={isNotificationModalOpen}
+        setActive={setIsNotificationModalOpen}
+      >
+        <AnswerToUser
+          close={() => setIsNotificationModalOpen(false)}
+          answers={READY_MADE_ANSWERS}
+          person_id={OnePerson?.getOnePerson.id}
+          isSimpleNotification={true}
+        />
+      </Modal>
       <Modal active={showWarningUnblock} setActive={setShowWarningUnblock}>
         <ErrorMessage
           title={t('Block.Warning')}

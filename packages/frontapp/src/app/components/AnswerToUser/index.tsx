@@ -6,6 +6,7 @@ import { ButtonWrapper } from '../BackButton';
 import {
   GetAllMessagesDocument,
   useCreateAnswerNotificationMutation,
+  useCreateSimpleNotificationMutation,
 } from '@mimir/apollo-client';
 import { toast } from 'react-toastify';
 import { t } from 'i18next';
@@ -104,26 +105,42 @@ const ButtonWrapperStyled = styled(ButtonWrapper)`
 `;
 
 interface IAnswerToUser {
-  id: string | null | undefined;
+  id?: string | null | undefined;
   person_id: string | null | undefined;
   answers: Array<string>;
   close: () => void;
+  isSimpleNotification?: boolean;
 }
 interface IAnswerState {
   index: number;
   answer: string;
 }
 
-const AnswerToUser: FC<IAnswerToUser> = ({ id, answers, close, person_id }) => {
+const AnswerToUser: FC<IAnswerToUser> = ({
+  id,
+  answers,
+  close,
+  person_id,
+  isSimpleNotification,
+}) => {
   const [currentAnswer, setCurrentAnswer] = useState<IAnswerState | null>(null);
   const [message, setMessage] = useState('');
-  const [createNotification, { error }] = useCreateAnswerNotificationMutation({
-    refetchQueries: [GetAllMessagesDocument],
-  });
+  const [createAnswerNotification, { error: answerNotificationError }] =
+    useCreateAnswerNotificationMutation({
+      refetchQueries: [GetAllMessagesDocument],
+    });
+
+  const [createSimpleNotification, { error: simpleNotificationError }] =
+    useCreateSimpleNotificationMutation({
+      refetchQueries: [GetAllMessagesDocument],
+    });
 
   useEffect(() => {
-    if (error) toast.error(error.message);
-  }, [error]);
+    if (answerNotificationError || simpleNotificationError)
+      toast.error(
+        answerNotificationError?.message || simpleNotificationError?.message
+      );
+  }, [answerNotificationError, simpleNotificationError]);
 
   useEffect(() => {
     return () => {
@@ -142,7 +159,7 @@ const AnswerToUser: FC<IAnswerToUser> = ({ id, answers, close, person_id }) => {
   const handleClickTextArea = () => {
     setCurrentAnswer(null);
   };
-  const sendNotification = async () => {
+  const sendAnswerNotification = async () => {
     try {
       const answerMessage = currentAnswer?.answer || message;
       const createNotificationObj = {
@@ -150,7 +167,26 @@ const AnswerToUser: FC<IAnswerToUser> = ({ id, answers, close, person_id }) => {
         person_id: Number(person_id),
         message: answerMessage,
       };
-      await createNotification({ variables: { input: createNotificationObj } });
+      await createAnswerNotification({
+        variables: { input: createNotificationObj },
+      });
+      close();
+    } catch (e) {
+      if (e instanceof Error) toast.error(e.message);
+    }
+  };
+
+  const sendSimpleNotification = async () => {
+    try {
+      const createMessage = currentAnswer?.answer || message;
+      await createSimpleNotification({
+        variables: {
+          input: {
+            person_id: Number(person_id),
+            message: createMessage,
+          },
+        },
+      });
       close();
     } catch (e) {
       if (e instanceof Error) toast.error(e.message);
@@ -159,7 +195,11 @@ const AnswerToUser: FC<IAnswerToUser> = ({ id, answers, close, person_id }) => {
 
   return (
     <Wrapper>
-      <Title>{t('AnswerModal.Title')}</Title>
+      <Title>
+        {isSimpleNotification
+          ? t('AnswerModal.TitleReply')
+          : t('AnswerModal.TitleCreate')}
+      </Title>
       <TitleList>{t('AnswerModal.SubTitle')}</TitleList>
       <WrapperListAnswers>
         {answers &&
@@ -184,7 +224,11 @@ const AnswerToUser: FC<IAnswerToUser> = ({ id, answers, close, person_id }) => {
         <Button
           value={t('AnswerModal.SendBtn')}
           type="button"
-          onClick={sendNotification}
+          onClick={
+            isSimpleNotification
+              ? () => sendSimpleNotification()
+              : () => sendAnswerNotification()
+          }
           disabled={!(currentAnswer || message)}
         />
         <Button value={t('Cancel')} type="button" transparent onClick={close} />
