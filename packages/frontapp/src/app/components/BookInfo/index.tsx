@@ -228,7 +228,8 @@ const BookInfo: FC<IBookInfoProps> = ({
     useState<boolean>(false);
   const [valueIsISBN, setValueIsISBN] = useState<string>('');
   const [editing, setEditing] = useState<boolean>(false);
-
+  const [ReturningBookError, setReturningBookError] = useState<string>();
+  const [isReturnError, setIsReturnError] = useState<boolean>(false);
   const [newCategory, setNewCategory] = useState(category);
   const [newLocation, setNewLocation] = useState<Location>(location);
   const [newDeadline, setNewDeadline] = useState(periodOfKeeping);
@@ -323,13 +324,18 @@ const BookInfo: FC<IBookInfoProps> = ({
   };
 
   const retrieveBook = async () => {
-    await returnBook({
+    const output = await returnBook({
       variables: {
         person_id: id,
         identifier,
       },
     });
-
+    if (output.data?.returnItem.__typename === 'Error') {
+      setReturningBookError(output.data.returnItem.message);
+      setIsReturnError(true);
+      return;
+    }
+    setIsReturnError(false);
     setIsSuccessReturn(true);
   };
 
@@ -477,19 +483,23 @@ const BookInfo: FC<IBookInfoProps> = ({
             <>
               {person_id === id ? (
                 <WrapperButtons>
-                  {statusInfo?.status !== 'Free' ? (
-                    <>
-                      <StyledButton
-                        value="Return a book"
-                        onClick={retrieveBook}
-                      />
-                      <StyledButton
-                        value="Extend claim period"
-                        transparent
-                        onClick={prolongPeriod}
-                      />
-                    </>
-                  ) : null}
+                  {!statusInfo ? (
+                    <></>
+                  ) : (
+                    statusInfo?.status !== 'Free' && (
+                      <>
+                        <StyledButton
+                          value="Return a book"
+                          onClick={retrieveBook}
+                        />
+                        <StyledButton
+                          value="Extend claim period"
+                          transparent
+                          onClick={prolongPeriod}
+                        />
+                      </>
+                    )
+                  )}
                 </WrapperButtons>
               ) : (
                 <WrapperButtons>
@@ -616,6 +626,14 @@ const BookInfo: FC<IBookInfoProps> = ({
           title="Something goes wrong with your extending"
           message={errorConditionOfExtending}
           setActive={setIsShowErrorMessageOfExtending}
+          titleCancel="Close"
+        />
+      </Modal>
+      <Modal active={isReturnError} setActive={setIsReturnError}>
+        <ErrorMessage
+          title="Something goes wrong with your returning"
+          message={ReturningBookError}
+          setActive={setIsReturnError}
           titleCancel="Close"
         />
       </Modal>

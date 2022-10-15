@@ -68,7 +68,7 @@ const WrapperButtons = styled.div<{ active: boolean }>`
 
 interface IPropsErrorMessage {
   setActive: React.Dispatch<React.SetStateAction<boolean>>;
-  message: string | null;
+  message?: string | null;
   title: string;
   onClick?: () => void;
   onSubmitClick?: () => void;
