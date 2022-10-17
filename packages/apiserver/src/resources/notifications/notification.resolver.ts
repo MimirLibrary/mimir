@@ -22,6 +22,7 @@ export class NotificationResolver {
     return await Notification.find({ where: { material_id: id } });
   }
 
+  //TODO: combine 3 endpoints for creating a notification into single one
   @Mutation(() => Notification)
   async createNotification(
     @Args('input') createNotificationInput: CreateNotificationInput

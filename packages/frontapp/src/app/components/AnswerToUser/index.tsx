@@ -109,6 +109,8 @@ interface IAnswerToUser {
   person_id: string | null | undefined;
   answers: Array<string>;
   close: () => void;
+  //added flag to create simple notification with just person_id
+  // (matched with `createSimpleNotification` resolver)
   isSimpleNotification?: boolean;
 }
 interface IAnswerState {
@@ -159,6 +161,10 @@ const AnswerToUser: FC<IAnswerToUser> = ({
   const handleClickTextArea = () => {
     setCurrentAnswer(null);
   };
+
+  //using to create a notification with person_id, message_id (needed for
+  // removing `material` as an answer was provided -> `createAnswerNotification`
+  // resolver)
   const sendAnswerNotification = async () => {
     try {
       const answerMessage = currentAnswer?.answer || message;
