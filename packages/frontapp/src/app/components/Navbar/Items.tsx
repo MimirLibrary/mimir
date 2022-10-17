@@ -12,7 +12,20 @@ import { ReactComponent as Logout } from '../../../assets/Navbar/Logout.svg';
 import { RoutesTypes } from '../../../utils/routes';
 import { NavbarItems } from '../../../utils/NavbarItems';
 
-export const navReaderItemsArray = [
+export const bottomNavSectionList = [
+  {
+    icon: <Settings />,
+    name: NavbarItems.SETTINGS,
+    path: RoutesTypes.SETTINGS,
+  },
+  {
+    icon: <Logout />,
+    name: NavbarItems.LOGOUT,
+    path: '',
+  },
+];
+
+export const readerNavList = [
   { icon: <Home />, name: NavbarItems.HOME, path: RoutesTypes.HOME },
   { icon: <Library />, name: NavbarItems.SEARCH, path: RoutesTypes.SEARCH },
   {
@@ -30,19 +43,9 @@ export const navReaderItemsArray = [
     name: NavbarItems.HISTORY_OF_DONATE,
     path: RoutesTypes.HISTORY_OF_DONATE,
   },
-  {
-    icon: <Settings />,
-    name: NavbarItems.SETTINGS,
-    path: RoutesTypes.SETTINGS,
-  },
-  {
-    icon: <Logout />,
-    name: NavbarItems.LOGOUT,
-    path: '',
-  },
 ];
 
-export const navManagerItemsArray = [
+export const managerNavList = [
   { icon: <Home />, name: NavbarItems.HOME, path: RoutesTypes.HOME },
   { icon: <Readers />, name: NavbarItems.READERS, path: RoutesTypes.READERS },
   {
@@ -59,15 +62,5 @@ export const navManagerItemsArray = [
     icon: <Create />,
     name: NavbarItems.CREATE_NEW_ITEM,
     path: RoutesTypes.CREATE_NEW_ITEM,
-  },
-  {
-    icon: <Settings />,
-    name: NavbarItems.SETTINGS,
-    path: RoutesTypes.SETTINGS,
-  },
-  {
-    icon: <Logout />,
-    name: NavbarItems.LOGOUT,
-    path: '',
   },
 ];

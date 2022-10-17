@@ -11,6 +11,7 @@ import { setSearchReaders } from '../../store/slices/readersSlice';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import { locationIds } from '../../store/slices/userSlice';
 import { toast } from 'react-toastify';
+import { NavbarItems } from '../../../utils/NavbarItems';
 
 const SearchByUserName = () => {
   const [search, setSearch] = useState<string>('');
@@ -43,14 +44,14 @@ const SearchByUserName = () => {
   const redirectToSearchByKey = (e: React.KeyboardEvent<HTMLImageElement>) => {
     if (e.key === 'Enter') {
       navigate(RoutesTypes.READERS);
-      dispatch(setActiveTab(1));
+      dispatch(setActiveTab(NavbarItems.SEARCH));
     }
   };
 
   const redirectToSearchByClick = () => {
     if (search) {
       navigate(RoutesTypes.READERS);
-      dispatch(setActiveTab(1));
+      dispatch(setActiveTab(NavbarItems.SEARCH));
     }
   };
 

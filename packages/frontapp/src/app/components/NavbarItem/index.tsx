@@ -13,8 +13,7 @@ interface IProps {
   icon: ReactElement;
   name: string;
   path: string;
-  index: number;
-  changeActiveTab: (index: number) => void;
+  changeActiveTab: (name: string) => void;
 }
 
 interface IStyle {
@@ -34,9 +33,6 @@ const StyledLink = styled(Link)<IStyle>`
   border-radius: 6.25rem;
   padding-left: ${dimensions.xl_2};
   margin-bottom: 0.12rem;
-  ${({ name }) => name === NavbarItems.LOGOUT && 'position: fixed; bottom: 0'};
-  ${({ name }) =>
-    name === NavbarItems.SETTINGS && 'position: fixed; bottom: 66px;'}
 
   :hover {
     background: ${colors.hover_color};
@@ -57,12 +53,6 @@ const StyledLink = styled(Link)<IStyle>`
 
   :active p {
     color: ${colors.bg_secondary};
-  }
-  @media (max-width: ${dimensions.tablet_width}) {
-    ${({ name }) =>
-      name === NavbarItems.LOGOUT && 'position: relative; bottom: 0'};
-    ${({ name }) =>
-      name === NavbarItems.SETTINGS && 'position: relative; bottom: 0;'}
   }
 `;
 
@@ -93,13 +83,7 @@ const TextInButton = styled.p<IStyle>`
     JSON.parse(props.primary) ? colors.bg_secondary : colors.main_black};
 `;
 
-const NavbarItem: FC<IProps> = ({
-  icon,
-  name,
-  path,
-  index,
-  changeActiveTab,
-}) => {
+const NavbarItem: FC<IProps> = ({ icon, name, path, changeActiveTab }) => {
   const history = useNavigate();
   const dispatch = useAppDispatch();
   const { userRole } = useAppSelector((state) => state.user);
@@ -113,17 +97,18 @@ const NavbarItem: FC<IProps> = ({
 
   return (
     <StyledLink
-      primary={String(index === activeTab)}
+      primary={String(name === activeTab)}
+      data-testid={name === activeTab ? 'navbar-active' : 'navbar-regular'}
       name={name}
       to={path}
       onClick={() => {
         if (name === NavbarItems.LOGOUT) return handleLogout();
-        changeActiveTab(index);
+        changeActiveTab(name);
       }}
     >
       <InsideButtonContainer>
-        <StyledIcon primary={String(index === activeTab)}>{icon}</StyledIcon>
-        <TextInButton primary={String(index === activeTab)}>
+        <StyledIcon primary={String(name === activeTab)}>{icon}</StyledIcon>
+        <TextInButton primary={String(name === activeTab)}>
           {userRole === RolesTypes.READER
             ? t(`NavbarReader.${name}`)
             : t(`NavbarManager.${name}`)}

@@ -1,18 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { NavbarItems } from '../../../utils/NavbarItems';
 
 interface IStateTabs {
-  activeTab: null | number;
+  activeTab: string | null;
 }
 
 const initialState: IStateTabs = {
-  activeTab: 0,
+  activeTab: NavbarItems.HOME,
 };
 
 const tabsSlice = createSlice({
   name: 'tabsSlice',
   initialState,
   reducers: {
-    setActiveTab: (state: IStateTabs, action: PayloadAction<number | null>) => {
+    setActiveTab: (state: IStateTabs, action: PayloadAction<string | null>) => {
       state.activeTab = action.payload;
     },
   },
