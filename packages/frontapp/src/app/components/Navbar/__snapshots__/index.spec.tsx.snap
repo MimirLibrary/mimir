@@ -1,0 +1,373 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render Navbar component should completely match a snapshot 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background: #1A1ED6;
+  width: 16rem;
+  height: 4rem;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  border-radius: 6.25rem;
+  padding-left: 1.5rem;
+  margin-bottom: 0.12rem;
+}
+
+.emotion-2:hover {
+  background: #1A1DB1;
+  color: #FFFFFF;
+}
+
+.emotion-2:hover svg {
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
+}
+
+.emotion-2:hover p {
+  color: #FFFFFF;
+}
+
+.emotion-2:active {
+  background: #0A0D95;
+}
+
+.emotion-2:active p {
+  color: #FFFFFF;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  -webkit-justify-content: start;
+  justify-content: start;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  max-width: 12.5rem;
+  width: 100%;
+  color: #FFFFFF;
+}
+
+.emotion-4 svg {
+  margin-right: 0.625rem;
+  width: 2rem;
+  height: 2rem;
+  -webkit-filter: invert(1);
+  filter: invert(1);
+}
+
+.emotion-5 {
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  color: #FFFFFF;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background: #FFFFFF;
+  width: 16rem;
+  height: 4rem;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  border-radius: 6.25rem;
+  padding-left: 1.5rem;
+  margin-bottom: 0.12rem;
+}
+
+.emotion-6:hover {
+  background: #1A1DB1;
+  color: #FFFFFF;
+}
+
+.emotion-6:hover svg {
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
+}
+
+.emotion-6:hover p {
+  color: #FFFFFF;
+}
+
+.emotion-6:active {
+  background: #0A0D95;
+}
+
+.emotion-6:active p {
+  color: #FFFFFF;
+}
+
+.emotion-8 svg {
+  margin-right: 0.625rem;
+  width: 2rem;
+  height: 2rem;
+  -webkit-filter: invert(0);
+  filter: invert(0);
+}
+
+.emotion-9 {
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  color: #333333;
+}
+
+.emotion-22 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+}
+
+@media (max-height: 747px) {
+  .emotion-22 {
+    position: static;
+  }
+}
+
+@media (max-width: 64.125rem) {
+  .emotion-22 {
+    position: static;
+  }
+}
+
+<nav
+  class="emotion-0"
+  data-testid="navbar"
+>
+  <div
+    class="emotion-0"
+  >
+    <a
+      class="emotion-2"
+      data-testid="navbar-active"
+      href="/home"
+      name="Home"
+      primary="true"
+    >
+      <div
+        class="emotion-3"
+      >
+        <div
+          class="emotion-4"
+        >
+          <svg>
+            Home.svg
+          </svg>
+        </div>
+        <p
+          class="emotion-5"
+        >
+          NavbarReader.Home
+        </p>
+      </div>
+    </a>
+    <a
+      class="emotion-6"
+      data-testid="navbar-regular"
+      href="/search"
+      name="Library"
+      primary="false"
+    >
+      <div
+        class="emotion-3"
+      >
+        <div
+          class="emotion-8"
+        >
+          <svg>
+            Library.svg
+          </svg>
+        </div>
+        <p
+          class="emotion-9"
+        >
+          NavbarReader.Library
+        </p>
+      </div>
+    </a>
+    <a
+      class="emotion-6"
+      data-testid="navbar-regular"
+      href="/donate-to-library"
+      name="Donate to the library"
+      primary="false"
+    >
+      <div
+        class="emotion-3"
+      >
+        <div
+          class="emotion-8"
+        >
+          <svg>
+            DonateToLibrary.svg
+          </svg>
+        </div>
+        <p
+          class="emotion-9"
+        >
+          NavbarReader.Donate to the library
+        </p>
+      </div>
+    </a>
+    <a
+      class="emotion-6"
+      data-testid="navbar-regular"
+      href="/history-of-claim"
+      name="History of claim"
+      primary="false"
+    >
+      <div
+        class="emotion-3"
+      >
+        <div
+          class="emotion-8"
+        >
+          <svg>
+            Book.svg
+          </svg>
+        </div>
+        <p
+          class="emotion-9"
+        >
+          NavbarReader.History of claim
+        </p>
+      </div>
+    </a>
+    <a
+      class="emotion-6"
+      data-testid="navbar-regular"
+      href="/history-of-donate"
+      name="History of donate"
+      primary="false"
+    >
+      <div
+        class="emotion-3"
+      >
+        <div
+          class="emotion-8"
+        >
+          <svg>
+            Donate.svg
+          </svg>
+        </div>
+        <p
+          class="emotion-9"
+        >
+          NavbarReader.History of donate
+        </p>
+      </div>
+    </a>
+  </div>
+  <div
+    class="emotion-22"
+  >
+    <a
+      class="emotion-6"
+      data-testid="navbar-regular"
+      href="/settings"
+      name="Settings"
+      primary="false"
+    >
+      <div
+        class="emotion-3"
+      >
+        <div
+          class="emotion-8"
+        >
+          <svg>
+            Settings.svg
+          </svg>
+        </div>
+        <p
+          class="emotion-9"
+        >
+          NavbarReader.Settings
+        </p>
+      </div>
+    </a>
+    <a
+      class="emotion-6"
+      data-testid="navbar-regular"
+      href="/"
+      name="Log out"
+      primary="false"
+    >
+      <div
+        class="emotion-3"
+      >
+        <div
+          class="emotion-8"
+        >
+          <svg>
+            Logout.svg
+          </svg>
+        </div>
+        <p
+          class="emotion-9"
+        >
+          NavbarReader.Log out
+        </p>
+      </div>
+    </a>
+  </div>
+</nav>
+`;

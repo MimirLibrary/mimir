@@ -12,6 +12,7 @@ import { locationIds } from '../../store/slices/userSlice';
 import SearchSuggestions from '../SearchSuggestions';
 import styled from '@emotion/styled';
 import { toast } from 'react-toastify';
+import { NavbarItems } from '../../../utils/NavbarItems';
 
 const Wrapper = styled.div`
   position: relative;
@@ -57,14 +58,14 @@ const SearchByBookOrAuthor: FC<{ path: string }> = ({ path }) => {
   const redirectToSearchByKey = (e: React.KeyboardEvent<HTMLImageElement>) => {
     if (e.key === 'Enter') {
       navigate(path);
-      dispatch(setActiveTab(1));
+      dispatch(setActiveTab(NavbarItems.SEARCH));
     }
   };
 
   const redirectToSearchByClick = () => {
     if (search) {
       navigate(path);
-      dispatch(setActiveTab(1));
+      dispatch(setActiveTab(NavbarItems.SEARCH));
     }
   };
 
