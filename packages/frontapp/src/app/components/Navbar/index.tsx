@@ -6,6 +6,7 @@ import { setActiveTab } from '../../store/slices/tabsSlice';
 import { bottomNavSectionList, managerNavList, readerNavList } from './Items';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import { RolesTypes } from '@mimir/global-types';
+import { dimensions } from '@mimir/ui-kit';
 
 interface IProps {
   hideSidebar: () => void;
@@ -33,6 +34,10 @@ const NavbarBottomSubsectionWrapper = styled.div`
   bottom: 0;
 
   @media (max-height: 747px) {
+    position: static;
+  }
+
+  @media (max-width: ${dimensions.tablet_width}) {
     position: static;
   }
 `;

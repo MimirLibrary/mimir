@@ -183,6 +183,12 @@ exports[`render Navbar component should completely match a snapshot 1`] = `
   }
 }
 
+@media (max-width: 64.125rem) {
+  .emotion-22 {
+    position: static;
+  }
+}
+
 <nav
   class="emotion-0"
   data-testid="navbar"
