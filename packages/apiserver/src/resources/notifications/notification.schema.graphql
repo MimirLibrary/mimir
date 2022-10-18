@@ -19,6 +19,11 @@ input CreateNotificationInput {
   person_id: Int!
 }
 
+input CreateSimpleNotification {
+  person_id: Int!
+  message: String!
+}
+
 input RemoveNotificationInput {
   material_id: Int!
   person_id: Int!
@@ -33,4 +38,5 @@ extend type Mutation {
   createNotification(input: CreateNotificationInput!): Notification
   removeNotification(input: RemoveNotificationInput!): Notification
   createAnswerNotification(input: CreateAnswerNotification!): Notification!
+  createSimpleNotification(input: CreateSimpleNotification): Notification!
 }

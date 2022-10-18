@@ -110,6 +110,11 @@ export interface CreateNotificationInput {
     person_id: number;
 }
 
+export interface CreateSimpleNotification {
+    person_id: number;
+    message: string;
+}
+
 export interface RemoveNotificationInput {
     material_id: number;
     person_id: number;
@@ -180,6 +185,7 @@ export interface IMutation {
     createNotification(input: CreateNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
     removeNotification(input: RemoveNotificationInput): Nullable<Notification> | Promise<Nullable<Notification>>;
     createAnswerNotification(input: CreateAnswerNotification): Notification | Promise<Notification>;
+    createSimpleNotification(input?: Nullable<CreateSimpleNotification>): Notification | Promise<Notification>;
     createPerson(input: CreatePersonInput): Person | Promise<Person>;
     addPersonLocation(input: UpdatePersonLocationInput): Person | Promise<Person>;
     removePersonLocation(input: UpdatePersonLocationInput): Person | Promise<Person>;

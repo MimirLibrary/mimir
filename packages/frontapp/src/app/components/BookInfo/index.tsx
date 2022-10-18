@@ -418,8 +418,10 @@ const BookInfo: FC<IBookInfoProps> = ({
       getNotificationsByPersonData.getNotificationsByPerson.find(
         (notification) => notification?.person_id === id
       )
-    )
-      return setIsMaterialTakenByCurrentUser(true);
+    ) {
+      //TODO: consider removing this local book claiming if no material_id provided
+      setIsMaterialTakenByCurrentUser(true);
+    }
   }, [getNotificationsByPersonData]);
 
   const showAskManagerModal = () => {
@@ -481,7 +483,7 @@ const BookInfo: FC<IBookInfoProps> = ({
           />
           {userRole === RolesTypes.READER ? (
             <>
-              {person_id === id ? (
+              {statusInfo?.person_id === id ? (
                 <WrapperButtons>
                   {!statusInfo ? (
                     <></>

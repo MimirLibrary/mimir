@@ -4,6 +4,7 @@ import { BadRequestException } from '@nestjs/common';
 import {
   CreateAnswerNotification,
   CreateNotificationInput,
+  CreateSimpleNotification,
   RemoveNotificationInput,
 } from '@mimir/global-types';
 import { GraphQLError } from 'graphql';
@@ -21,6 +22,7 @@ export class NotificationResolver {
     return await Notification.find({ where: { material_id: id } });
   }
 
+  //TODO: combine 3 endpoints for creating a notification into single one
   @Mutation(() => Notification)
   async createNotification(
     @Args('input') createNotificationInput: CreateNotificationInput
@@ -47,6 +49,18 @@ export class NotificationResolver {
       await Message.delete(createAnswerNotification.id);
       const { id, ...createNotification } = createAnswerNotification;
       const notification = Notification.create(createNotification);
+      return Notification.save(notification);
+    } catch (e) {
+      throw new GraphQLError(e.message);
+    }
+  }
+
+  @Mutation(() => Notification)
+  async createSimpleNotification(
+    @Args('input') createSimpleNotification: CreateSimpleNotification
+  ) {
+    try {
+      const notification = Notification.create(createSimpleNotification);
       return Notification.save(notification);
     } catch (e) {
       throw new GraphQLError(e.message);
