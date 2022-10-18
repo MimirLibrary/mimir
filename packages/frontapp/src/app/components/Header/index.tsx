@@ -9,6 +9,7 @@ import ClosedButton from '../ClosedButton';
 
 interface IProps {
   hideSidebar: () => void;
+  areNewNotifications: boolean;
 }
 
 const WrapperTitle = styled.div`
@@ -39,13 +40,13 @@ const WrapperHeader = styled.header`
   margin-bottom: 2rem;
 `;
 
-const Header: FC<IProps> = ({ hideSidebar }) => {
+const Header: FC<IProps> = ({ hideSidebar, areNewNotifications }) => {
   const { username, email, avatar } = useAppSelector((state) => state.user);
   return (
     <WrapperHeader>
       <WrapperTitle>
         <TitleProject title="Mimir" />
-        <NotificationIcon active={true} />
+        <NotificationIcon active={areNewNotifications} />
         <ClosedButton hideSidebar={hideSidebar} />
       </WrapperTitle>
       <WrapperForCenter>

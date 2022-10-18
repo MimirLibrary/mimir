@@ -795,7 +795,7 @@ export type GetNotificationsByPersonQueryVariables = Exact<{
 }>;
 
 
-export type GetNotificationsByPersonQuery = { __typename?: 'Query', getNotificationsByPerson: Array<{ __typename?: 'Notification', id: string, material_id?: number | null, person_id: number } | null> };
+export type GetNotificationsByPersonQuery = { __typename?: 'Query', getNotificationsByPerson: Array<{ __typename?: 'Notification', id: string, message?: string | null, material_id?: number | null, person_id: number, created_at: any } | null> };
 
 export type GetOnePersonQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -2042,8 +2042,10 @@ export const GetNotificationsByPersonDocument = gql`
     query GetNotificationsByPerson($person_id: Int!) {
   getNotificationsByPerson(person_id: $person_id) {
     id
+    message
     material_id
     person_id
+    created_at
   }
 }
     `;
