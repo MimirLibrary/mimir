@@ -156,7 +156,7 @@ const Notifications: FC<INotifications> = ({
     <>
       <Title>{t('Notifications.Managers.MainTitle')}</Title>
       <Description>{t('Notifications.Managers.MainDescription')}</Description>
-      {todayNotifications?.length && (
+      {!!todayNotifications?.length && (
         <>
           <Subtitle>{t('Notifications.Today')}</Subtitle>
           {todayNotifications?.map((notification) =>
@@ -208,7 +208,7 @@ const Notifications: FC<INotifications> = ({
           )}
         </>
       )}
-      {earlierNotifications?.length && (
+      {!!earlierNotifications?.length && (
         <>
           <Subtitle>{t('Notifications.Earlier')}</Subtitle>
           {earlierNotifications?.map((notification) =>
