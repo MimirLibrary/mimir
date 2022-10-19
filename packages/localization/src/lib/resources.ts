@@ -123,6 +123,8 @@ export const resources = {
         MakeManager: 'Make manager',
         MakeReader: 'Make reader',
         hAgo: 'h ago',
+        mAgo: 'm ago',
+        now: 'now',
         dAgo: 'd ago',
       },
       Notifications: {
@@ -320,6 +322,8 @@ export const resources = {
         MakeManager: 'Сделать менеджером',
         MakeReader: 'Сделать читателем',
         hAgo: 'ч назад',
+        mAgo: 'м назад',
+        now: 'сейчас',
         dAgo: 'д назад',
       },
       Notifications: {
