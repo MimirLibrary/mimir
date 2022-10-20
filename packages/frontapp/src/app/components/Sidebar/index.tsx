@@ -67,7 +67,7 @@ const Sidebar: FC<IProps> = ({ isSidebarActive, hideSidebar }) => {
   return (
     <StyledSidebar isSidebarActive={isSidebarActive}>
       <Header
-        areNewNotifications={
+        hasNewNotifications={
           !!getNotificationsByPersonData?.getNotificationsByPerson.length ||
           !!allMessagesData?.getAllMessages?.length
         }
