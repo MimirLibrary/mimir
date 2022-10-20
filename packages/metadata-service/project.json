@@ -2,8 +2,16 @@
   "sourceRoot": "packages/metadata-service/src",
   "projectType": "application",
   "targets": {
+    "prisma-generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["npx prisma generate"],
+        "cwd": "packages/metadata-service"
+      }
+    },
     "build": {
       "executor": "@nrwl/node:webpack",
+      "dependsOn": ["prisma-generate"],
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/metadata-service",
@@ -28,6 +36,7 @@
     },
     "serve": {
       "executor": "@nrwl/node:node",
+      "dependsOn": ["prisma-generate"],
       "options": {
         "buildTarget": "metadata-service:build"
       }
