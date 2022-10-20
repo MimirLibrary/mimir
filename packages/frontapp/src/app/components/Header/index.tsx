@@ -1,4 +1,4 @@
-import { FC, Dispatch, SetStateAction } from 'react';
+import { FC } from 'react';
 import TitleProject from '../TitleProject';
 import styled from '@emotion/styled';
 import NotificationIcon from '../NotificationIcon';
