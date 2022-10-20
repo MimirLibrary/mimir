@@ -1,6 +1,7 @@
 import React, { FC, useCallback, useState } from 'react';
 import { t } from 'i18next';
 import {
+  parseTodayDate,
   specialParseDate,
   todayCondition,
 } from '../../models/helperFunctions/converTime';
@@ -18,7 +19,7 @@ export interface IOneNotification {
   id: string | undefined;
   type: string;
   created_at: Date;
-  title: string;
+  title?: string;
   message?: string;
   user?: { id: string; name: string };
 }
@@ -162,19 +163,24 @@ const Notifications: FC<INotifications> = ({
             notification.type === 'message' ? (
               <NotificationWrapper message today key={notification?.id}>
                 <ColumnWrapper>
-                  <NotificationDescription titlee>
-                    {notification.title}
-                  </NotificationDescription>
+                  {notification.title && (
+                    <NotificationDescription titlee>
+                      {notification.title}
+                    </NotificationDescription>
+                  )}
                   <NotificationDescription>
                     {notification.message}
                   </NotificationDescription>
                   <NotificationDescription small>
-                    <RestyledOpenLink
-                      to={`${RoutesTypes.READERS}/${notification.user?.id}`}
-                      showuserlink={showUserLink}
-                    >
-                      {notification.user?.name}
-                    </RestyledOpenLink>
+                    {userRole !== RolesTypes.READER && (
+                      <RestyledOpenLink
+                        to={`${RoutesTypes.READERS}/${notification.user?.id}`}
+                        showuserlink={showUserLink}
+                      >
+                        {notification.user?.name}
+                      </RestyledOpenLink>
+                    )}
+                    {parseTodayDate(new Date(notification.created_at))}
                   </NotificationDescription>
                 </ColumnWrapper>
                 {userRole !== RolesTypes.READER && (
@@ -209,19 +215,23 @@ const Notifications: FC<INotifications> = ({
             notification.type === 'message' ? (
               <NotificationWrapper message key={notification.id}>
                 <ColumnWrapper>
-                  <NotificationDescription titlee>
-                    {notification.title}
-                  </NotificationDescription>
+                  {notification.title && (
+                    <NotificationDescription titlee>
+                      {notification.title}
+                    </NotificationDescription>
+                  )}
                   <NotificationDescription>
                     {notification.message}
                   </NotificationDescription>
                   <NotificationDescription small>
-                    <RestyledOpenLink
-                      to={`${RoutesTypes.READERS}/${notification.user?.id}`}
-                      showuserlink={showUserLink}
-                    >
-                      {notification.user?.name}
-                    </RestyledOpenLink>
+                    {userRole !== RolesTypes.READER && (
+                      <RestyledOpenLink
+                        to={`${RoutesTypes.READERS}/${notification.user?.id}`}
+                        showuserlink={showUserLink}
+                      >
+                        {notification.user?.name}
+                      </RestyledOpenLink>
+                    )}
                     {specialParseDate(new Date(notification.created_at))}
                   </NotificationDescription>
                 </ColumnWrapper>

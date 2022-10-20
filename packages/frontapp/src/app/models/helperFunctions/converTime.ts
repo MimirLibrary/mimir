@@ -43,13 +43,31 @@ export const todayCondition = (date: Date) => {
   else return false;
 };
 
+export const parseTodayDate = (date: Date): string => {
+  const currentDate = new Date();
+  const diff = currentDate.getTime() - date.getTime();
+
+  function getNumberOfHours(diff: number) {
+    return diff / 1000 / 3600;
+  }
+
+  function getNumberOfMinutes(diff: number) {
+    return diff / 1000 / 60;
+  }
+  if (getNumberOfHours(diff) >= 1) {
+    return `${Math.trunc(getNumberOfHours(diff))}${t('UserCard.hAgo')}`;
+  } else if (getNumberOfHours(diff) && getNumberOfMinutes(diff) >= 1) {
+    return `${Math.trunc(getNumberOfMinutes(diff))}${t('UserCard.mAgo')}`;
+  } else {
+    return `{t('UserCard.now')}`;
+  }
+};
+
 export const specialParseDate = (date: Date) => {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth() + 1;
   const currentDay = currentDate.getDate();
   const dateYear = date.getFullYear();
-  const dateMonthNum = date.getMonth() + 1;
   const dateDayNum = date.getDate();
   let dateMonth: number | string = date.getMonth() + 1;
   let dateDay: number | string = date.getDate();
@@ -70,8 +88,6 @@ export const specialParseDate = (date: Date) => {
     return `${currentDay - dateDayNum}${t('UserCard.dAgo')}`;
   } else if (currentYear === dateYear) {
     return `${dateMonth}.${dateDay}`;
-
-    return `${dateMonth}.${dateDay}.${dateYear}`;
   }
 
   return returnDate;
