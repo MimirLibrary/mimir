@@ -1,7 +1,9 @@
 query GetNotificationsByPerson($person_id: Int!) {
   getNotificationsByPerson(person_id: $person_id) {
     id
+    message
     material_id
     person_id
+    created_at
   }
 }

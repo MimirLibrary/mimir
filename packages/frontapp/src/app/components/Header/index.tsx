@@ -9,6 +9,7 @@ import { dimensions } from '@mimir/ui-kit';
 
 interface IProps {
   hideSidebar: () => void;
+  hasNewNotifications: boolean;
 }
 
 const WrapperTitle = styled.div`
@@ -43,13 +44,16 @@ const WrapperHeader = styled.header`
   }
 `;
 
-const Header: FC<IProps> = ({ hideSidebar }) => {
+const Header: FC<IProps> = ({ hideSidebar, hasNewNotifications }) => {
   const { username, email, avatar } = useAppSelector((state) => state.user);
   return (
     <WrapperHeader>
       <WrapperTitle>
         <TitleProject title="Mimir" />
-        <NotificationIcon active={true} hideSidebar={hideSidebar} />
+        <NotificationIcon
+          active={hasNewNotifications}
+          hideSidebar={hideSidebar}
+        />
       </WrapperTitle>
       <WrapperForCenter>
         <WrapperUserInfo>

@@ -4,6 +4,13 @@ import Navbar from '../Navbar';
 import Header from '../Header';
 import { colors, dimensions } from '@mimir/ui-kit';
 import useOnClickOutside from '../../hooks/useOnClickOutside';
+import {
+  useGetAllMessagesQuery,
+  useGetNotificationsByPersonQuery,
+} from '@mimir/apollo-client';
+import { useAppSelector } from '../../hooks/useTypedSelector';
+import { RolesTypes } from '@mimir/global-types';
+import { locationIds } from '../../store/slices/userSlice';
 
 interface IProps {
   isSidebarActive: boolean;
@@ -58,10 +65,33 @@ const StyledSidebar = styled.aside<IStyledSidebarProps>`
 const Sidebar: FC<IProps> = ({ isSidebarActive, hideSidebar }) => {
   const ref = useRef(null);
   useOnClickOutside(ref, hideSidebar);
+  const { id, userRole, locations } = useAppSelector((state) => state.user);
+
+  const { data: getNotificationsByPersonData } =
+    useGetNotificationsByPersonQuery({
+      variables: {
+        person_id: id,
+      },
+      skip: userRole === RolesTypes.MANAGER,
+    });
+
+  const { data: allMessagesData } = useGetAllMessagesQuery({
+    skip: userRole === RolesTypes.READER,
+    variables: { location_id: parseInt(locations[0].id) },
+  });
+
+  // TODO: handle READER notifications
+
   return (
     <StyledWrapper isSidebarActive={isSidebarActive}>
       <StyledSidebar isSidebarActive={isSidebarActive} ref={ref}>
-        <Header hideSidebar={hideSidebar} />
+        <Header
+          hasNewNotifications={
+            !!getNotificationsByPersonData?.getNotificationsByPerson.length ||
+            !!allMessagesData?.getAllMessages?.length
+          }
+          hideSidebar={hideSidebar}
+        />
         <Navbar hideSidebar={hideSidebar} />
       </StyledSidebar>
     </StyledWrapper>
