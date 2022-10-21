@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import styled from '@emotion/styled';
-import { colors, fonts } from '@mimir/ui-kit';
+import { colors, dimensions, fonts } from '@mimir/ui-kit';
 
 const Title = styled.h1`
   font-family: ${fonts.secondary}, sans-serif;
@@ -9,6 +9,9 @@ const Title = styled.h1`
   font-size: 2.2rem;
   font-weight: 500;
   text-transform: uppercase;
+  @media (max-width: ${dimensions.tablet_width}) {
+    font-size: 1.7rem;
+  }
 `;
 
 interface IProps {

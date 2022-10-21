@@ -1,8 +1,9 @@
-import { FC } from 'react';
+import { FC, useRef } from 'react';
 import styled from '@emotion/styled';
 import Navbar from '../Navbar';
 import Header from '../Header';
 import { colors, dimensions } from '@mimir/ui-kit';
+import useOnClickOutside from '../../hooks/useOnClickOutside';
 
 interface IProps {
   isSidebarActive: boolean;
@@ -12,6 +13,20 @@ interface IProps {
 interface IStyledSidebarProps {
   isSidebarActive: boolean;
 }
+
+const StyledWrapper = styled.div<IStyledSidebarProps>`
+  max-width: 22rem;
+  width: 100%;
+  @media (max-width: ${dimensions.tablet_width}) {
+    max-width: none;
+    position: fixed;
+    background-color: ${(props) =>
+      props.isSidebarActive ? 'rgba(0, 0, 0, 0.4)' : 'none'};
+    height: 100%;
+    transition: all 0.8s;
+    z-index: ${(props) => (props.isSidebarActive ? 1000 : 0)};
+  }
+`;
 
 const StyledSidebar = styled.aside<IStyledSidebarProps>`
   position: relative;
@@ -29,10 +44,11 @@ const StyledSidebar = styled.aside<IStyledSidebarProps>`
   }
   @media (max-width: ${dimensions.tablet_width}) {
     position: fixed;
+    padding-top: ${dimensions.lg};
     top: 0;
     left: ${(props) => (props.isSidebarActive ? '0' : '-100%')};
     background: ${colors.bg_secondary};
-    width: 90%;
+    width: 85%;
     transition: all 0.8s;
     height: 100%;
     z-index: 1000;
@@ -40,11 +56,15 @@ const StyledSidebar = styled.aside<IStyledSidebarProps>`
 `;
 
 const Sidebar: FC<IProps> = ({ isSidebarActive, hideSidebar }) => {
+  const ref = useRef(null);
+  useOnClickOutside(ref, hideSidebar);
   return (
-    <StyledSidebar isSidebarActive={isSidebarActive}>
-      <Header hideSidebar={hideSidebar} />
-      <Navbar hideSidebar={hideSidebar} />
-    </StyledSidebar>
+    <StyledWrapper isSidebarActive={isSidebarActive}>
+      <StyledSidebar isSidebarActive={isSidebarActive} ref={ref}>
+        <Header hideSidebar={hideSidebar} />
+        <Navbar hideSidebar={hideSidebar} />
+      </StyledSidebar>
+    </StyledWrapper>
   );
 };
 
