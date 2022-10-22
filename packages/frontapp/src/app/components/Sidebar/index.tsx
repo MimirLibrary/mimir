@@ -34,12 +34,17 @@ const StyledSidebar = styled.aside<IStyledSidebarProps>`
   ::-webkit-scrollbar {
     width: 0;
   }
+  @media (max-width: ${dimensions.laptop_width}) {
+    max-width: 18rem;
+  }
+
   @media (max-width: ${dimensions.tablet_width}) {
     position: fixed;
     top: 0;
     left: ${(props) => (props.isSidebarActive ? '0' : '-100%')};
     background: ${colors.bg_secondary};
     width: 90%;
+    max-width: 22rem;
     transition: all 0.8s;
     height: 100%;
     z-index: 1000;

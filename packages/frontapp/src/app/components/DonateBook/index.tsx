@@ -18,6 +18,7 @@ import FileUpload from '../FielUpload';
 import { api } from '../../axios-api/api';
 import { listOfGenres } from '../../../assets/SearchConsts';
 import { TUserLocation } from '../../store/slices/userSlice';
+import { t } from 'i18next';
 
 const WrapperDonate = styled.section`
   background-color: ${colors.bg_secondary};
@@ -26,6 +27,11 @@ const WrapperDonate = styled.section`
   padding: ${dimensions.base_2};
   margin-top: ${dimensions.xl_2};
   position: relative;
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    margin-top: ${dimensions.xl};
+    padding: ${dimensions.xl_2} ${dimensions.base};
+  }
 `;
 
 const Form = styled.form`
@@ -46,6 +52,12 @@ const Label = styled.label`
   line-height: ${dimensions.xl_2};
   color: ${colors.main_black};
   margin-bottom: ${dimensions.xs_2};
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    display: block;
+    margin-bottom: 0.25rem;
+    line-height: ${dimensions.xl};
+  }
 `;
 
 const WrapperInput = styled.div`
@@ -67,6 +79,11 @@ const WrapperInput = styled.div`
   :focus {
     border: 0.5px solid ${colors.accent_color};
   }
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    margin-bottom: ${dimensions.base};
+    max-width: 100%;
+  }
 `;
 
 const WrapperBlockInput = styled.div`
@@ -76,8 +93,9 @@ const WrapperBlockInput = styled.div`
     position: relative;
   }
 
-  @media (max-width: ${dimensions.phone_width}) {
+  @media (max-width: ${dimensions.tablet_width}) {
     position: relative;
+    margin-left: 0;
   }
 `;
 
@@ -120,6 +138,11 @@ const StyledDropdown = styled(Dropdown)`
   max-width: 300px;
   width: 100%;
   margin-bottom: ${dimensions.xs_2};
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    max-width: 100%;
+    margin-bottom: ${dimensions.base};
+  }
 `;
 
 const WrapperDescription = styled.div`
@@ -128,6 +151,10 @@ const WrapperDescription = styled.div`
   flex-direction: column;
   align-items: flex-start;
   margin-top: ${dimensions.xl_2};
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    margin-top: 0;
+  }
 `;
 
 const StyledDescription = styled.label`
@@ -136,6 +163,10 @@ const StyledDescription = styled.label`
   color: ${colors.main_black};
   line-height: ${dimensions.xl};
   margin-bottom: ${dimensions.base};
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    margin-bottom: 0.25rem;
+  }
 `;
 
 const StyledTextArea = styled.textarea`
@@ -162,9 +193,10 @@ const StyledTextArea = styled.textarea`
     height: 10.5rem;
     margin-bottom: 4rem;
   }
-  @media (max-width: ${dimensions.phone_width}) {
+  @media (max-width: ${dimensions.tablet_width}) {
     height: 10.5rem;
     margin-bottom: 4rem;
+    border-radius: ${dimensions.base};
   }
 `;
 
@@ -200,6 +232,12 @@ const WrapperWithoutButtons = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   width: 100%;
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    flex-direction: column;
+    align-items: center;
+    gap: ${dimensions.xl_2};
+  }
 `;
 
 const StyledButton = styled(Button)`
@@ -464,9 +502,14 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
             </WrapperWithoutButtons>
             <WrapperButtons>
               <StyledButton
-                value="Donate item to the library"
+                value="Add item to library"
                 disabled={isInvalid}
                 type="submit"
+              />
+              <StyledButton
+                value={t(`Cancel`)}
+                transparent
+                onClick={onHideContent}
               />
               {userRole !== RolesTypes.MANAGER && (
                 <StyledButton

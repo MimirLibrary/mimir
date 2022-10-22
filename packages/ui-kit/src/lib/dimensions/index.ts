@@ -13,6 +13,7 @@ export const dimensions = {
   xl_6: '2.5rem', //40px
   base_3: '3rem', //48px
   xl_10: '3.125rem', //50px
-  tablet_width: '64.125rem', //768px
-  phone_width: '26.25rem', //420px
+  laptop_width: '64rem', //1024px
+  tablet_width: '48rem', //768px
+  phone_width: '30rem', //480px
 };
