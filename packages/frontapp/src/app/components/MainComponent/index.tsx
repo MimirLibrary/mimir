@@ -29,6 +29,10 @@ const WrapperRoutes = styled.div`
   @media (max-width: ${dimensions.tablet_width}) {
     padding: 67px ${dimensions.base} ${dimensions.base};
   }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    padding-bottom: 10.25rem;
+  }
 `;
 interface IStyledButton {
   show: boolean;

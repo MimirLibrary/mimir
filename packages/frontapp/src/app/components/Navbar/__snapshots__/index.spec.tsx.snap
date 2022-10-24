@@ -183,7 +183,7 @@ exports[`render Navbar component should completely match a snapshot 1`] = `
   }
 }
 
-@media (max-width: 64.125rem) {
+@media (max-width: 48rem) {
   .emotion-22 {
     position: static;
   }

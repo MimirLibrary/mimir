@@ -166,6 +166,7 @@ const StyledDescription = styled.label`
 
   @media (max-width: ${dimensions.tablet_width}) {
     margin-bottom: 0.25rem;
+    font-weight: 700;
   }
 `;
 
@@ -198,6 +199,11 @@ const StyledTextArea = styled.textarea`
     margin-bottom: 4rem;
     border-radius: ${dimensions.base};
   }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    margin-bottom: 0;
+    overflow: auto;
+  }
 `;
 
 const WrapperButtons = styled.div`
@@ -207,7 +213,12 @@ const WrapperButtons = styled.div`
   flex-direction: column;
   width: 100%;
 
+  @media (max-width: 85rem) {
+    width: 60%;
+  }
+
   @media (max-width: 77rem) {
+    width: 100%;
     position: absolute;
     bottom: 0;
     left: 50%;
@@ -219,9 +230,10 @@ const WrapperButtons = styled.div`
   }
   @media (max-width: ${dimensions.phone_width}) {
     position: absolute;
-    bottom: 0;
+    bottom: -11rem;
     left: 50%;
-    flex-direction: row;
+    flex-direction: column;
+    gap: ${dimensions.xs_2};
     align-items: center;
     transform: translate(-50%, -50%);
   }
@@ -251,6 +263,10 @@ const StyledButton = styled(Button)`
     background-color: ${colors.dropdown_gray};
   }
 
+  @media (max-width: 85rem) {
+    max-width: 14.875rem;
+  }
+
   @media (max-width: 77rem) {
     max-width: 16.875rem;
     :first-of-type {
@@ -260,10 +276,9 @@ const StyledButton = styled(Button)`
   }
 
   @media (max-width: ${dimensions.phone_width}) {
-    max-width: 10.875rem;
+    max-width: 100%;
     :first-of-type {
-      margin-bottom: 0;
-      margin-right: 1rem;
+      margin: 0;
     }
   }
 `;
