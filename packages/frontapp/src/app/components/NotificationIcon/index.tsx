@@ -5,25 +5,23 @@ import { ReactComponent as NoNotification } from '../../../assets/NoNotification
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setActiveTab } from '../../store/slices/tabsSlice';
-import { dimensions } from '@mimir/ui-kit';
 
 const WrapperIcon = styled.div`
   cursor: pointer;
-  @media (max-width: ${dimensions.tablet_width}) {
-    display: none;
-  }
 `;
 
 interface IProps {
   active: boolean;
+  hideSidebar: () => void;
 }
 
-const NotificationIcon: FC<IProps> = ({ active }) => {
+const NotificationIcon: FC<IProps> = ({ active, hideSidebar }) => {
   const dispatch = useDispatch();
   const history = useNavigate();
   const linkToNotification = () => {
     history('/notifications');
     dispatch(setActiveTab(null));
+    hideSidebar();
   };
   return (
     <WrapperIcon>

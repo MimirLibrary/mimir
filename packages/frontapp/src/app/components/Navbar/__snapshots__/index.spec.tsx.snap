@@ -33,7 +33,7 @@ exports[`render Navbar component should completely match a snapshot 1`] = `
   -ms-flex-align: center;
   align-items: center;
   background: #1A1ED6;
-  width: 16rem;
+  width: 15rem;
   height: 4rem;
   -webkit-text-decoration: none;
   text-decoration: none;
@@ -83,8 +83,8 @@ exports[`render Navbar component should completely match a snapshot 1`] = `
 }
 
 .emotion-4 svg {
-  margin-right: 0.625rem;
-  width: 2rem;
+  margin-right: 1.25rem;
+  width: 1.875rem;
   height: 2rem;
   -webkit-filter: invert(1);
   filter: invert(1);
@@ -111,7 +111,7 @@ exports[`render Navbar component should completely match a snapshot 1`] = `
   -ms-flex-align: center;
   align-items: center;
   background: #FFFFFF;
-  width: 16rem;
+  width: 15rem;
   height: 4rem;
   -webkit-text-decoration: none;
   text-decoration: none;
@@ -143,8 +143,8 @@ exports[`render Navbar component should completely match a snapshot 1`] = `
 }
 
 .emotion-8 svg {
-  margin-right: 0.625rem;
-  width: 2rem;
+  margin-right: 1.25rem;
+  width: 1.875rem;
   height: 2rem;
   -webkit-filter: invert(0);
   filter: invert(0);
@@ -157,7 +157,14 @@ exports[`render Navbar component should completely match a snapshot 1`] = `
   color: #333333;
 }
 
-.emotion-22 {
+@media (max-width: 64.125rem) {
+  .emotion-22 {
+    width: 100%;
+    color: #E0E0E0;
+  }
+}
+
+.emotion-23 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -178,13 +185,13 @@ exports[`render Navbar component should completely match a snapshot 1`] = `
 }
 
 @media (max-height: 747px) {
-  .emotion-22 {
+  .emotion-23 {
     position: static;
   }
 }
 
 @media (max-width: 64.125rem) {
-  .emotion-22 {
+  .emotion-23 {
     position: static;
   }
 }
@@ -317,8 +324,11 @@ exports[`render Navbar component should completely match a snapshot 1`] = `
       </div>
     </a>
   </div>
-  <div
+  <hr
     class="emotion-22"
+  />
+  <div
+    class="emotion-23"
   >
     <a
       class="emotion-6"

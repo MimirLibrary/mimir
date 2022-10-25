@@ -6,7 +6,7 @@ import { setActiveTab } from '../../store/slices/tabsSlice';
 import { bottomNavSectionList, managerNavList, readerNavList } from './Items';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import { RolesTypes } from '@mimir/global-types';
-import { dimensions } from '@mimir/ui-kit';
+import { colors, dimensions } from '@mimir/ui-kit';
 
 interface IProps {
   hideSidebar: () => void;
@@ -42,6 +42,13 @@ const NavbarBottomSubsectionWrapper = styled.div`
   }
 `;
 
+const StyledHr = styled.hr`
+  @media (max-width: ${dimensions.tablet_width}) {
+    width: 100%;
+    color: ${colors.gray_additional};
+  }
+`;
+
 const Navbar: FC<IProps> = ({ hideSidebar }) => {
   const { userRole } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
@@ -69,6 +76,7 @@ const Navbar: FC<IProps> = ({ hideSidebar }) => {
               />
             ))}
       </NavbarTopSubsectionWrapper>
+      <StyledHr />
       <NavbarBottomSubsectionWrapper>
         {bottomNavSectionList.map((item) => (
           <NavbarItem

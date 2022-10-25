@@ -27,7 +27,7 @@ const StyledLink = styled(Link)<IStyle>`
   align-items: center;
   background: ${(props) =>
     JSON.parse(props.primary) ? colors.accent_color : colors.bg_secondary};
-  width: 16rem;
+  width: 15rem;
   height: 4rem;
   text-decoration: none;
   border-radius: 6.25rem;
@@ -67,8 +67,8 @@ const InsideButtonContainer = styled.div`
 
 const StyledIcon = styled.div<IStyle>`
   & svg {
-    margin-right: ${dimensions.xs_1};
-    width: ${dimensions.base_2};
+    margin-right: ${dimensions.xl};
+    width: ${dimensions.xl_3};
     height: ${dimensions.base_2};
     filter: ${(props) =>
       JSON.parse(props.primary) ? 'invert(1)' : 'invert(0)'};

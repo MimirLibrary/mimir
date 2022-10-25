@@ -46,7 +46,7 @@ describe('render BookCardExtended', () => {
       statuses: [
         {
           id: '1',
-          created_at: '2022-09-21T08:29:24.192Z',
+          created_at: '2022-10-21T08:29:24.192Z',
           status: StatusTypes.BUSY,
           person: {
             id: '1',
