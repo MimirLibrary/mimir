@@ -18,6 +18,10 @@ export const WrapperInfo = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   margin-top: 3.5rem;
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    margin-top: ${dimensions.xl_3};
+  }
 `;
 
 export const TitleInfo = styled.h1`
@@ -39,12 +43,19 @@ export const BackSpan = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: ${dimensions.lg};
   text-align: center;
   margin-top: ${dimensions.xl_3};
   font-weight: 600;
   font-size: ${dimensions.base};
   color: #000000;
   cursor: pointer;
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    order: -1;
+    margin-top: 0;
+    margin-bottom: ${dimensions.xl_3};
+  }
 `;
 
 export const WrapperLoader = styled.div`
@@ -120,7 +131,7 @@ const DonateBookFlow = () => {
           </SubTitle>
           {showEmptyContentDonate && (
             <BackSpan onClick={handleCloseContentOfDonate}>
-              <ArrowIcon /> Back
+              <ArrowIcon /> <span>Back</span>
             </BackSpan>
           )}
         </WrapperInfo>

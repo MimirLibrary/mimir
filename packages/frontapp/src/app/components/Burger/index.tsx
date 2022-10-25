@@ -14,7 +14,12 @@ const StyledBurger = styled.div`
 
   @media (max-width: ${dimensions.tablet_width}) {
     display: block;
-    transform: translateY(-50%);
+    margin: 0;
+    transform: translateY(0);
+
+    span:nth-of-type(3) {
+      margin-bottom: 0;
+    }
   }
 
   span {

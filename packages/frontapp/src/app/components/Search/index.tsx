@@ -52,7 +52,15 @@ export const WrapperInput = styled.div`
   }
 
   @media (max-width: ${dimensions.tablet_width}) {
-    width: 100%;
+    max-width: 100%;
+    width: 64vw;
+    min-width: 12rem;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 9px 0;
+    padding-left: ${dimensions.base};
+    font-size: ${dimensions.sm};
+    line-height: ${dimensions.lg};
   }
 `;
 

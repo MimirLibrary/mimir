@@ -31,6 +31,12 @@ const StyledUploadFile = styled.span`
   margin-top: 0.25rem;
   width: 100%;
   cursor: pointer;
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    margin-top: 0.5rem;
+    font-size: ${dimensions.sm};
+    line-height: ${dimensions.xl};
+  }
 `;
 
 const StyledImg = styled.img`
@@ -42,6 +48,11 @@ const StyledImg = styled.img`
   @media (max-width: ${dimensions.tablet_width}) {
     height: 15.5rem;
     width: 7.3rem;
+  }
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    height: 18.125rem;
+    width: 12.125rem;
   }
 `;
 

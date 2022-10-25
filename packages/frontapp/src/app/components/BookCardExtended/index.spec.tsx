@@ -40,13 +40,13 @@ describe('render BookCardExtended', () => {
       author: 'Ivan',
       category: 'Horror',
       title: 'Dracula',
-      created_at: '2022-09-21T08:29:24.192Z',
+      created_at: new Date().toDateString(),
       id: '1',
       picture: '',
       statuses: [
         {
           id: '1',
-          created_at: '2022-10-21T08:29:24.192Z',
+          created_at: new Date().toDateString(),
           status: StatusTypes.BUSY,
           person: {
             id: '1',

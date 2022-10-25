@@ -21,9 +21,17 @@ const WrapperRoutes = styled.div`
   background-color: ${colors.bg_primary};
   padding: 2.5rem 2.5rem 0 2.3rem;
 
-  @media (max-width: ${dimensions.tablet_width}) {
+  @media (max-width: ${dimensions.laptop_width}) {
     width: 100%;
-    padding: ${dimensions.xs_1};
+    padding: 2.5rem ${dimensions.xs_1};
+  }
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    padding: 67px ${dimensions.base} ${dimensions.base};
+  }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    padding-bottom: 10.25rem;
   }
 `;
 interface IStyledButton {

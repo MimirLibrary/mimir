@@ -157,7 +157,7 @@ exports[`render Navbar component should completely match a snapshot 1`] = `
   color: #333333;
 }
 
-@media (max-width: 64.125rem) {
+@media (max-width: 48rem) {
   .emotion-22 {
     width: 100%;
     color: #E0E0E0;
@@ -190,7 +190,7 @@ exports[`render Navbar component should completely match a snapshot 1`] = `
   }
 }
 
-@media (max-width: 64.125rem) {
+@media (max-width: 48rem) {
   .emotion-23 {
     position: static;
   }

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { colors } from '@mimir/ui-kit';
+import { colors, dimensions } from '@mimir/ui-kit';
 import { FC } from 'react';
 import { ReactComponent as Filter } from '../../../assets/Filter.svg';
 import CategorySearch from '../CategorySearch';
@@ -17,6 +17,13 @@ const StyledButton = styled.button<IProps>`
   background-color: transparent;
   cursor: pointer;
   fill: ${(props) => (props.active ? colors.accent_color : '')};
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 const FiltersButton: FC = () => {

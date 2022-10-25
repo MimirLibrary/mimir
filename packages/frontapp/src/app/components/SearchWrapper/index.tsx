@@ -22,6 +22,15 @@ const StyledSearch = styled.div`
 
   @media (max-width: ${dimensions.tablet_width}) {
     justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    padding: ${dimensions.sm} ${dimensions.base};
+    align-items: center;
+    background: #ffffff;
+    box-shadow: 0px -4px 64px rgba(24, 39, 75, 0.12);
+    border-radius: 0px;
   }
 `;
 
