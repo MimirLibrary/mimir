@@ -31,7 +31,7 @@ const StyledWrapper = styled.div<IStyledSidebarProps>`
       props.isSidebarActive ? 'rgba(0, 0, 0, 0.4)' : 'none'};
     height: 100%;
     transition: all 0.8s;
-    z-index: ${(props) => (props.isSidebarActive ? 1000 : 0)};
+    z-index: ${(props) => (props.isSidebarActive ? 1000 : -1)};
   }
 `;
 
