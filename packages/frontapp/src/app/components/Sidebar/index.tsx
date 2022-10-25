@@ -1,8 +1,9 @@
-import { FC } from 'react';
+import { FC, useRef } from 'react';
 import styled from '@emotion/styled';
 import Navbar from '../Navbar';
 import Header from '../Header';
 import { colors, dimensions } from '@mimir/ui-kit';
+import useOnClickOutside from '../../hooks/useOnClickOutside';
 import {
   useGetAllMessagesQuery,
   useGetNotificationsByPersonQuery,
@@ -19,6 +20,20 @@ interface IProps {
 interface IStyledSidebarProps {
   isSidebarActive: boolean;
 }
+
+const StyledWrapper = styled.div<IStyledSidebarProps>`
+  max-width: 22rem;
+  width: 100%;
+  @media (max-width: ${dimensions.tablet_width}) {
+    max-width: none;
+    position: fixed;
+    background-color: ${(props) =>
+      props.isSidebarActive ? 'rgba(0, 0, 0, 0.4)' : 'none'};
+    height: 100%;
+    transition: all 0.8s;
+    z-index: ${(props) => (props.isSidebarActive ? 1000 : 0)};
+  }
+`;
 
 const StyledSidebar = styled.aside<IStyledSidebarProps>`
   position: relative;
@@ -40,11 +55,11 @@ const StyledSidebar = styled.aside<IStyledSidebarProps>`
 
   @media (max-width: ${dimensions.tablet_width}) {
     position: fixed;
+    padding-top: ${dimensions.lg};
     top: 0;
     left: ${(props) => (props.isSidebarActive ? '0' : '-100%')};
     background: ${colors.bg_secondary};
-    width: 90%;
-    max-width: 22rem;
+    width: 85%;
     transition: all 0.8s;
     height: 100%;
     z-index: 1000;
@@ -52,6 +67,8 @@ const StyledSidebar = styled.aside<IStyledSidebarProps>`
 `;
 
 const Sidebar: FC<IProps> = ({ isSidebarActive, hideSidebar }) => {
+  const ref = useRef(null);
+  useOnClickOutside(ref, hideSidebar);
   const { id, userRole, locations } = useAppSelector((state) => state.user);
 
   const { data: getNotificationsByPersonData } =
@@ -70,16 +87,18 @@ const Sidebar: FC<IProps> = ({ isSidebarActive, hideSidebar }) => {
   // TODO: handle READER notifications
 
   return (
-    <StyledSidebar isSidebarActive={isSidebarActive}>
-      <Header
-        hasNewNotifications={
-          !!getNotificationsByPersonData?.getNotificationsByPerson.length ||
-          !!allMessagesData?.getAllMessages?.length
-        }
-        hideSidebar={hideSidebar}
-      />
-      <Navbar hideSidebar={hideSidebar} />
-    </StyledSidebar>
+    <StyledWrapper isSidebarActive={isSidebarActive}>
+      <StyledSidebar isSidebarActive={isSidebarActive} ref={ref}>
+        <Header
+          hasNewNotifications={
+            !!getNotificationsByPersonData?.getNotificationsByPerson.length ||
+            !!allMessagesData?.getAllMessages?.length
+          }
+          hideSidebar={hideSidebar}
+        />
+        <Navbar hideSidebar={hideSidebar} />
+      </StyledSidebar>
+    </StyledWrapper>
   );
 };
 

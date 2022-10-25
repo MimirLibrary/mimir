@@ -5,7 +5,7 @@ import NotificationIcon from '../NotificationIcon';
 import Avatar from '../Avatar';
 import UserInfo from '../UserInfo';
 import { useAppSelector } from '../../hooks/useTypedSelector';
-import ClosedButton from '../ClosedButton';
+import { dimensions } from '@mimir/ui-kit';
 
 interface IProps {
   hideSidebar: () => void;
@@ -38,6 +38,10 @@ const WrapperHeader = styled.header`
   max-width: 16.5rem;
   width: 100%;
   margin-bottom: 2rem;
+  @media (max-width: ${dimensions.tablet_width}) {
+    max-width: none;
+    padding: 0 20px;
+  }
 `;
 
 const Header: FC<IProps> = ({ hideSidebar, hasNewNotifications }) => {
@@ -46,8 +50,10 @@ const Header: FC<IProps> = ({ hideSidebar, hasNewNotifications }) => {
     <WrapperHeader>
       <WrapperTitle>
         <TitleProject title="Mimir" />
-        <NotificationIcon active={hasNewNotifications} />
-        <ClosedButton hideSidebar={hideSidebar} />
+        <NotificationIcon
+          active={hasNewNotifications}
+          hideSidebar={hideSidebar}
+        />
       </WrapperTitle>
       <WrapperForCenter>
         <WrapperUserInfo>
