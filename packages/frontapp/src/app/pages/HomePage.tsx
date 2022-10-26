@@ -208,9 +208,7 @@ const HomePage: FC = () => {
           <StatisticsModal
             isActive={isStatisticsOpen}
             setIsActive={setIsStatisticOpen}
-          >
-            <div>Hello</div>
-          </StatisticsModal>
+          />
         </>
       )}
     </WrapperHome>
