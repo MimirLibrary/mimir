@@ -49,6 +49,9 @@ export const resources = {
         Language: 'Language',
         Notification: 'Notification',
       },
+      Statistics: {
+        Title: 'Library statistics',
+      },
       Readers: {
         Title: 'All users',
         Description:
@@ -247,6 +250,9 @@ export const resources = {
         Several: 'вы можете выбрать несколько',
         Language: 'Язык',
         Notification: 'Уведомления',
+      },
+      Statistics: {
+        Title: 'Статистика библиотеки',
       },
       Readers: {
         Title: 'Все пользователи',
