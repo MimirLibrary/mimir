@@ -182,6 +182,7 @@ export const resources = {
         Prolong: 'Return till: ',
         Pending: 'Waiting for a manger',
         Rejected: 'Rejected',
+        Claimed: 'In use',
       },
       BookClaimHistory: {
         Title: 'Claim history',
@@ -383,6 +384,7 @@ export const resources = {
         Prolong: 'Вернуть до: ',
         Pending: 'В ожидании менеджера',
         Rejected: 'Отклонено',
+        Claimed: 'Используется',
       },
       BookClaimHistory: {
         Title: 'История действий',

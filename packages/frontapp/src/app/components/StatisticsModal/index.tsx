@@ -43,6 +43,7 @@ const PieChart = styled.figure<{
   free: number;
   claimed: number;
   overdue: number;
+  pending: number;
 }>`
   justify-self: center;
   background: radial-gradient(
@@ -61,6 +62,13 @@ const PieChart = styled.figure<{
       ${colors.problem_red} 0,
       ${colors.problem_red}
         ${(props) => props.free / 2 + props.claimed / 2 + props.overdue / 2}%,
+      ${colors.gray_additional} 0,
+      ${colors.gray_additional}
+        ${(props) =>
+          props.free / 2 +
+          props.claimed / 2 +
+          props.overdue / 2 +
+          props.pending / 2}%,
       ${colors.bg_secondary} 0,
       ${colors.bg_secondary} 100%
     );
@@ -69,8 +77,8 @@ const PieChart = styled.figure<{
   border-radius: 50%;
   margin: 0;
 
-  @media (max-width: ${dimensions.phone_width}) {
-    margin-bottom: 2rem;
+  @media (max-width: ${dimensions.tablet_width}) {
+    margin-bottom: 3rem;
   }
 `;
 
@@ -81,12 +89,14 @@ const LegendWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: ${dimensions.xl_2};
-  @media (max-width: ${dimensions.phone_width}) {
+
+  @media (max-width: ${dimensions.tablet_width}) {
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: ${dimensions.xs_2};};
-  }
+    gap: ${dimensions.xs_2};
+    margin-left: 3.5rem;
+  } ;
 `;
 
 const LegendItem = styled.div`
@@ -113,13 +123,7 @@ const StatisticsModal: FC<StatisticsModal> = ({ isActive, setIsActive }) => {
   });
 
   const NUMBER_OF_ALL_BOOKS =
-    bookItems?.filter(
-      (item) =>
-        item?.status?.status === StatusTypes.BUSY ||
-        item?.status?.status === StatusTypes.PROLONG ||
-        item?.status?.status === StatusTypes.FREE ||
-        item?.status?.status === StatusTypes.OVERDUE
-    ).length || 0;
+    bookItems?.filter((item) => item.status?.status).length || 0;
   const NUMBER_OF_FREE_BOOKS =
     bookItems?.filter((item) => item?.status?.status === StatusTypes.FREE)
       .length || 0;
@@ -132,11 +136,15 @@ const StatisticsModal: FC<StatisticsModal> = ({ isActive, setIsActive }) => {
   const NUMBER_OF_OVERDUE_BOOKS =
     bookItems?.filter((item) => item?.status?.status === StatusTypes.OVERDUE)
       .length || 0;
+  const NUMBER_OF_PENDING_BOOKS =
+    bookItems?.filter((item) => item?.status?.status === StatusTypes.PENDING)
+      .length || 0;
 
   const STATISTICS = {
     free: Math.round((NUMBER_OF_FREE_BOOKS / NUMBER_OF_ALL_BOOKS) * 100),
     claimed: Math.round((NUMBER_OF_CLAIMED_BOOKS / NUMBER_OF_ALL_BOOKS) * 100),
     overdue: Math.round((NUMBER_OF_OVERDUE_BOOKS / NUMBER_OF_ALL_BOOKS) * 100),
+    pending: Math.round((NUMBER_OF_PENDING_BOOKS / NUMBER_OF_ALL_BOOKS) * 100),
   };
 
   const closeModal = () => {
@@ -157,19 +165,33 @@ const StatisticsModal: FC<StatisticsModal> = ({ isActive, setIsActive }) => {
           free={STATISTICS.free}
           claimed={STATISTICS.claimed}
           overdue={STATISTICS.overdue}
+          pending={STATISTICS.pending}
+          data-testid="statistics-chart"
         ></PieChart>
-        <LegendWrapper>
-          <LegendItem>
+        <LegendWrapper data-testid="statistics-legend">
+          <LegendItem data-testid="statistics-free">
             <LegendColor color={colors.main_green}></LegendColor>
-            <span>On the shelf - {NUMBER_OF_FREE_BOOKS}</span>
+            <span>
+              {t('Statuses.Free')} - {NUMBER_OF_FREE_BOOKS}
+            </span>
           </LegendItem>
-          <LegendItem>
+          <LegendItem data-testid="statistics-claimed">
             <LegendColor color={colors.accent_color}></LegendColor>
-            <span>Claimed - {NUMBER_OF_CLAIMED_BOOKS}</span>
+            <span>
+              {t('Statuses.Claimed')} - {NUMBER_OF_CLAIMED_BOOKS}
+            </span>
           </LegendItem>
-          <LegendItem>
+          <LegendItem data-testid="statistics-overdue">
             <LegendColor color={colors.problem_red}></LegendColor>
-            <span>Overdue - {NUMBER_OF_OVERDUE_BOOKS}</span>
+            <span>
+              {t('Statuses.Overdue')} - {NUMBER_OF_OVERDUE_BOOKS}
+            </span>
+          </LegendItem>
+          <LegendItem data-testid="statistics-pending">
+            <LegendColor color={colors.gray_additional}></LegendColor>
+            <span>
+              {t('Statuses.Pending')} - {NUMBER_OF_PENDING_BOOKS}
+            </span>
           </LegendItem>
         </LegendWrapper>
         <ButtonsWrapper>
