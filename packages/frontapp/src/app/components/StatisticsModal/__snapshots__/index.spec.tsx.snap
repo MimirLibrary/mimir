@@ -58,7 +58,6 @@ exports[`Statistics Modal Component should match snapshot 2`] = `
   -webkit-justify-content: space-between;
   justify-content: space-between;
   gap: 1.5rem;
-  margin-left: 3.5rem;
 }
 
 @media (max-width: 48rem) {
@@ -75,6 +74,7 @@ exports[`Statistics Modal Component should match snapshot 2`] = `
     -ms-flex-align: flex-start;
     align-items: flex-start;
     gap: 0.5rem;
+    margin-left: 3.5rem;
   }
 }
 

@@ -28,7 +28,10 @@ const wrapper: FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <BrowserRouter>
       <ApolloProvider client={client}>
-        <Provider store={store}>{children}</Provider>
+        <Provider store={store}>
+          {children}
+          <div id="modal"></div>
+        </Provider>
       </ApolloProvider>
     </BrowserRouter>
   );
