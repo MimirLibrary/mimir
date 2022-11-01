@@ -19,6 +19,8 @@ import {
 } from '../store/slices/userSlice';
 import DropDownLocation from '../components/DropdownLocation';
 import { toast } from 'react-toastify';
+import LabeledCheckbox from '../components/LabeledCheckbox';
+import LocationsContainer from '../components/LocationsContainer';
 
 export type TLanguage = {
   locale: string;
@@ -156,6 +158,12 @@ const SettingsPage = () => {
           initIndex={currentLocaleIndex}
           onChange={(option) => handleLanguageChange(option as TLanguage)}
         />
+        {/* TODO: add checkbox container to handle disabled/checked states as well as wrap with flex */}
+        {!GetAllLocationsLoading && !!GetAllLocationsData && (
+          <LocationsContainer
+            locations={GetAllLocationsData?.getAllLocations}
+          ></LocationsContainer>
+        )}
       </SettingsContainer>
     </WrapperSettings>
   );
