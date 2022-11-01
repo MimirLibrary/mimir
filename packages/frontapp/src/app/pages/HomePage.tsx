@@ -181,28 +181,23 @@ const HomePage: FC = () => {
           )}
         </>
       ) : (
-        <>
-          <ButtonWrapper>
-            <Button value={t(`ManagerInfoCard.Description.Library`)} />
-          </ButtonWrapper>
-          <CardsWrapper>
-            <OverdueDonatesWrapper>
-              <ManagerInfoCard
-                type={ManagerCardTypes.OVERDUE}
-                fieldsOverdue={overdueList}
-              />
-              <ManagerInfoCard
-                type={ManagerCardTypes.DONATES}
-                fieldsDonate={donateList}
-              />
-            </OverdueDonatesWrapper>
-            <NotificationsWrapper>
-              <NotificationList
-                fieldsNotification={allMessagesData?.getAllMessages}
-              />
-            </NotificationsWrapper>
-          </CardsWrapper>
-        </>
+        <CardsWrapper>
+          <OverdueDonatesWrapper>
+            <ManagerInfoCard
+              type={ManagerCardTypes.OVERDUE}
+              fieldsOverdue={overdueList}
+            />
+            <ManagerInfoCard
+              type={ManagerCardTypes.DONATES}
+              fieldsDonate={donateList}
+            />
+          </OverdueDonatesWrapper>
+          <NotificationsWrapper>
+            <NotificationList
+              fieldsNotification={allMessagesData?.getAllMessages}
+            />
+          </NotificationsWrapper>
+        </CardsWrapper>
       )}
     </WrapperHome>
   );
