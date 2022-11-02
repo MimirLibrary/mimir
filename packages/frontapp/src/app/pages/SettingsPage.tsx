@@ -5,7 +5,7 @@ import {
   useRemovePersonLocationMutation,
 } from '@mimir/apollo-client';
 import { colors, dimensions } from '@mimir/ui-kit';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Dropdown, { IDropdownOption } from '../components/Dropdown';
 import { TextArticle } from '../globalUI/TextArticle';
@@ -19,7 +19,6 @@ import {
 } from '../store/slices/userSlice';
 import DropDownLocation from '../components/DropdownLocation';
 import { toast } from 'react-toastify';
-import LabeledCheckbox from '../components/LabeledCheckbox';
 import LocationsContainer from '../components/LocationsContainer';
 
 export type TLanguage = {
@@ -102,28 +101,28 @@ const SettingsPage = () => {
     localStorage.setItem('locale', locale);
   };
 
-  const handleChangeLocation = useCallback(
-    async (e: React.ChangeEvent<HTMLInputElement>, option: TUserLocation) => {
-      if (e.target.checked) {
-        await addPersonLocation({
-          variables: {
-            location_id: +option.id,
-            person_id: id,
-          },
-        });
-        dispatch(addLocation(option));
-      } else {
-        await removePersonLocation({
-          variables: {
-            location_id: +option.id,
-            person_id: id,
-          },
-        });
-        dispatch(removeLocation(option.id));
-      }
-    },
-    [id]
-  );
+  const handleChangeLocation = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    option: TUserLocation
+  ) => {
+    if (e.target.checked) {
+      await addPersonLocation({
+        variables: {
+          location_id: +option.id,
+          person_id: id,
+        },
+      });
+      dispatch(addLocation(option));
+    } else {
+      await removePersonLocation({
+        variables: {
+          location_id: +option.id,
+          person_id: id,
+        },
+      });
+      dispatch(removeLocation(option.id));
+    }
+  };
 
   useEffect(() => {
     if (GetAllLocationsError) {
@@ -141,6 +140,7 @@ const SettingsPage = () => {
         <SettingsArticle>
           {t('Settings.Locations')} <span>({t('Settings.Several')})</span>
         </SettingsArticle>
+        {/* TODO: remove it when the design of the settings page is ready */}
         {!GetAllLocationsLoading && !!GetAllLocationsData && (
           <StyledDropDownLocation
             options={GetAllLocationsData.getAllLocations.map((loc) => ({
@@ -158,10 +158,13 @@ const SettingsPage = () => {
           initIndex={currentLocaleIndex}
           onChange={(option) => handleLanguageChange(option as TLanguage)}
         />
-        {/* TODO: add checkbox container to handle disabled/checked states as well as wrap with flex */}
         {!GetAllLocationsLoading && !!GetAllLocationsData && (
           <LocationsContainer
-            locations={GetAllLocationsData?.getAllLocations}
+            locations={GetAllLocationsData.getAllLocations.map((loc) => ({
+              id: loc!.id,
+              value: loc!.location,
+            }))}
+            onChange={handleChangeLocation}
           ></LocationsContainer>
         )}
       </SettingsContainer>

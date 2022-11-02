@@ -31,6 +31,16 @@ const Checkbox = styled.input`
     color: ${colors.accent_color};
     transition: all 0.2s;
   }
+
+  &:disabled {
+    cursor: auto;
+    pointer-events: none;
+  }
+
+  &:disabled + label {
+    cursor: auto;
+    pointer-events: none;
+  }
 `;
 
 interface ILabeledCheckbox {
