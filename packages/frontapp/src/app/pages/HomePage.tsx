@@ -21,7 +21,6 @@ import { RolesTypes, StatusTypes } from '@mimir/global-types';
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
 import { isOverdue } from '../models/helperFunctions/converTime';
-import NotificationList from '../components/NotificationList';
 import { locationIds } from '../store/slices/userSlice';
 
 const WrapperHome = styled.div`
@@ -68,7 +67,7 @@ const Wrapper = styled.div`
 `;
 
 const CardsWrapper = styled.div`
-  padding: 58px 0 ${dimensions.xl_3};
+  padding: 28px 0 ${dimensions.xl_3};
   display: flex;
   flex-direction: column;
   row-gap: 30px;
@@ -76,6 +75,9 @@ const CardsWrapper = styled.div`
 
 const NotificationsWrapper = styled.div`
   height: 587px;
+  @media (max-width: ${dimensions.tablet_width}) {
+    height: 100%;
+  }
 `;
 
 const OverdueDonatesWrapper = styled.div`
@@ -193,7 +195,8 @@ const HomePage: FC = () => {
             />
           </OverdueDonatesWrapper>
           <NotificationsWrapper>
-            <NotificationList
+            <ManagerInfoCard
+              type={ManagerCardTypes.NOTIFICATIONS}
               fieldsNotification={allMessagesData?.getAllMessages}
             />
           </NotificationsWrapper>
