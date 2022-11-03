@@ -127,7 +127,7 @@ const DonateBookFlow = () => {
             Are you planning to donate something to the library?
           </TitleInfo>
           <SubTitle>
-            Fill in the required* fields or try to scan the code
+            Fill in the required* fields or check the received data
           </SubTitle>
           {showEmptyContentDonate && (
             <BackSpan onClick={handleCloseContentOfDonate}>

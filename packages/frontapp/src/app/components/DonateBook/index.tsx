@@ -32,6 +32,10 @@ const WrapperDonate = styled.section`
     margin-top: ${dimensions.xl};
     padding: ${dimensions.xl_2} ${dimensions.base};
   }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    margin-bottom: 4rem;
+  }
 `;
 
 const Form = styled.form`
@@ -230,7 +234,7 @@ const WrapperButtons = styled.div`
   }
   @media (max-width: ${dimensions.phone_width}) {
     position: absolute;
-    bottom: -11rem;
+    bottom: -17rem;
     left: 50%;
     flex-direction: column;
     gap: ${dimensions.xs_2};
@@ -471,7 +475,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
               </div>
               <WrapperBlockInput>
                 <WrapperStyledInput>
-                  <Label htmlFor="title">Title*</Label>
+                  <Label htmlFor="title">Name*</Label>
                   <WrapperInput>
                     <StyledInput
                       type="text"
@@ -480,7 +484,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
                       value={dataOfBook.title || ''}
                       onChange={handleChange}
                       autoComplete="off"
-                      placeholder="Enter title"
+                      placeholder="Book name"
                     />
                   </WrapperInput>
                 </WrapperStyledInput>
@@ -495,7 +499,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
                       onChange={handleChange}
                       autoComplete="off"
                       required
-                      placeholder="Enter author"
+                      placeholder="Book author"
                     />
                   </WrapperInput>
                 </WrapperStyledInput>
@@ -503,7 +507,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
                 <StyledDropdown
                   options={listOfGenres}
                   onChange={handleChangeGenre}
-                  placeholder="Enter genre"
+                  placeholder="Book genre"
                 />
                 <Label htmlFor="location">Location*</Label>
                 <StyledDropdown
@@ -543,7 +547,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
               id="description"
               value={description || ''}
               onChange={handleChangeDescription}
-              placeholder="Enter your text"
+              placeholder="Enter book description"
               required
             />
           </WrapperDescription>
