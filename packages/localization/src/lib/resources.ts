@@ -49,6 +49,9 @@ export const resources = {
         Language: 'Language',
         Notification: 'Notification',
       },
+      Statistics: {
+        Title: 'Library statistics',
+      },
       Readers: {
         Title: 'All users',
         Description:
@@ -179,6 +182,7 @@ export const resources = {
         Prolong: 'Return till: ',
         Pending: 'Waiting for a manger',
         Rejected: 'Rejected',
+        Claimed: 'In use',
       },
       BookClaimHistory: {
         Title: 'Claim history',
@@ -247,6 +251,9 @@ export const resources = {
         Several: 'вы можете выбрать несколько',
         Language: 'Язык',
         Notification: 'Уведомления',
+      },
+      Statistics: {
+        Title: 'Статистика библиотеки',
       },
       Readers: {
         Title: 'Все пользователи',
@@ -377,6 +384,7 @@ export const resources = {
         Prolong: 'Вернуть до: ',
         Pending: 'В ожидании менеджера',
         Rejected: 'Отклонено',
+        Claimed: 'Используется',
       },
       BookClaimHistory: {
         Title: 'История действий',

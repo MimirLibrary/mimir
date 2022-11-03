@@ -1,0 +1,182 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Statistics Modal Component should match snapshot 1`] = `
+.emotion-0 {
+  justify-self: center;
+  background: radial-gradient(
+        circle closest-side,
+        #FFFFFF 0,
+        #FFFFFF 55%,
+        transparent 55%,
+        transparent 100%
+      ),conic-gradient(
+        from 270deg,
+        #2AA816 0,
+        #2AA816 25%,
+        #1A1ED6 0,
+        #1A1ED6 37.5%,
+        #FF372A 0,
+        #FF372A
+          50%,
+        #E0E0E0 0,
+        #E0E0E0
+          50%,
+        #FFFFFF 0,
+        #FFFFFF 100%
+      );
+  width: 290px;
+  height: 290px;
+  border-radius: 50%;
+  margin: 0;
+}
+
+@media (max-width: 48rem) {
+  .emotion-0 {
+    margin-bottom: 3rem;
+  }
+}
+
+<figure
+  class="emotion-0"
+  data-testid="statistics-chart"
+/>
+`;
+
+exports[`Statistics Modal Component should match snapshot 2`] = `
+.emotion-0 {
+  position: absolute;
+  top: 18rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+@media (max-width: 48rem) {
+  .emotion-0 {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+    -webkit-align-items: flex-start;
+    -webkit-box-align: flex-start;
+    -ms-flex-align: flex-start;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-left: 3.5rem;
+  }
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.emotion-2 {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background-color: #2AA816;
+}
+
+.emotion-4 {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background-color: #1A1ED6;
+}
+
+.emotion-6 {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background-color: #FF372A;
+}
+
+.emotion-8 {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background-color: #E0E0E0;
+}
+
+<div
+  class="emotion-0"
+  data-testid="statistics-legend"
+>
+  <div
+    class="emotion-1"
+    data-testid="statistics-free"
+  >
+    <div
+      class="emotion-2"
+      color="#2AA816"
+    />
+    <span>
+      Statuses.Free
+       - 
+      2
+    </span>
+  </div>
+  <div
+    class="emotion-1"
+    data-testid="statistics-claimed"
+  >
+    <div
+      class="emotion-4"
+      color="#1A1ED6"
+    />
+    <span>
+      Statuses.Claimed
+       - 
+      1
+    </span>
+  </div>
+  <div
+    class="emotion-1"
+    data-testid="statistics-overdue"
+  >
+    <div
+      class="emotion-6"
+      color="#FF372A"
+    />
+    <span>
+      Statuses.Overdue
+       - 
+      1
+    </span>
+  </div>
+  <div
+    class="emotion-1"
+    data-testid="statistics-pending"
+  >
+    <div
+      class="emotion-8"
+      color="#E0E0E0"
+    />
+    <span>
+      Statuses.Pending
+       - 
+      0
+    </span>
+  </div>
+</div>
+`;

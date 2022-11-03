@@ -36,7 +36,7 @@ const StyledCross = styled(Cross)`
   cursor: pointer;
   position: absolute;
   right: 4%;
-  top: 5%;
+  top: 2.6rem;
 `;
 export const ContentModal = styled.div<IStyleProps>`
   padding: ${dimensions.base_3};
