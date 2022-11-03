@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { useAppSelector } from '../hooks/useTypedSelector';
 import ManagerInfoCard from '../components/ManagerInfoCard';
 import InstructionsClaim from '../components/InstructionsClaim';
@@ -22,6 +22,7 @@ import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
 import { isOverdue } from '../models/helperFunctions/converTime';
 import { locationIds } from '../store/slices/userSlice';
+import StatisticsModal from '../components/StatisticsModal';
 
 const WrapperHome = styled.div`
   @media (max-width: ${dimensions.tablet_width}) {
@@ -40,7 +41,7 @@ const ButtonWrapper = styled.div`
   width: 234px;
   height: 52px;
   right: 46px;
-  top: 40px;
+  top: 35px;
 
   @media (max-width: ${dimensions.tablet_width}) {
     margin-top: ${dimensions.xs_2};
@@ -131,6 +132,8 @@ const HomePage: FC = () => {
     fetchPolicy: 'no-cache',
   });
 
+  const [isStatisticsOpen, setIsStatisticOpen] = useState(false);
+
   const donateList = useMemo(() => {
     return allMaterialsData?.getAllMaterials.filter(
       (material) =>
@@ -184,7 +187,7 @@ const HomePage: FC = () => {
         </>
       ) : (
         <>
-          {/* <ButtonWrapper>
+          {/* <ButtonWrapper onClick={() => setIsStatisticOpen(true)}>
             <Button value={t(`ManagerInfoCard.Description.Library`)} />
           </ButtonWrapper> */}
           <CardsWrapper>
@@ -205,6 +208,10 @@ const HomePage: FC = () => {
               />
             </NotificationsWrapper>
           </CardsWrapper>
+          <StatisticsModal
+            isActive={isStatisticsOpen}
+            setIsActive={setIsStatisticOpen}
+          />
         </>
       )}
     </WrapperHome>

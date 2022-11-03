@@ -22,12 +22,20 @@ export const InputSearch = styled(Input)`
   @media (max-width: ${dimensions.tablet_width}) {
     margin-left: -${dimensions.xl};
   }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    width: 100%;
+    margin-left: 0;
+  }
 `;
 
 export const StyledSearchIcon = styled(SearchIcon)`
   cursor: pointer;
   :hover {
     fill: ${colors.accent_color};
+  }
+  @media (max-width: ${dimensions.phone_width}) {
+    display: none;
   }
 `;
 
