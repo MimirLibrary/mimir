@@ -6,7 +6,7 @@ import { colors, dimensions } from '@mimir/ui-kit';
 const WrapperUploadFile = styled.div`
   width: 12.25rem;
   height: 20.5rem;
-  border: ${colors.accent_color};
+  border: 1px solid ${colors.accent_color};
   border-radius: ${dimensions.xs_1};
   background-color: #f9faff;
   cursor: pointer;
