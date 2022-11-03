@@ -1,12 +1,12 @@
 import React, { FC, useRef } from 'react';
-import { ReactComponent as PhotoIcon } from '../../../assets/Photo.svg';
+import { ReactComponent as PhotoIcon } from '../../../assets/Picture.svg';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 
 const WrapperUploadFile = styled.div`
   width: 12.25rem;
   height: 20.5rem;
-  border: ${colors.accent_color};
+  border: 1px solid ${colors.accent_color};
   border-radius: ${dimensions.xs_1};
   background-color: #f9faff;
   cursor: pointer;
@@ -15,11 +15,11 @@ const WrapperUploadFile = styled.div`
   align-items: center;
 
   @media (max-width: ${dimensions.tablet_width}) {
-    width: 8rem;
+    width: 15rem;
   }
 
   @media (max-width: ${dimensions.phone_width}) {
-    width: 6rem;
+    width: 13rem;
   }
 `;
 
