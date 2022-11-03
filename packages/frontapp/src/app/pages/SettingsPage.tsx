@@ -20,6 +20,7 @@ import {
 import DropDownLocation from '../components/DropdownLocation';
 import { toast } from 'react-toastify';
 import LocationsContainer from '../components/LocationsContainer';
+import { RadioGroup } from '../components/RadioButton';
 
 export type TLanguage = {
   locale: string;
@@ -101,6 +102,11 @@ const SettingsPage = () => {
     localStorage.setItem('locale', locale);
   };
 
+  const handleLanguageChange1 = (value: string) => {
+    changeLanguage(value);
+    localStorage.setItem('locale', value);
+  };
+
   const handleChangeLocation = async (
     e: React.ChangeEvent<HTMLInputElement>,
     option: TUserLocation
@@ -167,6 +173,15 @@ const SettingsPage = () => {
             onChange={handleChangeLocation}
           ></LocationsContainer>
         )}
+        <RadioGroup
+          name="language"
+          defaultValue={language}
+          options={languages.map((lang) => ({
+            name: lang.value,
+            value: lang.locale,
+          }))}
+          onChange={handleLanguageChange1}
+        />
       </SettingsContainer>
     </WrapperSettings>
   );
