@@ -21,7 +21,7 @@ export class StatusService {
       .andWhere('person.type = :type', { type: RolesTypes.READER })
       .andWhere('material.location_id IN (:...locations)', { locations })
       .andWhere('status.status IN(:...statuses)', {
-        statuses: [StatusTypes.BUSY, StatusTypes.PROLONG],
+        statuses: [StatusTypes.IN_USE, StatusTypes.PROLONG],
       })
       .getMany();
   }

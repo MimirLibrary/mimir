@@ -8,10 +8,21 @@ type Status {
   person: Person!
 }
 
+enum ItemStatus {
+  PENDING,
+  REJECTED,
+  NEW,
+  FREE,
+  IN_USE,
+  PROLONG,
+  SUSPEND,
+  OVERDUE
+}
+
 input CreateStatusInput {
   material_id: Int!
   person_id: Int!
-  status: String!
+  status: ItemStatus!
 }
 
 extend type Query {
