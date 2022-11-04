@@ -28,7 +28,7 @@ const StartPageBackground = styled.div`
   justify-content: center;
   align-items: flex-end;
   background-color: #f9faff;
-  background-image: url('../../assets/startpage_pattern.png');
+  background-image: url('../../assets/bookshelf-pattern.png');
   @media (max-width: ${dimensions.phone_width}) {
     overflow: hidden;
   }
