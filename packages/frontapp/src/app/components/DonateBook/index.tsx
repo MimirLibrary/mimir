@@ -258,9 +258,7 @@ const WrapperWithoutButtons = styled.div`
 const StyledButton = styled(Button)`
   max-width: 16.875rem;
   width: 100%;
-  :first-of-type {
-    margin-bottom: ${dimensions.xs_2};
-  }
+  margin-bottom: ${dimensions.xs_2};
   :disabled {
     cursor: auto;
     background-color: ${colors.dropdown_gray};
@@ -272,10 +270,7 @@ const StyledButton = styled(Button)`
 
   @media (max-width: 77rem) {
     max-width: 16.875rem;
-    :first-of-type {
-      margin-bottom: 0;
-      margin-right: 1rem;
-    }
+    margin-bottom: -0.4rem;
   }
 
   @media (max-width: ${dimensions.phone_width}) {
@@ -283,6 +278,7 @@ const StyledButton = styled(Button)`
     :first-of-type {
       margin: 0;
     }
+    margin-bottom: 0;
   }
 `;
 
