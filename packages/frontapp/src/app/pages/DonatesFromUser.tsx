@@ -21,7 +21,12 @@ interface TitleProps {
 
 const WrapperSearch = styled(WrapperInput)`
   position: relative;
-  top: -3.5rem;
+  top: -6.5rem;
+`;
+const StyledWrapperInput = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
 `;
 
 const ColumnHeader = styled.div`
@@ -86,15 +91,21 @@ const DonatesFromUser = () => {
 
   return (
     <WrapperInfo>
-      <WrapperSearch>
-        <StyledSearchIcon fill={colors.dropdown_gray} width="20" height="20" />
-        <InputSearch
-          type="text"
-          value={search}
-          onChange={handleChangeSearch}
-          placeholder={t('Search.UsernamePlaceholder')}
-        />
-      </WrapperSearch>
+      <StyledWrapperInput>
+        <WrapperSearch>
+          <StyledSearchIcon
+            fill={colors.dropdown_gray}
+            width="20"
+            height="20"
+          />
+          <InputSearch
+            type="text"
+            value={search}
+            onChange={handleChangeSearch}
+            placeholder={t('Search.UsernamePlaceholder')}
+          />
+        </WrapperSearch>
+      </StyledWrapperInput>
       <TitleInfo>Donates from user</TitleInfo>
       <SubTitle>
         Items brought to the library by users. Confirm them so that they appear
