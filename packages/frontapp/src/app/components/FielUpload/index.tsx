@@ -15,11 +15,11 @@ const WrapperUploadFile = styled.div`
   align-items: center;
 
   @media (max-width: ${dimensions.tablet_width}) {
-    width: 15rem;
+    width: 8rem;
   }
 
   @media (max-width: ${dimensions.phone_width}) {
-    width: 15rem;
+    width: 12rem;
   }
 `;
 
