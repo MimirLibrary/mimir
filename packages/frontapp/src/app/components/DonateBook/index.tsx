@@ -32,7 +32,6 @@ const WrapperDonate = styled.section`
     margin-top: ${dimensions.xl};
     padding: ${dimensions.xl_2} ${dimensions.base};
   }
-
   @media (max-width: ${dimensions.phone_width}) {
     margin-bottom: 4rem;
   }
@@ -234,7 +233,7 @@ const WrapperButtons = styled.div`
   }
   @media (max-width: ${dimensions.phone_width}) {
     position: absolute;
-    bottom: -17rem;
+    bottom: -17.5rem;
     left: 50%;
     flex-direction: column;
     gap: ${dimensions.xs_2};
@@ -475,7 +474,9 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
               </div>
               <WrapperBlockInput>
                 <WrapperStyledInput>
-                  <Label htmlFor="title">Name*</Label>
+                  <Label htmlFor="title">
+                    {t('DonateBookInputs.Name.Title')}*
+                  </Label>
                   <WrapperInput>
                     <StyledInput
                       type="text"
@@ -484,12 +485,14 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
                       value={dataOfBook.title || ''}
                       onChange={handleChange}
                       autoComplete="off"
-                      placeholder="Book name"
+                      placeholder={t('DonateBookInputs.Name.Placeholder')}
                     />
                   </WrapperInput>
                 </WrapperStyledInput>
                 <WrapperStyledInput>
-                  <Label htmlFor="author">Author*</Label>
+                  <Label htmlFor="author">
+                    {t('DonateBookInputs.Author.Title')}*
+                  </Label>
                   <WrapperInput>
                     <StyledInput
                       type="text"
@@ -499,29 +502,33 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
                       onChange={handleChange}
                       autoComplete="off"
                       required
-                      placeholder="Book author"
+                      placeholder={t('DonateBookInputs.Author.Placeholder')}
                     />
                   </WrapperInput>
                 </WrapperStyledInput>
-                <Label htmlFor="genre">Genre*</Label>
+                <Label htmlFor="genre">
+                  {t('DonateBookInputs.Genre.Title')}*
+                </Label>
                 <StyledDropdown
                   options={listOfGenres}
                   onChange={handleChangeGenre}
-                  placeholder="Book genre"
+                  placeholder={t('DonateBookInputs.Genre.Placeholder')}
                 />
-                <Label htmlFor="location">Location*</Label>
+                <Label htmlFor="location">
+                  {t('DonateBookInputs.Location.Title')}*
+                </Label>
                 <StyledDropdown
                   options={locations}
                   onChange={(option) =>
                     handleChangeLocation(option as TUserLocation)
                   }
-                  placeholder="Choose your location"
+                  placeholder={t('DonateBookInputs.Location.Placeholder')}
                 />
               </WrapperBlockInput>
             </WrapperWithoutButtons>
             <WrapperButtons>
               <StyledButton
-                value="Add item to library"
+                value={t(`WrapperButtons.AddItem`)}
                 disabled={isInvalid}
                 type="submit"
               />
@@ -532,7 +539,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
               />
               {userRole !== RolesTypes.MANAGER && (
                 <StyledButton
-                  value="Ask a manger"
+                  value={t(`WrapperButtons.AskManager`)}
                   transparent
                   onClick={handleShowAskManagerForm}
                 />
@@ -541,13 +548,13 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
           </WrapperMainInfo>
           <WrapperDescription>
             <StyledDescription htmlFor="description">
-              Description*
+              {t('DonateBookInputs.Description.Title')}*
             </StyledDescription>
             <StyledTextArea
               id="description"
               value={description || ''}
               onChange={handleChangeDescription}
-              placeholder="Enter book description"
+              placeholder={t('DonateBookInputs.Description.Placeholder')}
               required
             />
           </WrapperDescription>
@@ -556,8 +563,8 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
       <Modal setActive={setSuccess} active={isSuccess}>
         <SuccessMessage
           setActive={setSuccess}
-          title="You have successfully donated to the library"
-          description="Put the book on the nearest free space on the shelf. In case of any problems, our manager will contact you"
+          title={t('DonateBookInputs.Modal.DonateSuccess.Title')}
+          description={t('DonateBookInputs.Modal.DonateSuccess.Message')}
           onCloseContentDonate={onHideContent}
         />
       </Modal>
@@ -569,8 +576,8 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
       </Modal>
       <Modal active={sendManagerSuccess} setActive={setSendManagerSuccess}>
         <ErrorMessage
-          title="We reported the problem to the manager"
-          message="The problem will be solved soon"
+          title={t('DonateBookInputs.Modal.ProblemReported.Title')}
+          message={t('DonateBookInputs.Modal.ProblemReported.Message')}
           titleCancel="Ok"
           setActive={setSendManagerSuccess}
           activeAskManager={false}
