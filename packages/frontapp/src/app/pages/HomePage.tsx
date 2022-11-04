@@ -46,7 +46,7 @@ const ButtonWrapper = styled.div`
   @media (max-width: ${dimensions.tablet_width}) {
     margin-top: ${dimensions.xs_2};
     position: static;
-    width: 160px;
+    width: 100%;
     height: 40px;
     button {
       span {
@@ -187,9 +187,9 @@ const HomePage: FC = () => {
         </>
       ) : (
         <>
-          {/* <ButtonWrapper onClick={() => setIsStatisticOpen(true)}>
+          <ButtonWrapper onClick={() => setIsStatisticOpen(true)}>
             <Button value={t(`ManagerInfoCard.Description.Library`)} />
-          </ButtonWrapper> */}
+          </ButtonWrapper>
           <CardsWrapper>
             <OverdueDonatesWrapper>
               <ManagerInfoCard

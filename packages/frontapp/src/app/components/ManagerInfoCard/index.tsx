@@ -307,7 +307,7 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
   return (
     <>
       {fieldsOverdue && (
-        <WrapperCard>
+        <WrapperCard data-testid="overdueCard">
           <div>
             <Title>
               {t(`ManagerInfoCard.Title.${type}`) +
@@ -320,7 +320,11 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
           {!fieldsOverdue.length ? (
             <WrapperForEmptyBlock>
               <WrapperCircle />
-              <img src={overdue_placeholder} alt="overdue_placeholder" />
+              <img
+                src={overdue_placeholder}
+                alt="overdue_placeholder"
+                data-testid="overdue-placeholder"
+              />
               <TitleEmpty top="45px">
                 {t('PlaceholderTitle.Overdue')}
               </TitleEmpty>
@@ -367,7 +371,7 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
         </WrapperCard>
       )}
       {fieldsDonate && (
-        <WrapperCard>
+        <WrapperCard data-testid="donateCard">
           <div>
             <Title>
               {t(`ManagerInfoCard.Title.${type}`) +
@@ -439,7 +443,7 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
         </WrapperCard>
       )}
       {fieldsNotification && (
-        <WrapperCard>
+        <WrapperCard data-testid="notificationCard">
           <div>
             <Title>
               {t(`ManagerInfoCard.Title.Notifications`) +
@@ -455,14 +459,18 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
           {!fieldsNotification.length ? (
             <WrapperForEmptyBlock>
               <WrapperCircle />
-              <img src={notification_placeholder} alt="donate_placeholder" />
+              <img
+                src={notification_placeholder}
+                alt="notification_placeholder"
+                data-testid="notification-placeholder"
+              />
               <TitleEmpty top="20px">
                 {t('PlaceholderTitle.Notifications')}
               </TitleEmpty>
             </WrapperForEmptyBlock>
           ) : (
             fieldsNotification?.slice(0, 3).map((field) => (
-              <FieldWrapper key={field.id}>
+              <FieldWrapper key={field.id} data-testid="newNotif">
                 <>
                   <FieldTitle>{field.title}</FieldTitle>
                   <InlineWrapper>
