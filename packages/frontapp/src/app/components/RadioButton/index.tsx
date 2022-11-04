@@ -9,8 +9,8 @@ enum LabelPosition {
 
 const RadioInput = styled.input`
   margin: 0;
-  width: ${dimensions.xl_2};
-  height: ${dimensions.xl_2};
+  width: ${dimensions.base_2};
+  height: ${dimensions.base_2};
   accent-color: ${colors.accent_color};
   cursor: pointer;
 
@@ -22,9 +22,6 @@ const RadioInput = styled.input`
   &:disabled + label {
     cursor: auto;
     pointer-events: none;
-  }
-
-  &:checked + label {
   }
 `;
 

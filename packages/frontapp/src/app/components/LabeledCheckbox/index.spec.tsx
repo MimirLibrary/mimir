@@ -3,10 +3,6 @@ import { render } from 'packages/frontapp/src/helpers/customRender';
 import LabeledCheckbox from './index';
 
 describe('Labeled Checkbox', () => {
-  beforeEach(() => {
-    render(<LabeledCheckbox id="1" value="example" />);
-  });
-
   it('should render correct label with args', () => {
     render(<LabeledCheckbox id="1" value="example" />);
     expect(screen.getByLabelText('example')).toBeInTheDocument();

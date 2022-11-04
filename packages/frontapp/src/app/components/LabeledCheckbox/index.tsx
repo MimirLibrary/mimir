@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
-import { ChangeEvent, FC } from 'react';
+import { FC } from 'react';
 
 const Label = styled.label`
   display: inline-block;
@@ -9,7 +9,6 @@ const Label = styled.label`
   color: ${colors.description_gray};
   border-radius: 100px;
   white-space: nowrap;
-  margin-bottom: ${dimensions.xs_2};
   padding: ${dimensions.xs_1} ${dimensions.base};
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -17,7 +16,6 @@ const Label = styled.label`
   -ms-user-select: none;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
-  transition: all 0.2s;
   cursor: pointer;
 `;
 
@@ -29,7 +27,6 @@ const Checkbox = styled.input`
     border: 1px solid ${colors.accent_color};
     background-color: ${colors.bg_secondary};
     color: ${colors.accent_color};
-    transition: all 0.2s;
   }
 
   &:disabled {

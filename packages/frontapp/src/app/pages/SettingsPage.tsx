@@ -5,9 +5,8 @@ import {
   useRemovePersonLocationMutation,
 } from '@mimir/apollo-client';
 import { colors, dimensions } from '@mimir/ui-kit';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import Dropdown, { IDropdownOption } from '../components/Dropdown';
 import { TextArticle } from '../globalUI/TextArticle';
 import { TextBase } from '../globalUI/TextBase';
 import { useAppDispatch } from '../hooks/useTypedDispatch';
@@ -17,16 +16,12 @@ import {
   removeLocation,
   TUserLocation,
 } from '../store/slices/userSlice';
-import DropDownLocation from '../components/DropdownLocation';
 import { toast } from 'react-toastify';
 import LocationsContainer from '../components/LocationsContainer';
 import { RadioGroup } from '../components/RadioButton';
+import Loader from '../components/Loader';
 
-export type TLanguage = {
-  locale: string;
-} & IDropdownOption;
-
-const WrapperSettings = styled.div`
+const PageWrapper = styled.div`
   @media (max-width: ${dimensions.tablet_width}) {
     display: flex;
     flex-direction: column;
@@ -41,7 +36,7 @@ const Wrapper = styled.div`
 
 const SettingsContainer = styled.div`
   box-sizing: border-box;
-  padding: ${dimensions.base_2};
+  padding: ${dimensions.base};
   background-color: ${colors.bg_secondary};
   box-shadow: 0px 10px 70px rgba(26, 30, 214, 0.08);
   border-radius: ${dimensions.xs_1};
@@ -51,28 +46,24 @@ const SettingsArticle = styled.h4`
   color: ${colors.main_black};
   line-height: ${dimensions.xl};
   font-weight: 600;
+  margin-bottom: ${dimensions.xs_2};
   span {
     font-weight: 400;
     font-size: ${dimensions.base};
     line-height: ${dimensions.xl};
     color: ${colors.main_black};
-    margin-top: ${dimensions.base};
   }
 `;
 
-const RestyledDropdown = styled(Dropdown)`
-  margin: ${dimensions.base} 0 ${dimensions.xl_2};
-  max-width: 310px;
+const SettingsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${dimensions.base};
 `;
 
-const StyledDropDownLocation = styled(DropDownLocation)`
-  margin: ${dimensions.base} 0 ${dimensions.xl_2};
-  max-width: 310px;
-`;
-
-const languages: TLanguage[] = [
-  { locale: 'ru', value: 'RUS' },
+const languages = [
   { locale: 'en', value: 'ENG' },
+  { locale: 'ru', value: 'RUS' },
 ];
 
 const SettingsPage = () => {
@@ -85,24 +76,12 @@ const SettingsPage = () => {
     loading: GetAllLocationsLoading,
     error: GetAllLocationsError,
   } = useGetAllLocationsQuery();
-  const [addPersonLocation, { loading: addLoading }] =
-    useAddPersonLocationMutation();
-  const [removePersonLocation, { loading: removeLoading }] =
-    useRemovePersonLocationMutation();
+  const [addPersonLocation] = useAddPersonLocationMutation();
+  const [removePersonLocation] = useRemovePersonLocationMutation();
   const { id } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
-  const currentLocaleIndex = useMemo(
-    () => languages.findIndex(({ locale }) => locale === language),
-    [language]
-  );
-
-  const handleLanguageChange = ({ locale }: TLanguage) => {
-    changeLanguage(locale);
-    localStorage.setItem('locale', locale);
-  };
-
-  const handleLanguageChange1 = (value: string) => {
+  const handleLanguageChange = (value: string) => {
     changeLanguage(value);
     localStorage.setItem('locale', value);
   };
@@ -137,53 +116,42 @@ const SettingsPage = () => {
   }, [GetAllLocationsError]);
 
   return (
-    <WrapperSettings>
+    <PageWrapper>
       <Wrapper>
         <TextArticle>{t('Settings.Title')}</TextArticle>
         <TextBase>{t('Settings.Desc')}</TextBase>
       </Wrapper>
-      <SettingsContainer>
-        <SettingsArticle>
-          {t('Settings.Locations')} <span>({t('Settings.Several')})</span>
-        </SettingsArticle>
-        {/* TODO: remove it when the design of the settings page is ready */}
-        {!GetAllLocationsLoading && !!GetAllLocationsData && (
-          <StyledDropDownLocation
-            options={GetAllLocationsData.getAllLocations.map((loc) => ({
-              id: loc!.id,
-              value: loc!.location,
+      <SettingsWrapper>
+        <SettingsContainer>
+          <SettingsArticle>{t('Settings.Language')}</SettingsArticle>
+          <RadioGroup
+            name="language"
+            defaultValue={language}
+            options={languages.map((lang) => ({
+              name: lang.value,
+              value: lang.locale,
             }))}
-            handleChangeLocations={handleChangeLocation}
-            loading={{ addLoading, removeLoading }}
+            onChange={handleLanguageChange}
           />
-        )}
-
-        <SettingsArticle>{t('Settings.Language')}</SettingsArticle>
-        <RestyledDropdown
-          options={[...languages]}
-          initIndex={currentLocaleIndex}
-          onChange={(option) => handleLanguageChange(option as TLanguage)}
-        />
-        {!GetAllLocationsLoading && !!GetAllLocationsData && (
-          <LocationsContainer
-            locations={GetAllLocationsData.getAllLocations.map((loc) => ({
-              id: loc!.id,
-              value: loc!.location,
-            }))}
-            onChange={handleChangeLocation}
-          ></LocationsContainer>
-        )}
-        <RadioGroup
-          name="language"
-          defaultValue={language}
-          options={languages.map((lang) => ({
-            name: lang.value,
-            value: lang.locale,
-          }))}
-          onChange={handleLanguageChange1}
-        />
-      </SettingsContainer>
-    </WrapperSettings>
+        </SettingsContainer>
+        <SettingsContainer>
+          <SettingsArticle>
+            {t('Settings.Locations')} <span>({t('Settings.Several')})</span>
+          </SettingsArticle>
+          {!GetAllLocationsLoading && !!GetAllLocationsData ? (
+            <LocationsContainer
+              locations={GetAllLocationsData.getAllLocations.map((loc) => ({
+                id: loc!.id,
+                value: loc!.location,
+              }))}
+              onChange={handleChangeLocation}
+            ></LocationsContainer>
+          ) : (
+            <Loader width={50} height={50} color={`${colors.accent_color}`} />
+          )}
+        </SettingsContainer>
+      </SettingsWrapper>
+    </PageWrapper>
   );
 };
 
