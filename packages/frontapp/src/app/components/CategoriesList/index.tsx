@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { useNavigate } from 'react-router-dom';
+import { t } from 'i18next';
 
 interface IStyledContainerProps {
   flex: string | null;
@@ -63,7 +64,7 @@ const CategoriesList: FC<ICategoriesListProps> = ({ allCategories }) => {
   return (
     <CategoriesWrapper>
       <Categories flex="2">
-        <Header>Books</Header>
+        <Header>{t('Books')}</Header>
         <List>
           {allCategories &&
             Object.keys(allCategories).map((category) => (
@@ -78,7 +79,7 @@ const CategoriesList: FC<ICategoriesListProps> = ({ allCategories }) => {
         </List>
       </Categories>
       <Categories flex="1">
-        <Header>Other</Header>
+        <Header>{t('Other')}</Header>
       </Categories>
     </CategoriesWrapper>
   );
