@@ -78,7 +78,7 @@ const CategoriesList: FC<ICategoriesListProps> = ({ allCategories }) => {
         </List>
       </Categories>
       <Categories flex="1">
-        <Header>Else</Header>
+        <Header>Other</Header>
       </Categories>
     </CategoriesWrapper>
   );
