@@ -3,6 +3,7 @@ import { FC } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { ReactComponent as Close } from '../../../assets/Close.svg';
 import { useTranslation } from 'react-i18next';
+import { dimensions } from '@mimir/ui-kit';
 
 const Header = styled.h2`
   font-size: 24px;
@@ -28,6 +29,15 @@ const TagsWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
+
+  @media (max-width: ${dimensions.phone_width}) {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 4px;
+    ::-webkit-scrollbar {
+      height: 0;
+    }
+  }
 `;
 const Wrapper = styled.div`
   display: flex;
