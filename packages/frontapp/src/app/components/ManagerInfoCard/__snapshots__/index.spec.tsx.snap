@@ -47,6 +47,12 @@ exports[`render ManagerInfo Card snapshot testing of manager DONATES card 1`] = 
   color: #333333;
 }
 
+@media (max-width: 48rem) {
+  .emotion-1 {
+    font-size: 1.25rem;
+  }
+}
+
 .emotion-2 {
   font-weight: 300;
   font-size: 1rem;
@@ -245,6 +251,12 @@ exports[`render ManagerInfo Card snapshot testing of manager NOTIFICATIONS card 
   font-size: 1.5rem;
   line-height: 1.875rem;
   color: #333333;
+}
+
+@media (max-width: 48rem) {
+  .emotion-1 {
+    font-size: 1.25rem;
+  }
 }
 
 .emotion-2 {
@@ -466,6 +478,12 @@ exports[`render ManagerInfo Card snapshot testing of manager Overdue card 1`] = 
   font-size: 1.5rem;
   line-height: 1.875rem;
   color: #333333;
+}
+
+@media (max-width: 48rem) {
+  .emotion-1 {
+    font-size: 1.25rem;
+  }
 }
 
 .emotion-2 {
