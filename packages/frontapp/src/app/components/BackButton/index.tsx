@@ -15,6 +15,7 @@ export const ButtonWrapper = styled.div`
 export const GoBack = styled.a`
   font-weight: 600;
   font-size: ${dimensions.base};
+  margin-left: 18px;
 `;
 
 const BackButton = () => {
