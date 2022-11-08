@@ -56,6 +56,9 @@ export const Title = styled.p`
   font-size: ${dimensions.xl_2};
   line-height: ${dimensions.xl_3};
   color: ${colors.main_black};
+  @media (max-width: ${dimensions.tablet_width}) {
+    font-size: ${dimensions.xl};
+  }
 `;
 
 export const FieldTitle = styled.p`
@@ -100,20 +103,6 @@ export const OpenLink = styled(Link)`
   width: 120px;
   text-align: right;
   text-decoration: underline;
-`;
-
-const InlineOpenLink = styled(OpenLink)`
-  flex: none;
-  position: absolute;
-  right: 71px;
-  order: 1;
-  flex-grow: 0;
-  text-align: center;
-  @media (max-width: ${dimensions.tablet_width}) {
-    position: static;
-    display: block;
-    text-align: center;
-  }
 `;
 
 export const FieldWrapper = styled.div`
