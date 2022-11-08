@@ -64,7 +64,7 @@ const CategoriesList: FC<ICategoriesListProps> = ({ allCategories }) => {
   return (
     <CategoriesWrapper>
       <Categories flex="2">
-        <Header>{t('Books')}</Header>
+        <Header>{t('Search.Books')}</Header>
         <List>
           {allCategories &&
             Object.keys(allCategories).map((category) => (
@@ -79,7 +79,7 @@ const CategoriesList: FC<ICategoriesListProps> = ({ allCategories }) => {
         </List>
       </Categories>
       <Categories flex="1">
-        <Header>{t('Other')}</Header>
+        <Header>{t('Search.Other')}</Header>
       </Categories>
     </CategoriesWrapper>
   );
