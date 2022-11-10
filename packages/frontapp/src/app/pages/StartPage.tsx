@@ -28,7 +28,10 @@ const StartPageBackground = styled.div`
   justify-content: center;
   align-items: flex-end;
   background-color: #f9faff;
-  background-image: url('../../assets/startpage-pattern.png');
+  background-image: url('../../assets/bookshelf-pattern.png');
+  @media (max-width: ${dimensions.phone_width}) {
+    overflow: hidden;
+  }
 `;
 
 const StartPageContainer = styled.div`
@@ -41,6 +44,11 @@ const StartPageContainer = styled.div`
   border-radius: 1000px 1000px 0 0;
   box-shadow: 0px 10px 70px rgba(26, 30, 214, 0.08);
   padding: 0 175px;
+  @media (max-width: ${dimensions.phone_width}) {
+    font-size: ${dimensions.sm};
+    padding: 0 32px;
+    margin: -70px 0;
+  }
 `;
 
 const Logo = styled(LogoSvg)`
