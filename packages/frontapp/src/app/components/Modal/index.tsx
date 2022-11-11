@@ -16,7 +16,7 @@ export const WrapperModal = styled.div<IStyleProps>`
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1;
+  z-index: 100;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,7 +36,7 @@ const StyledCross = styled(Cross)`
   cursor: pointer;
   position: absolute;
   right: 4%;
-  top: 5%;
+  top: 2.6rem;
 `;
 export const ContentModal = styled.div<IStyleProps>`
   padding: ${dimensions.base_3};

@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { useAppSelector } from '../hooks/useTypedSelector';
 import ManagerInfoCard from '../components/ManagerInfoCard';
 import InstructionsClaim from '../components/InstructionsClaim';
@@ -21,8 +21,8 @@ import { RolesTypes, StatusTypes } from '@mimir/global-types';
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
 import { isOverdue } from '../models/helperFunctions/converTime';
-import NotificationList from '../components/NotificationList';
 import { locationIds } from '../store/slices/userSlice';
+import StatisticsModal from '../components/StatisticsModal';
 
 const WrapperHome = styled.div`
   @media (max-width: ${dimensions.tablet_width}) {
@@ -41,12 +41,12 @@ const ButtonWrapper = styled.div`
   width: 234px;
   height: 52px;
   right: 46px;
-  top: 40px;
+  top: 35px;
 
   @media (max-width: ${dimensions.tablet_width}) {
     margin-top: ${dimensions.xs_2};
     position: static;
-    width: 160px;
+    width: 100%;
     height: 40px;
     button {
       span {
@@ -68,7 +68,7 @@ const Wrapper = styled.div`
 `;
 
 const CardsWrapper = styled.div`
-  padding: 58px 0 ${dimensions.xl_3};
+  padding: 28px 0 ${dimensions.xl_3};
   display: flex;
   flex-direction: column;
   row-gap: 30px;
@@ -76,6 +76,9 @@ const CardsWrapper = styled.div`
 
 const NotificationsWrapper = styled.div`
   height: 587px;
+  @media (max-width: ${dimensions.tablet_width}) {
+    height: 100%;
+  }
 `;
 
 const OverdueDonatesWrapper = styled.div`
@@ -128,6 +131,8 @@ const HomePage: FC = () => {
     skip: userRole === RolesTypes.READER,
     fetchPolicy: 'no-cache',
   });
+
+  const [isStatisticsOpen, setIsStatisticOpen] = useState(false);
 
   const donateList = useMemo(() => {
     return allMaterialsData?.getAllMaterials.filter(
@@ -182,7 +187,7 @@ const HomePage: FC = () => {
         </>
       ) : (
         <>
-          <ButtonWrapper>
+          <ButtonWrapper onClick={() => setIsStatisticOpen(true)}>
             <Button value={t(`ManagerInfoCard.Description.Library`)} />
           </ButtonWrapper>
           <CardsWrapper>
@@ -197,11 +202,16 @@ const HomePage: FC = () => {
               />
             </OverdueDonatesWrapper>
             <NotificationsWrapper>
-              <NotificationList
+              <ManagerInfoCard
+                type={ManagerCardTypes.NOTIFICATIONS}
                 fieldsNotification={allMessagesData?.getAllMessages}
               />
             </NotificationsWrapper>
           </CardsWrapper>
+          <StatisticsModal
+            isActive={isStatisticsOpen}
+            setIsActive={setIsStatisticOpen}
+          />
         </>
       )}
     </WrapperHome>

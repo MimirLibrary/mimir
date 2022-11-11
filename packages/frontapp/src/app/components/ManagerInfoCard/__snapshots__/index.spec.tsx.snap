@@ -1,0 +1,640 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render ManagerInfo Card snapshot testing of manager DONATES card 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  background: #FFFFFF;
+  height: inherit;
+  width: 100%;
+  box-shadow: 0px 10px 70px rgba(26, 30, 214, 0.08);
+  border-radius: 0.625rem;
+  position: relative;
+  padding: 1.5rem 1.5rem 1.875rem 1.5rem;
+}
+
+@media (max-width: 48rem) {
+  .emotion-0 {
+    box-shadow: none;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    min-height: 300px;
+    border-radius: 0;
+  }
+
+  .emotion-0:first-of-type {
+    margin-bottom: 1.875rem;
+  }
+}
+
+.emotion-1 {
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.875rem;
+  color: #333333;
+}
+
+@media (max-width: 48rem) {
+  .emotion-1 {
+    font-size: 1.25rem;
+  }
+}
+
+.emotion-2 {
+  font-weight: 300;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  color: #333333;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+}
+
+.emotion-3 img {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 48rem) {
+  .emotion-3 img {
+    height: 100px;
+  }
+}
+
+.emotion-4 {
+  border-radius: 50%;
+  height: 270px;
+  max-width: 270px;
+  width: 100%;
+  background-color: #f2f6ff;
+  position: absolute;
+}
+
+@media (max-width: 48rem) {
+  .emotion-4 {
+    height: 170px;
+    max-width: 170px;
+  }
+}
+
+.emotion-5 {
+  font-weight: 700;
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+  color: #333333;
+  position: relative;
+  top: 20px;
+  z-index: 1;
+  text-align: center;
+}
+
+@media (max-width: 48rem) {
+  .emotion-5 {
+    display: none;
+  }
+}
+
+.emotion-6 {
+  -webkit-order: 4;
+  -ms-flex-order: 4;
+  order: 4;
+  -webkit-box-flex: 0;
+  -webkit-flex-grow: 0;
+  -ms-flex-positive: 0;
+  flex-grow: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  bottom: 0.625rem;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+@media (max-width: 48rem) {
+  .emotion-6 {
+    display: none;
+  }
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+@media (max-width: 48rem) {
+  .emotion-7 {
+    display: block;
+  }
+}
+
+<div
+  class="emotion-0"
+  data-testid="donateCard"
+>
+  <div>
+    <p
+      class="emotion-1"
+    >
+      undefined — (0)
+    </p>
+    <p
+      class="emotion-2"
+    />
+  </div>
+  <div
+    class="emotion-3"
+  >
+    <div
+      class="emotion-4"
+    />
+    <img
+      alt="donate_placeholder"
+      data-testid="donate-placeholder"
+      src="donate_placeholder.png"
+    />
+    <h3
+      class="emotion-5"
+    />
+  </div>
+  <div
+    class="emotion-6"
+  >
+    <div
+      class="emotion-7"
+    />
+  </div>
+</div>
+`;
+
+exports[`render ManagerInfo Card snapshot testing of manager NOTIFICATIONS card 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  background: #FFFFFF;
+  height: inherit;
+  width: 100%;
+  box-shadow: 0px 10px 70px rgba(26, 30, 214, 0.08);
+  border-radius: 0.625rem;
+  position: relative;
+  padding: 1.5rem 1.5rem 1.875rem 1.5rem;
+}
+
+@media (max-width: 48rem) {
+  .emotion-0 {
+    box-shadow: none;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    min-height: 300px;
+    border-radius: 0;
+  }
+
+  .emotion-0:first-of-type {
+    margin-bottom: 1.875rem;
+  }
+}
+
+.emotion-1 {
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.875rem;
+  color: #333333;
+}
+
+@media (max-width: 48rem) {
+  .emotion-1 {
+    font-size: 1.25rem;
+  }
+}
+
+.emotion-2 {
+  display: none;
+  cursor: pointer;
+}
+
+@media (max-width: 48rem) {
+  .emotion-2 {
+    display: block;
+    position: absolute;
+    right: 20px;
+    top: 70px;
+  }
+}
+
+.emotion-3 {
+  font-weight: 300;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  color: #333333;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+}
+
+.emotion-4 img {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 48rem) {
+  .emotion-4 img {
+    height: 100px;
+  }
+}
+
+.emotion-5 {
+  border-radius: 50%;
+  height: 270px;
+  max-width: 270px;
+  width: 100%;
+  background-color: #f2f6ff;
+  position: absolute;
+}
+
+@media (max-width: 48rem) {
+  .emotion-5 {
+    height: 170px;
+    max-width: 170px;
+  }
+}
+
+.emotion-6 {
+  font-weight: 700;
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+  color: #333333;
+  position: relative;
+  top: 20px;
+  z-index: 1;
+  text-align: center;
+}
+
+@media (max-width: 48rem) {
+  .emotion-6 {
+    display: none;
+  }
+}
+
+.emotion-7 {
+  -webkit-order: 4;
+  -ms-flex-order: 4;
+  order: 4;
+  -webkit-box-flex: 0;
+  -webkit-flex-grow: 0;
+  -ms-flex-positive: 0;
+  flex-grow: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  bottom: 0.625rem;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+@media (max-width: 48rem) {
+  .emotion-7 {
+    display: none;
+  }
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+@media (max-width: 48rem) {
+  .emotion-8 {
+    display: block;
+  }
+}
+
+<div
+  class="emotion-0"
+  data-testid="notificationCard"
+>
+  <div>
+    <p
+      class="emotion-1"
+    >
+      undefined — (0)
+    </p>
+    <div
+      class="emotion-2"
+    >
+      <svg>
+        AddBookBluePlus.svg
+      </svg>
+    </div>
+    <p
+      class="emotion-3"
+    />
+  </div>
+  <div
+    class="emotion-4"
+  >
+    <div
+      class="emotion-5"
+    />
+    <img
+      alt="notification_placeholder"
+      data-testid="notification-placeholder"
+      src="notification_placeholder.png"
+    />
+    <h3
+      class="emotion-6"
+    />
+  </div>
+  <div
+    class="emotion-7"
+  >
+    <div
+      class="emotion-8"
+    />
+  </div>
+</div>
+`;
+
+exports[`render ManagerInfo Card snapshot testing of manager Overdue card 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  background: #FFFFFF;
+  height: inherit;
+  width: 100%;
+  box-shadow: 0px 10px 70px rgba(26, 30, 214, 0.08);
+  border-radius: 0.625rem;
+  position: relative;
+  padding: 1.5rem 1.5rem 1.875rem 1.5rem;
+}
+
+@media (max-width: 48rem) {
+  .emotion-0 {
+    box-shadow: none;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    min-height: 300px;
+    border-radius: 0;
+  }
+
+  .emotion-0:first-of-type {
+    margin-bottom: 1.875rem;
+  }
+}
+
+.emotion-1 {
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.875rem;
+  color: #333333;
+}
+
+@media (max-width: 48rem) {
+  .emotion-1 {
+    font-size: 1.25rem;
+  }
+}
+
+.emotion-2 {
+  font-weight: 300;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  color: #333333;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+}
+
+.emotion-3 img {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 48rem) {
+  .emotion-3 img {
+    height: 100px;
+  }
+}
+
+.emotion-4 {
+  border-radius: 50%;
+  height: 270px;
+  max-width: 270px;
+  width: 100%;
+  background-color: #f2f6ff;
+  position: absolute;
+}
+
+@media (max-width: 48rem) {
+  .emotion-4 {
+    height: 170px;
+    max-width: 170px;
+  }
+}
+
+.emotion-5 {
+  font-weight: 700;
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+  color: #333333;
+  position: relative;
+  top: 45px;
+  z-index: 1;
+  text-align: center;
+}
+
+@media (max-width: 48rem) {
+  .emotion-5 {
+    display: none;
+  }
+}
+
+.emotion-6 {
+  -webkit-order: 4;
+  -ms-flex-order: 4;
+  order: 4;
+  -webkit-box-flex: 0;
+  -webkit-flex-grow: 0;
+  -ms-flex-positive: 0;
+  flex-grow: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  bottom: 0.625rem;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+@media (max-width: 48rem) {
+  .emotion-6 {
+    display: none;
+  }
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+@media (max-width: 48rem) {
+  .emotion-7 {
+    display: block;
+  }
+}
+
+<div
+  class="emotion-0"
+  data-testid="overdueCard"
+>
+  <div>
+    <p
+      class="emotion-1"
+    >
+      undefined — (0)
+    </p>
+    <p
+      class="emotion-2"
+    />
+  </div>
+  <div
+    class="emotion-3"
+  >
+    <div
+      class="emotion-4"
+    />
+    <img
+      alt="overdue_placeholder"
+      data-testid="overdue-placeholder"
+      src="overdue_placeholder.png"
+    />
+    <h3
+      class="emotion-5"
+    />
+  </div>
+  <div
+    class="emotion-6"
+  >
+    <div
+      class="emotion-7"
+    />
+  </div>
+</div>
+`;

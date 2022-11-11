@@ -3,6 +3,7 @@ import { DbService } from './db.service';
 import { OzbyService } from './ozby.service';
 import { LabirintService } from './labirint.service';
 import { ChitaiGorodService } from './chitai-gorod.service';
+import { AbeBooksService } from './abebooks.service';
 import { Identifier, Material, Author, Publisher } from '@prisma/client';
 
 type ReturnLookUpType = Identifier & {
@@ -19,7 +20,8 @@ export class ReaderService {
     private db: DbService,
     private ozbyReader: OzbyService,
     private labirintService: LabirintService,
-    private chitaiGorodService: ChitaiGorodService
+    private chitaiGorodService: ChitaiGorodService,
+    private abeBooksService: AbeBooksService
   ) {}
 
   async lookup(isbn: string): Promise<ReturnLookUpType> {
@@ -48,6 +50,7 @@ export class ReaderService {
         this.chitaiGorodService.getData(isbn),
         this.ozbyReader.getData(isbn),
         this.labirintService.getData(isbn),
+        this.abeBooksService.getData(isbn),
       ]);
       return result;
     } catch (e) {

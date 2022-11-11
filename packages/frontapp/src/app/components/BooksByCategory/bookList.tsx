@@ -42,7 +42,7 @@ const BookList: FC<IBookList> = ({ allData, searchParams }) => {
     ]);
 
     if (searchParams.toString() === '') {
-      setFilteredData([]);
+      setFilteredData(allData);
       return;
     }
     let allBooks = allData;

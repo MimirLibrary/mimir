@@ -55,4 +55,58 @@ describe('render ManagerInfo Card', () => {
     expect(screen.queryByTestId('items-list')).toBeNull();
     expect(screen.queryByTestId('donate-placeholder')).toBeNull();
   });
+  it('snapshot testing of manager NOTIFICATIONS card', () => {
+    render(
+      <ManagerInfoCard
+        type={ManagerCardTypes.NOTIFICATIONS}
+        fieldsNotification={[]}
+      />
+    );
+    expect(screen.getByTestId('notificationCard')).toMatchSnapshot();
+  });
+  it('snapshot testing of manager Overdue card', () => {
+    render(
+      <ManagerInfoCard type={ManagerCardTypes.OVERDUE} fieldsOverdue={[]} />
+    );
+    expect(screen.getByTestId('overdueCard')).toMatchSnapshot();
+  });
+  it('snapshot testing of manager DONATES card', () => {
+    render(
+      <ManagerInfoCard type={ManagerCardTypes.DONATES} fieldsDonate={[]} />
+    );
+    expect(screen.getByTestId('donateCard')).toMatchSnapshot();
+  });
+  it('show image when there is no data NOTIFICATION', () => {
+    render(
+      <ManagerInfoCard
+        type={ManagerCardTypes.NOTIFICATIONS}
+        fieldsNotification={[]}
+      />
+    );
+    expect(screen.getByTestId('notification-placeholder')).toBeInTheDocument();
+  });
+  it('show all notifs when there is data', () => {
+    const data = [
+      {
+        id: '1',
+        title: 'test',
+        message: 'test',
+        description: 'test',
+        person_id: 1,
+        person: {
+          id: '1',
+          username: 'test',
+          avatar: 'test',
+        },
+        created_at: '2022-10-20T12:00:00.000Z',
+      },
+    ];
+    render(
+      <ManagerInfoCard
+        type={ManagerCardTypes.NOTIFICATIONS}
+        fieldsNotification={data}
+      />
+    );
+    expect(screen.getByTestId('newNotif')).toBeInTheDocument();
+  });
 });

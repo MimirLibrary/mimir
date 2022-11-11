@@ -36,6 +36,8 @@ export const resources = {
         Placeholder: 'Search by book or author',
         Scan: 'Scan a code',
         UsernamePlaceholder: 'Search by user name',
+        Books: 'Books',
+        Other: 'Other',
       },
       Start: {
         ChooseLocation: 'Your current location',
@@ -48,6 +50,9 @@ export const resources = {
         Several: 'you can choose several',
         Language: 'Language',
         Notification: 'Notification',
+      },
+      Statistics: {
+        Title: 'Library statistics',
       },
       Readers: {
         Title: 'All users',
@@ -179,6 +184,7 @@ export const resources = {
         Prolong: 'Return till: ',
         Pending: 'Waiting for a manger',
         Rejected: 'Rejected',
+        Claimed: 'In use',
       },
       BookClaimHistory: {
         Title: 'Claim history',
@@ -280,6 +286,8 @@ export const resources = {
         Placeholder: 'Поиск по книге или автору',
         Scan: 'Сканировать',
         UsernamePlaceholder: 'Поиск по имени пользователя',
+        Books: 'Книги',
+        Other: 'Другое',
       },
       Start: {
         ChooseLocation: 'Ваше текущее местоположение',
@@ -292,6 +300,9 @@ export const resources = {
         Several: 'вы можете выбрать несколько',
         Language: 'Язык',
         Notification: 'Уведомления',
+      },
+      Statistics: {
+        Title: 'Статистика библиотеки',
       },
       Readers: {
         Title: 'Все пользователи',
@@ -422,6 +433,7 @@ export const resources = {
         Prolong: 'Вернуть до: ',
         Pending: 'В ожидании менеджера',
         Rejected: 'Отклонено',
+        Claimed: 'Используется',
       },
       BookClaimHistory: {
         Title: 'История действий',
