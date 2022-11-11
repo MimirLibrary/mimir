@@ -202,6 +202,10 @@ export const resources = {
           'It seems the action failed. Please try again later  We will try to fix this error',
         TitleButton: 'Go back home',
       },
+      DonateItem: {
+        Title: 'Are you planning to donate something to the library?',
+        Description: 'Fill in the required* fields or try to scan the code',
+      },
     },
   },
   ru: {
@@ -405,6 +409,11 @@ export const resources = {
         Description:
           'Похоже, что действие не удалось. Пожалуйста, повторите попытку позже. Мы постараемся исправить эту ошибку',
         TitleButton: 'Возвращайтесь на главную',
+      },
+      DonateItem: {
+        Title: 'Планируете ли вы что-то пожертвовать библиотеке?',
+        Description:
+          'Заполните обязательные* поля или попробуйте отсканировать код',
       },
     },
   },

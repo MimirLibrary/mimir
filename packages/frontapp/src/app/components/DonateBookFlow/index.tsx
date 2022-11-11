@@ -11,6 +11,7 @@ import ErrorMessage from '../ErrorMessge';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { GetMaterialFromMetadataQuery } from '@mimir/apollo-client';
+import { t } from 'i18next';
 
 export const WrapperInfo = styled.div`
   display: flex;
@@ -123,12 +124,8 @@ const DonateBookFlow = () => {
     <>
       <section>
         <WrapperInfo>
-          <TitleInfo>
-            Are you planning to donate something to the library?
-          </TitleInfo>
-          <SubTitle>
-            Fill in the required* fields or try to scan the code
-          </SubTitle>
+          <TitleInfo>{t('DonateItem.Title')}</TitleInfo>
+          <SubTitle>{t('DonateItem.Description')}</SubTitle>
           {showEmptyContentDonate && (
             <BackSpan onClick={handleCloseContentOfDonate}>
               <ArrowIcon /> <span>Back</span>

@@ -20,6 +20,10 @@ const Wrapper = styled.section`
   border-radius: ${dimensions.xs_1};
   margin-top: ${dimensions.xl_2};
   padding: ${dimensions.base_2} ${dimensions.xl_6};
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    padding: ${dimensions.xl_2};
+  }
 `;
 
 const Title = styled.h3`
@@ -41,6 +45,8 @@ const SubTitle = styled.p`
 const WrapperInputStyled = styled(WrapperInput)`
   margin: 0;
   @media (max-width: ${dimensions.tablet_width}) {
+    min-width: 97%;
+    justify-content: flex-start;
   }
 `;
 const ISBNWrapper = styled.div`
@@ -53,6 +59,7 @@ const ISBNWrapper = styled.div`
     flex-direction: column;
     align-items: start;
     justify-content: start;
+    gap: ${dimensions.xl_2};
   }
 `;
 
@@ -74,10 +81,7 @@ const InputStyledMask = styled(InputMask)`
   font-family: ${fonts.primary}, sans-serif;
   margin-right: 0.12rem;
   @media (max-width: ${dimensions.tablet_width}) {
-    margin-left: -${dimensions.xl};
-  }
-  @media (max-width: ${dimensions.phone_width}) {
-    width: 70%;
+    width: 100%;
   }
   ::-webkit-inner-spin-button {
     -webkit-appearance: none;
