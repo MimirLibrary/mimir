@@ -6,6 +6,7 @@ import { OzbyService } from './ozby.service';
 import { LabirintService } from './labirint.service';
 import { ReaderService } from './reader.service';
 import { ChitaiGorodService } from './chitai-gorod.service';
+import { AbeBooksService } from './abebooks.service';
 
 @Module({
   providers: [
@@ -15,6 +16,7 @@ import { ChitaiGorodService } from './chitai-gorod.service';
     PrismaService,
     LabirintService,
     ChitaiGorodService,
+    AbeBooksService,
   ],
   controllers: [SearchController],
 })
