@@ -38,6 +38,7 @@ export const resources = {
         UsernamePlaceholder: 'Search by user name',
         Books: 'Books',
         Other: 'Other',
+        NotFound: 'Nothing was found',
       },
       Start: {
         ChooseLocation: 'Your current location',
@@ -243,6 +244,7 @@ export const resources = {
         UsernamePlaceholder: 'Поиск по имени пользователя',
         Books: 'Книги',
         Other: 'Другое',
+        NotFound: 'Ничего не было найдено',
       },
       Start: {
         ChooseLocation: 'Ваше текущее местоположение',

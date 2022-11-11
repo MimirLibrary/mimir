@@ -3,6 +3,7 @@ import BookCard from '../BookCard';
 import { WrapperList } from '../ListBooks';
 import { Material, Status } from '@mimir/apollo-client';
 import Tags from './tags';
+import ItemsNotFound from '../ItemsNotFound';
 
 type IStatus = Omit<
   Status,
@@ -106,7 +107,7 @@ const BookList: FC<IBookList> = ({ allData, searchParams }) => {
             />
           ))
         ) : (
-          <h3>Nothing was found</h3>
+          <ItemsNotFound />
         )}
       </WrapperList>
     </div>
