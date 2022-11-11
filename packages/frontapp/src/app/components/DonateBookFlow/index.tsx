@@ -11,6 +11,7 @@ import ErrorMessage from '../ErrorMessge';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { GetMaterialFromMetadataQuery } from '@mimir/apollo-client';
+import { t } from 'i18next';
 
 export const WrapperInfo = styled.div`
   display: flex;
@@ -123,12 +124,8 @@ const DonateBookFlow = () => {
     <>
       <section>
         <WrapperInfo>
-          <TitleInfo>
-            Are you planning to donate something to the library?
-          </TitleInfo>
-          <SubTitle>
-            Fill in the required* fields or try to scan the code
-          </SubTitle>
+          <TitleInfo>{t('DonateBookInputs.Title')}</TitleInfo>
+          <SubTitle>{t('DonateBookInputs.Subtitle')}</SubTitle>
           {showEmptyContentDonate && (
             <BackSpan onClick={handleCloseContentOfDonate}>
               <ArrowIcon /> <span>Back</span>
@@ -169,9 +166,8 @@ const DonateBookFlow = () => {
       <Modal active={isShowError} setActive={setIsShowError}>
         <ErrorMessage
           setActive={setIsShowError}
-          message="We did not find a suitable book code :(
-          But you can still donate to the library by filling in the information manually"
-          title="ISBN is not known"
+          message={t('DonateBookInputs.Modal.ISBNError.Message')}
+          title={t('DonateBookInputs.Modal.ISBNError.Title')}
           titleCancel="Ok"
           activeAskManager={false}
           showContentOfDonate={showContentOfDonate}

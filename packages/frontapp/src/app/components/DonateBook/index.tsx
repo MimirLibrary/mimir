@@ -21,22 +21,30 @@ import { TUserLocation } from '../../store/slices/userSlice';
 import { t } from 'i18next';
 
 const WrapperDonate = styled.section`
-  background-color: ${colors.bg_secondary};
-  box-shadow: 0 10px 70px rgba(26, 30, 214, 0.08);
-  border-radius: ${dimensions.xs_1};
-  padding: ${dimensions.base_2};
   margin-top: ${dimensions.xl_2};
+  margin-bottom: ${dimensions.xl_2};
   position: relative;
 
   @media (max-width: ${dimensions.tablet_width}) {
     margin-top: ${dimensions.xl};
-    padding: ${dimensions.xl_2} ${dimensions.base};
   }
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  position: relative;
+`;
+
+const FormWrapper = styled.div`
+  background-color: ${colors.bg_secondary};
+  box-shadow: 0 10px 70px rgba(26, 30, 214, 0.08);
+  border-radius: ${dimensions.xs_1};
+  padding: ${dimensions.base_2};
+
+  @media (max-width: ${dimensions.phone_width}) {
+    padding: ${dimensions.base};
+  }
 `;
 
 const WrapperStyledInput = styled.div`
@@ -211,31 +219,33 @@ const WrapperButtons = styled.div`
   justify-content: flex-end;
   align-items: flex-end;
   flex-direction: column;
-  width: 100%;
+  width: 40%;
+  position: absolute;
+  right: 0;
+  margin: ${dimensions.base_2};
 
   @media (max-width: 85rem) {
     width: 60%;
+    margin: ${dimensions.base} 0 0 0;
   }
 
   @media (max-width: 77rem) {
     width: 100%;
-    position: absolute;
+    position: initial;
     bottom: 0;
     left: 50%;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    transform: translate(-50%, -50%);
     padding: 0 ${dimensions.xs_2};
   }
   @media (max-width: ${dimensions.phone_width}) {
-    position: absolute;
-    bottom: -11rem;
+    position: initial;
     left: 50%;
     flex-direction: column;
     gap: ${dimensions.xs_2};
     align-items: center;
-    transform: translate(-50%, -50%);
+    margin-top: ${dimensions.xl_2};
   }
 `;
 
@@ -255,9 +265,7 @@ const WrapperWithoutButtons = styled.div`
 const StyledButton = styled(Button)`
   max-width: 16.875rem;
   width: 100%;
-  :first-of-type {
-    margin-bottom: ${dimensions.xs_2};
-  }
+  margin-bottom: ${dimensions.xs_2};
   :disabled {
     cursor: auto;
     background-color: ${colors.dropdown_gray};
@@ -269,10 +277,7 @@ const StyledButton = styled(Button)`
 
   @media (max-width: 77rem) {
     max-width: 16.875rem;
-    :first-of-type {
-      margin-bottom: 0;
-      margin-right: 1rem;
-    }
+    margin-bottom: -0.4rem;
   }
 
   @media (max-width: ${dimensions.phone_width}) {
@@ -280,6 +285,7 @@ const StyledButton = styled(Button)`
     :first-of-type {
       margin: 0;
     }
+    margin-bottom: 0;
   }
 `;
 
@@ -460,100 +466,110 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
     <>
       <WrapperDonate>
         <Form onSubmit={handleSubmit}>
-          <WrapperMainInfo>
-            <WrapperWithoutButtons>
-              <div>
-                <FileUpload
-                  file={file}
-                  handleChangeFile={handleChangeFile}
-                  pictureOfCover={pictureOfCover}
-                />
-              </div>
-              <WrapperBlockInput>
-                <WrapperStyledInput>
-                  <Label htmlFor="title">Title*</Label>
-                  <WrapperInput>
-                    <StyledInput
-                      type="text"
-                      id="title"
-                      name="title"
-                      value={dataOfBook.title || ''}
-                      onChange={handleChange}
-                      autoComplete="off"
-                      placeholder="Enter title"
-                    />
-                  </WrapperInput>
-                </WrapperStyledInput>
-                <WrapperStyledInput>
-                  <Label htmlFor="author">Author*</Label>
-                  <WrapperInput>
-                    <StyledInput
-                      type="text"
-                      id="author"
-                      name="author"
-                      value={dataOfBook.author || ''}
-                      onChange={handleChange}
-                      autoComplete="off"
-                      required
-                      placeholder="Enter author"
-                    />
-                  </WrapperInput>
-                </WrapperStyledInput>
-                <Label htmlFor="genre">Genre*</Label>
-                <StyledDropdown
-                  options={listOfGenres}
-                  onChange={handleChangeGenre}
-                  placeholder="Enter genre"
-                />
-                <Label htmlFor="location">Location*</Label>
-                <StyledDropdown
-                  options={locations}
-                  onChange={(option) =>
-                    handleChangeLocation(option as TUserLocation)
-                  }
-                  placeholder="Choose your location"
-                />
-              </WrapperBlockInput>
-            </WrapperWithoutButtons>
-            <WrapperButtons>
-              <StyledButton
-                value="Add item to library"
-                disabled={isInvalid}
-                type="submit"
+          <FormWrapper>
+            <WrapperMainInfo>
+              <WrapperWithoutButtons>
+                <div>
+                  <FileUpload
+                    file={file}
+                    handleChangeFile={handleChangeFile}
+                    pictureOfCover={pictureOfCover}
+                  />
+                </div>
+                <WrapperBlockInput>
+                  <WrapperStyledInput>
+                    <Label htmlFor="title">
+                      {t('DonateBookInputs.Name.Title')}*
+                    </Label>
+                    <WrapperInput>
+                      <StyledInput
+                        type="text"
+                        id="title"
+                        name="title"
+                        value={dataOfBook.title || ''}
+                        onChange={handleChange}
+                        autoComplete="off"
+                        placeholder={t('DonateBookInputs.Name.Placeholder')}
+                      />
+                    </WrapperInput>
+                  </WrapperStyledInput>
+                  <WrapperStyledInput>
+                    <Label htmlFor="author">
+                      {t('DonateBookInputs.Author.Title')}*
+                    </Label>
+                    <WrapperInput>
+                      <StyledInput
+                        type="text"
+                        id="author"
+                        name="author"
+                        value={dataOfBook.author || ''}
+                        onChange={handleChange}
+                        autoComplete="off"
+                        required
+                        placeholder={t('DonateBookInputs.Author.Placeholder')}
+                      />
+                    </WrapperInput>
+                  </WrapperStyledInput>
+                  <Label htmlFor="genre">
+                    {t('DonateBookInputs.Genre.Title')}*
+                  </Label>
+                  <StyledDropdown
+                    options={listOfGenres}
+                    onChange={handleChangeGenre}
+                    placeholder={t('DonateBookInputs.Genre.Placeholder')}
+                  />
+                  <Label htmlFor="location">
+                    {t('DonateBookInputs.Location.Title')}*
+                  </Label>
+                  <StyledDropdown
+                    options={locations}
+                    onChange={(option) =>
+                      handleChangeLocation(option as TUserLocation)
+                    }
+                    placeholder={t('DonateBookInputs.Location.Placeholder')}
+                  />
+                </WrapperBlockInput>
+              </WrapperWithoutButtons>
+            </WrapperMainInfo>
+            <WrapperDescription>
+              <StyledDescription htmlFor="description">
+                {t('DonateBookInputs.Description.Title')}*
+              </StyledDescription>
+              <StyledTextArea
+                id="description"
+                value={description || ''}
+                onChange={handleChangeDescription}
+                placeholder={t('DonateBookInputs.Description.Placeholder')}
+                required
               />
-              <StyledButton
-                value={t(`Cancel`)}
-                transparent
-                onClick={onHideContent}
-              />
-              {userRole !== RolesTypes.MANAGER && (
-                <StyledButton
-                  value="Ask a manger"
-                  transparent
-                  onClick={handleShowAskManagerForm}
-                />
-              )}
-            </WrapperButtons>
-          </WrapperMainInfo>
-          <WrapperDescription>
-            <StyledDescription htmlFor="description">
-              Description*
-            </StyledDescription>
-            <StyledTextArea
-              id="description"
-              value={description || ''}
-              onChange={handleChangeDescription}
-              placeholder="Enter your text"
-              required
+            </WrapperDescription>
+          </FormWrapper>
+          <WrapperButtons>
+            <StyledButton
+              value={t(`WrapperButtons.AddItem`)}
+              disabled={isInvalid}
+              type="submit"
             />
-          </WrapperDescription>
+            <StyledButton
+              value={t(`Cancel`)}
+              transparent
+              onClick={onHideContent}
+            />
+            {userRole !== RolesTypes.MANAGER && (
+              <StyledButton
+                value={t(`WrapperButtons.AskManager`)}
+                transparent
+                onClick={handleShowAskManagerForm}
+              />
+            )}
+          </WrapperButtons>
         </Form>
       </WrapperDonate>
       <Modal setActive={setSuccess} active={isSuccess}>
         <SuccessMessage
           setActive={setSuccess}
-          title="You have successfully donated to the library"
-          description="Put the book on the nearest free space on the shelf. In case of any problems, our manager will contact you"
+          title={t('DonateBookInputs.Modal.DonateSuccess.Title')}
+          description={t('DonateBookInputs.Modal.DonateSuccess.Message')}
           onCloseContentDonate={onHideContent}
         />
       </Modal>
@@ -565,8 +581,8 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
       </Modal>
       <Modal active={sendManagerSuccess} setActive={setSendManagerSuccess}>
         <ErrorMessage
-          title="We reported the problem to the manager"
-          message="The problem will be solved soon"
+          title={t('DonateBookInputs.Modal.ProblemReported.Title')}
+          message={t('DonateBookInputs.Modal.ProblemReported.Message')}
           titleCancel="Ok"
           setActive={setSendManagerSuccess}
           activeAskManager={false}

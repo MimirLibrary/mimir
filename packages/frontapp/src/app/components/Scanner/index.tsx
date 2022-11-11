@@ -1,6 +1,6 @@
 import { ChangeEvent, FC, memo, useEffect, useMemo } from 'react';
 import { scanImageData } from 'zbar.wasm';
-import { BrowserMultiFormatOneDReader } from '@zxing/browser';
+// import { BrowserMultiFormatOneDReader } from '@zxing/browser';
 import { barcode } from './barcode';
 import styled from '@emotion/styled';
 import { createPortal } from 'react-dom';
@@ -146,7 +146,7 @@ const Scanner: FC<IScannerProps> = memo(
     useEffect(() => {
       showScanner();
 
-      const codeReader = new BrowserMultiFormatOneDReader();
+      // const codeReader = new BrowserMultiFormatOneDReader();
 
       const videoElement = document.querySelector<HTMLVideoElement>(
         '#scanner-video video'
@@ -225,12 +225,12 @@ const Scanner: FC<IScannerProps> = memo(
           const barcodeRes = barcode(ctx) as unknown as string;
           if (barcodeRes) return found(barcodeRes);
 
-          try {
+          /*try {
             const zxingRes = codeReader.decodeFromCanvas(canvasElement);
             return found(zxingRes.getText());
           } catch (e) {
             console.log(e);
-          }
+          }*/
           setTimeout(scanFrame, timeout); // repeat
         }
       }
