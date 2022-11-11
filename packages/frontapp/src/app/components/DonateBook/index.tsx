@@ -21,25 +21,30 @@ import { TUserLocation } from '../../store/slices/userSlice';
 import { t } from 'i18next';
 
 const WrapperDonate = styled.section`
-  background-color: ${colors.bg_secondary};
-  box-shadow: 0 10px 70px rgba(26, 30, 214, 0.08);
-  border-radius: ${dimensions.xs_1};
-  padding: ${dimensions.base_2};
   margin-top: ${dimensions.xl_2};
+  margin-bottom: ${dimensions.xl_2};
   position: relative;
 
   @media (max-width: ${dimensions.tablet_width}) {
     margin-top: ${dimensions.xl};
-    padding: ${dimensions.xl_2} ${dimensions.base};
-  }
-  @media (max-width: ${dimensions.phone_width}) {
-    margin-bottom: 4rem;
   }
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  position: relative;
+`;
+
+const FormWrapper = styled.div`
+  background-color: ${colors.bg_secondary};
+  box-shadow: 0 10px 70px rgba(26, 30, 214, 0.08);
+  border-radius: ${dimensions.xs_1};
+  padding: ${dimensions.base_2};
+
+  @media (max-width: ${dimensions.phone_width}) {
+    padding: ${dimensions.base};
+  }
 `;
 
 const WrapperStyledInput = styled.div`
@@ -214,31 +219,33 @@ const WrapperButtons = styled.div`
   justify-content: flex-end;
   align-items: flex-end;
   flex-direction: column;
-  width: 100%;
+  width: 40%;
+  position: absolute;
+  right: 0;
+  margin: ${dimensions.base_2};
 
   @media (max-width: 85rem) {
     width: 60%;
+    margin: ${dimensions.base} 0 0 0;
   }
 
   @media (max-width: 77rem) {
     width: 100%;
-    position: absolute;
+    position: initial;
     bottom: 0;
     left: 50%;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    transform: translate(-50%, -50%);
     padding: 0 ${dimensions.xs_2};
   }
   @media (max-width: ${dimensions.phone_width}) {
-    position: absolute;
-    bottom: -17.5rem;
+    position: initial;
     left: 50%;
     flex-direction: column;
     gap: ${dimensions.xs_2};
     align-items: center;
-    transform: translate(-50%, -50%);
+    margin-top: ${dimensions.xl_2};
   }
 `;
 
@@ -459,101 +466,103 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
     <>
       <WrapperDonate>
         <Form onSubmit={handleSubmit}>
-          <WrapperMainInfo>
-            <WrapperWithoutButtons>
-              <div>
-                <FileUpload
-                  file={file}
-                  handleChangeFile={handleChangeFile}
-                  pictureOfCover={pictureOfCover}
-                />
-              </div>
-              <WrapperBlockInput>
-                <WrapperStyledInput>
-                  <Label htmlFor="title">
-                    {t('DonateBookInputs.Name.Title')}*
+          <FormWrapper>
+            <WrapperMainInfo>
+              <WrapperWithoutButtons>
+                <div>
+                  <FileUpload
+                    file={file}
+                    handleChangeFile={handleChangeFile}
+                    pictureOfCover={pictureOfCover}
+                  />
+                </div>
+                <WrapperBlockInput>
+                  <WrapperStyledInput>
+                    <Label htmlFor="title">
+                      {t('DonateBookInputs.Name.Title')}*
+                    </Label>
+                    <WrapperInput>
+                      <StyledInput
+                        type="text"
+                        id="title"
+                        name="title"
+                        value={dataOfBook.title || ''}
+                        onChange={handleChange}
+                        autoComplete="off"
+                        placeholder={t('DonateBookInputs.Name.Placeholder')}
+                      />
+                    </WrapperInput>
+                  </WrapperStyledInput>
+                  <WrapperStyledInput>
+                    <Label htmlFor="author">
+                      {t('DonateBookInputs.Author.Title')}*
+                    </Label>
+                    <WrapperInput>
+                      <StyledInput
+                        type="text"
+                        id="author"
+                        name="author"
+                        value={dataOfBook.author || ''}
+                        onChange={handleChange}
+                        autoComplete="off"
+                        required
+                        placeholder={t('DonateBookInputs.Author.Placeholder')}
+                      />
+                    </WrapperInput>
+                  </WrapperStyledInput>
+                  <Label htmlFor="genre">
+                    {t('DonateBookInputs.Genre.Title')}*
                   </Label>
-                  <WrapperInput>
-                    <StyledInput
-                      type="text"
-                      id="title"
-                      name="title"
-                      value={dataOfBook.title || ''}
-                      onChange={handleChange}
-                      autoComplete="off"
-                      placeholder={t('DonateBookInputs.Name.Placeholder')}
-                    />
-                  </WrapperInput>
-                </WrapperStyledInput>
-                <WrapperStyledInput>
-                  <Label htmlFor="author">
-                    {t('DonateBookInputs.Author.Title')}*
+                  <StyledDropdown
+                    options={listOfGenres}
+                    onChange={handleChangeGenre}
+                    placeholder={t('DonateBookInputs.Genre.Placeholder')}
+                  />
+                  <Label htmlFor="location">
+                    {t('DonateBookInputs.Location.Title')}*
                   </Label>
-                  <WrapperInput>
-                    <StyledInput
-                      type="text"
-                      id="author"
-                      name="author"
-                      value={dataOfBook.author || ''}
-                      onChange={handleChange}
-                      autoComplete="off"
-                      required
-                      placeholder={t('DonateBookInputs.Author.Placeholder')}
-                    />
-                  </WrapperInput>
-                </WrapperStyledInput>
-                <Label htmlFor="genre">
-                  {t('DonateBookInputs.Genre.Title')}*
-                </Label>
-                <StyledDropdown
-                  options={listOfGenres}
-                  onChange={handleChangeGenre}
-                  placeholder={t('DonateBookInputs.Genre.Placeholder')}
-                />
-                <Label htmlFor="location">
-                  {t('DonateBookInputs.Location.Title')}*
-                </Label>
-                <StyledDropdown
-                  options={locations}
-                  onChange={(option) =>
-                    handleChangeLocation(option as TUserLocation)
-                  }
-                  placeholder={t('DonateBookInputs.Location.Placeholder')}
-                />
-              </WrapperBlockInput>
-            </WrapperWithoutButtons>
-            <WrapperButtons>
-              <StyledButton
-                value={t(`WrapperButtons.AddItem`)}
-                disabled={isInvalid}
-                type="submit"
+                  <StyledDropdown
+                    options={locations}
+                    onChange={(option) =>
+                      handleChangeLocation(option as TUserLocation)
+                    }
+                    placeholder={t('DonateBookInputs.Location.Placeholder')}
+                  />
+                </WrapperBlockInput>
+              </WrapperWithoutButtons>
+            </WrapperMainInfo>
+            <WrapperDescription>
+              <StyledDescription htmlFor="description">
+                {t('DonateBookInputs.Description.Title')}*
+              </StyledDescription>
+              <StyledTextArea
+                id="description"
+                value={description || ''}
+                onChange={handleChangeDescription}
+                placeholder={t('DonateBookInputs.Description.Placeholder')}
+                required
               />
-              <StyledButton
-                value={t(`Cancel`)}
-                transparent
-                onClick={onHideContent}
-              />
-              {userRole !== RolesTypes.MANAGER && (
-                <StyledButton
-                  value={t(`WrapperButtons.AskManager`)}
-                  transparent
-                  onClick={handleShowAskManagerForm}
-                />
-              )}
-            </WrapperButtons>
-          </WrapperMainInfo>
-          <WrapperDescription>
-            <StyledDescription htmlFor="description">
-              {t('DonateBookInputs.Description.Title')}*
-            </StyledDescription>
-            <StyledTextArea
-              id="description"
-              value={description || ''}
-              onChange={handleChangeDescription}
-              placeholder={t('DonateBookInputs.Description.Placeholder')}
-              required
+            </WrapperDescription>
+          </FormWrapper>
+          <WrapperButtons>
+            <StyledButton
+              value={t(`WrapperButtons.AddItem`)}
+              disabled={isInvalid}
+              type="submit"
             />
-          </WrapperDescription>
+            <StyledButton
+              value={t(`Cancel`)}
+              transparent
+              onClick={onHideContent}
+            />
+            {userRole !== RolesTypes.MANAGER && (
+              <StyledButton
+                value={t(`WrapperButtons.AskManager`)}
+                transparent
+                onClick={handleShowAskManagerForm}
+              />
+            )}
+          </WrapperButtons>
         </Form>
       </WrapperDonate>
       <Modal setActive={setSuccess} active={isSuccess}>
