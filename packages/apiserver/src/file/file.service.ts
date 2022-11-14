@@ -2,9 +2,31 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
 import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 
 @Injectable()
 export class FileService {
+  async createTmpFileFromLink(link?: string) {
+    try {
+      if (!link) {
+        throw new Error('Link to a file is missing');
+      }
+      const { data } = await axios.get<NodeJS.ReadStream>(link, {
+        responseType: 'stream',
+      });
+      const fileExtension = link.split('.').pop();
+      const fileName = uuidv4() + '.' + fileExtension;
+      const filePath = path.resolve('storage', 'tmp');
+      if (!fs.existsSync(filePath)) {
+        fs.mkdirSync(filePath, { recursive: true });
+      }
+      fs.writeFileSync(path.resolve(filePath, fileName), data.read());
+      return `${process.env['NX_API_ROOT_URL']}/tmp/${fileName}`;
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
   createFileForTmp(file) {
     try {
       const fileExtension = file.originalname.split('.').pop();
