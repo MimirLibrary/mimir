@@ -24,21 +24,21 @@ exports[`render Navbar component should completely match a snapshot 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  -webkit-justify-content: flex-start;
+  justify-content: flex-start;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
   background: #1A1ED6;
-  width: 15rem;
+  width: 16.375rem;
   height: 4rem;
   -webkit-text-decoration: none;
   text-decoration: none;
   border-radius: 6.25rem;
-  padding-left: 1.5rem;
+  padding-left: 2rem;
   margin-bottom: 0.12rem;
 }
 
@@ -78,7 +78,7 @@ exports[`render Navbar component should completely match a snapshot 1`] = `
   -ms-flex-align: center;
   align-items: center;
   max-width: 12.5rem;
-  width: 100%;
+  min-width: 100%;
   color: #FFFFFF;
 }
 
@@ -102,21 +102,21 @@ exports[`render Navbar component should completely match a snapshot 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  -webkit-justify-content: flex-start;
+  justify-content: flex-start;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
   background: #FFFFFF;
-  width: 15rem;
+  width: 16.375rem;
   height: 4rem;
   -webkit-text-decoration: none;
   text-decoration: none;
   border-radius: 6.25rem;
-  padding-left: 1.5rem;
+  padding-left: 2rem;
   margin-bottom: 0.12rem;
 }
 
@@ -184,7 +184,7 @@ exports[`render Navbar component should completely match a snapshot 1`] = `
   bottom: 0;
 }
 
-@media (max-height: 747px) {
+@media (max-height: 784px) {
   .emotion-23 {
     position: static;
   }
