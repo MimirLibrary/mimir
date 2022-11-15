@@ -7,6 +7,7 @@ import ErrorType500 from '../ErrorType500';
 import { toast } from 'react-toastify';
 import BookList, { IMaterial } from './bookList';
 import BackButton from '../BackButton';
+import ItemsNotFound from '../ItemsNotFound';
 
 const BooksByCategory = () => {
   const locations = useAppSelector(locationIds);
@@ -22,7 +23,8 @@ const BooksByCategory = () => {
   }, [error]);
 
   if (loading) return <h1>Loading...</h1>;
-  if (!data || data.getAllMaterials.length === 0) return <ErrorType500 />;
+  if (!data) return <ErrorType500 />;
+  if (data.getAllMaterials.length === 0) return <ItemsNotFound />;
 
   return (
     data && (
