@@ -41,7 +41,7 @@ const WrapperHeader = styled.header`
   @media (max-width: ${dimensions.tablet_width}) {
     max-width: none;
     padding: 0 20px;
-    margin-bottom: 2.5rem;
+    margin-bottom: ${dimensions.xl_6};
   }
 `;
 
