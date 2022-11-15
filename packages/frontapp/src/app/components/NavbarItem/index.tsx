@@ -23,15 +23,15 @@ interface IStyle {
 
 const StyledLink = styled(Link)<IStyle>`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   background: ${(props) =>
     JSON.parse(props.primary) ? colors.accent_color : colors.bg_secondary};
-  width: 15rem;
+  width: 16.375rem;
   height: 4rem;
   text-decoration: none;
   border-radius: 6.25rem;
-  padding-left: ${dimensions.xl_2};
+  padding-left: ${dimensions.base_2};
   margin-bottom: 0.12rem;
 
   :hover {
@@ -61,7 +61,7 @@ const InsideButtonContainer = styled.div`
   justify-content: start;
   align-items: center;
   max-width: 12.5rem;
-  width: 100%;
+  min-width: 100%;
   color: ${colors.bg_secondary};
 `;
 
