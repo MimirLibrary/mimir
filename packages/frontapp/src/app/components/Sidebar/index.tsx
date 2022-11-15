@@ -59,10 +59,14 @@ const StyledSidebar = styled.aside<IStyledSidebarProps>`
     top: 0;
     left: ${(props) => (props.isSidebarActive ? '0' : '-100%')};
     background: ${colors.bg_secondary};
-    width: 85%;
+    max-width: 20rem;
     transition: all 0.8s;
     height: 100%;
     z-index: 1000;
+  }
+
+  @media (max-width: 23rem) {
+    max-width: 85%;
   }
 `;
 

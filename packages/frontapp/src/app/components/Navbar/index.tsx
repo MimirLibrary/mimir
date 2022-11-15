@@ -33,7 +33,7 @@ const NavbarBottomSubsectionWrapper = styled.div`
   position: fixed;
   bottom: 0;
 
-  @media (max-height: 747px) {
+  @media (max-height: 784px) {
     position: static;
   }
 

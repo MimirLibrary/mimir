@@ -37,10 +37,11 @@ const WrapperForCenter = styled.div`
 const WrapperHeader = styled.header`
   max-width: 16.5rem;
   width: 100%;
-  margin-bottom: 2rem;
+  margin-bottom: 3.5rem;
   @media (max-width: ${dimensions.tablet_width}) {
     max-width: none;
     padding: 0 20px;
+    margin-bottom: ${dimensions.xl_6};
   }
 `;
 

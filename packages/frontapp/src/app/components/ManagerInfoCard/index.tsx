@@ -252,9 +252,9 @@ const AddWrapper = styled.div`
   cursor: pointer;
   @media (max-width: ${dimensions.tablet_width}) {
     display: block;
-    position: absolute;
-    right: 20px;
-    top: 70px;
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
   }
 `;
 
@@ -438,9 +438,6 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
               {t(`ManagerInfoCard.Title.Notifications`) +
                 ` — (${fieldsNotification?.length})`}
             </Title>
-            <AddWrapper onClick={handleClickOnOpenScanner}>
-              <AddBookBluePlus />
-            </AddWrapper>
             <Description>
               {t(`ManagerInfoCard.Description.Notifications`)}
             </Description>
@@ -512,6 +509,9 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
           onClose={handleOnCloseScanner}
         />
       )}
+      <AddWrapper onClick={handleClickOnOpenScanner}>
+        <AddBookBluePlus />
+      </AddWrapper>
       <Modal active={isAnswerModal} setActive={setIsAnswerModal}>
         {isAnswerModal && (
           <AnswerToUser

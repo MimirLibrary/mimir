@@ -124,8 +124,8 @@ const DonateBookFlow = () => {
     <>
       <section>
         <WrapperInfo>
-          <TitleInfo>{t('DonateBookInputs.Title')}</TitleInfo>
-          <SubTitle>{t('DonateBookInputs.Subtitle')}</SubTitle>
+          <TitleInfo>{t('DonateItem.Title')}</TitleInfo>
+          <SubTitle>{t('DonateItem.Description')}</SubTitle>
           {showEmptyContentDonate && (
             <BackSpan onClick={handleCloseContentOfDonate}>
               <ArrowIcon /> <span>Back</span>

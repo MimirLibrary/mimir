@@ -260,27 +260,13 @@ exports[`render ManagerInfo Card snapshot testing of manager NOTIFICATIONS card 
 }
 
 .emotion-2 {
-  display: none;
-  cursor: pointer;
-}
-
-@media (max-width: 48rem) {
-  .emotion-2 {
-    display: block;
-    position: absolute;
-    right: 20px;
-    top: 70px;
-  }
-}
-
-.emotion-3 {
   font-weight: 300;
   font-size: 1rem;
   line-height: 1.5rem;
   color: #333333;
 }
 
-.emotion-4 {
+.emotion-3 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -300,18 +286,18 @@ exports[`render ManagerInfo Card snapshot testing of manager NOTIFICATIONS card 
   width: 100%;
 }
 
-.emotion-4 img {
+.emotion-3 img {
   position: relative;
   z-index: 1;
 }
 
 @media (max-width: 48rem) {
-  .emotion-4 img {
+  .emotion-3 img {
     height: 100px;
   }
 }
 
-.emotion-5 {
+.emotion-4 {
   border-radius: 50%;
   height: 270px;
   max-width: 270px;
@@ -321,13 +307,13 @@ exports[`render ManagerInfo Card snapshot testing of manager NOTIFICATIONS card 
 }
 
 @media (max-width: 48rem) {
-  .emotion-5 {
+  .emotion-4 {
     height: 170px;
     max-width: 170px;
   }
 }
 
-.emotion-6 {
+.emotion-5 {
   font-weight: 700;
   font-size: 1.25rem;
   line-height: 1.5rem;
@@ -339,12 +325,12 @@ exports[`render ManagerInfo Card snapshot testing of manager NOTIFICATIONS card 
 }
 
 @media (max-width: 48rem) {
-  .emotion-6 {
+  .emotion-5 {
     display: none;
   }
 }
 
-.emotion-7 {
+.emotion-6 {
   -webkit-order: 4;
   -ms-flex-order: 4;
   order: 4;
@@ -366,12 +352,12 @@ exports[`render ManagerInfo Card snapshot testing of manager NOTIFICATIONS card 
 }
 
 @media (max-width: 48rem) {
-  .emotion-7 {
+  .emotion-6 {
     display: none;
   }
 }
 
-.emotion-8 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -382,7 +368,7 @@ exports[`render ManagerInfo Card snapshot testing of manager NOTIFICATIONS card 
 }
 
 @media (max-width: 48rem) {
-  .emotion-8 {
+  .emotion-7 {
     display: block;
   }
 }
@@ -397,22 +383,15 @@ exports[`render ManagerInfo Card snapshot testing of manager NOTIFICATIONS card 
     >
       undefined — (0)
     </p>
-    <div
-      class="emotion-2"
-    >
-      <svg>
-        AddBookBluePlus.svg
-      </svg>
-    </div>
     <p
-      class="emotion-3"
+      class="emotion-2"
     />
   </div>
   <div
-    class="emotion-4"
+    class="emotion-3"
   >
     <div
-      class="emotion-5"
+      class="emotion-4"
     />
     <img
       alt="notification_placeholder"
@@ -420,14 +399,14 @@ exports[`render ManagerInfo Card snapshot testing of manager NOTIFICATIONS card 
       src="notification_placeholder.png"
     />
     <h3
-      class="emotion-6"
+      class="emotion-5"
     />
   </div>
   <div
-    class="emotion-7"
+    class="emotion-6"
   >
     <div
-      class="emotion-8"
+      class="emotion-7"
     />
   </div>
 </div>
