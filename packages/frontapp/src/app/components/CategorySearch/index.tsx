@@ -55,16 +55,22 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
   const FilteringObjects = () => {
     setAllFilters([
       {
-        title: 'Availability',
-        inputType: 'checkbox',
-        id: 1,
-        subAttributes: customObjectFilter(allAvailability),
+        title: 'SortBy',
+        inputType: 'radio',
+        id: 5,
+        subAttributes: customObjectFilter(allSortBy),
       },
       {
         title: 'Items',
         inputType: 'radio',
         id: 2,
         subAttributes: customObjectFilter(allTypes),
+      },
+      {
+        title: 'Availability',
+        inputType: 'checkbox',
+        id: 1,
+        subAttributes: customObjectFilter(allAvailability),
       },
       {
         title: 'Categories',
@@ -77,12 +83,6 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
         inputType: 'checkbox',
         id: 4,
         subAttributes: customObjectFilter(allAuthors),
-      },
-      {
-        title: 'SortBy',
-        inputType: 'radio',
-        id: 5,
-        subAttributes: customObjectFilter(allSortBy),
       },
     ]);
   };
@@ -122,16 +122,10 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
     setActive(false);
     navigate('/search');
   };
-  const radioBtnHandler = (
-    attributes: SubItemType[],
-    type: string,
-    value: string
-  ) => {
-    if (type === 'radio') {
-      attributes[0].title === value
-        ? attributes[1] && (attributes[1].checked = false)
-        : (attributes[0].checked = false);
-    }
+  const radioBtnHandler = (attributes: SubItemType[], value: string) => {
+    attributes.forEach((item) => {
+      item.title === value ? (item.checked = true) : (item.checked = false);
+    });
   };
   const checkBoxHandler = (attribute: SubItemType) =>
     (attribute.checked = !attribute.checked);

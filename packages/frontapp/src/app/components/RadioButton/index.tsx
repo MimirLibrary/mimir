@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 enum LabelPosition {
   Left = 'left',
@@ -92,6 +92,7 @@ const RadioGroupWrapper = styled.div<{ orientation: string }>`
     orientation === RadioGroupOrientation.Horizontal ? 'row' : 'column'};
   align-items: center;
   gap: ${dimensions.base};
+  flex-wrap: wrap;
 `;
 
 interface IRadioGroup {
@@ -100,6 +101,7 @@ interface IRadioGroup {
   name: string;
   options: { name: string; value: string }[];
   onChange?: (value: string) => void;
+  reset?: boolean;
 }
 
 export const RadioGroup: React.FC<IRadioGroup> = ({
@@ -108,6 +110,7 @@ export const RadioGroup: React.FC<IRadioGroup> = ({
   onChange,
   orientation = 'horizontal',
   defaultValue = '',
+  reset,
 }) => {
   const [checkedValue, setCheckedValue] = useState(defaultValue);
 
@@ -115,6 +118,9 @@ export const RadioGroup: React.FC<IRadioGroup> = ({
     setCheckedValue(e.target.value);
     onChange && onChange(e.target.value);
   };
+  useEffect(() => {
+    reset && setCheckedValue(defaultValue);
+  }, [reset, defaultValue]);
 
   return (
     <RadioGroupWrapper orientation={orientation}>

@@ -38,22 +38,16 @@ const UserSearch: FC<IProps> = ({ setActive }) => {
     navigate(RoutesTypes.READERS);
   };
 
-  const radioBtnHandler = (
-    attributes: Attribute[],
-    type: string,
-    value: string
-  ) => {
-    if (type === 'radio') {
-      if (attributes[0].title === value) {
-        attributes[1].checked = false;
-        attributes[2].checked = false;
-      } else if (attributes[1].title === value) {
-        attributes[0].checked = false;
-        attributes[2].checked = false;
-      } else {
-        attributes[0].checked = false;
-        attributes[1].checked = false;
-      }
+  const radioBtnHandler = (attributes: Attribute[], value: string) => {
+    if (attributes[0].title === value) {
+      attributes[1].checked = false;
+      attributes[2].checked = false;
+    } else if (attributes[1].title === value) {
+      attributes[0].checked = false;
+      attributes[2].checked = false;
+    } else {
+      attributes[0].checked = false;
+      attributes[1].checked = false;
     }
   };
 

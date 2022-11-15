@@ -28,7 +28,7 @@ export const WrapperModal = styled.div<IStyleProps>`
     height: 0;
   }
   @media (max-width: ${dimensions.tablet_width}) {
-    padding: ${dimensions.base};
+    padding-top: 5rem;
   }
 `;
 
@@ -37,6 +37,9 @@ const StyledCross = styled(Cross)`
   position: absolute;
   right: 4%;
   top: 2.6rem;
+  @media (max-width: ${dimensions.phone_width}) {
+    display: none;
+  }
 `;
 export const ContentModal = styled.div<IStyleProps>`
   padding: ${dimensions.base_3};
@@ -47,6 +50,10 @@ export const ContentModal = styled.div<IStyleProps>`
   max-width: ${dimensions.tablet_width};
   width: 100%;
   margin: auto;
+  @media (max-width: ${dimensions.phone_width}) {
+    padding: ${dimensions.xl} ${dimensions.xs_2};
+    border-radius: ${dimensions.base_2};
+  }
 `;
 
 interface IPropsModal {

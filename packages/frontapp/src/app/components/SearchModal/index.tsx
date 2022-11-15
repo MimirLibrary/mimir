@@ -2,11 +2,16 @@ import styled from '@emotion/styled';
 import { dimensions, colors } from '@mimir/ui-kit';
 import { Dispatch, FC, SetStateAction, useState } from 'react';
 import Button from '../Button';
-import CheckBox from '../CheckBox';
+import LabeledCheckbox from '../LabeledCheckbox';
+import { RadioGroup } from '../RadioButton';
+
 const Filters = styled.div`
   font-weight: 700;
   font-size: ${dimensions.xl_2};
   margin-bottom: ${dimensions.base_2};
+  @media (max-width: ${dimensions.phone_width}) {
+    text-align: center;
+  }
 `;
 
 const Title = styled.h3`
@@ -16,13 +21,15 @@ const Title = styled.h3`
 `;
 
 const AttributeWrapper = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  row-gap: ${dimensions.xs_2};
-  column-gap: 5rem;
+  display: flex;
+  gap: ${dimensions.base};
+  flex-wrap: wrap;
   width: 100%;
   height: 100%;
   margin-bottom: ${dimensions.xl_2};
+  @media (max-width: ${dimensions.phone_width}) {
+    gap: ${dimensions.xs_2};
+  }
 `;
 
 const OneCategory = styled.div`
@@ -37,14 +44,23 @@ const OneCategory = styled.div`
 
 const SeeMoreButton = styled.p`
   color: ${colors.accent_color};
-  text-decoration: underline;
   cursor: pointer;
+  align-self: center;
 `;
 
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: space-around;
   gap: ${dimensions.base};
+  @media (max-width: ${dimensions.phone_width}) {
+    justify-content: center;
+    flex-direction: column;
+    gap: ${dimensions.xs_1};
+    position: sticky;
+    bottom: 0;
+    background-color: ${colors.bg_secondary};
+    padding: ${dimensions.xs_2};
+  }
 `;
 
 export type ItemsType = {
@@ -64,11 +80,7 @@ export type SubItemType = {
 
 interface IProps {
   attributes: ItemsType[];
-  radioBtnHandler: (
-    attributes: SubItemType[],
-    type: string,
-    value: string
-  ) => void;
+  radioBtnHandler: (attributes: SubItemType[], value: string) => void;
   checkBoxHandler: (attribute: SubItemType) => boolean;
   setApplyFilters: Dispatch<SetStateAction<boolean>>;
   handleResetClick?: () => void;
@@ -91,6 +103,7 @@ const SearchModal: FC<IProps> = ({
     authors: false,
     categories: false,
   });
+  const [reset, setReset] = useState<boolean>(false);
   const seeMoreHandler = (category: string) => {
     setShowMore((prev) => ({
       ...prev,
@@ -104,64 +117,76 @@ const SearchModal: FC<IProps> = ({
         <div key={item.id}>
           <Title>{item.title}</Title>
           <AttributeWrapper>
-            {item.subAttributes.slice(0, 7).map((attribute: SubItemType) => (
-              <OneCategory key={attribute.id}>
-                {attribute.title}
-                {attribute.numberOfItems && <> - {attribute.numberOfItems}</>}
-                <CheckBox
-                  type={item.inputType}
-                  name={item.title.toLowerCase()}
-                  value={attribute.title}
-                  onChange={(e) =>
-                    radioBtnHandler(
-                      item.subAttributes,
-                      item.inputType,
-                      e.target.value
-                    )
-                  }
-                  onMouseDown={() => checkBoxHandler(attribute)}
-                />
-              </OneCategory>
-            ))}
+            {item.inputType === 'radio' ? (
+              <RadioGroup
+                options={item.subAttributes.map((attr) => ({
+                  name: attr.title,
+                  value: attr.title,
+                }))}
+                name={item.title}
+                onChange={(e) => radioBtnHandler(item.subAttributes, e)}
+                reset={reset}
+              />
+            ) : (
+              <>
+                {item.subAttributes
+                  .slice(0, 7)
+                  .map((attribute: SubItemType) => (
+                    <OneCategory key={attribute.id}>
+                      <LabeledCheckbox
+                        id={attribute.title}
+                        value={`${attribute.title} - ${attribute.numberOfItems}`}
+                        onChange={() => {
+                          checkBoxHandler(attribute);
+                        }}
+                      />
+                    </OneCategory>
+                  ))}
+              </>
+            )}
+
             {showMore[item.title.toLowerCase() as keyof showMoreStats] &&
               item.subAttributes
                 .slice(numberOfInitialItems, item.subAttributes.length)
                 .map((attribute: SubItemType) => (
                   <OneCategory key={attribute.id}>
-                    {attribute.title}{' '}
-                    {attribute.numberOfItems && `- ${attribute.numberOfItems}`}
-                    <CheckBox
-                      type={item.inputType}
-                      name={item.title.toLowerCase()}
-                      value={attribute.title}
-                      onChange={(e) =>
-                        radioBtnHandler(
-                          item.subAttributes,
-                          item.inputType,
-                          e.target.value
-                        )
-                      }
-                      onMouseDown={() => checkBoxHandler(attribute)}
+                    <LabeledCheckbox
+                      id={attribute.title}
+                      value={`${attribute.title} - ${attribute.numberOfItems}`}
+                      onMouseDown={() => {
+                        checkBoxHandler(attribute);
+                      }}
                     />
                   </OneCategory>
                 ))}
             {item.subAttributes.length > numberOfInitialItems && (
-              <SeeMoreButton onClick={() => seeMoreHandler(item.title)}>
+              <SeeMoreButton
+                onClick={() => seeMoreHandler(item.title.toLowerCase())}
+              >
                 {showMore[item.title.toLowerCase() as keyof showMoreStats]
-                  ? 'see less'
-                  : 'see more'}
+                  ? 'See Less'
+                  : 'See All'}
               </SeeMoreButton>
             )}
           </AttributeWrapper>
         </div>
       ))}
       <ButtonWrapper>
-        <Button value="Apply filters" onClick={() => setApplyFilters(true)} />
+        <Button
+          value="Results"
+          onClick={() => {
+            setApplyFilters(true);
+            setReset(false);
+          }}
+        />
         <Button
           type="reset"
           transparent
-          value="Reset all filters"
-          onClick={handleResetClick}
+          value="Reset all"
+          onClick={() => {
+            handleResetClick!();
+            setReset(true);
+          }}
         />
       </ButtonWrapper>
     </form>
