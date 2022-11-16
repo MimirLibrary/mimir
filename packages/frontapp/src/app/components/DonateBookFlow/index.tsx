@@ -166,8 +166,8 @@ const DonateBookFlow = () => {
       <Modal active={isShowError} setActive={setIsShowError}>
         <ErrorMessage
           setActive={setIsShowError}
-          message={t('DonateBookInputs.Modal.ISBNError.Message')}
-          title={t('DonateBookInputs.Modal.ISBNError.Title')}
+          message={t('DonateItem.Modal.ISBNError.Message')}
+          title={t('DonateItem.Modal.ISBNError.Title')}
           titleCancel="Ok"
           activeAskManager={false}
           showContentOfDonate={showContentOfDonate}

@@ -479,7 +479,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
                 <WrapperBlockInput>
                   <WrapperStyledInput>
                     <Label htmlFor="title">
-                      {t('DonateBookInputs.Name.Title')}*
+                      {t('DonateItem.Inputs.Name.Title')}*
                     </Label>
                     <WrapperInput>
                       <StyledInput
@@ -489,13 +489,13 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
                         value={dataOfBook.title || ''}
                         onChange={handleChange}
                         autoComplete="off"
-                        placeholder={t('DonateBookInputs.Name.Placeholder')}
+                        placeholder={t('DonateItem.Inputs.Name.Placeholder')}
                       />
                     </WrapperInput>
                   </WrapperStyledInput>
                   <WrapperStyledInput>
                     <Label htmlFor="author">
-                      {t('DonateBookInputs.Author.Title')}*
+                      {t('DonateItem.Inputs.Author.Title')}*
                     </Label>
                     <WrapperInput>
                       <StyledInput
@@ -506,47 +506,47 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
                         onChange={handleChange}
                         autoComplete="off"
                         required
-                        placeholder={t('DonateBookInputs.Author.Placeholder')}
+                        placeholder={t('DonateItem.Inputs.Author.Placeholder')}
                       />
                     </WrapperInput>
                   </WrapperStyledInput>
                   <Label htmlFor="genre">
-                    {t('DonateBookInputs.Genre.Title')}*
+                    {t('DonateItem.Inputs.Genre.Title')}*
                   </Label>
                   <StyledDropdown
                     options={listOfGenres}
                     onChange={handleChangeGenre}
-                    placeholder={t('DonateBookInputs.Genre.Placeholder')}
+                    placeholder={t('DonateItem.Inputs.Genre.Placeholder')}
                   />
                   <Label htmlFor="location">
-                    {t('DonateBookInputs.Location.Title')}*
+                    {t('DonateItem.Inputs.Location.Title')}*
                   </Label>
                   <StyledDropdown
                     options={locations}
                     onChange={(option) =>
                       handleChangeLocation(option as TUserLocation)
                     }
-                    placeholder={t('DonateBookInputs.Location.Placeholder')}
+                    placeholder={t('DonateItem.Inputs.Location.Placeholder')}
                   />
                 </WrapperBlockInput>
               </WrapperWithoutButtons>
             </WrapperMainInfo>
             <WrapperDescription>
               <StyledDescription htmlFor="description">
-                {t('DonateBookInputs.Description.Title')}*
+                {t('DonateItem.Inputs.Description.Title')}*
               </StyledDescription>
               <StyledTextArea
                 id="description"
                 value={description || ''}
                 onChange={handleChangeDescription}
-                placeholder={t('DonateBookInputs.Description.Placeholder')}
+                placeholder={t('DonateItem.Inputs.Description.Placeholder')}
                 required
               />
             </WrapperDescription>
           </FormWrapper>
           <WrapperButtons>
             <StyledButton
-              value={t(`WrapperButtons.AddItem`)}
+              value={t(`DonateItem.Button.AddItem`)}
               disabled={isInvalid}
               type="submit"
             />
@@ -557,7 +557,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
             />
             {userRole !== RolesTypes.MANAGER && (
               <StyledButton
-                value={t(`WrapperButtons.AskManager`)}
+                value={t(`DonateItem.Button.AskManager`)}
                 transparent
                 onClick={handleShowAskManagerForm}
               />
@@ -568,8 +568,8 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
       <Modal setActive={setSuccess} active={isSuccess}>
         <SuccessMessage
           setActive={setSuccess}
-          title={t('DonateBookInputs.Modal.DonateSuccess.Title')}
-          description={t('DonateBookInputs.Modal.DonateSuccess.Message')}
+          title={t('DonateItem.Modal.DonateSuccess.Title')}
+          description={t('DonateItem.Modal.DonateSuccess.Message')}
           onCloseContentDonate={onHideContent}
         />
       </Modal>
@@ -581,8 +581,8 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
       </Modal>
       <Modal active={sendManagerSuccess} setActive={setSendManagerSuccess}>
         <ErrorMessage
-          title={t('DonateBookInputs.Modal.ProblemReported.Title')}
-          message={t('DonateBookInputs.Modal.ProblemReported.Message')}
+          title={t('DonateItem.Modal.ProblemReported.Title')}
+          message={t('DonateItem.Modal.ProblemReported.Message')}
           titleCancel="Ok"
           setActive={setSendManagerSuccess}
           activeAskManager={false}
