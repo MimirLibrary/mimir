@@ -8,6 +8,15 @@ import { toast } from 'react-toastify';
 import BookList, { IMaterial } from './bookList';
 import BackButton from '../BackButton';
 import ItemsNotFound from '../ItemsNotFound';
+import Loader from '../Loader';
+import { colors, dimensions } from '@mimir/ui-kit';
+import styled from '@emotion/styled';
+
+const WrapperLoader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 const BooksByCategory = () => {
   const locations = useAppSelector(locationIds);
@@ -22,7 +31,13 @@ const BooksByCategory = () => {
     }
   }, [error]);
 
-  if (loading) return <h1>Loading...</h1>;
+  if (loading)
+    return (
+      <WrapperLoader>
+        <Loader height={100} width={100} color={`${colors.accent_color}`} />
+      </WrapperLoader>
+    );
+
   if (!data) return <ErrorType500 />;
   if (data.getAllMaterials.length === 0) return <ItemsNotFound />;
 

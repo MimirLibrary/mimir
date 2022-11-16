@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { useGetAllPersonsQuery } from '@mimir/apollo-client';
 import { t } from 'i18next';
 import SingleUser from './SingleUser';
-import { dimensions } from '@mimir/ui-kit';
+import { colors, dimensions } from '@mimir/ui-kit';
 import {
   countClaimHistory,
   IClaimHistory,
@@ -14,6 +14,7 @@ import { setSearchReaders } from '../../store/slices/readersSlice';
 import { IReader } from '../../types';
 import { locationIds } from '../../store/slices/userSlice';
 import { toast } from 'react-toastify';
+import Loader from '../Loader';
 
 const ReadersWrapper = styled.div`
   display: flex;
@@ -41,6 +42,12 @@ const Description = styled.p`
   font-weight: 300;
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
+`;
+
+const WrapperLoader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 interface IProps {
@@ -139,8 +146,12 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
     }
   }, [error]);
 
-  if (loading) return <h1>{t('Loading')}</h1>;
-
+  if (loading)
+    return (
+      <WrapperLoader>
+        <Loader height={100} width={100} color={`${colors.accent_color}`} />
+      </WrapperLoader>
+    );
   return (
     <ReadersWrapper>
       <Title>

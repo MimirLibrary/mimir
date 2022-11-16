@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
-import { dimensions } from '@mimir/ui-kit';
+import { colors, dimensions } from '@mimir/ui-kit';
 import { ButtonGroup } from './BookPreview';
 import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
 import { ReactComponent as ScrollButtonRight } from '../../assets/ArrowButtonRight.svg';
@@ -14,6 +14,7 @@ import useMaterialFilter from '../hooks/useMaterialFilter';
 import { locationIds } from '../store/slices/userSlice';
 import { toast } from 'react-toastify';
 import ItemsNotFound from '../components/ItemsNotFound';
+import Loader from '../components/Loader';
 const ContentWrapper = styled.div`
   margin: 3rem 0 ${dimensions.xl_6};
 `;
@@ -33,6 +34,12 @@ const Topics = styled.h5`
   font-weight: 700;
   flex: 1;
   font-size: ${dimensions.xl};
+`;
+
+const WrapperLoader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const SearchPage = () => {
@@ -59,7 +66,12 @@ const SearchPage = () => {
     }
   }, [error]);
 
-  if (loading) return <h1>Loading...</h1>;
+  if (loading)
+    return (
+      <WrapperLoader>
+        <Loader height={100} width={100} color={`${colors.accent_color}`} />
+      </WrapperLoader>
+    );
 
   if (!data) return <ErrorType500 />;
   if (data.getAllMaterials.length === 0) return <ItemsNotFound />;

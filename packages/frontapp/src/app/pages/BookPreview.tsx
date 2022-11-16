@@ -28,6 +28,7 @@ import { IClaimHistory } from '../models/helperFunctions/claimHistory';
 import { getDates, isOverdue } from '../models/helperFunctions/converTime';
 import { locationIds } from '../store/slices/userSlice';
 import { toast } from 'react-toastify';
+import Loader from '../components/Loader';
 
 export const ButtonGroup = styled.div`
   display: flex;
@@ -75,6 +76,12 @@ const FieldsText = styled.p<IFieldsTextProps>`
       ? colors.free_book
       : colors.accent_color};
   margin-bottom: ${dimensions.xs_2};
+`;
+
+const WrapperLoader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 interface IFieldsTextProps {
@@ -149,7 +156,12 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
     }
   }, [error]);
 
-  if (loading) return <h1>Loading...</h1>;
+  if (loading)
+    return (
+      <WrapperLoader>
+        <Loader height={100} width={100} color={`${colors.accent_color}`} />
+      </WrapperLoader>
+    );
 
   return (
     <>
