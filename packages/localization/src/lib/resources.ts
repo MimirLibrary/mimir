@@ -38,6 +38,7 @@ export const resources = {
         UsernamePlaceholder: 'Search by user name',
         Books: 'Books',
         Other: 'Other',
+        NotFound: 'Nothing was found',
       },
       Start: {
         ChooseLocation: 'Your current location',
@@ -229,6 +230,10 @@ export const resources = {
           OverdueDeals: 'Number of overdue deals',
         },
       },
+      DonateItem: {
+        Title: 'Are you planning to donate something to the library?',
+        Description: 'Fill in the required* fields or try to scan the code',
+      },
     },
   },
   ru: {
@@ -270,6 +275,7 @@ export const resources = {
         UsernamePlaceholder: 'Поиск по имени пользователя',
         Books: 'Книги',
         Other: 'Другое',
+        NotFound: 'Ничего не было найдено',
       },
       Start: {
         ChooseLocation: 'Ваше текущее местоположение',
@@ -459,6 +465,11 @@ export const resources = {
           ThingsTaken: 'Количеству взятых предметов',
           OverdueDeals: 'Количеству просроченных сделок',
         },
+      },
+      DonateItem: {
+        Title: 'Планируете ли вы что-то пожертвовать библиотеке?',
+        Description:
+          'Заполните обязательные* поля или попробуйте отсканировать код',
       },
     },
   },

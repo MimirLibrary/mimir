@@ -59,7 +59,7 @@ const Count = styled.p`
 const CategoriesList: FC<ICategoriesListProps> = ({ allCategories }) => {
   const navigate = useNavigate();
   const handleItemRedirect = (category: string) => {
-    navigate(`/category/${category}`);
+    navigate(`/category/${category}?categories=${category}`);
   };
   return (
     <CategoriesWrapper>

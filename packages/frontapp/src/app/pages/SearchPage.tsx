@@ -13,6 +13,7 @@ import ErrorType500 from '../components/ErrorType500';
 import useMaterialFilter from '../hooks/useMaterialFilter';
 import { locationIds } from '../store/slices/userSlice';
 import { toast } from 'react-toastify';
+import ItemsNotFound from '../components/ItemsNotFound';
 const ContentWrapper = styled.div`
   margin: 3rem 0 ${dimensions.xl_6};
 `;
@@ -60,7 +61,8 @@ const SearchPage = () => {
 
   if (loading) return <h1>Loading...</h1>;
 
-  if (!data || data.getAllMaterials.length === 0) return <ErrorType500 />;
+  if (!data) return <ErrorType500 />;
+  if (data.getAllMaterials.length === 0) return <ItemsNotFound />;
 
   return (
     <>

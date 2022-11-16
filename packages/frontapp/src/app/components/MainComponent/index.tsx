@@ -46,7 +46,7 @@ const StyledButton = styled(Button)<IStyledButton>`
   top: ${dimensions.base_2};
   right: ${dimensions.base_2};
 
-  @media (max-width: ${dimensions.tablet_width}) {
+  @media (max-width: ${dimensions.laptop_width}) {
     position: fixed;
     top: auto;
     right: ${dimensions.base};
