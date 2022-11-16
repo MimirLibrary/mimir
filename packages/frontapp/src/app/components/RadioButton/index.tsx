@@ -101,7 +101,7 @@ interface IRadioGroup {
   name: string;
   options: { name: string; value: string }[];
   onChange?: (value: string) => void;
-  reset?: boolean;
+  shouldReset?: boolean;
 }
 
 export const RadioGroup: React.FC<IRadioGroup> = ({
@@ -110,7 +110,7 @@ export const RadioGroup: React.FC<IRadioGroup> = ({
   onChange,
   orientation = 'horizontal',
   defaultValue = '',
-  reset,
+  shouldReset,
 }) => {
   const [checkedValue, setCheckedValue] = useState(defaultValue);
 
@@ -119,8 +119,8 @@ export const RadioGroup: React.FC<IRadioGroup> = ({
     onChange && onChange(e.target.value);
   };
   useEffect(() => {
-    reset && setCheckedValue(defaultValue);
-  }, [reset, defaultValue]);
+    shouldReset && setCheckedValue(defaultValue);
+  }, [shouldReset, defaultValue]);
 
   return (
     <RadioGroupWrapper orientation={orientation}>

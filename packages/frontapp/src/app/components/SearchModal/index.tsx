@@ -4,6 +4,7 @@ import { Dispatch, FC, SetStateAction, useState } from 'react';
 import Button from '../Button';
 import LabeledCheckbox from '../LabeledCheckbox';
 import { RadioGroup } from '../RadioButton';
+import { t } from 'i18next';
 
 const Filters = styled.div`
   font-weight: 700;
@@ -68,7 +69,7 @@ export type ItemsType = {
   inputType: string;
   id: number;
   subAttributes: SubItemType[];
-  paramName?: string;
+  paramName: string;
 };
 
 export type SubItemType = {
@@ -103,20 +104,20 @@ const SearchModal: FC<IProps> = ({
     authors: false,
     categories: false,
   });
-  const [reset, setReset] = useState<boolean>(false);
+  const [shouldReset, setShouldReset] = useState<boolean>(false);
   const seeMoreHandler = (category: string) => {
     setShowMore((prev) => ({
       ...prev,
-      [category]: !prev[category.toLowerCase() as keyof showMoreStats],
+      [category]: !prev[category as keyof showMoreStats],
     }));
   };
   return (
-    <form>
-      <Filters>Filters</Filters>
+    <form data-testid="searchModal">
+      <Filters>{t('SearchModal.Title')}</Filters>
       {attributes.map((item: ItemsType) => (
         <div key={item.id}>
           <Title>{item.title}</Title>
-          <AttributeWrapper>
+          <AttributeWrapper data-testid="wrapperOfElements">
             {item.inputType === 'radio' ? (
               <RadioGroup
                 options={item.subAttributes.map((attr) => ({
@@ -125,7 +126,7 @@ const SearchModal: FC<IProps> = ({
                 }))}
                 name={item.title}
                 onChange={(e) => radioBtnHandler(item.subAttributes, e)}
-                reset={reset}
+                shouldReset={shouldReset}
               />
             ) : (
               <>
@@ -135,7 +136,11 @@ const SearchModal: FC<IProps> = ({
                     <OneCategory key={attribute.id}>
                       <LabeledCheckbox
                         id={attribute.title}
-                        value={`${attribute.title} - ${attribute.numberOfItems}`}
+                        value={
+                          attribute.numberOfItems
+                            ? `${attribute.title} - ${attribute.numberOfItems}`
+                            : attribute.title
+                        }
                         onChange={() => {
                           checkBoxHandler(attribute);
                         }}
@@ -145,7 +150,7 @@ const SearchModal: FC<IProps> = ({
               </>
             )}
 
-            {showMore[item.title.toLowerCase() as keyof showMoreStats] &&
+            {showMore[item.paramName as keyof showMoreStats] &&
               item.subAttributes
                 .slice(numberOfInitialItems, item.subAttributes.length)
                 .map((attribute: SubItemType) => (
@@ -161,11 +166,12 @@ const SearchModal: FC<IProps> = ({
                 ))}
             {item.subAttributes.length > numberOfInitialItems && (
               <SeeMoreButton
-                onClick={() => seeMoreHandler(item.title.toLowerCase())}
+                data-testid="seeMoreButton"
+                onClick={() => seeMoreHandler(item.paramName)}
               >
-                {showMore[item.title.toLowerCase() as keyof showMoreStats]
-                  ? 'See Less'
-                  : 'See All'}
+                {showMore[item.paramName as keyof showMoreStats]
+                  ? t('SearchModal.SeeLess')
+                  : t('SearchModal.SeeAll')}
               </SeeMoreButton>
             )}
           </AttributeWrapper>
@@ -173,19 +179,19 @@ const SearchModal: FC<IProps> = ({
       ))}
       <ButtonWrapper>
         <Button
-          value="Results"
+          value={t('SearchModal.ShowResults')}
           onClick={() => {
             setApplyFilters(true);
-            setReset(false);
+            setShouldReset(false);
           }}
         />
         <Button
           type="reset"
           transparent
-          value="Reset all"
+          value={t('SearchModal.Reset')}
           onClick={() => {
             handleResetClick!();
-            setReset(true);
+            setShouldReset(true);
           }}
         />
       </ButtonWrapper>
