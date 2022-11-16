@@ -17,6 +17,9 @@ const Label = styled.label`
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   cursor: pointer;
+  @media (max-width: ${dimensions.phone_width}) {
+    padding: ${dimensions.xs_2} ${dimensions.xs};
+  }
 `;
 
 const Checkbox = styled.input`
@@ -46,6 +49,7 @@ interface ILabeledCheckbox {
   disabled?: boolean;
   checked?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onMouseDown?: (e: React.MouseEvent<HTMLInputElement>) => void;
 }
 
 const LabeledCheckbox: FC<ILabeledCheckbox> = ({
@@ -54,6 +58,7 @@ const LabeledCheckbox: FC<ILabeledCheckbox> = ({
   disabled,
   checked,
   onChange,
+  onMouseDown,
 }) => {
   return (
     <div>
@@ -64,6 +69,7 @@ const LabeledCheckbox: FC<ILabeledCheckbox> = ({
         type="checkbox"
         id={id}
         value={value}
+        onMouseDown={onMouseDown}
       />
       <Label htmlFor={id}>{value}</Label>
     </div>

@@ -1,8 +1,8 @@
 import { useState, useEffect, Dispatch, SetStateAction, FC } from 'react';
 import { createSearchParams, useNavigate } from 'react-router-dom';
-import { filterItems } from './filterItems';
 import { RoutesTypes } from '../../../utils/routes';
 import SearchModal from '../SearchModal';
+import { t } from 'i18next';
 
 type FilterType = {
   title: string;
@@ -17,12 +17,53 @@ type Attribute = {
   id: number;
   checked: boolean;
 };
-
 interface IProps {
   setActive: Dispatch<SetStateAction<boolean>>;
 }
 
 const UserSearch: FC<IProps> = ({ setActive }) => {
+  const filterItems = [
+    {
+      title: t('SearchModal.UsersFilter.TakenItems'),
+      paramName: 'itemsTaken',
+      id: 1,
+      inputType: 'checkBox',
+      subAttributes: [
+        { title: t('SearchModal.UsersFilter.Nothing'), id: 1, checked: false },
+        { title: t('SearchModal.UsersFilter.TenItems'), id: 2, checked: false },
+        {
+          title: t('SearchModal.UsersFilter.MoreThanTen'),
+          id: 3,
+          checked: false,
+        },
+        { title: t('SearchModal.UsersFilter.All'), id: 4, checked: false },
+      ],
+    },
+    {
+      title: t('SearchModal.UsersFilter.SortBy'),
+      paramName: 'SortBy',
+      id: 2,
+      inputType: 'radio',
+      subAttributes: [
+        {
+          title: t('SearchModal.UsersFilter.Alphabetical'),
+          id: 1,
+          checked: false,
+        },
+        {
+          title: t('SearchModal.UsersFilter.ThingsTaken'),
+          id: 2,
+          checked: false,
+        },
+        {
+          title: t('SearchModal.UsersFilter.OverdueDeals'),
+          id: 3,
+          checked: false,
+        },
+      ],
+    },
+  ];
+
   const [applyFilters, setApplyFilters] = useState(false);
   const navigate = useNavigate();
   const params: { [key: string]: string[] } = {
@@ -38,23 +79,10 @@ const UserSearch: FC<IProps> = ({ setActive }) => {
     navigate(RoutesTypes.READERS);
   };
 
-  const radioBtnHandler = (
-    attributes: Attribute[],
-    type: string,
-    value: string
-  ) => {
-    if (type === 'radio') {
-      if (attributes[0].title === value) {
-        attributes[1].checked = false;
-        attributes[2].checked = false;
-      } else if (attributes[1].title === value) {
-        attributes[0].checked = false;
-        attributes[2].checked = false;
-      } else {
-        attributes[0].checked = false;
-        attributes[1].checked = false;
-      }
-    }
+  const radioBtnHandler = (attributes: Attribute[], value: string) => {
+    attributes.forEach((item) => {
+      item.title === value ? (item.checked = true) : (item.checked = false);
+    });
   };
 
   const checkBoxHandler = (attribute: Attribute) =>

@@ -8,6 +8,8 @@ import { getStatus } from '../../models/helperFunctions/converTime';
 import { GetAllMaterialsQuery } from '@mimir/apollo-client';
 import { locationIds } from '../../store/slices/userSlice';
 import { toast } from 'react-toastify';
+import { RoutesTypes } from '../../../utils/routes';
+import { t } from 'i18next';
 
 type ParamsType = {
   [key: string]: string[];
@@ -55,34 +57,39 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
   const FilteringObjects = () => {
     setAllFilters([
       {
-        title: 'Availability',
-        inputType: 'checkbox',
-        id: 1,
-        subAttributes: customObjectFilter(allAvailability),
+        title: t('SearchModal.ItemFilter.SortBy'),
+        paramName: 'sortby',
+        inputType: 'radio',
+        id: 5,
+        subAttributes: customObjectFilter(allSortBy),
       },
       {
-        title: 'Items',
+        title: t('SearchModal.ItemFilter.Items'),
+        paramName: 'items',
         inputType: 'radio',
         id: 2,
         subAttributes: customObjectFilter(allTypes),
       },
       {
-        title: 'Categories',
+        title: t('SearchModal.ItemFilter.Availability'),
+        paramName: 'availability',
+        inputType: 'checkbox',
+        id: 1,
+        subAttributes: customObjectFilter(allAvailability),
+      },
+      {
+        title: t('SearchModal.ItemFilter.Categories'),
+        paramName: 'categories',
         inputType: 'checkbox',
         id: 3,
         subAttributes: customObjectFilter(allCategories),
       },
       {
-        title: 'Authors',
+        title: t('SearchModal.ItemFilter.Authors'),
+        paramName: 'authors',
         inputType: 'checkbox',
         id: 4,
         subAttributes: customObjectFilter(allAuthors),
-      },
-      {
-        title: 'SortBy',
-        inputType: 'radio',
-        id: 5,
-        subAttributes: customObjectFilter(allSortBy),
       },
     ]);
   };
@@ -120,18 +127,12 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
     );
 
     setActive(false);
-    navigate('/search');
+    navigate(RoutesTypes.SEARCH);
   };
-  const radioBtnHandler = (
-    attributes: SubItemType[],
-    type: string,
-    value: string
-  ) => {
-    if (type === 'radio') {
-      attributes[0].title === value
-        ? attributes[1] && (attributes[1].checked = false)
-        : (attributes[0].checked = false);
-    }
+  const radioBtnHandler = (attributes: SubItemType[], value: string) => {
+    attributes.forEach((item) => {
+      item.title === value ? (item.checked = true) : (item.checked = false);
+    });
   };
   const checkBoxHandler = (attribute: SubItemType) =>
     (attribute.checked = !attribute.checked);
@@ -140,15 +141,14 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
     allFilters?.map((item: ItemsType) =>
       item?.subAttributes.map(
         (subItem: SubItemType) =>
-          subItem.checked &&
-          params[item.title.toLowerCase()].push(subItem.title)
+          subItem.checked && params[item.paramName].push(subItem.title)
       )
     );
   });
   useEffect(() => {
     if (applyFilters) {
       navigate({
-        pathname: '/category',
+        pathname: RoutesTypes.CATEGORY,
         search: `?${createSearchParams(params)}`,
       });
       setActive(false);
