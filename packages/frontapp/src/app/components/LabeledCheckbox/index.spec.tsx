@@ -4,14 +4,19 @@ import LabeledCheckbox from './index';
 
 describe('Labeled Checkbox', () => {
   it('should render correct label with args', () => {
-    render(<LabeledCheckbox id="1" value="example" />);
+    render(<LabeledCheckbox id="1" name="example" value="example" />);
     expect(screen.getByLabelText('example')).toBeInTheDocument();
   });
 
   it('should be checked when clicked', () => {
     const handleChange = jest.fn();
     const { container } = render(
-      <LabeledCheckbox id="1" value="example" onChange={() => handleChange()} />
+      <LabeledCheckbox
+        id="1"
+        name="example"
+        value="example"
+        onChange={() => handleChange()}
+      />
     );
     const input = container.querySelector('input');
     expect(input?.checked).toBe(false);
