@@ -25,7 +25,7 @@ import { RolesTypes } from '@mimir/global-types';
 import { toast } from 'react-toastify';
 import AnswerToUser from '../AnswerToUser';
 import { nanoid } from '@reduxjs/toolkit';
-import Loader from '../Loader';
+import Loader, { WrapperLoader } from '../Loader';
 
 const InlineWrapper = styled.div`
   display: flex;
@@ -125,12 +125,6 @@ const StyledButton = styled(Button)`
   :hover {
     border-color: ${colors.hover_color};
   }
-`;
-
-const WrapperLoader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const UserCard = () => {

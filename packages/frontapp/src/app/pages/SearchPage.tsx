@@ -14,7 +14,7 @@ import useMaterialFilter from '../hooks/useMaterialFilter';
 import { locationIds } from '../store/slices/userSlice';
 import { toast } from 'react-toastify';
 import ItemsNotFound from '../components/ItemsNotFound';
-import Loader from '../components/Loader';
+import Loader, { WrapperLoader } from '../components/Loader';
 const ContentWrapper = styled.div`
   margin: 3rem 0 ${dimensions.xl_6};
 `;
@@ -34,12 +34,6 @@ const Topics = styled.h5`
   font-weight: 700;
   flex: 1;
   font-size: ${dimensions.xl};
-`;
-
-const WrapperLoader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const SearchPage = () => {

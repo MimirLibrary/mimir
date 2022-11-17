@@ -14,7 +14,7 @@ import { setSearchReaders } from '../../store/slices/readersSlice';
 import { IReader } from '../../types';
 import { locationIds } from '../../store/slices/userSlice';
 import { toast } from 'react-toastify';
-import Loader from '../Loader';
+import Loader, { WrapperLoader } from '../Loader';
 
 const ReadersWrapper = styled.div`
   display: flex;
@@ -42,12 +42,6 @@ const Description = styled.p`
   font-weight: 300;
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
-`;
-
-const WrapperLoader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 interface IProps {
