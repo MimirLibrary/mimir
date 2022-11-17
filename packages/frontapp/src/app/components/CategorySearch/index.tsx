@@ -1,5 +1,8 @@
 import { useState, useEffect, Dispatch, SetStateAction, FC } from 'react';
-import SearchModal, { ItemsType, SubItemType } from '../SearchModal';
+import SearchFiltersForm, {
+  ItemsType,
+  SubItemType,
+} from '../SearchFiltersForm';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
@@ -57,35 +60,35 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
   const FilteringObjects = () => {
     setAllFilters([
       {
-        title: t('SearchModal.ItemFilter.SortBy'),
+        title: t('SearchFiltersForm.ItemFilter.SortBy'),
         paramName: 'sortby',
         inputType: 'radio',
         id: 5,
         subAttributes: customObjectFilter(allSortBy),
       },
       {
-        title: t('SearchModal.ItemFilter.Items'),
+        title: t('SearchFiltersForm.ItemFilter.Items'),
         paramName: 'items',
         inputType: 'radio',
         id: 2,
         subAttributes: customObjectFilter(allTypes),
       },
       {
-        title: t('SearchModal.ItemFilter.Availability'),
+        title: t('SearchFiltersForm.ItemFilter.Availability'),
         paramName: 'availability',
         inputType: 'checkbox',
         id: 1,
         subAttributes: customObjectFilter(allAvailability),
       },
       {
-        title: t('SearchModal.ItemFilter.Categories'),
+        title: t('SearchFiltersForm.ItemFilter.Categories'),
         paramName: 'categories',
         inputType: 'checkbox',
         id: 3,
         subAttributes: customObjectFilter(allCategories),
       },
       {
-        title: t('SearchModal.ItemFilter.Authors'),
+        title: t('SearchFiltersForm.ItemFilter.Authors'),
         paramName: 'authors',
         inputType: 'checkbox',
         id: 4,
@@ -157,7 +160,7 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
   }, [applyFilters]);
 
   return (
-    <SearchModal
+    <SearchFiltersForm
       attributes={allFilters}
       radioBtnHandler={radioBtnHandler}
       checkBoxHandler={checkBoxHandler}

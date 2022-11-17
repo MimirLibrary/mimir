@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { dimensions, colors } from '@mimir/ui-kit';
-import { Dispatch, FC, SetStateAction, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useReducer, useState } from 'react';
 import Button from '../Button';
 import LabeledCheckbox from '../LabeledCheckbox';
 import { RadioGroup } from '../RadioButton';
@@ -85,6 +85,8 @@ interface IProps {
   checkBoxHandler: (attribute: SubItemType) => boolean;
   setApplyFilters: Dispatch<SetStateAction<boolean>>;
   handleResetClick?: () => void;
+  initFilers?: any; // TODO: remove any when we implement the reducer
+  minimalNumberOfItems?: number;
 }
 
 interface showMoreStats {
@@ -92,14 +94,16 @@ interface showMoreStats {
   categories: boolean;
 }
 
-const SearchModal: FC<IProps> = ({
+const SearchFiltersForm: FC<IProps> = ({
   handleResetClick,
   setApplyFilters,
   attributes,
   radioBtnHandler,
   checkBoxHandler,
+  minimalNumberOfItems = 7,
 }) => {
-  const NUMBER_OF_INITIAL_ITEMS = 7; // number of items to show before clicked ShowMore
+  const [state, dispatch] = useReducer(filterReducer, []);
+
   const [showMore, setShowMore] = useState<showMoreStats>({
     authors: false,
     categories: false,
@@ -112,8 +116,8 @@ const SearchModal: FC<IProps> = ({
     }));
   };
   return (
-    <form data-testid="searchModal">
-      <Filters>{t('SearchModal.Title')}</Filters>
+    <form data-testid="search-filters-form">
+      <Filters>{t('SearchFiltersForm.Title')}</Filters>
       {attributes.map((item: ItemsType) => (
         <div key={item.id}>
           <Title>{item.title}</Title>
@@ -131,11 +135,16 @@ const SearchModal: FC<IProps> = ({
             ) : (
               <>
                 {item.subAttributes
-                  .slice(0, NUMBER_OF_INITIAL_ITEMS)
+                  .slice(0, minimalNumberOfItems)
                   .map((attribute: SubItemType) => (
                     <OneCategory key={attribute.id}>
                       <LabeledCheckbox
                         id={attribute.title}
+                        name={
+                          attribute.numberOfItems
+                            ? `${attribute.title} - ${attribute.numberOfItems}`
+                            : attribute.title
+                        }
                         value={
                           attribute.numberOfItems
                             ? `${attribute.title} - ${attribute.numberOfItems}`
@@ -152,12 +161,13 @@ const SearchModal: FC<IProps> = ({
 
             {showMore[item.paramName as keyof showMoreStats] &&
               item.subAttributes
-                .slice(NUMBER_OF_INITIAL_ITEMS, item.subAttributes.length)
+                .slice(minimalNumberOfItems, item.subAttributes.length)
                 .map((attribute: SubItemType) =>
                   item.inputType === 'checkbox' ? (
                     <OneCategory key={attribute.id}>
                       <LabeledCheckbox
                         id={attribute.title}
+                        name={`${attribute.title} - ${attribute.numberOfItems}`}
                         value={`${attribute.title} - ${attribute.numberOfItems}`}
                         onMouseDown={() => {
                           checkBoxHandler(attribute);
@@ -166,14 +176,14 @@ const SearchModal: FC<IProps> = ({
                     </OneCategory>
                   ) : null
                 )}
-            {item.subAttributes.length > NUMBER_OF_INITIAL_ITEMS && (
+            {item.subAttributes.length > minimalNumberOfItems && (
               <SeeMoreButton
                 data-testid="seeMoreButton"
                 onClick={() => seeMoreHandler(item.paramName)}
               >
                 {showMore[item.paramName as keyof showMoreStats]
-                  ? t('SearchModal.SeeLess')
-                  : t('SearchModal.SeeAll')}
+                  ? t('SearchFiltersForm.SeeLess')
+                  : t('SearchFiltersForm.SeeAll')}
               </SeeMoreButton>
             )}
           </AttributeWrapper>
@@ -181,7 +191,7 @@ const SearchModal: FC<IProps> = ({
       ))}
       <ButtonWrapper>
         <Button
-          value={t('SearchModal.ShowResults')}
+          value={t('SearchFiltersForm.ShowResults')}
           onClick={() => {
             setApplyFilters(true);
             setShouldReset(false);
@@ -190,7 +200,7 @@ const SearchModal: FC<IProps> = ({
         <Button
           type="reset"
           transparent
-          value={t('SearchModal.Reset')}
+          value={t('SearchFiltersForm.Reset')}
           onClick={() => {
             handleResetClick!();
             setShouldReset(true);
@@ -200,4 +210,45 @@ const SearchModal: FC<IProps> = ({
     </form>
   );
 };
-export default SearchModal;
+
+type Filter = {
+  id: string;
+  title: string;
+  hasMultipleOptions: boolean;
+  shouldShowAll: boolean;
+  options: Array<string>;
+  value: null | string | Array<string>;
+};
+
+function filterReducer(filters: Filter[], action: any) {
+  switch (action.type) {
+    case 'change': {
+      return filters.map((filter) =>
+        filter.id !== action.filter.id
+          ? filter
+          : { ...filter, value: action.filter }
+      );
+    }
+    case 'seeAll': {
+      return filters.map((filter) =>
+        filter.id !== action.filter.id
+          ? filter
+          : { ...filter, shouldShowAll: !filter.shouldShowAll }
+      );
+    }
+    case 'reset': {
+      return filters.map((filter) => ({
+        ...filter,
+        shouldShowAll: false,
+        value: null,
+      }));
+    }
+    default: {
+      throw Error('Unknown action: ' + action.type);
+    }
+  }
+}
+
+const exampleOfInitialFilters = [];
+
+export default SearchFiltersForm;

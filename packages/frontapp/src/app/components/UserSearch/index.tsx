@@ -1,7 +1,7 @@
 import { useState, useEffect, Dispatch, SetStateAction, FC } from 'react';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 import { RoutesTypes } from '../../../utils/routes';
-import SearchModal from '../SearchModal';
+import SearchFiltersForm from '../SearchFiltersForm';
 import { t } from 'i18next';
 
 type FilterType = {
@@ -24,39 +24,51 @@ interface IProps {
 const UserSearch: FC<IProps> = ({ setActive }) => {
   const filterItems = [
     {
-      title: t('SearchModal.UsersFilter.TakenItems'),
+      title: t('SearchFiltersForm.UsersFilter.TakenItems'),
       paramName: 'itemsTaken',
       id: 1,
       inputType: 'checkBox',
       subAttributes: [
-        { title: t('SearchModal.UsersFilter.Nothing'), id: 1, checked: false },
-        { title: t('SearchModal.UsersFilter.TenItems'), id: 2, checked: false },
         {
-          title: t('SearchModal.UsersFilter.MoreThanTen'),
+          title: t('SearchFiltersForm.UsersFilter.Nothing'),
+          id: 1,
+          checked: false,
+        },
+        {
+          title: t('SearchFiltersForm.UsersFilter.TenItems'),
+          id: 2,
+          checked: false,
+        },
+        {
+          title: t('SearchFiltersForm.UsersFilter.MoreThanTen'),
           id: 3,
           checked: false,
         },
-        { title: t('SearchModal.UsersFilter.All'), id: 4, checked: false },
+        {
+          title: t('SearchFiltersForm.UsersFilter.All'),
+          id: 4,
+          checked: false,
+        },
       ],
     },
     {
-      title: t('SearchModal.UsersFilter.SortBy'),
+      title: t('SearchFiltersForm.UsersFilter.SortBy'),
       paramName: 'SortBy',
       id: 2,
       inputType: 'radio',
       subAttributes: [
         {
-          title: t('SearchModal.UsersFilter.Alphabetical'),
+          title: t('SearchFiltersForm.UsersFilter.Alphabetical'),
           id: 1,
           checked: false,
         },
         {
-          title: t('SearchModal.UsersFilter.ThingsTaken'),
+          title: t('SearchFiltersForm.UsersFilter.ThingsTaken'),
           id: 2,
           checked: false,
         },
         {
-          title: t('SearchModal.UsersFilter.OverdueDeals'),
+          title: t('SearchFiltersForm.UsersFilter.OverdueDeals'),
           id: 3,
           checked: false,
         },
@@ -110,7 +122,7 @@ const UserSearch: FC<IProps> = ({ setActive }) => {
   }, [applyFilters]);
 
   return (
-    <SearchModal
+    <SearchFiltersForm
       attributes={filterItems}
       radioBtnHandler={radioBtnHandler}
       checkBoxHandler={checkBoxHandler}

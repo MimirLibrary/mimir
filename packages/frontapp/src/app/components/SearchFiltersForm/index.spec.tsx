@@ -1,6 +1,6 @@
 import { render } from 'packages/frontapp/src/helpers/customRender';
 import { fireEvent, screen } from '@testing-library/react';
-import SearchModal from './index';
+import SearchFiltersForm from './index';
 
 const handleResetClick = jest.fn();
 const setApplyFilters = jest.fn();
@@ -99,7 +99,7 @@ const attributesLessSeven = [
 describe('Search Modal', () => {
   it('should render properly', () => {
     render(
-      <SearchModal
+      <SearchFiltersForm
         attributes={attributes}
         checkBoxHandler={checkBoxHandler}
         radioBtnHandler={radioBtnHandler}
@@ -107,11 +107,11 @@ describe('Search Modal', () => {
         handleResetClick={handleResetClick}
       />
     );
-    expect(screen.getAllByTestId('searchModal')[0]).toBeInTheDocument();
+    expect(screen.getAllByTestId('search-filters-form')[0]).toBeInTheDocument();
   });
   it('should show seeMore button if there is more than 7 elements', () => {
     render(
-      <SearchModal
+      <SearchFiltersForm
         attributes={attributes}
         checkBoxHandler={checkBoxHandler}
         radioBtnHandler={radioBtnHandler}
@@ -123,7 +123,7 @@ describe('Search Modal', () => {
   });
   it('should not show seeMore button if there is less than 7 elements', () => {
     render(
-      <SearchModal
+      <SearchFiltersForm
         attributes={attributesLessSeven}
         checkBoxHandler={checkBoxHandler}
         radioBtnHandler={radioBtnHandler}
@@ -135,7 +135,7 @@ describe('Search Modal', () => {
   });
   it('should show all elements if seeMore button is clicked', () => {
     render(
-      <SearchModal
+      <SearchFiltersForm
         attributes={attributes}
         checkBoxHandler={checkBoxHandler}
         radioBtnHandler={radioBtnHandler}
