@@ -40,7 +40,7 @@ describe('UserCard Component', () => {
   });
 
   it('should render loading', async () => {
-    expect(screen.getByText('Loading')).toBeInTheDocument();
+    expect(screen.getByTestId('oval-loading')).toBeInTheDocument();
   });
 
   it('should render result', async () => {

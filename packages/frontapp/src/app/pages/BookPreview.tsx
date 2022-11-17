@@ -28,6 +28,7 @@ import { IClaimHistory } from '../models/helperFunctions/claimHistory';
 import { getDates, isOverdue } from '../models/helperFunctions/converTime';
 import { locationIds } from '../store/slices/userSlice';
 import { toast } from 'react-toastify';
+import Loader, { WrapperLoader } from '../components/Loader';
 
 export const ButtonGroup = styled.div`
   display: flex;
@@ -149,7 +150,12 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
     }
   }, [error]);
 
-  if (loading) return <h1>Loading...</h1>;
+  if (loading)
+    return (
+      <WrapperLoader>
+        <Loader height={100} width={100} color={`${colors.accent_color}`} />
+      </WrapperLoader>
+    );
 
   return (
     <>
