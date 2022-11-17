@@ -38,7 +38,7 @@ const Form = styled.form`
 
 const FormWrapper = styled.div`
   background-color: ${colors.bg_secondary};
-  box-shadow: 0 10px 70px rgba(26, 30, 214, 0.08);
+  box-shadow: 0 ${dimensions.xs_1} 70px ${colors.shadow};
   border-radius: ${dimensions.xs_1};
   padding: ${dimensions.base_2};
 
