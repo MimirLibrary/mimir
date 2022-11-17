@@ -99,7 +99,7 @@ const SearchModal: FC<IProps> = ({
   radioBtnHandler,
   checkBoxHandler,
 }) => {
-  const numberOfInitialItems = 7; // number of items to show before clicked ShowMore
+  const NUMBER_OF_INITIAL_ITEMS = 7; // number of items to show before clicked ShowMore
   const [showMore, setShowMore] = useState<showMoreStats>({
     authors: false,
     categories: false,
@@ -131,7 +131,7 @@ const SearchModal: FC<IProps> = ({
             ) : (
               <>
                 {item.subAttributes
-                  .slice(0, 7)
+                  .slice(0, NUMBER_OF_INITIAL_ITEMS)
                   .map((attribute: SubItemType) => (
                     <OneCategory key={attribute.id}>
                       <LabeledCheckbox
@@ -152,19 +152,21 @@ const SearchModal: FC<IProps> = ({
 
             {showMore[item.paramName as keyof showMoreStats] &&
               item.subAttributes
-                .slice(numberOfInitialItems, item.subAttributes.length)
-                .map((attribute: SubItemType) => (
-                  <OneCategory key={attribute.id}>
-                    <LabeledCheckbox
-                      id={attribute.title}
-                      value={`${attribute.title} - ${attribute.numberOfItems}`}
-                      onMouseDown={() => {
-                        checkBoxHandler(attribute);
-                      }}
-                    />
-                  </OneCategory>
-                ))}
-            {item.subAttributes.length > numberOfInitialItems && (
+                .slice(NUMBER_OF_INITIAL_ITEMS, item.subAttributes.length)
+                .map((attribute: SubItemType) =>
+                  item.inputType === 'checkbox' ? (
+                    <OneCategory key={attribute.id}>
+                      <LabeledCheckbox
+                        id={attribute.title}
+                        value={`${attribute.title} - ${attribute.numberOfItems}`}
+                        onMouseDown={() => {
+                          checkBoxHandler(attribute);
+                        }}
+                      />
+                    </OneCategory>
+                  ) : null
+                )}
+            {item.subAttributes.length > NUMBER_OF_INITIAL_ITEMS && (
               <SeeMoreButton
                 data-testid="seeMoreButton"
                 onClick={() => seeMoreHandler(item.paramName)}
