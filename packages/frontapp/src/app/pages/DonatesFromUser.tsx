@@ -21,12 +21,18 @@ interface TitleProps {
 
 const WrapperSearch = styled(WrapperInput)`
   position: relative;
-  top: -6.5rem;
+  left: 0;
+  top: -3.5rem;
+  @media (max-width: ${dimensions.phone_width}) {
+    top: -6.5rem;
+  }
 `;
 const StyledWrapperInput = styled.div`
   width: 100%;
   display: flex;
-  justify-content: center;
+  @media (max-width: ${dimensions.phone_width}) {
+    justify-content: center;
+  }
 `;
 
 const ColumnHeader = styled.div`
