@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { t } from 'i18next';
 
 export const ButtonWrapper = styled.div`
-  margin: 3rem 0 ${dimensions.xl_3} 0;
+  margin: ${dimensions.base_3} 0 ${dimensions.xl_3} 0;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -15,6 +15,7 @@ export const ButtonWrapper = styled.div`
 export const GoBack = styled.a`
   font-weight: 600;
   font-size: ${dimensions.base};
+  margin-left: ${dimensions.lg};
 `;
 
 const BackButton = () => {
