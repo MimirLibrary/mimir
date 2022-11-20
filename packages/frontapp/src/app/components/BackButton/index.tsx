@@ -11,11 +11,11 @@ export const ButtonWrapper = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;
+  gap: ${dimensions.lg};
 `;
 export const GoBack = styled.a`
   font-weight: 600;
   font-size: ${dimensions.base};
-  margin-left: ${dimensions.lg};
 `;
 
 const BackButton = () => {
