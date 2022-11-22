@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 import { useSearchOfMaterialsQuery } from '@mimir/apollo-client';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/useTypedDispatch';
@@ -68,7 +68,7 @@ const SearchByBookOrAuthor: FC<{ path: string }> = ({ path }) => {
       dispatch(setActiveTab(NavbarItems.SEARCH));
     }
   };
-
+  const { t } = useTranslation();
   return (
     <Wrapper>
       <Search
