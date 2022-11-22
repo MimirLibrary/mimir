@@ -1,9 +1,6 @@
 import { useState, useEffect, Dispatch, SetStateAction, FC } from 'react';
-import SearchFiltersForm, {
-  ItemsType,
-  SubItemType,
-} from '../SearchFiltersForm';
-import { createSearchParams, useNavigate } from 'react-router-dom';
+import SearchFiltersForm, { ItemsType } from '../SearchFiltersForm';
+import { useNavigate } from 'react-router-dom';
 import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import useMaterialFilter from '../../hooks/useMaterialFilter';
@@ -13,18 +10,16 @@ import { locationIds } from '../../store/slices/userSlice';
 import { toast } from 'react-toastify';
 import { RoutesTypes } from '../../../utils/routes';
 import { t } from 'i18next';
-
-type ParamsType = {
-  [key: string]: string[];
-};
+import { adaptFiltersToAttrs } from '../../models/helperFunctions/filters';
+import { useFilters } from '../../hooks/useFilters';
+import { ParamsType } from '../../types/filterTypes';
 
 interface IProps {
   setActive: Dispatch<SetStateAction<boolean>>;
 }
 
 const CategorySearch: FC<IProps> = ({ setActive }) => {
-  let idOfItems = 0;
-  const [allFilters, setAllFilters] = useState<ItemsType[]>([]);
+  const [attributes, setAttributes] = useState<ItemsType[]>([]);
   const locations = useAppSelector(locationIds);
   const [availableMaterial, setAvailableMaterial] = useState<
     GetAllMaterialsQuery['getAllMaterials']
@@ -43,59 +38,12 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
     'By date of writing': undefined,
   };
 
+  // const filtersParams = fromSearchParamsToFilters(searchParams);
+  // const [filters, setFilters] = useState(filtersParams);
+
   useEffect(() => {
     if (error) toast.error(error.message);
   }, [error]);
-
-  const customObjectFilter = (filterName: {
-    [author: string]: number | undefined;
-  }) =>
-    Object.keys(filterName).map((key) => ({
-      title: key,
-      numberOfItems: filterName[key],
-      id: idOfItems++,
-      checked: false,
-    }));
-
-  const FilteringObjects = () => {
-    setAllFilters([
-      {
-        title: t('SearchFiltersForm.ItemFilter.SortBy'),
-        paramName: 'sortby',
-        inputType: 'radio',
-        id: 5,
-        subAttributes: customObjectFilter(allSortBy),
-      },
-      {
-        title: t('SearchFiltersForm.ItemFilter.Items'),
-        paramName: 'items',
-        inputType: 'radio',
-        id: 2,
-        subAttributes: customObjectFilter(allTypes),
-      },
-      {
-        title: t('SearchFiltersForm.ItemFilter.Availability'),
-        paramName: 'availability',
-        inputType: 'checkbox',
-        id: 1,
-        subAttributes: customObjectFilter(allAvailability),
-      },
-      {
-        title: t('SearchFiltersForm.ItemFilter.Categories'),
-        paramName: 'categories',
-        inputType: 'checkbox',
-        id: 3,
-        subAttributes: customObjectFilter(allCategories),
-      },
-      {
-        title: t('SearchFiltersForm.ItemFilter.Authors'),
-        paramName: 'authors',
-        inputType: 'checkbox',
-        id: 4,
-        subAttributes: customObjectFilter(allAuthors),
-      },
-    ]);
-  };
 
   useEffect(() => {
     const available = data?.getAllMaterials.filter((material) => {
@@ -108,11 +56,47 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
 
   useEffect(() => {
     if (allAuthors && allCategories && allTypes && allAvailability) {
-      FilteringObjects();
+      setAttributes([
+        {
+          title: t('SearchFiltersForm.ItemFilter.SortBy'),
+          paramName: 'sortby',
+          inputType: 'radio',
+          id: 5,
+          subAttributes: adaptFiltersToAttrs(allSortBy),
+        },
+        {
+          title: t('SearchFiltersForm.ItemFilter.Items'),
+          paramName: 'items',
+          inputType: 'radio',
+          id: 2,
+          subAttributes: adaptFiltersToAttrs(allTypes),
+        },
+        {
+          title: t('SearchFiltersForm.ItemFilter.Availability'),
+          paramName: 'availability',
+          inputType: 'checkbox',
+          id: 1,
+          subAttributes: adaptFiltersToAttrs(allAvailability),
+        },
+        {
+          title: t('SearchFiltersForm.ItemFilter.Categories'),
+          paramName: 'categories',
+          inputType: 'checkbox',
+          id: 3,
+          subAttributes: adaptFiltersToAttrs(allCategories),
+        },
+        {
+          title: t('SearchFiltersForm.ItemFilter.Authors'),
+          paramName: 'authors',
+          inputType: 'checkbox',
+          id: 4,
+          subAttributes: adaptFiltersToAttrs(allAuthors),
+        },
+      ]);
     }
   }, [availableMaterial]);
 
-  const [applyFilters, setApplyFilters] = useState(false);
+  // const [isFiltersApplied, setIsFiltersApplied] = useState(false);
   const navigate = useNavigate();
   const params: ParamsType = {
     availability: [],
@@ -122,50 +106,51 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
     sortby: [],
   };
 
-  const handleResetClick = () => {
-    allFilters?.map((item: ItemsType) =>
-      item?.subAttributes.forEach(
-        (subItem: SubItemType) => (subItem.checked = false)
-      )
-    );
+  const { filters, setFilters, setIsFiltersApplied } = useFilters(
+    params,
+    RoutesTypes.CATEGORY
+  );
 
+  const handleResetClick = () => {
     setActive(false);
     navigate(RoutesTypes.SEARCH);
   };
-  const radioBtnHandler = (attributes: SubItemType[], value: string) => {
-    attributes.forEach((item) => {
-      item.title === value ? (item.checked = true) : (item.checked = false);
-    });
-  };
-  const checkBoxHandler = (attribute: SubItemType) =>
-    (attribute.checked = !attribute.checked);
 
-  useEffect(() => {
-    allFilters?.map((item: ItemsType) =>
-      item?.subAttributes.map(
-        (subItem: SubItemType) =>
-          subItem.checked && params[item.paramName].push(subItem.title)
-      )
-    );
-  });
-  useEffect(() => {
-    if (applyFilters) {
-      navigate({
-        pathname: RoutesTypes.CATEGORY,
-        search: `?${createSearchParams(params)}`,
-      });
-      setActive(false);
-    }
-    setApplyFilters(false);
-  }, [applyFilters]);
+  const handleApplyFilters = (e: Record<string, Array<string>>) => {
+    setIsFiltersApplied(true);
+    setFilters(e);
+    setActive(false);
+  };
+
+  // useEffect(() => {
+  //   if (isFiltersApplied) {
+  //     Object.entries(filters)?.map(
+  //       ([key, value]) =>
+  //         value &&
+  //         (Array.isArray(value)
+  //           ? value.forEach((el) => el && params[key].push(el))
+  //           : params[key].push(value!))
+  //     );
+  //     navigate({
+  //       pathname: RoutesTypes.CATEGORY,
+  //       search: `?${createSearchParams(params)}`
+  //     });
+  //   }
+  //   setIsFiltersApplied(false);
+  // }, [isFiltersApplied]);
+
+  // useEffect(() => {
+  //   const filtersParams = fromSearchParamsToFilters(searchParams);
+  //   !isFiltersApplied && setFilters(filtersParams);
+  // }, [searchParams]);
 
   return (
     <SearchFiltersForm
-      attributes={allFilters}
-      radioBtnHandler={radioBtnHandler}
-      checkBoxHandler={checkBoxHandler}
-      setApplyFilters={setApplyFilters}
-      handleResetClick={handleResetClick}
+      key={JSON.stringify(filters)}
+      attributes={attributes}
+      onFiltersApply={handleApplyFilters}
+      onReset={handleResetClick}
+      defaultFilters={filters}
     />
   );
 };

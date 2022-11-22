@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 const Label = styled.label`
   display: inline-block;
@@ -87,19 +87,26 @@ const LabeledCheckboxGroupWrapper = styled.div`
 `;
 interface ILabeledCheckboxGroup {
   orientation?: string;
-  defaultValue: Array<string>;
+  defaultValue?: Array<string>;
   name: string;
   options: { name: string; value: string }[];
   onChange?: (value: Array<string>) => void;
+  onMouseDown?: (event: string) => void;
   shouldReset?: boolean;
 }
 
-const LabeledCheckboxGroup: React.FC<ILabeledCheckboxGroup> = ({
-  defaultValue,
+export const LabeledCheckboxGroup: React.FC<ILabeledCheckboxGroup> = ({
+  defaultValue = [],
   options,
   onChange,
+  onMouseDown,
+  shouldReset,
 }) => {
   const [checkedValues, setCheckedValues] = useState(defaultValue);
+
+  useEffect(() => {
+    shouldReset && setCheckedValues(defaultValue);
+  }, [shouldReset]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     checkedValues.some((value) => value === e.target.value)
@@ -107,19 +114,27 @@ const LabeledCheckboxGroup: React.FC<ILabeledCheckboxGroup> = ({
           prev?.filter((value) => value !== e.target.value)
         )
       : setCheckedValues((prev) => [...prev, e.target.value]);
-    onChange && onChange(checkedValues);
   };
+
+  const handleMouseDown = (option: string) => {
+    onMouseDown && onMouseDown(option);
+  };
+
+  useEffect(() => {
+    onChange && onChange(checkedValues);
+  }, [checkedValues]);
 
   return (
     <LabeledCheckboxGroupWrapper>
       {options?.map((option) => (
         <LabeledCheckbox
-          id={option.value}
+          id={`${option.value} - ${option.name}`}
           name={option.name}
           value={option.value}
           key={option.value}
           checked={checkedValues.some((value) => value === option.value)}
           onChange={handleChange}
+          onMouseDown={() => handleMouseDown(option.value)}
         />
       ))}
     </LabeledCheckboxGroupWrapper>

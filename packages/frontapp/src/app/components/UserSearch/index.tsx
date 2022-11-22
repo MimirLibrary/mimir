@@ -1,22 +1,11 @@
-import { useState, useEffect, Dispatch, SetStateAction, FC } from 'react';
-import { createSearchParams, useNavigate } from 'react-router-dom';
+import { Dispatch, SetStateAction, FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { RoutesTypes } from '../../../utils/routes';
 import SearchFiltersForm from '../SearchFiltersForm';
 import { t } from 'i18next';
+import { useFilters } from '../../hooks/useFilters';
+import { ParamsType } from '../../types/filterTypes';
 
-type FilterType = {
-  title: string;
-  inputType: string;
-  paramName: string;
-  id: number;
-  subAttributes: Attribute[];
-};
-
-type Attribute = {
-  title: string;
-  id: number;
-  checked: boolean;
-};
 interface IProps {
   setActive: Dispatch<SetStateAction<boolean>>;
 }
@@ -25,7 +14,7 @@ const UserSearch: FC<IProps> = ({ setActive }) => {
   const filterItems = [
     {
       title: t('SearchFiltersForm.UsersFilter.TakenItems'),
-      paramName: 'itemsTaken',
+      paramName: 'itemstaken',
       id: 1,
       inputType: 'checkBox',
       subAttributes: [
@@ -53,7 +42,7 @@ const UserSearch: FC<IProps> = ({ setActive }) => {
     },
     {
       title: t('SearchFiltersForm.UsersFilter.SortBy'),
-      paramName: 'SortBy',
+      paramName: 'sortby',
       id: 2,
       inputType: 'radio',
       subAttributes: [
@@ -76,58 +65,35 @@ const UserSearch: FC<IProps> = ({ setActive }) => {
     },
   ];
 
-  const [applyFilters, setApplyFilters] = useState(false);
   const navigate = useNavigate();
-  const params: { [key: string]: string[] } = {
+  const params: ParamsType = {
     itemstaken: [],
     sortby: [],
   };
 
+  const { filters, setFilters, setIsFiltersApplied } = useFilters(
+    params,
+    RoutesTypes.READERS
+  );
+
   const handleResetClick = () => {
-    filterItems?.map((item) =>
-      item?.subAttributes.forEach((subItem) => (subItem.checked = false))
-    );
     setActive(false);
     navigate(RoutesTypes.READERS);
   };
 
-  const radioBtnHandler = (attributes: Attribute[], value: string) => {
-    attributes.forEach((item) => {
-      item.title === value ? (item.checked = true) : (item.checked = false);
-    });
+  const handleApplyFilters = (e: Record<string, Array<string>>) => {
+    setIsFiltersApplied(true);
+    setFilters(e);
+    setActive(false);
   };
-
-  const checkBoxHandler = (attribute: Attribute) =>
-    (attribute.checked = !attribute.checked);
-
-  useEffect(() => {
-    filterItems?.map((item: FilterType) =>
-      item?.subAttributes.map(
-        (subItem) =>
-          subItem.checked &&
-          params[item.paramName.toLowerCase()].push(subItem.title)
-      )
-    );
-  });
-
-  useEffect(() => {
-    if (applyFilters) {
-      navigate({
-        pathname: RoutesTypes.READERS,
-        search: `?${createSearchParams(params)}`,
-      });
-      setActive(false);
-    }
-    setApplyFilters(false);
-  }, [applyFilters]);
 
   return (
     <SearchFiltersForm
+      key={JSON.stringify(filters)}
       attributes={filterItems}
-      radioBtnHandler={radioBtnHandler}
-      checkBoxHandler={checkBoxHandler}
-      setApplyFilters={setApplyFilters}
-      handleResetClick={handleResetClick}
+      onFiltersApply={handleApplyFilters}
+      onReset={handleResetClick}
+      defaultFilters={filters}
     />
   );
 };

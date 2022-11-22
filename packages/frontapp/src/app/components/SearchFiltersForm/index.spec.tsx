@@ -3,9 +3,6 @@ import { fireEvent, screen } from '@testing-library/react';
 import SearchFiltersForm from './index';
 
 const handleResetClick = jest.fn();
-const setApplyFilters = jest.fn();
-const radioBtnHandler = jest.fn();
-const checkBoxHandler = jest.fn();
 const attributes = [
   {
     title: 'SortBy',
@@ -97,14 +94,18 @@ const attributesLessSeven = [
 ];
 
 describe('Search Modal', () => {
+  let filter = {};
+
+  afterEach(() => {
+    filter = {};
+  });
   it('should render properly', () => {
     render(
       <SearchFiltersForm
+        defaultFilters={filter}
+        key={JSON.stringify(filter)}
         attributes={attributes}
-        checkBoxHandler={checkBoxHandler}
-        radioBtnHandler={radioBtnHandler}
-        setApplyFilters={setApplyFilters}
-        handleResetClick={handleResetClick}
+        onReset={handleResetClick}
       />
     );
     expect(screen.getAllByTestId('search-filters-form')[0]).toBeInTheDocument();
@@ -112,11 +113,10 @@ describe('Search Modal', () => {
   it('should show seeMore button if there is more than 7 elements', () => {
     render(
       <SearchFiltersForm
+        defaultFilters={filter}
+        key={JSON.stringify(filter)}
         attributes={attributes}
-        checkBoxHandler={checkBoxHandler}
-        radioBtnHandler={radioBtnHandler}
-        setApplyFilters={setApplyFilters}
-        handleResetClick={handleResetClick}
+        onReset={handleResetClick}
       />
     );
     expect(screen.queryByTestId('seeMoreButton')).toBeInTheDocument();
@@ -124,11 +124,10 @@ describe('Search Modal', () => {
   it('should not show seeMore button if there is less than 7 elements', () => {
     render(
       <SearchFiltersForm
+        defaultFilters={filter}
+        key={JSON.stringify(filter)}
         attributes={attributesLessSeven}
-        checkBoxHandler={checkBoxHandler}
-        radioBtnHandler={radioBtnHandler}
-        setApplyFilters={setApplyFilters}
-        handleResetClick={handleResetClick}
+        onReset={handleResetClick}
       />
     );
     expect(screen.queryByTestId('seeMoreButton')).not.toBeInTheDocument();
@@ -136,15 +135,14 @@ describe('Search Modal', () => {
   it('should show all elements if seeMore button is clicked', () => {
     render(
       <SearchFiltersForm
+        defaultFilters={filter}
+        key={JSON.stringify(filter)}
         attributes={attributes}
-        checkBoxHandler={checkBoxHandler}
-        radioBtnHandler={radioBtnHandler}
-        setApplyFilters={setApplyFilters}
-        handleResetClick={handleResetClick}
+        onReset={handleResetClick}
       />
     );
     fireEvent.click(screen.getByTestId('seeMoreButton'));
     const wrapper = screen.getByTestId('wrapperOfElements');
-    expect(wrapper.children.length).toBeGreaterThan(7);
+    expect(wrapper.children[0].children.length).toBeGreaterThan(7);
   });
 });
