@@ -38,9 +38,6 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
     'By date of writing': undefined,
   };
 
-  // const filtersParams = fromSearchParamsToFilters(searchParams);
-  // const [filters, setFilters] = useState(filtersParams);
-
   useEffect(() => {
     if (error) toast.error(error.message);
   }, [error]);
@@ -96,7 +93,6 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
     }
   }, [availableMaterial]);
 
-  // const [isFiltersApplied, setIsFiltersApplied] = useState(false);
   const navigate = useNavigate();
   const params: ParamsType = {
     availability: [],
@@ -121,28 +117,6 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
     setFilters(e);
     setActive(false);
   };
-
-  // useEffect(() => {
-  //   if (isFiltersApplied) {
-  //     Object.entries(filters)?.map(
-  //       ([key, value]) =>
-  //         value &&
-  //         (Array.isArray(value)
-  //           ? value.forEach((el) => el && params[key].push(el))
-  //           : params[key].push(value!))
-  //     );
-  //     navigate({
-  //       pathname: RoutesTypes.CATEGORY,
-  //       search: `?${createSearchParams(params)}`
-  //     });
-  //   }
-  //   setIsFiltersApplied(false);
-  // }, [isFiltersApplied]);
-
-  // useEffect(() => {
-  //   const filtersParams = fromSearchParamsToFilters(searchParams);
-  //   !isFiltersApplied && setFilters(filtersParams);
-  // }, [searchParams]);
 
   return (
     <SearchFiltersForm
