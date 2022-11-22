@@ -26,7 +26,6 @@ export const useFilters = (
 
   useEffect(() => {
     if (isFiltersApplied) {
-      console.log(params);
       Object.entries(filters)?.map(
         ([key, value]) =>
           value &&
