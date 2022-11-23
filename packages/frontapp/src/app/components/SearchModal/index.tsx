@@ -55,7 +55,7 @@ const ButtonWrapper = styled.div`
   gap: ${dimensions.base};
   @media (max-width: ${dimensions.phone_width}) {
     justify-content: center;
-    flex-direction: column;
+    flex-direction: column-reverse;
     gap: ${dimensions.xs_1};
     position: sticky;
     bottom: 0;
@@ -179,19 +179,19 @@ const SearchModal: FC<IProps> = ({
       ))}
       <ButtonWrapper>
         <Button
-          value={t('SearchModal.ShowResults')}
-          onClick={() => {
-            setApplyFilters(true);
-            setShouldReset(false);
-          }}
-        />
-        <Button
           type="reset"
           transparent
           value={t('SearchModal.Reset')}
           onClick={() => {
             handleResetClick!();
             setShouldReset(true);
+          }}
+        />
+        <Button
+          value={t('SearchModal.ShowResults')}
+          onClick={() => {
+            setApplyFilters(true);
+            setShouldReset(false);
           }}
         />
       </ButtonWrapper>
