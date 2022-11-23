@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { dimensions, colors } from '@mimir/ui-kit';
-import { Dispatch, FC, SetStateAction, useState } from 'react';
+import { FC, useState } from 'react';
 import Button from '../Button';
 import { LabeledCheckboxGroup } from '../LabeledCheckbox';
 import { RadioGroup } from '../RadioButton';
@@ -21,13 +21,19 @@ const Title = styled.h3`
   margin-bottom: ${dimensions.lg};
 `;
 
-const AttributeWrapper = styled.div`
+const AttributeWrapper = styled.div<{ isTitleProvided?: boolean }>`
   display: flex;
   gap: ${dimensions.base};
   flex-wrap: wrap;
   width: 100%;
   height: 100%;
   margin-bottom: ${dimensions.xl_2};
+
+  & > div {
+    justify-content: ${({ isTitleProvided }) =>
+      isTitleProvided ? 'center' : 'flex-start'};
+  }
+
   @media (max-width: ${dimensions.phone_width}) {
     gap: ${dimensions.xs_2};
   }
@@ -68,6 +74,7 @@ export type SubItemType = {
 };
 
 interface IProps {
+  title?: string;
   attributes: ItemsType[];
   defaultFilters?: Record<string, Array<string>>;
   onReset?: () => void;
@@ -76,6 +83,7 @@ interface IProps {
 }
 
 const SearchFiltersForm: FC<IProps> = ({
+  title,
   onReset,
   attributes,
   defaultFilters,
@@ -105,11 +113,14 @@ const SearchFiltersForm: FC<IProps> = ({
 
   return (
     <form data-testid="search-filters-form">
-      <Filters>{t('SearchFiltersForm.Title')}</Filters>
+      <Filters>{title || t('SearchFiltersForm.Title')}</Filters>
       {attributes.map((item: ItemsType) => (
         <div key={item.id}>
-          <Title>{item.title}</Title>
-          <AttributeWrapper data-testid="wrapperOfElements">
+          {!title && <Title>{item.title}</Title>}
+          <AttributeWrapper
+            isTitleProvided={!!title}
+            data-testid="wrapperOfElements"
+          >
             {item.inputType === 'radio' ? (
               <RadioGroup
                 options={item.subAttributes.map((attr) => ({
