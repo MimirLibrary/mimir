@@ -166,9 +166,8 @@ const DonateBookFlow = () => {
       <Modal active={isShowError} setActive={setIsShowError}>
         <ErrorMessage
           setActive={setIsShowError}
-          message="We did not find a suitable book code :(
-          But you can still donate to the library by filling in the information manually"
-          title="ISBN is not known"
+          message={t('DonateItem.Modal.ISBNError.Message')}
+          title={t('DonateItem.Modal.ISBNError.Title')}
           titleCancel="Ok"
           activeAskManager={false}
           showContentOfDonate={showContentOfDonate}
