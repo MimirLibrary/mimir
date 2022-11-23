@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import { RoutesTypes } from '../../utils/routes';
 import Modal from '../components/Modal';
 import CategorySearch from '../components/CategorySearch';
+import Loader, { WrapperLoader } from '../components/Loader';
 const ContentWrapper = styled.div`
   margin: 3rem 0 ${dimensions.xl_6};
 `;
@@ -104,7 +105,12 @@ const SearchPage = () => {
     }
   }, [error]);
 
-  if (loading) return <h1>Loading...</h1>;
+  if (loading)
+    return (
+      <WrapperLoader>
+        <Loader height={100} width={100} color={`${colors.accent_color}`} />
+      </WrapperLoader>
+    );
 
   if (!data) return <ErrorType500 />;
   if (data.getAllMaterials.length === 0) return <ItemsNotFound />;

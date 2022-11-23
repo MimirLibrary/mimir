@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { Oval } from 'react-loader-spinner';
+import styled from '@emotion/styled';
 
 interface IPropsLoader {
   height: number;
@@ -8,6 +9,12 @@ interface IPropsLoader {
   secondaryColor?: string;
   strokeWidth?: number;
 }
+
+export const WrapperLoader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 const Loader: FC<IPropsLoader> = ({
   color,

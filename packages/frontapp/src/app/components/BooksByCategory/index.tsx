@@ -8,6 +8,8 @@ import { toast } from 'react-toastify';
 import BookList, { IMaterial } from './bookList';
 import BackButton from '../BackButton';
 import ItemsNotFound from '../ItemsNotFound';
+import Loader, { WrapperLoader } from '../Loader';
+import { colors } from '@mimir/ui-kit';
 
 const BooksByCategory = () => {
   const locations = useAppSelector(locationIds);
@@ -22,7 +24,13 @@ const BooksByCategory = () => {
     }
   }, [error]);
 
-  if (loading) return <h1>Loading...</h1>;
+  if (loading)
+    return (
+      <WrapperLoader>
+        <Loader height={100} width={100} color={`${colors.accent_color}`} />
+      </WrapperLoader>
+    );
+
   if (!data) return <ErrorType500 />;
   if (data.getAllMaterials.length === 0) return <ItemsNotFound />;
 

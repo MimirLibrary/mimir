@@ -25,6 +25,7 @@ import { RolesTypes } from '@mimir/global-types';
 import { toast } from 'react-toastify';
 import AnswerToUser from '../AnswerToUser';
 import { nanoid } from '@reduxjs/toolkit';
+import Loader, { WrapperLoader } from '../Loader';
 
 const InlineWrapper = styled.div`
   display: flex;
@@ -249,7 +250,13 @@ const UserCard = () => {
   ];
 
   const state = OnePerson?.getOnePerson.states?.slice().pop()?.state;
-  if (loading) return <h1>{t('Loading')}</h1>;
+
+  if (loading)
+    return (
+      <WrapperLoader>
+        <Loader height={100} width={100} color={`${colors.accent_color}`} />
+      </WrapperLoader>
+    );
 
   return (
     <div style={{ marginBottom: '138px' }}>
