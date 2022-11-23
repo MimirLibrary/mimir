@@ -25,21 +25,15 @@ exports[`BookCard Component renders correctly, with snapshots 1`] = `
   box-shadow: 0px 6px 14px -6px rgba(24, 39, 75, 0.08),0px 10px 32px -4px rgba(24, 39, 75, 0.08);
 }
 
-@media (min-width: 30rem) {
-  .emotion-0 {
-    min-height: 19.5rem;
-  }
-}
-
 @media (max-width: 30rem) {
   .emotion-0 {
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    height: -webkit-min-content;
-    height: -moz-min-content;
-    height: min-content;
+    max-width: 8.75rem;
     width: 100%;
+    padding: 0.625rem;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
   }
 }
 
@@ -54,9 +48,9 @@ exports[`BookCard Component renders correctly, with snapshots 1`] = `
 
 @media (max-width: 30rem) {
   .emotion-1 {
-    width: 5rem;
-    height: 8rem;
-    margin-right: 1rem;
+    display: block;
+    width: 7.5rem;
+    height: 11.25rem;
   }
 }
 
@@ -74,6 +68,14 @@ exports[`BookCard Component renders correctly, with snapshots 1`] = `
   flex-direction: column;
 }
 
+@media (max-width: 30rem) {
+  .emotion-2 {
+    -webkit-align-self: start;
+    -ms-flex-item-align: start;
+    align-self: start;
+  }
+}
+
 .emotion-3 {
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -83,6 +85,13 @@ exports[`BookCard Component renders correctly, with snapshots 1`] = `
   font-size: 0.875rem;
   line-height: 1rem;
   color: #333333;
+  white-space: normal;
+}
+
+@media (max-width: 30rem) {
+  .emotion-3 {
+    font-size: 0.75rem;
+  }
 }
 
 .emotion-4 {
@@ -92,6 +101,14 @@ exports[`BookCard Component renders correctly, with snapshots 1`] = `
   line-height: 1rem;
   color: #4F4F4F;
   margin: 0.5rem 0;
+}
+
+@media (max-width: 30rem) {
+  .emotion-4 {
+    max-width: 100%;
+    margin: 0.25rem 0;
+    font-size: 0.75rem;
+  }
 }
 
 @media (max-width: 30rem) {
@@ -138,7 +155,7 @@ exports[`BookCard Component renders correctly, with snapshots 1`] = `
     <p
       class="emotion-4"
     >
-      Test / Test
+      Test
     </p>
     <div
       class="emotion-5"
