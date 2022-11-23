@@ -18,6 +18,10 @@ const CategoriesWrapper = styled.div`
   @media (max-width: ${dimensions.tablet_width}) {
     flex-direction: column;
   }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    display: none;
+  }
 `;
 const Categories = styled.div<IStyledContainerProps>`
   padding: ${dimensions.base_2};

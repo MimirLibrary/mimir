@@ -5,6 +5,7 @@ import bookImage from '../../../assets/MOC-data/BookImage.png';
 import { useNavigate } from 'react-router-dom';
 import { DateTime } from '@mimir/global-types';
 import BookStatus from '../BookStatus';
+import { shortenText } from '../../../helpers/common';
 export interface IBookCardProps {
   src?: string | null;
   title?: string;
@@ -30,14 +31,12 @@ const BookCardWrapper = styled.div`
     box-shadow: 0px 6px 14px -6px rgba(24, 39, 75, 0.08),
       0px 10px 32px -4px rgba(24, 39, 75, 0.08);
   }
-  @media (min-width: ${dimensions.phone_width}) {
-    min-height: 19.5rem;
-  }
 
   @media (max-width: ${dimensions.phone_width}) {
-    flex-direction: row;
-    height: min-content;
+    max-width: 8.75rem;
     width: 100%;
+    padding: ${dimensions.xs_1};
+    align-items: center;
   }
 `;
 
@@ -45,6 +44,10 @@ const DescriptionWrapper = styled.div`
   display: flex;
   justify-content: start;
   flex-direction: column;
+
+  @media (max-width: ${dimensions.phone_width}) {
+    align-self: start;
+  }
 `;
 
 const BookImage = styled.img`
@@ -53,9 +56,9 @@ const BookImage = styled.img`
   margin-bottom: ${dimensions.xs_2};
   align-self: center;
   @media (max-width: ${dimensions.phone_width}) {
-    width: 5rem;
-    height: 8rem;
-    margin-right: ${dimensions.base};
+    display: block;
+    width: 7.5rem;
+    height: 11.25rem;
   }
 `;
 
@@ -68,6 +71,11 @@ const TitleBook = styled.h3`
   font-size: ${dimensions.sm};
   line-height: ${dimensions.base};
   color: ${colors.main_black};
+
+  @media (max-width: ${dimensions.phone_width}) {
+    font-size: ${dimensions.xs};};
+    white-space: normal;
+  }
 `;
 
 const DescriptionBook = styled.p`
@@ -77,6 +85,12 @@ const DescriptionBook = styled.p`
   line-height: ${dimensions.base};
   color: ${colors.description_gray};
   margin: ${dimensions.xs_2} 0;
+
+  @media (max-width: ${dimensions.phone_width}) {
+    max-width: 100%;
+    margin: 0.25rem 0;
+    font-size: ${dimensions.xs};
+  }
 `;
 
 const BookCard: FC<IBookCardProps> = ({
@@ -97,8 +111,8 @@ const BookCard: FC<IBookCardProps> = ({
     <BookCardWrapper onClick={handleItemRedirect} data-testid="bookCard">
       <BookImage src={src || bookImage} data-testid="bookImage" />
       <DescriptionWrapper>
-        <TitleBook data-testid="bookTitle">{title}</TitleBook>
-        <DescriptionBook>{category + ' / ' + author}</DescriptionBook>
+        <TitleBook data-testid="bookTitle">{shortenText(title, 20)}</TitleBook>
+        <DescriptionBook>{shortenText(author, 20)}</DescriptionBook>
         <BookStatus status={status} date={date} />
       </DescriptionWrapper>
     </BookCardWrapper>

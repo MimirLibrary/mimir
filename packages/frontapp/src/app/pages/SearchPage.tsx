@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
-import { dimensions } from '@mimir/ui-kit';
+import { colors, dimensions } from '@mimir/ui-kit';
 import { ButtonGroup } from './BookPreview';
 import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
 import { ReactComponent as ScrollButtonRight } from '../../assets/ArrowButtonRight.svg';
@@ -14,6 +14,10 @@ import useMaterialFilter from '../hooks/useMaterialFilter';
 import { locationIds } from '../store/slices/userSlice';
 import { toast } from 'react-toastify';
 import ItemsNotFound from '../components/ItemsNotFound';
+import { useNavigate } from 'react-router-dom';
+import { RoutesTypes } from '../../utils/routes';
+import Modal from '../components/Modal';
+import CategorySearch from '../components/CategorySearch';
 const ContentWrapper = styled.div`
   margin: 3rem 0 ${dimensions.xl_6};
 `;
@@ -21,12 +25,44 @@ const ContentWrapper = styled.div`
 const TopicNameWrapper = styled.div`
   margin-bottom: ${dimensions.xl_2};
   display: flex;
+  justify-content: space-between;
+
+  @media (max-width: ${dimensions.phone_width}) {
+    display: block;
+  }
 `;
 
 const MainText = styled.h3`
-  margin: 3.5rem 0 ${dimensions.xl_6};
   font-weight: 700;
   font-size: ${dimensions.xl_2};
+
+  @media (max-width: ${dimensions.phone_width}) {
+    font-size: ${dimensions.xl};
+  }
+`;
+
+const TextWrapper = styled.div<{ type?: string }>`
+  margin: ${({ type }) =>
+    type === 'main' ? `3.5rem 0 ${dimensions.xl_6}` : `0`};
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const SeeAllButton = styled.button`
+  font-size: ${dimensions.sm};
+  font-weight: 500;
+  color: ${colors.accent_color};
+  background: transparent;
+  border: none;
+  outline: none;
+  display: none;
+  gap: ${dimensions.base};
+  cursor: pointer;
+
+  @media (max-width: ${dimensions.phone_width}) {
+    display: flex;
+  }
 `;
 
 const Topics = styled.h5`
@@ -38,6 +74,8 @@ const Topics = styled.h5`
 const SearchPage = () => {
   const locations = useAppSelector(locationIds);
   const [availableMaterial, setAvailableMaterial] = useState<any>([]);
+  const [isModalActive, setIsModalActive] = useState(false);
+  const navigate = useNavigate();
   const { data, loading, error } = useGetAllMaterialsQuery({
     variables: { locations },
     fetchPolicy: 'no-cache',
@@ -53,6 +91,13 @@ const SearchPage = () => {
 
   const allCategories = useMaterialFilter(availableMaterial, 'category');
 
+  const navigateToCategory = (category: string) => {
+    navigate({
+      pathname: RoutesTypes.CATEGORY,
+      search: `?categories=${category}`,
+    });
+  };
+
   useEffect(() => {
     if (error) {
       toast.error(error.message);
@@ -66,14 +111,24 @@ const SearchPage = () => {
 
   return (
     <>
-      <MainText>Categories</MainText>
+      <TextWrapper type="main">
+        <MainText>Categories</MainText>
+        <SeeAllButton onClick={() => setIsModalActive(true)}>
+          See All
+        </SeeAllButton>
+      </TextWrapper>
       <CategoriesList allCategories={allCategories} />
       {allCategories &&
         Object.keys(allCategories).map((category) => {
           return (
             <ContentWrapper key={category}>
               <TopicNameWrapper>
-                <Topics>{category}</Topics>
+                <TextWrapper>
+                  <Topics>{category}</Topics>
+                  <SeeAllButton onClick={() => navigateToCategory(category)}>
+                    All
+                  </SeeAllButton>
+                </TextWrapper>
                 <ButtonGroup>
                   <ScrollButtonLeft />
                   <ScrollButtonRight />
@@ -86,6 +141,9 @@ const SearchPage = () => {
             </ContentWrapper>
           );
         })}
+      <Modal active={isModalActive} setActive={setIsModalActive}>
+        <CategorySearch setActive={setIsModalActive} />
+      </Modal>
     </>
   );
 };
