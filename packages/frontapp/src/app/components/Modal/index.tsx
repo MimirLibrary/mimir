@@ -30,6 +30,9 @@ export const WrapperModal = styled.div<IStyleProps>`
   @media (max-width: ${dimensions.tablet_width}) {
     padding-top: 5rem;
   }
+  @media (max-width: ${dimensions.phone_width}) {
+    align-items: flex-end;
+  }
 `;
 
 const StyledCross = styled(Cross)`
@@ -53,6 +56,7 @@ export const ContentModal = styled.div<IStyleProps>`
   @media (max-width: ${dimensions.phone_width}) {
     padding: ${dimensions.xl} ${dimensions.xs_2};
     border-radius: ${dimensions.base_2};
+    margin: 0;
   }
 `;
 
