@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 const Label = styled.label`
   display: inline-block;
@@ -45,6 +45,7 @@ const Checkbox = styled.input`
 
 interface ILabeledCheckbox {
   id: string;
+  name: string;
   value: string;
   disabled?: boolean;
   checked?: boolean;
@@ -55,6 +56,7 @@ interface ILabeledCheckbox {
 const LabeledCheckbox: FC<ILabeledCheckbox> = ({
   id,
   value,
+  name,
   disabled,
   checked,
   onChange,
@@ -71,8 +73,71 @@ const LabeledCheckbox: FC<ILabeledCheckbox> = ({
         value={value}
         onMouseDown={onMouseDown}
       />
-      <Label htmlFor={id}>{value}</Label>
+      <Label htmlFor={id}>{name}</Label>
     </div>
+  );
+};
+
+const LabeledCheckboxGroupWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: ${dimensions.base};
+  flex-wrap: wrap;
+`;
+interface ILabeledCheckboxGroup {
+  orientation?: string;
+  defaultValue?: Array<string>;
+  name: string;
+  options: { name: string; value: string }[];
+  onChange?: (value: Array<string>) => void;
+  onMouseDown?: (event: string) => void;
+  shouldReset?: boolean;
+}
+
+export const LabeledCheckboxGroup: React.FC<ILabeledCheckboxGroup> = ({
+  defaultValue = [],
+  options,
+  onChange,
+  onMouseDown,
+  shouldReset,
+}) => {
+  const [checkedValues, setCheckedValues] = useState(defaultValue);
+
+  useEffect(() => {
+    shouldReset && setCheckedValues(defaultValue);
+  }, [shouldReset]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    checkedValues.some((value) => value === e.target.value)
+      ? setCheckedValues((prev) =>
+          prev?.filter((value) => value !== e.target.value)
+        )
+      : setCheckedValues((prev) => [...prev, e.target.value]);
+  };
+
+  const handleMouseDown = (option: string) => {
+    onMouseDown && onMouseDown(option);
+  };
+
+  useEffect(() => {
+    onChange && onChange(checkedValues);
+  }, [checkedValues]);
+
+  return (
+    <LabeledCheckboxGroupWrapper>
+      {options?.map((option) => (
+        <LabeledCheckbox
+          id={`${option.value} - ${option.name}`}
+          name={option.name}
+          value={option.value}
+          key={option.value}
+          checked={checkedValues.some((value) => value === option.value)}
+          onChange={handleChange}
+          onMouseDown={() => handleMouseDown(option.value)}
+        />
+      ))}
+    </LabeledCheckboxGroupWrapper>
   );
 };
 

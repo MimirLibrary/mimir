@@ -203,7 +203,7 @@ export const resources = {
           'It seems the action failed. Please try again later  We will try to fix this error',
         TitleButton: 'Go back home',
       },
-      SearchModal: {
+      SearchFiltersForm: {
         Title: 'Filters',
         SeeAll: 'See all',
         SeeLess: 'See less',
@@ -482,7 +482,7 @@ export const resources = {
           'Похоже, что действие не удалось. Пожалуйста, повторите попытку позже. Мы постараемся исправить эту ошибку',
         TitleButton: 'Возвращайтесь на главную',
       },
-      SearchModal: {
+      SearchFiltersForm: {
         Title: 'Фильтры',
         SeeAll: 'Посмотреть все',
         SeeLess: 'Скрыть',
