@@ -31,6 +31,16 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
 
   const allCategories = useMaterialFilter(availableMaterial, 'category');
 
+  const initAttributes = [
+    {
+      title: t('SearchFiltersForm.ItemFilter.Categories'),
+      paramName: 'categories',
+      inputType: 'checkbox',
+      id: 3,
+      subAttributes: adaptFiltersToAttrs(allCategories),
+    },
+  ];
+
   useEffect(() => {
     if (error) toast.error(error.message);
   }, [error]);
@@ -46,15 +56,7 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
 
   useEffect(() => {
     if (allCategories) {
-      setAttributes([
-        {
-          title: t('SearchFiltersForm.ItemFilter.Categories'),
-          paramName: 'categories',
-          inputType: 'checkbox',
-          id: 3,
-          subAttributes: adaptFiltersToAttrs(allCategories),
-        },
-      ]);
+      setAttributes(initAttributes);
     }
   }, [availableMaterial]);
 
