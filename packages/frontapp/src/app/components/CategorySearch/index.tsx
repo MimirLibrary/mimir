@@ -38,6 +38,44 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
     'By date of writing': undefined,
   };
 
+  const initAttributes = [
+    {
+      title: t('SearchFiltersForm.ItemFilter.SortBy'),
+      paramName: 'sortby',
+      inputType: 'radio',
+      id: 5,
+      subAttributes: adaptFiltersToAttrs(allSortBy),
+    },
+    {
+      title: t('SearchFiltersForm.ItemFilter.Items'),
+      paramName: 'items',
+      inputType: 'radio',
+      id: 2,
+      subAttributes: adaptFiltersToAttrs(allTypes),
+    },
+    {
+      title: t('SearchFiltersForm.ItemFilter.Availability'),
+      paramName: 'availability',
+      inputType: 'checkbox',
+      id: 1,
+      subAttributes: adaptFiltersToAttrs(allAvailability),
+    },
+    {
+      title: t('SearchFiltersForm.ItemFilter.Categories'),
+      paramName: 'categories',
+      inputType: 'checkbox',
+      id: 3,
+      subAttributes: adaptFiltersToAttrs(allCategories),
+    },
+    {
+      title: t('SearchFiltersForm.ItemFilter.Authors'),
+      paramName: 'authors',
+      inputType: 'checkbox',
+      id: 4,
+      subAttributes: adaptFiltersToAttrs(allAuthors),
+    },
+  ];
+
   useEffect(() => {
     if (error) toast.error(error.message);
   }, [error]);
@@ -53,43 +91,7 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
 
   useEffect(() => {
     if (allAuthors && allCategories && allTypes && allAvailability) {
-      setAttributes([
-        {
-          title: t('SearchFiltersForm.ItemFilter.SortBy'),
-          paramName: 'sortby',
-          inputType: 'radio',
-          id: 5,
-          subAttributes: adaptFiltersToAttrs(allSortBy),
-        },
-        {
-          title: t('SearchFiltersForm.ItemFilter.Items'),
-          paramName: 'items',
-          inputType: 'radio',
-          id: 2,
-          subAttributes: adaptFiltersToAttrs(allTypes),
-        },
-        {
-          title: t('SearchFiltersForm.ItemFilter.Availability'),
-          paramName: 'availability',
-          inputType: 'checkbox',
-          id: 1,
-          subAttributes: adaptFiltersToAttrs(allAvailability),
-        },
-        {
-          title: t('SearchFiltersForm.ItemFilter.Categories'),
-          paramName: 'categories',
-          inputType: 'checkbox',
-          id: 3,
-          subAttributes: adaptFiltersToAttrs(allCategories),
-        },
-        {
-          title: t('SearchFiltersForm.ItemFilter.Authors'),
-          paramName: 'authors',
-          inputType: 'checkbox',
-          id: 4,
-          subAttributes: adaptFiltersToAttrs(allAuthors),
-        },
-      ]);
+      setAttributes(initAttributes);
     }
   }, [availableMaterial]);
 
