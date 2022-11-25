@@ -19,6 +19,7 @@ import { RoutesTypes } from '../../utils/routes';
 import Modal from '../components/Modal';
 import CategorySearch from '../components/CategorySearch';
 import Loader, { WrapperLoader } from '../components/Loader';
+import { t } from 'i18next';
 const ContentWrapper = styled.div`
   margin: 3rem 0 ${dimensions.xl_6};
 `;
@@ -118,9 +119,9 @@ const SearchPage = () => {
   return (
     <>
       <TextWrapper type="main">
-        <MainText>Categories</MainText>
+        <MainText>{t('SearchFiltersForm.ItemFilter.Categories')}</MainText>
         <SeeAllButton onClick={() => setIsModalActive(true)}>
-          See All
+          {t('SearchFiltersForm.SeeAll')}
         </SeeAllButton>
       </TextWrapper>
       <CategoriesList allCategories={allCategories} />
@@ -132,7 +133,7 @@ const SearchPage = () => {
                 <TextWrapper>
                   <Topics>{category}</Topics>
                   <SeeAllButton onClick={() => navigateToCategory(category)}>
-                    All
+                    {t('SearchFiltersForm.UsersFilter.All')}
                   </SeeAllButton>
                 </TextWrapper>
                 <ButtonGroup>

@@ -83,7 +83,7 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
 
   return (
     <SearchFiltersForm
-      title="Category"
+      title={t('SearchFiltersForm.ItemFilter.Categories')}
       key={JSON.stringify(filters)}
       attributes={attributes}
       onFiltersApply={handleApplyFilters}
