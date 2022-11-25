@@ -3,23 +3,24 @@ import { FC } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { ReactComponent as Close } from '../../../assets/Close.svg';
 import { useTranslation } from 'react-i18next';
+import { dimensions } from '@mimir/ui-kit';
 
 const Header = styled.h2`
-  font-size: 24px;
+  font-size: ${dimensions.xl_2};
   font-weight: 700;
 `;
 
 const StyledTags = styled.button`
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: ${dimensions.xs_1};
   outline: none;
   border: none;
-  border-radius: 20px;
-  padding: 8px 24px;
+  border-radius: ${dimensions.xl};
+  padding: ${dimensions.xs_2} ${dimensions.xl_2};
   background-color: blue;
-  font-size: 16px;
-  max-height: 40px;
+  font-size: ${dimensions.base};
+  max-height: ${dimensions.xl_6};
   width: fit-content;
   color: white;
 `;
@@ -27,18 +28,27 @@ const StyledTags = styled.button`
 const TagsWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: ${dimensions.base};
+
+  @media (max-width: ${dimensions.phone_width}) {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 4px;
+    ::-webkit-scrollbar {
+      height: 0;
+    }
+  }
 `;
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin-bottom: 20px;
+  gap: ${dimensions.base};
+  margin-bottom: ${dimensions.xl};
 `;
 const StyledCross = styled(Close)`
   cursor: pointer;
-  width: 30px;
-  height: 30px;
+  width: ${dimensions.xl_3};
+  height: ${dimensions.xl_3};
   filter: invert(1);
 `;
 interface IProps {

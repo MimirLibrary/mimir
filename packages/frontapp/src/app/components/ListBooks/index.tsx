@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import styled from '@emotion/styled';
-import { colors, dimensions } from '@mimir/ui-kit';
+import { dimensions } from '@mimir/ui-kit';
 import BookCard from '../BookCard';
 
 export const WrapperList = styled.section`
@@ -9,20 +9,6 @@ export const WrapperList = styled.section`
   row-gap: ${dimensions.base};
   column-gap: ${dimensions.base_2};
   width: 100%;
-  max-height: 42.25rem;
-  height: 100%;
-  overflow-y: auto;
-
-  ::-webkit-scrollbar {
-    background: #e0e0e0;
-    width: ${dimensions.xs_2};
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: ${colors.accent_color};
-    border-radius: ${dimensions.xs_2};
-    height: ${dimensions.xs_2};
-  }
 `;
 
 export interface IMaterial {

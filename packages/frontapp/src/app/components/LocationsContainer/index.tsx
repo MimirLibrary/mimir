@@ -42,6 +42,7 @@ const LocationsContainer: React.FC<ILocationsContainer> = ({
         <LabeledCheckbox
           key={location.id}
           id={location.id}
+          name={location.value}
           value={location.value}
           checked={isChecked(location.id)}
           disabled={isDisabled(location.id)}

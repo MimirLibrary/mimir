@@ -14,6 +14,7 @@ export const Checked = () => {
       id="1"
       checked={checked}
       onChange={() => setIsChecked((prev) => !prev)}
+      name="example"
       value="example"
     />
   );
@@ -28,6 +29,7 @@ export const Disabled = () => {
       checked={checked}
       disabled
       onChange={() => setIsChecked((prev) => !prev)}
+      name="example"
       value="example"
     />
   );

@@ -203,7 +203,7 @@ export const resources = {
           'It seems the action failed. Please try again later  We will try to fix this error',
         TitleButton: 'Go back home',
       },
-      SearchModal: {
+      SearchFiltersForm: {
         Title: 'Filters',
         SeeAll: 'See all',
         SeeLess: 'See less',
@@ -233,6 +233,49 @@ export const resources = {
       DonateItem: {
         Title: 'Are you planning to donate something to the library?',
         Description: 'Fill in the required* fields or try to scan the code',
+        Inputs: {
+          Name: {
+            Title: 'Name',
+            Placeholder: 'Book name',
+          },
+          Author: {
+            Title: 'Author',
+            Placeholder: 'Book author',
+          },
+          Genre: {
+            Title: 'Genre',
+            Placeholder: 'Book genre',
+          },
+          Location: {
+            Title: 'Location',
+            Placeholder: 'Choose book location',
+          },
+          Description: {
+            Title: 'Description',
+            Placeholder: 'Enter book description',
+          },
+        },
+        Modal: {
+          ISBNError: {
+            Title: 'ISBN is not known',
+            Message:
+              'We did not find a suitable book code :(\n' +
+              'But you can still donate to the library by filling in the information manually',
+          },
+          DonateSuccess: {
+            Title: 'You have successfully donated to the library',
+            Message:
+              'Put the book on the nearest free space on the shelf. In case of any problems, our manager will contact you',
+          },
+          ProblemReported: {
+            Title: 'We reported the problem to the manager',
+            Message: 'The problem will be solved soon',
+          },
+        },
+        Button: {
+          AddItem: 'Add item to library',
+          AskManager: 'Ask a manager',
+        },
       },
     },
   },
@@ -439,7 +482,7 @@ export const resources = {
           'Похоже, что действие не удалось. Пожалуйста, повторите попытку позже. Мы постараемся исправить эту ошибку',
         TitleButton: 'Возвращайтесь на главную',
       },
-      SearchModal: {
+      SearchFiltersForm: {
         Title: 'Фильтры',
         SeeAll: 'Посмотреть все',
         SeeLess: 'Скрыть',
@@ -470,6 +513,49 @@ export const resources = {
         Title: 'Планируете ли вы что-то пожертвовать библиотеке?',
         Description:
           'Заполните обязательные* поля или попробуйте отсканировать код',
+        Inputs: {
+          Name: {
+            Title: 'Название',
+            Placeholder: 'Название книги',
+          },
+          Author: {
+            Title: 'Автор',
+            Placeholder: 'Автор книги',
+          },
+          Genre: {
+            Title: 'Жанр',
+            Placeholder: 'Жанр книги',
+          },
+          Location: {
+            Title: 'Местоположение',
+            Placeholder: 'Выберите местоположение книги',
+          },
+          Description: {
+            Title: 'Описание',
+            Placeholder: 'Введите описание книги',
+          },
+        },
+        Modal: {
+          ISBNError: {
+            Title: 'ISBN не найден',
+            Message:
+              'Мы не смогли найти подходящий код книги :(\n' +
+              'Но вы все равно можете пожертвовать библиотеке, заполнив информацию вручную',
+          },
+          DonateSuccess: {
+            Title: 'Вы успешно пожертвовали библиотеке',
+            Message:
+              'Поставьте книгу на ближайшее свободное место на полке. В случае возникновения проблем наш менеджер свяжется с вами',
+          },
+          ProblemReported: {
+            Title: 'Мы сообщили о проблеме менеджеру',
+            Message: 'Проблема будет решена в ближайшее время',
+          },
+        },
+        Button: {
+          AddItem: 'Добавить в библиотеку',
+          AskManager: 'Спросить у менеджера',
+        },
       },
     },
   },

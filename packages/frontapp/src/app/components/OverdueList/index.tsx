@@ -1,20 +1,18 @@
 import React, { FC, useEffect, useMemo } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
-import { ReactComponent as ArrowIcon } from '../../../assets/ArrowUp2.svg';
-import { BackSpan, WrapperLoader } from '../DonateBookFlow';
-import { useNavigate } from 'react-router-dom';
+import { WrapperLoader } from '../DonateBookFlow';
 import OverdueCard from '../OverdueCard';
 import { useGetAllStatusesIsOverdueQuery } from '@mimir/apollo-client';
 import { Oval } from 'react-loader-spinner';
 import { toast } from 'react-toastify';
 import {
-  getDateOfEarlier,
   isOverdue,
   isOverdueToday,
 } from '../../models/helperFunctions/converTime';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import { locationIds } from '../../store/slices/userSlice';
+import BackButton from '../BackButton';
 
 const Wrapper = styled.main``;
 
@@ -55,10 +53,6 @@ const OverdueList: FC = () => {
   const { data, loading, error } = useGetAllStatusesIsOverdueQuery({
     variables: { locations },
   });
-  const navigate = useNavigate();
-  const goBack = () => {
-    navigate(-1);
-  };
 
   const todayOverdueList = useMemo(
     () =>
@@ -102,9 +96,7 @@ const OverdueList: FC = () => {
       ) : (
         <>
           <WrapperOverdueInstructions>
-            <BackSpan onClick={goBack}>
-              <ArrowIcon /> Back
-            </BackSpan>
+            <BackButton />
             <Title>Overdues</Title>
             <SubTitle>
               The following users have not turned in their books
