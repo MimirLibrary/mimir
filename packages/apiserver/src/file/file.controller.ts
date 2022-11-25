@@ -21,7 +21,7 @@ export class FileController {
   @allowUnauthorizedRequest()
   @UseInterceptors(FileInterceptor('file'))
   async createFile(@UploadedFile() file: Express.Multer.File) {
-    return this.fileService.createFileForTmp(file);
+    return this.fileService.createFile(file);
   }
 
   @Delete('/delete/:fileName')

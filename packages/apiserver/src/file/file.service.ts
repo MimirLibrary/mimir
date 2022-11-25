@@ -1,20 +1,49 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import * as fs from 'fs';
-import * as path from 'path';
+import * as AWS from 'aws-sdk';
 import { v4 as uuidv4 } from 'uuid';
+
+const spacesEndpoint = new AWS.Endpoint(`${process.env['SPACE_ENDPOINT']}`);
 
 @Injectable()
 export class FileService {
-  createFileForTmp(file) {
+  s3 = new AWS.S3({
+    endpoint: `${spacesEndpoint.href}/bookPictures`,
+    credentials: new AWS.Credentials({
+      accessKeyId: `${process.env['SPACE_ID']}`,
+      secretAccessKey: `${process.env['SPACE_SECRET']}`,
+    }),
+  });
+
+  createFile(file) {
     try {
       const fileExtension = file.originalname.split('.').pop();
       const fileName = uuidv4() + '.' + fileExtension;
-      const filePath = path.resolve('storage', 'tmp');
-      if (!fs.existsSync(filePath)) {
-        fs.mkdirSync(filePath, { recursive: true });
-      }
-      fs.writeFileSync(path.resolve(filePath, fileName), file.buffer);
-      return `${process.env['NX_API_ROOT_URL']}/tmp/${fileName}`;
+      return new Promise((resolve, reject) => {
+        this.s3.putObject(
+          {
+            Bucket: 'mimir-content',
+            Key: fileName,
+            Body: file.buffer,
+            ACL: 'public-read',
+          },
+          (error: AWS.AWSError) => {
+            if (!error) {
+              resolve(
+                `${process.env['NX_API_SPACES']}/bookPictures/${fileName}`
+              );
+            } else {
+              reject(
+                new Error(
+                  `SpacesService_ERROR: ${
+                    error.message || 'Something went wrong'
+                  }`
+                )
+              );
+            }
+          }
+        );
+      });
+      return fileExtension;
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -22,44 +51,27 @@ export class FileService {
 
   async removeFile(fileName: string) {
     try {
-      fs.unlinkSync(path.resolve(process.cwd(), 'storage', 'tmp', fileName));
-      return 'File was deleted';
-    } catch (e) {
-      throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-  }
-
-  moveFileInMainStorage(fileName: string | null, identifier: string) {
-    if (!fileName) return null;
-    if (/http/.test(fileName.split('//')[0])) return fileName;
-    try {
-      const onlyFileName = fileName.split('/').pop();
-      const filePathToStorage = path.resolve(
-        process.cwd(),
-        'storage',
-        'mainData'
-      );
-      const fileExtension = fileName.split('.').pop();
-      if (!fs.existsSync(filePathToStorage)) {
-        fs.mkdirSync(filePathToStorage, { recursive: true });
-      }
-      fs.copyFileSync(
-        path.resolve(process.cwd(), 'storage', 'tmp', onlyFileName),
-        path.resolve(process.cwd(), 'storage', 'mainData', onlyFileName)
-      );
-      fs.renameSync(
-        path.resolve(process.cwd(), 'storage', 'mainData', onlyFileName),
-        path.resolve(
-          process.cwd(),
-          'storage',
-          'mainData',
-          `${identifier}.${fileExtension}`
-        )
-      );
-      fs.unlinkSync(
-        path.resolve(process.cwd(), 'storage', 'tmp', onlyFileName)
-      );
-      return `${process.env['NX_API_ROOT_URL']}/mainData/${identifier}.${fileExtension}`;
+      return new Promise((resolve, reject) => {
+        this.s3.deleteObject(
+          {
+            Bucket: 'mimir-content',
+            Key: fileName,
+          },
+          (error: AWS.AWSError) => {
+            if (!error) {
+              resolve(`successfully deleted`);
+            } else {
+              reject(
+                new Error(
+                  `SpacesService_ERROR: ${
+                    error.message || 'Something went wrong'
+                  }`
+                )
+              );
+            }
+          }
+        );
+      });
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }

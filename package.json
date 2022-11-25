@@ -114,6 +114,7 @@
     "@zxing/browser": "^0.1.1",
     "apollo": "^2.33.10",
     "apollo-server-express": "^3.6.6",
+    "aws-sdk": "^2.1260.0",
     "axios": "^0.27.2",
     "cheerio": "^1.0.0-rc.12",
     "core-js": "^3.6.5",

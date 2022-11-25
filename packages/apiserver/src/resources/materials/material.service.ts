@@ -55,17 +55,13 @@ export class MaterialService {
         where: { identifier: updateIdentifier },
       });
       if (isExistMaterial) {
-        throw new ErrorBook('This material is already exist!');
+        throw new ErrorBook('This material already exists!');
       }
-      const pictureWithIdentifier = this.fileService.moveFileInMainStorage(
-        donateBookInput.picture,
-        updateIdentifier
-      );
       const newMaterial = await materialRepository.create({
         ...newMaterialObj,
         identifier: updateIdentifier,
         is_donated: donateBookInput.role === RolesTypes.READER,
-        picture: pictureWithIdentifier,
+        picture: donateBookInput.picture,
       });
       const savedMaterial = await materialRepository.save(newMaterial);
       await statusRepository.save({
