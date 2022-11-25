@@ -19,5 +19,4 @@ const Template: Story<IPropsModal> = (args: IPropsModal) => (
 export const Primary = Template.bind({});
 Primary.args = {
   active: true,
-  //setActive: ;
 };
