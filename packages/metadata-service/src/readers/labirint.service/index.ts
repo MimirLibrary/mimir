@@ -3,11 +3,13 @@ import axios from 'axios';
 import { Prisma } from '@prisma/client';
 import cheerio from 'cheerio';
 import { Bundle } from '../../types';
+import { DigitalSpaceService } from '../../digitalSpace/digitalSpace.service';
 
 const READER_ID = 'LABIRINT';
 
 @Injectable()
 export class LabirintService {
+  constructor(private readonly digitalSpaceService: DigitalSpaceService) {}
   private readonly rootUrl = 'https://www.labirint.ru';
   private readonly rootUrlSearch = 'https://www.labirint.ru/search/';
 
@@ -19,13 +21,22 @@ export class LabirintService {
       const $ = cheerio.load(firstResponse.data, null, false);
       const id = $('.product-title-link').attr('href');
       const secondResponse = await axios.get(`${this.rootUrl}${id}`);
-      return secondResponse.data;
+      const second$ = cheerio.load(secondResponse.data);
+      const pic = await axios.get(second$('.book-img-cover').attr('src'), {
+        responseType: 'arraybuffer',
+      });
+      const extension = second$('.book-img-cover').attr('src').split('.').pop();
+      return {
+        result: secondResponse.data,
+        image: pic.data,
+        extension: extension,
+      };
     } catch (e) {
       throw new BadRequestException(e.message);
     }
   }
 
-  private parseData(result): Bundle {
+  private parseData(result, img): Bundle {
     const $ = cheerio.load(result, null, false);
     if (cheerio.html($('.search-error'))) {
       console.log('incorrect ISBN');
@@ -37,7 +48,6 @@ export class LabirintService {
     const about = cheerio.html($('#fullannotation'))
       ? $('#fullannotation').find('p').text().trim()
       : $('#product-about').find('p').text().trim();
-    const image = $('.book-img-cover').attr('src');
     const publishers = $('.publisher').find('a').text();
     const date = $('.publisher').text().split(',')[1].split('г')[0];
     const genres = $('.thermo-item').text().split('/');
@@ -47,7 +57,7 @@ export class LabirintService {
       yearPublishedAt: Number(date),
       monthPublishedAt: 0,
       description: about,
-      cover: image,
+      cover: img,
       meta: {
         sku: itemId,
         price: price,
@@ -76,6 +86,10 @@ export class LabirintService {
 
   async getData(isbn: string): Promise<Bundle> {
     const result = await this.readData(isbn);
-    return this.parseData(result);
+    const img = await this.digitalSpaceService.createFile({
+      fileExtension: result.extension,
+      buffer: result.image,
+    });
+    return this.parseData(result.result, img);
   }
 }

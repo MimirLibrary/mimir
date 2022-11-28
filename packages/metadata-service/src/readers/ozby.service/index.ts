@@ -4,6 +4,7 @@ import cheerio from 'cheerio';
 import * as _ from 'lodash';
 import axios from 'axios';
 import { Bundle } from '../../types';
+import { DigitalSpaceService } from '../../digitalSpace/digitalSpace.service';
 
 type Author = {
   name: string;
@@ -81,20 +82,27 @@ function readCells(keyEl, valEl) {
 
 @Injectable()
 export class OzbyService {
+  constructor(private readonly digitalSpaceService: DigitalSpaceService) {}
+
   readonly rootURL = 'https://oz.by/search/';
 
   async readData(isbn: string) {
     try {
       const result = await axios.get(this.rootURL, { params: { q: isbn } });
-      return result.data;
+      const $ = cheerio.load(result.data);
+
+      const pic = await axios.get(
+        $('.b-product-photo__picture-self img').first().attr('src'),
+        { responseType: 'arraybuffer' }
+      );
+      return { result: result.data, image: pic.data };
     } catch (e) {
       throw new BadRequestException(e.message);
     }
   }
 
-  parseData(htmlContent): Bundle {
+  parseData(htmlContent, img): Bundle {
     const $ = cheerio.load(htmlContent);
-    const coverEl = $('.b-product-photo__picture-self img').first();
     const publisherEl = $('[itemprop=publisher]');
     const itemsFlat = $('.b-description__sub table tr')
       .map(function () {
@@ -111,13 +119,13 @@ export class OzbyService {
     const items = _(itemsFlat).chunk(2).fromPairs().value();
     const year = Number(items.year);
     delete items.year;
-
+    console.log('img: ', img);
     const material: Prisma.MaterialCreateInput = {
       title: $('h1[itemprop=name]').text().trim(),
       yearPublishedAt: year,
       monthPublishedAt: 0,
       description: $('#truncatedBlock').text().trim(),
-      cover: coverEl.attr('src'),
+      cover: img,
       meta: _.merge(items, {
         sku: /\d+/.exec($('.b-product-title__art').text())[0],
         price: $('.b-product__controls .b-product-control__text_main')
@@ -156,6 +164,16 @@ export class OzbyService {
 
   async getData(isbn: string): Promise<Bundle> {
     const result = await this.readData(isbn);
-    return this.parseData(result);
+    const $ = cheerio.load(result.result);
+    const img = await this.digitalSpaceService.createFile({
+      fileExtension: $('.b-product-photo__picture-self img')
+        .first()
+        .attr('src')
+        .split('.')
+        .pop(),
+      buffer: result.image,
+    });
+
+    return this.parseData(result.result, img);
   }
 }

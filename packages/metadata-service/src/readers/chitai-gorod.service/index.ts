@@ -2,9 +2,11 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { Prisma } from '@prisma/client';
 import { Bundle } from '../../types';
+import { DigitalSpaceService } from '../../digitalSpace/digitalSpace.service';
 
 @Injectable()
 export class ChitaiGorodService {
+  constructor(private readonly digitalSpaceService: DigitalSpaceService) {}
   private READER_ID = 'Сhitai-gorod';
   private readonly rootUrlSearch =
     'https://search-v2.chitai-gorod.ru/api/v3/search/';
@@ -27,17 +29,21 @@ export class ChitaiGorodService {
         action: 'read',
         data: [ids],
       });
-      return infoOfBook.data.result[ids];
+      const pic = await axios.get(
+        `https://img-gorod.ru${infoOfBook.data.result[ids].image_url}`,
+        { responseType: 'arraybuffer' }
+      );
+      return { info: infoOfBook.data.result[ids], image: pic.data };
     } catch (e) {
       throw new BadRequestException(e.message);
     }
   }
-
-  private parseData(result): Bundle {
+  private parseData(result, img): Bundle {
     if (!result) return null;
+    console.log('img: ', img);
     const material: Prisma.MaterialCreateInput = {
       title: result.name,
-      cover: `https://img-gorod.ru${result.image_url}`,
+      cover: img,
       yearPublishedAt: result.year,
       monthPublishedAt: 0,
       description: result.detail_text,
@@ -73,6 +79,14 @@ export class ChitaiGorodService {
 
   async getData(isbn: string): Promise<Bundle> {
     const result = await this.readData(isbn);
-    return this.parseData(result);
+
+    const img = await this.digitalSpaceService.createFile({
+      fileExtension: `https://img-gorod.ru${result.info.image_url}`
+        .split('.')
+        .pop(),
+      buffer: result.image,
+    });
+
+    return this.parseData(result.info, img);
   }
 }

@@ -6,7 +6,6 @@ import {
   SearchInput,
   StatusTypes,
 } from '@mimir/global-types';
-import { FileService } from '../../file/file.service';
 import { Status } from '../statuses/status.entity';
 import { Connection } from 'typeorm';
 import { ErrorBook } from '../../errors';
@@ -16,10 +15,7 @@ import { normalizeIdentifier } from '@mimir/helper-functions';
 
 @Injectable()
 export class MaterialService {
-  constructor(
-    private fileService: FileService,
-    private connection: Connection
-  ) {}
+  constructor(private connection: Connection) {}
   async search(searchInput: SearchInput) {
     const { search, locations } = searchInput;
     if (!search) return [];

@@ -7,8 +7,10 @@ import { LabirintService } from './labirint.service';
 import { ReaderService } from './reader.service';
 import { ChitaiGorodService } from './chitai-gorod.service';
 import { AbeBooksService } from './abebooks.service';
+import { DigitalSpaceModule } from '../digitalSpace/digitalSpace.module';
 
 @Module({
+  imports: [DigitalSpaceModule],
   providers: [
     ReaderService,
     DbService,
