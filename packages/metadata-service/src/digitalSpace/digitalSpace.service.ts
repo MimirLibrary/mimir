@@ -1,6 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
-import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
