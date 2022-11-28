@@ -3,18 +3,21 @@ import { Story } from '@storybook/react';
 import { useState } from 'react';
 
 export default {
-  title: 'Modal',
   component: Modal,
+  title: 'Modal',
 };
 
-const Wrapper = (props: any) => {
+const Template: Story<IPropsModal> = (args: IPropsModal) => {
   const [active, setActive] = useState(true);
-  return <Modal active={active} setActive={setActive} {...props} />;
+  return (
+    <div>
+      <Modal active={true} setActive={setActive}>
+        <p>Text for example #1</p>
+      </Modal>
+      <p>Text for example #2</p>
+    </div>
+  );
 };
-
-const Template: Story<IPropsModal> = (args: IPropsModal) => (
-  <Wrapper {...args} />
-);
 
 export const Primary = Template.bind({});
 Primary.args = {
