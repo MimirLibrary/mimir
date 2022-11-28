@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import Button from '../Button';
 import { colors, dimensions } from '@mimir/ui-kit';
 import claimPicture from '../../../assets/ClaimABook.svg';
+import { t } from 'i18next';
 
 const Wrapper = styled.div`
   display: flex;
@@ -109,10 +110,6 @@ const ErrorMessage: FC<IPropsErrorMessage> = ({
           </div>
         </WrapperInfo>
         <WrapperButtons active={activeAskManager}>
-          <StyledButton
-            value={titleOption || 'Ok'}
-            onClick={onSubmitClick ? onSubmitClick : closeModal}
-          />
           {activeAskManager && (
             <StyledButton
               value={titleCancel || 'Cancel'}
@@ -120,6 +117,10 @@ const ErrorMessage: FC<IPropsErrorMessage> = ({
               onClick={onClick || closeModal}
             />
           )}
+          <StyledButton
+            value={titleOption || 'Ok'}
+            onClick={onSubmitClick ? onSubmitClick : closeModal}
+          />
         </WrapperButtons>
       </WrapperErrorClaim>
     </Wrapper>
