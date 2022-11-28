@@ -227,6 +227,7 @@ const AnswerToUser: FC<IAnswerToUser> = ({
         onClick={handleClickTextArea}
       />
       <ButtonWrapperStyled>
+        <Button value={t('Cancel')} type="button" transparent onClick={close} />
         <Button
           value={t('AnswerModal.SendBtn')}
           type="button"
@@ -237,7 +238,6 @@ const AnswerToUser: FC<IAnswerToUser> = ({
           }
           disabled={!(currentAnswer || message)}
         />
-        <Button value={t('Cancel')} type="button" transparent onClick={close} />
       </ButtonWrapperStyled>
     </Wrapper>
   );
