@@ -13,6 +13,10 @@ const WrapperList = styled.section`
   ::-webkit-scrollbar {
     height: 0;
   }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    gap: ${dimensions.xs_1};
+  }
 `;
 
 interface IAllBooksListProps {

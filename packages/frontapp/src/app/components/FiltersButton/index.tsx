@@ -2,12 +2,12 @@ import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { FC } from 'react';
 import { ReactComponent as Filter } from '../../../assets/Filter.svg';
-import CategorySearch from '../CategorySearch';
 import UserSearch from '../UserSearch';
 import Modal from '../Modal';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { RoutesTypes } from '../../../utils/routes';
+import MaterialSearch from '../MaterialSearch';
 interface IProps {
   active: boolean;
 }
@@ -38,7 +38,7 @@ const FiltersButton: FC = () => {
         {location.pathname === RoutesTypes.READERS ? (
           <UserSearch setActive={setActive} />
         ) : (
-          <CategorySearch setActive={setActive} />
+          <MaterialSearch setActive={setActive} />
         )}
       </Modal>
     </>

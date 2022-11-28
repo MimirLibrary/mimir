@@ -18,7 +18,7 @@ interface IProps {
   setActive: Dispatch<SetStateAction<boolean>>;
 }
 
-const CategorySearch: FC<IProps> = ({ setActive }) => {
+const MaterialSearch: FC<IProps> = ({ setActive }) => {
   const [attributes, setAttributes] = useState<ItemsType[]>([]);
   const locations = useAppSelector(locationIds);
   const [availableMaterial, setAvailableMaterial] = useState<
@@ -30,14 +30,49 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
   });
 
   const allCategories = useMaterialFilter(availableMaterial, 'category');
+  const allAuthors = useMaterialFilter(availableMaterial, 'author');
+  const allTypes = useMaterialFilter(availableMaterial, 'type');
+  const allAvailability = useMaterialFilter(availableMaterial, 'availability');
+  const allSortBy = {
+    'By date added': undefined,
+    'By date of writing': undefined,
+  };
 
   const initAttributes = [
+    {
+      title: t('SearchFiltersForm.ItemFilter.SortBy'),
+      paramName: 'sortby',
+      inputType: 'radio',
+      id: 5,
+      subAttributes: adaptFiltersToAttrs(allSortBy),
+    },
+    {
+      title: t('SearchFiltersForm.ItemFilter.Items'),
+      paramName: 'items',
+      inputType: 'radio',
+      id: 2,
+      subAttributes: adaptFiltersToAttrs(allTypes),
+    },
+    {
+      title: t('SearchFiltersForm.ItemFilter.Availability'),
+      paramName: 'availability',
+      inputType: 'checkbox',
+      id: 1,
+      subAttributes: adaptFiltersToAttrs(allAvailability),
+    },
     {
       title: t('SearchFiltersForm.ItemFilter.Categories'),
       paramName: 'categories',
       inputType: 'checkbox',
       id: 3,
       subAttributes: adaptFiltersToAttrs(allCategories),
+    },
+    {
+      title: t('SearchFiltersForm.ItemFilter.Authors'),
+      paramName: 'authors',
+      inputType: 'checkbox',
+      id: 4,
+      subAttributes: adaptFiltersToAttrs(allAuthors),
     },
   ];
 
@@ -55,14 +90,18 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
   }, [data]);
 
   useEffect(() => {
-    if (allCategories) {
+    if (allAuthors && allCategories && allTypes && allAvailability) {
       setAttributes(initAttributes);
     }
   }, [availableMaterial]);
 
   const navigate = useNavigate();
   const params: ParamsType = {
+    availability: [],
+    items: [],
     categories: [],
+    authors: [],
+    sortby: [],
   };
 
   const { filters, setFilters, setIsFiltersApplied } = useFilters(
@@ -83,7 +122,6 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
 
   return (
     <SearchFiltersForm
-      title={t('SearchFiltersForm.ItemFilter.Categories')}
       key={JSON.stringify(filters)}
       attributes={attributes}
       onFiltersApply={handleApplyFilters}
@@ -93,4 +131,4 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
   );
 };
 
-export default CategorySearch;
+export default MaterialSearch;
