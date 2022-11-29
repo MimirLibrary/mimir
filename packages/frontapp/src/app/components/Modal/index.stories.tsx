@@ -11,10 +11,10 @@ const Template: Story<IPropsModal> = (args: IPropsModal) => {
   const [active, setActive] = useState(true);
   return (
     <div>
-      <Modal active={true} setActive={setActive}>
-        <p>Text for example #1</p>
+      <div id="modal"></div>
+      <Modal active={active} setActive={setActive}>
+        <p>Text for example</p>
       </Modal>
-      <p>Text for example #2</p>
     </div>
   );
 };
