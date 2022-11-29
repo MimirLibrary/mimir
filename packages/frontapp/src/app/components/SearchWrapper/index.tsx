@@ -8,6 +8,7 @@ import SearchByUserName from '../SearchByUserName';
 import SearchByBookOrAuthor from '../SearchByBookOrAuthor';
 import { RolesTypes } from '@mimir/global-types';
 import { useAppSelector } from '../../hooks/useTypedSelector';
+import { useLocation } from 'react-router-dom';
 
 interface IProps {
   showSidebar: () => void;
@@ -36,10 +37,13 @@ const StyledSearch = styled.div`
 
 const SearchWrapper: FC<IProps> = ({ showSidebar }) => {
   const { userRole } = useAppSelector((state) => state.user);
+  // added location to dynamically change the search component depending on the current url
+  const location = useLocation();
+  const isReadersPage = location.pathname.startsWith(RoutesTypes.READERS);
   return (
     <StyledSearch>
       <Burger showSidebar={showSidebar} />
-      {window.location.pathname.startsWith(RoutesTypes.READERS) ? (
+      {isReadersPage ? (
         <SearchByUserName />
       ) : (
         <SearchByBookOrAuthor

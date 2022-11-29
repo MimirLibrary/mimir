@@ -15,6 +15,7 @@ import { IReader } from '../../types';
 import { locationIds } from '../../store/slices/userSlice';
 import { toast } from 'react-toastify';
 import Loader, { WrapperLoader } from '../Loader';
+import Tags from '../BooksByCategory/tags';
 
 const ReadersWrapper = styled.div`
   display: flex;
@@ -34,8 +35,6 @@ const ListWrapper = styled.div`
   flex-flow: wrap row;
   column-gap: ${dimensions.xl_2};
   row-gap: ${dimensions.base};
-  overflow: auto;
-  max-height: 70vh;
 `;
 
 const Description = styled.p`
@@ -45,8 +44,8 @@ const Description = styled.p`
 `;
 
 interface IProps {
-  itemsTaken?: string[];
-  sortBy?: string[];
+  itemsTaken: string[];
+  sortBy: string[];
 }
 
 type MinMaxType = {
@@ -65,6 +64,14 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
   const dispatch = useAppDispatch();
 
   const { searchReaders } = useAppSelector((state) => state.readers);
+  const [readers, setReaders] = useState<(IReader | null)[] | null | undefined>(
+    []
+  );
+  const [allFilters, setAllFilters] = useState<Array<string>>([]);
+
+  useEffect(() => {
+    setReaders(searchReaders);
+  }, [searchReaders]);
 
   const getClaims = (person: IReader | null) =>
     countClaimHistory(person?.statuses as IClaimHistory[]);
@@ -110,13 +117,16 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
   const filterUsers = (category: string) => {
     switch (category) {
       case 'By alphabet':
-        if (searchReaders) searchReaders.sort(sortAlphabetically);
+        if (searchReaders)
+          setReaders([...searchReaders].sort(sortAlphabetically));
         break;
       case 'Number of things taken':
-        if (searchReaders) searchReaders.sort(sortByThingsTaken);
+        if (searchReaders)
+          setReaders([...searchReaders].sort(sortByThingsTaken));
         break;
       case 'Number of overdue deals':
-        if (searchReaders) searchReaders.sort(sortByThingsOverdue);
+        if (searchReaders)
+          setReaders([...searchReaders].sort(sortByThingsOverdue));
         break;
     }
   };
@@ -129,6 +139,10 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
     setMinMax([]);
     filterCategories(itemsTaken);
   }, [itemsTaken]);
+
+  useEffect(() => {
+    setAllFilters([...itemsTaken, ...sortBy]);
+  }, [itemsTaken, sortBy]);
 
   useEffect(() => {
     if (data) dispatch(setSearchReaders(data?.getAllPersons));
@@ -149,13 +163,14 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
   return (
     <ReadersWrapper>
       <Title>
-        {itemsTaken!.length > 0 || sortBy!.length > 0
-          ? t('Readers.TitleFiltered')
+        {itemsTaken.length > 0 || sortBy.length > 0
+          ? `${t('Readers.TitleFiltered')} - ${readers?.length || 0}`
           : t('Readers.Title')}
       </Title>
       <Description>{t('Readers.Description')}</Description>
+      <Tags chosenTags={allFilters} />
       <ListWrapper>
-        {searchReaders?.map((person) => {
+        {readers?.map((person) => {
           if (minMax.length === 0) {
             return (
               <SingleUser
