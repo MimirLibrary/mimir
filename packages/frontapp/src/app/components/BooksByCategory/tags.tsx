@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import { ReactComponent as Close } from '../../../assets/Close.svg';
 import { useTranslation } from 'react-i18next';
 import { dimensions } from '@mimir/ui-kit';
-import { shortenText } from 'packages/frontapp/src/helpers/common';
+import { shortenText } from '../../../helpers/common';
 
 const StyledTags = styled.button`
   display: flex;
