@@ -1,17 +1,19 @@
 import * as fs from 'fs';
 import { Test } from '@nestjs/testing';
 import axios from 'axios';
-
+import cheerio from 'cheerio';
 import { OzbyService } from './index';
+import { DigitalSpaceService } from '../../digitalSpace/digitalSpace.service';
 
 jest.mock('axios');
+jest.mock('cheerio');
 
 describe('OzbyService', () => {
   let service: OzbyService;
 
   beforeAll(async () => {
     const app = await Test.createTestingModule({
-      providers: [OzbyService],
+      providers: [OzbyService, DigitalSpaceService],
     }).compile();
 
     service = app.get<OzbyService>(OzbyService);
@@ -22,6 +24,7 @@ describe('OzbyService', () => {
       const isbn = '123';
 
       (axios.get as jest.Mock).mockResolvedValue('val');
+      (cheerio.load as jest.Mock).mockReturnValue('val');
       await service.readData(isbn);
     });
   });
@@ -36,7 +39,7 @@ describe('OzbyService', () => {
         const result = JSON.parse(
           fs.readFileSync(`${path}/result.json`, 'utf-8')
         );
-        expect(service.parseData(content)).toEqual(result);
+        expect(service.parseData(content, 'img')).toEqual(result);
       });
     });
   });

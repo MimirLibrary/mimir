@@ -4,7 +4,7 @@
     "yearPublishedAt": 2022,
     "monthPublishedAt": 0,
     "description": "Данная книга является продолжением книги\n                          \"Цифровая схемотехника и архитектура компьютера\"\n                          и рассказывает о цифровой схемотехнике с точки зрения\n                          компьютерной архитектуры, начиная с основ цифровой\n                          логики и заканчивая архитектурой микропроцессора\n                          RISC-V.\n                        \n                        \n                          Вы узнаете о цифровых логических элементах и\n                          разработке комбинационных и последовательных схем,\n                          используя эти базовые строительные блоки в качестве\n                          основы для проектирования RISC-V. Теоретическая часть\n                          подкреплена многочисленными примерами на языках\n                          описания аппаратуры SystemVerilog и VHDL.",
-    "cover": "https://s1-goods.ozstatic.by/480/20/95/101/101095020_0_Cifrovaya_shemotehnika_i_arhitektura_kompyutera_RISC-V_Devid_Harris_Sara_Harris.jpg",
+    "cover": "img",
     "meta": {
       "originalName": "Digital Design and Computer Architecture: RISC-V\n                              Edition",
       "numberOfPages": "810",
