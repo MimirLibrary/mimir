@@ -496,7 +496,7 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
               ) : null}
             </InlineWrapper>
             {!!fieldsNotification.length && (
-              <OpenLink to="/notifications">
+              <OpenLink to={RoutesTypes.NOTIFICATIONS}>
                 {t(`ManagerInfoCard.Link.Notifications`)}
               </OpenLink>
             )}
