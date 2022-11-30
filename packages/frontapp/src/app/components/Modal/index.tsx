@@ -60,7 +60,7 @@ export const ContentModal = styled.div<IStyleProps>`
   }
 `;
 
-interface IPropsModal {
+export interface IPropsModal {
   active: boolean;
   setActive: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -87,7 +87,7 @@ const Modal: FC<IPropsModal> = ({ active, setActive, children }) => {
   }, [active]);
 
   return createPortal(
-    <WrapperModal active={active} onClick={closeModalDarkPlace}>
+    <WrapperModal active={active} onClick={closeModalDarkPlace} role="document">
       <ContentModal active={active} onClick={(e) => e.stopPropagation()}>
         {children}
         <StyledCross
@@ -95,6 +95,7 @@ const Modal: FC<IPropsModal> = ({ active, setActive, children }) => {
           width={43}
           height={43}
           onClick={() => setActive(false)}
+          role="button"
         />
       </ContentModal>
     </WrapperModal>,
