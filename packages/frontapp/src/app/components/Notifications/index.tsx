@@ -264,7 +264,7 @@ const Notifications: FC<INotifications> = ({
           )}
         </>
       )}
-      <Modal active={isAnswerModal} setActive={setIsAnswerModal}>
+      <Modal visible={isAnswerModal} setActive={setIsAnswerModal}>
         {isAnswerModal && (
           <AnswerToUser
             id={dataOfMessage?.id}

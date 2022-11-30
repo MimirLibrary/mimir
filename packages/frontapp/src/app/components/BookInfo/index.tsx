@@ -578,7 +578,7 @@ const BookInfo: FC<IBookInfoProps> = ({
           </LongDescription>
         )}
       </BookHolder>
-      <Modal active={isShowClaimModal} setActive={setIsShowClaimModal}>
+      <Modal visible={isShowClaimModal} setActive={setIsShowClaimModal}>
         <ClaimOperation
           setActive={setIsShowClaimModal}
           claimBook={claim}
@@ -586,7 +586,7 @@ const BookInfo: FC<IBookInfoProps> = ({
           setValueInput={setValueIsISBN}
         />
       </Modal>
-      <Modal active={isShowSuccessClaim} setActive={setIsShowSuccessClaim}>
+      <Modal visible={isShowSuccessClaim} setActive={setIsShowSuccessClaim}>
         <SuccessMessage
           setActive={setIsShowSuccessClaim}
           title="You have successfully claim the book"
@@ -595,7 +595,7 @@ const BookInfo: FC<IBookInfoProps> = ({
         />
       </Modal>
       <Modal
-        active={isShowErrorMessageOfClaiming}
+        visible={isShowErrorMessageOfClaiming}
         setActive={setIsShowErrorMessageOfClaiming}
       >
         <ErrorMessage
@@ -606,13 +606,13 @@ const BookInfo: FC<IBookInfoProps> = ({
           onClick={showAskManagerModal}
         />
       </Modal>
-      <Modal active={isShowSuccessReturn} setActive={setIsSuccessReturn}>
+      <Modal visible={isShowSuccessReturn} setActive={setIsSuccessReturn}>
         <SuccessMessage
           setActive={setIsSuccessReturn}
           title="You have successfully return the book"
         />
       </Modal>
-      <Modal active={isShowSuccessExtend} setActive={setIsSuccessExtend}>
+      <Modal visible={isShowSuccessExtend} setActive={setIsSuccessExtend}>
         <SuccessMessage
           setActive={setIsSuccessExtend}
           created_at={dateConditionOfExtending}
@@ -621,7 +621,7 @@ const BookInfo: FC<IBookInfoProps> = ({
         />
       </Modal>
       <Modal
-        active={isShowErrorMessageOfExtending}
+        visible={isShowErrorMessageOfExtending}
         setActive={setIsShowErrorMessageOfExtending}
       >
         <ErrorMessage
@@ -631,7 +631,7 @@ const BookInfo: FC<IBookInfoProps> = ({
           titleCancel="Close"
         />
       </Modal>
-      <Modal active={isReturnError} setActive={setIsReturnError}>
+      <Modal visible={isReturnError} setActive={setIsReturnError}>
         <ErrorMessage
           title="Something goes wrong with your returning"
           message={ReturningBookError}
@@ -639,7 +639,7 @@ const BookInfo: FC<IBookInfoProps> = ({
           titleCancel="Close"
         />
       </Modal>
-      <Modal active={isShowAskManger} setActive={setIsShowAskManager}>
+      <Modal visible={isShowAskManger} setActive={setIsShowAskManager}>
         <AskManagerForm
           setActive={setIsShowAskManager}
           setSuccessModal={setIsShowWindowReportedToManager}
@@ -648,7 +648,7 @@ const BookInfo: FC<IBookInfoProps> = ({
         />
       </Modal>
       <Modal
-        active={isShowWindowReportedToManager}
+        visible={isShowWindowReportedToManager}
         setActive={setIsShowWindowReportedToManager}
       >
         <ErrorMessage
@@ -660,7 +660,7 @@ const BookInfo: FC<IBookInfoProps> = ({
         />
       </Modal>
       {currentStatus === 'Free' ? (
-        <Modal active={deleteWarning} setActive={setDeleteWarning}>
+        <Modal visible={deleteWarning} setActive={setDeleteWarning}>
           <ErrorMessage
             title="Warning"
             message={`Are you sure you want to delete the book "${title}" from the library permanently?`}
@@ -671,7 +671,7 @@ const BookInfo: FC<IBookInfoProps> = ({
           />
         </Modal>
       ) : (
-        <Modal active={deleteWarning} setActive={setDeleteWarning}>
+        <Modal visible={deleteWarning} setActive={setDeleteWarning}>
           <ErrorMessage
             title="Warning"
             message={`The book "${title}" is now in the possession of a person with Id ${statusInfo?.person_id} .Are you sure you want to delete the book "${title}" from the library permanently?`}

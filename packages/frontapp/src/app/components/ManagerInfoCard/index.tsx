@@ -512,7 +512,7 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
       <AddWrapper onClick={handleClickOnOpenScanner}>
         <AddBookBluePlus />
       </AddWrapper>
-      <Modal active={isAnswerModal} setActive={setIsAnswerModal}>
+      <Modal visible={isAnswerModal} setActive={setIsAnswerModal}>
         {isAnswerModal && (
           <AnswerToUser
             id={dataOfMessage?.id}

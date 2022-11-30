@@ -158,7 +158,7 @@ const StatisticsModal: FC<StatisticsModal> = ({ isActive, setIsActive }) => {
   }, [error]);
 
   return (
-    <Modal active={isActive} setActive={setIsActive}>
+    <Modal visible={isActive} setActive={setIsActive}>
       <Wrapper>
         <Title>{t('Statistics.Title')}</Title>
         <PieChart

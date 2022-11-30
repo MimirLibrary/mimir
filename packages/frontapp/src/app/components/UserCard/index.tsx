@@ -326,7 +326,7 @@ const UserCard = () => {
         <Notifications notifications={sortedNotifications}></Notifications>
       )}
       <Modal
-        active={isNotificationModalOpen}
+        visible={isNotificationModalOpen}
         setActive={setIsNotificationModalOpen}
       >
         <AnswerToUser
@@ -336,7 +336,7 @@ const UserCard = () => {
           isSimpleNotification={true}
         />
       </Modal>
-      <Modal active={showWarningUnblock} setActive={setShowWarningUnblock}>
+      <Modal visible={showWarningUnblock} setActive={setShowWarningUnblock}>
         <ErrorMessage
           title={t('Block.Warning')}
           message={
@@ -350,7 +350,7 @@ const UserCard = () => {
           onSubmitClick={unblockSubmit}
         />
       </Modal>
-      <Modal active={showWarningBlock} setActive={setShowWarningBlock}>
+      <Modal visible={showWarningBlock} setActive={setShowWarningBlock}>
         <ErrorMessage
           title={t('Block.Warning')}
           message={
@@ -364,7 +364,7 @@ const UserCard = () => {
           onSubmitClick={openInput}
         />
       </Modal>
-      <Modal active={showBlockInput} setActive={setShowBlockInput}>
+      <Modal visible={showBlockInput} setActive={setShowBlockInput}>
         <Form onSubmit={blockSubmit}>
           <Description bold titlee>
             {t('Block.BlockUser')}

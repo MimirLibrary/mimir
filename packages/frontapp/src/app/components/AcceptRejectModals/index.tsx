@@ -67,7 +67,7 @@ const AcceptRejectModals: FC<IDonateProps> = ({
   }, [returnError, rejectError]);
 
   return (
-    <Modal active={active} setActive={setActive}>
+    <Modal visible={active} setActive={setActive}>
       {method === 'reject' ? (
         <ErrorMessage
           title="Warning!"

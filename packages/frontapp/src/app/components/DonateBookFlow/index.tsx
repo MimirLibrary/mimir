@@ -163,7 +163,7 @@ const DonateBookFlow = () => {
           <DonateBook onHideContent={handleCloseContentOfDonate} />
         )}
       </section>
-      <Modal active={isShowError} setActive={setIsShowError}>
+      <Modal visible={isShowError} setActive={setIsShowError}>
         <ErrorMessage
           setActive={setIsShowError}
           message={t('DonateItem.Modal.ISBNError.Message')}

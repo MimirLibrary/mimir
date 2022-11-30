@@ -565,7 +565,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
           </WrapperButtons>
         </Form>
       </WrapperDonate>
-      <Modal setActive={setSuccess} active={isSuccess}>
+      <Modal setActive={setSuccess} visible={isSuccess}>
         <SuccessMessage
           setActive={setSuccess}
           title={t('DonateItem.Modal.DonateSuccess.Title')}
@@ -573,13 +573,13 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
           onCloseContentDonate={onHideContent}
         />
       </Modal>
-      <Modal active={isAskManager} setActive={setIsAskManager}>
+      <Modal visible={isAskManager} setActive={setIsAskManager}>
         <AskManagerForm
           setActive={setIsAskManager}
           setSuccessModal={setSendManagerSuccess}
         />
       </Modal>
-      <Modal active={sendManagerSuccess} setActive={setSendManagerSuccess}>
+      <Modal visible={sendManagerSuccess} setActive={setSendManagerSuccess}>
         <ErrorMessage
           title={t('DonateItem.Modal.ProblemReported.Title')}
           message={t('DonateItem.Modal.ProblemReported.Message')}

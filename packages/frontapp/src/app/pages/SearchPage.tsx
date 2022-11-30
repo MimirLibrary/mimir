@@ -148,7 +148,7 @@ const SearchPage = () => {
             </ContentWrapper>
           );
         })}
-      <Modal active={isModalActive} setActive={setIsModalActive}>
+      <Modal visible={isModalActive} setActive={setIsModalActive}>
         <CategorySearch setActive={setIsModalActive} />
       </Modal>
     </>

@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { RoutesTypes } from '../../../utils/routes';
 import MaterialSearch from '../MaterialSearch';
+
 interface IProps {
   active: boolean;
 }
@@ -29,12 +30,13 @@ const StyledButton = styled.button<IProps>`
 const FiltersButton: FC = () => {
   const location = useLocation();
   const [active, setActive] = useState(false);
+
   return (
     <>
       <StyledButton active={false} onClick={() => setActive(true)}>
         <Filter />
       </StyledButton>
-      <Modal active={active} setActive={setActive}>
+      <Modal visible={active} setActive={setActive}>
         {location.pathname === RoutesTypes.READERS ? (
           <UserSearch setActive={setActive} />
         ) : (

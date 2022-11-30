@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ContentModal, WrapperModal } from '../components/Modal';
+import { ContentModal, ModalBackground } from '../components/Modal';
 import { Description } from '../components/UserCard';
 import { t } from 'i18next';
 import styled from '@emotion/styled';
@@ -54,8 +54,8 @@ const BlockPage = () => {
 
   return (
     <div>
-      <WrapperModal active={blockedState}>
-        <ContentModal active={blockedState}>
+      <ModalBackground visible={blockedState}>
+        <ContentModal>
           <ModalWrapper>
             <Description bold titlee>
               {t('Block.Opps')}
@@ -69,7 +69,7 @@ const BlockPage = () => {
             <SadMimirImage />
           </ModalWrapper>
         </ContentModal>
-      </WrapperModal>
+      </ModalBackground>
     </div>
   );
 };
