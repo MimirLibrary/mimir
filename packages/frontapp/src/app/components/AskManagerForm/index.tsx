@@ -201,12 +201,12 @@ const AskManagerForm: FC<IPropsAskManagerForm> = ({
           required
         />
         <WrapperButtons>
+          <Button value="Cancel" transparent onClick={closeModal} />
           <Button
             value="Ok"
             type="submit"
             disabled={!(location_id || location)}
           />
-          <Button value="Cancel" transparent onClick={closeModal} />
         </WrapperButtons>
       </Form>
     </Wrapper>

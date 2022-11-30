@@ -27,10 +27,11 @@ const StartPageBackground = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  background-color: #f9faff;
+  background-color: ${colors.light_gray};
   background-image: url('../../assets/bookshelf-pattern.png');
   @media (max-width: ${dimensions.phone_width}) {
     overflow: hidden;
+    align-items: flex-end;
   }
 `;
 
@@ -42,12 +43,13 @@ const StartPageContainer = styled.div`
   height: 96%;
   background-color: ${colors.bg_secondary};
   border-radius: 1000px 1000px 0 0;
-  box-shadow: 0px 10px 70px rgba(26, 30, 214, 0.08);
+  box-shadow: ${colors.shadow};
   padding: 0 175px;
   @media (max-width: ${dimensions.phone_width}) {
     font-size: ${dimensions.sm};
-    padding: 0 32px;
-    margin: -70px 0;
+    padding: 0 ${dimensions.base_2};
+    margin: 0;
+    height: 90%;
   }
 `;
 
