@@ -13,11 +13,6 @@ export class AbeBooksService {
 
   private readonly rootUrl = 'https://www.abebooks.com';
 
-  async getPicture(url: string) {
-    const pic = await axios(url).then((r) => r.data.blob());
-    return pic;
-  }
-
   private async readData(identifier: string) {
     try {
       const website = await axios.get(
@@ -27,14 +22,9 @@ export class AbeBooksService {
         `https://www.abebooks.com/servlet/HighlightInventory?ds=20&kn=${identifier}&sortby=17`
       );
 
-      const pic = await axios.get(
-        firstResponse.data.highlightedItemsMap.SORT_MODE_FEATURED[0].imageUrl,
-        { responseType: 'arraybuffer' }
-      );
       return {
         url: firstResponse.data.highlightedItemsMap.SORT_MODE_FEATURED[0],
         website: website.data,
-        img: pic.data,
       };
     } catch (e) {
       throw new BadRequestException(e.message);
@@ -81,9 +71,13 @@ export class AbeBooksService {
 
   async getData(isbn: string): Promise<Bundle> {
     const result = await this.readData(isbn);
+
+    const pic = await axios.get(result.url.imageUrl, {
+      responseType: 'arraybuffer',
+    });
     const img = await this.digitalSpaceService.createFile({
       fileExtension: result.url.imageUrl.split('.').pop(),
-      buffer: result.img,
+      buffer: pic.data,
     });
     return this.parseData(result, img);
   }

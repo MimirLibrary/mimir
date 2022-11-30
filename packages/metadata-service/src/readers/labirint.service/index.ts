@@ -21,16 +21,7 @@ export class LabirintService {
       const $ = cheerio.load(firstResponse.data, null, false);
       const id = $('.product-title-link').attr('href');
       const secondResponse = await axios.get(`${this.rootUrl}${id}`);
-      const second$ = cheerio.load(secondResponse.data);
-      const pic = await axios.get(second$('.book-img-cover').attr('src'), {
-        responseType: 'arraybuffer',
-      });
-      const extension = second$('.book-img-cover').attr('src').split('.').pop();
-      return {
-        result: secondResponse.data,
-        image: pic.data,
-        extension: extension,
-      };
+      return secondResponse.data;
     } catch (e) {
       throw new BadRequestException(e.message);
     }
@@ -86,10 +77,15 @@ export class LabirintService {
 
   async getData(isbn: string): Promise<Bundle> {
     const result = await this.readData(isbn);
-    const img = await this.digitalSpaceService.createFile({
-      fileExtension: result.extension,
-      buffer: result.image,
+    const $ = cheerio.load(result);
+    const pic = await axios.get($('.book-img-cover').attr('src'), {
+      responseType: 'arraybuffer',
     });
-    return this.parseData(result.result, img);
+    const extension = $('.book-img-cover').attr('src').split('.').pop();
+    const img = await this.digitalSpaceService.createFile({
+      fileExtension: extension,
+      buffer: pic.data,
+    });
+    return this.parseData(result, img);
   }
 }

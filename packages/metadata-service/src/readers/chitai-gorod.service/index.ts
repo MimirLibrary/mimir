@@ -29,11 +29,7 @@ export class ChitaiGorodService {
         action: 'read',
         data: [ids],
       });
-      const pic = await axios.get(
-        `https://img-gorod.ru${infoOfBook.data.result[ids].image_url}`,
-        { responseType: 'arraybuffer' }
-      );
-      return { info: infoOfBook.data.result[ids], image: pic.data };
+      return infoOfBook.data.result[ids];
     } catch (e) {
       throw new BadRequestException(e.message);
     }
@@ -79,14 +75,14 @@ export class ChitaiGorodService {
 
   async getData(isbn: string): Promise<Bundle> {
     const result = await this.readData(isbn);
-
+    const pic = await axios.get(`https://img-gorod.ru${result.image_url}`, {
+      responseType: 'arraybuffer',
+    });
     const img = await this.digitalSpaceService.createFile({
-      fileExtension: `https://img-gorod.ru${result.info.image_url}`
-        .split('.')
-        .pop(),
-      buffer: result.image,
+      fileExtension: `https://img-gorod.ru${result.image_url}`.split('.').pop(),
+      buffer: pic.data,
     });
 
-    return this.parseData(result.info, img);
+    return this.parseData(result, img);
   }
 }

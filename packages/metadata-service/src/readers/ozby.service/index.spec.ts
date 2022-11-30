@@ -6,7 +6,6 @@ import { OzbyService } from './index';
 import { DigitalSpaceService } from '../../digitalSpace/digitalSpace.service';
 
 jest.mock('axios');
-jest.mock('cheerio');
 
 describe('OzbyService', () => {
   let service: OzbyService;
@@ -24,7 +23,6 @@ describe('OzbyService', () => {
       const isbn = '123';
 
       (axios.get as jest.Mock).mockResolvedValue('val');
-      (cheerio.load as jest.Mock).mockReturnValue('val');
       await service.readData(isbn);
     });
   });

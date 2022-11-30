@@ -89,13 +89,8 @@ export class OzbyService {
   async readData(isbn: string) {
     try {
       const result = await axios.get(this.rootURL, { params: { q: isbn } });
-      const $ = cheerio.load(result.data);
 
-      const pic = await axios.get(
-        $('.b-product-photo__picture-self img').first().attr('src'),
-        { responseType: 'arraybuffer' }
-      );
-      return { result: result.data, image: pic.data };
+      return result.data;
     } catch (e) {
       throw new BadRequestException(e.message);
     }
@@ -119,7 +114,6 @@ export class OzbyService {
     const items = _(itemsFlat).chunk(2).fromPairs().value();
     const year = Number(items.year);
     delete items.year;
-    console.log('img: ', img);
     const material: Prisma.MaterialCreateInput = {
       title: $('h1[itemprop=name]').text().trim(),
       yearPublishedAt: year,
@@ -164,16 +158,20 @@ export class OzbyService {
 
   async getData(isbn: string): Promise<Bundle> {
     const result = await this.readData(isbn);
-    const $ = cheerio.load(result.result);
+    const $ = cheerio.load(result);
+    const pic = await axios.get(
+      $('.b-product-photo__picture-self img').first().attr('src'),
+      { responseType: 'arraybuffer' }
+    );
     const img = await this.digitalSpaceService.createFile({
       fileExtension: $('.b-product-photo__picture-self img')
         .first()
         .attr('src')
         .split('.')
         .pop(),
-      buffer: result.image,
+      buffer: pic.data,
     });
 
-    return this.parseData(result.result, img);
+    return this.parseData(result, img);
   }
 }
