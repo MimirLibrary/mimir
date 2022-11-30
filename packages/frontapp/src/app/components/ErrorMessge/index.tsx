@@ -109,10 +109,6 @@ const ErrorMessage: FC<IPropsErrorMessage> = ({
           </div>
         </WrapperInfo>
         <WrapperButtons active={activeAskManager}>
-          <StyledButton
-            value={titleOption || 'Ok'}
-            onClick={onSubmitClick ? onSubmitClick : closeModal}
-          />
           {activeAskManager && (
             <StyledButton
               value={titleCancel || 'Cancel'}
@@ -120,6 +116,10 @@ const ErrorMessage: FC<IPropsErrorMessage> = ({
               onClick={onClick || closeModal}
             />
           )}
+          <StyledButton
+            value={titleOption || 'Ok'}
+            onClick={onSubmitClick ? onSubmitClick : closeModal}
+          />
         </WrapperButtons>
       </WrapperErrorClaim>
     </Wrapper>

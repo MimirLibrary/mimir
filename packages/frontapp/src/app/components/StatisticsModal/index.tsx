@@ -195,8 +195,8 @@ const StatisticsModal: FC<StatisticsModal> = ({ isActive, setIsActive }) => {
           </LegendItem>
         </LegendWrapper>
         <ButtonsWrapper>
-          <Button value="Ok" onClick={closeModal} />
           <Button transparent value="Cancel" onClick={closeModal} />
+          <Button value="Ok" onClick={closeModal} />
         </ButtonsWrapper>
       </Wrapper>
     </Modal>

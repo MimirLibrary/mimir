@@ -189,14 +189,14 @@ const SearchFiltersForm: FC<IProps> = ({
       ))}
       <ButtonWrapper>
         <Button
-          value={t('SearchFiltersForm.ShowResults')}
-          onClick={handleSubmit}
-        />
-        <Button
           type="reset"
           transparent
           value={t('SearchFiltersForm.Reset')}
           onClick={handleReset}
+        />
+        <Button
+          value={t('SearchFiltersForm.ShowResults')}
+          onClick={handleSubmit}
         />
       </ButtonWrapper>
     </form>

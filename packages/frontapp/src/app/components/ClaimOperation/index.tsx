@@ -175,12 +175,12 @@ const ClaimOperation: FC<IProps> = ({
           />
         </Row>
         <WrapperButtons>
+          <StyledButton transparent value="Cancel" onClick={closeModal} />
           <StyledButton
             value="Claim a book"
             onClick={claimBook}
             disabled={!value}
           />
-          <StyledButton transparent value="Cancel" onClick={closeModal} />
         </WrapperButtons>
       </WrapperClaimOperation>
       {isShowScanner && (
