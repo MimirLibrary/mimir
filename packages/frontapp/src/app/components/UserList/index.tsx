@@ -53,6 +53,11 @@ type MinMaxType = {
   max: number;
 };
 
+type SortType = (
+  userFirst: IReader | null,
+  userSecond: IReader | null
+) => number;
+
 const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
   const locations = useAppSelector(locationIds);
   const [minMax, setMinMax] = useState<MinMaxType[]>([]);
@@ -114,20 +119,16 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
       }
     });
   };
-  const filterUsers = (category: string) => {
-    switch (category) {
-      case 'By alphabet':
-        if (searchReaders)
-          setReaders([...searchReaders].sort(sortAlphabetically));
-        break;
-      case 'Number of things taken':
-        if (searchReaders)
-          setReaders([...searchReaders].sort(sortByThingsTaken));
-        break;
-      case 'Number of overdue deals':
-        if (searchReaders)
-          setReaders([...searchReaders].sort(sortByThingsOverdue));
-        break;
+
+  const categorySortsMap: Record<string, SortType> = {
+    'By alphabet': sortAlphabetically,
+    'Number of things taken': sortByThingsTaken,
+    'Number of overdue deals': sortByThingsOverdue,
+  };
+
+  const filterUsers = (category: keyof typeof categorySortsMap) => {
+    if (searchReaders?.length) {
+      setReaders([...searchReaders].sort(categorySortsMap[category]));
     }
   };
 
