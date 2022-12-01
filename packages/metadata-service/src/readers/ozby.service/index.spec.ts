@@ -1,9 +1,8 @@
 import * as fs from 'fs';
 import { Test } from '@nestjs/testing';
 import axios from 'axios';
-import cheerio from 'cheerio';
 import { OzbyService } from './index';
-import { DigitalSpaceService } from '../../digitalSpace/digitalSpace.service';
+import { DigitalSpaceService } from '@mimir/digital-space';
 
 jest.mock('axios');
 

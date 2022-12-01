@@ -3,8 +3,7 @@ import axios from 'axios';
 import { Prisma } from '@prisma/client';
 import cheerio from 'cheerio';
 import { Bundle } from '../../types';
-import { DigitalSpaceService } from '../../digitalSpace/digitalSpace.service';
-
+import { DigitalSpaceService } from '@mimir/digital-space';
 const READER_ID = 'LABIRINT';
 
 @Injectable()
@@ -77,13 +76,12 @@ export class LabirintService {
 
   async getData(isbn: string): Promise<Bundle> {
     const result = await this.readData(isbn);
-    const $ = cheerio.load(result);
+    const $ = cheerio.load(result, null, false);
     const pic = await axios.get($('.book-img-cover').attr('src'), {
       responseType: 'arraybuffer',
     });
-    const extension = $('.book-img-cover').attr('src').split('.').pop();
     const img = await this.digitalSpaceService.createFile({
-      fileExtension: extension,
+      originalname: $('.book-img-cover').attr('src'),
       buffer: pic.data,
     });
     return this.parseData(result, img);

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Prisma } from '@prisma/client';
 import cheerio from 'cheerio';
 import { Bundle } from '../../types';
-import { DigitalSpaceService } from '../../digitalSpace/digitalSpace.service';
+import { DigitalSpaceService } from '@mimir/digital-space';
 
 const READER_ID = 'ABEBOOKS';
 
@@ -76,7 +76,7 @@ export class AbeBooksService {
       responseType: 'arraybuffer',
     });
     const img = await this.digitalSpaceService.createFile({
-      fileExtension: result.url.imageUrl.split('.').pop(),
+      originalname: result.url.imageUrl,
       buffer: pic.data,
     });
     return this.parseData(result, img);

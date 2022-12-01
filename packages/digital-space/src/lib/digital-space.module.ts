@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { DigitalSpaceService } from './digitalSpace.service';
+import { DigitalSpaceService } from './digital-space.service';
 @Module({
   providers: [DigitalSpaceService],
   exports: [DigitalSpaceService],

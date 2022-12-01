@@ -4,7 +4,7 @@ import cheerio from 'cheerio';
 import * as _ from 'lodash';
 import axios from 'axios';
 import { Bundle } from '../../types';
-import { DigitalSpaceService } from '../../digitalSpace/digitalSpace.service';
+import { DigitalSpaceService } from '@mimir/digital-space';
 
 type Author = {
   name: string;
@@ -164,11 +164,7 @@ export class OzbyService {
       { responseType: 'arraybuffer' }
     );
     const img = await this.digitalSpaceService.createFile({
-      fileExtension: $('.b-product-photo__picture-self img')
-        .first()
-        .attr('src')
-        .split('.')
-        .pop(),
+      originalname: $('.b-product-photo__picture-self img').first().attr('src'),
       buffer: pic.data,
     });
 

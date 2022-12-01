@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { Prisma } from '@prisma/client';
 import { Bundle } from '../../types';
-import { DigitalSpaceService } from '../../digitalSpace/digitalSpace.service';
+import { DigitalSpaceService } from '@mimir/digital-space';
 
 @Injectable()
 export class ChitaiGorodService {
@@ -79,7 +79,7 @@ export class ChitaiGorodService {
       responseType: 'arraybuffer',
     });
     const img = await this.digitalSpaceService.createFile({
-      fileExtension: `https://img-gorod.ru${result.image_url}`.split('.').pop(),
+      originalname: `https://img-gorod.ru${result.image_url}`,
       buffer: pic.data,
     });
 
