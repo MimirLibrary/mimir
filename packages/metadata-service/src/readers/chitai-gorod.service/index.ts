@@ -36,7 +36,6 @@ export class ChitaiGorodService {
   }
   private parseData(result, img): Bundle {
     if (!result) return null;
-    console.log('img: ', img);
     const material: Prisma.MaterialCreateInput = {
       title: result.name,
       cover: img,
