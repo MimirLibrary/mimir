@@ -43,7 +43,7 @@ describe('BooksByCategory', () => {
   });
 
   it('tags should render correctly', () => {
-    render(<Tags chosenTags={params} numOfResults={1} />);
+    render(<Tags chosenTags={params} />);
     expect(screen.getAllByTestId('tags')[0]).toBeInTheDocument();
   });
 });

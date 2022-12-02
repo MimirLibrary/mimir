@@ -4,11 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import { ReactComponent as Close } from '../../../assets/Close.svg';
 import { useTranslation } from 'react-i18next';
 import { dimensions } from '@mimir/ui-kit';
-
-const Header = styled.h2`
-  font-size: ${dimensions.xl_2};
-  font-weight: 700;
-`;
+import { shortenText } from '../../../helpers/common';
 
 const StyledTags = styled.button`
   display: flex;
@@ -33,7 +29,9 @@ const TagsWrapper = styled.div`
   @media (max-width: ${dimensions.phone_width}) {
     flex-wrap: nowrap;
     overflow-x: auto;
+    overflow-y: hidden;
     gap: 4px;
+    max-width: calc(100vw - ${dimensions.xl_3});
     ::-webkit-scrollbar {
       height: 0;
     }
@@ -53,9 +51,8 @@ const StyledCross = styled(Close)`
 `;
 interface IProps {
   chosenTags: string[];
-  numOfResults: number;
 }
-const Tags: FC<IProps> = ({ chosenTags, numOfResults }) => {
+const Tags: FC<IProps> = ({ chosenTags }) => {
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   let searchString = '';
@@ -77,16 +74,13 @@ const Tags: FC<IProps> = ({ chosenTags, numOfResults }) => {
   };
   return (
     <Wrapper data-testid="tags">
-      <Header>
-        {t('Readers.TitleFiltered')} - {numOfResults}
-      </Header>
       <TagsWrapper>
         {chosenTags.map((tag) => {
           indexes++;
           return (
             <StyledTags key={indexes}>
               <StyledCross onClick={() => onCrossClick(tag)} />
-              {tag}
+              {shortenText(tag, 15)}
             </StyledTags>
           );
         })}

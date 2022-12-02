@@ -4,6 +4,15 @@ import { WrapperList } from '../ListBooks';
 import { Material, Status } from '@mimir/apollo-client';
 import Tags from './tags';
 import ItemsNotFound from '../ItemsNotFound';
+import styled from '@emotion/styled';
+import { dimensions } from '@mimir/ui-kit';
+import { t } from 'i18next';
+
+const Header = styled.h2`
+  font-size: ${dimensions.xl_2};
+  font-weight: 700;
+  margin-bottom: ${dimensions.base};
+`;
 
 type IStatus = Omit<
   Status,
@@ -91,7 +100,10 @@ const BookList: FC<IBookList> = ({ allData, searchParams }) => {
 
   return (
     <div data-testid="bookList">
-      <Tags chosenTags={allFilters} numOfResults={filteredData.length} />
+      <Header>
+        {t('Readers.TitleFiltered')} - {filteredData.length}
+      </Header>
+      <Tags chosenTags={allFilters} />
       <WrapperList>
         {filteredData.length !== 0 ? (
           filteredData.map((material: IMaterial) => (
