@@ -10,6 +10,7 @@ import { Message } from './message.entity';
 import { CreateMessageInput } from '@mimir/global-types';
 import { Person } from '../persons/person.entity';
 import { GraphQLError } from 'graphql';
+import { In } from 'typeorm';
 
 @Resolver('Message')
 export class MessageResolver {
@@ -19,8 +20,8 @@ export class MessageResolver {
   }
 
   @Query(() => [Message])
-  async getAllMessages(@Args('location_id') location_id: number) {
-    return Message.find({ where: { location_id } });
+  async getAllMessages(@Args('location_id') location_id: Array<number>) {
+    return Message.find({ where: { location_id: In(location_id) } });
   }
 
   @ResolveField(() => Person)

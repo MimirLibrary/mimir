@@ -82,46 +82,43 @@ const MainComponent: FC<IPropsMainComponent> = ({ showSidebar }) => {
     setIsShowScanner(true);
   }, []);
 
-  return (
-    <>
-      {blocked ? (
-        <Routes>
-          <Route path="*" element={<BlockPage />} />
-        </Routes>
+  return blocked ? (
+    <Routes>
+      <Route path="*" element={<BlockPage />} />
+    </Routes>
+  ) : (
+    <WrapperRoutes>
+      {window.location.pathname !== RoutesTypes.DONATES_FROM_USER ? (
+        <SearchWrapper showSidebar={showSidebar} />
       ) : (
-        <WrapperRoutes>
-          {window.location.pathname !== RoutesTypes.DONATES_FROM_USER ? (
-            <SearchWrapper showSidebar={showSidebar} />
-          ) : (
-            <StyledContainer>
-              <Burger showSidebar={showSidebar} />
-            </StyledContainer>
-          )}
-          <Routes>
-            {routes}
-            <Route path="/notifications" element={<NotificationPage />} />
-            <Route path="*" element={<HomePage />} />
-            <Route path="/block" element={<BlockPage />} />
-          </Routes>
-          {userRole !== RolesTypes.MANAGER && (
-            <StyledButton
-              svgComponent={<QRCodeSvg />}
-              value={t('Search.Scan')}
-              onClick={handleOnClickButton}
-              show={
-                !(window.location.pathname === RoutesTypes.DONATE_TO_LIBRARY)
-              }
-            />
-          )}
-          {isShowScanner && (
-            <Scanner
-              onDetected={handleOnDetectedScannerRoute}
-              onClose={handleOnCloseScanner}
-            />
-          )}
-        </WrapperRoutes>
+        <StyledContainer>
+          <Burger showSidebar={showSidebar} />
+        </StyledContainer>
       )}
-    </>
+      <Routes>
+        {routes}
+        <Route
+          path={RoutesTypes.NOTIFICATIONS}
+          element={<NotificationPage />}
+        />
+        <Route path="*" element={<HomePage />} />
+        <Route path="/block" element={<BlockPage />} />
+      </Routes>
+      {userRole !== RolesTypes.MANAGER && (
+        <StyledButton
+          svgComponent={<QRCodeSvg />}
+          value={t('Search.Scan')}
+          onClick={handleOnClickButton}
+          show={!(window.location.pathname === RoutesTypes.DONATE_TO_LIBRARY)}
+        />
+      )}
+      {isShowScanner && (
+        <Scanner
+          onDetected={handleOnDetectedScannerRoute}
+          onClose={handleOnCloseScanner}
+        />
+      )}
+    </WrapperRoutes>
   );
 };
 

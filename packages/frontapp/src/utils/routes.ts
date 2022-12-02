@@ -12,4 +12,5 @@ export enum RoutesTypes {
   DONATE_PREVIEW = '/donate',
   BOOK_PREVIEW = '/item',
   CATEGORY = '/category',
+  NOTIFICATIONS = '/notifications',
 }

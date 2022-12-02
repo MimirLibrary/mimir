@@ -403,7 +403,7 @@ export type QueryGetAllMaterialsArgs = {
 
 
 export type QueryGetAllMessagesArgs = {
-  location_id: Scalars['Int'];
+  location_id?: InputMaybe<Array<Scalars['Int']>>;
 };
 
 
@@ -733,7 +733,7 @@ export type GetAllMaterialsForManagerQueryVariables = Exact<{
 export type GetAllMaterialsForManagerQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', id: string, title: string, category: string, picture?: string | null, statuses: Array<{ __typename?: 'Status', id: string, created_at: any, status: string, person: { __typename?: 'Person', id: string, username: string } } | null> } | null> };
 
 export type GetAllMessagesQueryVariables = Exact<{
-  location_id: Scalars['Int'];
+  location_id?: InputMaybe<Array<Scalars['Int']> | Scalars['Int']>;
 }>;
 
 
@@ -1676,7 +1676,7 @@ export type GetAllMaterialsForManagerQueryHookResult = ReturnType<typeof useGetA
 export type GetAllMaterialsForManagerLazyQueryHookResult = ReturnType<typeof useGetAllMaterialsForManagerLazyQuery>;
 export type GetAllMaterialsForManagerQueryResult = Apollo.QueryResult<GetAllMaterialsForManagerQuery, GetAllMaterialsForManagerQueryVariables>;
 export const GetAllMessagesDocument = gql`
-    query GetAllMessages($location_id: Int!) {
+    query GetAllMessages($location_id: [Int!]) {
   getAllMessages(location_id: $location_id) {
     id
     created_at
@@ -1708,7 +1708,7 @@ export const GetAllMessagesDocument = gql`
  *   },
  * });
  */
-export function useGetAllMessagesQuery(baseOptions: Apollo.QueryHookOptions<GetAllMessagesQuery, GetAllMessagesQueryVariables>) {
+export function useGetAllMessagesQuery(baseOptions?: Apollo.QueryHookOptions<GetAllMessagesQuery, GetAllMessagesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetAllMessagesQuery, GetAllMessagesQueryVariables>(GetAllMessagesDocument, options);
       }

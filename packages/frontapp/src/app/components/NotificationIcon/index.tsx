@@ -5,6 +5,7 @@ import { ReactComponent as NoNotification } from '../../../assets/NoNotification
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setActiveTab } from '../../store/slices/tabsSlice';
+import { RoutesTypes } from '../../../utils/routes';
 
 const WrapperIcon = styled.div`
   cursor: pointer;
@@ -17,9 +18,9 @@ interface IProps {
 
 const NotificationIcon: FC<IProps> = ({ active, hideSidebar }) => {
   const dispatch = useDispatch();
-  const history = useNavigate();
+  const navigate = useNavigate();
   const linkToNotification = () => {
-    history('/notifications');
+    navigate(RoutesTypes.NOTIFICATIONS);
     dispatch(setActiveTab(null));
     hideSidebar();
   };

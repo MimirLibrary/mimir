@@ -8,17 +8,19 @@ import { useAppSelector } from '../hooks/useTypedSelector';
 import { toast } from 'react-toastify';
 import { RolesTypes } from '@mimir/global-types';
 import Item from '../components/ClaimTable/Item';
+import { locationIds } from '../store/slices/userSlice';
 
 const NotificationPage = () => {
   const [notifications, setNotifications] = useState<IOneNotification[]>([]);
-  const { locations, userRole, id } = useAppSelector((state) => state.user);
+  const { userRole, id } = useAppSelector((state) => state.user);
+  const locations = useAppSelector(locationIds);
   const {
     data: managerNotificationsData,
     loading: managerNotificationsLoading,
     error: managerNotificationsError,
   } = useGetAllMessagesQuery({
     variables: {
-      location_id: parseInt(locations[0].id),
+      location_id: locations,
     },
     skip: userRole === RolesTypes.READER,
   });
@@ -33,8 +35,6 @@ const NotificationPage = () => {
     },
     skip: userRole === RolesTypes.MANAGER,
   });
-
-  // TODO: handle READER notifications
 
   useEffect(() => {
     if (managerNotificationsError) {

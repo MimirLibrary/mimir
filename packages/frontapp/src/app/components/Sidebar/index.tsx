@@ -73,7 +73,8 @@ const StyledSidebar = styled.aside<IStyledSidebarProps>`
 const Sidebar: FC<IProps> = ({ isSidebarActive, hideSidebar }) => {
   const ref = useRef(null);
   useOnClickOutside(ref, hideSidebar);
-  const { id, userRole, locations } = useAppSelector((state) => state.user);
+  const { id, userRole } = useAppSelector((state) => state.user);
+  const locations = useAppSelector(locationIds);
 
   const { data: getNotificationsByPersonData } =
     useGetNotificationsByPersonQuery({
@@ -85,10 +86,8 @@ const Sidebar: FC<IProps> = ({ isSidebarActive, hideSidebar }) => {
 
   const { data: allMessagesData } = useGetAllMessagesQuery({
     skip: userRole === RolesTypes.READER,
-    variables: { location_id: parseInt(locations[0].id) },
+    variables: { location_id: locations },
   });
-
-  // TODO: handle READER notifications
 
   return (
     <StyledWrapper isSidebarActive={isSidebarActive}>
