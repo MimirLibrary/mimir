@@ -24,15 +24,24 @@ import { InputDescription } from '../AskManagerForm';
 import { RolesTypes } from '@mimir/global-types';
 import { toast } from 'react-toastify';
 import AnswerToUser from '../AnswerToUser';
-import { nanoid } from '@reduxjs/toolkit';
 import Loader, { WrapperLoader } from '../Loader';
 
-const InlineWrapper = styled.div`
+interface IInlineWrapperProps {
+  column?: boolean;
+}
+
+const InlineWrapper = styled.div<IInlineWrapperProps>`
   display: flex;
   flex-direction: row;
   column-gap: 4px;
   align-items: center;
+  @media (max-width: ${dimensions.phone_width}) {
+    flex-direction: ${({ column }) => (column ? 'column' : null)};
+    row-gap: ${({ column }) => (column ? `${dimensions.xs_2}` : null)};
+    align-items: ${({ column }) => (column ? 'flex-start' : null)};
+  }
 `;
+
 const ColumnWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -44,8 +53,13 @@ const CardWrapper = styled(InlineWrapper)`
   height: 250px;
   width: auto;
   box-shadow: ${colors.shadow};
-  border-radius: 10px;
-  padding: 32px;
+  border-radius: ${dimensions.xs_1};
+  padding: ${dimensions.base_2};
+  @media (max-width: ${dimensions.phone_width}) {
+    flex-direction: column;
+    height: 100%;
+    padding: ${dimensions.xl_2} ${dimensions.base};
+  }
 `;
 
 const Avatar = styled.img`
@@ -53,12 +67,21 @@ const Avatar = styled.img`
   width: 115px;
   height: 186px;
   object-fit: cover;
+  @media (max-width: ${dimensions.phone_width}) {
+    height: 215px;
+    width: 140px;
+    border-radius: ${dimensions.xs_1};
+  }
 `;
 
 const DescriptionWrapper = styled(ColumnWrapper)`
-  margin-left: 24px;
+  margin-left: ${dimensions.xl_2};
   font-size: ${dimensions.base};
-  row-gap: 8px;
+  row-gap: ${dimensions.xs_2};
+  @media (max-width: ${dimensions.phone_width}) {
+    margin-left: 0;
+    width: 100%;
+  }
 `;
 
 interface IDescriptionProps {
@@ -74,6 +97,10 @@ export const Description = styled.p<IDescriptionProps>`
   line-height: ${({ titlee }) =>
     titlee ? `${dimensions.xl_2}` : `${dimensions.xl}`};
   margin-bottom: ${({ titlee }) => (titlee ? dimensions.base : null)};
+  @media (max-width: ${dimensions.phone_width}) {
+    margin: ${({ titlee }) => (titlee ? `${dimensions.base} 0` : null)};
+    text-align: ${({ titlee }) => (titlee ? `center` : null)};
+  }
 `;
 
 export const Title = styled.h1`
@@ -90,7 +117,11 @@ const ButtonsWrapper = styled.div`
   margin-left: auto;
   max-width: 276px;
   width: 100%;
-  row-gap: 8px;
+  row-gap: ${dimensions.xs_2};
+  @media (max-width: ${dimensions.phone_width}) {
+    max-width: none;
+    margin-top: ${dimensions.xl_2};
+  }
 `;
 
 const RadioButton = styled.input`
@@ -100,8 +131,8 @@ const RadioButton = styled.input`
   appearance: none;
   border: 1px solid ${colors.main_gray};
   border-radius: 50%;
-  width: 24px;
-  height: 24px;
+  width: ${dimensions.xl_2};
+  height: ${dimensions.xl_2};
 
   &:checked {
     background-color: ${colors.accent_color};
@@ -267,11 +298,11 @@ const UserCard = () => {
           <Description bold titlee>
             {OnePerson?.getOnePerson.username}
           </Description>
-          <InlineWrapper>
+          <InlineWrapper column>
             <Description bold>{t('UserCard.Position')}</Description>
             <Description>{OnePerson?.getOnePerson.position}</Description>
           </InlineWrapper>
-          <InlineWrapper>
+          <InlineWrapper column>
             <Description bold>E-mail:</Description>
             <Description>{OnePerson?.getOnePerson.email}</Description>
           </InlineWrapper>
