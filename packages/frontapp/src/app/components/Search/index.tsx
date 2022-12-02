@@ -70,6 +70,10 @@ export const WrapperInput = styled.div`
     font-size: ${dimensions.sm};
     line-height: ${dimensions.lg};
   }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    width: 100%;
+  }
 `;
 
 interface ISearchParams {

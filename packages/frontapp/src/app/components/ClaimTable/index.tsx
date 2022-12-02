@@ -109,6 +109,11 @@ const SortText = styled.div<ISortTextProps>`
     border-bottom: 3px solid;
     border-bottom-color: ${colors.accent_color};
   }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    width: 100%;
+    height: ${dimensions.base_2};
+  }
 `;
 
 const HeadWrapper = styled.div`
@@ -116,6 +121,11 @@ const HeadWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  @media (max-width: ${dimensions.phone_width}) {
+    flex-direction: column;
+    width: 100%;
+    row-gap: ${dimensions.base};
+  }
 `;
 
 interface IClaimTable {
