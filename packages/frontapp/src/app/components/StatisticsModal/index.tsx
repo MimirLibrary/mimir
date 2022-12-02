@@ -23,20 +23,20 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.h1`
-  align-self: flex-start;
+  align-self: center;
   font-weight: 700;
-  font-size: ${dimensions.xl_2};
-  line-height: ${dimensions.xl_3};
+  font-size: ${dimensions.xl};
+  line-height: ${dimensions.xl_2};
 `;
 
 const ButtonsWrapper = styled.div`
-  position: absolute;
+  flex-direction: column-reverse;
   bottom: 3rem;
   width: 90%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: ${dimensions.base};
+  gap: ${dimensions.xs_2};
 `;
 
 const PieChart = styled.figure<{
@@ -75,27 +75,23 @@ const PieChart = styled.figure<{
   width: 290px;
   height: 290px;
   border-radius: 50%;
-  margin: 0;
-
-  @media (max-width: ${dimensions.tablet_width}) {
-    margin-bottom: 3rem;
-  }
+  margin-bottom: -10rem;
+  margin-top: -10px;
 `;
 
 const LegendWrapper = styled.div`
-  position: absolute;
-  top: 18rem;
   display: flex;
+  top: 18rem;
   align-items: center;
   justify-content: space-between;
   gap: ${dimensions.xl_2};
+  margin-bottom: -10px;
 
   @media (max-width: ${dimensions.tablet_width}) {
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: ${dimensions.xs_2};
-    margin-left: 3.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: ${dimensions.base};
+    margin-left: 2rem;
   } ;
 `;
 
@@ -105,10 +101,29 @@ const LegendItem = styled.div`
   gap: ${dimensions.xs_2};
 `;
 
+const LegendSubItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 2px;
+`;
+
+const LegendSubItemName = styled.div`
+  font: ${colors.main_black};
+  font-size: ${dimensions.sm};
+  line-height: 16px;
+`;
+
+const LegendSubItemNumber = styled.div`
+  font: ${colors.main_black};
+  font-size: ${dimensions.xs};
+  line-height: 16px;
+`;
+
 const LegendColor = styled.div`
   width: ${dimensions.base};
   height: ${dimensions.base};
   border-radius: 50%;
+  flex-shrink: 0;
   background-color: ${({ color }) => color};
 `;
 
@@ -171,27 +186,37 @@ const StatisticsModal: FC<StatisticsModal> = ({ isActive, setIsActive }) => {
         <LegendWrapper data-testid="statistics-legend">
           <LegendItem data-testid="statistics-free">
             <LegendColor color={colors.main_green}></LegendColor>
-            <span>
-              {t('Statuses.Free')} - {NUMBER_OF_FREE_BOOKS}
-            </span>
+            <LegendSubItem>
+              <LegendSubItemName>{t('Statuses.Free')}</LegendSubItemName>
+              <LegendSubItemNumber>{NUMBER_OF_FREE_BOOKS}</LegendSubItemNumber>
+            </LegendSubItem>
           </LegendItem>
           <LegendItem data-testid="statistics-claimed">
             <LegendColor color={colors.accent_color}></LegendColor>
-            <span>
-              {t('Statuses.Claimed')} - {NUMBER_OF_CLAIMED_BOOKS}
-            </span>
+            <LegendSubItem>
+              <LegendSubItemName>{t('Statuses.Claimed')}</LegendSubItemName>
+              <LegendSubItemNumber>
+                {NUMBER_OF_CLAIMED_BOOKS}
+              </LegendSubItemNumber>
+            </LegendSubItem>
           </LegendItem>
           <LegendItem data-testid="statistics-overdue">
             <LegendColor color={colors.problem_red}></LegendColor>
-            <span>
-              {t('Statuses.Overdue')} - {NUMBER_OF_OVERDUE_BOOKS}
-            </span>
+            <LegendSubItem>
+              <LegendSubItemName>{t('Statuses.Overdue')}</LegendSubItemName>
+              <LegendSubItemNumber>
+                {NUMBER_OF_OVERDUE_BOOKS}
+              </LegendSubItemNumber>
+            </LegendSubItem>
           </LegendItem>
           <LegendItem data-testid="statistics-pending">
             <LegendColor color={colors.gray_additional}></LegendColor>
-            <span>
-              {t('Statuses.Pending')} - {NUMBER_OF_PENDING_BOOKS}
-            </span>
+            <LegendSubItem>
+              <LegendSubItemName>{t('Statuses.Pending')}</LegendSubItemName>
+              <LegendSubItemNumber>
+                {NUMBER_OF_PENDING_BOOKS}
+              </LegendSubItemNumber>
+            </LegendSubItem>
           </LegendItem>
         </LegendWrapper>
         <ButtonsWrapper>
