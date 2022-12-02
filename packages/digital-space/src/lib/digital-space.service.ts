@@ -9,12 +9,14 @@ type IProps = {
 
 @Injectable()
 export class DigitalSpaceService {
-  spacesEndpoint = new AWS.Endpoint(`${process.env['SPACE_ENDPOINT']}`);
+  spacesEndpoint = new AWS.Endpoint(
+    `${process.env['SPACE_ENDPOINT'] || 'space-endpoint'}`
+  );
   s3 = new AWS.S3({
     endpoint: `${this.spacesEndpoint.href}bookPictures`,
     credentials: new AWS.Credentials({
-      accessKeyId: `${process.env['SPACE_ID']}`,
-      secretAccessKey: `${process.env['SPACE_SECRET']}`,
+      accessKeyId: `${process.env['SPACE_ID'] || 'space-id'}`,
+      secretAccessKey: `${process.env['SPACE_SECRET'] || 'space-secret'}`,
     }),
   });
 
