@@ -39,7 +39,11 @@ export const StyledSearchIcon = styled(SearchIcon)`
   }
 `;
 
-export const WrapperInput = styled.div`
+interface IWrapperInput {
+  full?: boolean;
+}
+
+export const WrapperInput = styled.div<IWrapperInput>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -72,7 +76,7 @@ export const WrapperInput = styled.div`
   }
 
   @media (max-width: ${dimensions.phone_width}) {
-    width: 100%;
+    width: ${({ full }) => (full ? '100%' : null)};
   }
 `;
 

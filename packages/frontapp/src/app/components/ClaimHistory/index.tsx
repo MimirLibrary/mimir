@@ -17,10 +17,6 @@ const InlineWrapper = styled.div`
   display: flex;
   flex-direction: row;
   column-gap: 4px;
-  @media (max-width: ${dimensions.phone_width}) {
-    flex-direction: column;
-    row-gap: ${dimensions.xs_2};
-  }
 `;
 interface IDescriptionProps {
   warning?: boolean;

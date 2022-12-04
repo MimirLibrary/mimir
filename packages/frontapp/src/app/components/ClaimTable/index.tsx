@@ -19,6 +19,9 @@ const CardWrapper = styled.div`
   margin-top: ${dimensions.lg};
   border-radius: ${dimensions.xs_1};
   padding: ${dimensions.base_2};
+  @media (max-width: ${dimensions.phone_width}) {
+    padding: 0;
+  }
 `;
 
 const EmptyShelfWrapper = styled.div`
@@ -86,6 +89,11 @@ const StyledTable = styled.table`
       margin-right: ${dimensions.xs};
       height: 125px;
       width: 90px;
+    }
+  }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    th {
     }
   }
 `;
@@ -195,7 +203,7 @@ const ClaimTable: FC<IClaimTable> = ({ statuses, name }) => {
             </SortText>
           </InlineWrapper>
         )}
-        <WrapperInput>
+        <WrapperInput full>
           <StyledSearchIcon
             fill={colors.dropdown_gray}
             width="20"
