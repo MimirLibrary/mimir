@@ -34,11 +34,18 @@ export class ChitaiGorodService {
       throw new BadRequestException(e.message);
     }
   }
-  private parseData(result, img): Bundle {
+  private async parseData(result): Promise<Bundle> {
+    const pic = await axios.get(`https://img-gorod.ru${result.image_url}`, {
+      responseType: 'arraybuffer',
+    });
+    const img = await this.digitalSpaceService.createFile({
+      originalname: `https://img-gorod.ru${result.image_url}`,
+      buffer: pic.data,
+    });
     if (!result) return null;
     const material: Prisma.MaterialCreateInput = {
       title: result.name,
-      cover: img,
+      cover: String(img),
       yearPublishedAt: result.year,
       monthPublishedAt: 0,
       description: result.detail_text,
@@ -74,14 +81,7 @@ export class ChitaiGorodService {
 
   async getData(isbn: string): Promise<Bundle> {
     const result = await this.readData(isbn);
-    const pic = await axios.get(`https://img-gorod.ru${result.image_url}`, {
-      responseType: 'arraybuffer',
-    });
-    const img = await this.digitalSpaceService.createFile({
-      originalname: `https://img-gorod.ru${result.image_url}`,
-      buffer: pic.data,
-    });
 
-    return this.parseData(result, img);
+    return this.parseData(result);
   }
 }

@@ -96,7 +96,7 @@ export class OzbyService {
     }
   }
 
-  parseData(htmlContent, img): Bundle {
+  async parseData(htmlContent): Promise<Bundle> {
     const $ = cheerio.load(htmlContent);
     const publisherEl = $('[itemprop=publisher]');
     const itemsFlat = $('.b-description__sub table tr')
@@ -111,7 +111,16 @@ export class OzbyService {
         return results;
       })
       .get();
+
     const items = _(itemsFlat).chunk(2).fromPairs().value();
+    const pic = await axios.get(
+      $('.b-product-photo__picture-self img').first().attr('src'),
+      { responseType: 'arraybuffer' }
+    );
+    const img = await this.digitalSpaceService.createFile({
+      originalname: $('.b-product-photo__picture-self img').first().attr('src'),
+      buffer: pic.data,
+    });
     const year = Number(items.year);
     delete items.year;
     const material: Prisma.MaterialCreateInput = {
@@ -119,7 +128,7 @@ export class OzbyService {
       yearPublishedAt: year,
       monthPublishedAt: 0,
       description: $('#truncatedBlock').text().trim(),
-      cover: img,
+      cover: String(img),
       meta: _.merge(items, {
         sku: /\d+/.exec($('.b-product-title__art').text())[0],
         price: $('.b-product__controls .b-product-control__text_main')
@@ -158,16 +167,6 @@ export class OzbyService {
 
   async getData(isbn: string): Promise<Bundle> {
     const result = await this.readData(isbn);
-    const $ = cheerio.load(result);
-    const pic = await axios.get(
-      $('.b-product-photo__picture-self img').first().attr('src'),
-      { responseType: 'arraybuffer' }
-    );
-    const img = await this.digitalSpaceService.createFile({
-      originalname: $('.b-product-photo__picture-self img').first().attr('src'),
-      buffer: pic.data,
-    });
-
-    return this.parseData(result, img);
+    return this.parseData(result);
   }
 }

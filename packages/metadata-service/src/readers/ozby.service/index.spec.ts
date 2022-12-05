@@ -30,13 +30,13 @@ describe('OzbyService', () => {
     it('Parses', () => {
       const rootPath = `${__dirname}/snapshots/`;
       const snapshots = fs.readdirSync(rootPath);
-      snapshots.map(function (snapshot) {
+      snapshots.map(async function (snapshot) {
         const path = `${rootPath}/${snapshot}`;
         const content = fs.readFileSync(`${path}/index.html`);
         const result = JSON.parse(
           fs.readFileSync(`${path}/result.json`, 'utf-8')
         );
-        expect(service.parseData(content, 'img')).toEqual(result);
+        expect(await service.parseData(content)).toEqual(result);
       });
     });
   });

@@ -31,7 +31,7 @@ export class AbeBooksService {
     }
   }
 
-  private parseData({ url, website }, img): Bundle {
+  private async parseData({ url, website }): Promise<Bundle> {
     const $ = cheerio.load(website, null, false);
     const date = $('.opt-publish-date').text().slice(0, 4);
     const publishedBy = $('.opt-publisher').text().slice(0, -1);
@@ -39,13 +39,19 @@ export class AbeBooksService {
     const author = url.author.split(',');
     const itemId = url.listingId;
     const price = url.priceInDomainCurrency;
-
+    const pic = await axios.get(url.imageUrl, {
+      responseType: 'arraybuffer',
+    });
+    const img = await this.digitalSpaceService.createFile({
+      originalname: url.imageUrl,
+      buffer: pic.data,
+    });
     const material: Prisma.MaterialCreateInput = {
       title: title,
       yearPublishedAt: Number(date),
       monthPublishedAt: 0,
       description: 'not provided',
-      cover: img,
+      cover: String(img),
       meta: {
         sku: itemId,
         price: price,
@@ -71,14 +77,6 @@ export class AbeBooksService {
 
   async getData(isbn: string): Promise<Bundle> {
     const result = await this.readData(isbn);
-
-    const pic = await axios.get(result.url.imageUrl, {
-      responseType: 'arraybuffer',
-    });
-    const img = await this.digitalSpaceService.createFile({
-      originalname: result.url.imageUrl,
-      buffer: pic.data,
-    });
-    return this.parseData(result, img);
+    return this.parseData(result);
   }
 }

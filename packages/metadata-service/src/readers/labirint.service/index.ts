@@ -26,12 +26,20 @@ export class LabirintService {
     }
   }
 
-  private parseData(result, img): Bundle {
+  private async parseData(result): Promise<Bundle> {
     const $ = cheerio.load(result, null, false);
     if (cheerio.html($('.search-error'))) {
       console.log('incorrect ISBN');
       return;
     }
+
+    const pic = await axios.get($('.book-img-cover').attr('src'), {
+      responseType: 'arraybuffer',
+    });
+    const img = await this.digitalSpaceService.createFile({
+      originalname: $('.book-img-cover').attr('src'),
+      buffer: pic.data,
+    });
     const title = $('#product-title').find('h1').text().split(': ')[1];
     const author = $('.authors').first().text().split(': ')[1].split(',');
     const price = $('.buying-priceold-val-number').text();
@@ -47,7 +55,7 @@ export class LabirintService {
       yearPublishedAt: Number(date),
       monthPublishedAt: 0,
       description: about,
-      cover: img,
+      cover: String(img),
       meta: {
         sku: itemId,
         price: price,
@@ -76,14 +84,6 @@ export class LabirintService {
 
   async getData(isbn: string): Promise<Bundle> {
     const result = await this.readData(isbn);
-    const $ = cheerio.load(result, null, false);
-    const pic = await axios.get($('.book-img-cover').attr('src'), {
-      responseType: 'arraybuffer',
-    });
-    const img = await this.digitalSpaceService.createFile({
-      originalname: $('.book-img-cover').attr('src'),
-      buffer: pic.data,
-    });
-    return this.parseData(result, img);
+    return this.parseData(result);
   }
 }
