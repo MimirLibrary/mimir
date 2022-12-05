@@ -27,13 +27,8 @@ exports[`Statistics Modal Component should match snapshot 1`] = `
   width: 290px;
   height: 290px;
   border-radius: 50%;
-  margin: 0;
-}
-
-@media (max-width: 48rem) {
-  .emotion-0 {
-    margin-bottom: 3rem;
-  }
+  margin-bottom: -10rem;
+  margin-top: -10px;
 }
 
 <figure
@@ -44,12 +39,11 @@ exports[`Statistics Modal Component should match snapshot 1`] = `
 
 exports[`Statistics Modal Component should match snapshot 2`] = `
 .emotion-0 {
-  position: absolute;
-  top: 18rem;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  top: 18rem;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -58,23 +52,15 @@ exports[`Statistics Modal Component should match snapshot 2`] = `
   -webkit-justify-content: space-between;
   justify-content: space-between;
   gap: 1.5rem;
+  margin-bottom: -10px;
 }
 
 @media (max-width: 48rem) {
   .emotion-0 {
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -webkit-box-pack: start;
-    -ms-flex-pack: start;
-    -webkit-justify-content: flex-start;
-    justify-content: flex-start;
-    -webkit-align-items: flex-start;
-    -webkit-box-align: flex-start;
-    -ms-flex-align: flex-start;
-    align-items: flex-start;
-    gap: 0.5rem;
-    margin-left: 3.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 1rem;
+    margin-left: 2rem;
   }
 }
 
@@ -94,27 +80,62 @@ exports[`Statistics Modal Component should match snapshot 2`] = `
   width: 1rem;
   height: 1rem;
   border-radius: 50%;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
   background-color: #2AA816;
 }
 
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  margin-left: 2px;
+}
+
 .emotion-4 {
+  font: #333333;
+  font-size: 0.875rem;
+  line-height: 16px;
+}
+
+.emotion-5 {
+  font: #333333;
+  font-size: 0.75rem;
+  line-height: 16px;
+}
+
+.emotion-7 {
   width: 1rem;
   height: 1rem;
   border-radius: 50%;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
   background-color: #1A1ED6;
 }
 
-.emotion-6 {
+.emotion-12 {
   width: 1rem;
   height: 1rem;
   border-radius: 50%;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
   background-color: #FF372A;
 }
 
-.emotion-8 {
+.emotion-17 {
   width: 1rem;
   height: 1rem;
   border-radius: 50%;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
   background-color: #E0E0E0;
 }
 
@@ -130,53 +151,89 @@ exports[`Statistics Modal Component should match snapshot 2`] = `
       class="emotion-2"
       color="#2AA816"
     />
-    <span>
-      Statuses.Free
-       - 
-      2
-    </span>
+    <div
+      class="emotion-3"
+    >
+      <div
+        class="emotion-4"
+      >
+        Statuses.Free
+      </div>
+      <div
+        class="emotion-5"
+      >
+        2
+      </div>
+    </div>
   </div>
   <div
     class="emotion-1"
     data-testid="statistics-claimed"
   >
     <div
-      class="emotion-4"
+      class="emotion-7"
       color="#1A1ED6"
     />
-    <span>
-      Statuses.Claimed
-       - 
-      1
-    </span>
+    <div
+      class="emotion-3"
+    >
+      <div
+        class="emotion-4"
+      >
+        Statuses.Claimed
+      </div>
+      <div
+        class="emotion-5"
+      >
+        1
+      </div>
+    </div>
   </div>
   <div
     class="emotion-1"
     data-testid="statistics-overdue"
   >
     <div
-      class="emotion-6"
+      class="emotion-12"
       color="#FF372A"
     />
-    <span>
-      Statuses.Overdue
-       - 
-      1
-    </span>
+    <div
+      class="emotion-3"
+    >
+      <div
+        class="emotion-4"
+      >
+        Statuses.Overdue
+      </div>
+      <div
+        class="emotion-5"
+      >
+        1
+      </div>
+    </div>
   </div>
   <div
     class="emotion-1"
     data-testid="statistics-pending"
   >
     <div
-      class="emotion-8"
+      class="emotion-17"
       color="#E0E0E0"
     />
-    <span>
-      Statuses.Pending
-       - 
-      0
-    </span>
+    <div
+      class="emotion-3"
+    >
+      <div
+        class="emotion-4"
+      >
+        Statuses.Pending
+      </div>
+      <div
+        class="emotion-5"
+      >
+        0
+      </div>
+    </div>
   </div>
 </div>
 `;
