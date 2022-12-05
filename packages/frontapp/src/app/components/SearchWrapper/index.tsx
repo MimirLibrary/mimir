@@ -9,6 +9,7 @@ import SearchByBookOrAuthor from '../SearchByBookOrAuthor';
 import { RolesTypes } from '@mimir/global-types';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import { useLocation } from 'react-router-dom';
+import { StatisticsButton } from '../StatisticsButton';
 
 interface IProps {
   showSidebar: () => void;
@@ -46,15 +47,18 @@ const SearchWrapper: FC<IProps> = ({ showSidebar }) => {
       {isReadersPage ? (
         <SearchByUserName />
       ) : (
-        <SearchByBookOrAuthor
-          path={
-            userRole === RolesTypes.READER
-              ? `${RoutesTypes.SEARCH}_by_name_or_author`
-              : RoutesTypes.BOOKS_STUFF
-          }
-        />
+        <>
+          <SearchByBookOrAuthor
+            path={
+              userRole === RolesTypes.READER
+                ? `${RoutesTypes.SEARCH}_by_name_or_author`
+                : RoutesTypes.BOOKS_STUFF
+            }
+          />
+        </>
       )}
       <FiltersButton />
+      <StatisticsButton />
     </StyledSearch>
   );
 };
