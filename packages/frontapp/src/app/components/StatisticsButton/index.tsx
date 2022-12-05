@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { FC, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { ReactComponent as Statistic } from '../../../assets/Remove.svg';
+import { ReactComponent as Statistic } from '../../../assets/Vector.svg';
 import { RoutesTypes } from '../../../utils/routes';
 import StatisticsModal from '../StatisticsModal';
 
@@ -14,7 +14,7 @@ const StyledStatisticsButton = styled.button<IProps>`
   border: none;
   background-color: transparent;
   cursor: pointer;
-  fill: ${(props) => (props.active ? colors.accent_color : '')};
+  stroke: ${(props) => (props.active ? colors.accent_color : 'black')};
 
   @media (max-width: ${dimensions.tablet_width}) {
     padding: 0;
