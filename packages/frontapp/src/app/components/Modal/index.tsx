@@ -55,7 +55,7 @@ export const ContentModal = styled.div<IStyleProps>`
   margin: auto;
   @media (max-width: ${dimensions.phone_width}) {
     padding: ${dimensions.xl} ${dimensions.xs_2};
-    border-radius: ${dimensions.base_2};
+    border-radius: ${dimensions.base_2} ${dimensions.base_2} 0 0;
     margin: 0;
   }
 `;

@@ -183,9 +183,9 @@ export const resources = {
         Free: 'On the shelf',
         Busy: 'Return till: ',
         Prolong: 'Return till: ',
-        Pending: 'Waiting for a manger',
+        Pending: 'Pending',
         Rejected: 'Rejected',
-        Claimed: 'In use',
+        Claimed: 'Claimed',
       },
       BookClaimHistory: {
         Title: 'Claim history',
