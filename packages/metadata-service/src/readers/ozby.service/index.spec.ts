@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import { Test } from '@nestjs/testing';
 import axios from 'axios';
 import { OzbyService } from './index';
-import { DigitalSpaceService } from '@mimir/digital-space';
+import { DigitalOceanService } from '@mimir/api-util';
 
 jest.mock('axios');
 
@@ -11,7 +11,7 @@ describe('OzbyService', () => {
 
   beforeAll(async () => {
     const app = await Test.createTestingModule({
-      providers: [OzbyService, DigitalSpaceService],
+      providers: [OzbyService, DigitalOceanService],
     }).compile();
 
     service = app.get<OzbyService>(OzbyService);

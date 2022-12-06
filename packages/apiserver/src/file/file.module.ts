@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { FileService } from './file.service';
 import { FileController } from './file.controller';
-import { DigitalSpaceModule } from '@mimir/digital-space';
+import { DigitalOceanModule } from '@mimir/api-util';
 
 @Module({
-  imports: [DigitalSpaceModule],
+  imports: [DigitalOceanModule],
   controllers: [FileController],
   providers: [FileService],
 })

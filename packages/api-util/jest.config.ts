@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'digital-space',
+  displayName: 'api-util',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -11,5 +11,5 @@ module.exports = {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/packages/digital-space',
+  coverageDirectory: '../../coverage/packages/api-util',
 };

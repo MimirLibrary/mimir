@@ -3,13 +3,13 @@ import axios from 'axios';
 import { Prisma } from '@prisma/client';
 import cheerio from 'cheerio';
 import { Bundle } from '../../types';
-import { DigitalSpaceService } from '@mimir/digital-space';
+import { DigitalOceanService } from '@mimir/api-util';
 
 const READER_ID = 'ABEBOOKS';
 
 @Injectable()
 export class AbeBooksService {
-  constructor(private readonly digitalSpaceService: DigitalSpaceService) {}
+  constructor(private readonly digitalOceanService: DigitalOceanService) {}
 
   private readonly rootUrl = 'https://www.abebooks.com';
 
@@ -42,7 +42,7 @@ export class AbeBooksService {
     const pic = await axios.get(url.imageUrl, {
       responseType: 'arraybuffer',
     });
-    const img = await this.digitalSpaceService.createFile({
+    const img = await this.digitalOceanService.createFile({
       originalname: url.imageUrl,
       buffer: pic.data,
     });

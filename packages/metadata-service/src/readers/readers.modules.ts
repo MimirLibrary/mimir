@@ -7,10 +7,10 @@ import { LabirintService } from './labirint.service';
 import { ReaderService } from './reader.service';
 import { ChitaiGorodService } from './chitai-gorod.service';
 import { AbeBooksService } from './abebooks.service';
-import { DigitalSpaceModule } from '@mimir/digital-space';
+import { DigitalOceanModule } from '@mimir/api-util';
 
 @Module({
-  imports: [DigitalSpaceModule],
+  imports: [DigitalOceanModule],
   providers: [
     ReaderService,
     DbService,

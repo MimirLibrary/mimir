@@ -2,11 +2,11 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { Prisma } from '@prisma/client';
 import { Bundle } from '../../types';
-import { DigitalSpaceService } from '@mimir/digital-space';
+import { DigitalOceanService } from '@mimir/api-util';
 
 @Injectable()
 export class ChitaiGorodService {
-  constructor(private readonly digitalSpaceService: DigitalSpaceService) {}
+  constructor(private readonly digitalOceanService: DigitalOceanService) {}
   private READER_ID = 'Сhitai-gorod';
   private readonly rootUrlSearch =
     'https://search-v2.chitai-gorod.ru/api/v3/search/';
@@ -38,7 +38,7 @@ export class ChitaiGorodService {
     const pic = await axios.get(`https://img-gorod.ru${result.image_url}`, {
       responseType: 'arraybuffer',
     });
-    const img = await this.digitalSpaceService.createFile({
+    const img = await this.digitalOceanService.createFile({
       originalname: `https://img-gorod.ru${result.image_url}`,
       buffer: pic.data,
     });

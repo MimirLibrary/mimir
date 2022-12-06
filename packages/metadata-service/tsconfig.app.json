@@ -8,5 +8,5 @@
     "target": "es2015"
   },
   "exclude": ["jest.config.ts", "**/*.spec.ts", "**/*.test.ts"],
-  "include": ["**/*.ts", "../digital-space/src/lib/digital-space.service.ts"]
+  "include": ["**/*.ts", "../api-util/src/lib/digital-ocean.service.ts"]
 }

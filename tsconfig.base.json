@@ -16,7 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@mimir/apollo-client": ["packages/apollo-client/src/index.ts"],
-      "@mimir/digital-space": ["packages/digital-space/src/index.ts"],
+      "@mimir/api-util": ["packages/api-util/src/index.ts"],
       "@mimir/global-types": ["packages/global-types/src/index.ts"],
       "@mimir/helper-functions": ["packages/helper-functions/src/index.ts"],
       "@mimir/localization": ["packages/localization/src/index.ts"],

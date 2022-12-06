@@ -3,7 +3,7 @@
   "projects": {
     "apiserver": "packages/apiserver",
     "apollo-client": "packages/apollo-client",
-    "digital-space": "packages/digital-space",
+    "api-util": "packages/api-util",
     "email-service": "packages/email-service",
     "frontapp": "packages/frontapp",
     "frontapp-e2e": "packages/frontapp-e2e",

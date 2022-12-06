@@ -8,7 +8,7 @@ type IProps = {
 };
 
 @Injectable()
-export class DigitalSpaceService {
+export class DigitalOceanService {
   spacesEndpoint = new AWS.Endpoint(
     `${process.env['SPACE_ENDPOINT'] || 'space-endpoint'}`
   );

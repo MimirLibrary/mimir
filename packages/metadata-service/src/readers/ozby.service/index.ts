@@ -4,7 +4,7 @@ import cheerio from 'cheerio';
 import * as _ from 'lodash';
 import axios from 'axios';
 import { Bundle } from '../../types';
-import { DigitalSpaceService } from '@mimir/digital-space';
+import { DigitalOceanService } from '@mimir/api-util';
 
 type Author = {
   name: string;
@@ -82,7 +82,7 @@ function readCells(keyEl, valEl) {
 
 @Injectable()
 export class OzbyService {
-  constructor(private readonly digitalSpaceService: DigitalSpaceService) {}
+  constructor(private readonly digitalOceanService: DigitalOceanService) {}
 
   readonly rootURL = 'https://oz.by/search/';
 
@@ -117,7 +117,7 @@ export class OzbyService {
       $('.b-product-photo__picture-self img').first().attr('src'),
       { responseType: 'arraybuffer' }
     );
-    const img = await this.digitalSpaceService.createFile({
+    const img = await this.digitalOceanService.createFile({
       originalname: $('.b-product-photo__picture-self img').first().attr('src'),
       buffer: pic.data,
     });

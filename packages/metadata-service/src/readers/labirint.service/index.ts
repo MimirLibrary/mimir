@@ -3,12 +3,12 @@ import axios from 'axios';
 import { Prisma } from '@prisma/client';
 import cheerio from 'cheerio';
 import { Bundle } from '../../types';
-import { DigitalSpaceService } from '@mimir/digital-space';
+import { DigitalOceanService } from '@mimir/api-util';
 const READER_ID = 'LABIRINT';
 
 @Injectable()
 export class LabirintService {
-  constructor(private readonly digitalSpaceService: DigitalSpaceService) {}
+  constructor(private readonly digitalOceanService: DigitalOceanService) {}
   private readonly rootUrl = 'https://www.labirint.ru';
   private readonly rootUrlSearch = 'https://www.labirint.ru/search/';
 
@@ -36,7 +36,7 @@ export class LabirintService {
     const pic = await axios.get($('.book-img-cover').attr('src'), {
       responseType: 'arraybuffer',
     });
-    const img = await this.digitalSpaceService.createFile({
+    const img = await this.digitalOceanService.createFile({
       originalname: $('.book-img-cover').attr('src'),
       buffer: pic.data,
     });
