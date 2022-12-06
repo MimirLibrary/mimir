@@ -20,6 +20,11 @@ const StyledWrapperList = styled(WrapperList)`
   @media (max-width: ${dimensions.tablet_width}) {
     grid-template-columns: repeat(auto-fill, 260px);
   }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 const ListAllItems = () => {

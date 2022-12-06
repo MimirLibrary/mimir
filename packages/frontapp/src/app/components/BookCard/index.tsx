@@ -14,9 +14,10 @@ export interface IBookCardProps {
   author?: string;
   category?: string;
   id?: string;
+  presentationMode?: boolean;
 }
 
-const BookCardWrapper = styled.div`
+const BookCardWrapper = styled.div<Pick<IBookCardProps, 'presentationMode'>>`
   flex-shrink: 0;
   width: 12rem;
   background-color: ${colors.bg_secondary};
@@ -33,36 +34,48 @@ const BookCardWrapper = styled.div`
   }
 
   @media (max-width: ${dimensions.phone_width}) {
-    max-width: 8.75rem;
+    max-width: ${({ presentationMode }) =>
+      !presentationMode ? `100%` : `8.75rem`};
+    flex-direction: ${({ presentationMode }) =>
+      !presentationMode ? 'row' : `column`};
+    gap: ${({ presentationMode }) => (!presentationMode ? dimensions.base : 0)};
     width: 100%;
     padding: ${dimensions.xs_1};
     align-items: center;
   }
 `;
 
-const DescriptionWrapper = styled.div`
+const DescriptionWrapper = styled.div<Pick<IBookCardProps, 'presentationMode'>>`
   display: flex;
   justify-content: start;
   flex-direction: column;
 
   @media (max-width: ${dimensions.phone_width}) {
     align-self: start;
+
+    & p {
+      font-size: ${({ presentationMode }) =>
+        !presentationMode ? dimensions.sm : dimensions.xs};
+    }
   }
 `;
 
-const BookImage = styled.img`
+const BookImage = styled.img<Pick<IBookCardProps, 'presentationMode'>>`
   width: 7rem;
   height: 12rem;
   margin-bottom: ${dimensions.xs_2};
   align-self: center;
   @media (max-width: ${dimensions.phone_width}) {
     display: block;
-    width: 7.5rem;
-    height: 11.25rem;
+    width: ${({ presentationMode }) => (!presentationMode ? '5rem' : `7.5rem`)};
+    height: ${({ presentationMode }) =>
+      !presentationMode ? '8.125rem' : `11.25rem`};
+    margin-bottom: ${({ presentationMode }) =>
+      !presentationMode ? 0 : dimensions.xs_2};
   }
 `;
 
-const TitleBook = styled.h3`
+const TitleBook = styled.h3<Pick<IBookCardProps, 'presentationMode'>>`
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -73,12 +86,13 @@ const TitleBook = styled.h3`
   color: ${colors.main_black};
 
   @media (max-width: ${dimensions.phone_width}) {
-    font-size: ${dimensions.xs};};
+    font-size: ${({ presentationMode }) =>
+      !presentationMode ? dimensions.base : dimensions.xs};
     white-space: normal;
   }
 `;
 
-const DescriptionBook = styled.p`
+const DescriptionBook = styled.p<Pick<IBookCardProps, 'presentationMode'>>`
   max-width: 10rem;
   font-weight: 300;
   font-size: ${dimensions.sm};
@@ -89,7 +103,8 @@ const DescriptionBook = styled.p`
   @media (max-width: ${dimensions.phone_width}) {
     max-width: 100%;
     margin: 0.25rem 0;
-    font-size: ${dimensions.xs};
+    font-size: ${({ presentationMode }) =>
+      !presentationMode ? dimensions.sm : dimensions.xs};
   }
 `;
 
@@ -101,6 +116,7 @@ const BookCard: FC<IBookCardProps> = ({
   category,
   date,
   id,
+  presentationMode,
 }) => {
   const navigate = useNavigate();
   const handleItemRedirect = () => {
@@ -108,11 +124,23 @@ const BookCard: FC<IBookCardProps> = ({
   };
 
   return (
-    <BookCardWrapper onClick={handleItemRedirect} data-testid="bookCard">
-      <BookImage src={src || bookImage} data-testid="bookImage" />
-      <DescriptionWrapper>
-        <TitleBook data-testid="bookTitle">{shortenText(title, 20)}</TitleBook>
-        <DescriptionBook>{shortenText(author, 20)}</DescriptionBook>
+    <BookCardWrapper
+      presentationMode={presentationMode}
+      onClick={handleItemRedirect}
+      data-testid="bookCard"
+    >
+      <BookImage
+        presentationMode={presentationMode}
+        src={src || bookImage}
+        data-testid="bookImage"
+      />
+      <DescriptionWrapper presentationMode={presentationMode}>
+        <TitleBook presentationMode={presentationMode} data-testid="bookTitle">
+          {shortenText(title, 20)}
+        </TitleBook>
+        <DescriptionBook presentationMode={presentationMode}>
+          {shortenText(author, 20)}
+        </DescriptionBook>
         <BookStatus status={status} date={date} />
       </DescriptionWrapper>
     </BookCardWrapper>
