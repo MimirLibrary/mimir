@@ -47,18 +47,16 @@ const SearchWrapper: FC<IProps> = ({ showSidebar }) => {
       {isReadersPage ? (
         <SearchByUserName />
       ) : (
-        <>
-          <SearchByBookOrAuthor
-            path={
-              userRole === RolesTypes.READER
-                ? `${RoutesTypes.SEARCH}_by_name_or_author`
-                : RoutesTypes.BOOKS_STUFF
-            }
-          />
-        </>
+        <SearchByBookOrAuthor
+          path={
+            userRole === RolesTypes.READER
+              ? `${RoutesTypes.SEARCH}_by_name_or_author`
+              : RoutesTypes.BOOKS_STUFF
+          }
+        />
       )}
       <FiltersButton />
-      <StatisticsButton />
+      {isReadersPage ? null : <StatisticsButton />}
     </StyledSearch>
   );
 };
