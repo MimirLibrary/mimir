@@ -32,9 +32,7 @@ export const StatisticsButton: FC = () => {
       <StyledStatisticsButton active={active} onClick={() => setActive(true)}>
         <Statistic />
       </StyledStatisticsButton>
-      {location.pathname === RoutesTypes.READERS ? (
-        () => <></>
-      ) : (
+      {location.pathname === RoutesTypes.READERS ? null : (
         <StatisticsModal isActive={active} setIsActive={setActive} />
       )}
     </>
