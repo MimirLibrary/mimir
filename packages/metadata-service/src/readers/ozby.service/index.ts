@@ -4,6 +4,7 @@ import cheerio from 'cheerio';
 import * as _ from 'lodash';
 import axios from 'axios';
 import { Bundle } from '../../types';
+import { DigitalOceanService } from '@mimir/api-util';
 
 type Author = {
   name: string;
@@ -81,20 +82,22 @@ function readCells(keyEl, valEl) {
 
 @Injectable()
 export class OzbyService {
+  constructor(private readonly digitalOceanService: DigitalOceanService) {}
+
   readonly rootURL = 'https://oz.by/search/';
 
   async readData(isbn: string) {
     try {
       const result = await axios.get(this.rootURL, { params: { q: isbn } });
+
       return result.data;
     } catch (e) {
       throw new BadRequestException(e.message);
     }
   }
 
-  parseData(htmlContent): Bundle {
+  async parseData(htmlContent): Promise<Bundle> {
     const $ = cheerio.load(htmlContent);
-    const coverEl = $('.b-product-photo__picture-self img').first();
     const publisherEl = $('[itemprop=publisher]');
     const itemsFlat = $('.b-description__sub table tr')
       .map(function () {
@@ -108,16 +111,24 @@ export class OzbyService {
         return results;
       })
       .get();
+
     const items = _(itemsFlat).chunk(2).fromPairs().value();
+    const pic = await axios.get(
+      $('.b-product-photo__picture-self img').first().attr('src'),
+      { responseType: 'arraybuffer' }
+    );
+    const img = await this.digitalOceanService.createFile({
+      originalname: $('.b-product-photo__picture-self img').first().attr('src'),
+      buffer: pic.data,
+    });
     const year = Number(items.year);
     delete items.year;
-
     const material: Prisma.MaterialCreateInput = {
       title: $('h1[itemprop=name]').text().trim(),
       yearPublishedAt: year,
       monthPublishedAt: 0,
       description: $('#truncatedBlock').text().trim(),
-      cover: coverEl.attr('src'),
+      cover: String(img),
       meta: _.merge(items, {
         sku: /\d+/.exec($('.b-product-title__art').text())[0],
         price: $('.b-product__controls .b-product-control__text_main')

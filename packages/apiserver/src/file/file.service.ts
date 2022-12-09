@@ -1,8 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import * as fs from 'fs';
-import * as path from 'path';
 import { v4 as uuidv4 } from 'uuid';
-
+import * as path from 'path';
+import * as fs from 'fs';
 @Injectable()
 export class FileService {
   createFileForTmp(file) {

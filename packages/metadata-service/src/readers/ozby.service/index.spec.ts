@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import { Test } from '@nestjs/testing';
 import axios from 'axios';
-
 import { OzbyService } from './index';
+import { DigitalOceanService } from '@mimir/api-util';
 
 jest.mock('axios');
 
@@ -11,7 +11,7 @@ describe('OzbyService', () => {
 
   beforeAll(async () => {
     const app = await Test.createTestingModule({
-      providers: [OzbyService],
+      providers: [OzbyService, DigitalOceanService],
     }).compile();
 
     service = app.get<OzbyService>(OzbyService);
@@ -30,13 +30,13 @@ describe('OzbyService', () => {
     it('Parses', () => {
       const rootPath = `${__dirname}/snapshots/`;
       const snapshots = fs.readdirSync(rootPath);
-      snapshots.map(function (snapshot) {
+      snapshots.map(async function (snapshot) {
         const path = `${rootPath}/${snapshot}`;
         const content = fs.readFileSync(`${path}/index.html`);
         const result = JSON.parse(
           fs.readFileSync(`${path}/result.json`, 'utf-8')
         );
-        expect(service.parseData(content)).toEqual(result);
+        expect(await service.parseData(content)).toEqual(result);
       });
     });
   });

@@ -1,6 +1,7 @@
 {
   "version": 2,
   "projects": {
+    "api-util": "packages/api-util",
     "apiserver": "packages/apiserver",
     "apollo-client": "packages/apollo-client",
     "email-service": "packages/email-service",

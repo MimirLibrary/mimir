@@ -2,9 +2,11 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { Prisma } from '@prisma/client';
 import { Bundle } from '../../types';
+import { DigitalOceanService } from '@mimir/api-util';
 
 @Injectable()
 export class ChitaiGorodService {
+  constructor(private readonly digitalOceanService: DigitalOceanService) {}
   private READER_ID = 'Сhitai-gorod';
   private readonly rootUrlSearch =
     'https://search-v2.chitai-gorod.ru/api/v3/search/';
@@ -32,12 +34,18 @@ export class ChitaiGorodService {
       throw new BadRequestException(e.message);
     }
   }
-
-  private parseData(result): Bundle {
+  private async parseData(result): Promise<Bundle> {
+    const pic = await axios.get(`https://img-gorod.ru${result.image_url}`, {
+      responseType: 'arraybuffer',
+    });
+    const img = await this.digitalOceanService.createFile({
+      originalname: `https://img-gorod.ru${result.image_url}`,
+      buffer: pic.data,
+    });
     if (!result) return null;
     const material: Prisma.MaterialCreateInput = {
       title: result.name,
-      cover: `https://img-gorod.ru${result.image_url}`,
+      cover: String(img),
       yearPublishedAt: result.year,
       monthPublishedAt: 0,
       description: result.detail_text,
@@ -73,6 +81,7 @@ export class ChitaiGorodService {
 
   async getData(isbn: string): Promise<Bundle> {
     const result = await this.readData(isbn);
+
     return this.parseData(result);
   }
 }

@@ -3,11 +3,12 @@ import axios from 'axios';
 import { Prisma } from '@prisma/client';
 import cheerio from 'cheerio';
 import { Bundle } from '../../types';
-
+import { DigitalOceanService } from '@mimir/api-util';
 const READER_ID = 'LABIRINT';
 
 @Injectable()
 export class LabirintService {
+  constructor(private readonly digitalOceanService: DigitalOceanService) {}
   private readonly rootUrl = 'https://www.labirint.ru';
   private readonly rootUrlSearch = 'https://www.labirint.ru/search/';
 
@@ -25,19 +26,26 @@ export class LabirintService {
     }
   }
 
-  private parseData(result): Bundle {
+  private async parseData(result): Promise<Bundle> {
     const $ = cheerio.load(result, null, false);
     if (cheerio.html($('.search-error'))) {
       console.log('incorrect ISBN');
       return;
     }
+
+    const pic = await axios.get($('.book-img-cover').attr('src'), {
+      responseType: 'arraybuffer',
+    });
+    const img = await this.digitalOceanService.createFile({
+      originalname: $('.book-img-cover').attr('src'),
+      buffer: pic.data,
+    });
     const title = $('#product-title').find('h1').text().split(': ')[1];
     const author = $('.authors').first().text().split(': ')[1].split(',');
     const price = $('.buying-priceold-val-number').text();
     const about = cheerio.html($('#fullannotation'))
       ? $('#fullannotation').find('p').text().trim()
       : $('#product-about').find('p').text().trim();
-    const image = $('.book-img-cover').attr('src');
     const publishers = $('.publisher').find('a').text();
     const date = $('.publisher').text().split(',')[1].split('г')[0];
     const genres = $('.thermo-item').text().split('/');
@@ -47,7 +55,7 @@ export class LabirintService {
       yearPublishedAt: Number(date),
       monthPublishedAt: 0,
       description: about,
-      cover: image,
+      cover: String(img),
       meta: {
         sku: itemId,
         price: price,

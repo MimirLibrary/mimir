@@ -3,11 +3,14 @@ import axios from 'axios';
 import { Prisma } from '@prisma/client';
 import cheerio from 'cheerio';
 import { Bundle } from '../../types';
+import { DigitalOceanService } from '@mimir/api-util';
 
 const READER_ID = 'ABEBOOKS';
 
 @Injectable()
 export class AbeBooksService {
+  constructor(private readonly digitalOceanService: DigitalOceanService) {}
+
   private readonly rootUrl = 'https://www.abebooks.com';
 
   private async readData(identifier: string) {
@@ -18,6 +21,7 @@ export class AbeBooksService {
       const firstResponse = await axios.get(
         `https://www.abebooks.com/servlet/HighlightInventory?ds=20&kn=${identifier}&sortby=17`
       );
+
       return {
         url: firstResponse.data.highlightedItemsMap.SORT_MODE_FEATURED[0],
         website: website.data,
@@ -27,21 +31,27 @@ export class AbeBooksService {
     }
   }
 
-  private parseData({ url, website }): Bundle {
+  private async parseData({ url, website }): Promise<Bundle> {
     const $ = cheerio.load(website, null, false);
     const date = $('.opt-publish-date').text().slice(0, 4);
     const publishedBy = $('.opt-publisher').text().slice(0, -1);
     const title = url.title;
     const author = url.author.split(',');
-    const image = url.imageUrl;
     const itemId = url.listingId;
     const price = url.priceInDomainCurrency;
+    const pic = await axios.get(url.imageUrl, {
+      responseType: 'arraybuffer',
+    });
+    const img = await this.digitalOceanService.createFile({
+      originalname: url.imageUrl,
+      buffer: pic.data,
+    });
     const material: Prisma.MaterialCreateInput = {
       title: title,
       yearPublishedAt: Number(date),
       monthPublishedAt: 0,
       description: 'not provided',
-      cover: image,
+      cover: String(img),
       meta: {
         sku: itemId,
         price: price,
