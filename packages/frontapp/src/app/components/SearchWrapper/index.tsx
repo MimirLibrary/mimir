@@ -56,7 +56,7 @@ const SearchWrapper: FC<IProps> = ({ showSidebar }) => {
         />
       )}
       <FiltersButton />
-      {isReadersPage ? null : <StatisticsButton />}
+      {userRole === RolesTypes.MANAGER ? <StatisticsButton /> : null}
     </StyledSearch>
   );
 };

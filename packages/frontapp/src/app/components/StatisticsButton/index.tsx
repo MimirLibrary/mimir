@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { FC, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { ReactComponent as Statistic } from '../../../assets/Vector.svg';
-import { RoutesTypes } from '../../../utils/routes';
 import StatisticsModal from '../StatisticsModal';
+import { RolesTypes } from '@mimir/global-types';
+import { useAppSelector } from '../../hooks/useTypedSelector';
 
 interface IProps {
   active: boolean;
@@ -15,6 +15,7 @@ const StyledStatisticsButton = styled.button<IProps>`
   background-color: transparent;
   cursor: pointer;
   stroke: ${(props) => (props.active ? colors.accent_color : 'black')};
+  display: none;
 
   @media (max-width: ${dimensions.tablet_width}) {
     padding: 0;
@@ -25,16 +26,16 @@ const StyledStatisticsButton = styled.button<IProps>`
 `;
 
 export const StatisticsButton: FC = () => {
-  const location = useLocation();
+  const { userRole } = useAppSelector((state) => state.user);
   const [active, setActive] = useState(false);
   return (
     <>
       <StyledStatisticsButton active={active} onClick={() => setActive(true)}>
         <Statistic />
       </StyledStatisticsButton>
-      {location.pathname === RoutesTypes.READERS ? null : (
+      {userRole === RolesTypes.MANAGER ? (
         <StatisticsModal isActive={active} setIsActive={setActive} />
-      )}
+      ) : null}
     </>
   );
 };
