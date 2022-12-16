@@ -8,7 +8,7 @@ import { t } from 'i18next';
 import { RoutesTypes } from '../../../utils/routes';
 
 export const ButtonWrapper = styled.div`
-  margin: ${dimensions.base_3} 0 ${dimensions.xl_3} 0;
+  margin: ${dimensions.xl_3} 0 ${dimensions.xl_3} 0;
   display: flex;
   align-items: center;
   cursor: pointer;
