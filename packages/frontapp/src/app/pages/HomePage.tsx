@@ -44,15 +44,7 @@ const ButtonWrapper = styled.div`
   top: 35px;
 
   @media (max-width: ${dimensions.tablet_width}) {
-    margin-top: ${dimensions.xs_2};
-    position: static;
-    width: 100%;
-    height: 40px;
-    button {
-      span {
-        font-size: ${dimensions.xs};
-      }
-    }
+    display: none;
   }
 `;
 

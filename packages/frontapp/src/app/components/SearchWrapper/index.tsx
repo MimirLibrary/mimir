@@ -9,6 +9,7 @@ import SearchByBookOrAuthor from '../SearchByBookOrAuthor';
 import { RolesTypes } from '@mimir/global-types';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import { useLocation } from 'react-router-dom';
+import { StatisticsButton } from '../StatisticsButton';
 
 interface IProps {
   showSidebar: () => void;
@@ -55,6 +56,7 @@ const SearchWrapper: FC<IProps> = ({ showSidebar }) => {
         />
       )}
       <FiltersButton />
+      {userRole === RolesTypes.MANAGER ? <StatisticsButton /> : null}
     </StyledSearch>
   );
 };
