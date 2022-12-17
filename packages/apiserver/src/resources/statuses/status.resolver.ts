@@ -44,7 +44,7 @@ export class StatusResolver {
   @UseGuards(AuthGuard)
   async createStatus(@Args('input') createStatusInput: CreateStatusInput) {
     try {
-      const status = await Status.create(createStatusInput);
+      const status = Status.create(createStatusInput);
       await Status.save(status);
       return status;
     } catch (e) {

@@ -93,7 +93,7 @@ export type CreateStateInput = {
 export type CreateStatusInput = {
   material_id: Scalars['Int'];
   person_id: Scalars['Int'];
-  status: Scalars['String'];
+  status: ItemStatus;
 };
 
 export type DonateBookInput = {
@@ -133,6 +133,17 @@ export type IMetaOfMaterial = {
   material?: Maybe<IMaterialMeta>;
   value?: Maybe<Scalars['String']>;
 };
+
+export enum ItemStatus {
+  Free = 'FREE',
+  InUse = 'IN_USE',
+  New = 'NEW',
+  Overdue = 'OVERDUE',
+  Pending = 'PENDING',
+  Prolong = 'PROLONG',
+  Rejected = 'REJECTED',
+  Suspend = 'SUSPEND'
+}
 
 export type Location = {
   __typename?: 'Location';

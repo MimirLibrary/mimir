@@ -12,6 +12,17 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_ROOT_PASSWORD}
 
+  # Unit testing db for Apiserver
+  db-test:
+    image: postgres
+    env_file: .env
+    ports:
+      - ${APISERVER_TEST_DB_PORT}:5432
+    environment:
+      POSTGRES_DB: ${APISERVER_TEST_DB}
+      POSTGRES_USER: ${APISERVER_TEST_DB_USER}
+      POSTGRES_PASSWORD: ${APISERVER_TEST_DB_PASSWORD}
+
   websrv:
     image: nginx:latest
     ports:
