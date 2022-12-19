@@ -31,9 +31,10 @@ import { BlockedUsersModule } from '../resources/blocked-users/blocked-users.mod
 import { BlockedUsers } from '../resources/blocked-users/blocked-users.entity';
 import { AuthModule } from '../auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from '../auth/auth.guard';
 import { BlockedUsersGuard } from '../resources/blocked-users/blocked-users.guard';
 import { GrantGuard } from '../permission/grant.guard';
+import { JwtStrategy } from '../auth/strategy';
+import { JwtAuthGuard } from '../auth/guard';
 
 @Module({
   imports: [
@@ -81,9 +82,10 @@ import { GrantGuard } from '../permission/grant.guard';
   providers: [
     AppService,
     AppResolver,
-    { provide: APP_GUARD, useClass: AuthGuard },
+    JwtStrategy,
     { provide: APP_GUARD, useClass: BlockedUsersGuard },
     { provide: APP_GUARD, useClass: GrantGuard },
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
   ],
 })
 export class AppModule {}

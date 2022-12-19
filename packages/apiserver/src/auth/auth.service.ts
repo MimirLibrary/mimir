@@ -1,85 +1,63 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { OAuth2Client, UserRefreshClient } from 'google-auth-library';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Person } from '../resources/persons/person.entity';
-import { BlockedUsers } from '../resources/blocked-users/blocked-users.entity';
 import { RolesTypes } from '@mimir/global-types';
+import { REQUEST } from '@nestjs/core';
+import { AuthUser } from './model/auth-user';
 
 @Injectable()
 export class AuthService {
-  readonly oAuth2Client: OAuth2Client;
-  constructor() {
-    this.oAuth2Client = new OAuth2Client(
-      process.env.GOOGLE_CLIENT_ID,
-      process.env.GOOGLE_CLIENT_SECRET,
-      'postmessage'
-    );
+  private get token(): string | undefined {
+    return this.request.headers['id-token'];
   }
 
-  async authenticate(code: string) {
-    const { tokens } = await this.oAuth2Client.getToken(code);
-    const bufB64 = Buffer.from(tokens.id_token.split('.')[1], 'base64');
-    const result = JSON.parse(bufB64.toString());
+  constructor(@Inject(REQUEST) private request) {}
+
+  async getAuthUser(): Promise<AuthUser | null> {
+    const token = this.token;
+    if (!token) {
+      return null;
+    }
+    const bufB64 = Buffer.from(token.split('.')[1], 'base64');
+    return JSON.parse(bufB64.toString());
+  }
+
+  async createUser(): Promise<Person> {
+    const authUser = await this.getAuthUser();
+    if (!authUser) {
+      throw new UnauthorizedException('Invalid token');
+    }
     const person = await Person.findOne({
       where: {
-        smg_id: result.sub,
+        smg_id: authUser.sub,
       },
-      relations: ['location'],
     });
-
     if (person) {
-      const state = await BlockedUsers.findOne({
-        where: {
-          person_id: person.id,
-        },
-      });
-      return {
-        ...tokens,
-        ...person,
-        userRole: person.type,
-        blocked: state?.state,
-      };
+      this.updatePerson(person, authUser);
+      return Person.save(person);
     }
 
-    const newPerson = Person.create({
-      smg_id: result.sub,
-      avatar: result.picture,
-      email: result.email,
-      username: result.name,
+    const newPerson = this.createPerson(authUser);
+    return Person.save(newPerson);
+  }
+
+  private createPerson(authUser: AuthUser): Person {
+    return Person.create({
+      smg_id: authUser.sub,
+      avatar: authUser.picture,
+      email: authUser.email,
+      username: this.getFullName(authUser),
       position: 'Ruby Developer',
       type: RolesTypes.READER,
     });
-    await Person.save(newPerson);
-
-    return {
-      ...tokens,
-      ...newPerson,
-      userRole: newPerson.type,
-      blocked: false,
-    };
   }
 
-  async verifyToken(id_token: string) {
-    try {
-      await this.oAuth2Client.verifyIdToken({
-        idToken: id_token,
-        audience: process.env.GOOGLE_CLIENT_ID,
-      });
-    } catch (e) {
-      throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+  private updatePerson(person: Person, authUser: AuthUser): void {
+    person.avatar = authUser.picture;
+    person.email = authUser.email;
+    person.username = this.getFullName(authUser);
   }
 
-  async refreshToken(refresh_token: string) {
-    try {
-      const user = new UserRefreshClient(
-        process.env.GOOGLE_CLIENT_ID,
-        process.env.GOOGLE_CLIENT_SECRET,
-        refresh_token
-      );
-      const { credentials } = await user.refreshAccessToken();
-      return credentials;
-    } catch (e) {
-      throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+  private getFullName(authUser: AuthUser): string {
+    return authUser.name || `${authUser.lastName} ${authUser.firstName}`;
   }
 }

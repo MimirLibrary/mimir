@@ -1,31 +1,32 @@
-import {
-  ExecutionContext,
-  ForbiddenException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { ExecutionContext, Injectable } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GqlExecutionContext } from '@nestjs/graphql';
+import { Observable } from 'rxjs';
+import { Reflector } from '@nestjs/core';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
-  constructor() {
+  constructor(private reflector: Reflector) {
     super();
   }
 
-  canActivate(context: ExecutionContext): boolean {
-    const ctx = GqlExecutionContext.create(context);
-    return true;
+  canActivate(
+    context: ExecutionContext
+  ): boolean | Promise<boolean> | Observable<boolean> {
+    const allowUnauthorizedRequest = this.reflector.get<boolean>(
+      'allowUnauthorizedRequest',
+      context.getHandler()
+    );
+
+    if (allowUnauthorizedRequest) {
+      return true;
+    }
+
+    return super.canActivate(context);
   }
 
-  handleRequest(err, user, info) {
-    if (err || !user) {
-      throw err || new UnauthorizedException();
-    }
-    const roles: string[] = user.roles;
-    if (!roles.includes('AngularUser')) {
-      throw new ForbiddenException();
-    }
-    return user;
+  getRequest(context: ExecutionContext) {
+    const ctx = GqlExecutionContext.create(context);
+    return ctx.getContext().req;
   }
 }
