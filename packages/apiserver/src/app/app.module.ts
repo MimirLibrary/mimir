@@ -35,10 +35,11 @@ import { BlockedUsersGuard } from '../resources/blocked-users/blocked-users.guar
 import { GrantGuard } from '../permission/grant.guard';
 import { JwtStrategy } from '../auth/strategy';
 import { JwtAuthGuard } from '../auth/guard';
+import jwt from '../config/jwt.config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env', load: [jwt] }),
     TypeOrmModule.forRoot({
       ...typeorm,
       entities: [

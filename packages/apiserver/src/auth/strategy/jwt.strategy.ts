@@ -18,13 +18,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         )}/.well-known/openid-configuration/jwks`,
       }),
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      audience: configService.get<string>('jwt.clientId'),
+      audience: configService.get<string>('jwt.audience'),
+      issuer: configService.get<string>('jwt.oidcServerUrl'),
       algorithms: ['RS256'],
     });
   }
 
   async validate(payload: any) {
-    console.log(payload);
     return true;
   }
 }
