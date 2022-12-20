@@ -18,16 +18,18 @@ import {
 } from '@mimir/global-types';
 import { Notification } from '../notifications/notification.entity';
 import { MaterialService } from './material.service';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, UseInterceptors } from '@nestjs/common';
 import { Message } from '../messages/message.entity';
 import { GraphQLError } from 'graphql';
 import { normalizeIdentifier } from '@mimir/helper-functions';
+import { TransformInterceptor } from './material.interceptor';
 
 @Resolver('Material')
 export class MaterialResolver {
   constructor(private materialService: MaterialService) {}
 
   @Query(() => [Material])
+  @UseInterceptors(TransformInterceptor)
   async getAllMaterials(
     @Args('locations') locations: Array<number>,
     @Args('limit') limit: number,
@@ -64,11 +66,13 @@ export class MaterialResolver {
   }
 
   @Query(() => [Material])
+  @UseInterceptors(TransformInterceptor)
   async searchOfMaterials(@Args('input') searchInput: SearchInput) {
     return this.materialService.search(searchInput);
   }
 
   @Query(() => [Material])
+  @UseInterceptors(TransformInterceptor)
   async getAllDonatedMaterialsByPerson(@Args('id') id: number | string) {
     return this.materialService.getAllDonatedMaterialsByPerson(id);
   }
