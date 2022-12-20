@@ -5,7 +5,7 @@ import AllBooksList from '../components/AllBooksList';
 import styled from '@emotion/styled';
 import { useAppSelector } from '../hooks/useTypedSelector';
 
-import { colors, dimensions } from '@mimir/ui-kit';
+import { colors, dimensions, theme } from '@mimir/ui-kit';
 import {
   useGetMaterialByIdQuery,
   useGetAllMaterialsQuery,
@@ -52,7 +52,7 @@ const SuggestionText = styled.h3`
 `;
 
 const ClaimHistoryWrapper = styled.div`
-  margin-top: calc(${dimensions.base_2}*2);
+  margin-top: calc(${dimensions.base_2});
 `;
 
 const SearchWrapper = styled.div`
@@ -64,6 +64,16 @@ const RestyleSingleUser = styled(SingleUser)`
   height: auto;
   background: none;
   box-shadow: none;
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    margin-bottom: 14px;
+    :hover {
+      box-shadow: none;
+    }
+    :first-of-type {
+      width: 100%;
+    }
+  }
 `;
 
 const FieldsText = styled.p<IFieldsTextProps>`
@@ -76,11 +86,16 @@ const FieldsText = styled.p<IFieldsTextProps>`
       ? colors.free_book
       : colors.accent_color};
   margin-bottom: ${dimensions.xs_2};
+  @media (max-width: ${dimensions.tablet_width}) {
+    margin-left: ${(props) => (props.mobileMode ? '72px' : '')};
+    width: ${(props) => (props.mobileMode ? '75%' : '')};
+  }
 `;
 
 interface IFieldsTextProps {
   overdue?: boolean;
   returned?: boolean;
+  mobileMode?: boolean;
 }
 
 type BookPreviewProps = {
@@ -217,6 +232,7 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
               <TextBase>{t('BookClaimHistory.Desc')}</TextBase>
               <SearchWrapper>
                 <Search
+                  isFullWidth={true}
                   handleChangeSearch={handleChangeSearch}
                   placeholder={t('Search.UsernamePlaceholder')}
                   search={search}
@@ -237,19 +253,19 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
                             name={item?.person.username}
                             statuses={item?.person.statuses as IClaimHistory[]}
                           />
-                          <FieldsText>
+                          <FieldsText mobileMode={true}>
                             {countReturnDate(item.created_at)}
                           </FieldsText>
                           {item.status === StatusTypes.FREE ? (
-                            <FieldsText returned>
+                            <FieldsText returned mobileMode={true}>
                               {t('UserCard.Table.Returned')}
                             </FieldsText>
                           ) : isOverdue(item.created_at) ? (
-                            <FieldsText overdue>
+                            <FieldsText overdue mobileMode={true}>
                               {t('UserCard.Table.Overdue')}
                             </FieldsText>
                           ) : (
-                            <FieldsText>
+                            <FieldsText mobileMode={true}>
                               {item.status === StatusTypes.BUSY
                                 ? t('UserCard.Table.Claim')
                                 : item.status === StatusTypes.PROLONG

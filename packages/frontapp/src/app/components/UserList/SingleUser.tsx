@@ -12,9 +12,13 @@ const InfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: ${dimensions.base};
-  row-gap: ${dimensions.xs_2};
   > p:first-of-type {
     margin-bottom: ${dimensions.xs_2};
+  }
+  @media (max-width: ${dimensions.tablet_width}) {
+    width: 100%;
+    border-bottom: 1px solid #bdbdbd;
+    padding-bottom: 14px;
   }
 `;
 

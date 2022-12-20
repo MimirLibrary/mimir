@@ -8,6 +8,13 @@ const TableContainer = styled.div`
   background-color: white;
   box-shadow: 0px 10px 70px rgba(26, 30, 214, 0.08);
   padding: ${dimensions.base_2} ${dimensions.xl_6};
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    background-color: #f1f3fe;
+    padding: 0 0 0 0;
+    height: auto;
+    width: 100%;
+  }
 `;
 
 const List = styled.div`
@@ -15,11 +22,19 @@ const List = styled.div`
   padding: 0 ${dimensions.xl} 0 0;
   max-height: 680px;
   position: relative;
-  overflow: auto;
 
   &::-webkit-scrollbar {
     border-radius: 8px;
     width: 8px;
+  }
+  @media (max-width: ${dimensions.tablet_width}) {
+    overflow: hidden;
+    padding: 0 0 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    max-height: none;
   }
 `;
 
@@ -40,9 +55,24 @@ const Item = styled.div`
       width: 60%;
     }
   }
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    flex-direction: column;
+    border-radius: ${dimensions.xs_1};
+    background-color: #ffffff;
+    height: 191px;
+    width: 100%;
+    padding: 16px 16px 16px 16px;
+
+    &:nth-of-type(2n) {
+      background-color: #ffffff;
+    }
+  }
 `;
 
-const Title = styled.div`
+type MobileClaimList = { visible?: boolean };
+
+const Title = styled.div<MobileClaimList>`
   display: flex;
   background-color: ${colors.accent_color};
   border-radius: ${dimensions.xs_1} ${dimensions.xs_1} 0 0;
@@ -61,6 +91,10 @@ const Title = styled.div`
       width: 60%;
     }
   }
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    display: ${(props) => (props.visible ? 'initial' : 'none')};
+  }
 `;
 
 const Table: FC<{ columnTitles: string[]; rows?: ReactElement[] }> = ({
@@ -70,7 +104,7 @@ const Table: FC<{ columnTitles: string[]; rows?: ReactElement[] }> = ({
   return (
     <TableContainer>
       <List>
-        <Title>
+        <Title visible={false}>
           {columnTitles.map((title, i) => (
             <span key={i}>{title}</span>
           ))}
