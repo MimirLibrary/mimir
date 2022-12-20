@@ -26,10 +26,6 @@ export interface IUserPayload {
   userRole: RolesTypes;
   isAuth: boolean;
   blocked: boolean;
-  access_token: string;
-  id_token: string;
-  refresh_token: string;
-  expiry_date: number;
   location: Array<TUserLocation> | TUserLocation;
 }
 

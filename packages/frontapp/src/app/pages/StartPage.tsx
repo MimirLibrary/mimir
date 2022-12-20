@@ -14,12 +14,15 @@ import {
   useAddPersonLocationMutation,
   useGetAllLocationsQuery,
 } from '@mimir/apollo-client';
-import { useGoogleLogin } from '@react-oauth/google';
-import { ReactComponent as GoogleSvg } from '../../assets/google.svg';
 import { ReactComponent as LogoSvg } from '../../assets/Mimir.svg';
 import Button from '../components/Button';
-import axios from 'axios';
 import { toast } from 'react-toastify';
+import { createUser } from '../axios-api/api';
+import {
+  getAppUserManager,
+  getOidcState,
+  setAuthTokens,
+} from '@mimir/auth-manager';
 
 const StartPageBackground = styled.div`
   height: 100vh;
@@ -92,7 +95,17 @@ const RestyledDropdown = styled(Dropdown)`
   margin-bottom: ${dimensions.xs_2};
 `;
 
-const StartPage: FC = () => {
+const userManager = getAppUserManager();
+
+const signIn = (): Promise<void> => {
+  return userManager.signinRedirect({ state: getOidcState() });
+};
+
+interface StartPageProps {
+  ssoRedirect?: boolean;
+}
+
+const StartPage: FC<StartPageProps> = ({ ssoRedirect }) => {
   const [preparedUserPayload, setPreparedUserPayload] =
     useState<IUserPayload>();
   const [isSignUp, setIsSignUp] = useState(false);
@@ -105,36 +118,37 @@ const StartPage: FC = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const history = useNavigate();
-  const googleLogin = useGoogleLogin({
-    flow: 'auth-code',
-    onSuccess: async ({ code }) => {
-      const { data } = await axios.post<IUserPayload>(
-        `${process.env['NX_API_ROOT_URL']}/api/auth`,
-        {
-          code,
+
+  useEffect(() => {
+    if (!ssoRedirect) {
+      return;
+    }
+    const handleSsoRedirect = async () => {
+      try {
+        const oidcUserInfo = await userManager.signinRedirectCallback();
+        setAuthTokens(oidcUserInfo);
+
+        const { data } = await createUser();
+
+        if (data.location?.length && Array.isArray(data.location)) {
+          const transformLocations = data.location.map((loc: any) => ({
+            id: String(loc.id),
+            value: loc.location,
+          }));
+          dispatch(
+            setUser({ ...data, location: transformLocations, isAuth: true })
+          );
+          return history('/home');
         }
-      );
 
-      localStorage.setItem('access_token', data.access_token);
-      localStorage.setItem('id_token', data.id_token);
-      localStorage.setItem('expiry_date', data.expiry_date.toString());
-      localStorage.setItem('refresh_token', data.refresh_token);
-
-      if (data.location && Array.isArray(data.location)) {
-        const transformLocations = data.location.map((loc: any) => ({
-          id: String(loc.id),
-          value: loc.location,
-        }));
-        dispatch(
-          setUser({ ...data, location: transformLocations, isAuth: true })
-        );
-        return history('/home');
+        setPreparedUserPayload({ ...data, location: { id: '0', value: '' } });
+        setIsSignUp(true);
+      } finally {
+        await userManager.clearStaleState();
       }
-
-      setPreparedUserPayload({ ...data, location: { id: '0', value: '' } });
-      setIsSignUp(true);
-    },
-  });
+    };
+    handleSsoRedirect();
+  }, []);
 
   const handleChangeDropdown = async (location: TUserLocation) => {
     await addPersonLocation({
@@ -175,14 +189,8 @@ const StartPage: FC = () => {
             onChange={(option) => handleChangeDropdown(option as TUserLocation)}
           />
         )}
-        {!isSignUp && (
-          <Button
-            value="Sign In With"
-            svgComponent={<GoogleSvg />}
-            invert
-            transparent
-            onClick={googleLogin}
-          />
+        {!isSignUp && !ssoRedirect && (
+          <Button value="Sign In With" invert transparent onClick={signIn} />
         )}
       </StartPageContainer>
     </StartPageBackground>

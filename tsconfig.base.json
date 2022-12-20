@@ -17,6 +17,7 @@
     "paths": {
       "@mimir/api-util": ["packages/api-util/src/index.ts"],
       "@mimir/apollo-client": ["packages/apollo-client/src/index.ts"],
+      "@mimir/auth-manager": ["packages/auth-manager/src/index.ts"],
       "@mimir/global-types": ["packages/global-types/src/index.ts"],
       "@mimir/helper-functions": ["packages/helper-functions/src/index.ts"],
       "@mimir/localization": ["packages/localization/src/index.ts"],
