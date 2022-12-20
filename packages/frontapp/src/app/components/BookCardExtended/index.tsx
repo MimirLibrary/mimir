@@ -22,6 +22,10 @@ const Wrapper = styled.div`
     box-shadow: 0px 6px 14px -6px rgba(24, 39, 75, 0.08),
       0px 10px 32px -4px rgba(24, 39, 75, 0.08);
   }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    max-width: 100%;
+  }
 `;
 
 const WrapperImg = styled.div`

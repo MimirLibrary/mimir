@@ -231,7 +231,11 @@ const DescriptionBook: FC<IDescriptionBook> = ({
           <>
             <Topic>State: </Topic>
             <StyledStatus>
-              <BookStatus status={status} date={date} />
+              <BookStatus
+                fontSize={dimensions.base}
+                status={status}
+                date={date}
+              />
             </StyledStatus>
           </>
         ) : editing ? (

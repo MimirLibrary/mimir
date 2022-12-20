@@ -4,12 +4,12 @@ import { StatusTypes } from '@mimir/global-types';
 
 interface IStyledBookStatusProps {
   status: string | null;
+  fontSize?: string;
 }
 
 export const StyledBookStatusWrapper = styled.div<IStyledBookStatusProps>`
   @media (max-width: ${dimensions.phone_width}) {
     width: fit-content;
-    padding: 0 4px;
     border-radius: 4px;
   }
 `;
@@ -37,6 +37,6 @@ export const StyledBookStatus = styled.p<IStyledBookStatusProps>`
     }
   }};
   @media (max-width: ${dimensions.phone_width}) {
-    font-size: ${dimensions.xs_1};
+    font-size: ${({ fontSize }) => fontSize || dimensions.xs_1};
   }
 `;
