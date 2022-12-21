@@ -1,8 +1,17 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Person } from '../resources/persons/person.entity';
+import { Location } from '../resources/locations/location.entity';
 import { RolesTypes } from '@mimir/global-types';
 import { REQUEST } from '@nestjs/core';
 import { AuthUser } from './model/auth-user';
+import { BlockedUsers } from '../resources/blocked-users/blocked-users.entity';
+import { BaseEntity } from 'typeorm';
+
+export type User = Omit<Person, keyof BaseEntity> & {
+  blocked: boolean;
+  userRole: string;
+  location?: Location[];
+};
 
 @Injectable()
 export class AuthService {
@@ -21,43 +30,47 @@ export class AuthService {
     return JSON.parse(bufB64.toString());
   }
 
-  async createUser(): Promise<Person> {
+  async createPerson(): Promise<User> {
     const authUser = await this.getAuthUser();
     if (!authUser) {
       throw new UnauthorizedException('Invalid token');
     }
     const person = await Person.findOne({
       where: {
-        smg_id: authUser.sub,
+        smg_id: authUser.smg_profile_id,
       },
+      relations: ['location'],
     });
     if (person) {
-      this.updatePerson(person, authUser);
-      return Person.save(person);
+      const state = await BlockedUsers.findOne({
+        where: {
+          person_id: person.id,
+        },
+      });
+      return {
+        ...person,
+        userRole: person.type,
+        blocked: state?.state,
+      };
     }
 
-    const newPerson = this.createPerson(authUser);
-    return Person.save(newPerson);
+    const newPerson = await this.savePerson(authUser);
+    return {
+      ...newPerson,
+      userRole: newPerson.type,
+      blocked: false,
+    };
   }
 
-  private createPerson(authUser: AuthUser): Person {
-    return Person.create({
-      smg_id: authUser.sub,
+  private savePerson(authUser: AuthUser): Promise<Person> {
+    const newPerson = Person.create({
+      smg_id: authUser.smg_profile_id,
       avatar: authUser.picture,
       email: authUser.email,
-      username: this.getFullName(authUser),
-      position: 'Ruby Developer',
+      username: authUser.display_name,
+      position: authUser.title_role,
       type: RolesTypes.READER,
     });
-  }
-
-  private updatePerson(person: Person, authUser: AuthUser): void {
-    person.avatar = authUser.picture;
-    person.email = authUser.email;
-    person.username = this.getFullName(authUser);
-  }
-
-  private getFullName(authUser: AuthUser): string {
-    return authUser.name || `${authUser.lastName} ${authUser.firstName}`;
+    return Person.save(newPerson);
   }
 }
