@@ -1,6 +1,42 @@
 /*eslint @typescript-eslint/no-empty-function: ["error", { "allow": ["private-constructors"] }]*/
 
-import { User, UserManager, WebStorageStateStore } from 'oidc-client';
+import {
+  User,
+  UserManager,
+  UserManagerSettings,
+  WebStorageStateStore,
+} from 'oidc-client';
+
+const userManagerSettings: UserManagerSettings = {
+  authority: process.env['NX_OIDC_SERVER_URL'],
+  client_id: process.env['NX_OIDC_CLIENT'],
+  redirect_uri: `${window.location.origin}/auth/signin_redirect`,
+
+  // if we choose to use popup window instead for logins
+  popup_redirect_uri: `${window.location.origin}/auth/signin-callback-popup`,
+  popupWindowFeatures:
+    'menubar=yes,location=yes,toolbar=yes,width=1200,height=800,left=100,top=100;resizable=yes',
+
+  // these two will be done dynamically from the buttons clicked, but are
+  // needed if you want to use the silent_renew
+  response_type: 'code',
+  scope:
+    'openid profile email basic_profile unit_profile smg_profile itechart_mimir_api',
+
+  // this will toggle if profile endpoint is used
+  loadUserInfo: true,
+
+  // silent renew will get a new access_token via an iframe
+  // just prior to the old access_token expiring (60 seconds prior)
+  silent_redirect_uri: `${window.location.origin}/auth/silent_redirect`,
+  automaticSilentRenew: true,
+
+  // this will allow all the OIDC protocol claims to be visible in the window. normally a client app
+  // wouldn't care about them or want them taking up space
+  filterProtocolClaims: false,
+
+  userStore: new WebStorageStateStore({ store: localStorage }),
+} as const;
 
 export default class AuthManager {
   private static _instance: AuthManager;
@@ -12,7 +48,7 @@ export default class AuthManager {
     return AuthManager._instance;
   }
 
-  private userManager = this.createAppUserManager();
+  private userManager = new UserManager(userManagerSettings);
 
   private constructor() {}
 
@@ -78,38 +114,5 @@ export default class AuthManager {
     localStorage.setItem('expiry_date', user.expires_at.toString());
     user.refresh_token &&
       localStorage.setItem('refresh_token', user.refresh_token);
-  }
-
-  private createAppUserManager(): UserManager {
-    return new UserManager({
-      authority: process.env['NX_OIDC_SERVER_URL'],
-      client_id: process.env['NX_OIDC_CLIENT'],
-      redirect_uri: `${window.location.origin}/auth/signin_redirect`,
-
-      // if we choose to use popup window instead for logins
-      popup_redirect_uri: `${window.location.origin}/auth/signin-callback-popup`,
-      popupWindowFeatures:
-        'menubar=yes,location=yes,toolbar=yes,width=1200,height=800,left=100,top=100;resizable=yes',
-
-      // these two will be done dynamically from the buttons clicked, but are
-      // needed if you want to use the silent_renew
-      response_type: 'code',
-      scope:
-        'openid profile email basic_profile unit_profile smg_profile itechart_mimir_api',
-
-      // this will toggle if profile endpoint is used
-      loadUserInfo: true,
-
-      // silent renew will get a new access_token via an iframe
-      // just prior to the old access_token expiring (60 seconds prior)
-      silent_redirect_uri: `${window.location.origin}/auth/silent_redirect`,
-      automaticSilentRenew: true,
-
-      // this will allow all the OIDC protocol claims to be visible in the window. normally a client app
-      // wouldn't care about them or want them taking up space
-      filterProtocolClaims: false,
-
-      userStore: new WebStorageStateStore({ store: localStorage }),
-    });
   }
 }
