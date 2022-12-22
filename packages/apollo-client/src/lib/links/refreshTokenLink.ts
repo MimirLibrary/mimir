@@ -10,9 +10,12 @@ export const refreshTokenLink = setContext(async () => {
 
   if (Date.now() > parseInt(expiryDate) * 1000) {
     const userManager = getAppUserManager();
-    const oidcUserInfo = await userManager.signinSilent();
-    setAuthTokens(oidcUserInfo);
-    await userManager.clearStaleState();
+    try {
+      const oidcUserInfo = await userManager.signinSilent();
+      setAuthTokens(oidcUserInfo);
+    } finally {
+      await userManager.clearStaleState();
+    }
     return {};
   }
   return {};

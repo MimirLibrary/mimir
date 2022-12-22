@@ -7,7 +7,7 @@ import { AuthUser } from './model/auth-user';
 import { BlockedUsers } from '../resources/blocked-users/blocked-users.entity';
 import { BaseEntity } from 'typeorm';
 
-export type User = Omit<Person, keyof BaseEntity> & {
+export type PersonDto = Omit<Person, keyof BaseEntity> & {
   blocked: boolean;
   userRole: string;
   location?: Location[];
@@ -30,7 +30,7 @@ export class AuthService {
     return JSON.parse(bufB64.toString());
   }
 
-  async createPerson(): Promise<User> {
+  async createPerson(): Promise<PersonDto> {
     const authUser = await this.getAuthUser();
     if (!authUser) {
       throw new UnauthorizedException('Invalid token');

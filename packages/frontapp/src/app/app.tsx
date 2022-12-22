@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { withTranslation } from 'react-i18next';
 import MainComponent from './components/MainComponent';
 import SilentSignInRedirectPage from './pages/SilentSignInRedirectPage';
+import { SignInRedirectPage } from './pages/SignInRedirectPage';
 
 const WrapperPage = styled.main`
   display: flex;
@@ -38,24 +39,24 @@ const App: FC = () => {
             hideSidebar={hideSidebar}
           />
           <MainComponent showSidebar={showSidebar} />
-          <Routes>
-            <Route
-              path="/auth/silent_redirect"
-              element={<SilentSignInRedirectPage />}
-            />
-          </Routes>
         </WrapperPage>
       ) : (
         <Routes>
           <Route path="/login" element={<StartPage />} />
           <Route
             path="/auth/signin_redirect"
-            element={<StartPage ssoRedirect={true} />}
+            element={<SignInRedirectPage />}
           />
           <Route path="*" element={<StartPage />} />
         </Routes>
       )}
       <ToastContainer position="bottom-right" />
+      <Routes>
+        <Route
+          path="/auth/silent_redirect"
+          element={<SilentSignInRedirectPage />}
+        />
+      </Routes>
     </>
   );
 };
