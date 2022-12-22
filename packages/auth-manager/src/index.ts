@@ -1,1 +1,1 @@
-export * from './lib/auth-manager';
+export { default as AuthManager } from './lib/auth-manager';

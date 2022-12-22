@@ -1,12 +1,10 @@
 import React from 'react';
 import Button from '../components/Button';
-import { getAppUserManager, getOidcState } from '@mimir/auth-manager';
 import { StartPageTemplate } from './StartPageTemplate';
-
-const userManager = getAppUserManager();
+import { AuthManager } from '@mimir/auth-manager';
 
 const signIn = (): Promise<void> => {
-  return userManager.signinRedirect({ state: getOidcState() });
+  return AuthManager.instance.signIn();
 };
 
 const StartPage = () => {

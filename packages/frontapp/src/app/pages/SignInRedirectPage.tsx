@@ -14,10 +14,10 @@ import Dropdown from '../components/Dropdown';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { useAppDispatch } from '../hooks/useTypedDispatch';
 import { useNavigate } from 'react-router-dom';
-import { getAppUserManager, setAuthTokens } from '@mimir/auth-manager';
 import { createUser } from '../axios-api/api';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { AuthManager } from '@mimir/auth-manager';
 
 const RestyledDropdown = styled(Dropdown)`
   border: 2px solid ${colors.accent_color};
@@ -26,8 +26,6 @@ const RestyledDropdown = styled(Dropdown)`
   height: ${dimensions.xl_10};
   margin-bottom: ${dimensions.xs_2};
 `;
-
-const userManager = getAppUserManager();
 
 export const SignInRedirectPage = () => {
   const [preparedUserPayload, setPreparedUserPayload] =
@@ -45,29 +43,25 @@ export const SignInRedirectPage = () => {
 
   useEffect(() => {
     const handleSsoRedirect = async () => {
-      try {
-        const oidcUserInfo = await userManager.signinRedirectCallback();
-        setAuthTokens(oidcUserInfo);
+      await AuthManager.instance.signInRedirectCallback();
 
-        const { data } = await createUser();
+      const { data } = await createUser();
 
-        if (data.location?.length && Array.isArray(data.location)) {
-          const transformLocations = data.location.map((loc: any) => ({
-            id: String(loc.id),
-            value: loc.location,
-          }));
-          dispatch(
-            setUser({ ...data, location: transformLocations, isAuth: true })
-          );
-          return history('/home');
-        }
-
-        setPreparedUserPayload({ ...data, location: { id: '0', value: '' } });
-        setIsSignUp(true);
-      } finally {
-        await userManager.clearStaleState();
+      if (data.location?.length && Array.isArray(data.location)) {
+        const transformLocations = data.location.map((loc: any) => ({
+          id: String(loc.id),
+          value: loc.location,
+        }));
+        dispatch(
+          setUser({ ...data, location: transformLocations, isAuth: true })
+        );
+        return history('/home');
       }
+
+      setPreparedUserPayload({ ...data, location: { id: '0', value: '' } });
+      setIsSignUp(true);
     };
+
     handleSsoRedirect();
   }, []);
 

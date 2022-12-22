@@ -1,5 +1,5 @@
 import { setContext } from '@apollo/client/link/context';
-import { getAppUserManager, setAuthTokens } from '@mimir/auth-manager';
+import { AuthManager } from '@mimir/auth-manager';
 
 export const refreshTokenLink = setContext(async () => {
   const expiryDate = localStorage.getItem('expiry_date');
@@ -9,13 +9,7 @@ export const refreshTokenLink = setContext(async () => {
   }
 
   if (Date.now() > parseInt(expiryDate) * 1000) {
-    const userManager = getAppUserManager();
-    try {
-      const oidcUserInfo = await userManager.signinSilent();
-      setAuthTokens(oidcUserInfo);
-    } finally {
-      await userManager.clearStaleState();
-    }
+    await AuthManager.instance.signInSilent();
     return {};
   }
   return {};

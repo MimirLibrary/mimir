@@ -8,7 +8,7 @@ import { NavbarItems } from '../../../utils/NavbarItems';
 import { useAppDispatch } from '../../hooks/useTypedDispatch';
 import { logout } from '../../store/slices/userSlice';
 import { RolesTypes } from '@mimir/global-types';
-import { getAppUserManager } from '@mimir/auth-manager';
+import { AuthManager } from '@mimir/auth-manager';
 
 interface IProps {
   icon: ReactElement;
@@ -84,8 +84,6 @@ const TextInButton = styled.p<IStyle>`
     JSON.parse(props.primary) ? colors.bg_secondary : colors.main_black};
 `;
 
-const userManager = getAppUserManager();
-
 const NavbarItem: FC<IProps> = ({ icon, name, path, changeActiveTab }) => {
   const dispatch = useAppDispatch();
   const { userRole } = useAppSelector((state) => state.user);
@@ -94,7 +92,7 @@ const NavbarItem: FC<IProps> = ({ icon, name, path, changeActiveTab }) => {
   const handleLogout = () => {
     dispatch(logout());
     localStorage.clear();
-    userManager.signoutRedirect();
+    AuthManager.instance.signOut();
   };
 
   return (
