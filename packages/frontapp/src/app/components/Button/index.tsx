@@ -136,6 +136,17 @@ const ButtonContainer = styled.button<IButtonProps>`
     max-width: ${dimensions.xl_2};
   }
 
+  svg path {
+    fill: ${({ transparent, secondary }) =>
+      transparent
+        ? secondary
+          ? colors.dropdown_gray
+          : colors.hover_color
+        : colors.bg_secondary};
+    height: auto;
+    max-width: ${dimensions.xl_2};
+  }
+
   span {
     font-size: ${dimensions.base};
     font-weight: 700;

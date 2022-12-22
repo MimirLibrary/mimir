@@ -3,6 +3,13 @@ import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { useAppSelector } from '../hooks/useTypedSelector';
 import ListOfMaterialsSearch from '../components/ListOfMaterialsSearch';
+import { NotFoundWindow } from '../components/NotFoundWindow';
+import BackButton from '../components/BackButton';
+import Button from '../components/Button';
+import { ReactComponent as ArrowSVG } from './../../assets/ArrowLeft.svg';
+import { t } from 'i18next';
+import { useNavigate } from 'react-router-dom';
+import { RoutesTypes } from '../../utils/routes';
 
 const Wrapper = styled.section`
   margin-top: ${dimensions.base_3};
@@ -24,12 +31,36 @@ const AmountTitle = styled.h2`
 const SearchByNameOrAuthorPage = () => {
   const { searchMaterials } = useAppSelector((state) => state.materials);
   const quantityOfMaterials = searchMaterials?.length || 0;
+
+  const navigate = useNavigate();
+  const handleGoBack = () => {
+    window.history.state.idx === 0
+      ? navigate(RoutesTypes.SEARCH)
+      : navigate(-1);
+  };
   return (
     <Wrapper>
-      <WrapperSearch>
-        <AmountTitle>Result: {quantityOfMaterials}</AmountTitle>
-        {searchMaterials && <ListOfMaterialsSearch />}
-      </WrapperSearch>
+      <BackButton customName="BackForNotFound" />
+      {searchMaterials?.length !== 0 ? (
+        <WrapperSearch>
+          <AmountTitle>Result: {quantityOfMaterials}</AmountTitle>
+          {searchMaterials && <ListOfMaterialsSearch />}
+        </WrapperSearch>
+      ) : (
+        <WrapperSearch>
+          <NotFoundWindow
+            withButton={
+              <Button
+                type="reset"
+                onClick={handleGoBack}
+                value={t('Back')}
+                svgComponent={<ArrowSVG />}
+                transparent={true}
+              />
+            }
+          />
+        </WrapperSearch>
+      )}
     </Wrapper>
   );
 };

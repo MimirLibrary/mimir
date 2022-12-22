@@ -2,7 +2,6 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { dimensions } from '@mimir/ui-kit';
 import { ReactComponent as ArrowBack } from '../../../assets/ArrowUp2.svg';
-
 import { useNavigate } from 'react-router-dom';
 import { t } from 'i18next';
 import { RoutesTypes } from '../../../utils/routes';
@@ -19,7 +18,7 @@ export const GoBack = styled.a`
   font-size: ${dimensions.base};
 `;
 
-const BackButton = () => {
+const BackButton = (props: any) => {
   const navigate = useNavigate();
   const handleGoBack = () => {
     window.history.state.idx === 0
@@ -30,7 +29,9 @@ const BackButton = () => {
   return (
     <ButtonWrapper onClick={handleGoBack}>
       <ArrowBack />
-      <GoBack>{t('Back')}</GoBack>
+      <GoBack>
+        {props.customName === undefined ? t('Back') : t(props.customName)}
+      </GoBack>
     </ButtonWrapper>
   );
 };

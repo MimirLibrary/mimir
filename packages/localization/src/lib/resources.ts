@@ -2,6 +2,7 @@ export const resources = {
   en: {
     translation: {
       Back: 'Back',
+      BackForNotFound: 'Back to all books',
       Loading: 'Loading...',
       Cancel: 'Cancel',
       EmptyListItems: {
@@ -282,6 +283,7 @@ export const resources = {
   ru: {
     translation: {
       Back: 'Назад',
+      BackForNotFound: 'Назад ко всем книгам',
       Loading: 'Загрузка...',
       Cancel: 'Закрыть',
       EmptyListItems: {
