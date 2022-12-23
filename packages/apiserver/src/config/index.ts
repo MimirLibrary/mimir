@@ -1,1 +1,1 @@
-export default './jwt.config';
+export { default as jwt } from './jwt.config';
