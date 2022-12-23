@@ -43,7 +43,7 @@ export const SignInRedirectPage = () => {
 
   useEffect(() => {
     const handleSsoRedirect = async () => {
-      await AuthManager.instance.signInRedirectCallback();
+      await AuthManager.signInRedirectCallback();
 
       const { data } = await createUser();
 

@@ -9,7 +9,7 @@ export const refreshTokenLink = setContext(async () => {
   }
 
   if (Date.now() > parseInt(expiryDate) * 1000) {
-    await AuthManager.instance.signInSilent();
+    await AuthManager.signInSilent();
     return {};
   }
   return {};

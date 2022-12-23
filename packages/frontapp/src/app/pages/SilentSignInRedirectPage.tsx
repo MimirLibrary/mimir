@@ -3,7 +3,7 @@ import { AuthManager } from '@mimir/auth-manager';
 
 const SilentSignInRedirectPage = () => {
   useEffect(() => {
-    AuthManager.instance.signInSilentCallback();
+    AuthManager.signInSilentCallback();
   }, []);
 
   return null;

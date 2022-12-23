@@ -4,7 +4,7 @@ import { StartPageTemplate } from './StartPageTemplate';
 import { AuthManager } from '@mimir/auth-manager';
 
 const signIn = (): Promise<void> => {
-  return AuthManager.instance.signIn();
+  return AuthManager.signIn();
 };
 
 const StartPage = () => {

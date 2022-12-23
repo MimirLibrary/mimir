@@ -38,7 +38,7 @@ const userManagerSettings: UserManagerSettings = {
   userStore: new WebStorageStateStore({ store: localStorage }),
 } as const;
 
-export default class AuthManager {
+export class AuthManager {
   private static _instance: AuthManager;
 
   public static get instance(): AuthManager {
@@ -116,3 +116,5 @@ export default class AuthManager {
       localStorage.setItem('refresh_token', user.refresh_token);
   }
 }
+
+export default AuthManager.instance;
