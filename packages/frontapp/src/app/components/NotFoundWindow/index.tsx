@@ -71,11 +71,17 @@ const SvgIconWrapper = styled.div`
 
 interface INotFoundWindow {
   withButton?: JSX.Element;
+  searchEntity?: string;
 }
-export const NotFoundWindow: FC<INotFoundWindow> = ({ withButton }) => {
+export const NotFoundWindow: FC<INotFoundWindow> = ({
+  withButton,
+  searchEntity,
+}) => {
   return (
     <NotFoundWindowWrapper>
-      <WarningMessage>We couldn't find any book for this search</WarningMessage>
+      <WarningMessage>
+        We couldn't find any {searchEntity} for this search
+      </WarningMessage>
       <BodyMessage>
         Please check your request for errors or search using a different name
       </BodyMessage>

@@ -1,4 +1,4 @@
-import { useEffect, useState, FC } from 'react';
+import React, { useEffect, useState, FC } from 'react';
 import styled from '@emotion/styled';
 import { useGetAllPersonsQuery } from '@mimir/apollo-client';
 import { t } from 'i18next';
@@ -16,8 +16,14 @@ import { locationIds } from '../../store/slices/userSlice';
 import { toast } from 'react-toastify';
 import Loader, { WrapperLoader } from '../Loader';
 import Tags from '../BooksByCategory/tags';
+import BackButton from '../BackButton';
+import Button from '../Button';
+import { NotFoundWindow } from '../NotFoundWindow';
+import { ReactComponent as ArrowSVG } from './../../../assets/ArrowLeft.svg';
+import { useNavigate } from 'react-router-dom';
+import { RoutesTypes } from '../../../utils/routes';
 
-const ReadersWrapper = styled.div`
+const WrapperReaders = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -41,6 +47,11 @@ const Description = styled.p`
   font-weight: 300;
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
+`;
+
+const BackButtonContainer = styled.div`
+  margin-top: -48px;
+  margin-bottom: -60px;
 `;
 
 interface IProps {
@@ -132,6 +143,13 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
     }
   };
 
+  const navigate = useNavigate();
+  const handleGoBack = () => {
+    window.history.state.idx === 0
+      ? navigate(RoutesTypes.SEARCH)
+      : navigate(-1);
+  };
+
   useEffect(() => {
     filterUsers(sortBy![0]);
   }, [sortBy]);
@@ -162,13 +180,41 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
       </WrapperLoader>
     );
   return (
-    <ReadersWrapper>
-      <Title>
+    <WrapperReaders>
+      {itemsTaken.length > 0 || sortBy.length > 0 ? (
+        <>
+          <Title>
+            {`${t('Readers.TitleFiltered')} - ${readers?.length || 0}`}
+          </Title>
+          <Description>{t('Readers.Description')}</Description>
+        </>
+      ) : (
+        <>
+          <BackButtonContainer>
+            <BackButton customName="BackForNotFoundUser" />
+          </BackButtonContainer>
+          <NotFoundWindow
+            searchEntity={'user'}
+            withButton={
+              <Button
+                type="button"
+                onClick={handleGoBack}
+                value={t('Back')}
+                svgComponent={<ArrowSVG />}
+                transparent={true}
+              />
+            }
+          />
+        </>
+      )}
+
+      {/*<Title>
         {itemsTaken.length > 0 || sortBy.length > 0
           ? `${t('Readers.TitleFiltered')} - ${readers?.length || 0}`
           : t('Readers.Title')}
       </Title>
       <Description>{t('Readers.Description')}</Description>
+      <Tags chosenTags={allFilters} />*/}
       <Tags chosenTags={allFilters} />
       <ListWrapper>
         {readers?.map((person) => {
@@ -206,7 +252,7 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
           );
         })}
       </ListWrapper>
-    </ReadersWrapper>
+    </WrapperReaders>
   );
 };
 

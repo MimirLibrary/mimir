@@ -40,7 +40,7 @@ const SearchByNameOrAuthorPage = () => {
   };
   return (
     <Wrapper>
-      <BackButton customName="BackForNotFound" />
+      <BackButton customName="BackForNotFoundBook" />
       {searchMaterials?.length !== 0 ? (
         <WrapperSearch>
           <AmountTitle>Result: {quantityOfMaterials}</AmountTitle>
@@ -49,9 +49,10 @@ const SearchByNameOrAuthorPage = () => {
       ) : (
         <WrapperSearch>
           <NotFoundWindow
+            searchEntity={'book'}
             withButton={
               <Button
-                type="reset"
+                type="button"
                 onClick={handleGoBack}
                 value={t('Back')}
                 svgComponent={<ArrowSVG />}

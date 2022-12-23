@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import { dimensions } from '@mimir/ui-kit';
 import { ReactComponent as ArrowBack } from '../../../assets/ArrowUp2.svg';
@@ -18,7 +18,11 @@ export const GoBack = styled.a`
   font-size: ${dimensions.base};
 `;
 
-const BackButton = (props: any) => {
+interface IBackButtonProps {
+  customName?: string;
+}
+
+const BackButton: FC<IBackButtonProps> = ({ customName }) => {
   const navigate = useNavigate();
   const handleGoBack = () => {
     window.history.state.idx === 0
@@ -29,9 +33,7 @@ const BackButton = (props: any) => {
   return (
     <ButtonWrapper onClick={handleGoBack}>
       <ArrowBack />
-      <GoBack>
-        {props.customName === undefined ? t('Back') : t(props.customName)}
-      </GoBack>
+      <GoBack>{customName === undefined ? t('Back') : t(customName)}</GoBack>
     </ButtonWrapper>
   );
 };
