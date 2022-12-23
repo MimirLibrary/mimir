@@ -6,6 +6,7 @@ import {
   UserManagerSettings,
   WebStorageStateStore,
 } from 'oidc-client';
+import { firstValueFrom, Subject } from 'rxjs';
 
 const userManagerSettings: UserManagerSettings = {
   authority: process.env['NX_OIDC_SERVER_URL'],
@@ -48,6 +49,9 @@ export class AuthManager {
     return AuthManager._instance;
   }
 
+  private silentSignInSubject: Subject<User> = new Subject();
+  private silentSignInInProgress = false;
+
   private userManager = new UserManager(userManagerSettings);
 
   private constructor() {}
@@ -77,14 +81,22 @@ export class AuthManager {
   }
 
   public async signInSilent(): Promise<User> {
-    let oidcUserInfo;
+    if (this.silentSignInInProgress) {
+      return firstValueFrom(this.silentSignInSubject);
+    }
     try {
-      oidcUserInfo = await this.userManager.signinSilent();
+      this.silentSignInInProgress = true;
+      const oidcUserInfo = await this.userManager.signinSilent();
       this.setAuthTokens(oidcUserInfo);
+      this.silentSignInSubject.next(oidcUserInfo);
+      return oidcUserInfo;
+    } catch (error) {
+      this.silentSignInSubject.error(error);
+      throw error;
     } finally {
+      this.silentSignInInProgress = false;
       await this.userManager.clearStaleState();
     }
-    return oidcUserInfo;
   }
 
   private getOidcState(): string {
