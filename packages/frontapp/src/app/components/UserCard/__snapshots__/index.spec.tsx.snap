@@ -194,6 +194,12 @@ exports[`UserCard Component should match snapshot 1`] = `
   max-width: 1.5rem;
 }
 
+.emotion-21 svg path {
+  fill: #1A1DB1;
+  height: auto;
+  max-width: 1.5rem;
+}
+
 .emotion-21 span {
   font-size: 1rem;
   font-weight: 700;
@@ -268,6 +274,12 @@ exports[`UserCard Component should match snapshot 1`] = `
   max-width: 1.5rem;
 }
 
+.emotion-22 svg path {
+  fill: #BDBDBD;
+  height: auto;
+  max-width: 1.5rem;
+}
+
 .emotion-22 span {
   font-size: 1rem;
   font-weight: 700;
@@ -333,6 +345,12 @@ exports[`UserCard Component should match snapshot 1`] = `
 }
 
 .emotion-23 svg {
+  fill: #1A1DB1;
+  height: auto;
+  max-width: 1.5rem;
+}
+
+.emotion-23 svg path {
   fill: #1A1DB1;
   height: auto;
   max-width: 1.5rem;
