@@ -75,9 +75,7 @@ export class AuthManager {
   }
 
   public signOut(): Promise<void> {
-    return this.userManager.signoutRedirect({
-      post_logout_redirect_uri: window.location.origin,
-    });
+    return this.userManager.signoutRedirect();
   }
 
   public async signInSilent(): Promise<User> {
