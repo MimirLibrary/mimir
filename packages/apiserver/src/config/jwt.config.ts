@@ -1,7 +1,7 @@
 import { registerAs } from '@nestjs/config';
 
 export default registerAs('jwt', () => ({
-  oidcServerUrl: process.env.OIDC_SERVER_URL,
-  clientId: process.env.OIDC_CLIENT,
-  audience: process.env.OIDC_AUDIENCE,
+  oidcServerUrl: process.env.NX_OIDC_SERVER_URL,
+  clientId: process.env.NX_OIDC_CLIENT,
+  audience: process.env.NX_OIDC_AUDIENCE,
 }));
