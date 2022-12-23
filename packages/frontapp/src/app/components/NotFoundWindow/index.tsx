@@ -14,6 +14,14 @@ const NotFoundWindowWrapper = styled.div`
   height: 448px;
   border-radius: 10px;
   box-shadow: 0px -4px 64px rgba(24, 39, 75, 0.12);
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    width: 100%;
+    height: 336px;
+    background: #ffffff;
+    box-shadow: 0px -4px 64px rgba(24, 39, 75, 0.12);
+    border-radius: 10px;
+  }
 `;
 
 const WarningMessage = styled.div`
@@ -27,6 +35,13 @@ const WarningMessage = styled.div`
   line-height: 38px;
   text-align: center;
   text-transform: uppercase;
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    width: 100%;
+    padding: 20px 16px 0 16px;
+    font-size: 24px;
+    line-height: 29px;
+  }
 `;
 
 const BodyMessage = styled.div`
@@ -39,6 +54,15 @@ const BodyMessage = styled.div`
   line-height: 25px;
   text-align: center;
   color: ${colors.main_black};
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 18px;
+    width: 100%;
+    padding: 0 40px 0 40px;
+    height: 40px;
+  }
 `;
 
 const SvgIconWrapper = styled.div`
