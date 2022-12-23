@@ -91,8 +91,9 @@ const NavbarItem: FC<IProps> = ({ icon, name, path, changeActiveTab }) => {
 
   const handleLogout = () => {
     dispatch(logout());
-    localStorage.clear();
-    AuthManager.signOut();
+    AuthManager.signOut().then(() => {
+      localStorage.clear();
+    });
   };
 
   return (
