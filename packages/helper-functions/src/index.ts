@@ -1,2 +1,2 @@
 export * from './lib/normalizeIdentifier';
-export * from './lib/readLocalFile';
+export * from './lib/file-system-services';
