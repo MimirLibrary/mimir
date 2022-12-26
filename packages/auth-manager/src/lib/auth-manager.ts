@@ -30,7 +30,7 @@ const userManagerSettings: UserManagerSettings = {
   // silent renew will get a new access_token via an iframe
   // just prior to the old access_token expiring (60 seconds prior)
   silent_redirect_uri: `${window.location.origin}/auth/silent_redirect`,
-  automaticSilentRenew: true,
+  automaticSilentRenew: false,
 
   // this will allow all the OIDC protocol claims to be visible in the window. normally a client app
   // wouldn't care about them or want them taking up space
