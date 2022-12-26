@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { ReadFileError, UnknownFileError } from './fileErrors';
 
 interface File {
   originalname: string;
@@ -21,8 +20,8 @@ export const readLocalFile = async (fileUrl: string): Promise<File> => {
       resolve({ originalname: fileName, buffer: file });
     } catch (err) {
       err instanceof Error
-        ? reject(new ReadFileError(`Can't read file. ${err.message}`))
-        : reject(new UnknownFileError('Unknown error'));
+        ? reject(new Error(`Can't read file. ${err.message}`))
+        : reject(new Error('Unknown error'));
     }
   });
 };

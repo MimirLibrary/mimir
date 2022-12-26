@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { DeleteFileError, UnknownFileError } from './fileErrors';
 
 export const deleteLocalFile = async (fileUrl: string): Promise<void> => {
   return new Promise((resolve, reject) => {
@@ -15,8 +14,8 @@ export const deleteLocalFile = async (fileUrl: string): Promise<void> => {
       resolve();
     } catch (err) {
       err instanceof Error
-        ? reject(new DeleteFileError(`Can't read file. ${err.message}`))
-        : reject(new UnknownFileError('Unknown error'));
+        ? reject(new Error(`Can't read file. ${err.message}`))
+        : reject(new Error('Unknown error'));
     }
   });
 };
