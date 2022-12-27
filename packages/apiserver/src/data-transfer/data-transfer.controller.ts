@@ -11,7 +11,7 @@ export class DataTransferController {
   @Get()
   @allowUnauthorizedRequest()
   @SkipBlock()
-  TransferData(): Promise<DataTransferOut> {
+  transferData(): Promise<DataTransferOut> {
     return this.dataTransfer.move();
   }
 }

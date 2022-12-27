@@ -37,10 +37,10 @@ export class DataTransferService {
     return { successes: successes, errors: errors };
   }
 
-  private async transferFile(material: Material) {
-    const file = await this.fileService.readFile(material.picture);
+  private async transferFile(material: Material): Promise<void> {
+    const file = this.fileService.readFile(material.picture);
     const url = (await this.digitalOceanService.createFile(file)) as string;
     await Material.update(material.id, { picture: url });
-    await this.fileService.removeFile(material.picture);
+    this.fileService.removeFile(material.picture);
   }
 }

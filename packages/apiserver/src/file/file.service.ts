@@ -22,7 +22,7 @@ export class FileService {
     }
   }
 
-  async removeFile(fileUrl: string): Promise<void> {
+  removeFile(fileUrl: string): void {
     const location = this.parseFileLocation(fileUrl);
     const filePath: string = path.resolve(
       process.cwd(),
@@ -36,7 +36,7 @@ export class FileService {
     }
   }
 
-  async readFile(fileUrl: string): Promise<File> {
+  readFile(fileUrl: string): File {
     const location = this.parseFileLocation(fileUrl);
     const filePath: string = path.resolve(
       'storage',
@@ -88,7 +88,7 @@ export class FileService {
     }
   }
 
-  private parseFileLocation(path): URL {
+  private parseFileLocation(path: string): URL {
     try {
       return new URL(path);
     } catch (e) {
