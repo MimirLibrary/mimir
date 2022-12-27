@@ -2,6 +2,9 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import * as path from 'path';
 import * as fs from 'fs';
+import { File } from './file';
+import * as process from 'process';
+
 @Injectable()
 export class FileService {
   createFileForTmp(file) {
@@ -19,10 +22,31 @@ export class FileService {
     }
   }
 
-  async removeFile(fileName: string) {
+  removeFile(fileUrl: string): void {
+    const location = this.parseFileLocation(fileUrl);
+    const filePath: string = path.resolve(
+      process.cwd(),
+      'storage',
+      ...location.pathname.split('/')
+    );
     try {
-      fs.unlinkSync(path.resolve(process.cwd(), 'storage', 'tmp', fileName));
-      return 'File was deleted';
+      fs.unlinkSync(filePath);
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  readFile(fileUrl: string): File {
+    const location = this.parseFileLocation(fileUrl);
+    const filePath: string = path.resolve(
+      'storage',
+      ...location.pathname.split('/')
+    );
+    const fileName: string = filePath.split('/').pop() as string;
+
+    try {
+      const file = fs.readFileSync(filePath);
+      return { originalname: fileName, buffer: file };
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -61,6 +85,14 @@ export class FileService {
       return `${process.env['NX_API_ROOT_URL']}/mainData/${identifier}.${fileExtension}`;
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  private parseFileLocation(path: string): URL {
+    try {
+      return new URL(path);
+    } catch (e) {
+      return new URL(path, process.env['NX_API_ROOT_URL']);
     }
   }
 }
