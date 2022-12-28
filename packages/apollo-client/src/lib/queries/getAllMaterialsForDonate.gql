@@ -11,5 +11,6 @@ query GetAllMaterialsForDonate($locations: [Int!], $limit: Int, $offset: Int) {
         avatar
       }
     }
+    currentStatusValue
   }
 }

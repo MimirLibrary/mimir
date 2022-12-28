@@ -13,5 +13,6 @@ query GetAllMaterialsForManager($locations: [Int!], $limit: Int, $offset: Int) {
         username
       }
     }
+    currentStatusValue
   }
 }

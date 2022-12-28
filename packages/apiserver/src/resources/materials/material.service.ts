@@ -16,10 +16,17 @@ import { normalizeIdentifier } from '@mimir/helper-functions';
 @Injectable()
 export class MaterialService {
   constructor(private connection: Connection) {}
-  async search(searchInput: SearchInput) {
+
+  async search(
+    searchInput: SearchInput,
+    selectHidden = false
+  ): Promise<Material[]> {
     const { search, locations } = searchInput;
-    if (!search) return [];
-    const data = await Material.createQueryBuilder('material')
+    if (!search) {
+      return [];
+    }
+
+    const query = Material.createQueryBuilder('material')
       .where('material.location_id IN (:...locations)', { locations })
       .andWhere(
         `${
@@ -29,11 +36,19 @@ export class MaterialService {
         }`,
         { text: `%${search}%` }
       )
-      .getMany();
+      .addOrderBy('title', 'ASC');
 
-    return data.sort((a, b) =>
-      a.title.toLowerCase().localeCompare(b.title.toLowerCase())
-    );
+    if (!selectHidden) {
+      query.andWhere('material.current_status NOT IN (:...statuses)', {
+        statuses: [
+          StatusTypes.PENDING,
+          StatusTypes.REJECTED,
+          StatusTypes.SUSPEND,
+        ],
+      });
+    }
+
+    return query.getMany();
   }
 
   async donate(donateBookInput: DonateBookInput) {
@@ -104,6 +119,7 @@ export class MaterialService {
       throw new GraphQLError(e.message);
     }
   }
+
   async getAllDonatedMaterialsByPerson(id: number | string) {
     try {
       return await Material.createQueryBuilder('material')

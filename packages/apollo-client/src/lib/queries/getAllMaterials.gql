@@ -20,5 +20,6 @@ query GetAllMaterials($locations: [Int!], $limit: Int, $offset: Int) {
     title
     type
     updated_at
+    currentStatusValue
   }
 }

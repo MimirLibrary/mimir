@@ -13,6 +13,7 @@ import { Status } from '../statuses/status.entity';
 import { Message } from '../messages/message.entity';
 import { Location } from '../locations/location.entity';
 import { BlockedUsers } from '../blocked-users/blocked-users.entity';
+import { Material } from '../materials/material.entity';
 
 @Entity('person')
 export class Person extends BaseEntity {
@@ -68,4 +69,7 @@ export class Person extends BaseEntity {
     },
   })
   location: Location[];
+
+  @OneToMany(() => Material, (materials) => materials.currentPerson)
+  materials: Material[];
 }

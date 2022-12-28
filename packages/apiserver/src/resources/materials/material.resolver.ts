@@ -15,6 +15,7 @@ import {
   DonateBookInput,
   SearchInput,
   SearchOneMaterial,
+  RolesTypes,
 } from '@mimir/global-types';
 import { Notification } from '../notifications/notification.entity';
 import { MaterialService } from './material.service';
@@ -22,6 +23,8 @@ import { BadRequestException } from '@nestjs/common';
 import { Message } from '../messages/message.entity';
 import { GraphQLError } from 'graphql';
 import { normalizeIdentifier } from '@mimir/helper-functions';
+import { CurrentUser } from '../../auth/current-user';
+import { Person } from '../persons/person.entity';
 
 @Resolver('Material')
 export class MaterialResolver {
@@ -64,8 +67,14 @@ export class MaterialResolver {
   }
 
   @Query(() => [Material])
-  async searchOfMaterials(@Args('input') searchInput: SearchInput) {
-    return this.materialService.search(searchInput);
+  async searchOfMaterials(
+    @Args('input') searchInput: SearchInput,
+    @CurrentUser() user: Person
+  ) {
+    return this.materialService.search(
+      searchInput,
+      user.type === RolesTypes.MANAGER
+    );
   }
 
   @Query(() => [Material])
@@ -142,5 +151,21 @@ export class MaterialResolver {
   async messages(@Parent() material: Material) {
     const { id } = material;
     return Message.find({ where: { material_id: id } });
+  }
+
+  @ResolveField(() => Status)
+  async currentStatus(@Parent() material: Material): Promise<Status> {
+    if (!material) {
+      return null;
+    }
+    return Status.findOne({ where: { id: material.currentStatusId } });
+  }
+
+  @ResolveField(() => Person)
+  async currentPerson(@Parent() material: Material): Promise<Person> {
+    if (!material) {
+      return null;
+    }
+    return Person.findOne({ where: { id: material.currentPersonId } });
   }
 }

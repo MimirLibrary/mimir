@@ -13,6 +13,7 @@ type Person {
   location: [Location!]
   messages: [Message]
   states: [BlockedUsers]
+  materials: [Material]
 }
 
 input CreatePersonInput {

@@ -35,6 +35,7 @@ import { AuthGuard } from '../auth/auth.guard';
 import { BlockedUsersGuard } from '../resources/blocked-users/blocked-users.guard';
 import { GrantGuard } from '../permission/grant.guard';
 import { DataTransferModule } from '../data-transfer/data-transfer.module';
+import { StatusSubscriber } from '../resources/statuses/status.subscriber';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { DataTransferModule } from '../data-transfer/data-transfer.module';
         Location,
         BlockedUsers,
       ],
+      subscribers: [StatusSubscriber],
       migrations: [`${__dirname}/migrations/*.js`],
     }),
     MaterialModule,

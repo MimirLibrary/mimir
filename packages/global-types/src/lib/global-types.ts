@@ -218,6 +218,9 @@ export interface Material {
     messages: Nullable<Message>[];
     description: string;
     is_donated: boolean;
+    currentStatusValue?: Nullable<string>;
+    currentStatus?: Nullable<Status>;
+    currentPerson?: Nullable<Person>;
 }
 
 export interface ResponseMetadata {
@@ -300,6 +303,7 @@ export interface Person {
     location?: Nullable<Location[]>;
     messages?: Nullable<Nullable<Message>[]>;
     states?: Nullable<Nullable<BlockedUsers>[]>;
+    materials?: Nullable<Nullable<Material>[]>;
 }
 
 export interface Status {

@@ -20,5 +20,6 @@ query GetMaterialById($id: ID!) {
       id
       location
     }
+    currentStatusValue
   }
 }

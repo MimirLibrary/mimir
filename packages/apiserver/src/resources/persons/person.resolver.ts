@@ -20,6 +20,7 @@ import { Message } from '../messages/message.entity';
 import { BlockedUsers } from '../blocked-users/blocked-users.entity';
 import { PersonService } from './person.service';
 import { Grants } from '../../permission/grant.decorator';
+import { Material } from '../materials/material.entity';
 
 @Resolver('Person')
 export class PersonResolver {
@@ -141,5 +142,10 @@ export class PersonResolver {
   async permissions(@Parent() person: Person) {
     const { permissions } = person;
     return permissions && permissions.split(',');
+  }
+
+  @ResolveField(() => [Material])
+  async materials(@Parent() person: Person): Promise<Material[]> {
+    return Material.find({ where: { currentPersonId: person.id } });
   }
 }

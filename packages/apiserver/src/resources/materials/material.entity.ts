@@ -6,6 +6,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -13,6 +14,7 @@ import { Location } from '../locations/location.entity';
 import { Notification } from '../notifications/notification.entity';
 import { Status } from '../statuses/status.entity';
 import { Message } from '../messages/message.entity';
+import { Person } from '../persons/person.entity';
 
 @Entity('material')
 export class Material extends BaseEntity {
@@ -55,6 +57,15 @@ export class Material extends BaseEntity {
   @Column({ nullable: true })
   location_id: number;
 
+  @Column({ name: 'current_person_id', nullable: true })
+  currentPersonId: number;
+
+  @Column({ name: 'current_status_id', nullable: true })
+  currentStatusId: number;
+
+  @Column({ name: 'current_status', nullable: true })
+  currentStatusValue: string;
+
   @OneToMany(() => Status, (status) => status.material)
   status!: Status[];
 
@@ -67,4 +78,12 @@ export class Material extends BaseEntity {
   @ManyToOne(() => Location, (location) => location.material)
   @JoinColumn({ name: 'location_id' })
   location: Location;
+
+  @OneToOne(() => Status, (status) => status.material)
+  @JoinColumn({ name: 'current_status_id' })
+  currentStatus: Status;
+
+  @ManyToOne(() => Person, (person) => person.materials)
+  @JoinColumn({ name: 'current_person_id' })
+  currentPerson: Person;
 }
