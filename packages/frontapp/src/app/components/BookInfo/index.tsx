@@ -41,7 +41,8 @@ import { RolesTypes } from '@mimir/global-types';
 import { IDropdownOption } from '../Dropdown';
 import { TUserLocation } from '../../store/slices/userSlice';
 import DescriptionBook from './DescriptionBook';
-import DescriptionDetails from './Description';
+import Section from '../Section';
+import ExpandableText from '../ExpandableText';
 
 export const BookHolder = styled.div`
   width: 100%;
@@ -563,7 +564,9 @@ const BookInfo: FC<IBookInfoProps> = ({
             </TextAreaWrapper>
           </>
         ) : description ? (
-          <DescriptionDetails>{description || ''}</DescriptionDetails>
+          <Section title={'Description: '}>
+            <ExpandableText>{description}</ExpandableText>
+          </Section>
         ) : null}
       </BookHolder>
       <Modal active={isShowClaimModal} setActive={setIsShowClaimModal}>
