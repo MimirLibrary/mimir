@@ -41,6 +41,7 @@ import { RolesTypes } from '@mimir/global-types';
 import { IDropdownOption } from '../Dropdown';
 import { TUserLocation } from '../../store/slices/userSlice';
 import DescriptionBook from './DescriptionBook';
+import DescriptionDetails from './Description';
 
 export const BookHolder = styled.div`
   width: 100%;
@@ -68,13 +69,6 @@ export const ShortDescriptionWrapper = styled.div`
 export const LongDescription = styled.div`
   margin-top: ${dimensions.xl_2};
   grid-column: 1 / span 3;
-`;
-
-export const Description = styled.p`
-  font-weight: 300;
-  font-size: ${dimensions.base};
-  line-height: ${dimensions.xl};
-  color: ${colors.main_black};
 `;
 
 export const WrapperButtons = styled.div`
@@ -568,15 +562,9 @@ const BookInfo: FC<IBookInfoProps> = ({
               />
             </TextAreaWrapper>
           </>
-        ) : (
-          <LongDescription>
-            <Topic>Description: </Topic>
-            <Description>{description || ''}</Description>
-            {userRole === RolesTypes.READER ? (
-              <OpenLink>see full description</OpenLink>
-            ) : null}
-          </LongDescription>
-        )}
+        ) : description ? (
+          <DescriptionDetails>{description || ''}</DescriptionDetails>
+        ) : null}
       </BookHolder>
       <Modal active={isShowClaimModal} setActive={setIsShowClaimModal}>
         <ClaimOperation
