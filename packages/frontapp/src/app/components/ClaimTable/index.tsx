@@ -10,6 +10,8 @@ import emptyList from '../../../assets/EmptyList.svg';
 import InlineWrapper from './InlineWrapper';
 import { t } from 'i18next';
 import Item from './Item';
+import MobileItem from './MobileItem';
+import { useMediaQuery } from 'react-responsive';
 
 const CardWrapper = styled.div`
   display: flex;
@@ -109,6 +111,11 @@ const SortText = styled.div<ISortTextProps>`
     border-bottom: 3px solid;
     border-bottom-color: ${colors.accent_color};
   }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    padding: 15px;
+    width: 50%;
+  } ;
 `;
 
 const HeadWrapper = styled.div`
@@ -116,6 +123,10 @@ const HeadWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
+  @media (max-width: ${dimensions.phone_width}) {
+    flex-direction: column;
+  } ;
 `;
 
 interface IClaimTable {
@@ -124,6 +135,9 @@ interface IClaimTable {
 }
 
 const ClaimTable: FC<IClaimTable> = ({ statuses, name }) => {
+  const isMobile = useMediaQuery({
+    query: `(max-width: ${dimensions.phone_width})`,
+  });
   const sortedStatuses = countClaimHistory(statuses).claimHistoryItems;
   const [allItemsActive, setAllItemsActive] = useState<boolean>(true);
   const [search, setSearch] = useState<string>('');
@@ -185,7 +199,7 @@ const ClaimTable: FC<IClaimTable> = ({ statuses, name }) => {
             </SortText>
           </InlineWrapper>
         )}
-        <WrapperInput>
+        <WrapperInput mobilefullsize>
           <StyledSearchIcon
             fill={colors.dropdown_gray}
             width="20"
@@ -199,33 +213,41 @@ const ClaimTable: FC<IClaimTable> = ({ statuses, name }) => {
           />
         </WrapperInput>
       </HeadWrapper>
-      <CardWrapper>
-        {statuses?.length ? (
-          <StyledScroll>
-            <StyledTable>
-              <tbody>
-                <tr>
-                  <th>{t('UserCard.Table.ItemName')}</th>
-                  <th>{t('UserCard.Table.Deadline')}</th>
-                  <th>{t('UserCard.Table.State')}</th>
-                </tr>
-                {shownItems?.map((d) => (
-                  <Item key={d.material_id} item={d} />
-                ))}
-              </tbody>
-            </StyledTable>
-          </StyledScroll>
-        ) : (
-          <EmptyShelfWrapper>
-            <img src={emptyList} alt="no items" />
-            <p>
-              {t('UserCard.Table.ShelfOf') +
-                name?.split(' ')[0] +
-                t('UserCard.Table.BooksAndItems')}
-            </p>
-          </EmptyShelfWrapper>
-        )}
-      </CardWrapper>
+      {!isMobile ? (
+        <CardWrapper>
+          {statuses?.length ? (
+            <StyledScroll>
+              <StyledTable>
+                <tbody>
+                  <tr>
+                    <th>{t('UserCard.Table.ItemName')}</th>
+                    <th>{t('UserCard.Table.Deadline')}</th>
+                    <th>{t('UserCard.Table.State')}</th>
+                  </tr>
+                  {shownItems?.map((d) => (
+                    <Item key={d.material_id} item={d} />
+                  ))}
+                </tbody>
+              </StyledTable>
+            </StyledScroll>
+          ) : (
+            <EmptyShelfWrapper>
+              <img src={emptyList} alt="no items" />
+              <p>
+                {t('UserCard.Table.ShelfOf') +
+                  name?.split(' ')[0] +
+                  t('UserCard.Table.BooksAndItems')}
+              </p>
+            </EmptyShelfWrapper>
+          )}
+        </CardWrapper>
+      ) : (
+        <div>
+          {shownItems?.map((d) => (
+            <MobileItem item={d} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

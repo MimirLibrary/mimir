@@ -39,7 +39,11 @@ export const StyledSearchIcon = styled(SearchIcon)`
   }
 `;
 
-export const WrapperInput = styled.div`
+interface IInputStyle {
+  mobilefullsize?: boolean;
+}
+
+export const WrapperInput = styled.div<IInputStyle>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -70,6 +74,13 @@ export const WrapperInput = styled.div`
     font-size: ${dimensions.sm};
     line-height: ${dimensions.lg};
   }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    max-width: 100%;
+    width: ${({ mobilefullsize }) => (mobilefullsize ? '100%' : '48vw')};
+    padding: 9px 0;
+    padding-left: calc(${dimensions.base} - 0.5rem);
+  } ;
 `;
 
 interface ISearchParams {
