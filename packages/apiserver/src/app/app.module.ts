@@ -36,6 +36,8 @@ import { BlockedUsersGuard } from '../resources/blocked-users/blocked-users.guar
 import { GrantGuard } from '../permission/grant.guard';
 import { DataTransferModule } from '../data-transfer/data-transfer.module';
 import { StatusSubscriber } from '../resources/statuses/status.subscriber';
+import createStatusesLoader from '../resources/statuses/statuses.loader';
+import createPersonsLoader from '../resources/persons/persons.loader';
 
 @Module({
   imports: [
@@ -65,16 +67,24 @@ import { StatusSubscriber } from '../resources/statuses/status.subscriber';
     LocationModule,
     AuthModule,
     FileModule,
-    GraphQLModule.forRoot<ApolloDriverConfig>({
+    GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
-      typePaths: [`${__dirname}/**/*.graphql`],
-      typeDefs: [...scalarTypeDefs],
-      resolvers: [scalarResolvers],
-      definitions: {
-        path: join(
-          process.cwd(),
-          './packages/global-types/src/lib/global-types.ts'
-        ),
+      useFactory: () => {
+        return {
+          typePaths: [`${__dirname}/**/*.graphql`],
+          typeDefs: [...scalarTypeDefs],
+          resolvers: [scalarResolvers],
+          definitions: {
+            path: join(
+              process.cwd(),
+              './packages/global-types/src/lib/global-types.ts'
+            ),
+          },
+          context: () => ({
+            statusesLoader: createStatusesLoader(),
+            personsLoader: createPersonsLoader(),
+          }),
+        };
       },
     }),
     ServeStaticModule.forRoot({

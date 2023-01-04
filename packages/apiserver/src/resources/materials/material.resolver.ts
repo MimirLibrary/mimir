@@ -1,21 +1,22 @@
 import {
   Args,
+  Context,
+  Mutation,
   Parent,
   Query,
   ResolveField,
   Resolver,
-  Mutation,
 } from '@nestjs/graphql';
 import { Material } from './material.entity';
 import { Status } from '../statuses/status.entity';
 import {
   CreateMaterialInput,
-  UpdateMaterialInput,
-  RemoveMaterialInput,
   DonateBookInput,
+  RemoveMaterialInput,
+  RolesTypes,
   SearchInput,
   SearchOneMaterial,
-  RolesTypes,
+  UpdateMaterialInput,
 } from '@mimir/global-types';
 import { Notification } from '../notifications/notification.entity';
 import { MaterialService } from './material.service';
@@ -25,6 +26,7 @@ import { GraphQLError } from 'graphql';
 import { normalizeIdentifier } from '@mimir/helper-functions';
 import { CurrentUser } from '../../auth/current-user';
 import { Person } from '../persons/person.entity';
+import * as DataLoader from 'dataloader';
 
 @Resolver('Material')
 export class MaterialResolver {
@@ -114,6 +116,7 @@ export class MaterialResolver {
       throw new BadRequestException();
     }
   }
+
   @Mutation(() => Material)
   async updateMaterial(
     @Args('input') updateMaterialInput: UpdateMaterialInput
@@ -132,6 +135,7 @@ export class MaterialResolver {
       throw new BadRequestException();
     }
   }
+
   @ResolveField(() => [Status])
   async statuses(@Parent() material: Material) {
     const { id } = material;
@@ -154,18 +158,24 @@ export class MaterialResolver {
   }
 
   @ResolveField(() => Status)
-  async currentStatus(@Parent() material: Material): Promise<Status> {
-    if (!material) {
+  async currentStatus(
+    @Parent() material: Material,
+    @Context('statusesLoader') statusesLoader: DataLoader<number, Status>
+  ): Promise<Status> {
+    if (!material?.currentStatusId) {
       return null;
     }
-    return Status.findOne({ where: { id: material.currentStatusId } });
+    return statusesLoader.load(material.currentStatusId);
   }
 
   @ResolveField(() => Person)
-  async currentPerson(@Parent() material: Material): Promise<Person> {
-    if (!material) {
+  async currentPerson(
+    @Parent() material: Material,
+    @Context('personsLoader') personsLoader: DataLoader<number, Person>
+  ): Promise<Person> {
+    if (!material?.currentPersonId) {
       return null;
     }
-    return Person.findOne({ where: { id: material.currentPersonId } });
+    return personsLoader.load(material.currentPersonId);
   }
 }

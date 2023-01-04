@@ -118,6 +118,7 @@
     "axios": "^0.27.2",
     "cheerio": "^1.0.0-rc.12",
     "core-js": "^3.6.5",
+    "dataloader": "^2.1.0",
     "dotenv": "^16.0.1",
     "google-auth-library": "^8.1.0",
     "graphql": "16.4.0",
