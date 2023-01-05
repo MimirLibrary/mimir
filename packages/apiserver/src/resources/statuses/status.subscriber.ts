@@ -5,6 +5,8 @@ import {
   EventSubscriber,
   InsertEvent,
 } from 'typeorm';
+import { StatusTypes } from '@mimir/global-types';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
 @EventSubscriber()
 export class StatusSubscriber implements EntitySubscriberInterface<Status> {
@@ -14,10 +16,20 @@ export class StatusSubscriber implements EntitySubscriberInterface<Status> {
 
   async afterInsert(event: InsertEvent<Status>): Promise<void> {
     const status = event.entity;
-    await event.manager.getRepository(Material).update(status.material_id, {
+    const update: QueryDeepPartialEntity<Material> = {
       currentStatusId: status.id,
       currentPersonId: status.person_id,
       currentStatusValue: status.status,
-    });
+    };
+    if (status.status === StatusTypes.BUSY) {
+      update.claimCount = () => 'claim_count + 1';
+    }
+    await event.manager
+      .getRepository(Material)
+      .createQueryBuilder()
+      .update()
+      .where({ id: status.material_id })
+      .set(update)
+      .execute();
   }
 }

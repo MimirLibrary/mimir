@@ -16,8 +16,8 @@ const ListOfMaterialsSearch = () => {
             title={item?.title}
             author={item?.author}
             category={item?.category}
-            date={item?.statuses.slice(-1)[0]?.created_at}
-            status={item?.statuses.slice(-1)[0]?.status}
+            date={item?.currentStatus?.created_at}
+            status={item?.currentStatus?.status}
           />
         ))}
     </WrapperList>

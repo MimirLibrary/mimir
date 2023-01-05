@@ -84,8 +84,10 @@ const SearchPage = () => {
   });
   useEffect(() => {
     const available = data?.getAllMaterials.filter((material: any) => {
-      const lastStatus = material.statuses.slice(-1)[0];
-      const currentStatus = getStatus(lastStatus?.status, material?.created_at);
+      const currentStatus = getStatus(
+        material?.currentStatusValue,
+        material?.created_at
+      );
       return currentStatus !== 'Rejected' && currentStatus !== 'Pending';
     });
     setAvailableMaterial(available);

@@ -4,7 +4,7 @@ query GetAllMaterialsForManager($locations: [Int!], $limit: Int, $offset: Int) {
     title
     category
     picture
-    statuses {
+    currentStatus {
       id
       created_at
       status
@@ -14,5 +14,6 @@ query GetAllMaterialsForManager($locations: [Int!], $limit: Int, $offset: Int) {
       }
     }
     currentStatusValue
+    claimCount
   }
 }

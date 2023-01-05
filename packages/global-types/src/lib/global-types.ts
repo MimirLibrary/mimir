@@ -221,6 +221,7 @@ export interface Material {
     currentStatusValue?: Nullable<string>;
     currentStatus?: Nullable<Status>;
     currentPerson?: Nullable<Person>;
+    claimCount: number;
 }
 
 export interface ResponseMetadata {

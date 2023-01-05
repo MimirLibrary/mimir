@@ -1,18 +1,11 @@
-import {
-  BlockedUsers,
-  Location,
-  Maybe,
-  Message,
-  Notification,
-  Scalars,
-  Status,
-} from '@mimir/apollo-client';
+import { Status } from '@mimir/apollo-client';
 
 export interface IStatus {
   __typename?: 'Status';
   id: string;
   created_at: any;
   status: string;
+  person_id?: number;
   person?: IPerson;
 }
 
@@ -24,7 +17,10 @@ export interface IMaterial {
   author: string;
   category: string;
   id: string;
-  statuses: Array<IStatus | null>;
+  currentStatus?: IStatus | null;
+  claimCount: number;
+  identifier: string;
+  description: string;
 }
 interface IPerson {
   __typename?: 'Person' | undefined;
@@ -33,7 +29,7 @@ interface IPerson {
 }
 
 export interface IMaterialsState {
-  searchMaterials: Array<IMaterial | null> | null | undefined;
+  searchMaterials: Array<Partial<IMaterial> | null> | null | undefined;
 }
 export interface IReader {
   __typename?: 'Person';

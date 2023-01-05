@@ -8,7 +8,7 @@ import { useLocation } from 'react-router-dom';
 import useBookStatus from '../../hooks/useBookStatus';
 
 interface IBookStatusProps {
-  status?: string;
+  status?: string | null;
   date: any;
   fontSize?: string;
 }

@@ -5,10 +5,12 @@ query GetAllDonatedMaterialsByPerson($id: ID!) {
     title
     author
     category
-    statuses {
+    currentStatus {
       id
       created_at
       status
     }
+    currentStatusValue
+    claimCount
   }
 }

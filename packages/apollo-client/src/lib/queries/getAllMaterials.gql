@@ -13,7 +13,7 @@ query GetAllMaterials($locations: [Int!], $limit: Int, $offset: Int) {
       person_id
     }
     picture
-    statuses {
+    currentStatus {
       status
       person_id
     }
@@ -21,5 +21,6 @@ query GetAllMaterials($locations: [Int!], $limit: Int, $offset: Int) {
     type
     updated_at
     currentStatusValue
+    claimCount
   }
 }

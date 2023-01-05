@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { dimensions, colors } from '@mimir/ui-kit';
 import AcceptRejectModals from '../AcceptRejectModals';
 import { toast } from 'react-toastify';
+import { IStatus } from '../../types';
 interface BackgroundProps {
   GrayBackground?: boolean;
 }
@@ -14,10 +15,10 @@ interface BackgroundProps {
 interface OneDonatorProps {
   title: string;
   identifier: string;
-  statuses: any;
+  lastStatus?: IStatus | null;
   id: number;
   index: number;
-  picture: string;
+  picture?: string | null;
   description: string;
   search: string;
   setShownId: Dispatch<SetStateAction<number[]>>;
@@ -120,7 +121,7 @@ const OneDonator = ({
   picture,
   title,
   description,
-  statuses,
+  lastStatus,
   index,
   search,
   shownId,
@@ -132,13 +133,11 @@ const OneDonator = ({
     navigate(`/donate/${item_id}`);
   };
 
-  const lastStatus = statuses.slice(-1)[0];
-
   const GrayBackground = index % 2 === 0;
 
   const { data: personName, error } = useGetOnePersonQuery({
     variables: {
-      id: lastStatus.person_id,
+      id: '' + lastStatus?.person_id,
     },
   });
 
@@ -172,11 +171,11 @@ const OneDonator = ({
           {personName ? personName?.getOnePerson.username : 'unknown'}
         </DonatorName>
         <WrapperBtn>
-          {lastStatus.status === 'Pending' && (
+          {lastStatus?.status === 'Pending' && (
             <Button onClick={() => setAccept(true)} value="Accept" />
           )}
-          {lastStatus.status === 'Free' && <Accepted>Accepted</Accepted>}
-          {lastStatus.status === 'Rejected' && <Rejected>Rejected</Rejected>}
+          {lastStatus?.status === 'Free' && <Accepted>Accepted</Accepted>}
+          {lastStatus?.status === 'Rejected' && <Rejected>Rejected</Rejected>}
         </WrapperBtn>
       </DonateWrapper>
       <AcceptRejectModals

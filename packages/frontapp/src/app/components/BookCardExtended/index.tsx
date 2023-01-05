@@ -7,7 +7,6 @@ import { IMaterial } from '../../types';
 import { useNavigate } from 'react-router-dom';
 import { OpenLink } from '../ManagerInfoCard';
 import { RoutesTypes } from '../../../utils/routes';
-import { StatusTypes } from '@mimir/global-types';
 
 const Wrapper = styled.div`
   background: ${colors.bg_secondary};
@@ -99,15 +98,12 @@ const HistoryBook = styled.p`
 `;
 
 interface IPropsBookCardExtended {
-  item: IMaterial | null;
+  item: Partial<IMaterial> | null;
 }
 
 const BookCardExtended: FC<IPropsBookCardExtended> = ({ item }) => {
-  const countOfHistoryClaimed = item?.statuses.filter(
-    (elem) => elem?.status === StatusTypes.BUSY
-  ).length;
   const navigate = useNavigate();
-  const currenStatusElement = item?.statuses[item?.statuses.length - 1];
+  const currenStatusElement = item?.currentStatus;
   const currentStatus = useMemo(
     () => getCurrentStatus(currenStatusElement),
     [currenStatusElement]
@@ -147,9 +143,7 @@ const BookCardExtended: FC<IPropsBookCardExtended> = ({ item }) => {
             )}
           </TitleStatus>
           <TitleClaimHistory>Claim history:</TitleClaimHistory>
-          <HistoryBook>
-            was claimed {countOfHistoryClaimed || 0} times
-          </HistoryBook>
+          <HistoryBook>was claimed {item.claimCount || 0} times</HistoryBook>
         </WrapperDescription>
       </Wrapper>
     )

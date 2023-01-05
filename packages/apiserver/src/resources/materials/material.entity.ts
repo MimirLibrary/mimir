@@ -57,6 +57,9 @@ export class Material extends BaseEntity {
   @Column({ nullable: true })
   location_id: number;
 
+  @Column({ name: 'claim_count' })
+  claimCount: number;
+
   @Column({ name: 'current_person_id', nullable: true })
   currentPersonId: number;
 

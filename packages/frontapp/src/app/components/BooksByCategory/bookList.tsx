@@ -7,6 +7,7 @@ import ItemsNotFound from '../ItemsNotFound';
 import styled from '@emotion/styled';
 import { dimensions } from '@mimir/ui-kit';
 import { t } from 'i18next';
+import { StatusTypes } from '@mimir/global-types';
 
 const Header = styled.h2`
   font-size: ${dimensions.xl_2};
@@ -21,7 +22,7 @@ type IStatus = Omit<
 export type IMaterial = Pick<
   Material,
   'id' | 'title' | 'author' | 'type' | 'picture' | 'created_at' | 'category'
-> & { statuses: IStatus[] };
+> & { currentStatusValue: StatusTypes; currentStatus: IStatus | null };
 
 interface IBookList {
   allData: IMaterial[];
@@ -76,13 +77,9 @@ const BookList: FC<IBookList> = ({ allData, searchParams }) => {
       allBooks = filter;
     }
     if (availability.length !== 0) {
-      const filter = allBooks.filter((book: IMaterial) => {
-        const lastStatus = book.statuses.slice(-1)[0];
-        if (lastStatus) {
-          return availability.includes(lastStatus.status);
-        }
-        return false;
-      });
+      const filter = allBooks.filter((book: IMaterial) =>
+        availability.includes(book.currentStatusValue)
+      );
       !availability.includes('All') && (allBooks = filter);
     }
     if (sortBy.length !== 0) {
@@ -115,7 +112,7 @@ const BookList: FC<IBookList> = ({ allData, searchParams }) => {
               author={material.author}
               category={material.category}
               date={material.created_at}
-              status={material.statuses.slice(-1)[0]?.status}
+              status={material.currentStatusValue}
             />
           ))
         ) : (

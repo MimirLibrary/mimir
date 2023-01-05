@@ -119,7 +119,7 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
     [claimHistory, debounceSearch]
   );
 
-  const lastStatusAnotherPerson = data?.getMaterialById.statuses.slice(-1)[0];
+  const lastStatusAnotherPerson = data?.getMaterialById.currentStatus;
 
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);

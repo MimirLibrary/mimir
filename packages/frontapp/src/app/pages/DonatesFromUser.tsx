@@ -14,6 +14,7 @@ import {
 import { t } from 'i18next';
 import { locationIds } from '../store/slices/userSlice';
 import { toast } from 'react-toastify';
+import { IMaterial } from '../types';
 
 interface TitleProps {
   flex?: number;
@@ -133,7 +134,7 @@ const DonatesFromUser = () => {
                 shownId={shownId}
                 identifier={donate.identifier}
                 title={donate.title}
-                statuses={donate.statuses}
+                lastStatus={donate.currentStatus}
                 key={donate.identifier}
                 id={donate.id}
                 index={index}

@@ -19,6 +19,7 @@ type Material {
   currentStatusValue: String
   currentStatus: Status
   currentPerson: Person
+  claimCount: Int!
 }
 
 input CreateMaterialInput {
