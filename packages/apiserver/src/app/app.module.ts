@@ -38,6 +38,8 @@ import { DataTransferModule } from '../data-transfer/data-transfer.module';
 import { StatusSubscriber } from '../resources/statuses/status.subscriber';
 import createStatusesLoader from '../resources/statuses/statuses.loader';
 import createPersonsLoader from '../resources/persons/persons.loader';
+import createMaterialsByPersonsLoader from '../resources/materials/materials.loader';
+import dataLoaders from '../data-loaders';
 
 @Module({
   imports: [
@@ -81,8 +83,10 @@ import createPersonsLoader from '../resources/persons/persons.loader';
             ),
           },
           context: () => ({
-            statusesLoader: createStatusesLoader(),
-            personsLoader: createPersonsLoader(),
+            [dataLoaders.statusesLoader]: createStatusesLoader(),
+            [dataLoaders.personsLoader]: createPersonsLoader(),
+            [dataLoaders.materialsByPersonsLoader]:
+              createMaterialsByPersonsLoader(),
           }),
         };
       },

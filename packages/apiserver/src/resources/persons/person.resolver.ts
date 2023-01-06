@@ -1,5 +1,6 @@
 import {
   Args,
+  Context,
   Mutation,
   Parent,
   Query,
@@ -21,6 +22,8 @@ import { BlockedUsers } from '../blocked-users/blocked-users.entity';
 import { PersonService } from './person.service';
 import { Grants } from '../../permission/grant.decorator';
 import { Material } from '../materials/material.entity';
+import * as DataLoader from 'dataloader';
+import dataLoaders from '../../data-loaders';
 
 @Resolver('Person')
 export class PersonResolver {
@@ -145,7 +148,11 @@ export class PersonResolver {
   }
 
   @ResolveField(() => [Material])
-  async materials(@Parent() person: Person): Promise<Material[]> {
-    return Material.find({ where: { currentPersonId: person.id } });
+  async materials(
+    @Parent() person: Person,
+    @Context(dataLoaders.materialsByPersonsLoader)
+    materialsLoader: DataLoader<number, Material[]>
+  ): Promise<(Error | Material)[]> {
+    return materialsLoader.load(person.id);
   }
 }

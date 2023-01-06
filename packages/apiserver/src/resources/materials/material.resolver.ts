@@ -27,6 +27,7 @@ import { normalizeIdentifier } from '@mimir/helper-functions';
 import { CurrentUser } from '../../auth/current-user';
 import { Person } from '../persons/person.entity';
 import * as DataLoader from 'dataloader';
+import dataLoaders from '../../data-loaders';
 
 @Resolver('Material')
 export class MaterialResolver {
@@ -160,7 +161,8 @@ export class MaterialResolver {
   @ResolveField(() => Status)
   async currentStatus(
     @Parent() material: Material,
-    @Context('statusesLoader') statusesLoader: DataLoader<number, Status>
+    @Context(dataLoaders.statusesLoader)
+    statusesLoader: DataLoader<number, Status>
   ): Promise<Status> {
     if (!material?.currentStatusId) {
       return null;
@@ -171,7 +173,8 @@ export class MaterialResolver {
   @ResolveField(() => Person)
   async currentPerson(
     @Parent() material: Material,
-    @Context('personsLoader') personsLoader: DataLoader<number, Person>
+    @Context(dataLoaders.personsLoader)
+    personsLoader: DataLoader<number, Person>
   ): Promise<Person> {
     if (!material?.currentPersonId) {
       return null;
