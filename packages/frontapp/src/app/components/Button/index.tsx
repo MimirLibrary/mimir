@@ -125,17 +125,7 @@ const ButtonContainer = styled.button<IButtonProps>`
     cursor: default;
   }
 
-  svg {
-    fill: ${({ transparent, secondary }) =>
-      transparent
-        ? secondary
-          ? colors.dropdown_gray
-          : colors.hover_color
-        : colors.bg_secondary};
-    height: auto;
-    max-width: ${dimensions.xl_2};
-  }
-
+  svg,
   svg path {
     fill: ${({ transparent, secondary }) =>
       transparent

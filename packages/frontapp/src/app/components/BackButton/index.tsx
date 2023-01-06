@@ -33,7 +33,7 @@ const BackButton: FC<IBackButtonProps> = ({ customName }) => {
   return (
     <ButtonWrapper onClick={handleGoBack}>
       <ArrowBack />
-      <GoBack>{customName === undefined ? t('Back') : t(customName)}</GoBack>
+      <GoBack>{!customName ? t('Back') : t(customName)}</GoBack>
     </ButtonWrapper>
   );
 };
