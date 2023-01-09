@@ -188,12 +188,7 @@ exports[`UserCard Component should match snapshot 1`] = `
   cursor: default;
 }
 
-.emotion-21 svg {
-  fill: #1A1DB1;
-  height: auto;
-  max-width: 1.5rem;
-}
-
+.emotion-21 svg,
 .emotion-21 svg path {
   fill: #1A1DB1;
   height: auto;
@@ -268,12 +263,7 @@ exports[`UserCard Component should match snapshot 1`] = `
   cursor: default;
 }
 
-.emotion-22 svg {
-  fill: #BDBDBD;
-  height: auto;
-  max-width: 1.5rem;
-}
-
+.emotion-22 svg,
 .emotion-22 svg path {
   fill: #BDBDBD;
   height: auto;
@@ -344,12 +334,7 @@ exports[`UserCard Component should match snapshot 1`] = `
   cursor: default;
 }
 
-.emotion-23 svg {
-  fill: #1A1DB1;
-  height: auto;
-  max-width: 1.5rem;
-}
-
+.emotion-23 svg,
 .emotion-23 svg path {
   fill: #1A1DB1;
   height: auto;

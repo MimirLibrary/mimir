@@ -207,14 +207,6 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
           />
         </>
       )}
-
-      {/*<Title>
-        {itemsTaken.length > 0 || sortBy.length > 0
-          ? `${t('Readers.TitleFiltered')} - ${readers?.length || 0}`
-          : t('Readers.Title')}
-      </Title>
-      <Description>{t('Readers.Description')}</Description>
-      <Tags chosenTags={allFilters} />*/}
       <Tags chosenTags={allFilters} />
       <ListWrapper>
         {readers?.map((person) => {
