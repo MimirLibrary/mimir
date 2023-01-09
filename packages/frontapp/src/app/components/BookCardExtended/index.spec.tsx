@@ -13,17 +13,18 @@ describe('render BookCardExtended', () => {
       created_at: '2022-09-21T08:29:24.192Z',
       id: '1',
       picture: '',
-      statuses: [
-        {
+      currentStatus: {
+        id: '1',
+        created_at: '2022-09-21T08:29:24.192Z',
+        status: StatusTypes.FREE,
+        person: {
           id: '1',
-          created_at: '2022-09-21T08:29:24.192Z',
-          status: StatusTypes.FREE,
-          person: {
-            id: '1',
-            username: 'Dmitry',
-          },
+          username: 'Dmitry',
         },
-      ],
+      },
+      claimCount: 0,
+      identifier: '1',
+      description: '',
     };
     render(<BookCardExtended item={mockItem} />);
 
@@ -43,17 +44,18 @@ describe('render BookCardExtended', () => {
       created_at: new Date().toDateString(),
       id: '1',
       picture: '',
-      statuses: [
-        {
+      currentStatus: {
+        id: '1',
+        created_at: new Date().toDateString(),
+        status: StatusTypes.BUSY,
+        person: {
           id: '1',
-          created_at: new Date().toDateString(),
-          status: StatusTypes.BUSY,
-          person: {
-            id: '1',
-            username: 'Dmitry',
-          },
+          username: 'Dmitry',
         },
-      ],
+      },
+      claimCount: 1,
+      identifier: '1',
+      description: '',
     };
     render(<BookCardExtended item={mockItem} />);
 
