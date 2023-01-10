@@ -187,6 +187,43 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
             {`${t('Readers.TitleFiltered')} - ${readers?.length || 0}`}
           </Title>
           <Description>{t('Readers.Description')}</Description>
+          <Tags chosenTags={allFilters} />
+          <ListWrapper>
+            {readers?.map((person) => {
+              if (minMax.length === 0) {
+                return (
+                  <SingleUser
+                    avatar={person!.avatar}
+                    name={person!.username}
+                    key={person?.id}
+                    id={person?.id as string}
+                    statuses={person?.statuses as IClaimHistory[]}
+                  />
+                );
+              }
+              return (
+                <>
+                  {minMax.map((item) => {
+                    if (
+                      getClaims(person).claimNow >= item.min &&
+                      getClaims(person).claimNow <= item.max
+                    ) {
+                      return (
+                        <SingleUser
+                          avatar={person!.avatar}
+                          name={person!.username}
+                          id={person?.id as string}
+                          key={person?.id}
+                          statuses={person?.statuses as IClaimHistory[]}
+                        />
+                      );
+                    }
+                    return null;
+                  })}
+                </>
+              );
+            })}
+          </ListWrapper>
         </>
       ) : (
         <>
@@ -207,43 +244,6 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
           />
         </>
       )}
-      <Tags chosenTags={allFilters} />
-      <ListWrapper>
-        {readers?.map((person) => {
-          if (minMax.length === 0) {
-            return (
-              <SingleUser
-                avatar={person!.avatar}
-                name={person!.username}
-                key={person?.id}
-                id={person?.id as string}
-                statuses={person?.statuses as IClaimHistory[]}
-              />
-            );
-          }
-          return (
-            <>
-              {minMax.map((item) => {
-                if (
-                  getClaims(person).claimNow >= item.min &&
-                  getClaims(person).claimNow <= item.max
-                ) {
-                  return (
-                    <SingleUser
-                      avatar={person!.avatar}
-                      name={person!.username}
-                      id={person?.id as string}
-                      key={person?.id}
-                      statuses={person?.statuses as IClaimHistory[]}
-                    />
-                  );
-                }
-                return null;
-              })}
-            </>
-          );
-        })}
-      </ListWrapper>
     </WrapperReaders>
   );
 };
