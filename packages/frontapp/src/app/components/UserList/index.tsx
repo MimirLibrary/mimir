@@ -1,4 +1,4 @@
-import React, { useEffect, useState, FC } from 'react';
+import React, { useEffect, useState, FC, useCallback } from 'react';
 import styled from '@emotion/styled';
 import { useGetAllPersonsQuery } from '@mimir/apollo-client';
 import { t } from 'i18next';
@@ -19,7 +19,7 @@ import Tags from '../BooksByCategory/tags';
 import BackButton from '../BackButton';
 import Button from '../Button';
 import { NotFoundWindow } from '../NotFoundWindow';
-import { ReactComponent as ArrowSVG } from './../../../assets/ArrowLeft.svg';
+import { ReactComponent as ArrowSVG } from './../../../assets/ArrowLeftUncolored.svg';
 import { useNavigate } from 'react-router-dom';
 import { RoutesTypes } from '../../../utils/routes';
 
@@ -144,11 +144,11 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
   };
 
   const navigate = useNavigate();
-  const handleGoBack = () => {
+  const handleGoBack = useCallback(() => {
     window.history.state.idx === 0
       ? navigate(RoutesTypes.SEARCH)
       : navigate(-1);
-  };
+  }, [navigate]);
 
   useEffect(() => {
     filterUsers(sortBy![0]);

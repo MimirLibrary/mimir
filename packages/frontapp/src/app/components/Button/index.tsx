@@ -125,8 +125,7 @@ const ButtonContainer = styled.button<IButtonProps>`
     cursor: default;
   }
 
-  svg,
-  svg path {
+  svg {
     fill: ${({ transparent, secondary }) =>
       transparent
         ? secondary
