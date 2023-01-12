@@ -41,6 +41,7 @@ const ListWrapper = styled.div`
   flex-flow: wrap row;
   column-gap: ${dimensions.xl_2};
   row-gap: ${dimensions.base};
+  width: 100%;
 `;
 
 const Description = styled.p`
@@ -138,7 +139,7 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
   };
 
   const filterUsers = (category: keyof typeof categorySortsMap) => {
-    if (searchReaders?.length) {
+    if (searchReaders?.length && itemsTaken.length) {
       setReaders([...searchReaders].sort(categorySortsMap[category]));
     }
   };
@@ -181,7 +182,7 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
     );
   return (
     <WrapperReaders>
-      {itemsTaken.length > 0 || sortBy.length > 0 ? (
+      {readers?.length ? (
         <>
           <Title>
             {`${t('Readers.TitleFiltered')} - ${readers?.length || 0}`}
@@ -218,7 +219,20 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
                         />
                       );
                     }
-                    return null;
+                    return (
+                      <NotFoundWindow
+                        searchEntity={'user'}
+                        withButton={
+                          <Button
+                            type="button"
+                            onClick={handleGoBack}
+                            value={t('Back')}
+                            svgComponent={<ArrowSVG />}
+                            transparent={true}
+                          />
+                        }
+                      />
+                    );
                   })}
                 </>
               );
