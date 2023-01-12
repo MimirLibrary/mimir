@@ -1,4 +1,4 @@
-import React, { useEffect, useState, FC, useCallback } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useGetAllPersonsQuery } from '@mimir/apollo-client';
 import { t } from 'i18next';
@@ -70,6 +70,70 @@ type SortType = (
   userSecond: IReader | null
 ) => number;
 
+const getClaims = (person: IReader | null) =>
+  countClaimHistory(person?.statuses as IClaimHistory[]);
+
+const sortAlphabetically = (
+  userFirst: IReader | null,
+  userSecond: IReader | null
+) => {
+  return userFirst!.username.localeCompare(userSecond!.username);
+};
+
+const sortByThingsTaken = (
+  userFirst: IReader | null,
+  userSecond: IReader | null
+) => {
+  return getClaims(userSecond).claimNow - getClaims(userFirst).claimNow;
+};
+
+const sortByThingsOverdue = (
+  userFirst: IReader | null,
+  userSecond: IReader | null
+) => {
+  return getClaims(userSecond).overdue - getClaims(userFirst).overdue;
+};
+
+const filterUsersByClaimCount = (
+  users: IReader[],
+  minMaxFilters: MinMaxType[]
+): IReader[] => {
+  if (!users?.length || !minMaxFilters?.length) {
+    return users;
+  }
+  return users.filter((user) =>
+    minMaxFilters.some(
+      (minMaxFilter) =>
+        getClaims(user).claimNow >= minMaxFilter.min &&
+        getClaims(user).claimNow <= minMaxFilter.max
+    )
+  );
+};
+
+const categorySortsMap: Record<string, SortType> = {
+  'By alphabet': sortAlphabetically,
+  'Number of things taken': sortByThingsTaken,
+  'Number of overdue deals': sortByThingsOverdue,
+};
+
+const filterUsers = (
+  users: IReader[],
+  minMaxFilters: MinMaxType[],
+  sortBy: string
+): IReader[] => {
+  if (!users?.length) {
+    return [];
+  }
+  let readers = [...users];
+  if (minMaxFilters?.length) {
+    readers = filterUsersByClaimCount(readers, minMaxFilters);
+  }
+  if (sortBy) {
+    readers = readers.sort(categorySortsMap[sortBy]);
+  }
+  return readers;
+};
+
 const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
   const locations = useAppSelector(locationIds);
   const [minMax, setMinMax] = useState<MinMaxType[]>([]);
@@ -87,32 +151,14 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
   const [allFilters, setAllFilters] = useState<Array<string>>([]);
 
   useEffect(() => {
-    setReaders(searchReaders);
+    const readers = filterUsers(
+      searchReaders as IReader[],
+      minMax,
+      sortBy?.[0]
+    );
+    setReaders(readers);
   }, [searchReaders]);
 
-  const getClaims = (person: IReader | null) =>
-    countClaimHistory(person?.statuses as IClaimHistory[]);
-
-  const sortAlphabetically = (
-    userFirst: IReader | null,
-    userSecond: IReader | null
-  ) => {
-    return userFirst!.username.localeCompare(userSecond!.username);
-  };
-
-  const sortByThingsTaken = (
-    userFirst: IReader | null,
-    userSecond: IReader | null
-  ) => {
-    return getClaims(userSecond).claimNow - getClaims(userFirst).claimNow;
-  };
-
-  const sortByThingsOverdue = (
-    userFirst: IReader | null,
-    userSecond: IReader | null
-  ) => {
-    return getClaims(userSecond).overdue - getClaims(userFirst).overdue;
-  };
   const filterCategories = (filtersArr: string[] | undefined) => {
     filtersArr?.forEach((item) => {
       switch (item) {
@@ -126,22 +172,13 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
           setMinMax((oldArray) => [...oldArray, { min: 0, max: 0 }]);
           break;
         case 'All':
-          setMinMax([]);
+          setMinMax((oldArray) => [
+            ...oldArray,
+            { min: -Infinity, max: Infinity },
+          ]);
           break;
       }
     });
-  };
-
-  const categorySortsMap: Record<string, SortType> = {
-    'By alphabet': sortAlphabetically,
-    'Number of things taken': sortByThingsTaken,
-    'Number of overdue deals': sortByThingsOverdue,
-  };
-
-  const filterUsers = (category: keyof typeof categorySortsMap) => {
-    if (searchReaders?.length && itemsTaken.length) {
-      setReaders([...searchReaders].sort(categorySortsMap[category]));
-    }
   };
 
   const navigate = useNavigate();
@@ -152,8 +189,13 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
   }, [navigate]);
 
   useEffect(() => {
-    filterUsers(sortBy![0]);
-  }, [sortBy]);
+    const readers = filterUsers(
+      searchReaders as IReader[],
+      minMax,
+      sortBy?.[0]
+    );
+    setReaders(readers);
+  }, [sortBy, minMax]);
 
   useEffect(() => {
     setMinMax([]);
@@ -182,63 +224,23 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
     );
   return (
     <WrapperReaders>
+      <Title>{`${t('Readers.TitleFiltered')} - ${readers?.length || 0}`}</Title>
+      <Description>{t('Readers.Description')}</Description>
+      <Tags chosenTags={allFilters} />
       {readers?.length ? (
-        <>
-          <Title>
-            {`${t('Readers.TitleFiltered')} - ${readers?.length || 0}`}
-          </Title>
-          <Description>{t('Readers.Description')}</Description>
-          <Tags chosenTags={allFilters} />
-          <ListWrapper>
-            {readers?.map((person) => {
-              if (minMax.length === 0) {
-                return (
-                  <SingleUser
-                    avatar={person!.avatar}
-                    name={person!.username}
-                    key={person?.id}
-                    id={person?.id as string}
-                    statuses={person?.statuses as IClaimHistory[]}
-                  />
-                );
-              }
-              return (
-                <>
-                  {minMax.map((item) => {
-                    if (
-                      getClaims(person).claimNow >= item.min &&
-                      getClaims(person).claimNow <= item.max
-                    ) {
-                      return (
-                        <SingleUser
-                          avatar={person!.avatar}
-                          name={person!.username}
-                          id={person?.id as string}
-                          key={person?.id}
-                          statuses={person?.statuses as IClaimHistory[]}
-                        />
-                      );
-                    }
-                    return (
-                      <NotFoundWindow
-                        searchEntity={'user'}
-                        withButton={
-                          <Button
-                            type="button"
-                            onClick={handleGoBack}
-                            value={t('Back')}
-                            svgComponent={<ArrowSVG />}
-                            transparent={true}
-                          />
-                        }
-                      />
-                    );
-                  })}
-                </>
-              );
-            })}
-          </ListWrapper>
-        </>
+        <ListWrapper>
+          {readers?.map((person) => {
+            return (
+              <SingleUser
+                avatar={person!.avatar}
+                name={person!.username}
+                key={person?.id}
+                id={person?.id as string}
+                statuses={person?.statuses as IClaimHistory[]}
+              />
+            );
+          })}
+        </ListWrapper>
       ) : (
         <>
           <BackButtonContainer>
