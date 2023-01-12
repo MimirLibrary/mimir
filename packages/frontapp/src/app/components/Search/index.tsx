@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 import { colors, dimensions, fonts } from '@mimir/ui-kit';
 import { ReactComponent as SearchIcon } from '../../../assets/Navbar/Search.svg';
 import Input from '../Input';
-import { ThemeProvider } from '@emotion/react';
 
 export const InputSearch = styled(Input)`
   width: 19rem;

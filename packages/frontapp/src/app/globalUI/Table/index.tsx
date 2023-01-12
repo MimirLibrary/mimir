@@ -1,6 +1,7 @@
 import { FC, ReactElement } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
+import MediaQuery from 'react-responsive';
 
 const TableContainer = styled.div`
   width: 100%;
@@ -70,9 +71,7 @@ const Item = styled.div`
   }
 `;
 
-type MobileClaimList = { visible?: boolean };
-
-const Title = styled.div<MobileClaimList>`
+const Title = styled.div`
   display: flex;
   background-color: ${colors.accent_color};
   border-radius: ${dimensions.xs_1} ${dimensions.xs_1} 0 0;
@@ -91,10 +90,6 @@ const Title = styled.div<MobileClaimList>`
       width: 60%;
     }
   }
-
-  @media (max-width: ${dimensions.tablet_width}) {
-    display: ${(props) => (props.visible ? 'initial' : 'none')};
-  }
 `;
 
 const Table: FC<{ columnTitles: string[]; rows?: ReactElement[] }> = ({
@@ -104,11 +99,13 @@ const Table: FC<{ columnTitles: string[]; rows?: ReactElement[] }> = ({
   return (
     <TableContainer>
       <List>
-        <Title visible={false}>
-          {columnTitles.map((title, i) => (
-            <span key={i}>{title}</span>
-          ))}
-        </Title>
+        <MediaQuery minWidth={dimensions.tablet_width}>
+          <Title>
+            {columnTitles.map((title, i) => (
+              <span key={i}>{title}</span>
+            ))}
+          </Title>
+        </MediaQuery>
         {rows && rows.map((row, i) => <Item key={i}>{row}</Item>)}
       </List>
     </TableContainer>
