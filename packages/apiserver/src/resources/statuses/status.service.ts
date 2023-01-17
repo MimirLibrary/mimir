@@ -1,10 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { Status } from './status.entity';
-import { RolesTypes } from '@mimir/global-types';
-import { StatusTypes } from '@mimir/global-types';
+import { RolesTypes, StatusTypes } from '@mimir/global-types';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class StatusService {
+  get periodOfKeeping(): number {
+    return +this.config.get<number>('common.periodOfKeeping');
+  }
+
+  constructor(private config: ConfigService) {}
+
   async allOverdueStatuses(locations: Array<number>) {
     const statusesQb = Status.createQueryBuilder('status')
       .select('status.id')
@@ -23,6 +29,26 @@ export class StatusService {
       .andWhere('status.status IN(:...statuses)', {
         statuses: [StatusTypes.BUSY, StatusTypes.PROLONG],
       })
+      .getMany();
+  }
+
+  public getStatusesForReminder(reminderPeriod: number): Promise<Status[]> {
+    return Status.createQueryBuilder('s1')
+      .leftJoin(
+        'status',
+        's2',
+        's1.material_id = s2.material_id AND s1.id < s2.id'
+      )
+      .where('s2.id IS NULL')
+      .andWhere('s1.status IN(:...statuses)', {
+        statuses: [StatusTypes.BUSY, StatusTypes.PROLONG],
+      })
+      .andWhere(
+        `s1.lastReminderTime IS NULL OR s1.lastReminderTime < NOW() - INTERVAL '${reminderPeriod} days'`
+      )
+      .andWhere(
+        `s1.created_at < NOW() - INTERVAL '${this.periodOfKeeping} days'`
+      )
       .getMany();
   }
 }

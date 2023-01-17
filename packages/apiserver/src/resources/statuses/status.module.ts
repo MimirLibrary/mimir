@@ -7,5 +7,6 @@ import { StatusService } from './status.service';
 @Module({
   imports: [TypeOrmModule.forFeature([Status])],
   providers: [StatusResolver, StatusService],
+  exports: [StatusService],
 })
 export class StatusModule {}

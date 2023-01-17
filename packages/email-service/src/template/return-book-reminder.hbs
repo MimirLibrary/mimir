@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang='en' style="height: 100%">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <link rel='preconnect' href='https://fonts.googleapis.com'/>
+  <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin/>
+  <link
+    href='https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;800&display=swap'
+    rel='stylesheet'
+  />
+  <title>Mimir: Don't forget to return the books!</title>
+</head>
+
+<body style="margin: 0; height: 100%; font-family: 'Montserrat', sans-serif; font-style: normal;">
+<table
+  style="color: #333333; border-collapse: collapse; height: 100%; width: 100%; background-image: url('https://mimir-content.fra1.cdn.digitaloceanspaces.com/background.png'); background-size: 2000px">
+  <tr></tr>
+  <tr style="height: 513px;">
+    <td
+      style="width: 533px; background-color: #fdfdfd; background-image: url('https://mimir-content.fra1.cdn.digitaloceanspaces.com/MimirEmail.svg'); background-position: 100% 100%; background-repeat: no-repeat; border-radius: 0 80px 80px 0; padding: 40px 85px 40px 40px;">
+      <table style="border-collapse: collapse;">
+
+        <tr>
+          <td
+            style="padding-bottom: 16px; font-weight: 800; font-size: 20px; line-height: 24px;">
+            Whoops! It looks like you forgot to return the book
+          </td>
+        </tr>
+
+        <tr>
+          <td
+            style="padding-bottom: 16px; font-weight: 300; font-size: 15px; line-height: 18px;">
+            A friendly reminder that you need to return the <q>{{bookName}}</q> book as soon as possible or extend the
+            term of the borrowing
+          </td>
+        </tr>
+
+        <tr>
+          <td style="text-align: center;">
+            <table style="border-collapse: collapse;">
+              <tr>
+                <td style="padding: 16px; background-color: #F4F6FA; border-radius: 10px;">
+                  <table style="border-collapse: collapse;">
+                    <tr>
+                      <td>
+                        <img src='{{bookCover}}' alt='book' style="max-width: 115px;"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style="padding-top: 8px; font-weight: 500; font-size: 14px; line-height: 17px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; word-break: break-word;">
+                        {{bookName}}
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding-top: 16px;">
+                  <a
+                    style="display: inline-block; width: 100%; background: #1a1ed6; cursor: pointer; border-radius: 30px; height: 37px; color: #fff; font-weight: 700; font-size: 14px; line-height: 37px; text-decoration: none;"
+                    href='{{appUrl}}'>Go to app</a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+    <td></td>
+  </tr>
+  <tr></tr>
+</table>
+</body>
+</html>
