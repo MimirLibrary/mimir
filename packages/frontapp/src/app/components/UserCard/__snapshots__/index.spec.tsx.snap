@@ -205,18 +205,6 @@ exports[`UserCard Component should match snapshot 1`] = `
   column-gap: 4px;
 }
 
-@media (max-width: 30rem) {
-  .emotion-11 {
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -webkit-align-items: flex-start;
-    -webkit-box-align: flex-start;
-    -ms-flex-align: flex-start;
-    align-items: flex-start;
-  }
-}
-
 .emotion-12 {
   font-weight: 500;
   font-size: inherit;

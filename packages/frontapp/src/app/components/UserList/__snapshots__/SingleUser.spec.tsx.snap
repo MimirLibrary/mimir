@@ -100,18 +100,6 @@ exports[`render SingleUserCard component renders correctly, with snapshots 1`] =
   column-gap: 4px;
 }
 
-@media (max-width: 30rem) {
-  .emotion-7 {
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -webkit-align-items: flex-start;
-    -webkit-box-align: flex-start;
-    -ms-flex-align: flex-start;
-    align-items: flex-start;
-  }
-}
-
 .emotion-8 {
   font-weight: 500;
   font-size: inherit;
