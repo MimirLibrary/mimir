@@ -36,6 +36,7 @@ import { GrantGuard } from '../permission/grant.guard';
 import { JwtStrategy } from '../auth/strategy';
 import { JwtAuthGuard } from '../auth/guard';
 import jwt from '../config/jwt.config';
+import { DataTransferModule } from '../data-transfer/data-transfer.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import jwt from '../config/jwt.config';
       migrations: [`${__dirname}/migrations/*.js`],
     }),
     MaterialModule,
+    DataTransferModule,
     StatusModule,
     PersonModule,
     ItemModule,
