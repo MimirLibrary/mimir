@@ -4,8 +4,6 @@ import {
   BookHolder,
   ShortDescriptionWrapper,
   Topic,
-  LongDescription,
-  Description,
   WrapperButtons,
 } from '../BookInfo';
 import {
@@ -19,6 +17,9 @@ import AcceptRejectModals from '../AcceptRejectModals';
 import StyledButton from '../Button';
 import EmptyCover from '../../../assets/MOC-data/EmptyCover.png';
 import { Accepted, Rejected } from '../OneDonatedBookPreview';
+import Section from '../Section';
+import ExpandableText from '../ExpandableText';
+
 const DonateInfo = ({
   description,
   title,
@@ -68,10 +69,9 @@ const DonateInfo = ({
           {statusInfo?.status === 'Free' && <Accepted>Accepted</Accepted>}
           {statusInfo?.status === 'Rejected' && <Rejected>Rejected</Rejected>}
         </ShortDescriptionWrapper>
-        <LongDescription>
-          <Topic>Description: </Topic>
-          <Description>{description}</Description>
-        </LongDescription>
+        <Section title={'Description: '}>
+          <ExpandableText>{description}</ExpandableText>
+        </Section>
       </BookHolder>
       <AcceptRejectModals
         active={active}

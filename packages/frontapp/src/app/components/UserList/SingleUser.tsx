@@ -18,7 +18,7 @@ const InfoWrapper = styled.div`
   @media (max-width: ${dimensions.tablet_width}) {
     width: 100%;
     border-bottom: 1px solid #bdbdbd;
-    padding-bottom: 14px;
+    padding-bottom: ${dimensions.sm};
   }
 `;
 

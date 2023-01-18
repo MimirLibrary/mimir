@@ -39,7 +39,7 @@ export const StyledSearchIcon = styled(SearchIcon)`
   }
 `;
 
-type WrapperInputProps = { changeWidth?: boolean };
+type WrapperInputProps = { isFullWidth?: boolean };
 
 export const WrapperInput = styled.div<WrapperInputProps>`
   display: flex;
@@ -63,7 +63,7 @@ export const WrapperInput = styled.div<WrapperInputProps>`
 
   @media (max-width: ${dimensions.tablet_width}) {
     max-width: 100%;
-    width: ${(props) => (props.changeWidth ? '100%' : '64vw')};
+    width: ${(props) => (props.isFullWidth ? '100%' : '64vw')};
     min-width: 12rem;
     justify-content: flex-start;
     margin: 0;
@@ -91,7 +91,7 @@ const Search: FC<ISearchParams> = ({
   isFullWidth,
 }) => {
   return (
-    <WrapperInput changeWidth={isFullWidth} onKeyPress={redirectToSearchByKey}>
+    <WrapperInput isFullWidth={isFullWidth} onKeyPress={redirectToSearchByKey}>
       <StyledSearchIcon
         fill={colors.dropdown_gray}
         width="20"

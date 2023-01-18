@@ -66,7 +66,7 @@ const RestyleSingleUser = styled(SingleUser)`
   box-shadow: none;
 
   @media (max-width: ${dimensions.tablet_width}) {
-    margin-bottom: 14px;
+    margin-bottom: ${dimensions.sm};
     :hover {
       box-shadow: none;
     }
@@ -87,15 +87,14 @@ const FieldsText = styled.p<IFieldsTextProps>`
       : colors.accent_color};
   margin-bottom: ${dimensions.xs_2};
   @media (max-width: ${dimensions.tablet_width}) {
-    margin-left: ${(props) => (props.mobileMode ? '72px' : '')};
-    width: ${(props) => (props.mobileMode ? '75%' : '')};
+    margin-left: 72px;
+    width: 75%;
   }
 `;
 
 interface IFieldsTextProps {
   overdue?: boolean;
   returned?: boolean;
-  mobileMode?: boolean;
 }
 
 type BookPreviewProps = {
@@ -253,19 +252,19 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
                             name={item?.person.username}
                             statuses={item?.person.statuses as IClaimHistory[]}
                           />
-                          <FieldsText mobileMode={true}>
+                          <FieldsText>
                             {countReturnDate(item.created_at)}
                           </FieldsText>
                           {item.status === StatusTypes.FREE ? (
-                            <FieldsText returned mobileMode={true}>
+                            <FieldsText returned>
                               {t('UserCard.Table.Returned')}
                             </FieldsText>
                           ) : isOverdue(item.created_at) ? (
-                            <FieldsText overdue mobileMode={true}>
+                            <FieldsText overdue>
                               {t('UserCard.Table.Overdue')}
                             </FieldsText>
                           ) : (
-                            <FieldsText mobileMode={true}>
+                            <FieldsText>
                               {item.status === StatusTypes.BUSY
                                 ? t('UserCard.Table.Claim')
                                 : item.status === StatusTypes.PROLONG

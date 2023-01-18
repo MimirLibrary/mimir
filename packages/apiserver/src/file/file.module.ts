@@ -7,5 +7,6 @@ import { DigitalOceanModule } from '@mimir/api-util';
   imports: [DigitalOceanModule],
   controllers: [FileController],
   providers: [FileService],
+  exports: [FileService],
 })
 export class FileModule {}
