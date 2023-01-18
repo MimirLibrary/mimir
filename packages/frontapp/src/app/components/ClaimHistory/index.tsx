@@ -22,11 +22,6 @@ const InlineWrapper = styled.div`
   display: flex;
   flex-direction: row;
   column-gap: 4px;
-
-  @media (max-width: ${dimensions.phone_width}) {
-    flex-direction: column;
-    align-items: flex-start;
-  } ;
 `;
 interface IDescriptionProps {
   warning?: boolean;
