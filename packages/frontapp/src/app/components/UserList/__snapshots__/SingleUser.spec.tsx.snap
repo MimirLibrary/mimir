@@ -57,7 +57,7 @@ exports[`render SingleUserCard component renders correctly, with snapshots 1`] =
   .emotion-3 {
     width: 100%;
     border-bottom: 1px solid #bdbdbd;
-    padding-bottom: 14px;
+    padding-bottom: 0.875rem;
   }
 }
 
