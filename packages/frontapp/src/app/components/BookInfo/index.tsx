@@ -68,7 +68,6 @@ export const ShortDescriptionWrapper = styled.div`
 `;
 
 export const LongDescription = styled.div`
-  margin-top: ${dimensions.xl_2};
   grid-column: 1 / span 3;
 `;
 
@@ -87,9 +86,10 @@ const StyledButton = styled(Button)`
 `;
 
 export const TitleHolder = styled.p`
-  font-weight: 700;
+  font-weight: 600;
   font-size: ${dimensions.base};
   margin-bottom: ${dimensions.xs};
+  line-height: ${dimensions.xl};
 `;
 
 const StyledTextArea = styled.textarea`
@@ -460,22 +460,40 @@ const BookInfo: FC<IBookInfoProps> = ({
     <>
       <BookHolder>
         <ShortDescriptionWrapper>
-          <DescriptionBook
-            title={title}
-            author={author}
-            category={category}
-            date={created_at}
-            editing={editing}
-            location={location}
-            src={src}
-            status={statusInfo?.status}
-            newDeadline={newDeadline}
-            newTitleAndAuthor={newDescriptionData}
-            handleChangeDeadline={handleChangeDeadline}
-            handleChangeLocation={handleChangeLocation}
-            handleChangeAuthorAndTitle={handleChangeNewDescriptionData}
-            handleChangeNewGenre={handleChangeCategory}
-          />
+          <div>
+            <DescriptionBook
+              title={title}
+              author={author}
+              category={category}
+              date={created_at}
+              editing={editing}
+              location={location}
+              src={src}
+              status={statusInfo?.status}
+              newDeadline={newDeadline}
+              newTitleAndAuthor={newDescriptionData}
+              handleChangeDeadline={handleChangeDeadline}
+              handleChangeLocation={handleChangeLocation}
+              handleChangeAuthorAndTitle={handleChangeNewDescriptionData}
+              handleChangeNewGenre={handleChangeCategory}
+            />
+            {editing ? (
+              <>
+                <br />
+                <TitleHolder>Description: </TitleHolder>
+                <TextAreaWrapper>
+                  <StyledTextArea
+                    value={newDescription}
+                    onChange={handleChangeDescription}
+                  />
+                </TextAreaWrapper>
+              </>
+            ) : description ? (
+              <Section title={'Description: '}>
+                <ExpandableText>{description}</ExpandableText>
+              </Section>
+            ) : null}
+          </div>
           {userRole === RolesTypes.READER ? (
             <>
               {statusInfo?.person_id === id ? (

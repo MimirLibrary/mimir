@@ -47,11 +47,18 @@ exports[`render SingleUserCard component renders correctly, with snapshots 1`] =
   -ms-flex-direction: column;
   flex-direction: column;
   margin-left: 1rem;
-  row-gap: 0.5rem;
 }
 
 .emotion-3>p:first-of-type {
   margin-bottom: 0.5rem;
+}
+
+@media (max-width: 48rem) {
+  .emotion-3 {
+    width: 100%;
+    border-bottom: 1px solid #bdbdbd;
+    padding-bottom: 0.875rem;
+  }
 }
 
 .emotion-4 {

@@ -55,6 +55,8 @@ export const TitleBook = styled.h3`
   line-height: ${dimensions.xl_2};
   color: ${colors.main_black};
   @media (max-width: ${dimensions.phone_width}) {
+    display: flex;
+    justify-content: center;
     margin-bottom: 0;
     margin-top: ${dimensions.base};
   }
@@ -90,18 +92,22 @@ const StyledInputDeadline = styled.input`
   outline: none;
   padding-left: ${dimensions.xl};
   background: ${colors.bg_secondary};
+
   :hover {
     border: 0.5px solid ${colors.accent_color};
   }
+
   :focus {
     border: 0.5px solid ${colors.accent_color};
   }
+
   @media (max-width: ${dimensions.tablet_width}) {
     width: 100%;
   }
   @media (max-width: ${dimensions.phone_width}) {
     width: 70%;
   }
+
   ::-webkit-inner-spin-button,
   ::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -221,28 +227,6 @@ const DescriptionBook: FC<IDescriptionBook> = ({
             <TopicDescription>{author || 'Author Name'}</TopicDescription>
           </>
         )}
-        <>
-          {editing ? (
-            <WrapperDropDown>
-              <TitleHolder>Location </TitleHolder>
-              <RestyledDropdown
-                options={allLocations!.getAllLocations.map((loc) => ({
-                  id: loc!.id,
-                  value: loc!.location,
-                }))}
-                initIndex={currentLocationIndex}
-                onChange={(option) =>
-                  handleChangeLocation(option as TUserLocation)
-                }
-              />
-            </WrapperDropDown>
-          ) : (
-            <>
-              <Topic>Location: </Topic>
-              <TopicDescription>{location.location}</TopicDescription>
-            </>
-          )}
-        </>
         {userRole === RolesTypes.READER ? (
           <>
             <Topic>State: </Topic>
@@ -273,6 +257,28 @@ const DescriptionBook: FC<IDescriptionBook> = ({
             <TopicDescription>{newDeadline + ' days'}</TopicDescription>
           </>
         )}
+        <>
+          {editing ? (
+            <WrapperDropDown>
+              <TitleHolder>Location </TitleHolder>
+              <RestyledDropdown
+                options={allLocations!.getAllLocations.map((loc) => ({
+                  id: loc!.id,
+                  value: loc!.location,
+                }))}
+                initIndex={currentLocationIndex}
+                onChange={(option) =>
+                  handleChangeLocation(option as TUserLocation)
+                }
+              />
+            </WrapperDropDown>
+          ) : (
+            <>
+              <Topic>Location: </Topic>
+              <TopicDescription>{location.location}</TopicDescription>
+            </>
+          )}
+        </>
       </ShortDescription>
     </WrapperInfo>
   );
