@@ -5,9 +5,9 @@ import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import Button from '../Button';
 import StatusBadge from '../StatusBadge';
+import { t } from 'i18next';
 
 interface CardViewProps {
-  grayBackground: boolean;
   picture: string;
   title: string;
   description: string;
@@ -18,15 +18,12 @@ interface CardViewProps {
   redirect: () => void;
 }
 
-interface BackgroundProps {
-  grayBackground?: boolean;
-}
-
 const BookImage = styled.img`
   display: inline-block;
   height: 10.5rem;
   max-width: 8rem;
   min-width: 8rem;
+
   @media (max-width: ${dimensions.phone_width}) {
     height: 6rem;
     max-width: 5rem;
@@ -34,12 +31,14 @@ const BookImage = styled.img`
   }
 `;
 
-const DonateWrapper = styled.div<BackgroundProps>`
+const DonateWrapper = styled.div`
+  :nth-child(2n) {
+    background-color: ${colors.bg_secondary};
+  }
   display: flex;
   justify-content: center;
   position: relative;
-  background-color: ${({ grayBackground }) =>
-    !grayBackground ? colors.light_gray : colors.bg_secondary};
+  background-color: ${colors.light_gray};
   padding: ${dimensions.base} ${dimensions.xl_2};
   @media (max-width: ${dimensions.phone_width}) {
     padding: 5px;
@@ -47,40 +46,40 @@ const DonateWrapper = styled.div<BackgroundProps>`
   }
 `;
 const Title = styled.p`
-  margin-right: 30%;
-  margin-bottom: ${dimensions.base};
-  font-size: 16px;
+  font-size: ${dimensions.base};
   font-weight: 500;
   @media (max-width: ${dimensions.phone_width}) {
-    margin-right: 0px;
+    margin-right: 0;
   }
 `;
 const Description = styled.p`
-  font-size: 14px;
-  margin-right: 30%;
+  font-size: ${dimensions.sm};
   font-weight: 300;
-  line-height: 17px;
-  word-wrap: break-word;
+  line-height: 1.063rem;
+
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+
   overflow: hidden;
-  word-break: break-all;
-  white-space: normal;
+  text-overflow: ellipsis;
 
   @media (max-width: ${dimensions.phone_width}) {
     position: absolute;
     width: 100%;
-    margin-top: 40px;
+    margin-top: ${dimensions.xl_6};
     height: 150px;
   }
 `;
 const DonatorName = styled.p`
-  font-size: 16px;
+  font-size: ${dimensions.base};
   flex: 1;
   color: blue;
   word-wrap: break-word;
   overflow: hidden;
   word-break: break-all;
   white-space: normal;
-  padding: 0px 10px;
+  padding: 0 ${dimensions.xs_1};
 `;
 
 const Wrapper = styled.div`
@@ -91,7 +90,7 @@ const Wrapper = styled.div`
 const FlexContainer = styled.div`
   cursor: pointer;
   display: flex;
-  gap: 20px;
+  gap: ${dimensions.xl};
   flex: 3;
   @media (max-width: ${dimensions.phone_width}) {
     flex-direction: column;
@@ -105,7 +104,6 @@ const WrapperBtn = styled.div`
 `;
 
 const TableRowView: FC<CardViewProps> = ({
-  grayBackground,
   picture,
   title,
   description,
@@ -116,24 +114,27 @@ const TableRowView: FC<CardViewProps> = ({
   redirect,
 }) => {
   return (
-    <DonateWrapper grayBackground={grayBackground}>
+    <DonateWrapper>
       <FlexContainer onClick={() => redirect()}>
         <BookImage src={picture || EmptyCover} />
         <Wrapper>
           <Title>{title}</Title>
-          <Description> {description || 'no description provided'}</Description>
+          <Description>
+            {' '}
+            {description || t('Donates.NoDescription')}
+          </Description>
         </Wrapper>
       </FlexContainer>
       <DonatorName>{username}</DonatorName>
       <WrapperBtn>
         {status === StatusTypes.PENDING && (
-          <Button onClick={() => accept()} value="Accept" />
+          <Button onClick={() => accept()} value={t('Buttons.Accept')} />
         )}
         {status === StatusTypes.FREE && (
-          <StatusBadge type="success">Accepted</StatusBadge>
+          <StatusBadge type="success">{t('Statuses.Accepted')}</StatusBadge>
         )}
         {status === StatusTypes.REJECTED && (
-          <StatusBadge type="danger">Rejected</StatusBadge>
+          <StatusBadge type="danger">{t('Statuses.Rejected')}</StatusBadge>
         )}
       </WrapperBtn>
     </DonateWrapper>

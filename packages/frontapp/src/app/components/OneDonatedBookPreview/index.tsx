@@ -27,7 +27,7 @@ const CardListItem: StyledComponent<object, object, object> = styled.div`
   width: 100%;
 
   & + ${() => CardListItem} {
-    margin-top: 16px;
+    margin-top: ${dimensions.base};
   }
 `;
 
@@ -93,7 +93,6 @@ const OneDonator = ({
         </CardListItem>
       ) : (
         <TableRowView
-          grayBackground={index % 2 === 0}
           picture={picture}
           title={title}
           description={description}

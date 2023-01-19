@@ -34,6 +34,7 @@ export const TitleInfo = styled.h1`
 `;
 
 export const SubTitle = styled.h3`
+  margin-bottom: ${dimensions.base};
   font-weight: 300;
   font-size: ${dimensions.base};
   color: ${colors.main_black};

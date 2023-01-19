@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import React, { useState } from 'react';
 import {
   IBookInfoProps,
@@ -48,32 +49,35 @@ const DonateInfo = ({
             <ShortDescription>
               <TitleBook>{title}</TitleBook>
 
-              <Topic>Genre: </Topic>
+              <Topic>{t('DonateItem.Inputs.Genre.Title')}:</Topic>
               <TopicDescription>{category}</TopicDescription>
 
-              <Topic>Author: </Topic>
+              <Topic>{t('DonateItem.Inputs.Author.Title')}:</Topic>
               <TopicDescription>{author}</TopicDescription>
             </ShortDescription>
           </WrapperInfo>
           {statusInfo?.status === 'Pending' && (
             <WrapperButtons>
-              <StyledButton value="Accept" onClick={onClickAccept} />
               <StyledButton
-                value="Reject"
+                value={t('Buttons.Accept')}
+                onClick={onClickAccept}
+              />
+              <StyledButton
+                value={t('Buttons.Reject')}
                 transparent
                 onClick={onClickReject}
               />
             </WrapperButtons>
           )}
           {statusInfo?.status === 'Free' && (
-            <StatusBadge type="success">Accepted</StatusBadge>
+            <StatusBadge type="success">{t('Statuses.Accepted')}</StatusBadge>
           )}
           {statusInfo?.status === 'Rejected' && (
-            <StatusBadge type="danger">Rejected</StatusBadge>
+            <StatusBadge type="danger">{t('Statuses.Rejected')}</StatusBadge>
           )}
         </ShortDescriptionWrapper>
         <LongDescription>
-          <Topic>Description: </Topic>
+          <Topic>{t('DonateItem.Inputs.Description.Title')}: </Topic>
           <Description>{description}</Description>
         </LongDescription>
       </BookHolder>

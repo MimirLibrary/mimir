@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import EmptyCover from '../../../assets/MOC-data/EmptyCover.png';
 import Button from '../Button';
 import Card from '../Card';
@@ -64,21 +65,21 @@ const CardView: FC<CardViewProps> = ({
       {title}
     </Card.Title>
     <Card.Body>
-      <CardSection title="Description:">
+      <CardSection title={t('DonateItem.Inputs.Description.Title') + ':'}>
         <Description>{description}</Description>
       </CardSection>
-      <CardSection title="User name:">
+      <CardSection title={t('TableHeader.UserName') + ':'}>
         <ButtonLink to={`${RoutesTypes.READERS}/${userId}`}>
           {username}
         </ButtonLink>
       </CardSection>
       {status === StatusTypes.FREE || status === StatusTypes.REJECTED ? (
-        <CardSection title="State">
+        <CardSection title={t('TableHeader.State')}>
           {status === StatusTypes.FREE && (
-            <StatusBadge type="success">Accepted</StatusBadge>
+            <StatusBadge type="success">{t('Statuses.Accepted')}</StatusBadge>
           )}
           {status === StatusTypes.REJECTED && (
-            <StatusBadge type="danger">Rejected</StatusBadge>
+            <StatusBadge type="danger">{t('Statuses.Rejected')}</StatusBadge>
           )}
         </CardSection>
       ) : null}
@@ -86,8 +87,12 @@ const CardView: FC<CardViewProps> = ({
     {status === StatusTypes.FREE || status === StatusTypes.REJECTED ? null : (
       <Card.Footer>
         <FooterButtons>
-          <Button onClick={() => accept()} value="Accept" />
-          <Button transparent={true} onClick={() => reject()} value="Reject" />
+          <Button onClick={() => accept()} value={t('Buttons.Accept')} />
+          <Button
+            transparent={true}
+            onClick={() => reject()}
+            value={t('Buttons.Reject')}
+          />
         </FooterButtons>
       </Card.Footer>
     )}

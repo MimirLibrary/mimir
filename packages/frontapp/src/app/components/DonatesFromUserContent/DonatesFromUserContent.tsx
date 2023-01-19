@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { SubTitle, TitleInfo } from '../DonateBookFlow';
 import ConditionalWrapper from '../ConditionalWrapper';
 import { BookHolder } from '../BookInfo';
@@ -21,7 +22,7 @@ interface TitleProps {
 
 const ColumnHeader = styled.div`
   display: flex;
-  border-radius: 10px 10px 0px 0px;
+  border-radius: 10px 10px 0 0;
   background-color: ${colors.accent_color};
   padding: ${dimensions.xl};
 `;
@@ -57,20 +58,16 @@ const DonatesFromUserContent: FC<DonatesFromUserContentProps> = ({
 
   return (
     <Container>
-      <TitleInfo>Donates from user</TitleInfo>
-      <SubTitle>
-        Items brought to the library by users. Confirm them so that they appear
-        in the electronic database of books
-      </SubTitle>
-      <hr />
+      <TitleInfo>{t('Donates.Title')}</TitleInfo>
+      <SubTitle>{t('Donates.Description')}</SubTitle>
       <ConditionalWrapper
         condition={!isMobile}
         wrapper={(children) => (
           <BookHolder>
             <ColumnHeader>
-              <Column flex={3}>Item name</Column>
-              <Column flex={1}>User name</Column>
-              <Column flex={1}>State</Column>
+              <Column flex={3}>{t('TableHeader.ItemName')}</Column>
+              <Column flex={1}>{t('TableHeader.UserName')}</Column>
+              <Column flex={1}>{t('TableHeader.State')}</Column>
             </ColumnHeader>
             {children}
           </BookHolder>
