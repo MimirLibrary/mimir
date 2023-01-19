@@ -41,6 +41,8 @@ import { RolesTypes } from '@mimir/global-types';
 import { IDropdownOption } from '../Dropdown';
 import { TUserLocation } from '../../store/slices/userSlice';
 import DescriptionBook from './DescriptionBook';
+import Section from '../Section';
+import ExpandableText from '../ExpandableText';
 
 export const BookHolder = styled.div`
   width: 100%;
@@ -66,15 +68,7 @@ export const ShortDescriptionWrapper = styled.div`
 `;
 
 export const LongDescription = styled.div`
-  margin-top: ${dimensions.xl_2};
   grid-column: 1 / span 3;
-`;
-
-export const Description = styled.p`
-  font-weight: 300;
-  font-size: ${dimensions.base};
-  line-height: ${dimensions.xl};
-  color: ${colors.main_black};
 `;
 
 export const WrapperButtons = styled.div`
@@ -92,9 +86,10 @@ const StyledButton = styled(Button)`
 `;
 
 export const TitleHolder = styled.p`
-  font-weight: 700;
+  font-weight: 600;
   font-size: ${dimensions.base};
   margin-bottom: ${dimensions.xs};
+  line-height: ${dimensions.xl};
 `;
 
 const StyledTextArea = styled.textarea`
@@ -465,22 +460,40 @@ const BookInfo: FC<IBookInfoProps> = ({
     <>
       <BookHolder>
         <ShortDescriptionWrapper>
-          <DescriptionBook
-            title={title}
-            author={author}
-            category={category}
-            date={created_at}
-            editing={editing}
-            location={location}
-            src={src}
-            status={statusInfo?.status}
-            newDeadline={newDeadline}
-            newTitleAndAuthor={newDescriptionData}
-            handleChangeDeadline={handleChangeDeadline}
-            handleChangeLocation={handleChangeLocation}
-            handleChangeAuthorAndTitle={handleChangeNewDescriptionData}
-            handleChangeNewGenre={handleChangeCategory}
-          />
+          <div>
+            <DescriptionBook
+              title={title}
+              author={author}
+              category={category}
+              date={created_at}
+              editing={editing}
+              location={location}
+              src={src}
+              status={statusInfo?.status}
+              newDeadline={newDeadline}
+              newTitleAndAuthor={newDescriptionData}
+              handleChangeDeadline={handleChangeDeadline}
+              handleChangeLocation={handleChangeLocation}
+              handleChangeAuthorAndTitle={handleChangeNewDescriptionData}
+              handleChangeNewGenre={handleChangeCategory}
+            />
+            {editing ? (
+              <>
+                <br />
+                <TitleHolder>Description: </TitleHolder>
+                <TextAreaWrapper>
+                  <StyledTextArea
+                    value={newDescription}
+                    onChange={handleChangeDescription}
+                  />
+                </TextAreaWrapper>
+              </>
+            ) : description ? (
+              <Section title={'Description: '}>
+                <ExpandableText>{description}</ExpandableText>
+              </Section>
+            ) : null}
+          </div>
           {userRole === RolesTypes.READER ? (
             <>
               {statusInfo?.person_id === id ? (
@@ -568,15 +581,11 @@ const BookInfo: FC<IBookInfoProps> = ({
               />
             </TextAreaWrapper>
           </>
-        ) : (
-          <LongDescription>
-            <Topic>Description: </Topic>
-            <Description>{description || ''}</Description>
-            {userRole === RolesTypes.READER ? (
-              <OpenLink>see full description</OpenLink>
-            ) : null}
-          </LongDescription>
-        )}
+        ) : description ? (
+          <Section title={'Description: '}>
+            <ExpandableText>{description}</ExpandableText>
+          </Section>
+        ) : null}
       </BookHolder>
       <Modal active={isShowClaimModal} setActive={setIsShowClaimModal}>
         <ClaimOperation

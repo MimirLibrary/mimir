@@ -188,8 +188,8 @@ export const resources = {
         Claimed: 'Claimed',
       },
       BookClaimHistory: {
-        Title: 'Claim history',
-        Desc: 'List of users who bought this item',
+        Title: 'Claim list',
+        Desc: 'List of all items user have taken for all the time',
       },
       PlaceholderTitle: {
         Donate: 'No donations',
