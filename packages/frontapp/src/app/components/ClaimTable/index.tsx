@@ -199,7 +199,7 @@ const ClaimTable: FC<IClaimTable> = ({ statuses, name }) => {
             </SortText>
           </InlineWrapper>
         )}
-        <WrapperInput mobilefullsize>
+        <WrapperInput isFullWidth>
           <StyledSearchIcon
             fill={colors.dropdown_gray}
             width="20"
