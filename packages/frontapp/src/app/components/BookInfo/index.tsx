@@ -52,6 +52,8 @@ export const BookHolder = styled.div`
   background-color: ${colors.bg_secondary};
   padding: ${dimensions.base_2};
   box-shadow: 0 10px 70px rgba(26, 30, 214, 0.08);
+  box-sizing: border-box;
+
   @media (max-width: ${dimensions.phone_width}) {
     padding-top: ${dimensions.base};
   }
@@ -62,6 +64,11 @@ export const ShortDescriptionWrapper = styled.div`
   justify-content: space-between;
   width: 100%;
   gap: ${dimensions.xl_2};
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    gap: 0;
+  }
+
   @media (max-width: ${dimensions.phone_width}) {
     flex-direction: column;
   }
@@ -78,11 +85,20 @@ export const WrapperButtons = styled.div`
   gap: 8px;
   max-width: 276px;
   width: 100%;
+
+  @media (max-width: ${dimensions.phone_width}) {
+    margin-top: ${dimensions.base};
+    max-width: 100%;
+  }
 `;
 
 const StyledButton = styled(Button)`
   max-width: 278px;
   width: 100%;
+
+  @media (max-width: ${dimensions.phone_width}) {
+    max-width: 100%;
+  }
 `;
 
 export const TitleHolder = styled.p`
@@ -126,7 +142,7 @@ const TextAreaWrapper = styled.div`
   }
 
   @media (max-width: ${dimensions.phone_width}) {
-    width: 70%;
+    width: 100%;
   }
 `;
 
