@@ -32,6 +32,11 @@ const InlineWrapper = styled.div`
   flex-direction: row;
   column-gap: 4px;
   align-items: center;
+
+  @media (max-width: ${dimensions.phone_width}) {
+    flex-direction: column;
+    align-items: flex-start;
+  } ;
 `;
 const ColumnWrapper = styled.div`
   display: flex;
@@ -41,11 +46,16 @@ const ColumnWrapper = styled.div`
 
 const CardWrapper = styled(InlineWrapper)`
   background: ${colors.bg_secondary};
-  height: 250px;
-  width: auto;
   box-shadow: ${colors.shadow};
   border-radius: 10px;
   padding: 32px;
+
+  display: flex;
+
+  @media (max-width: ${dimensions.phone_width}) {
+    flex-direction: column;
+    align-items: flex-start;
+  } ;
 `;
 
 const Avatar = styled.img`
@@ -53,12 +63,24 @@ const Avatar = styled.img`
   width: 115px;
   height: 186px;
   object-fit: cover;
+  border-radius: 10px;
+
+  @media (max-width: ${dimensions.phone_width}) {
+    align-self: center;
+  }
 `;
 
 const DescriptionWrapper = styled(ColumnWrapper)`
   margin-left: 24px;
   font-size: ${dimensions.base};
   row-gap: 8px;
+
+  @media (max-width: ${dimensions.phone_width}) {
+    row-gap: 16px;
+    margin: 0;
+    width: 100%;
+    flex-direction: column;
+  } ;
 `;
 
 interface IDescriptionProps {
@@ -74,6 +96,12 @@ export const Description = styled.p<IDescriptionProps>`
   line-height: ${({ titlee }) =>
     titlee ? `${dimensions.xl_2}` : `${dimensions.xl}`};
   margin-bottom: ${({ titlee }) => (titlee ? dimensions.base : null)};
+
+  @media (max-width: ${dimensions.phone_width}) {
+    align-self: ${({ titlee }) => (titlee ? 'center' : 'flex-start')};
+    margin-bottom: 0;
+    margin-top: ${({ titlee }) => (titlee ? '16px' : '0')};
+  }
 `;
 
 export const Title = styled.h1`
@@ -91,6 +119,12 @@ const ButtonsWrapper = styled.div`
   max-width: 276px;
   width: 100%;
   row-gap: 8px;
+
+  @media (max-width: ${dimensions.phone_width}) {
+    width: 100%;
+    flex-direction: column;
+    margin: 16px 0 0;
+  } ;
 `;
 
 const RadioButton = styled.input`

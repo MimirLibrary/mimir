@@ -19,7 +19,7 @@ interface IFieldsTextProps {
   secondary?: boolean;
 }
 
-const FieldsText = styled.p<IFieldsTextProps>`
+export const FieldsText = styled.p<IFieldsTextProps>`
   font-weight: ${({ secondary }) => (secondary ? 300 : 500)};
   font-size: ${({ titlee }) => (titlee ? dimensions.base : dimensions.sm)};
   color: ${({ overdue, returned, titlee, secondary }) =>
@@ -33,7 +33,7 @@ const FieldsText = styled.p<IFieldsTextProps>`
   margin-bottom: ${dimensions.xs_2};
 `;
 
-const countReturnDate = (created_at: Date) => {
+export const countReturnDate = (created_at: Date) => {
   const day = `${getDates(created_at).returnDate.getDate()}`.padStart(2, '0');
   const month = `${getDates(created_at).returnDate.getMonth() + 1}`.padStart(
     2,
@@ -42,7 +42,7 @@ const countReturnDate = (created_at: Date) => {
   return `${t('UserCard.Table.ReturnTill')} ${day}.${month}`;
 };
 
-const countReturnedDate = (created_at: Date) => {
+export const countReturnedDate = (created_at: Date) => {
   const day = `${getDates(created_at).startDate.getDate()}`.padStart(2, '0');
   const month = `${getDates(created_at).returnDate.getMonth() + 1}`.padStart(
     2,
