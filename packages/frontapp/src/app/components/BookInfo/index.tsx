@@ -51,7 +51,7 @@ export const BookHolder = styled.div`
   border-radius: ${dimensions.xs_1};
   background-color: ${colors.bg_secondary};
   padding: ${dimensions.base_2};
-  box-shadow: 0px 10px 70px rgba(26, 30, 214, 0.08);
+  box-shadow: 0 10px 70px rgba(26, 30, 214, 0.08);
   @media (max-width: ${dimensions.phone_width}) {
     padding-top: ${dimensions.base};
   }
@@ -460,40 +460,22 @@ const BookInfo: FC<IBookInfoProps> = ({
     <>
       <BookHolder>
         <ShortDescriptionWrapper>
-          <div>
-            <DescriptionBook
-              title={title}
-              author={author}
-              category={category}
-              date={created_at}
-              editing={editing}
-              location={location}
-              src={src}
-              status={statusInfo?.status}
-              newDeadline={newDeadline}
-              newTitleAndAuthor={newDescriptionData}
-              handleChangeDeadline={handleChangeDeadline}
-              handleChangeLocation={handleChangeLocation}
-              handleChangeAuthorAndTitle={handleChangeNewDescriptionData}
-              handleChangeNewGenre={handleChangeCategory}
-            />
-            {editing ? (
-              <>
-                <br />
-                <TitleHolder>Description: </TitleHolder>
-                <TextAreaWrapper>
-                  <StyledTextArea
-                    value={newDescription}
-                    onChange={handleChangeDescription}
-                  />
-                </TextAreaWrapper>
-              </>
-            ) : description ? (
-              <Section title={'Description: '}>
-                <ExpandableText>{description}</ExpandableText>
-              </Section>
-            ) : null}
-          </div>
+          <DescriptionBook
+            title={title}
+            author={author}
+            category={category}
+            date={created_at}
+            editing={editing}
+            location={location}
+            src={src}
+            status={statusInfo?.status}
+            newDeadline={newDeadline}
+            newTitleAndAuthor={newDescriptionData}
+            handleChangeDeadline={handleChangeDeadline}
+            handleChangeLocation={handleChangeLocation}
+            handleChangeAuthorAndTitle={handleChangeNewDescriptionData}
+            handleChangeNewGenre={handleChangeCategory}
+          />
           {userRole === RolesTypes.READER ? (
             <>
               {statusInfo?.person_id === id ? (
