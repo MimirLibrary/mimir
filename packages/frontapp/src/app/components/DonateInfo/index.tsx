@@ -18,7 +18,6 @@ import AcceptRejectModals from '../AcceptRejectModals';
 import StyledButton from '../Button';
 import EmptyCover from '../../../assets/MOC-data/EmptyCover.png';
 import StatusBadge from '../StatusBadge';
-import { Accepted, Rejected } from '../OneDonatedBookPreview';
 import Section from '../Section';
 import ExpandableText from '../ExpandableText';
 
