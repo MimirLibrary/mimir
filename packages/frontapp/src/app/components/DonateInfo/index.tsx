@@ -5,8 +5,6 @@ import {
   BookHolder,
   ShortDescriptionWrapper,
   Topic,
-  LongDescription,
-  Description,
   WrapperButtons,
 } from '../BookInfo';
 import {
@@ -20,6 +18,10 @@ import AcceptRejectModals from '../AcceptRejectModals';
 import StyledButton from '../Button';
 import EmptyCover from '../../../assets/MOC-data/EmptyCover.png';
 import StatusBadge from '../StatusBadge';
+import { Accepted, Rejected } from '../OneDonatedBookPreview';
+import Section from '../Section';
+import ExpandableText from '../ExpandableText';
+
 const DonateInfo = ({
   description,
   title,
@@ -76,10 +78,9 @@ const DonateInfo = ({
             <StatusBadge type="danger">{t('Statuses.Rejected')}</StatusBadge>
           )}
         </ShortDescriptionWrapper>
-        <LongDescription>
-          <Topic>{t('DonateItem.Inputs.Description.Title')}: </Topic>
-          <Description>{description}</Description>
-        </LongDescription>
+        <Section title={t('DonateItem.Inputs.Description.Title') + ': '}>
+          <ExpandableText>{description}</ExpandableText>
+        </Section>
       </BookHolder>
       <AcceptRejectModals
         active={active}
