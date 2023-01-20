@@ -87,12 +87,8 @@ const CardView: FC<CardViewProps> = ({
     {status === StatusTypes.FREE || status === StatusTypes.REJECTED ? null : (
       <Card.Footer>
         <FooterButtons>
-          <Button onClick={() => accept()} value={t('Buttons.Accept')} />
-          <Button
-            transparent={true}
-            onClick={() => reject()}
-            value={t('Buttons.Reject')}
-          />
+          <Button onClick={accept} value={t('Buttons.Accept')} />
+          <Button onClick={reject} value={t('Buttons.Reject')} transparent />
         </FooterButtons>
       </Card.Footer>
     )}

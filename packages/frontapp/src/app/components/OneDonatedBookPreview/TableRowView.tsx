@@ -115,20 +115,17 @@ const TableRowView: FC<CardViewProps> = ({
 }) => {
   return (
     <DonateWrapper>
-      <FlexContainer onClick={() => redirect()}>
+      <FlexContainer onClick={redirect}>
         <BookImage src={picture || EmptyCover} />
         <Wrapper>
           <Title>{title}</Title>
-          <Description>
-            {' '}
-            {description || t('Donates.NoDescription')}
-          </Description>
+          <Description>{description || t('Donates.NoDescription')}</Description>
         </Wrapper>
       </FlexContainer>
       <DonatorName>{username}</DonatorName>
       <WrapperBtn>
         {status === StatusTypes.PENDING && (
-          <Button onClick={() => accept()} value={t('Buttons.Accept')} />
+          <Button onClick={accept} value={t('Buttons.Accept')} />
         )}
         {status === StatusTypes.FREE && (
           <StatusBadge type="success">{t('Statuses.Accepted')}</StatusBadge>
