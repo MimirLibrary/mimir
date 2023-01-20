@@ -17,7 +17,7 @@ const InfoWrapper = styled.div`
   }
   @media (max-width: ${dimensions.tablet_width}) {
     width: 100%;
-    border-bottom: 1px solid #bdbdbd;
+    //border-bottom: 1px solid #bdbdbd;
     padding-bottom: ${dimensions.sm};
   }
 `;
@@ -39,7 +39,7 @@ const CardWrapper = styled.div`
   transition: box-shadow 0.3s;
   cursor: pointer;
   :hover {
-    box-shadow: 0px 6px 14px -6px rgba(24, 39, 75, 0.08),
+    box-shadow: 0 6px 14px -6px rgba(24, 39, 75, 0.08),
       0px 10px 32px -4px rgba(24, 39, 75, 0.08);
   }
 `;

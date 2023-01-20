@@ -29,7 +29,10 @@ exports[`render DescriptionBook component renders correctly with snapshots 1`] =
 
 @media (max-width: 30rem) {
   .emotion-1 {
-    margin-right: 1rem;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    margin-bottom: 1rem;
   }
 }
 

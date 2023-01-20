@@ -21,7 +21,7 @@ exports[`render SingleUserCard component renders correctly, with snapshots 1`] =
 }
 
 .emotion-0:hover {
-  box-shadow: 0px 6px 14px -6px rgba(24, 39, 75, 0.08),0px 10px 32px -4px rgba(24, 39, 75, 0.08);
+  box-shadow: 0 6px 14px -6px rgba(24, 39, 75, 0.08),0px 10px 32px -4px rgba(24, 39, 75, 0.08);
 }
 
 .emotion-1 {
@@ -56,7 +56,6 @@ exports[`render SingleUserCard component renders correctly, with snapshots 1`] =
 @media (max-width: 48rem) {
   .emotion-3 {
     width: 100%;
-    border-bottom: 1px solid #bdbdbd;
     padding-bottom: 0.875rem;
   }
 }

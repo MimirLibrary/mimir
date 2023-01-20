@@ -12,6 +12,7 @@ import Dropdown, { IDropdownOption } from '../Dropdown';
 import { useGetAllLocationsQuery } from '@mimir/apollo-client';
 import { INewData, Location, OpenLink, TitleHolder, Topic } from './index';
 import { toast } from 'react-toastify';
+import { useMediaQuery } from 'react-responsive';
 
 export const WrapperInfo = styled.div`
   display: flex;
@@ -27,7 +28,8 @@ export const BookImage = styled.img`
   height: 19.5rem;
   border-radius: 10px;
   @media (max-width: ${dimensions.phone_width}) {
-    margin-right: ${dimensions.base};
+    align-self: center;
+    margin-bottom: ${dimensions.base};
   }
 `;
 
@@ -46,6 +48,10 @@ const StyledInput = styled.input`
   margin-left: ${dimensions.xs_2};
   color: ${colors.main_black};
   margin-right: 0.12rem;
+
+  @media (max-width: ${dimensions.phone_width}) {
+    width: 100%;
+  }
 `;
 
 export const TitleBook = styled.h3`
@@ -65,6 +71,10 @@ export const TitleBook = styled.h3`
 const WrapperDropDown = styled.div`
   margin-top: ${dimensions.base};
   width: 21.5rem;
+
+  @media (max-width: ${dimensions.phone_width}) {
+    width: 100%;
+  }
 `;
 
 const RestyledDropdown = styled(Dropdown)`
@@ -87,11 +97,11 @@ const StyledStatus = styled.div`
 const StyledInputDeadline = styled.input`
   border: 0.5px solid #bdbdbd;
   border-radius: ${dimensions.xl_3};
-  padding: 10px 0;
   width: 3.7rem;
   outline: none;
-  padding-left: ${dimensions.xl};
+  padding: 10px 0 10px ${dimensions.xl};
   background: ${colors.bg_secondary};
+  margin-right: ${dimensions.xs_1};
 
   :hover {
     border: 0.5px solid ${colors.accent_color};
@@ -105,7 +115,9 @@ const StyledInputDeadline = styled.input`
     width: 100%;
   }
   @media (max-width: ${dimensions.phone_width}) {
-    width: 70%;
+    width: 5rem;
+    text-align: center;
+    padding-left: 0;
   }
 
   ::-webkit-inner-spin-button,
@@ -149,6 +161,7 @@ const DescriptionBook: FC<IDescriptionBook> = ({
   handleChangeAuthorAndTitle,
 }) => {
   const { userRole } = useAppSelector((state) => state.user);
+  const isPhone = useMediaQuery({ maxWidth: dimensions.phone_width });
 
   const { data: allLocations, error: errorLocations } = useGetAllLocationsQuery(
     {
@@ -180,7 +193,7 @@ const DescriptionBook: FC<IDescriptionBook> = ({
         {editing ? (
           <>
             <TitleHolder>Name </TitleHolder>
-            <WrapperInput>
+            <WrapperInput isFullWidth={isPhone}>
               <StyledInput
                 type="text"
                 value={newTitleAndAuthor.newTitle}
@@ -212,7 +225,7 @@ const DescriptionBook: FC<IDescriptionBook> = ({
           <>
             <br />
             <TitleHolder>Author </TitleHolder>
-            <WrapperInput>
+            <WrapperInput isFullWidth={isPhone}>
               <StyledInput
                 type="text"
                 name="newAuthor"
@@ -248,7 +261,7 @@ const DescriptionBook: FC<IDescriptionBook> = ({
               onChange={handleChangeDeadline}
               min="1"
               max="31"
-            />{' '}
+            />
             days
           </>
         ) : (
