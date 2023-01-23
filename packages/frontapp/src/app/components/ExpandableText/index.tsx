@@ -8,7 +8,7 @@ export const Description = styled.p<{ showFullDescription: boolean }>`
   text-overflow: ${(props) =>
     props.showFullDescription ? 'unset' : 'ellipsis'};
   white-space: ${(props) => (props.showFullDescription ? 'normal' : 'nowrap')};
-
+  text-align: justify;
   font-weight: 300;
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
