@@ -31,10 +31,27 @@ const Title = styled.p`
 `;
 
 const ListWrapper = styled.div`
+  width: 100%;
   display: flex;
   flex-flow: wrap row;
-  column-gap: ${dimensions.xl_2};
-  row-gap: ${dimensions.base};
+  justify-content: space-between;
+  gap: ${dimensions.base};
+
+  ::after {
+    box-sizing: border-box;
+    content: '';
+    min-width: 320px;
+    height: 151px;
+    padding: ${dimensions.xl_2};
+    flex: 1;
+  }
+
+  @media (hover: none) {
+    > * {
+      box-shadow: 0 6px 14px -6px rgba(24, 39, 75, 0.08),
+        0 10px 32px -4px rgba(24, 39, 75, 0.08);
+    }
+  }
 `;
 
 const Description = styled.p`

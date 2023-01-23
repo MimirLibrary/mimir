@@ -10,18 +10,28 @@ exports[`render SingleUserCard component renders correctly, with snapshots 1`] =
   -ms-flex-direction: row;
   flex-direction: row;
   background: #FFFFFF;
-  width: 320px;
-  margin: 0 0 1.25rem;
+  min-width: 320px;
   height: 151px;
   padding: 1.5rem;
   border-radius: 0.625rem;
   -webkit-transition: box-shadow 0.3s;
   transition: box-shadow 0.3s;
   cursor: pointer;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
 }
 
 .emotion-0:hover {
-  box-shadow: 0 6px 14px -6px rgba(24, 39, 75, 0.08),0px 10px 32px -4px rgba(24, 39, 75, 0.08);
+  box-shadow: 0 6px 14px -6px rgba(24, 39, 75, 0.08),0 10px 32px -4px rgba(24, 39, 75, 0.08);
+}
+
+@media (max-width: 30rem) {
+  .emotion-0 {
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+  }
 }
 
 .emotion-1 {
@@ -46,18 +56,10 @@ exports[`render SingleUserCard component renders correctly, with snapshots 1`] =
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   margin-left: 1rem;
-}
-
-.emotion-3>p:first-of-type {
-  margin-bottom: 0.5rem;
-}
-
-@media (max-width: 48rem) {
-  .emotion-3 {
-    width: 100%;
-    padding-bottom: 0.875rem;
-  }
 }
 
 .emotion-4 {
@@ -138,6 +140,7 @@ exports[`render SingleUserCard component renders correctly, with snapshots 1`] =
   >
     <p
       class="emotion-4"
+      style="margin-bottom: 0.5rem;"
     >
       Test
     </p>
