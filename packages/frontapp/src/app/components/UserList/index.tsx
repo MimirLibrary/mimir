@@ -32,19 +32,10 @@ const Title = styled.p`
 
 const ListWrapper = styled.div`
   width: 100%;
-  display: flex;
-  flex-flow: wrap row;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   justify-content: space-between;
   gap: ${dimensions.base};
-
-  ::after {
-    box-sizing: border-box;
-    content: '';
-    min-width: 320px;
-    height: 151px;
-    padding: ${dimensions.xl_2};
-    flex: 1;
-  }
 
   @media (hover: none) {
     > * {

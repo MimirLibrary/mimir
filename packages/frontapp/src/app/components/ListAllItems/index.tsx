@@ -14,16 +14,18 @@ import { IMaterial } from '../../types';
 import { locationIds } from '../../store/slices/userSlice';
 
 const StyledWrapperList = styled(WrapperList)`
-  padding: ${dimensions.xs_2} 0;
-  grid-template-columns: repeat(auto-fill, 310px);
-  margin-top: ${dimensions.xl_2};
-  @media (max-width: ${dimensions.tablet_width}) {
-    grid-template-columns: repeat(auto-fill, 260px);
-  }
+  width: 100%;
+  margin-top: ${dimensions.xl_10};
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  justify-content: space-between;
+  gap: ${dimensions.base};
 
-  @media (max-width: ${dimensions.phone_width}) {
-    display: flex;
-    flex-direction: column;
+  @media (hover: none) {
+    > * {
+      box-shadow: 0 6px 14px -6px rgba(24, 39, 75, 0.08),
+        0 10px 32px -4px rgba(24, 39, 75, 0.08);
+    }
   }
 `;
 
