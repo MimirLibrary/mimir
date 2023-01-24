@@ -20,7 +20,6 @@ const TableContainer = styled.div`
 
 const List = styled.div`
   box-sizing: border-box;
-  //padding: 0 ${dimensions.xl} 0 0;
   max-height: 680px;
   position: relative;
 

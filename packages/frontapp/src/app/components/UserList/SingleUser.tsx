@@ -65,6 +65,7 @@ const Description = styled.p`
   font-weight: 500;
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
+  margin-bottom: 0.5rem;
 `;
 
 export interface ISingleUser {
@@ -99,7 +100,7 @@ const SingleUser: FC<ISingleUser> = ({
         <Avatar src={avatar || mockData.avatar} />
       </AvatarWrapper>
       <InfoWrapper underlined={underlined}>
-        <Description style={{ marginBottom: '0.5rem' }}>{name}</Description>
+        <Description>{name}</Description>
         <ClaimsWrapper>
           <ClaimHistory statuses={statuses} />
         </ClaimsWrapper>
