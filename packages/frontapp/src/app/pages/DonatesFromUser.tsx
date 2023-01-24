@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { dimensions, colors } from '@mimir/ui-kit';
-import { TitleInfo, SubTitle, WrapperInfo } from '../components/DonateBookFlow';
-import { BookHolder } from '../components/BookInfo';
-import OneDonator from '../components/OneDonatedBookPreview';
+import { colors, dimensions } from '@mimir/ui-kit';
+import { WrapperInfo } from '../components/DonateBookFlow';
 import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
 import { useAppSelector } from '../hooks/useTypedSelector';
 import {
@@ -14,11 +12,7 @@ import {
 import { t } from 'i18next';
 import { locationIds } from '../store/slices/userSlice';
 import { toast } from 'react-toastify';
-import { IMaterial } from '../types';
-
-interface TitleProps {
-  flex?: number;
-}
+import DonatesFromUserContent from '../components/DonatesFromUserContent/DonatesFromUserContent';
 
 const WrapperSearch = styled(WrapperInput)`
   position: relative;
@@ -36,21 +30,6 @@ const StyledWrapperInput = styled.div`
   }
 `;
 
-const ColumnHeader = styled.div`
-  display: flex;
-  border-radius: 10px 10px 0px 0px;
-  background-color: ${colors.accent_color};
-  padding: ${dimensions.xl};
-`;
-const Column = styled.h4<TitleProps>`
-  font-size: ${dimensions.base};
-  font-weight: 600;
-  color: ${colors.bg_secondary};
-  flex: ${({ flex }) => flex};
-  @media (max-width: ${dimensions.phone_width}) {
-    flex: 1;
-  }
-`;
 const DonatesFromUser = () => {
   const locations = useAppSelector(locationIds);
   const { data, error } = useGetAllMaterialsQuery({
@@ -113,37 +92,13 @@ const DonatesFromUser = () => {
           />
         </WrapperSearch>
       </StyledWrapperInput>
-      <TitleInfo>Donates from user</TitleInfo>
-      <SubTitle>
-        Items brought to the library by users. Confirm them so that they appear
-        in the electronic database of books
-      </SubTitle>
-      <hr />
-      <BookHolder>
-        <ColumnHeader>
-          <Column flex={3}>Item name</Column>
-          <Column flex={1}>User name</Column>
-          <Column flex={1}>State</Column>
-        </ColumnHeader>
-        {shownItems &&
-          shownItems?.map((donate: any, index: number) => {
-            return (
-              <OneDonator
-                search={search}
-                setShownId={setShownId}
-                shownId={shownId}
-                identifier={donate.identifier}
-                title={donate.title}
-                lastStatus={donate.currentStatus}
-                key={donate.identifier}
-                id={donate.id}
-                index={index}
-                picture={donate.picture}
-                description={donate.description}
-              />
-            );
-          })}
-      </BookHolder>
+
+      <DonatesFromUserContent
+        items={shownItems}
+        setShownId={setShownId}
+        shownId={shownId}
+        search={search}
+      ></DonatesFromUserContent>
     </WrapperInfo>
   );
 };

@@ -5,7 +5,7 @@ import AllBooksList from '../components/AllBooksList';
 import styled from '@emotion/styled';
 import { useAppSelector } from '../hooks/useTypedSelector';
 
-import { colors, dimensions } from '@mimir/ui-kit';
+import { colors, dimensions, theme } from '@mimir/ui-kit';
 import {
   useGetMaterialByIdQuery,
   useGetAllMaterialsQuery,
@@ -52,7 +52,7 @@ const SuggestionText = styled.h3`
 `;
 
 const ClaimHistoryWrapper = styled.div`
-  margin-top: calc(${dimensions.base_2}*2);
+  margin-top: calc(${dimensions.base_2});
 `;
 
 const SearchWrapper = styled.div`
@@ -64,6 +64,16 @@ const RestyleSingleUser = styled(SingleUser)`
   height: auto;
   background: none;
   box-shadow: none;
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    margin-bottom: ${dimensions.sm};
+    :hover {
+      box-shadow: none;
+    }
+    :first-of-type {
+      width: 100%;
+    }
+  }
 `;
 
 const FieldsText = styled.p<IFieldsTextProps>`
@@ -76,6 +86,10 @@ const FieldsText = styled.p<IFieldsTextProps>`
       ? colors.free_book
       : colors.accent_color};
   margin-bottom: ${dimensions.xs_2};
+  @media (max-width: ${dimensions.tablet_width}) {
+    margin-left: 72px;
+    width: 75%;
+  }
 `;
 
 interface IFieldsTextProps {
@@ -217,6 +231,7 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
               <TextBase>{t('BookClaimHistory.Desc')}</TextBase>
               <SearchWrapper>
                 <Search
+                  isFullWidth={true}
                   handleChangeSearch={handleChangeSearch}
                   placeholder={t('Search.UsernamePlaceholder')}
                   search={search}

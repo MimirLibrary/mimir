@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { FC, useEffect } from 'react';
 import Modal from '../Modal';
 import ErrorMessage from '../ErrorMessge';
@@ -67,20 +68,26 @@ const AcceptRejectModals: FC<IDonateProps> = ({
     <Modal active={active} setActive={setActive}>
       {method === 'reject' ? (
         <ErrorMessage
-          title="Warning!"
-          message={`Are you sure you want to reject the book "${title}" from the library?`}
+          title={t('ManagerDonateModal.Title')}
+          message={t('ManagerDonateModal.MessageReject').replace(
+            '${title}',
+            title as string
+          )}
           setActive={setActive}
-          titleCancel="Yes, reject"
-          titleOption="Cancel"
+          titleCancel={t('ManagerDonateModal.Buttons.Reject')}
+          titleOption={t('ManagerDonateModal.Buttons.Cancel')}
           onClick={rejectBook}
         />
       ) : (
         <ErrorMessage
-          title="Warning!"
-          message={`Are you sure you want to add the book "${title}" from the library?`}
+          title={t('ManagerDonateModal.Title')}
+          message={t('ManagerDonateModal.MessageAccept').replace(
+            '${title}',
+            title as string
+          )}
           setActive={setActive}
-          titleCancel="Yes, accept"
-          titleOption="Cancel"
+          titleCancel={t('ManagerDonateModal.Buttons.Accept')}
+          titleOption={t('ManagerDonateModal.Buttons.Cancel')}
           onClick={acceptBook}
         />
       )}

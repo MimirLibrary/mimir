@@ -41,6 +41,8 @@ import { RolesTypes } from '@mimir/global-types';
 import { IDropdownOption } from '../Dropdown';
 import { TUserLocation } from '../../store/slices/userSlice';
 import DescriptionBook from './DescriptionBook';
+import Section from '../Section';
+import ExpandableText from '../ExpandableText';
 
 export const BookHolder = styled.div`
   width: 100%;
@@ -49,7 +51,9 @@ export const BookHolder = styled.div`
   border-radius: ${dimensions.xs_1};
   background-color: ${colors.bg_secondary};
   padding: ${dimensions.base_2};
-  box-shadow: 0px 10px 70px rgba(26, 30, 214, 0.08);
+  box-shadow: 0 10px 70px rgba(26, 30, 214, 0.08);
+  box-sizing: border-box;
+
   @media (max-width: ${dimensions.phone_width}) {
     padding-top: ${dimensions.base};
   }
@@ -60,21 +64,18 @@ export const ShortDescriptionWrapper = styled.div`
   justify-content: space-between;
   width: 100%;
   gap: ${dimensions.xl_2};
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    gap: 0;
+  }
+
   @media (max-width: ${dimensions.phone_width}) {
     flex-direction: column;
   }
 `;
 
 export const LongDescription = styled.div`
-  margin-top: ${dimensions.xl_2};
   grid-column: 1 / span 3;
-`;
-
-export const Description = styled.p`
-  font-weight: 300;
-  font-size: ${dimensions.base};
-  line-height: ${dimensions.xl};
-  color: ${colors.main_black};
 `;
 
 export const WrapperButtons = styled.div`
@@ -84,17 +85,27 @@ export const WrapperButtons = styled.div`
   gap: 8px;
   max-width: 276px;
   width: 100%;
+
+  @media (max-width: ${dimensions.phone_width}) {
+    margin-top: ${dimensions.base};
+    max-width: 100%;
+  }
 `;
 
 const StyledButton = styled(Button)`
   max-width: 278px;
   width: 100%;
+
+  @media (max-width: ${dimensions.phone_width}) {
+    max-width: 100%;
+  }
 `;
 
 export const TitleHolder = styled.p`
-  font-weight: 700;
+  font-weight: 600;
   font-size: ${dimensions.base};
   margin-bottom: ${dimensions.xs};
+  line-height: ${dimensions.xl};
 `;
 
 const StyledTextArea = styled.textarea`
@@ -131,7 +142,7 @@ const TextAreaWrapper = styled.div`
   }
 
   @media (max-width: ${dimensions.phone_width}) {
-    width: 70%;
+    width: 100%;
   }
 `;
 
@@ -568,15 +579,11 @@ const BookInfo: FC<IBookInfoProps> = ({
               />
             </TextAreaWrapper>
           </>
-        ) : (
-          <LongDescription>
-            <Topic>Description: </Topic>
-            <Description>{description || ''}</Description>
-            {userRole === RolesTypes.READER ? (
-              <OpenLink>see full description</OpenLink>
-            ) : null}
-          </LongDescription>
-        )}
+        ) : description ? (
+          <Section title={'Description: '}>
+            <ExpandableText>{description}</ExpandableText>
+          </Section>
+        ) : null}
       </BookHolder>
       <Modal active={isShowClaimModal} setActive={setIsShowClaimModal}>
         <ClaimOperation
