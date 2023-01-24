@@ -60,44 +60,38 @@ export default function Item({ item }: Props) {
     : defaultImage;
 
   return (
-    <table>
-      <tbody>
-        <tr key={String(item.created_at)}>
-          <td>
-            <InlineWrapper>
-              <img data-testid="coverImg" src={coverUrl} />
-              <ColumnWrapper>
-                <FieldsText titlee>{material?.title}</FieldsText>
-                <FieldsText
-                  secondary
-                >{`${material?.category} / ${material?.author}`}</FieldsText>
-              </ColumnWrapper>
-            </InlineWrapper>
-          </td>
-          <td>
-            {item.status !== StatusTypes.FREE ? (
-              <FieldsText>{countReturnDate(item.created_at)}</FieldsText>
-            ) : (
-              <FieldsText returned>
-                {countReturnedDate(item.created_at)}
-              </FieldsText>
-            )}
-          </td>
-          <td>
-            {item.status === StatusTypes.FREE ? (
-              <FieldsText returned>{t('UserCard.Table.Returned')}</FieldsText>
-            ) : item.status === StatusTypes.OVERDUE ? (
-              <FieldsText overdue>{t('UserCard.Table.Overdue')}</FieldsText>
-            ) : (
-              <FieldsText>
-                {item.status === StatusTypes.BUSY
-                  ? t('UserCard.Table.Claim')
-                  : t('UserCard.Table.Prolong')}
-              </FieldsText>
-            )}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <tr key={String(item.created_at)}>
+      <td>
+        <InlineWrapper>
+          <img data-testid="coverImg" src={coverUrl} />
+          <ColumnWrapper>
+            <FieldsText titlee>{material?.title}</FieldsText>
+            <FieldsText
+              secondary
+            >{`${material?.category} / ${material?.author}`}</FieldsText>
+          </ColumnWrapper>
+        </InlineWrapper>
+      </td>
+      <td>
+        {item.status !== StatusTypes.FREE ? (
+          <FieldsText>{countReturnDate(item.created_at)}</FieldsText>
+        ) : (
+          <FieldsText returned>{countReturnedDate(item.created_at)}</FieldsText>
+        )}
+      </td>
+      <td>
+        {item.status === StatusTypes.FREE ? (
+          <FieldsText returned>{t('UserCard.Table.Returned')}</FieldsText>
+        ) : item.status === StatusTypes.OVERDUE ? (
+          <FieldsText overdue>{t('UserCard.Table.Overdue')}</FieldsText>
+        ) : (
+          <FieldsText>
+            {item.status === StatusTypes.BUSY
+              ? t('UserCard.Table.Claim')
+              : t('UserCard.Table.Prolong')}
+          </FieldsText>
+        )}
+      </td>
+    </tr>
   );
 }

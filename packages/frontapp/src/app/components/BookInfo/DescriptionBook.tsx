@@ -13,12 +13,19 @@ import { useGetAllLocationsQuery } from '@mimir/apollo-client';
 import { INewData, Location, OpenLink, TitleHolder, Topic } from './index';
 import { toast } from 'react-toastify';
 import { useMediaQuery } from 'react-responsive';
+import Days from './Days';
 
 export const WrapperInfo = styled.div`
   display: flex;
+  gap: ${dimensions.xl_2};
+
+  @media (max-width: ${dimensions.wide_laptop_width}) {
+    width: 100%;
+    flex-flow: wrap row;
+  }
+
   @media (max-width: ${dimensions.phone_width}) {
     flex-direction: column;
-    align-items: center;
   }
 `;
 
@@ -27,16 +34,22 @@ export const BookImage = styled.img`
   width: 12rem;
   height: 19.5rem;
   border-radius: 10px;
+
+  @media (max-width: ${dimensions.wide_laptop_width}) {
+    justify-self: center;
+  }
+
   @media (max-width: ${dimensions.phone_width}) {
     align-self: center;
-    margin-bottom: ${dimensions.base};
   }
 `;
 
 export const ShortDescription = styled.div`
-  width: 100%;
-  margin-left: ${dimensions.xl_2};
-  @media (max-width: ${dimensions.phone_width}) {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  > * {
     margin: 0;
   }
 `;
@@ -64,7 +77,6 @@ export const TitleBook = styled.h3`
     display: flex;
     justify-content: center;
     margin-bottom: 0;
-    margin-top: ${dimensions.base};
   }
 `;
 
@@ -72,7 +84,7 @@ const WrapperDropDown = styled.div`
   margin-top: ${dimensions.base};
   width: 21.5rem;
 
-  @media (max-width: ${dimensions.phone_width}) {
+  @media (max-width: ${dimensions.wide_laptop_width}) {
     width: 100%;
   }
 `;
@@ -81,6 +93,10 @@ const RestyledDropdown = styled(Dropdown)`
   margin-top: ${dimensions.xs_2};
   max-width: 21.5rem;
   width: 100%;
+
+  @media (max-width: ${dimensions.laptop_width}) {
+    max-width: 100%;
+  }
 `;
 
 export const TopicDescription = styled.p`
@@ -94,14 +110,21 @@ const StyledStatus = styled.div`
   font-size: ${dimensions.base};
 `;
 
+const DeadlineInputWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
 const StyledInputDeadline = styled.input`
   border: 0.5px solid #bdbdbd;
   border-radius: ${dimensions.xl_3};
   width: 3.7rem;
   outline: none;
-  padding: 10px 0 10px ${dimensions.xl};
+  padding: 10px 0 10px 0;
   background: ${colors.bg_secondary};
   margin-right: ${dimensions.xs_1};
+  text-align: center;
 
   :hover {
     border: 0.5px solid ${colors.accent_color};
@@ -109,15 +132,6 @@ const StyledInputDeadline = styled.input`
 
   :focus {
     border: 0.5px solid ${colors.accent_color};
-  }
-
-  @media (max-width: ${dimensions.tablet_width}) {
-    width: 100%;
-  }
-  @media (max-width: ${dimensions.phone_width}) {
-    width: 5rem;
-    text-align: center;
-    padding-left: 0;
   }
 
   ::-webkit-inner-spin-button,
@@ -162,6 +176,7 @@ const DescriptionBook: FC<IDescriptionBook> = ({
 }) => {
   const { userRole } = useAppSelector((state) => state.user);
   const isPhone = useMediaQuery({ maxWidth: dimensions.phone_width });
+  const isTablet = useMediaQuery({ maxWidth: dimensions.wide_laptop_width });
 
   const { data: allLocations, error: errorLocations } = useGetAllLocationsQuery(
     {
@@ -193,7 +208,7 @@ const DescriptionBook: FC<IDescriptionBook> = ({
         {editing ? (
           <>
             <TitleHolder>Name </TitleHolder>
-            <WrapperInput isFullWidth={isPhone}>
+            <WrapperInput isFullWidth={isPhone || isTablet}>
               <StyledInput
                 type="text"
                 value={newTitleAndAuthor.newTitle}
@@ -225,7 +240,7 @@ const DescriptionBook: FC<IDescriptionBook> = ({
           <>
             <br />
             <TitleHolder>Author </TitleHolder>
-            <WrapperInput isFullWidth={isPhone}>
+            <WrapperInput isFullWidth={isPhone || isTablet}>
               <StyledInput
                 type="text"
                 name="newAuthor"
@@ -255,19 +270,24 @@ const DescriptionBook: FC<IDescriptionBook> = ({
           <>
             <br />
             <TitleHolder>Deadline </TitleHolder>
-            <StyledInputDeadline
-              value={newDeadline}
-              type="number"
-              onChange={handleChangeDeadline}
-              min="1"
-              max="31"
-            />
-            days
+            <DeadlineInputWrapper>
+              <StyledInputDeadline
+                value={newDeadline}
+                type="number"
+                onChange={handleChangeDeadline}
+                min="1"
+                max="31"
+              />
+              <Days number={newDeadline} />
+            </DeadlineInputWrapper>
           </>
         ) : (
           <>
             <Topic>Deadline: </Topic>
-            <TopicDescription>{newDeadline + ' days'}</TopicDescription>
+            <TopicDescription>
+              {newDeadline + ' '}
+              <Days number={newDeadline} />
+            </TopicDescription>
           </>
         )}
         <>

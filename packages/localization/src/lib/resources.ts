@@ -1,6 +1,11 @@
 export const resources = {
   en: {
     translation: {
+      Days: {
+        One: 'day',
+        Many1: 'days',
+        Many2: 'days',
+      },
       Back: 'Back',
       Loading: 'Loading...',
       Cancel: 'Cancel',
@@ -281,6 +286,11 @@ export const resources = {
   },
   ru: {
     translation: {
+      Days: {
+        One: 'день',
+        Many1: 'дней',
+        Many2: 'дня',
+      },
       Back: 'Назад',
       Loading: 'Загрузка...',
       Cancel: 'Закрыть',

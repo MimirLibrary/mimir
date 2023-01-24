@@ -24,7 +24,7 @@ const WrapperRoutes = styled.div`
 
   @media (max-width: ${dimensions.laptop_width}) {
     width: 100%;
-    padding: 2.5rem ${dimensions.xs_1} ${dimensions.xs_1} ${dimensions.xs_1};
+    padding: 67px ${dimensions.xs_1} ${dimensions.xs_1} ${dimensions.xs_1};
   }
 
   @media (max-width: ${dimensions.tablet_width}) {

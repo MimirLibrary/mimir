@@ -234,6 +234,7 @@ exports[`UserCard Component should match snapshot 1`] = `
 
 @media (max-width: 30rem) {
   .emotion-20 {
+    max-width: unset;
     width: 100%;
     -webkit-flex-direction: column;
     -ms-flex-direction: column;

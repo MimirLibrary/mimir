@@ -121,6 +121,7 @@ const ButtonsWrapper = styled.div`
   row-gap: 8px;
 
   @media (max-width: ${dimensions.phone_width}) {
+    max-width: unset;
     width: 100%;
     flex-direction: column;
     margin: 16px 0 0;

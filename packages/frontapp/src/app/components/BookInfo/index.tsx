@@ -43,6 +43,7 @@ import { TUserLocation } from '../../store/slices/userSlice';
 import DescriptionBook from './DescriptionBook';
 import Section from '../Section';
 import ExpandableText from '../ExpandableText';
+import { useMediaQuery } from 'react-responsive';
 
 export const BookHolder = styled.div`
   width: 100%;
@@ -53,10 +54,6 @@ export const BookHolder = styled.div`
   padding: ${dimensions.base_2};
   box-shadow: 0 10px 70px rgba(26, 30, 214, 0.08);
   box-sizing: border-box;
-
-  @media (max-width: ${dimensions.phone_width}) {
-    padding-top: ${dimensions.base};
-  }
 `;
 
 export const ShortDescriptionWrapper = styled.div`
@@ -64,14 +61,6 @@ export const ShortDescriptionWrapper = styled.div`
   justify-content: space-between;
   width: 100%;
   gap: ${dimensions.xl_2};
-
-  @media (max-width: ${dimensions.tablet_width}) {
-    gap: 0;
-  }
-
-  @media (max-width: ${dimensions.phone_width}) {
-    flex-direction: column;
-  }
 `;
 
 export const LongDescription = styled.div`
@@ -86,17 +75,19 @@ export const WrapperButtons = styled.div`
   max-width: 276px;
   width: 100%;
 
-  @media (max-width: ${dimensions.phone_width}) {
+  @media (max-width: ${dimensions.wide_laptop_width}) {
     margin-top: ${dimensions.base};
+    flex-flow: wrap row;
     max-width: 100%;
   }
 `;
 
 const StyledButton = styled(Button)`
   max-width: 278px;
-  width: 100%;
 
-  @media (max-width: ${dimensions.phone_width}) {
+  @media (max-width: ${dimensions.wide_laptop_width}) {
+    flex: 1;
+    min-width: 278px;
     max-width: 100%;
   }
 `;
@@ -118,6 +109,7 @@ const StyledTextArea = styled.textarea`
   line-height: ${dimensions.xl};
   color: ${colors.main_black};
   resize: none;
+  text-align: justify;
 `;
 const TextAreaWrapper = styled.div`
   display: flex;
@@ -126,13 +118,13 @@ const TextAreaWrapper = styled.div`
   width: 100% - 100px;
   border: 0.5px solid #bdbdbd;
   border-radius: ${dimensions.xl_3};
-  padding: 10px 0;
-  padding-left: ${dimensions.xs_1};
-  margin-right: ${dimensions.xs_1};
+  padding: ${dimensions.xs_1};
   background: ${colors.bg_secondary};
+
   :hover {
     border: 0.5px solid ${colors.accent_color};
   }
+
   :focus {
     border: 0.5px solid ${colors.accent_color};
   }
@@ -224,6 +216,7 @@ const BookInfo: FC<IBookInfoProps> = ({
     refetchQueries: [GetNotificationsByPersonDocument],
   });
 
+  const isTablet = useMediaQuery({ maxWidth: dimensions.wide_laptop_width });
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [isShowClaimModal, setIsShowClaimModal] = useState<boolean>(false);
@@ -472,6 +465,81 @@ const BookInfo: FC<IBookInfoProps> = ({
     setIsMaterialTakenByCurrentUser(false);
   };
 
+  const buttons = () => {
+    return userRole === RolesTypes.READER ? (
+      <>
+        {statusInfo?.person_id === id ? (
+          <WrapperButtons>
+            {!statusInfo ? (
+              <></>
+            ) : (
+              statusInfo?.status !== 'Free' && (
+                <>
+                  <StyledButton value="Return a book" onClick={retrieveBook} />
+                  <StyledButton
+                    value="Extend claim period"
+                    transparent
+                    onClick={prolongPeriod}
+                  />
+                </>
+              )
+            )}
+          </WrapperButtons>
+        ) : (
+          <WrapperButtons>
+            {statusInfo?.status !== 'Free' &&
+              (!isMaterialTakenByCurrentUser ? (
+                <StyledButton
+                  value="Notify when available"
+                  svgComponent={<EnableNotifySvg />}
+                  onClick={handleEnableNotifyButton}
+                />
+              ) : (
+                <StyledButton
+                  value="Cancel"
+                  svgComponent={<CancelNotifySvg />}
+                  transparent
+                  onClick={handleCancelNotifyButton}
+                />
+              ))}
+          </WrapperButtons>
+        )}
+        {statusInfo?.status === 'Free' ? (
+          <StyledButton
+            value="Claim a book"
+            svgComponent={<Claim />}
+            onClick={showClaimModal}
+          />
+        ) : null}
+      </>
+    ) : editing ? (
+      <WrapperButtons>
+        <StyledButton value="Save changes" onClick={editInformation} />
+        <StyledButton
+          value="Cancel changes"
+          transparent
+          onClick={discardChanges}
+        />
+      </WrapperButtons>
+    ) : (
+      <WrapperButtons>
+        <StyledButton
+          value="Edit information"
+          transparent
+          svgComponent={<Edit />}
+          onClick={handleEditBtn}
+        />
+        <StyledButton
+          value="Delete item"
+          transparent
+          secondary
+          svgComponent={<Remove />}
+          onClick={handleDeleteBtn}
+        />
+      </WrapperButtons>
+    );
+  };
+
   return (
     <>
       <BookHolder>
@@ -492,81 +560,7 @@ const BookInfo: FC<IBookInfoProps> = ({
             handleChangeAuthorAndTitle={handleChangeNewDescriptionData}
             handleChangeNewGenre={handleChangeCategory}
           />
-          {userRole === RolesTypes.READER ? (
-            <>
-              {statusInfo?.person_id === id ? (
-                <WrapperButtons>
-                  {!statusInfo ? (
-                    <></>
-                  ) : (
-                    statusInfo?.status !== 'Free' && (
-                      <>
-                        <StyledButton
-                          value="Return a book"
-                          onClick={retrieveBook}
-                        />
-                        <StyledButton
-                          value="Extend claim period"
-                          transparent
-                          onClick={prolongPeriod}
-                        />
-                      </>
-                    )
-                  )}
-                </WrapperButtons>
-              ) : (
-                <WrapperButtons>
-                  {statusInfo?.status !== 'Free' &&
-                    (!isMaterialTakenByCurrentUser ? (
-                      <StyledButton
-                        value="Notify when available"
-                        svgComponent={<EnableNotifySvg />}
-                        onClick={handleEnableNotifyButton}
-                      />
-                    ) : (
-                      <StyledButton
-                        value="Cancel"
-                        svgComponent={<CancelNotifySvg />}
-                        transparent
-                        onClick={handleCancelNotifyButton}
-                      />
-                    ))}
-                </WrapperButtons>
-              )}
-              {statusInfo?.status === 'Free' ? (
-                <StyledButton
-                  value="Claim a book"
-                  svgComponent={<Claim />}
-                  onClick={showClaimModal}
-                />
-              ) : null}
-            </>
-          ) : editing ? (
-            <WrapperButtons>
-              <StyledButton value="Save changes" onClick={editInformation} />
-              <StyledButton
-                value="Cancel changes"
-                transparent
-                onClick={discardChanges}
-              />
-            </WrapperButtons>
-          ) : (
-            <WrapperButtons>
-              <StyledButton
-                value="Edit information"
-                transparent
-                svgComponent={<Edit />}
-                onClick={handleEditBtn}
-              />
-              <StyledButton
-                value="Delete item"
-                transparent
-                secondary
-                svgComponent={<Remove />}
-                onClick={handleDeleteBtn}
-              />
-            </WrapperButtons>
-          )}
+          {isTablet ? null : buttons()}
         </ShortDescriptionWrapper>
         {editing ? (
           <>
@@ -584,6 +578,7 @@ const BookInfo: FC<IBookInfoProps> = ({
             <ExpandableText>{description}</ExpandableText>
           </Section>
         ) : null}
+        {isTablet ? buttons() : null}
       </BookHolder>
       <Modal active={isShowClaimModal} setActive={setIsShowClaimModal}>
         <ClaimOperation
