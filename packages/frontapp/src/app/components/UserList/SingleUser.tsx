@@ -74,7 +74,6 @@ export interface ISingleUser {
   statuses: IClaimHistory[];
   className?: string;
   underlined?: boolean;
-  hoverable?: boolean;
 }
 
 const SingleUser: FC<ISingleUser> = ({

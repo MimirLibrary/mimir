@@ -49,9 +49,6 @@ const StyledSidebar = styled.aside<IStyledSidebarProps>`
   ::-webkit-scrollbar {
     width: 0;
   }
-  // @media (max-width: ${dimensions.laptop_width}) {
-  //   max-width: 18rem;
-  // }
 
   @media (max-width: ${dimensions.laptop_width}) {
     position: fixed;
