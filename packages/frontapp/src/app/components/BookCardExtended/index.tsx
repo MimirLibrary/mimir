@@ -49,7 +49,7 @@ const Title = styled.h4`
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-
+  height: ${dimensions.xl_6}; //strict 2 lines in title even if there is one line
   font-weight: 500;
   font-size: ${dimensions.base};
   color: ${colors.main_black};
