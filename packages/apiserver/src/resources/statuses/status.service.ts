@@ -44,7 +44,7 @@ export class StatusService {
         statuses: [StatusTypes.BUSY, StatusTypes.PROLONG],
       })
       .andWhere(
-        `s1.lastReminderTime IS NULL OR s1.lastReminderTime < NOW() - INTERVAL '${reminderPeriod} days'`
+        `(s1.lastReminderTime IS NULL OR s1.lastReminderTime < NOW() - INTERVAL '${reminderPeriod} days')`
       )
       .andWhere(
         `s1.created_at < NOW() - INTERVAL '${this.periodOfKeeping} days'`
