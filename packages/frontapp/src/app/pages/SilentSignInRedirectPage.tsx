@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { AuthManager } from '@mimir/auth-manager';
 
-const StartPage = () => {
+const SilentSignInRedirectPage = () => {
   useEffect(() => {
-    AuthManager.signIn();
+    AuthManager.signInSilentCallback();
   }, []);
+
   return null;
 };
 
-export default StartPage;
+export default SilentSignInRedirectPage;

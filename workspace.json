@@ -4,6 +4,7 @@
     "api-util": "packages/api-util",
     "apiserver": "packages/apiserver",
     "apollo-client": "packages/apollo-client",
+    "auth-manager": "packages/auth-manager",
     "email-service": "packages/email-service",
     "frontapp": "packages/frontapp",
     "frontapp-e2e": "packages/frontapp-e2e",

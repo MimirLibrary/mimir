@@ -1,0 +1,33 @@
+{
+  "sourceRoot": "packages/auth-manager/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/auth-manager",
+        "tsConfig": "packages/auth-manager/tsconfig.lib.json",
+        "packageJson": "packages/auth-manager/package.json",
+        "main": "packages/auth-manager/src/index.ts",
+        "assets": ["packages/auth-manager/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/auth-manager/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/auth-manager"],
+      "options": {
+        "jestConfig": "packages/auth-manager/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

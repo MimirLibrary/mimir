@@ -5,6 +5,7 @@ import { RolesTypes } from '@mimir/global-types';
 import NavbarItem from './index';
 import { ReactComponent as Home } from '../../../assets/Navbar/Home.svg';
 import { NavbarItems } from '../../../utils/NavbarItems';
+import { AuthManager } from '@mimir/auth-manager';
 
 jest.mock('react-redux');
 jest.mock('i18next', () => ({
@@ -67,13 +68,12 @@ describe('render NavbarItem component', () => {
   });
 
   it('should fire logout', () => {
-    jest.spyOn(reactHooks, 'useSelector').mockReturnValue(mockedStore);
     const handleChangeTab = jest.fn();
-    const handleDispatch = jest.spyOn(reactHooks, 'useDispatch');
+    const signOut = jest.spyOn(AuthManager, 'signOut');
     render(
       <NavbarItem
         icon={<Home />}
-        name="Logout"
+        name={NavbarItems.LOGOUT}
         path="/"
         changeActiveTab={handleChangeTab}
       />
@@ -82,7 +82,7 @@ describe('render NavbarItem component', () => {
     act(() => {
       button?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     });
-    expect(handleDispatch).toBeCalledTimes(2);
+    expect(signOut).toHaveBeenCalled();
   });
 
   it('should activate item', async () => {

@@ -1,13 +1,12 @@
 import { FC, ReactElement } from 'react';
 import styled from '@emotion/styled';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { t } from 'i18next';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import { NavbarItems } from '../../../utils/NavbarItems';
-import { useAppDispatch } from '../../hooks/useTypedDispatch';
-import { logout } from '../../store/slices/userSlice';
 import { RolesTypes } from '@mimir/global-types';
+import { AuthManager } from '@mimir/auth-manager';
 
 interface IProps {
   icon: ReactElement;
@@ -84,15 +83,13 @@ const TextInButton = styled.p<IStyle>`
 `;
 
 const NavbarItem: FC<IProps> = ({ icon, name, path, changeActiveTab }) => {
-  const history = useNavigate();
-  const dispatch = useAppDispatch();
   const { userRole } = useAppSelector((state) => state.user);
   const { activeTab } = useAppSelector((state) => state.tabs);
 
   const handleLogout = () => {
-    dispatch(logout());
-    history('/');
-    localStorage.clear();
+    AuthManager.signOut().then(() => {
+      localStorage.clear();
+    });
   };
 
   return (
