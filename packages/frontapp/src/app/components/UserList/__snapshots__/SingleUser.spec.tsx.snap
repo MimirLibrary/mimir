@@ -66,6 +66,7 @@ exports[`render SingleUserCard component renders correctly, with snapshots 1`] =
   font-weight: 500;
   font-size: 1rem;
   line-height: 1.25rem;
+  margin-bottom: 0.5rem;
 }
 
 .emotion-5 {
@@ -140,7 +141,6 @@ exports[`render SingleUserCard component renders correctly, with snapshots 1`] =
   >
     <p
       class="emotion-4"
-      style="margin-bottom: 0.5rem;"
     >
       Test
     </p>
