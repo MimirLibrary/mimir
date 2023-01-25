@@ -9,7 +9,7 @@ exports[`render DescriptionBook component renders correctly with snapshots 1`] =
   gap: 1.5rem;
 }
 
-@media (max-width: 85rem) {
+@media (max-width: 90rem) {
   .emotion-0 {
     width: 100%;
     -webkit-box-flex-flow: wrap row;
@@ -34,7 +34,7 @@ exports[`render DescriptionBook component renders correctly with snapshots 1`] =
   border-radius: 10px;
 }
 
-@media (max-width: 85rem) {
+@media (max-width: 90rem) {
   .emotion-1 {
     justify-self: center;
   }
