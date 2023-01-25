@@ -9,7 +9,10 @@
         "outputPath": "dist/packages/email-service",
         "main": "packages/email-service/src/main.ts",
         "tsConfig": "packages/email-service/tsconfig.app.json",
-        "assets": ["packages/email-service/src/assets"]
+        "assets": [
+          "packages/email-service/src/assets",
+          "packages/email-service/src/post-deploy.sh"
+        ]
       },
       "configurations": {
         "production": {
@@ -44,6 +47,20 @@
       "options": {
         "jestConfig": "packages/email-service/jest.config.ts",
         "passWithNoTests": true
+      }
+    },
+    "deploy": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build"],
+      "options": {},
+      "configurations": {
+        "production": {
+          "commands": [
+            "cp package-lock.json dist/packages/email-service",
+            "rsync -azvr --exclude=node_modules/ --delete --chown=app:app dist/packages/email-service/ root@mimirapp.xyz:/srv/email-service"
+          ],
+          "parallel": false
+        }
       }
     }
   },
