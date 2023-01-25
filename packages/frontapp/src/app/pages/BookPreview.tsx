@@ -249,7 +249,7 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
                             id={item?.person.id}
                             name={item?.person.username}
                             statuses={item?.person.statuses as IClaimHistory[]}
-                            underlined={isMobile}
+                            isUnderlined={isMobile}
                           />
                           <FieldsText>
                             {countReturnDate(item.created_at)}

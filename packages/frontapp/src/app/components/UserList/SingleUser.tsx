@@ -9,7 +9,7 @@ import ClaimHistory from '../ClaimHistory';
 import { RoutesTypes } from '../../../utils/routes';
 
 interface IInfoWrapper {
-  underlined?: boolean;
+  isUnderlined?: boolean;
 }
 
 const InfoWrapper = styled.div<IInfoWrapper>`
@@ -17,8 +17,9 @@ const InfoWrapper = styled.div<IInfoWrapper>`
   flex-direction: column;
   flex: 1;
   margin-left: ${dimensions.base};
-  padding-bottom: ${(props) => (props.underlined ? '0.5rem' : null)};
-  border-bottom: ${(props) => (props.underlined ? '1px solid #333333' : null)}};
+  padding-bottom: ${(props) => (props.isUnderlined ? '0.5rem' : null)};
+  border-bottom: ${(props) =>
+    props.isUnderlined ? '1px solid #333333' : null}};
 
   > p:first-of-type {
     margin-bottom: ${dimensions.xs_2};
@@ -74,7 +75,7 @@ export interface ISingleUser {
   name: string;
   statuses: IClaimHistory[];
   className?: string;
-  underlined?: boolean;
+  isUnderlined?: boolean;
 }
 
 const SingleUser: FC<ISingleUser> = ({
@@ -83,7 +84,7 @@ const SingleUser: FC<ISingleUser> = ({
   name,
   avatar,
   className,
-  underlined = false,
+  isUnderlined = false,
 }) => {
   const navigate = useNavigate();
   const handleUserRedirect = () => {
@@ -99,7 +100,7 @@ const SingleUser: FC<ISingleUser> = ({
       <AvatarWrapper>
         <Avatar src={avatar || mockData.avatar} />
       </AvatarWrapper>
-      <InfoWrapper underlined={underlined}>
+      <InfoWrapper isUnderlined={isUnderlined}>
         <Description>{name}</Description>
         <ClaimsWrapper>
           <ClaimHistory statuses={statuses} />

@@ -176,7 +176,7 @@ const DescriptionBook: FC<IDescriptionBook> = ({
 }) => {
   const { userRole } = useAppSelector((state) => state.user);
   const isPhone = useMediaQuery({ maxWidth: dimensions.phone_width });
-  const isTablet = useMediaQuery({ maxWidth: dimensions.wide_laptop_width });
+  const isLaptop = useMediaQuery({ maxWidth: dimensions.wide_laptop_width });
 
   const { data: allLocations, error: errorLocations } = useGetAllLocationsQuery(
     {
@@ -208,7 +208,7 @@ const DescriptionBook: FC<IDescriptionBook> = ({
         {editing ? (
           <>
             <TitleHolder>Name </TitleHolder>
-            <WrapperInput isFullWidth={isPhone || isTablet}>
+            <WrapperInput isFullWidth={isPhone || isLaptop}>
               <StyledInput
                 type="text"
                 value={newTitleAndAuthor.newTitle}
@@ -240,7 +240,7 @@ const DescriptionBook: FC<IDescriptionBook> = ({
           <>
             <br />
             <TitleHolder>Author </TitleHolder>
-            <WrapperInput isFullWidth={isPhone || isTablet}>
+            <WrapperInput isFullWidth={isPhone || isLaptop}>
               <StyledInput
                 type="text"
                 name="newAuthor"
