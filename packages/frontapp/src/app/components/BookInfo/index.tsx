@@ -464,15 +464,6 @@ const BookInfo: FC<IBookInfoProps> = ({
     setIsMaterialTakenByCurrentUser(false);
   };
 
-  console.log('Status: ', statusInfo?.status !== 'Free');
-  console.log('Id: ', statusInfo?.person_id === id);
-  console.log('Id: ', id);
-  console.log('Id: ', statusInfo?.person_id);
-  console.log(
-    'Expr: ',
-    statusInfo?.status !== 'Free' && statusInfo?.person_id === id
-  );
-
   return (
     <>
       <BookHolder>
