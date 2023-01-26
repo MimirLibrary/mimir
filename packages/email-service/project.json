@@ -11,7 +11,8 @@
         "tsConfig": "packages/email-service/tsconfig.app.json",
         "assets": [
           "packages/email-service/src/assets",
-          "packages/email-service/src/post-deploy.sh"
+          "packages/email-service/src/post-deploy.sh",
+          "packages/email-service/src/template"
         ]
       },
       "configurations": {

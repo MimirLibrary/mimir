@@ -35,10 +35,18 @@ import { AuthGuard } from '../auth/auth.guard';
 import { BlockedUsersGuard } from '../resources/blocked-users/blocked-users.guard';
 import { GrantGuard } from '../permission/grant.guard';
 import { DataTransferModule } from '../data-transfer/data-transfer.module';
+import { common } from '../config/index';
+import { ScheduleModule } from '@nestjs/schedule';
+import { SchedulerService } from '../scheduler';
+import { ReminderModule } from '../reminder';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+      load: [common],
+    }),
     TypeOrmModule.forRoot({
       ...typeorm,
       entities: [
@@ -52,6 +60,7 @@ import { DataTransferModule } from '../data-transfer/data-transfer.module';
       ],
       migrations: [`${__dirname}/migrations/*.js`],
     }),
+    ScheduleModule.forRoot(),
     MaterialModule,
     DataTransferModule,
     StatusModule,
@@ -78,6 +87,7 @@ import { DataTransferModule } from '../data-transfer/data-transfer.module';
     ServeStaticModule.forRoot({
       rootPath: resolve(process.cwd(), 'storage'),
     }),
+    ReminderModule,
   ],
   controllers: [AppController],
   providers: [
@@ -86,6 +96,7 @@ import { DataTransferModule } from '../data-transfer/data-transfer.module';
     { provide: APP_GUARD, useClass: AuthGuard },
     { provide: APP_GUARD, useClass: BlockedUsersGuard },
     { provide: APP_GUARD, useClass: GrantGuard },
+    SchedulerService,
   ],
 })
 export class AppModule {}
