@@ -24,7 +24,7 @@ interface IStyledSidebarProps {
 const StyledWrapper = styled.div<IStyledSidebarProps>`
   max-width: 22rem;
   width: 100%;
-  @media (max-width: ${dimensions.tablet_width}) {
+  @media (max-width: ${dimensions.laptop_width}) {
     max-width: none;
     position: fixed;
     background-color: ${(props) =>
@@ -49,11 +49,8 @@ const StyledSidebar = styled.aside<IStyledSidebarProps>`
   ::-webkit-scrollbar {
     width: 0;
   }
-  @media (max-width: ${dimensions.laptop_width}) {
-    max-width: 18rem;
-  }
 
-  @media (max-width: ${dimensions.tablet_width}) {
+  @media (max-width: ${dimensions.laptop_width}) {
     position: fixed;
     padding-top: ${dimensions.lg};
     top: 0;

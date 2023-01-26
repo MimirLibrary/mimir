@@ -17,7 +17,7 @@ const StyledStatisticsButton = styled.button<IProps>`
   stroke: ${(props) => (props.active ? colors.accent_color : 'black')};
   display: none;
 
-  @media (max-width: ${dimensions.tablet_width}) {
+  @media (max-width: ${dimensions.laptop_width}) {
     padding: 0;
     display: flex;
     align-items: center;

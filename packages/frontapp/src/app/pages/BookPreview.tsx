@@ -5,7 +5,7 @@ import AllBooksList from '../components/AllBooksList';
 import styled from '@emotion/styled';
 import { useAppSelector } from '../hooks/useTypedSelector';
 
-import { colors, dimensions, theme } from '@mimir/ui-kit';
+import { colors, dimensions } from '@mimir/ui-kit';
 import {
   useGetMaterialByIdQuery,
   useGetAllMaterialsQuery,
@@ -29,6 +29,7 @@ import { getDates, isOverdue } from '../models/helperFunctions/converTime';
 import { locationIds } from '../store/slices/userSlice';
 import { toast } from 'react-toastify';
 import Loader, { WrapperLoader } from '../components/Loader';
+import { useMediaQuery } from 'react-responsive';
 
 export const ButtonGroup = styled.div`
   display: flex;
@@ -64,12 +65,12 @@ const RestyleSingleUser = styled(SingleUser)`
   height: auto;
   background: none;
   box-shadow: none;
+  :hover {
+    box-shadow: none;
+  }
 
   @media (max-width: ${dimensions.tablet_width}) {
     margin-bottom: ${dimensions.sm};
-    :hover {
-      box-shadow: none;
-    }
     :first-of-type {
       width: 100%;
     }
@@ -86,10 +87,6 @@ const FieldsText = styled.p<IFieldsTextProps>`
       ? colors.free_book
       : colors.accent_color};
   margin-bottom: ${dimensions.xs_2};
-  @media (max-width: ${dimensions.tablet_width}) {
-    margin-left: 72px;
-    width: 75%;
-  }
 `;
 
 interface IFieldsTextProps {
@@ -104,6 +101,7 @@ type BookPreviewProps = {
 const columnTitles = ['User', 'Deadline', 'State'];
 
 const BookPreview = ({ donate }: BookPreviewProps) => {
+  const isMobile = useMediaQuery({ maxWidth: dimensions.phone_width });
   const { item_id } = useParams();
   const [search, setSearch] = useState<string>('');
   const [claimHistory, setClaimHistory] =
@@ -251,20 +249,24 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
                             id={item?.person.id}
                             name={item?.person.username}
                             statuses={item?.person.statuses as IClaimHistory[]}
+                            isUnderlined={isMobile}
                           />
                           <FieldsText>
                             {countReturnDate(item.created_at)}
                           </FieldsText>
                           {item.status === StatusTypes.FREE ? (
                             <FieldsText returned>
+                              {t('UserCard.Table.State') + ': '}
                               {t('UserCard.Table.Returned')}
                             </FieldsText>
                           ) : isOverdue(item.created_at) ? (
                             <FieldsText overdue>
+                              {t('UserCard.Table.State') + ': '}
                               {t('UserCard.Table.Overdue')}
                             </FieldsText>
                           ) : (
                             <FieldsText>
+                              {t('UserCard.Table.State') + ': '}
                               {item.status === StatusTypes.BUSY
                                 ? t('UserCard.Table.Claim')
                                 : item.status === StatusTypes.PROLONG

@@ -19,11 +19,11 @@ import { useRoutes } from '../../hooks/useRoutes';
 const WrapperRoutes = styled.div`
   width: calc(100% - 22rem);
   background-color: ${colors.bg_primary};
-  padding: 2.5rem 2.5rem 0 2.3rem;
+  padding: 2.5rem 2.5rem 2.5rem 2.3rem;
 
   @media (max-width: ${dimensions.laptop_width}) {
     width: 100%;
-    padding: 2.5rem ${dimensions.xs_1};
+    padding: 67px ${dimensions.xs_1} ${dimensions.xs_1} ${dimensions.xs_1};
   }
 
   @media (max-width: ${dimensions.tablet_width}) {
