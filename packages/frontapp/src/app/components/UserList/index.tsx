@@ -22,7 +22,11 @@ const ReadersWrapper = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: ${dimensions.xl_2};
-  padding-top: 56px;
+  margin-top: 56px;
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    margin-top: 1.875rem;
+  }
 `;
 
 const Title = styled.p`
