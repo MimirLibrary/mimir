@@ -71,6 +71,13 @@ export const WrapperInput = styled.div<WrapperInputProps>`
     font-size: ${dimensions.sm};
     line-height: ${dimensions.lg};
   }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    max-width: 100%;
+    width: ${(props) => (props.isFullWidth ? '100%' : '48vw')};
+    padding: 9px 0;
+    padding-left: calc(${dimensions.base} - 0.5rem);
+  } ;
 `;
 
 interface ISearchParams {

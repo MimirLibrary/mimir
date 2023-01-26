@@ -57,6 +57,7 @@ const ButtonWrapper = styled.div`
     bottom: 0;
     background-color: ${colors.bg_secondary};
     padding: ${dimensions.xs_2};
+    margin: 0 -${dimensions.xs_2};
   }
 `;
 
