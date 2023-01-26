@@ -16,11 +16,37 @@ exports[`UserCard Component should match snapshot 1`] = `
   -ms-flex-align: center;
   align-items: center;
   background: #FFFFFF;
-  height: 250px;
-  width: auto;
   box-shadow: 0px 10px 70px rgba(26, 30, 214, 0.08);
   border-radius: 10px;
   padding: 32px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+@media (max-width: 30rem) {
+  .emotion-0 {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-items: flex-start;
+    -webkit-box-align: flex-start;
+    -ms-flex-align: flex-start;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 30rem) {
+  .emotion-0 {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-items: flex-start;
+    -webkit-box-align: flex-start;
+    -ms-flex-align: flex-start;
+    align-items: flex-start;
+  }
 }
 
 .emotion-1 {
@@ -31,6 +57,15 @@ exports[`UserCard Component should match snapshot 1`] = `
   width: 115px;
   height: 186px;
   object-fit: cover;
+  border-radius: 10px;
+}
+
+@media (max-width: 30rem) {
+  .emotion-1 {
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+  }
 }
 
 .emotion-2 {
@@ -47,11 +82,32 @@ exports[`UserCard Component should match snapshot 1`] = `
   row-gap: 8px;
 }
 
+@media (max-width: 30rem) {
+  .emotion-2 {
+    row-gap: 16px;
+    margin: 0;
+    width: 100%;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
 .emotion-3 {
   font-weight: 700;
   font-size: 1.5rem;
   line-height: 1.5rem;
   margin-bottom: 1rem;
+}
+
+@media (max-width: 30rem) {
+  .emotion-3 {
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    margin-bottom: 0;
+    margin-top: 16px;
+  }
 }
 
 .emotion-4 {
@@ -70,16 +126,48 @@ exports[`UserCard Component should match snapshot 1`] = `
   align-items: center;
 }
 
+@media (max-width: 30rem) {
+  .emotion-4 {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-items: flex-start;
+    -webkit-box-align: flex-start;
+    -ms-flex-align: flex-start;
+    align-items: flex-start;
+  }
+}
+
 .emotion-5 {
   font-weight: 500;
   font-size: 1rem;
   line-height: 1.25rem;
 }
 
+@media (max-width: 30rem) {
+  .emotion-5 {
+    -webkit-align-self: flex-start;
+    -ms-flex-item-align: flex-start;
+    align-self: flex-start;
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+}
+
 .emotion-6 {
   font-weight: 300;
   font-size: 1rem;
   line-height: 1.25rem;
+}
+
+@media (max-width: 30rem) {
+  .emotion-6 {
+    -webkit-align-self: flex-start;
+    -ms-flex-item-align: flex-start;
+    align-self: flex-start;
+    margin-bottom: 0;
+    margin-top: 0;
+  }
 }
 
 .emotion-10 {
@@ -91,6 +179,18 @@ exports[`UserCard Component should match snapshot 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   row-gap: inherit;
+}
+
+@media (max-width: 30rem) {
+  .emotion-10 {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-items: flex-start;
+    -webkit-box-align: flex-start;
+    -ms-flex-align: flex-start;
+    align-items: flex-start;
+  }
 }
 
 .emotion-11 {
@@ -130,6 +230,17 @@ exports[`UserCard Component should match snapshot 1`] = `
   max-width: 276px;
   width: 100%;
   row-gap: 8px;
+}
+
+@media (max-width: 30rem) {
+  .emotion-20 {
+    max-width: unset;
+    width: 100%;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    margin: 16px 0 0;
+  }
 }
 
 .emotion-21 {

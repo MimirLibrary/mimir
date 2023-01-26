@@ -1,6 +1,11 @@
 export const resources = {
   en: {
     translation: {
+      Days: {
+        One: 'day',
+        Many1: 'days',
+        Many2: 'days',
+      },
       Back: 'Back',
       BackForNotFoundBook: 'Back to all books',
       BackForNotFoundUser: 'Back to all users',
@@ -179,6 +184,7 @@ export const resources = {
         Desc: 'List of items you have donated to the library',
       },
       Statuses: {
+        Accepted: 'Accepted',
         Overdue: 'Overdue',
         'Free/history-of-claim': 'Returned',
         'Free/history-of-donate': 'Received',
@@ -190,8 +196,8 @@ export const resources = {
         Claimed: 'Claimed',
       },
       BookClaimHistory: {
-        Title: 'Claim history',
-        Desc: 'List of users who bought this item',
+        Title: 'Claim list',
+        Desc: 'List of all items user have taken for all the time',
       },
       PlaceholderTitle: {
         Donate: 'No donations',
@@ -231,6 +237,17 @@ export const resources = {
           ThingsTaken: 'Number of things taken',
           OverdueDeals: 'Number of overdue deals',
         },
+      },
+      Donates: {
+        Title: 'Donates from user',
+        Description:
+          'Items brought to the library by users. Confirm them so that they appear in the electronic database of books',
+        NoDescription: 'no description provided.',
+      },
+      TableHeader: {
+        ItemName: 'Item name',
+        UserName: 'User name',
+        State: 'State',
       },
       DonateItem: {
         Title: 'Are you planning to donate something to the library?',
@@ -279,10 +296,31 @@ export const resources = {
           AskManager: 'Ask a manager',
         },
       },
+      ManagerDonateModal: {
+        Title: 'Warning!',
+        MessageReject:
+          'Are you sure you want to reject the book "${title}" from the library?',
+        MessageAccept:
+          'Are you sure you want to add the book "${title}" from the library?',
+        Buttons: {
+          Accept: 'Yes, accept',
+          Reject: 'Yes, reject',
+          Cancel: 'Cancel',
+        },
+      },
+      Buttons: {
+        Accept: 'Accept',
+        Reject: 'Reject',
+      },
     },
   },
   ru: {
     translation: {
+      Days: {
+        One: 'день',
+        Many1: 'дней',
+        Many2: 'дня',
+      },
       Back: 'Назад',
       BackForNotFoundBook: 'Назад ко всем книгам',
       BackForNotFoundUser: 'Назад ко всем пользователям',
@@ -460,6 +498,7 @@ export const resources = {
         Desc: 'Список вещей, пожертвованных вами в библиотеку',
       },
       Statuses: {
+        Accepted: 'Принята',
         Overdue: 'Просрочено',
         'Free/history-of-claim': 'Возвращено',
         'Free/history-of-donate': 'Принято',
@@ -469,6 +508,17 @@ export const resources = {
         Pending: 'В ожидании менеджера',
         Rejected: 'Отклонено',
         Claimed: 'Используется',
+      },
+      Donates: {
+        Title: 'Пожертвования пользователей',
+        Description:
+          'Книги, пожертвованные пользователями. Подтвердите их получение, чтобы они появились в базе данных библиотеки.',
+        NoDescription: 'нет описания.',
+      },
+      TableHeader: {
+        ItemName: 'Название книги',
+        UserName: 'Имя пользователя',
+        State: 'Состояние',
       },
       BookClaimHistory: {
         Title: 'История действий',
@@ -560,6 +610,21 @@ export const resources = {
           AddItem: 'Добавить в библиотеку',
           AskManager: 'Спросить у менеджера',
         },
+      },
+      ManagerDonateModal: {
+        Title: 'Внимание!',
+        MessageAccept:
+          'Вы уверены, что хотите принять книгу "${title}" в библиотеку?',
+        MessageReject: 'Вы уверены, что хотите отклонить книгу "${title}"',
+        Buttons: {
+          Accept: 'Да, принять',
+          Reject: 'Да, отклонить',
+          Cancel: 'Отмена',
+        },
+      },
+      Buttons: {
+        Accept: 'Принять',
+        Reject: 'Отклонить',
       },
     },
   },

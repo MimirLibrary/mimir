@@ -8,13 +8,26 @@ import { IClaimHistory } from '../../models/helperFunctions/claimHistory';
 import ClaimHistory from '../ClaimHistory';
 import { RoutesTypes } from '../../../utils/routes';
 
-const InfoWrapper = styled.div`
+interface IInfoWrapper {
+  isUnderlined?: boolean;
+}
+
+const InfoWrapper = styled.div<IInfoWrapper>`
   display: flex;
   flex-direction: column;
+  flex: 1;
   margin-left: ${dimensions.base};
-  row-gap: ${dimensions.xs_2};
+  padding-bottom: ${(props) => (props.isUnderlined ? '0.5rem' : null)};
+  border-bottom: ${(props) =>
+    props.isUnderlined ? '1px solid #333333' : null}};
+
   > p:first-of-type {
     margin-bottom: ${dimensions.xs_2};
+  }
+  @media (max-width: ${dimensions.tablet_width}) {
+    width: 100%;
+    //border-bottom: 1px solid #bdbdbd;
+    padding-bottom: ${dimensions.sm};
   }
 `;
 
@@ -27,16 +40,20 @@ const CardWrapper = styled.div`
   display: flex;
   flex-direction: row;
   background: ${colors.bg_secondary};
-  width: 320px;
-  margin: 0 0 ${dimensions.xl};
+  min-width: 320px;
   height: 151px;
   padding: ${dimensions.xl_2};
   border-radius: ${dimensions.xs_1};
   transition: box-shadow 0.3s;
   cursor: pointer;
+  flex: 1;
   :hover {
-    box-shadow: 0px 6px 14px -6px rgba(24, 39, 75, 0.08),
-      0px 10px 32px -4px rgba(24, 39, 75, 0.08);
+    box-shadow: 0 6px 14px -6px rgba(24, 39, 75, 0.08),
+      0 10px 32px -4px rgba(24, 39, 75, 0.08);
+  }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    flex: 1;
   }
 `;
 const AvatarWrapper = styled.div`
@@ -49,6 +66,7 @@ const Description = styled.p`
   font-weight: 500;
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
+  margin-bottom: 0.5rem;
 `;
 
 export interface ISingleUser {
@@ -57,6 +75,7 @@ export interface ISingleUser {
   name: string;
   statuses: IClaimHistory[];
   className?: string;
+  isUnderlined?: boolean;
 }
 
 const SingleUser: FC<ISingleUser> = ({
@@ -65,6 +84,7 @@ const SingleUser: FC<ISingleUser> = ({
   name,
   avatar,
   className,
+  isUnderlined = false,
 }) => {
   const navigate = useNavigate();
   const handleUserRedirect = () => {
@@ -80,7 +100,7 @@ const SingleUser: FC<ISingleUser> = ({
       <AvatarWrapper>
         <Avatar src={avatar || mockData.avatar} />
       </AvatarWrapper>
-      <InfoWrapper>
+      <InfoWrapper isUnderlined={isUnderlined}>
         <Description>{name}</Description>
         <ClaimsWrapper>
           <ClaimHistory statuses={statuses} />

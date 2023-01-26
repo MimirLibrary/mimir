@@ -12,7 +12,7 @@ const StyledBurger = styled.div`
   margin-right: ${dimensions.xs_1};
   cursor: pointer;
 
-  @media (max-width: ${dimensions.tablet_width}) {
+  @media (max-width: ${dimensions.laptop_width}) {
     display: block;
     margin: 0;
     transform: translateY(0);

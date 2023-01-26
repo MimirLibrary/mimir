@@ -6,6 +6,17 @@ exports[`render DescriptionBook component renders correctly with snapshots 1`] =
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  gap: 1.5rem;
+}
+
+@media (max-width: 90rem) {
+  .emotion-0 {
+    width: 100%;
+    -webkit-box-flex-flow: wrap row;
+    -webkit-flex-flow: wrap row;
+    -ms-flex-flow: wrap row;
+    flex-flow: wrap row;
+  }
 }
 
 @media (max-width: 30rem) {
@@ -13,10 +24,6 @@ exports[`render DescriptionBook component renders correctly with snapshots 1`] =
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
   }
 }
 
@@ -27,21 +34,35 @@ exports[`render DescriptionBook component renders correctly with snapshots 1`] =
   border-radius: 10px;
 }
 
+@media (max-width: 90rem) {
+  .emotion-1 {
+    justify-self: center;
+  }
+}
+
 @media (max-width: 30rem) {
   .emotion-1 {
-    margin-right: 1rem;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
   }
 }
 
 .emotion-2 {
-  width: 100%;
-  margin-left: 1.5rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
 }
 
-@media (max-width: 30rem) {
-  .emotion-2 {
-    margin: 0;
-  }
+.emotion-2>* {
+  margin: 0;
 }
 
 .emotion-3 {
@@ -54,8 +75,15 @@ exports[`render DescriptionBook component renders correctly with snapshots 1`] =
 
 @media (max-width: 30rem) {
   .emotion-3 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
     margin-bottom: 0;
-    margin-top: 1rem;
   }
 }
 
@@ -85,12 +113,12 @@ exports[`render DescriptionBook component renders correctly with snapshots 1`] =
   color: #333333;
 }
 
-.emotion-11 {
+.emotion-9 {
   font-size: 1rem;
 }
 
 @media (max-width: 30rem) {
-  .emotion-12 {
+  .emotion-10 {
     width: -webkit-fit-content;
     width: -moz-fit-content;
     width: fit-content;
@@ -98,7 +126,7 @@ exports[`render DescriptionBook component renders correctly with snapshots 1`] =
   }
 }
 
-.emotion-13 {
+.emotion-11 {
   font-weight: 500;
   font-size: 0.875rem;
   line-height: 1rem;
@@ -106,7 +134,7 @@ exports[`render DescriptionBook component renders correctly with snapshots 1`] =
 }
 
 @media (max-width: 30rem) {
-  .emotion-13 {
+  .emotion-11 {
     font-size: 1rem;
   }
 }
@@ -150,6 +178,26 @@ exports[`render DescriptionBook component renders correctly with snapshots 1`] =
     <p
       class="emotion-4"
     >
+      State: 
+    </p>
+    <div
+      class="emotion-9"
+    >
+      <div
+        class="emotion-10"
+        data-testid="bookStatus"
+      >
+        <p
+          class="emotion-11"
+          font-size="1rem"
+        >
+          Statuses.Free
+        </p>
+      </div>
+    </div>
+    <p
+      class="emotion-4"
+    >
       Location: 
     </p>
     <p
@@ -157,26 +205,6 @@ exports[`render DescriptionBook component renders correctly with snapshots 1`] =
     >
       Gomel
     </p>
-    <p
-      class="emotion-4"
-    >
-      State: 
-    </p>
-    <div
-      class="emotion-11"
-    >
-      <div
-        class="emotion-12"
-        data-testid="bookStatus"
-      >
-        <p
-          class="emotion-13"
-          font-size="1rem"
-        >
-          Statuses.Free
-        </p>
-      </div>
-    </div>
   </div>
 </div>
 `;

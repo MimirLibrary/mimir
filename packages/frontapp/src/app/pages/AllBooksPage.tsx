@@ -5,6 +5,10 @@ import ListAllItems from '../components/ListAllItems';
 
 const WrapperTitle = styled.section`
   margin-top: 3.5rem;
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    margin-top: 1.875rem;
+  }
 `;
 
 const Title = styled.h1`

@@ -34,3 +34,5 @@ testem.log
 data/
 
 packages/mimir-e2e/artifacts
+# IDE related files
+/.idea

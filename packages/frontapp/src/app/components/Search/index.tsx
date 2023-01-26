@@ -39,7 +39,9 @@ export const StyledSearchIcon = styled(SearchIcon)`
   }
 `;
 
-export const WrapperInput = styled.div`
+type WrapperInputProps = { isFullWidth?: boolean };
+
+export const WrapperInput = styled.div<WrapperInputProps>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -47,29 +49,34 @@ export const WrapperInput = styled.div`
   width: 100% - 100px;
   border: 0.5px solid #bdbdbd;
   border-radius: ${dimensions.xl_3};
-  padding: 10px 0;
-  padding-left: ${dimensions.xs_1};
+  padding: 10px 0 10px ${dimensions.xs_1};
   margin-right: ${dimensions.xs_1};
   background: ${colors.bg_secondary};
 
   :hover {
     border: 0.5px solid ${colors.accent_color};
   }
+
   :focus {
     border: 0.5px solid ${colors.accent_color};
   }
 
-  @media (max-width: ${dimensions.tablet_width}) {
+  @media (max-width: ${dimensions.laptop_width}) {
     max-width: 100%;
-    width: 64vw;
+    width: ${(props) => (props.isFullWidth ? '100%' : '64vw')};
     min-width: 12rem;
     justify-content: flex-start;
     margin: 0;
-    padding: 9px 0;
     padding-left: ${dimensions.base};
     font-size: ${dimensions.sm};
     line-height: ${dimensions.lg};
   }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    max-width: 100%;
+    width: ${(props) => (props.isFullWidth ? '100%' : '48vw')};
+    padding: 9px 0 9px calc(${dimensions.base} - 0.5rem);
+  } ;
 `;
 
 interface ISearchParams {
@@ -78,6 +85,7 @@ interface ISearchParams {
   redirectToSearchByClick?: () => void;
   placeholder: string;
   search: string;
+  isFullWidth?: boolean;
 }
 
 const Search: FC<ISearchParams> = ({
@@ -86,9 +94,10 @@ const Search: FC<ISearchParams> = ({
   redirectToSearchByKey,
   placeholder,
   search,
+  isFullWidth,
 }) => {
   return (
-    <WrapperInput onKeyPress={redirectToSearchByKey}>
+    <WrapperInput isFullWidth={isFullWidth} onKeyPress={redirectToSearchByKey}>
       <StyledSearchIcon
         fill={colors.dropdown_gray}
         width="20"

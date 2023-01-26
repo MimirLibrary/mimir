@@ -29,7 +29,7 @@ const BookCardWrapper = styled.div<Pick<IBookCardProps, 'presentationMode'>>`
   transition: box-shadow 0.3s;
 
   :hover {
-    box-shadow: 0px 6px 14px -6px rgba(24, 39, 75, 0.08),
+    box-shadow: 0 6px 14px -6px rgba(24, 39, 75, 0.08),
       0px 10px 32px -4px rgba(24, 39, 75, 0.08);
   }
 
@@ -76,9 +76,11 @@ const BookImage = styled.img<Pick<IBookCardProps, 'presentationMode'>>`
 `;
 
 const TitleBook = styled.h3<Pick<IBookCardProps, 'presentationMode'>>`
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
+  text-overflow: ellipsis;
   max-width: 10rem;
   font-weight: 500;
   font-size: ${dimensions.sm};
@@ -136,7 +138,7 @@ const BookCard: FC<IBookCardProps> = ({
       />
       <DescriptionWrapper presentationMode={presentationMode}>
         <TitleBook presentationMode={presentationMode} data-testid="bookTitle">
-          {shortenText(title, 20)}
+          {title}
         </TitleBook>
         <DescriptionBook presentationMode={presentationMode}>
           {shortenText(author, 20)}
