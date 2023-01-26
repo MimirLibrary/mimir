@@ -1,7 +1,9 @@
 import { t } from 'i18next';
 import { StatusTypes } from '@mimir/global-types';
 
-export const periodOfKeeping = 30;
+export const periodOfKeeping = Number(
+  process.env['NX_PERIOD_OF_KEEPING'] || 30
+);
 
 export const getDates = (date: Date) => {
   const currentDate = new Date();

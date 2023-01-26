@@ -39,4 +39,7 @@ export class Status extends BaseEntity {
 
   @CreateDateColumn()
   created_at!: Date;
+
+  @Column({ name: 'last_reminder_time' })
+  lastReminderTime: Date;
 }

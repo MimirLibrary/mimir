@@ -15,7 +15,6 @@ import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import Button from '../Button';
 import { useRoutes } from '../../hooks/useRoutes';
-import Burger from '../Burger';
 
 const WrapperRoutes = styled.div`
   width: calc(100% - 22rem);
@@ -59,10 +58,6 @@ const StyledButton = styled(Button)<IStyledButton>`
     }
   }
 `;
-const StyledContainer = styled.div`
-  position: relative;
-  top: -2.8rem;
-`;
 
 interface IPropsMainComponent {
   showSidebar: () => void;
@@ -88,13 +83,7 @@ const MainComponent: FC<IPropsMainComponent> = ({ showSidebar }) => {
     </Routes>
   ) : (
     <WrapperRoutes>
-      {window.location.pathname !== RoutesTypes.DONATES_FROM_USER ? (
-        <SearchWrapper showSidebar={showSidebar} />
-      ) : (
-        <StyledContainer>
-          <Burger showSidebar={showSidebar} />
-        </StyledContainer>
-      )}
+      <SearchWrapper showSidebar={showSidebar} />
       <Routes>
         {routes}
         <Route

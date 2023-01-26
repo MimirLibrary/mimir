@@ -40,9 +40,7 @@ const OneDonator = ({
   title,
   description,
   lastStatus,
-  index,
   search,
-  shownId,
   setShownId,
 }: OneDonatorProps) => {
   const [acceptRejectMethod, setAcceptRejectMethod] = useState<

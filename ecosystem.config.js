@@ -17,7 +17,7 @@ module.exports = {
     {
       name: 'email',
       script: 'main.js',
-      cwd: '/srv/email',
+      cwd: '/srv/email-service',
       min_uptime: 3000,
       max_restarts: 3,
     },

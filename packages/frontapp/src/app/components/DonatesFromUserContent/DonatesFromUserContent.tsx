@@ -39,11 +39,6 @@ const Column = styled.h4<TitleProps>`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-
-  @media (max-width: ${dimensions.phone_width}) {
-    top: calc(-6.5rem + 24px);
-    position: relative;
-  }
 `;
 
 const DonatesFromUserContent: FC<DonatesFromUserContentProps> = ({
