@@ -8,6 +8,9 @@ const EMAIL_TEMPLATES = {
   RETURN_BOOK_REMINDER: 'return-book-reminder',
 } as const;
 
+const DEFAULT_COVER_IMAGE =
+  'https://mimirapp.xyz/assets/MOC-data/BookImage.png';
+
 @Injectable()
 export class EmailService {
   constructor(
@@ -25,7 +28,7 @@ export class EmailService {
         template: EMAIL_TEMPLATES.RETURN_BOOK_REMINDER,
         context: {
           bookName: material.title,
-          bookCover: material.picture,
+          bookCover: material.picture || DEFAULT_COVER_IMAGE,
           appUrl: this.config.get<string>('common.frontendUrl'),
         },
       })
