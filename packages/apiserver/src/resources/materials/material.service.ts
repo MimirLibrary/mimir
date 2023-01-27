@@ -39,7 +39,12 @@ export class MaterialService {
       .addOrderBy('title', 'ASC');
 
     if (!selectHidden) {
-      query.andWhere('material.current_status NOT IN (:...statuses)', {
+      query.innerJoin(
+        'status',
+        'currentStatus',
+        'material.current_status_id = currentStatus.id'
+      );
+      query.andWhere('currentStatus.status NOT IN (:...statuses)', {
         statuses: [
           StatusTypes.PENDING,
           StatusTypes.REJECTED,

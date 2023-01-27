@@ -14,7 +14,6 @@ import { Location } from '../locations/location.entity';
 import { Notification } from '../notifications/notification.entity';
 import { Status } from '../statuses/status.entity';
 import { Message } from '../messages/message.entity';
-import { Person } from '../persons/person.entity';
 
 @Entity('material')
 export class Material extends BaseEntity {
