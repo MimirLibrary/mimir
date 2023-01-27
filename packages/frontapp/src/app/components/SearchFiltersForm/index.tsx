@@ -53,11 +53,11 @@ const ButtonWrapper = styled.div`
     justify-content: center;
     flex-direction: column;
     gap: ${dimensions.xs_1};
-    position: sticky;
+    /* position: sticky;
     bottom: 0;
     background-color: ${colors.bg_secondary};
     padding: ${dimensions.xs_2};
-    margin: 0 -${dimensions.xs_2};
+    margin: 0 -${dimensions.xs_2}; */
   }
 `;
 
