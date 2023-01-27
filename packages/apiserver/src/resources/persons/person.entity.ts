@@ -69,7 +69,4 @@ export class Person extends BaseEntity {
     },
   })
   location: Location[];
-
-  @OneToMany(() => Material, (materials) => materials.currentPerson)
-  materials: Material[];
 }

@@ -1330,36 +1330,12 @@
             "deprecationReason": null
           },
           {
-            "name": "currentPerson",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "Person",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "currentStatus",
             "description": null,
             "args": [],
             "type": {
               "kind": "OBJECT",
               "name": "Status",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "currentStatusValue",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,

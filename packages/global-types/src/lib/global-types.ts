@@ -218,9 +218,7 @@ export interface Material {
     messages: Nullable<Message>[];
     description: string;
     is_donated: boolean;
-    currentStatusValue?: Nullable<string>;
     currentStatus?: Nullable<Status>;
-    currentPerson?: Nullable<Person>;
     claimCount: number;
 }
 

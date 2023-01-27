@@ -10,7 +10,7 @@ const useMaterialFilter = (
   if (filterName === 'availability') {
     return availableMaterial?.reduce((acc: FilterObjectType, material: any) => {
       const currentStatus = getStatus(
-        material?.currentStatusValue,
+        material?.currentStatus?.status,
         material?.created_at
       );
       return {

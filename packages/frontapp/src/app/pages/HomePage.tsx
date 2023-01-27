@@ -128,7 +128,7 @@ const HomePage: FC = () => {
 
   const donateList = useMemo(() => {
     return allMaterialsData?.getAllMaterials.filter(
-      (material) => material?.currentStatusValue === StatusTypes.PENDING
+      (material) => material?.currentStatus?.status === StatusTypes.PENDING
     );
   }, [allMaterialsData]);
 

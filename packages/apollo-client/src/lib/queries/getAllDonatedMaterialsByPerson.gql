@@ -10,7 +10,6 @@ query GetAllDonatedMaterialsByPerson($id: ID!) {
       created_at
       status
     }
-    currentStatusValue
     claimCount
   }
 }

@@ -25,7 +25,6 @@ const mockMaterial = [
     is_donated: false,
     notification: [],
     picture: '',
-    currentStatusValue: mockStatus.status,
     currentStatus: mockStatus,
     title: 'test',
     type: 'Book',

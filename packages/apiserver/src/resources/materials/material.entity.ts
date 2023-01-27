@@ -60,14 +60,8 @@ export class Material extends BaseEntity {
   @Column({ name: 'claim_count' })
   claimCount: number;
 
-  @Column({ name: 'current_person_id', nullable: true })
-  currentPersonId: number;
-
   @Column({ name: 'current_status_id', nullable: true })
   currentStatusId: number;
-
-  @Column({ name: 'current_status', nullable: true })
-  currentStatusValue: string;
 
   @OneToMany(() => Status, (status) => status.material)
   status!: Status[];
@@ -85,8 +79,4 @@ export class Material extends BaseEntity {
   @OneToOne(() => Status, (status) => status.material)
   @JoinColumn({ name: 'current_status_id' })
   currentStatus: Status;
-
-  @ManyToOne(() => Person, (person) => person.materials)
-  @JoinColumn({ name: 'current_person_id' })
-  currentPerson: Person;
 }

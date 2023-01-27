@@ -16,9 +16,7 @@ type Material {
   messages: [Message]!
   description: String!
   is_donated: Boolean!
-  currentStatusValue: String
   currentStatus: Status
-  currentPerson: Person
   claimCount: Int!
 }
 

@@ -18,8 +18,6 @@ export class StatusSubscriber implements EntitySubscriberInterface<Status> {
     const status = event.entity;
     const update: QueryDeepPartialEntity<Material> = {
       currentStatusId: status.id,
-      currentPersonId: status.person_id,
-      currentStatusValue: status.status,
     };
     if (status.status === StatusTypes.BUSY) {
       update.claimCount = () => 'claim_count + 1';

@@ -42,7 +42,6 @@ import { ReminderModule } from '../reminder';
 import { StatusSubscriber } from '../resources/statuses/status.subscriber';
 import createStatusesLoader from '../resources/statuses/statuses.loader';
 import createPersonsLoader from '../resources/persons/persons.loader';
-import createMaterialsByPersonsLoader from '../resources/materials/materials.loader';
 import dataLoaders from '../data-loaders';
 
 @Module({
@@ -94,8 +93,6 @@ import dataLoaders from '../data-loaders';
           context: () => ({
             [dataLoaders.statusesLoader]: createStatusesLoader(),
             [dataLoaders.personsLoader]: createPersonsLoader(),
-            [dataLoaders.materialsByPersonsLoader]:
-              createMaterialsByPersonsLoader(),
           }),
         };
       },

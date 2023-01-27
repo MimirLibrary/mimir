@@ -22,7 +22,7 @@ type IStatus = Omit<
 export type IMaterial = Pick<
   Material,
   'id' | 'title' | 'author' | 'type' | 'picture' | 'created_at' | 'category'
-> & { currentStatusValue: StatusTypes; currentStatus: IStatus | null };
+> & { currentStatus: IStatus | null };
 
 interface IBookList {
   allData: IMaterial[];
@@ -78,7 +78,7 @@ const BookList: FC<IBookList> = ({ allData, searchParams }) => {
     }
     if (availability.length !== 0) {
       const filter = allBooks.filter((book: IMaterial) =>
-        availability.includes(book.currentStatusValue)
+        availability.includes(book.currentStatus?.status as string)
       );
       !availability.includes('All') && (allBooks = filter);
     }
@@ -112,7 +112,7 @@ const BookList: FC<IBookList> = ({ allData, searchParams }) => {
               author={material.author}
               category={material.category}
               date={material.created_at}
-              status={material.currentStatusValue}
+              status={material.currentStatus?.status}
             />
           ))
         ) : (

@@ -85,7 +85,7 @@ const SearchPage = () => {
   useEffect(() => {
     const available = data?.getAllMaterials.filter((material: any) => {
       const currentStatus = getStatus(
-        material?.currentStatusValue,
+        material?.currentStatus?.status,
         material?.created_at
       );
       return currentStatus !== 'Rejected' && currentStatus !== 'Pending';

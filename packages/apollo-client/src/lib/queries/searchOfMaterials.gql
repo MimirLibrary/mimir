@@ -6,7 +6,6 @@ query SearchOfMaterials($search: String, $locations: [Int!]) {
     author
     category
     id
-    currentStatusValue
     claimCount
     currentStatus {
       id

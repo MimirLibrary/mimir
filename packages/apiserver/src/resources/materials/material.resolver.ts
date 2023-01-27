@@ -169,16 +169,4 @@ export class MaterialResolver {
     }
     return statusesLoader.load(material.currentStatusId);
   }
-
-  @ResolveField(() => Person)
-  async currentPerson(
-    @Parent() material: Material,
-    @Context(dataLoaders.personsLoader)
-    personsLoader: DataLoader<number, Person>
-  ): Promise<Person> {
-    if (!material?.currentPersonId) {
-      return null;
-    }
-    return personsLoader.load(material.currentPersonId);
-  }
 }
