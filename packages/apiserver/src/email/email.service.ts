@@ -8,8 +8,18 @@ const EMAIL_TEMPLATES = {
   RETURN_BOOK_REMINDER: 'return-book-reminder',
 } as const;
 
+const DEFAULT_COVER_IMAGE_PATH = 'assets/MOC-data/EmptyCover.png';
+
 @Injectable()
 export class EmailService {
+  private get frontEndUrl(): string {
+    return this.config.get<string>('common.frontendUrl');
+  }
+
+  private get defaultCoverImage(): string {
+    return `${this.frontEndUrl}/${DEFAULT_COVER_IMAGE_PATH}`;
+  }
+
   constructor(
     @Inject('API_SERVICE') private readonly client: ClientProxy,
     private readonly config: ConfigService
@@ -25,8 +35,8 @@ export class EmailService {
         template: EMAIL_TEMPLATES.RETURN_BOOK_REMINDER,
         context: {
           bookName: material.title,
-          bookCover: material.picture,
-          appUrl: this.config.get<string>('common.frontendUrl'),
+          bookCover: material.picture || this.defaultCoverImage,
+          appUrl: this.frontEndUrl,
         },
       })
     );
