@@ -35,10 +35,18 @@ const Title = styled.p`
 `;
 
 const ListWrapper = styled.div`
-  display: flex;
-  flex-flow: wrap row;
-  column-gap: ${dimensions.xl_2};
-  row-gap: ${dimensions.base};
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  justify-content: space-between;
+  gap: ${dimensions.base};
+
+  @media (hover: none) {
+    > * {
+      box-shadow: 0 6px 14px -6px rgba(24, 39, 75, 0.08),
+        0 10px 32px -4px rgba(24, 39, 75, 0.08);
+    }
+  }
 `;
 
 const Description = styled.p`

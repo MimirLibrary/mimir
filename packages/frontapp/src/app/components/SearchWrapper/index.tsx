@@ -22,7 +22,7 @@ const StyledSearch = styled.div`
   width: 100%;
   position: relative;
 
-  @media (max-width: ${dimensions.tablet_width}) {
+  @media (max-width: ${dimensions.laptop_width}) {
     justify-content: space-between;
     position: fixed;
     top: 0;
@@ -32,7 +32,7 @@ const StyledSearch = styled.div`
     align-items: center;
     background: #ffffff;
     box-shadow: 0px -4px 64px rgba(24, 39, 75, 0.12);
-    border-radius: 0px;
+    border-radius: 0;
   }
 `;
 

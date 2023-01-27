@@ -43,7 +43,10 @@ const ButtonWrapper = styled.div`
   right: 46px;
   top: 35px;
 
-  @media (max-width: ${dimensions.tablet_width}) {
+  @media (max-width: ${dimensions.wide_laptop_width}) {
+    width: unset;
+  }
+  @media (max-width: ${dimensions.laptop_width}) {
     display: none;
   }
 `;

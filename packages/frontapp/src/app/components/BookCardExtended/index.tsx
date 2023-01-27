@@ -14,11 +14,12 @@ const Wrapper = styled.div`
   transition: box-shadow 0.3s;
   padding: ${dimensions.xl_2};
   display: flex;
-  max-width: 300px;
-  width: 100%;
+  flex: 1;
+  min-width: 300px;
   cursor: pointer;
+
   :hover {
-    box-shadow: 0px 6px 14px -6px rgba(24, 39, 75, 0.08),
+    box-shadow: 0 6px 14px -6px rgba(24, 39, 75, 0.08),
       0px 10px 32px -4px rgba(24, 39, 75, 0.08);
   }
 
@@ -42,6 +43,12 @@ const WrapperDescription = styled.div`
 `;
 
 const Title = styled.h4`
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: ${dimensions.xl_6}; //strict 2 lines in title even if there is one line
   font-weight: 500;
   font-size: ${dimensions.base};
   color: ${colors.main_black};

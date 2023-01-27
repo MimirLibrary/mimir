@@ -49,19 +49,19 @@ export const WrapperInput = styled.div<WrapperInputProps>`
   width: 100% - 100px;
   border: 0.5px solid #bdbdbd;
   border-radius: ${dimensions.xl_3};
-  padding: 10px 0;
-  padding-left: ${dimensions.xs_1};
+  padding: 10px 0 10px ${dimensions.xs_1};
   margin-right: ${dimensions.xs_1};
   background: ${colors.bg_secondary};
 
   :hover {
     border: 0.5px solid ${colors.accent_color};
   }
+
   :focus {
     border: 0.5px solid ${colors.accent_color};
   }
 
-  @media (max-width: ${dimensions.tablet_width}) {
+  @media (max-width: ${dimensions.laptop_width}) {
     max-width: 100%;
     width: ${(props) => (props.isFullWidth ? '100%' : '64vw')};
     min-width: 12rem;
@@ -75,8 +75,7 @@ export const WrapperInput = styled.div<WrapperInputProps>`
   @media (max-width: ${dimensions.phone_width}) {
     max-width: 100%;
     width: ${(props) => (props.isFullWidth ? '100%' : '48vw')};
-    padding: 9px 0;
-    padding-left: calc(${dimensions.base} - 0.5rem);
+    padding: 9px 0 9px calc(${dimensions.base} - 0.5rem);
   } ;
 `;
 

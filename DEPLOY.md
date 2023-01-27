@@ -35,7 +35,17 @@
 
 ## Frontapp
 
-As simple as:
+Clear nx cache (with following command or delete manually):
+
+```
+rm -rf ./node_modules/.cache/nx
+```
+
+Check .env is up to date
+
+Delete .local.env
+
+To deploy the code, run:
 
 ```
 nx run frontapp:deploy:production
@@ -46,7 +56,7 @@ nx run frontapp:deploy:production
 To deploy the code, run:
 
 ```
-nx run apiserver:dploy:production
+nx run apiserver:deploy:production
 ```
 
 Run migrations:
@@ -75,7 +85,20 @@ Make sure that there is a prod `.env` and run this:
 npm run migration:run
 ```
 
-If everything went fine, restart `pm2` service:
+Install dependencies:
+
+```
+cd /srv/apiserver
+npm install
+```
+
+Update /home/app/mimir/.env if necessary and restart using command:
+
+```
+env-cmd pm2 restart apiserver --update-env
+```
+
+If don't need to update .env, restart `pm2` service:
 
 ```
 pm2 restart apiserver
@@ -85,7 +108,7 @@ Check status with `pm2 status`
 
 ## Metadata service
 
-The steps are basically the same as for `metadata`, but migration command is different:
+The steps are basically the same as for `apiserver`, but migration command is different:
 
 ```
 cd /srv/metadata
@@ -93,3 +116,30 @@ npx prisma migration push
 ```
 
 Also, you'll have to change path to `prisma` config before running the migrate command
+
+## Email service
+
+To deploy the code, run:
+
+```
+nx run email-service:deploy:production
+```
+
+Install dependencies:
+
+```
+cd /srv/email-service
+npm install
+```
+
+Update /home/app/mimir/.env if necessary and restart using command:
+
+```
+env-cmd pm2 restart email --update-env
+```
+
+If don't need to update .env, restart `pm2` service:
+
+```
+pm2 restart email
+```

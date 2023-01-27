@@ -46,7 +46,6 @@ const StyledScroll = styled.div`
   flex-flow: wrap row;
   max-height: 744px;
   overflow: auto;
-  padding-right: ${dimensions.xl_2};
 `;
 
 const StyledTable = styled.table`
