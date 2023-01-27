@@ -8,7 +8,7 @@ const EMAIL_TEMPLATES = {
   RETURN_BOOK_REMINDER: 'return-book-reminder',
 } as const;
 
-const DEFAULT_COVER_IMAGE_PATH = 'assets/MOC-data/BookImage.png';
+const DEFAULT_COVER_IMAGE_PATH = 'assets/MOC-data/EmptyCover.png';
 
 @Injectable()
 export class EmailService {
