@@ -19,7 +19,8 @@ import { mail } from '../config';
       imports: [ConfigModule],
       useFactory: async (config: ConfigService) => ({
         transport: {
-          sendmail: true,
+          sendmail:
+            config.get('mail.useSendMailTransport')?.toLowerCase() === 'true',
           host: config.get<string>('mail.host'),
           port: config.get<number>('mail.port'),
           auth: {
