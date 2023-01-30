@@ -305,6 +305,13 @@ export const resources = {
         Accept: 'Accept',
         Reject: 'Reject',
       },
+      BookCardExtended: {
+        ClaimCount: 'was claimed {{claimCount}} time(s)',
+        ClaimHistory: 'Claim history:',
+        State: 'State:',
+        OverdueByStatusLabel: 'Overdue by',
+        ClaimedByStatusLabel: 'Claimed by',
+      },
     },
   },
   ru: {
@@ -611,6 +618,13 @@ export const resources = {
       Buttons: {
         Accept: 'Принять',
         Reject: 'Отклонить',
+      },
+      BookCardExtended: {
+        ClaimCount: 'взята {{claimCount}} раз(а)',
+        ClaimHistory: 'История:',
+        State: 'Статус:',
+        OverdueByStatusLabel: 'Просрочена',
+        ClaimedByStatusLabel: 'Используется',
       },
     },
   },

@@ -4,6 +4,10 @@ import { IMaterial } from '../../types';
 import { StatusTypes } from '@mimir/global-types';
 import { screen } from '@testing-library/react';
 
+jest.mock('i18next', () => ({
+  t: (str: any) => str,
+}));
+
 describe('render BookCardExtended', () => {
   it('correctly render with status is free', () => {
     const mockItem: IMaterial = {
@@ -33,7 +37,7 @@ describe('render BookCardExtended', () => {
     expect(screen.getByText('Dracula')).toBeInTheDocument();
     expect(screen.getByText('Horror')).toBeInTheDocument();
     expect(screen.getByText('on the shelf')).toBeInTheDocument();
-    expect(screen.getByText('was claimed 0 times')).toBeInTheDocument();
+    expect(screen.getByText('BookCardExtended.ClaimCount')).toBeInTheDocument();
   });
 
   it('correctly render with status is Busy', () => {
@@ -62,9 +66,11 @@ describe('render BookCardExtended', () => {
     expect(screen.getByTestId('book-card-extended')).toBeInTheDocument();
     expect(screen.getByText('Dracula')).toBeInTheDocument();
     expect(screen.getByText('Horror')).toBeInTheDocument();
-    expect(screen.getByText('Claimed by')).toBeInTheDocument();
+    expect(
+      screen.getByText('BookCardExtended.ClaimedByStatusLabel')
+    ).toBeInTheDocument();
     expect(screen.getByText('Dmitry')).toBeInTheDocument();
-    expect(screen.getByText('was claimed 1 times')).toBeInTheDocument();
+    expect(screen.getByText('BookCardExtended.ClaimCount')).toBeInTheDocument();
   });
 
   it('correctly render result with item is null', () => {

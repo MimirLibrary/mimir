@@ -302,7 +302,6 @@ export interface Person {
     location?: Nullable<Location[]>;
     messages?: Nullable<Nullable<Message>[]>;
     states?: Nullable<Nullable<BlockedUsers>[]>;
-    materials?: Nullable<Nullable<Material>[]>;
 }
 
 export interface Status {

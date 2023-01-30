@@ -7,6 +7,7 @@ import { IMaterial } from '../../types';
 import { useNavigate } from 'react-router-dom';
 import { OpenLink } from '../ManagerInfoCard';
 import { RoutesTypes } from '../../../utils/routes';
+import { t } from 'i18next';
 
 const Wrapper = styled.div`
   background: ${colors.bg_secondary};
@@ -122,7 +123,7 @@ const BookCardExtended: FC<IPropsBookCardExtended> = ({ item }) => {
         <WrapperDescription>
           <Title>{item?.title}</Title>
           <TitleGenre>{item?.category}</TitleGenre>
-          <TitleState>State:</TitleState>
+          <TitleState>{t('BookCardExtended.State')}</TitleState>
           <TitleStatus>
             {typeof currentStatus === 'string' ? (
               currentStatus
@@ -130,8 +131,8 @@ const BookCardExtended: FC<IPropsBookCardExtended> = ({ item }) => {
               <>
                 <TitleStatus>
                   {currentStatus.type === 'Overdue'
-                    ? 'Overdue by'
-                    : 'Claimed by'}
+                    ? t('BookCardExtended.OverdueByStatusLabel')
+                    : t('BookCardExtended.ClaimedByStatusLabel')}
                 </TitleStatus>
                 <StyledUserName
                   type={currentStatus.type}
@@ -142,8 +143,14 @@ const BookCardExtended: FC<IPropsBookCardExtended> = ({ item }) => {
               </>
             )}
           </TitleStatus>
-          <TitleClaimHistory>Claim history:</TitleClaimHistory>
-          <HistoryBook>was claimed {item.claimCount || 0} times</HistoryBook>
+          <TitleClaimHistory>
+            {t('BookCardExtended.ClaimHistory')}
+          </TitleClaimHistory>
+          <HistoryBook>
+            {t('BookCardExtended.ClaimCount', {
+              claimCount: item.claimCount || 0,
+            })}
+          </HistoryBook>
         </WrapperDescription>
       </Wrapper>
     )
