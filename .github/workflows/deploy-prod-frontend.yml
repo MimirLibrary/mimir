@@ -1,23 +1,19 @@
 name: Deploy prod frontend
 on:
-  workflow_dispatch:
-    inputs:
-      ref:
-        description: Branch to deploy
-        required: true
+  workflow_dispatch
 
 env:
-  NX_BRANCH: ${{ inputs.ref }}
+  NX_BRANCH: main
   NX_RUN_GROUP: ${{ github.run_id }}
 
 jobs:
-  build_and_test:
+  build_test_and_deploy:
     runs-on: ubuntu-latest
     environment: Production
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: ${{ inputs.ref }}
+          ref: main
           fetch-depth: 0
       - uses: actions/setup-node@v3
         with:
