@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions, fonts } from '@mimir/ui-kit';
+import { t } from 'i18next';
 
 const NotFoundWindowWrapper = styled.div`
   background-color: ${colors.bg_secondary};
@@ -72,12 +73,8 @@ export const NotFoundWindow: FC<INotFoundWindow> = ({
   return (
     <NotFoundWindowWrapper>
       <MessageContainer>
-        <WarningMessage>
-          We couldn't find any {searchEntity} for this search
-        </WarningMessage>
-        <BodyMessage>
-          Please check your request for errors or search using a different name
-        </BodyMessage>
+        <WarningMessage>{t('NotFound.Title', { searchEntity })}</WarningMessage>
+        <BodyMessage>{t('NotFound.Body')}</BodyMessage>
         <SvgIconWrapper>{withButton}</SvgIconWrapper>
       </MessageContainer>
     </NotFoundWindowWrapper>

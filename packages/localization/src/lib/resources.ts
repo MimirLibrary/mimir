@@ -71,6 +71,7 @@ export const resources = {
           ClaimNow: 'Claim now:',
           Item: 'item',
           Items: 'items',
+          User: 'user',
         },
         TitleFiltered: 'Results',
       },
@@ -312,6 +313,10 @@ export const resources = {
         Accept: 'Accept',
         Reject: 'Reject',
       },
+      NotFound: {
+        Title: `We couldn't find any {{searchEntity}} for this search`,
+        Body: `Please check your request for errors or search using a different name`,
+      },
     },
   },
   ru: {
@@ -387,6 +392,7 @@ export const resources = {
           ClaimNow: 'На руках:',
           Item: 'предмет',
           Items: 'предмета',
+          User: 'пользователя',
         },
       },
       ManagerInfoCard: {
@@ -625,6 +631,10 @@ export const resources = {
       Buttons: {
         Accept: 'Принять',
         Reject: 'Отклонить',
+      },
+      NotFound: {
+        Title: `Мы не смогли найти {{searchEntity}} по этому запросу`,
+        Body: `Пожалуйста, проверьте свой запрос на наличие ошибок или выполните поиск, используя другое имя`,
       },
     },
   },

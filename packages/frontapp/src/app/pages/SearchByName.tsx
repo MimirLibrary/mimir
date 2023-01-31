@@ -49,7 +49,7 @@ const SearchByNameOrAuthorPage = () => {
       ) : (
         <WrapperSearch>
           <NotFoundWindow
-            searchEntity={'book'}
+            searchEntity={t('Readers.SingleUser.Item')}
             withButton={
               <Button
                 type="button"

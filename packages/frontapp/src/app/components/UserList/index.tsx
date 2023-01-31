@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useGetAllPersonsQuery } from '@mimir/apollo-client';
 import { t } from 'i18next';
@@ -16,7 +16,6 @@ import { locationIds } from '../../store/slices/userSlice';
 import { toast } from 'react-toastify';
 import Loader, { WrapperLoader } from '../Loader';
 import Tags from '../BooksByCategory/tags';
-import BackButton from '../BackButton';
 import Button from '../Button';
 import { NotFoundWindow } from '../NotFoundWindow';
 import { ReactComponent as ArrowSVG } from './../../../assets/ArrowLeftUncolored.svg';
@@ -59,11 +58,6 @@ const Description = styled.p`
   font-weight: 300;
   font-size: ${dimensions.base};
   line-height: ${dimensions.xl};
-`;
-
-const BackButtonContainer = styled.div`
-  margin-top: -48px;
-  margin-bottom: -60px;
 `;
 
 interface IProps {
@@ -193,11 +187,10 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
   };
 
   const navigate = useNavigate();
-  const handleGoBack = useCallback(() => {
-    window.history.state.idx === 0
-      ? navigate(RoutesTypes.SEARCH)
-      : navigate(-1);
-  }, [navigate]);
+  // Todo: this handler should be replaced after implementation of reader url search
+  const handleGoBack = () => {
+    navigate(RoutesTypes.HOME);
+  };
 
   useEffect(() => {
     const readers = filterUsers(
@@ -253,23 +246,18 @@ const UserList: FC<IProps> = ({ itemsTaken, sortBy }) => {
           })}
         </ListWrapper>
       ) : (
-        <>
-          <BackButtonContainer>
-            <BackButton customName="BackForNotFoundUser" />
-          </BackButtonContainer>
-          <NotFoundWindow
-            searchEntity={'user'}
-            withButton={
-              <Button
-                type="button"
-                onClick={handleGoBack}
-                value={t('Back')}
-                svgComponent={<ArrowSVG />}
-                transparent={true}
-              />
-            }
-          />
-        </>
+        <NotFoundWindow
+          searchEntity={t('Readers.SingleUser.User')}
+          withButton={
+            <Button
+              type="button"
+              onClick={handleGoBack}
+              value={t('Back')}
+              svgComponent={<ArrowSVG />}
+              transparent={true}
+            />
+          }
+        />
       )}
     </WrapperReaders>
   );
