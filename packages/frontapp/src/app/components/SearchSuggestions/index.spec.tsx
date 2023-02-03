@@ -4,7 +4,6 @@ import { render } from '../../../helpers/customRender';
 import SearchSuggestions from './index';
 import { SearchOfMaterialsQuery } from '@mimir/apollo-client';
 import '@testing-library/jest-dom';
-import { BrowserRouter } from 'react-router-dom';
 
 const mockListOfMaterials: SearchOfMaterialsQuery['searchOfMaterials'] = [
   {
@@ -15,19 +14,18 @@ const mockListOfMaterials: SearchOfMaterialsQuery['searchOfMaterials'] = [
     created_at: '2022-09-14T04:22:47.953Z',
     title: 'Dracula',
     picture: '',
-    statuses: [
-      {
-        __typename: 'Status',
-        id: '1',
-        status: StatusTypes.FREE,
-        created_at: '2022-09-14T04:22:48.078Z',
-        person: {
-          __typename: 'Person',
-          id: '3',
-          username: 'Ivan Uglovec',
-        },
+    currentStatus: {
+      __typename: 'Status',
+      id: '1',
+      status: StatusTypes.FREE,
+      created_at: '2022-09-14T04:22:48.078Z',
+      person: {
+        __typename: 'Person',
+        id: '3',
+        username: 'Ivan Uglovec',
       },
-    ],
+    },
+    claimCount: 0,
   },
 ];
 

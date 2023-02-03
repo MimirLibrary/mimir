@@ -11,17 +11,15 @@ describe('render ManagerInfo Card', () => {
       {
         id: '18',
         title: 'test',
-        statuses: [
-          {
-            status: 'Pending',
-            id: '1',
-            person: {
-              id: '11',
-              username: 'Ivan Uglovets',
-              avatar: '',
-            },
+        currentStatus: {
+          status: 'Pending',
+          id: '1',
+          person: {
+            id: '11',
+            username: 'Ivan Uglovets',
+            avatar: '',
           },
-        ],
+        },
       },
     ];
 

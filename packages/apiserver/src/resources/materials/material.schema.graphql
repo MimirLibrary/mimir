@@ -16,6 +16,8 @@ type Material {
   messages: [Message]!
   description: String!
   is_donated: Boolean!
+  currentStatus: Status
+  claimCount: Int!
 }
 
 input CreateMaterialInput {

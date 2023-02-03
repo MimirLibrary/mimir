@@ -7,7 +7,7 @@ import { IMaterial } from '../../types';
 import { useNavigate } from 'react-router-dom';
 import { OpenLink } from '../ManagerInfoCard';
 import { RoutesTypes } from '../../../utils/routes';
-import { StatusTypes } from '@mimir/global-types';
+import { t } from 'i18next';
 
 const Wrapper = styled.div`
   background: ${colors.bg_secondary};
@@ -106,15 +106,12 @@ const HistoryBook = styled.p`
 `;
 
 interface IPropsBookCardExtended {
-  item: IMaterial | null;
+  item: Partial<IMaterial> | null;
 }
 
 const BookCardExtended: FC<IPropsBookCardExtended> = ({ item }) => {
-  const countOfHistoryClaimed = item?.statuses.filter(
-    (elem) => elem?.status === StatusTypes.BUSY
-  ).length;
   const navigate = useNavigate();
-  const currenStatusElement = item?.statuses[item?.statuses.length - 1];
+  const currenStatusElement = item?.currentStatus;
   const currentStatus = useMemo(
     () => getCurrentStatus(currenStatusElement),
     [currenStatusElement]
@@ -133,7 +130,7 @@ const BookCardExtended: FC<IPropsBookCardExtended> = ({ item }) => {
         <WrapperDescription>
           <Title>{item?.title}</Title>
           <TitleGenre>{item?.category}</TitleGenre>
-          <TitleState>State:</TitleState>
+          <TitleState>{t('BookCardExtended.State')}</TitleState>
           <TitleStatus>
             {typeof currentStatus === 'string' ? (
               currentStatus
@@ -141,8 +138,8 @@ const BookCardExtended: FC<IPropsBookCardExtended> = ({ item }) => {
               <>
                 <TitleStatus>
                   {currentStatus.type === 'Overdue'
-                    ? 'Overdue by'
-                    : 'Claimed by'}
+                    ? t('BookCardExtended.OverdueByStatusLabel')
+                    : t('BookCardExtended.ClaimedByStatusLabel')}
                 </TitleStatus>
                 <StyledUserName
                   type={currentStatus.type}
@@ -153,9 +150,13 @@ const BookCardExtended: FC<IPropsBookCardExtended> = ({ item }) => {
               </>
             )}
           </TitleStatus>
-          <TitleClaimHistory>Claim history:</TitleClaimHistory>
+          <TitleClaimHistory>
+            {t('BookCardExtended.ClaimHistory')}
+          </TitleClaimHistory>
           <HistoryBook>
-            was claimed {countOfHistoryClaimed || 0} times
+            {t('BookCardExtended.ClaimCount', {
+              claimCount: item.claimCount || 0,
+            })}
           </HistoryBook>
         </WrapperDescription>
       </Wrapper>

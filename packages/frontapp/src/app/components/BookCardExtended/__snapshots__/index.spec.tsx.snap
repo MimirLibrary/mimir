@@ -130,7 +130,7 @@ exports[`render BookCardExtended correctly render with status is free 1`] = `
     <p
       class="emotion-5"
     >
-      State:
+      BookCardExtended.State
     </p>
     <span
       class="emotion-6"
@@ -140,14 +140,12 @@ exports[`render BookCardExtended correctly render with status is free 1`] = `
     <p
       class="emotion-7"
     >
-      Claim history:
+      BookCardExtended.ClaimHistory
     </p>
     <p
       class="emotion-8"
     >
-      was claimed 
-      0
-       times
+      BookCardExtended.ClaimCount
     </p>
   </div>
 </div>

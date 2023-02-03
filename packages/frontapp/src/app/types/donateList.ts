@@ -16,5 +16,5 @@ export interface IMaterialDonate {
   __typename?: 'Material' | undefined;
   id: string;
   title: string;
-  statuses: Array<IStatus | null>;
+  currentStatus?: IStatus | null;
 }

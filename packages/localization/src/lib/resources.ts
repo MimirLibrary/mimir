@@ -317,6 +317,13 @@ export const resources = {
         Title: `We couldn't find any {{searchEntity}} for this search`,
         Body: `Please check your request for errors or search using a different name`,
       },
+      BookCardExtended: {
+        ClaimCount: 'was claimed {{claimCount}} time(s)',
+        ClaimHistory: 'Claim history:',
+        State: 'State:',
+        OverdueByStatusLabel: 'Overdue by',
+        ClaimedByStatusLabel: 'Claimed by',
+      },
     },
   },
   ru: {
@@ -635,6 +642,13 @@ export const resources = {
       NotFound: {
         Title: `Мы не смогли найти {{searchEntity}} по этому запросу`,
         Body: `Пожалуйста, проверьте свой запрос на наличие ошибок или выполните поиск, используя другое имя`,
+      },
+      BookCardExtended: {
+        ClaimCount: 'взята {{claimCount}} раз(а)',
+        ClaimHistory: 'История:',
+        State: 'Статус:',
+        OverdueByStatusLabel: 'Просрочена',
+        ClaimedByStatusLabel: 'Используется',
       },
     },
   },

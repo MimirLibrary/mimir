@@ -2,16 +2,15 @@ import BookList from './bookList';
 import { screen } from '@testing-library/react';
 import { render } from '../../../helpers/customRender';
 import Tags from './tags';
+import { StatusTypes } from '@mimir/global-types';
 
-const mockStatus = [
-  {
-    person_id: 1,
-    status: 'Free',
-    created_at: '2022-09-08T03:58:39.228Z',
-    id: 1,
-    material_id: 1,
-  },
-];
+const mockStatus = {
+  person_id: 1,
+  status: StatusTypes.FREE,
+  created_at: '2022-09-08T03:58:39.228Z',
+  id: 1,
+  material_id: 1,
+};
 
 const mockMaterial = [
   {
@@ -26,7 +25,7 @@ const mockMaterial = [
     is_donated: false,
     notification: [],
     picture: '',
-    statuses: mockStatus,
+    currentStatus: mockStatus,
     title: 'test',
     type: 'Book',
     updated_at: '2022-09-08T03:58:39.228Z',
