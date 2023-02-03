@@ -7,6 +7,8 @@ export const resources = {
         Many2: 'days',
       },
       Back: 'Back',
+      BackForNotFoundBook: 'Back to all books',
+      BackForNotFoundUser: 'Back to all users',
       Loading: 'Loading...',
       Cancel: 'Cancel',
       EmptyListItems: {
@@ -69,6 +71,7 @@ export const resources = {
           ClaimNow: 'Claim now:',
           Item: 'item',
           Items: 'items',
+          User: 'user',
         },
         TitleFiltered: 'Results',
       },
@@ -310,6 +313,10 @@ export const resources = {
         Accept: 'Accept',
         Reject: 'Reject',
       },
+      NotFound: {
+        Title: `We couldn't find any {{searchEntity}} for this search`,
+        Body: `Please check your request for errors or search using a different name`,
+      },
       BookCardExtended: {
         ClaimCount: 'was claimed {{claimCount}} time(s)',
         ClaimHistory: 'Claim history:',
@@ -327,6 +334,8 @@ export const resources = {
         Many2: 'дня',
       },
       Back: 'Назад',
+      BackForNotFoundBook: 'Назад ко всем книгам',
+      BackForNotFoundUser: 'Назад ко всем пользователям',
       Loading: 'Загрузка...',
       Cancel: 'Закрыть',
       EmptyListItems: {
@@ -390,6 +399,7 @@ export const resources = {
           ClaimNow: 'На руках:',
           Item: 'предмет',
           Items: 'предмета',
+          User: 'пользователя',
         },
       },
       ManagerInfoCard: {
@@ -628,6 +638,10 @@ export const resources = {
       Buttons: {
         Accept: 'Принять',
         Reject: 'Отклонить',
+      },
+      NotFound: {
+        Title: `Мы не смогли найти {{searchEntity}} по этому запросу`,
+        Body: `Пожалуйста, проверьте свой запрос на наличие ошибок или выполните поиск, используя другое имя`,
       },
       BookCardExtended: {
         ClaimCount: 'взята {{claimCount}} раз(а)',
