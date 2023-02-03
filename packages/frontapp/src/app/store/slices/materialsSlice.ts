@@ -11,7 +11,9 @@ const materialSlice = createSlice({
   reducers: {
     setSearchMaterials: (
       state: IMaterialsState,
-      { payload }: PayloadAction<(IMaterial | null)[] | null | undefined>
+      {
+        payload,
+      }: PayloadAction<(Partial<IMaterial> | null)[] | null | undefined>
     ) => {
       state.searchMaterials = payload;
     },

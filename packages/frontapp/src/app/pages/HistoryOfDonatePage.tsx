@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '../hooks/useTypedSelector';
 import { useGetAllDonatedMaterialsByPersonQuery } from '@mimir/apollo-client';
 import { toast } from 'react-toastify';
+import { IMaterial } from '../types';
 
 const HistoryOfDonatePage = () => {
   const { t } = useTranslation();
@@ -36,8 +37,8 @@ const HistoryOfDonatePage = () => {
                 title={item?.title}
                 author={item?.author}
                 category={item?.category}
-                date={item?.statuses.created_at}
-                status={item?.statuses[1]?.status || 'Pending'}
+                date={item?.currentStatus?.created_at}
+                status={item?.currentStatus?.status || 'Pending'}
               />
             ))
             .reverse()}

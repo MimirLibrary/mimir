@@ -20,8 +20,8 @@ import { Status } from '../resources/statuses/status.entity';
 import { Notification } from '../resources/notifications/notification.entity';
 import { Location } from '../resources/locations/location.entity';
 import {
-  typeDefs as scalarTypeDefs,
   resolvers as scalarResolvers,
+  typeDefs as scalarTypeDefs,
 } from 'graphql-scalars';
 import { MessageModule } from '../resources/messages/message.module';
 import { Message } from '../resources/messages/message.entity';
@@ -39,6 +39,9 @@ import { common } from '../config/index';
 import { ScheduleModule } from '@nestjs/schedule';
 import { SchedulerService } from '../scheduler';
 import { ReminderModule } from '../reminder';
+import { StatusSubscriber } from '../resources/statuses/status.subscriber';
+import createStatusesLoader from '../resources/statuses/statuses.loader';
+import dataLoaders from '../data-loaders';
 
 @Module({
   imports: [
@@ -58,6 +61,7 @@ import { ReminderModule } from '../reminder';
         Location,
         BlockedUsers,
       ],
+      subscribers: [StatusSubscriber],
       migrations: [`${__dirname}/migrations/*.js`],
     }),
     ScheduleModule.forRoot(),
@@ -72,16 +76,23 @@ import { ReminderModule } from '../reminder';
     LocationModule,
     AuthModule,
     FileModule,
-    GraphQLModule.forRoot<ApolloDriverConfig>({
+    GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
-      typePaths: [`${__dirname}/**/*.graphql`],
-      typeDefs: [...scalarTypeDefs],
-      resolvers: [scalarResolvers],
-      definitions: {
-        path: join(
-          process.cwd(),
-          './packages/global-types/src/lib/global-types.ts'
-        ),
+      useFactory: () => {
+        return {
+          typePaths: [`${__dirname}/**/*.graphql`],
+          typeDefs: [...scalarTypeDefs],
+          resolvers: [scalarResolvers],
+          definitions: {
+            path: join(
+              process.cwd(),
+              './packages/global-types/src/lib/global-types.ts'
+            ),
+          },
+          context: () => ({
+            [dataLoaders.statusesLoader]: createStatusesLoader(),
+          }),
+        };
       },
     }),
     ServeStaticModule.forRoot({

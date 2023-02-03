@@ -2,7 +2,6 @@ import { t } from 'i18next';
 import { FC, useEffect } from 'react';
 import Modal from '../Modal';
 import ErrorMessage from '../ErrorMessge';
-import { Status } from '@mimir/apollo-client';
 import {
   GetMaterialByIdDocument,
   GetAllTakenItemsDocument,
@@ -11,15 +10,13 @@ import {
   GetAllMaterialsDocument,
 } from '@mimir/apollo-client';
 import { toast } from 'react-toastify';
+import { IStatus } from '../../types';
 
 type IDonateProps = {
   active: boolean;
   setActive: React.Dispatch<React.SetStateAction<boolean>>;
   title: string | undefined;
-  statusInfo?: Pick<
-    Status,
-    'id' | 'person_id' | 'created_at' | 'status'
-  > | null;
+  statusInfo?: IStatus | null;
   identifier: string;
   method: string;
 };
@@ -38,7 +35,7 @@ const AcceptRejectModals: FC<IDonateProps> = ({
   const acceptBook = async () => {
     await returnBook({
       variables: {
-        person_id: statusInfo!.person_id,
+        person_id: statusInfo!.person_id!,
         identifier,
       },
       refetchQueries: [GetAllMaterialsDocument],
@@ -53,7 +50,7 @@ const AcceptRejectModals: FC<IDonateProps> = ({
   const rejectBook = async () => {
     await rejectItem({
       variables: {
-        person_id: statusInfo!.person_id,
+        person_id: statusInfo!.person_id!,
         identifier,
       },
       refetchQueries: [GetAllMaterialsDocument],

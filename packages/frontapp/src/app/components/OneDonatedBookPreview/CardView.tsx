@@ -13,12 +13,12 @@ import { RoutesTypes } from '../../../utils/routes';
 import { css } from '@emotion/react';
 
 interface CardViewProps {
-  picture: string;
+  picture?: string | null;
   title: string;
   description: string;
   username: string;
-  userId: number;
-  status: StatusTypes;
+  userId?: number;
+  status?: StatusTypes;
   accept: () => void;
   reject: () => void;
   redirect: () => void;

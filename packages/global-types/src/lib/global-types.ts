@@ -218,6 +218,8 @@ export interface Material {
     messages: Nullable<Message>[];
     description: string;
     is_donated: boolean;
+    currentStatus?: Nullable<Status>;
+    claimCount: number;
 }
 
 export interface ResponseMetadata {

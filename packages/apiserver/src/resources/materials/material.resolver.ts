@@ -1,20 +1,22 @@
 import {
   Args,
+  Context,
+  Mutation,
   Parent,
   Query,
   ResolveField,
   Resolver,
-  Mutation,
 } from '@nestjs/graphql';
 import { Material } from './material.entity';
 import { Status } from '../statuses/status.entity';
 import {
   CreateMaterialInput,
-  UpdateMaterialInput,
-  RemoveMaterialInput,
   DonateBookInput,
+  RemoveMaterialInput,
+  RolesTypes,
   SearchInput,
   SearchOneMaterial,
+  UpdateMaterialInput,
 } from '@mimir/global-types';
 import { Notification } from '../notifications/notification.entity';
 import { MaterialService } from './material.service';
@@ -22,6 +24,10 @@ import { BadRequestException } from '@nestjs/common';
 import { Message } from '../messages/message.entity';
 import { GraphQLError } from 'graphql';
 import { normalizeIdentifier } from '@mimir/helper-functions';
+import { CurrentUser } from '../../auth/current-user';
+import { Person } from '../persons/person.entity';
+import * as DataLoader from 'dataloader';
+import dataLoaders from '../../data-loaders';
 
 @Resolver('Material')
 export class MaterialResolver {
@@ -64,8 +70,14 @@ export class MaterialResolver {
   }
 
   @Query(() => [Material])
-  async searchOfMaterials(@Args('input') searchInput: SearchInput) {
-    return this.materialService.search(searchInput);
+  async searchOfMaterials(
+    @Args('input') searchInput: SearchInput,
+    @CurrentUser() user: Person
+  ) {
+    return this.materialService.search(
+      searchInput,
+      user.type === RolesTypes.MANAGER
+    );
   }
 
   @Query(() => [Material])
@@ -105,6 +117,7 @@ export class MaterialResolver {
       throw new BadRequestException();
     }
   }
+
   @Mutation(() => Material)
   async updateMaterial(
     @Args('input') updateMaterialInput: UpdateMaterialInput
@@ -123,6 +136,7 @@ export class MaterialResolver {
       throw new BadRequestException();
     }
   }
+
   @ResolveField(() => [Status])
   async statuses(@Parent() material: Material) {
     const { id } = material;
@@ -142,5 +156,17 @@ export class MaterialResolver {
   async messages(@Parent() material: Material) {
     const { id } = material;
     return Message.find({ where: { material_id: id } });
+  }
+
+  @ResolveField(() => Status)
+  async currentStatus(
+    @Parent() material: Material,
+    @Context(dataLoaders.statusesLoader)
+    statusesLoader: DataLoader<number, Status>
+  ): Promise<Status> {
+    if (!material?.currentStatusId) {
+      return null;
+    }
+    return statusesLoader.load(material.currentStatusId);
   }
 }

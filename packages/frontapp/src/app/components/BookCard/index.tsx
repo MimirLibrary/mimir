@@ -10,7 +10,7 @@ export interface IBookCardProps {
   src?: string | null;
   title?: string;
   date?: DateTime;
-  status?: string;
+  status?: string | null;
   author?: string;
   category?: string;
   id?: string;

@@ -9,8 +9,10 @@ const useMaterialFilter = (
 ) => {
   if (filterName === 'availability') {
     return availableMaterial?.reduce((acc: FilterObjectType, material: any) => {
-      const lastStatus = material.statuses.slice(-1)[0];
-      const currentStatus = getStatus(lastStatus?.status, material?.created_at);
+      const currentStatus = getStatus(
+        material?.currentStatus?.status,
+        material?.created_at
+      );
       return {
         ...acc,
         [currentStatus as string]: acc[currentStatus as string]

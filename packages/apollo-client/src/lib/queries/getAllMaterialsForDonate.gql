@@ -2,7 +2,7 @@ query GetAllMaterialsForDonate($locations: [Int!], $limit: Int, $offset: Int) {
   getAllMaterials(locations: $locations, limit: $limit, offset: $offset) {
     id
     title
-    statuses {
+    currentStatus {
       id
       status
       person {
@@ -11,5 +11,6 @@ query GetAllMaterialsForDonate($locations: [Int!], $limit: Int, $offset: Int) {
         avatar
       }
     }
+    claimCount
   }
 }

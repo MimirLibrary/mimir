@@ -8,7 +8,7 @@ import StatusBadge from '../StatusBadge';
 import { t } from 'i18next';
 
 interface CardViewProps {
-  picture: string;
+  picture?: string | null;
   title: string;
   description: string;
   username: string;

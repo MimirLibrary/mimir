@@ -9,14 +9,16 @@ import CardView from './CardView';
 import TableRowView from './TableRowView';
 import styled from '@emotion/styled/macro';
 import { StyledComponent } from '@emotion/styled';
+import { IStatus } from '../../types';
+import { StatusTypes } from '@mimir/global-types';
 
 interface OneDonatorProps {
   title: string;
   identifier: string;
-  statuses: any;
+  lastStatus?: IStatus | null;
   id: number;
   index: number;
-  picture: string;
+  picture?: string | null;
   description: string;
   search: string;
   setShownId: Dispatch<SetStateAction<number[]>>;
@@ -37,7 +39,7 @@ const OneDonator = ({
   picture,
   title,
   description,
-  statuses,
+  lastStatus,
   search,
   setShownId,
 }: OneDonatorProps) => {
@@ -49,11 +51,9 @@ const OneDonator = ({
     navigate(`/donate/${item_id}`);
   };
 
-  const lastStatus = statuses.slice(-1)[0];
-
   const { data: personName, error } = useGetOnePersonQuery({
     variables: {
-      id: lastStatus.person_id,
+      id: '' + lastStatus?.person_id,
     },
   });
 
@@ -82,8 +82,8 @@ const OneDonator = ({
             title={title}
             description={description}
             username={personName?.getOnePerson?.username || 'unknown'}
-            userId={lastStatus.person_id}
-            status={lastStatus.status}
+            userId={lastStatus?.person_id}
+            status={lastStatus?.status as StatusTypes}
             accept={() => setAcceptRejectMethod('accept')}
             reject={() => setAcceptRejectMethod('reject')}
             redirect={() => handleRedirect(id)}
@@ -95,7 +95,7 @@ const OneDonator = ({
           title={title}
           description={description}
           username={personName?.getOnePerson?.username || 'unknown'}
-          status={lastStatus.status}
+          status={lastStatus?.status as StatusTypes}
           accept={() => setAcceptRejectMethod('accept')}
           reject={() => setAcceptRejectMethod('reject')}
           redirect={() => handleRedirect(id)}

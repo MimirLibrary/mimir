@@ -134,7 +134,7 @@ const StatisticsModal: FC<StatisticsModal> = ({ isActive, setIsActive }) => {
     fetchPolicy: 'no-cache',
   });
   const bookItems = data?.getAllMaterials!.map((material) => {
-    return { ...material, status: material?.statuses.slice(-1)[0] };
+    return { ...material, status: material?.currentStatus };
   });
 
   const NUMBER_OF_ALL_BOOKS =

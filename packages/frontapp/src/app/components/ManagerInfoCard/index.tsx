@@ -391,14 +391,9 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
                     </FieldDescription>
                     <FieldOpenLink
                       secondary="true"
-                      to={`${RoutesTypes.READERS}/${
-                        field?.statuses[field?.statuses.length - 1]?.person.id
-                      }`}
+                      to={`${RoutesTypes.READERS}/${field?.currentStatus?.person.id}`}
                     >
-                      {
-                        field?.statuses[field?.statuses.length - 1]?.person
-                          .username
-                      }
+                      {field?.currentStatus?.person.username}
                     </FieldOpenLink>
                   </InlineWrapper>
                 </FieldWrapper>
@@ -410,9 +405,7 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
               {fieldsDonate?.slice(0, 3).map((field) => (
                 <StyledIcon
                   key={field?.id}
-                  src={
-                    field?.statuses[field?.statuses.length - 1]?.person.avatar
-                  }
+                  src={field?.currentStatus?.person.avatar}
                 />
               ))}
               {fieldsDonate.length > 3 ? (

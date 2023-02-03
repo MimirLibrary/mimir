@@ -10,7 +10,7 @@ query GetMaterialById($id: ID!) {
     updated_at
     description
     type
-    statuses {
+    currentStatus {
       id
       person_id
       status
@@ -20,5 +20,6 @@ query GetMaterialById($id: ID!) {
       id
       location
     }
+    claimCount
   }
 }

@@ -21,7 +21,7 @@ export const getDates = (date: Date) => {
 export const isOverdue = (date: Date) =>
   getDates(date).currentDate >= getDates(date).returnDate;
 
-export const getStatus = (status: string | undefined, date: any) => {
+export const getStatus = (status: string | undefined | null, date: any) => {
   if (!status) return null;
   if (status === StatusTypes.BUSY)
     return !isOverdue(date) ? StatusTypes.BUSY : StatusTypes.OVERDUE;
