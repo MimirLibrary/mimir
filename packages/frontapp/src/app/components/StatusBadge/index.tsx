@@ -1,14 +1,16 @@
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 
-export type BadgeType = 'success' | 'danger';
+export type BadgeType = 'success' | 'warning' | 'danger' | 'default';
 
 interface StatusBadgeProps {
-  type: 'success' | 'danger';
+  type: 'success' | 'warning' | 'danger' | 'default';
 }
 
 const badgeColors: Record<BadgeType, string> = {
   success: colors.main_green,
+  warning: colors.warning_yellow,
+  default: colors.main_black,
   danger: colors.problem_red,
 };
 
