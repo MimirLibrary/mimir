@@ -8,6 +8,7 @@ import { NavbarItems } from '../../../utils/NavbarItems';
 import { useAppDispatch } from '../../hooks/useTypedDispatch';
 import { logout } from '../../store/slices/userSlice';
 import { RolesTypes } from '@mimir/global-types';
+import { resetTab } from '../../store/slices/tabsSlice';
 
 interface IProps {
   icon: ReactElement;
@@ -91,6 +92,7 @@ const NavbarItem: FC<IProps> = ({ icon, name, path, changeActiveTab }) => {
 
   const handleLogout = () => {
     dispatch(logout());
+    dispatch(resetTab());
     history('/');
     localStorage.clear();
   };
