@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
 import { render } from '../../../helpers/customRender';
-import bookImage from '../../../assets/MOC-data/BookImage.png';
+import bookImage from '../../../assets/MOC-data/EmptyCover.png';
 import BookCard from './index';
 import { useTranslation } from 'react-i18next';
 

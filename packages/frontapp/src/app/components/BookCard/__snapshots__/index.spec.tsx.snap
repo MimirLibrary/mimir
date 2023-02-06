@@ -151,7 +151,7 @@ exports[`BookCard Component renders correctly, with snapshots 1`] = `
   <img
     class="emotion-1"
     data-testid="bookImage"
-    src="BookImage.png"
+    src="EmptyCover.png"
   />
   <div
     class="emotion-2"
