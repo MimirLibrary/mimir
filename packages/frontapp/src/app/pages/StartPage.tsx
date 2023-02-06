@@ -31,7 +31,7 @@ const StartPageBackground = styled.div`
   background-image: url('../../assets/bookshelf-pattern.png');
   @media (max-width: ${dimensions.phone_width}) {
     overflow: hidden;
-    align-items: flex-end;
+    align-items: center;
   }
 `;
 

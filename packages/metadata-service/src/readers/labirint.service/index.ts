@@ -18,6 +18,10 @@ export class LabirintService {
         `${this.rootUrlSearch}${identifier}/?stype=0`
       );
       const $ = cheerio.load(firstResponse.data, null, false);
+      if (cheerio.html($('.search-error'))) {
+        console.log('incorrect ISBN');
+        return null;
+      }
       const id = $('.product-title-link').attr('href');
       const secondResponse = await axios.get(`${this.rootUrl}${id}`);
       return secondResponse.data;
@@ -28,10 +32,6 @@ export class LabirintService {
 
   private async parseData(result): Promise<Bundle> {
     const $ = cheerio.load(result, null, false);
-    if (cheerio.html($('.search-error'))) {
-      console.log('incorrect ISBN');
-      return;
-    }
 
     const pic = await axios.get($('.book-img-cover').attr('src'), {
       responseType: 'arraybuffer',
@@ -84,6 +84,9 @@ export class LabirintService {
 
   async getData(isbn: string): Promise<Bundle> {
     const result = await this.readData(isbn);
+    if (!result) {
+      return null;
+    }
     return this.parseData(result);
   }
 }

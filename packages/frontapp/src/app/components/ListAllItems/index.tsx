@@ -12,6 +12,12 @@ import { setSearchMaterials } from '../../store/slices/materialsSlice';
 import { useAppDispatch } from '../../hooks/useTypedDispatch';
 import { IMaterial } from '../../types';
 import { locationIds } from '../../store/slices/userSlice';
+import Button from '../Button';
+import { NotFoundWindow } from '../NotFoundWindow';
+import { ReactComponent as ArrowSVG } from './../../../assets/ArrowLeftUncolored.svg';
+import { t } from 'i18next';
+import { useNavigate } from 'react-router-dom';
+import { RoutesTypes } from '../../../utils/routes';
 
 const StyledWrapperList = styled(WrapperList)`
   width: 100%;
@@ -40,6 +46,12 @@ const ListAllItems = () => {
 
   const dispatch = useAppDispatch();
 
+  const navigate = useNavigate();
+  // Todo: this handler should be replaced after implementation of reader url search
+  const handleGoBack = () => {
+    navigate(RoutesTypes.HOME);
+  };
+
   useEffect(() => {
     if (data)
       dispatch(setSearchMaterials(data?.getAllMaterials as IMaterial[]));
@@ -51,25 +63,34 @@ const ListAllItems = () => {
     }
   }, [error]);
 
-  return (
-    <>
-      {loading ? (
-        <WrapperLoader>
-          <Loader
-            height={100}
-            width={100}
-            color={`${colors.accent_color}`}
-            strokeWidth={5}
-          />
-        </WrapperLoader>
-      ) : (
-        <StyledWrapperList>
-          {searchMaterials?.map((item) => (
-            <BookCardExtended key={item?.id} item={item} />
-          ))}
-        </StyledWrapperList>
-      )}
-    </>
+  return loading ? (
+    <WrapperLoader>
+      <Loader
+        height={100}
+        width={100}
+        color={`${colors.accent_color}`}
+        strokeWidth={5}
+      />
+    </WrapperLoader>
+  ) : searchMaterials?.length ? (
+    <StyledWrapperList>
+      {searchMaterials?.map((item) => (
+        <BookCardExtended key={item?.id} item={item} />
+      ))}
+    </StyledWrapperList>
+  ) : (
+    <NotFoundWindow
+      searchEntity={t('Readers.SingleUser.Item')}
+      withButton={
+        <Button
+          type="button"
+          onClick={handleGoBack}
+          value={t('Back')}
+          svgComponent={<ArrowSVG />}
+          transparent={true}
+        />
+      }
+    />
   );
 };
 
