@@ -3,10 +3,21 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 import { colors, dimensions } from '@mimir/ui-kit';
 import {
   GetAllMaterialsForManagerDocument,
+  GetAllTakenItemsDocument,
+  GetMaterialByIdDocument,
+  GetNotificationsByPersonDocument,
   Status,
+  useClaimBookMutation,
+  useCreateNotificationMutation,
+  useGetAllLocationsQuery,
+  useGetNotificationsByPersonQuery,
+  useProlongTimeMutation,
+  useRemoveMaterialMutation,
+  useRemoveNotificationMutation,
+  useReturnBookMutation,
+  useUpdateMaterialMutation,
 } from '@mimir/apollo-client';
-import { DateTime } from '@mimir/global-types';
-import Button from '../Button';
+import { DateTime, RolesTypes, Notification } from '@mimir/global-types';
 import ClaimOperation from '../ClaimOperation';
 import Modal from '../Modal';
 import {
@@ -15,34 +26,25 @@ import {
   periodOfKeeping,
 } from '../../models/helperFunctions/converTime';
 import SuccessMessage from '../SuccessMessage';
-import {
-  GetAllTakenItemsDocument,
-  GetMaterialByIdDocument,
-  GetNotificationsByPersonDocument,
-  useClaimBookMutation,
-  useProlongTimeMutation,
-  useReturnBookMutation,
-  useRemoveMaterialMutation,
-  useUpdateMaterialMutation,
-  useGetNotificationsByPersonQuery,
-  useCreateNotificationMutation,
-  useRemoveNotificationMutation,
-} from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import ErrorMessage from '../ErrorMessge';
 import AskManagerForm from '../AskManagerForm';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { RolesTypes } from '@mimir/global-types';
 import { IDropdownOption } from '../Dropdown';
 import { TUserLocation } from '../../store/slices/userSlice';
-import DescriptionBook from './DescriptionBook';
 import Section from '../Section';
 import ExpandableText from '../ExpandableText';
-import { useMediaQuery } from 'react-responsive';
-import { ReturnBookButtons } from './ReturnBookButtons';
-import { NotifyMeButtons } from './NotifyMeButtons';
-import { EditButtons } from './EditButtons';
-import { ControlButtons } from './ControlButtons';
+import { ReturnBookButtons } from './Buttons/ReturnBookButtons';
+import { NotifyMeButtons } from './Buttons/NotifyMeButtons';
+import { EditButtons } from './Buttons/EditButtons';
+import { ControlButtons } from './Buttons/ControlButtons';
+import emptyCover from '../../../assets/MOC-data/EmptyCover.png';
+import Edit from '../Edit';
+import { listOfGenres } from '../../../assets/SearchConsts';
+import { toast } from 'react-toastify';
+import AcceptRejectModals from '../AcceptRejectModals';
+import { DonateButtons } from './Buttons/DonateButtons';
+import { CurrentStatus } from './CurrentStatus';
 
 export const BookHolder = styled.div`
   width: 100%;
@@ -55,15 +57,99 @@ export const BookHolder = styled.div`
   box-sizing: border-box;
 `;
 
+const BookWrapper = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: 12rem 1fr minmax(auto, 278px);
+  gap: ${dimensions.base};
+  grid-template-areas:
+    'picture credits buttons'
+    'description description description';
+
+  padding: ${dimensions.base_2};
+  background-color: ${colors.bg_secondary};
+  border-radius: ${dimensions.xs_1};
+  box-shadow: 0 10px 70px rgba(26, 30, 214, 0.08);
+  box-sizing: border-box;
+
+  @media (max-width: ${dimensions.wide_laptop_width}) {
+    grid-template-columns: 12rem 1fr;
+    grid-template-areas:
+      'picture credits'
+      'description description'
+      'buttons buttons';
+  }
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'picture'
+      'credits'
+      'description'
+      'buttons';
+  }
+`;
+const BookImageWrapper = styled.div`
+  display: flex;
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    justify-content: center;
+  }
+`;
+
+const BookImage = styled.img`
+  grid-area: picture;
+  width: 12rem;
+  height: 19.5rem;
+  border-radius: ${dimensions.xs_1};
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    justify-self: center;
+  }
+`;
+
+const BookTitle = styled.p`
+  font-weight: 700;
+  margin-bottom: ${dimensions.xl_2};
+  font-size: ${dimensions.xl};
+  line-height: ${dimensions.xl_2};
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    text-align: center;
+  }
+`;
+
+const BookCredits = styled.div`
+  width: 100%;
+  grid-area: credits;
+`;
+
+const BookDescription = styled.div`
+  width: 100%;
+  grid-area: description;
+`;
+
+const BookControls = styled.div`
+  grid-area: buttons;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: ${dimensions.base};
+
+  @media (max-width: ${dimensions.wide_laptop_width}) {
+    flex-direction: row;
+  }
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    flex-direction: column;
+  }
+`;
+
 export const ShortDescriptionWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
   gap: ${dimensions.xl_2};
-`;
-
-export const LongDescription = styled.div`
-  grid-column: 1 / span 3;
 `;
 
 export const WrapperButtons = styled.div`
@@ -81,60 +167,11 @@ export const WrapperButtons = styled.div`
   }
 `;
 
-export const StyledButton = styled(Button)`
-  max-width: 278px;
-
-  @media (max-width: ${dimensions.wide_laptop_width}) {
-    flex: 1;
-    min-width: 278px;
-    max-width: 100%;
-  }
-`;
-
 export const TitleHolder = styled.p`
   font-weight: 600;
   font-size: ${dimensions.base};
   margin-bottom: ${dimensions.xs};
   line-height: ${dimensions.xl};
-`;
-
-const StyledTextArea = styled.textarea`
-  border: none;
-  outline: none;
-  width: 98%;
-  height: 10rem;
-  font-weight: 300;
-  font-size: ${dimensions.base};
-  line-height: ${dimensions.xl};
-  color: ${colors.main_black};
-  resize: none;
-  text-align: justify;
-`;
-const TextAreaWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100% - 100px;
-  border: 0.5px solid #bdbdbd;
-  border-radius: ${dimensions.xl_3};
-  padding: ${dimensions.xs_1};
-  background: ${colors.bg_secondary};
-
-  :hover {
-    border: 0.5px solid ${colors.accent_color};
-  }
-
-  :focus {
-    border: 0.5px solid ${colors.accent_color};
-  }
-
-  @media (max-width: ${dimensions.tablet_width}) {
-    width: 100%;
-  }
-
-  @media (max-width: ${dimensions.phone_width}) {
-    width: 100%;
-  }
 `;
 
 export const OpenLink = styled.a`
@@ -155,7 +192,10 @@ export const Topic = styled.p`
   color: ${colors.main_black};
 `;
 
-type StatusType = Pick<Status, 'id' | 'person_id' | 'created_at' | 'status'>;
+export type StatusType = Pick<
+  Status,
+  'id' | 'person_id' | 'created_at' | 'status'
+>;
 
 export type Location = {
   __typename?: 'Location' | undefined;
@@ -169,7 +209,7 @@ export interface INewData {
 }
 
 export interface IBookInfoProps {
-  person_id: number | undefined;
+  isDonate?: boolean;
   src: string | null | undefined;
   title: string | undefined;
   description: string | undefined;
@@ -195,9 +235,9 @@ const BookInfo: FC<IBookInfoProps> = ({
   created_at,
   updated_at,
   material_id,
-  person_id,
   type,
   location,
+  isDonate = false,
 }) => {
   const { id, userRole } = useAppSelector((state) => state.user);
 
@@ -215,9 +255,9 @@ const BookInfo: FC<IBookInfoProps> = ({
     refetchQueries: [GetNotificationsByPersonDocument],
   });
 
-  const isLaptop = useMediaQuery({ maxWidth: dimensions.wide_laptop_width });
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+
   const [isShowClaimModal, setIsShowClaimModal] = useState<boolean>(false);
   const [isShowAskManger, setIsShowAskManager] = useState<boolean>(false);
   const [isShowSuccessClaim, setIsShowSuccessClaim] = useState<boolean>(false);
@@ -233,24 +273,18 @@ const BookInfo: FC<IBookInfoProps> = ({
   const [editing, setEditing] = useState<boolean>(false);
   const [ReturningBookError, setReturningBookError] = useState<string>();
   const [isReturnError, setIsReturnError] = useState<boolean>(false);
+  const [deleteWarning, setDeleteWarning] = useState(false);
+  const [active, setActive] = useState(false);
+  const [method, setMethod] = useState('');
+
   const [newCategory, setNewCategory] = useState(category);
   const [newLocation, setNewLocation] = useState<Location>(location);
   const [newDeadline, setNewDeadline] = useState(periodOfKeeping);
-  const [newDescriptionData, setNewDescriptionData] = useState<INewData>({
-    newAuthor: author,
-    newTitle: title,
-  });
-
+  const [newAuthor, setNewAuthor] = useState(author);
+  const [newTitle, setNewTitle] = useState(title);
   const [newDescription, setNewDescription] = useState(description || '');
-  const [deleteWarning, setDeleteWarning] = useState(false);
-  const [isMaterialTakenByCurrentUser, setIsMaterialTakenByCurrentUser] =
-    useState(false);
 
-  const handleChangeDescription = (
-    e: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    setNewDescription(e.target.value);
-  };
+  const [isCurrentUserSubscribed, setIsCurrentUserSubscriber] = useState(false);
 
   const [claimBook, { data }] = useClaimBookMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
@@ -287,29 +321,31 @@ const BookInfo: FC<IBookInfoProps> = ({
       ? infoOfProlong?.prolongClaimPeriod.message
       : null;
 
-  const handleChangeNewDescriptionData = (
-    e: React.ChangeEvent<HTMLInputElement>
+  const handleChangeDescription = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    setNewDescriptionData({
-      ...newDescriptionData,
-      [e.target.name]: e.target.value,
-    });
+    setNewDescription(e.target.value);
   };
 
-  const handleChangeCategory = (option: IDropdownOption) => {
-    setNewCategory(option.value);
+  const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewTitle(e.target.value);
   };
 
-  const handleChangeLocation = (option: TUserLocation) => {
-    const newLocation = {
-      id: option.id,
-      location: option.value,
-    };
+  const handleChangeAuthor = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewAuthor(e.target.value);
+  };
+
+  const handleChangeCategory = (e: IDropdownOption) => {
+    setNewCategory(e.value);
+  };
+
+  const handleChangeLocation = (e: TUserLocation) => {
+    const newLocation = { id: e.id, location: e.value };
     setNewLocation(newLocation);
   };
 
   const handleChangeDeadline = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewDeadline(Number(e.target.value));
+    if (e.target.value) setNewDeadline(Number(e.target.value));
     Number(e.target.value) > 31 && setNewDeadline(31);
     Number(e.target.value) <= 0 && setNewDeadline(1);
   };
@@ -323,7 +359,6 @@ const BookInfo: FC<IBookInfoProps> = ({
     });
     setValueIsISBN('');
     setIsShowClaimModal(false);
-    setIsMaterialTakenByCurrentUser(true);
   };
 
   const retrieveBook = async () => {
@@ -357,8 +392,8 @@ const BookInfo: FC<IBookInfoProps> = ({
         identifier: identifier,
         type: type,
         location_id: Number(newLocation.id),
-        title: newDescriptionData.newTitle,
-        author: newDescriptionData.newAuthor,
+        title: newTitle,
+        author: newAuthor,
         category: newCategory,
         description: newDescription,
         updated_at: getDates(updated_at).currentDate,
@@ -366,7 +401,6 @@ const BookInfo: FC<IBookInfoProps> = ({
     });
     setEditing(false);
   };
-
   const deleteItem = async () => {
     await removeMaterial({
       variables: {
@@ -381,12 +415,12 @@ const BookInfo: FC<IBookInfoProps> = ({
   const handleDeleteBtn = () => setDeleteWarning(true);
 
   const discardChanges = () => {
-    setNewDescriptionData({
-      newAuthor: author,
-      newTitle: title,
-    });
+    setNewTitle(title);
+    setNewAuthor(author);
     setNewCategory(category);
-    setNewDescription(description ? description : ' ');
+    setNewDeadline(newDeadline);
+    setNewLocation(location);
+    setNewDescription(description ? description : '');
     setEditing(false);
   };
 
@@ -396,7 +430,7 @@ const BookInfo: FC<IBookInfoProps> = ({
       setIsShowClaimModal(true);
       setValueIsISBN(claimModal);
     }
-  }, []);
+  }, [currentStatus, searchParams]);
 
   useEffect(() => {
     if (infoOfProlong?.prolongClaimPeriod.__typename === 'Status') {
@@ -414,18 +448,18 @@ const BookInfo: FC<IBookInfoProps> = ({
     }
   }, [data]);
 
+  // Check if current user is subscribed on this book
   useEffect(() => {
     if (!getNotificationsByPersonData) return;
-
     if (
-      getNotificationsByPersonData.getNotificationsByPerson.find(
-        (notification) => notification?.person_id === id
-      )
+      getNotificationsByPersonData.getNotificationsByPerson
+        .filter((item): item is Notification => !!item)
+        .filter((item) => item.material_id === material_id)
+        .find((item) => item.person_id === id)
     ) {
-      //TODO: consider removing this local book claiming if no material_id provided
-      setIsMaterialTakenByCurrentUser(true);
+      setIsCurrentUserSubscriber(true);
     }
-  }, [getNotificationsByPersonData]);
+  }, [id, material_id, getNotificationsByPersonData]);
 
   const showAskManagerModal = () => {
     setIsShowErrorMessageOfClaiming(false);
@@ -449,7 +483,7 @@ const BookInfo: FC<IBookInfoProps> = ({
         },
       },
     });
-    setIsMaterialTakenByCurrentUser(true);
+    setIsCurrentUserSubscriber(true);
   };
 
   const handleCancelNotifyButton = async () => {
@@ -461,85 +495,116 @@ const BookInfo: FC<IBookInfoProps> = ({
         },
       },
     });
-    setIsMaterialTakenByCurrentUser(false);
+    setIsCurrentUserSubscriber(false);
   };
+
+  const onClickReject = () => {
+    setActive(true);
+    setMethod('reject');
+  };
+  const onClickAccept = () => {
+    setActive(true);
+    setMethod('accept');
+  };
+
+  const { data: locations, error: errorLocations } = useGetAllLocationsQuery({
+    skip: userRole === RolesTypes.READER,
+  });
+
+  useEffect(() => {
+    if (errorLocations) {
+      toast.error(errorLocations.message);
+    }
+  }, [errorLocations]);
+
+  const locationsMap: IDropdownOption[] =
+    locations?.getAllLocations
+      .filter((value): value is Location => !!value)
+      .map((loc) => ({ id: loc.id, value: loc.location })) || [];
 
   return (
     <>
-      <BookHolder>
-        <ShortDescriptionWrapper>
-          <DescriptionBook
-            title={title}
-            author={author}
-            category={category}
-            date={created_at}
-            editing={editing}
-            location={location}
-            src={src}
-            status={statusInfo?.status}
-            newDeadline={newDeadline}
-            newTitleAndAuthor={newDescriptionData}
-            handleChangeDeadline={handleChangeDeadline}
-            handleChangeLocation={handleChangeLocation}
-            handleChangeAuthorAndTitle={handleChangeNewDescriptionData}
-            handleChangeNewGenre={handleChangeCategory}
-          />
-          {isLaptop ? null : (
-            <WrapperButtons>
-              {userRole === RolesTypes.READER ? (
-                statusInfo?.status === 'Free' ? (
-                  <ReturnBookButtons
-                    onClaim={showClaimModal}
-                    onReturn={retrieveBook}
-                    onProlong={prolongPeriod}
-                  />
-                ) : statusInfo?.status !== 'Free' &&
-                  statusInfo?.person_id === id ? (
-                  <ReturnBookButtons
-                    isClaimed
-                    onClaim={showClaimModal}
-                    onReturn={retrieveBook}
-                    onProlong={prolongPeriod}
-                  />
-                ) : (
-                  <NotifyMeButtons
-                    onSubscribe={handleEnableNotifyButton}
-                    onCancel={handleCancelNotifyButton}
-                  />
-                )
-              ) : editing ? (
-                <EditButtons
-                  onSave={editInformation}
-                  onCancel={discardChanges}
-                />
-              ) : (
-                <ControlButtons
-                  onEdit={handleEditBtn}
-                  onDelete={handleDeleteBtn}
-                />
-              )}
-            </WrapperButtons>
-          )}
-        </ShortDescriptionWrapper>
-        {editing ? (
-          <>
-            <br />
-            <TitleHolder>Description: </TitleHolder>
-            <TextAreaWrapper>
-              <StyledTextArea
-                value={newDescription}
-                onChange={handleChangeDescription}
+      <BookWrapper>
+        <BookImageWrapper>
+          <BookImage src={src || emptyCover} />
+        </BookImageWrapper>
+        <BookCredits>
+          {editing ? (
+            <>
+              <Edit
+                title={'Name:'}
+                handler={handleChangeTitle}
+                placeholder={'Enter title'}
+                value={newTitle}
               />
-            </TextAreaWrapper>
-          </>
-        ) : description ? (
-          <Section title={'Description: '}>
-            <ExpandableText>{description}</ExpandableText>
-          </Section>
+              <Edit
+                dropdown
+                title={'Genre:'}
+                dropdownOptions={listOfGenres}
+                placeholder={'Enter genre'}
+                handler={handleChangeCategory}
+                value={newCategory}
+              />
+              <Edit
+                title={'Author:'}
+                handler={handleChangeAuthor}
+                placeholder={'Enter author(s)'}
+                value={newAuthor}
+              />
+              <Edit
+                type="number"
+                title={'Deadline:'}
+                handler={handleChangeDeadline}
+                placeholder={'Enter deadline'}
+                value={newDeadline.toString()}
+              />
+              <Edit
+                dropdown
+                title={'Location:'}
+                dropdownOptions={locationsMap}
+                handler={handleChangeLocation}
+                value={newLocation.location}
+              />
+            </>
+          ) : (
+            <>
+              <BookTitle>{title}</BookTitle>
+              <Section title={'Genre:'}>{category}</Section>
+              <Section title={'Author:'}>{author}</Section>
+              {isDonate ? (
+                <Section title={'Status:'}>
+                  {statusInfo ? (
+                    <CurrentStatus status={statusInfo} />
+                  ) : (
+                    'No information provided'
+                  )}
+                </Section>
+              ) : (
+                <Section title={'Deadline:'}>{newDeadline}</Section>
+              )}
+              <Section title={'Location:'}>{location.location}</Section>
+            </>
+          )}
+        </BookCredits>
+        {description ? (
+          <BookDescription>
+            {editing ? (
+              <Edit
+                textarea
+                title={'Description:'}
+                handler={handleChangeDescription}
+                value={newDescription}
+              />
+            ) : (
+              <Section title={'Description:'}>
+                <ExpandableText>{description}</ExpandableText>
+              </Section>
+            )}
+          </BookDescription>
         ) : null}
-        {!isLaptop ? null : (
-          <WrapperButtons>
-            {userRole === RolesTypes.READER ? (
+        <BookControls>
+          {userRole === RolesTypes.READER ? (
+            statusInfo?.status !== 'Pending' ? (
               statusInfo?.status === 'Free' ? (
                 <ReturnBookButtons
                   onClaim={showClaimModal}
@@ -556,21 +621,29 @@ const BookInfo: FC<IBookInfoProps> = ({
                 />
               ) : (
                 <NotifyMeButtons
+                  isUserSubscriber={isCurrentUserSubscribed}
                   onSubscribe={handleEnableNotifyButton}
                   onCancel={handleCancelNotifyButton}
                 />
               )
-            ) : editing ? (
-              <EditButtons onSave={editInformation} onCancel={discardChanges} />
-            ) : (
-              <ControlButtons
-                onEdit={handleEditBtn}
-                onDelete={handleDeleteBtn}
-              />
-            )}
-          </WrapperButtons>
-        )}
-      </BookHolder>
+            ) : null
+          ) : editing ? (
+            <EditButtons onSave={editInformation} onCancel={discardChanges} />
+          ) : isDonate && statusInfo?.status === 'Pending' ? (
+            <DonateButtons onAccept={onClickAccept} onReject={onClickReject} />
+          ) : isDonate && statusInfo?.status !== 'Pending' ? null : (
+            <ControlButtons onEdit={handleEditBtn} onDelete={handleDeleteBtn} />
+          )}
+        </BookControls>
+      </BookWrapper>
+      <AcceptRejectModals
+        active={active}
+        setActive={setActive}
+        title={title}
+        statusInfo={statusInfo}
+        identifier={identifier}
+        method={method}
+      />
       <Modal active={isShowClaimModal} setActive={setIsShowClaimModal}>
         <ClaimOperation
           setActive={setIsShowClaimModal}

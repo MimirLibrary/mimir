@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
-import bookImage from '../../../assets/MOC-data/BookImage.png';
+import bookImage from '../../../assets/MOC-data/EmptyCover.png';
 import { useNavigate } from 'react-router-dom';
 import { DateTime } from '@mimir/global-types';
 import BookStatus from '../BookStatus';
