@@ -253,6 +253,11 @@ export const resources = {
       DonateItem: {
         Title: 'Are you planning to donate something to the library?',
         Description: 'Fill in the required* fields or try to scan the code',
+        Instruction: {
+          Title: 'ISBN code',
+          Description:
+            'Look at the back of the book for the code and write it in the box.',
+        },
         Inputs: {
           Name: {
             Title: 'Name',
@@ -580,6 +585,10 @@ export const resources = {
         Title: 'Планируете ли вы что-то пожертвовать библиотеке?',
         Description:
           'Заполните обязательные* поля или попробуйте отсканировать код',
+        Instruction: {
+          Title: 'ISBN код',
+          Description: 'Найдите код в конце книги и напишите его в поле',
+        },
         Inputs: {
           Name: {
             Title: 'Название',
