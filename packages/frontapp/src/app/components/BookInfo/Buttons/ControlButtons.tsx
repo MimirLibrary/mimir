@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { StyledButton } from './index';
-import { ReactComponent as Edit } from '../../../assets/Edit.svg';
-import { ReactComponent as Remove } from '../../../assets/Remove.svg';
+import { ReactComponent as Edit } from '../../../../assets/Edit.svg';
+import { ReactComponent as Remove } from '../../../../assets/Remove.svg';
+import Button from '../../Button';
 
 interface IControl {
   onEdit: () => void;
@@ -11,13 +11,13 @@ interface IControl {
 export const ControlButtons: FC<IControl> = ({ onEdit, onDelete }) => {
   return (
     <>
-      <StyledButton
+      <Button
         value="Edit information"
         onClick={onEdit}
         svgComponent={<Edit />}
         transparent
       />
-      <StyledButton
+      <Button
         value="Delete item"
         onClick={onDelete}
         svgComponent={<Remove />}

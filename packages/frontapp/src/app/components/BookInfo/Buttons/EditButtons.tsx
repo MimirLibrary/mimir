@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { StyledButton } from './index';
+import Button from '../../Button';
 
 interface IEdit {
   onSave: () => void;
@@ -9,8 +9,8 @@ interface IEdit {
 export const EditButtons: FC<IEdit> = ({ onSave, onCancel }) => {
   return (
     <>
-      <StyledButton value="Save changes" onClick={onSave} />
-      <StyledButton value="Cancel changes" onClick={onCancel} transparent />
+      <Button value="Save changes" onClick={onSave} />
+      <Button value="Cancel changes" onClick={onCancel} transparent />
     </>
   );
 };
