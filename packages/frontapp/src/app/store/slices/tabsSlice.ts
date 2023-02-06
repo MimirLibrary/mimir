@@ -16,8 +16,11 @@ const tabsSlice = createSlice({
     setActiveTab: (state: IStateTabs, action: PayloadAction<string | null>) => {
       state.activeTab = action.payload;
     },
+    resetTab: (state: IStateTabs) => {
+      state.activeTab = NavbarItems.HOME;
+    },
   },
 });
 
-export const { setActiveTab } = tabsSlice.actions;
+export const { setActiveTab, resetTab } = tabsSlice.actions;
 export default tabsSlice.reducer;

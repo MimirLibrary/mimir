@@ -21,7 +21,7 @@ const persistConfig = {
   storage,
   migrate: createMigrate(migrations, { debug: true }),
   stateReconciler: autoMergeLevel2,
-  whitelist: ['tabs', 'user'],
+  whitelist: ['user'],
 };
 
 const persistedReducer = persistReducer<RootReducer>(
