@@ -20,8 +20,8 @@ import { Status } from '../resources/statuses/status.entity';
 import { Notification } from '../resources/notifications/notification.entity';
 import { Location } from '../resources/locations/location.entity';
 import {
-  typeDefs as scalarTypeDefs,
   resolvers as scalarResolvers,
+  typeDefs as scalarTypeDefs,
 } from 'graphql-scalars';
 import { MessageModule } from '../resources/messages/message.module';
 import { Message } from '../resources/messages/message.entity';
@@ -41,7 +41,6 @@ import { SchedulerService } from '../scheduler';
 import { ReminderModule } from '../reminder';
 import { StatusSubscriber } from '../resources/statuses/status.subscriber';
 import createStatusesLoader from '../resources/statuses/statuses.loader';
-import createPersonsLoader from '../resources/persons/persons.loader';
 import dataLoaders from '../data-loaders';
 
 @Module({
@@ -92,7 +91,6 @@ import dataLoaders from '../data-loaders';
           },
           context: () => ({
             [dataLoaders.statusesLoader]: createStatusesLoader(),
-            [dataLoaders.personsLoader]: createPersonsLoader(),
           }),
         };
       },

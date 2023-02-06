@@ -31,6 +31,7 @@ export const WrapperModal = styled.div<IStyleProps>`
     padding-top: 5rem;
   }
   @media (max-width: ${dimensions.phone_width}) {
+    height: 100%;
     align-items: flex-end;
   }
 `;
@@ -54,10 +55,14 @@ export const ContentModal = styled.div<IStyleProps>`
   width: 100%;
   margin: auto;
   @media (max-width: ${dimensions.phone_width}) {
-    max-height: 100vh;
+    max-height: 100%;
     padding: ${dimensions.xl} ${dimensions.xs_2};
     border-radius: ${dimensions.base_2} ${dimensions.base_2} 0 0;
     margin: 0;
+    overflow-y: scroll;
+    ::-webkit-scrollbar {
+      display: none; /* Safari and Chrome */
+    }
   }
 `;
 
