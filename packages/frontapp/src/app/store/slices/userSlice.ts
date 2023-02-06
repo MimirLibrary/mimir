@@ -16,6 +16,7 @@ interface IUserState {
   isAuth: boolean;
   blocked: boolean;
   locations: Array<TUserLocation>;
+  permissions: string | null;
 }
 
 export interface IUserPayload {
@@ -31,6 +32,7 @@ export interface IUserPayload {
   refresh_token: string;
   expiry_date: number;
   location: Array<TUserLocation> | TUserLocation;
+  permissions: string | null;
 }
 
 const initialState: IUserState = {
@@ -42,6 +44,7 @@ const initialState: IUserState = {
   userRole: RolesTypes.READER,
   blocked: false,
   locations: [],
+  permissions: null,
 };
 
 const userSlice = createSlice({
@@ -49,8 +52,16 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state: IUserState, action: PayloadAction<IUserPayload>) => {
-      const { username, avatar, email, location, id, userRole, blocked } =
-        action.payload;
+      const {
+        username,
+        avatar,
+        email,
+        location,
+        id,
+        userRole,
+        blocked,
+        permissions,
+      } = action.payload;
       Array.isArray(location)
         ? (state.locations = location)
         : state.locations.push(location);
@@ -61,6 +72,7 @@ const userSlice = createSlice({
       state.isAuth = true;
       state.userRole = userRole;
       state.blocked = blocked ? blocked : false;
+      state.permissions = permissions;
     },
     updateBlocked: (state: IUserState, action: PayloadAction<boolean>) => {
       state.blocked = action.payload ? action.payload : false;
