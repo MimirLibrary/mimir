@@ -546,7 +546,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
           </FormWrapper>
           <WrapperButtons>
             <StyledButton
-              value={t(`DonateItem.Button.AddItem`)}
+              value={t(`DonateItem.Buttons.AddItem`)}
               disabled={isInvalid}
               type="submit"
             />
@@ -557,7 +557,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
             />
             {userRole !== RolesTypes.MANAGER && (
               <StyledButton
-                value={t(`DonateItem.Button.AskManager`)}
+                value={t(`DonateItem.Buttons.AskManager`)}
                 transparent
                 onClick={handleShowAskManagerForm}
               />

@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
+import { t } from 'i18next';
 
 export const Description = styled.p<{ showFullDescription: boolean }>`
   overflow: ${(props) => (props.showFullDescription ? 'visible' : 'hidden')};
@@ -40,7 +41,9 @@ const ExpandableText: FC<IProps> = ({ children }) => {
         {children}
       </Description>
       <OpenButton onClick={() => setShowDescription(!showDescription)}>
-        {!showDescription ? 'see full description' : 'hide description'}
+        {!showDescription
+          ? t('DonateItem.ExpandDescription.Show')
+          : t('DonateItem.ExpandDescription.Hide')}
       </OpenButton>
     </>
   );

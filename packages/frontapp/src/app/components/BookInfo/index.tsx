@@ -43,6 +43,7 @@ import { ReturnBookButtons } from './ReturnBookButtons';
 import { NotifyMeButtons } from './NotifyMeButtons';
 import { EditButtons } from './EditButtons';
 import { ControlButtons } from './ControlButtons';
+import { t } from 'i18next';
 
 export const BookHolder = styled.div`
   width: 100%;
@@ -524,7 +525,9 @@ const BookInfo: FC<IBookInfoProps> = ({
         {editing ? (
           <>
             <br />
-            <TitleHolder>Description: </TitleHolder>
+            <TitleHolder>
+              {t('DonateItem.Inputs.Description.Title')}:
+            </TitleHolder>
             <TextAreaWrapper>
               <StyledTextArea
                 value={newDescription}
@@ -533,7 +536,7 @@ const BookInfo: FC<IBookInfoProps> = ({
             </TextAreaWrapper>
           </>
         ) : description ? (
-          <Section title={'Description: '}>
+          <Section title={t('DonateItem.Inputs.Description.Title')}>
             <ExpandableText>{description}</ExpandableText>
           </Section>
         ) : null}

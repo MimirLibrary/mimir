@@ -274,6 +274,12 @@ export const resources = {
             Title: 'Description',
             Placeholder: 'Enter book description',
           },
+          State: 'State',
+          Deadline: 'Deadline',
+        },
+        ExpandDescription: {
+          Show: 'see full description',
+          Hide: 'hide description',
         },
         Modal: {
           ISBNError: {
@@ -292,9 +298,12 @@ export const resources = {
             Message: 'The problem will be solved soon',
           },
         },
-        Button: {
+        Buttons: {
           AddItem: 'Add item to library',
           AskManager: 'Ask a manager',
+          Claim: 'Claim a book',
+          Return: 'Return a book',
+          Extend: 'Extend claim period',
         },
       },
       ManagerDonateModal: {
@@ -601,6 +610,12 @@ export const resources = {
             Title: 'Описание',
             Placeholder: 'Введите описание книги',
           },
+          State: 'Статус',
+          Deadline: 'Срок возвращения',
+        },
+        ExpandDescription: {
+          Show: 'показать описание',
+          Hide: 'скрыть описание',
         },
         Modal: {
           ISBNError: {
@@ -619,9 +634,12 @@ export const resources = {
             Message: 'Проблема будет решена в ближайшее время',
           },
         },
-        Button: {
+        Buttons: {
           AddItem: 'Добавить в библиотеку',
           AskManager: 'Спросить у менеджера',
+          Claim: 'Забронировать книгу',
+          Return: 'Вернуть книгу',
+          Extend: 'Продлить период использования',
         },
       },
       ManagerDonateModal: {
