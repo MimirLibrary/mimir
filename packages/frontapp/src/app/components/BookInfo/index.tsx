@@ -585,8 +585,8 @@ const BookInfo: FC<IBookInfoProps> = ({
       <Modal active={isShowSuccessClaim} setActive={setIsShowSuccessClaim}>
         <SuccessMessage
           setActive={setIsShowSuccessClaim}
-          title="You have successfully claim the book"
-          description="Enjoy reading and don't forget to return this by"
+          title={t('DonateItem.Messages.Claim.Title')}
+          description={t('DonateItem.Messages.Claim.Description')}
           created_at={dateConditionOfClaiming}
         />
       </Modal>
@@ -595,9 +595,9 @@ const BookInfo: FC<IBookInfoProps> = ({
         setActive={setIsShowErrorMessageOfClaiming}
       >
         <ErrorMessage
-          title="Something goes wrong with your claiming"
+          title={t('DonateItem.Messages.Errors.Claim')}
           message={errorConditionOfClaiming}
-          titleCancel="Ask a manager"
+          titleCancel={t('DonateItem.Buttons.AskManager')}
           setActive={setIsShowErrorMessageOfClaiming}
           onClick={showAskManagerModal}
         />
@@ -605,15 +605,15 @@ const BookInfo: FC<IBookInfoProps> = ({
       <Modal active={isShowSuccessReturn} setActive={setIsSuccessReturn}>
         <SuccessMessage
           setActive={setIsSuccessReturn}
-          title="You have successfully return the book"
+          title={t('DonateItem.Messages.Return')}
         />
       </Modal>
       <Modal active={isShowSuccessExtend} setActive={setIsSuccessExtend}>
         <SuccessMessage
           setActive={setIsSuccessExtend}
           created_at={dateConditionOfExtending}
-          title="You have successfully extend claim period"
-          description="Enjoy reading and don't forget to return this by"
+          title={t('DonateItem.Messages.Extend.Title')}
+          description={t('DonateItem.Messages.Extend.Description')}
         />
       </Modal>
       <Modal
@@ -621,18 +621,18 @@ const BookInfo: FC<IBookInfoProps> = ({
         setActive={setIsShowErrorMessageOfExtending}
       >
         <ErrorMessage
-          title="Something goes wrong with your extending"
+          title={t('DonateItem.Messages.Errors.Extend')}
           message={errorConditionOfExtending}
           setActive={setIsShowErrorMessageOfExtending}
-          titleCancel="Close"
+          titleCancel={t('DonateItem.Messages.Buttons.Cancel')}
         />
       </Modal>
       <Modal active={isReturnError} setActive={setIsReturnError}>
         <ErrorMessage
-          title="Something goes wrong with your returning"
+          title={t('DonateItem.Messages.Errors.Return')}
           message={ReturningBookError}
           setActive={setIsReturnError}
-          titleCancel="Close"
+          titleCancel={t('DonateItem.Messages.Buttons.Close')}
         />
       </Modal>
       <Modal active={isShowAskManger} setActive={setIsShowAskManager}>
@@ -648,32 +648,32 @@ const BookInfo: FC<IBookInfoProps> = ({
         setActive={setIsShowWindowReportedToManager}
       >
         <ErrorMessage
-          title="We reported the problem to the manager"
-          message="The problem will be solved soon"
+          title={t('DonateItem.Messages.Errors.ReportToManager.Title')}
+          message={t('DonateItem.Messages.Errors.ReportToManager.Description')}
           setActive={setIsShowWindowReportedToManager}
-          titleCancel="Close"
+          titleCancel={t('DonateItem.Messages.Buttons.Close')}
           onClick={closeReportedManager}
         />
       </Modal>
       {currentStatus === 'Free' ? (
         <Modal active={deleteWarning} setActive={setDeleteWarning}>
           <ErrorMessage
-            title="Warning"
-            message={`Are you sure you want to delete the book "${title}" from the library permanently?`}
+            title={t('DonateItem.Messages.Delete.Title')}
+            message={t('DonateItem.Messages.Delete.Desctription', title)}
             setActive={setDeleteWarning}
-            titleCancel="Cancel"
-            titleOption="Yes, delete"
+            titleCancel={t('DonateItem.Messages.Buttons.Cancel')}
+            titleOption={t('DonateItem.Messages.Buttons.Delete')}
             onSubmitClick={deleteItem}
           />
         </Modal>
       ) : (
         <Modal active={deleteWarning} setActive={setDeleteWarning}>
           <ErrorMessage
-            title="Warning"
-            message={`The book "${title}" is now in the possession of a person with Id ${statusInfo?.person_id} .Are you sure you want to delete the book "${title}" from the library permanently?`}
+            title={t('DonateItem.Messages.Delete.Title')}
+            message={t('DonateItem.Messages.Errors.Delete.Desctription', title)}
             setActive={setDeleteWarning}
-            titleCancel="Cancel"
-            titleOption="Yes, delete"
+            titleCancel={t('DonateItem.Messages.Buttons.Cancel')}
+            titleOption={t('DonateItem.Messages.Buttons.Delete')}
             onSubmitClick={deleteItem}
           />
         </Modal>
