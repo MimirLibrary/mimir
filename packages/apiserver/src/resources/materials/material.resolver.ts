@@ -43,8 +43,14 @@ export class MaterialResolver {
   }
 
   @Query(() => Material)
-  async getMaterialById(@Args('id') id: number | string) {
-    return Material.findOneOrFail(id, { relations: ['location'] });
+  async getMaterialById(
+    @CurrentUser() user: Person,
+    @Args('id') id: number | string
+  ) {
+    return this.materialService.getOneById(
+      id,
+      user.type === RolesTypes.MANAGER
+    );
   }
 
   @Query(() => Material)

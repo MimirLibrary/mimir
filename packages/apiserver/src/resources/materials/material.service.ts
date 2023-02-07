@@ -17,6 +17,29 @@ import { normalizeIdentifier } from '@mimir/helper-functions';
 export class MaterialService {
   constructor(private connection: Connection) {}
 
+  async getOneById(id: number | string, showHidden = false): Promise<Material> {
+    const query = Material.createQueryBuilder('material')
+      .innerJoinAndSelect('material.location', 'location')
+      .where('material.id = :id', { id });
+
+    if (!showHidden) {
+      query.innerJoin(
+        'status',
+        'currentStatus',
+        'material.current_status_id = currentStatus.id'
+      );
+      query.andWhere('currentStatus.status NOT IN (:...statuses)', {
+        statuses: [
+          StatusTypes.PENDING,
+          StatusTypes.REJECTED,
+          StatusTypes.SUSPEND,
+          StatusTypes.REJECTED,
+        ],
+      });
+    }
+    return await query.getOneOrFail();
+  }
+
   async search(
     searchInput: SearchInput,
     selectHidden = false
@@ -49,6 +72,7 @@ export class MaterialService {
           StatusTypes.PENDING,
           StatusTypes.REJECTED,
           StatusTypes.SUSPEND,
+          StatusTypes.REJECTED,
         ],
       });
     }
