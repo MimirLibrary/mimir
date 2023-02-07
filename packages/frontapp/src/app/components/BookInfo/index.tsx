@@ -170,7 +170,7 @@ export interface INewData {
 }
 
 export interface IBookInfoProps {
-  person_id: number | undefined;
+  person_id?: number | undefined;
   src: string | null | undefined;
   title: string | undefined;
   description: string | undefined;
@@ -196,7 +196,6 @@ const BookInfo: FC<IBookInfoProps> = ({
   created_at,
   updated_at,
   material_id,
-  person_id,
   type,
   location,
 }) => {
@@ -244,8 +243,6 @@ const BookInfo: FC<IBookInfoProps> = ({
 
   const [newDescription, setNewDescription] = useState(description || '');
   const [deleteWarning, setDeleteWarning] = useState(false);
-  const [isMaterialTakenByCurrentUser, setIsMaterialTakenByCurrentUser] =
-    useState(false);
 
   const handleChangeDescription = (
     e: React.ChangeEvent<HTMLTextAreaElement>
@@ -324,7 +321,6 @@ const BookInfo: FC<IBookInfoProps> = ({
     });
     setValueIsISBN('');
     setIsShowClaimModal(false);
-    setIsMaterialTakenByCurrentUser(true);
   };
 
   const retrieveBook = async () => {
@@ -424,7 +420,6 @@ const BookInfo: FC<IBookInfoProps> = ({
       )
     ) {
       //TODO: consider removing this local book claiming if no material_id provided
-      setIsMaterialTakenByCurrentUser(true);
     }
   }, [getNotificationsByPersonData]);
 
@@ -450,7 +445,6 @@ const BookInfo: FC<IBookInfoProps> = ({
         },
       },
     });
-    setIsMaterialTakenByCurrentUser(true);
   };
 
   const handleCancelNotifyButton = async () => {
@@ -462,7 +456,6 @@ const BookInfo: FC<IBookInfoProps> = ({
         },
       },
     });
-    setIsMaterialTakenByCurrentUser(false);
   };
 
   return (
@@ -667,6 +660,7 @@ const BookInfo: FC<IBookInfoProps> = ({
           />
         </Modal>
       ) : (
+        // Here, I removed the person_id from the message. Later we can add username if needed
         <Modal active={deleteWarning} setActive={setDeleteWarning}>
           <ErrorMessage
             title={t('DonateItem.Messages.Delete.Title')}
