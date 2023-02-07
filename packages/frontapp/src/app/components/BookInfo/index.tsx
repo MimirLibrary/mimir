@@ -31,7 +31,7 @@ import {
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import ErrorMessage from '../ErrorMessge';
 import AskManagerForm from '../AskManagerForm';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { RolesTypes } from '@mimir/global-types';
 import { IDropdownOption } from '../Dropdown';
 import { TUserLocation } from '../../store/slices/userSlice';
@@ -137,7 +137,7 @@ const TextAreaWrapper = styled.div`
   }
 `;
 
-export const OpenLink = styled.a`
+export const OpenLink = styled(Link)`
   cursor: pointer;
   margin: ${dimensions.xs_2} 0;
   font-weight: 300;

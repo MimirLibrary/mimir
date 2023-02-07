@@ -162,6 +162,7 @@ exports[`render DescriptionBook component renders correctly with snapshots 1`] =
     </p>
     <a
       class="emotion-5"
+      href="/category?categories=Fantasy"
     >
       Fantasy
     </a>

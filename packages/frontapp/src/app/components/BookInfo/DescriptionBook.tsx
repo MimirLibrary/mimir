@@ -14,6 +14,7 @@ import { INewData, Location, OpenLink, TitleHolder, Topic } from './index';
 import { toast } from 'react-toastify';
 import { useMediaQuery } from 'react-responsive';
 import Days from './Days';
+import { RoutesTypes } from '../../../utils/routes';
 
 export const WrapperInfo = styled.div`
   display: flex;
@@ -222,7 +223,9 @@ const DescriptionBook: FC<IDescriptionBook> = ({
         )}
         {!editing && <Topic>Genre: </Topic>}
         {userRole === RolesTypes.READER ? (
-          <OpenLink>{category || 'Genres of book'}</OpenLink>
+          <OpenLink to={`${RoutesTypes.CATEGORY}?categories=${category || ''}`}>
+            {category || 'Genres of book'}
+          </OpenLink>
         ) : editing ? (
           <WrapperDropDown>
             <TitleHolder>Genre </TitleHolder>
