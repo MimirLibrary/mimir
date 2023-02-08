@@ -70,10 +70,10 @@ export class ItemResolver {
 
   @Mutation(() => Status)
   async rejectItem(
-    @Args('input') returnBookInput: BookInput
+    @Args('input') rejectBookInput: BookInput
   ): Promise<Status | ItemError> {
     try {
-      return await this.itemService.reject(returnBookInput);
+      return await this.itemService.reject(rejectBookInput);
     } catch (e) {
       console.log(e);
       return new ItemError(e.message);

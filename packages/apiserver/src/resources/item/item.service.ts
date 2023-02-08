@@ -8,6 +8,7 @@ import { normalizeIdentifier } from '@mimir/helper-functions';
 import { config } from '../../config';
 import { ConfigService } from '@nestjs/config';
 import { setTimeToProlong } from '../../utils/helpersFunctions/setTimeToProlong';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
 @Injectable()
 export class ItemService {
@@ -30,18 +31,15 @@ export class ItemService {
         throw new ErrorBook(`This book can't be claimed. Ask the manager!`);
       }
 
-      const insertResult = await manager
-        .createQueryBuilder(Status, 'status')
-        .insert()
-        .values({
+      return this.insertStatus(
+        {
           status: StatusTypes.BUSY,
           material_id: material.id,
           person_id,
           returnDate: () => `NOW() + INTERVAL '${this.periodOfKeeping} days'`,
-        })
-        .returning('*')
-        .execute();
-      return manager.create(Status, insertResult.generatedMaps[0]);
+        },
+        manager
+      );
     });
   }
 
@@ -64,17 +62,14 @@ export class ItemService {
         );
       }
 
-      const insertResult = await manager
-        .createQueryBuilder(Status, 'status')
-        .insert()
-        .values({
+      return this.insertStatus(
+        {
           status: StatusTypes.FREE,
           material_id: material.id,
           person_id,
-        })
-        .returning('*')
-        .execute();
-      return manager.create(Status, insertResult.generatedMaps[0]);
+        },
+        manager
+      );
     });
   }
 
@@ -91,17 +86,14 @@ export class ItemService {
         throw new ErrorBook(`This book can't be rejected. Ask the manager!`);
       }
 
-      const insertResult = await manager
-        .createQueryBuilder(Status, 'status')
-        .insert()
-        .values({
+      return this.insertStatus(
+        {
           status: StatusTypes.REJECTED,
           material_id: material.id,
           person_id,
-        })
-        .returning('*')
-        .execute();
-      return manager.create(Status, insertResult.generatedMaps[0]);
+        },
+        manager
+      );
     });
   }
 
@@ -167,20 +159,12 @@ export class ItemService {
       throw new ErrorBook("This book can't be prolonged");
     }
 
-    const insertResult = await Status.createQueryBuilder()
-      .insert()
-      .values({
-        status: StatusTypes.PROLONG,
-        returnDate: setTimeToProlong(
-          currentStatus.returnDate,
-          config.shelfLife
-        ),
-        material_id: currentStatus.material_id,
-        person_id: currentStatus.person_id,
-      })
-      .returning('*')
-      .execute();
-    return Status.create(insertResult.generatedMaps[0]);
+    return this.insertStatus({
+      status: StatusTypes.PROLONG,
+      returnDate: setTimeToProlong(currentStatus.returnDate, config.shelfLife),
+      material_id: currentStatus.material_id,
+      person_id: currentStatus.person_id,
+    });
   }
 
   private async getMaterialByIdentifier(
@@ -192,5 +176,20 @@ export class ItemService {
       relations: ['currentStatus'],
       where: { identifier: normalizedIdentifier },
     });
+  }
+
+  private async insertStatus(
+    status: QueryDeepPartialEntity<Status>,
+    transactionManager?: EntityManager
+  ): Promise<Status> {
+    const insertResult = await (transactionManager
+      ? transactionManager.createQueryBuilder(Status, 'status')
+      : Status.createQueryBuilder()
+    )
+      .insert()
+      .values(status)
+      .returning('*')
+      .execute();
+    return Status.create(insertResult.generatedMaps[0]);
   }
 }
