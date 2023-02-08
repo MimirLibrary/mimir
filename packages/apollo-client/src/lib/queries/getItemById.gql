@@ -15,6 +15,7 @@ query GetMaterialById($id: ID!) {
       person_id
       status
       created_at
+      returnDate
     }
     location {
       id

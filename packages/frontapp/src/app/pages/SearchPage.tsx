@@ -86,7 +86,7 @@ const SearchPage = () => {
     const available = data?.getAllMaterials.filter((material: any) => {
       const currentStatus = getStatus(
         material?.currentStatus?.status,
-        material?.created_at
+        material?.returnDate
       );
       return currentStatus !== 'Rejected' && currentStatus !== 'Pending';
     });

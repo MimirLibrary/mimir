@@ -5,6 +5,7 @@ query GetAllMaterialsForDonate($locations: [Int!], $limit: Int, $offset: Int) {
     currentStatus {
       id
       status
+      returnDate
       person {
         id
         username

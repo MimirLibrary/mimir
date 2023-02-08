@@ -67,7 +67,7 @@ const HistoryOfClaimPage = () => {
                 title={item?.material.title}
                 author={item?.material.author}
                 category={item?.material.category}
-                date={item?.created_at}
+                returnDate={item?.returnDate}
                 status={item?.status}
               />
             ))

@@ -5,6 +5,7 @@ import { StatusTypes } from '@mimir/global-types';
 export interface IClaimHistory {
   material_id?: number | string;
   status: StatusTypes;
+  returnDate?: string;
   created_at: Date;
   material?: IMaterial;
 }
@@ -18,8 +19,11 @@ export const countClaimHistory = (statuses: IClaimHistory[] = []) => {
       status.status === StatusTypes.BUSY ||
       status.status === StatusTypes.PROLONG
     ) {
-      if (!isOverdue(status.created_at)) busyItems.push(status);
-      else busyItems.push({ ...status, status: StatusTypes.OVERDUE });
+      if (!isOverdue(status.returnDate)) {
+        busyItems.push(status);
+      } else {
+        busyItems.push({ ...status, status: StatusTypes.OVERDUE });
+      }
     } else if (status.status === StatusTypes.FREE) {
       freeItems.push(status);
     }

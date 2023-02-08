@@ -528,6 +528,7 @@ export type Status = {
   material_id: Scalars['Int'];
   person: Person;
   person_id: Scalars['Int'];
+  returnDate?: Maybe<Scalars['DateTime']>;
   status: Scalars['String'];
 };
 
@@ -571,7 +572,7 @@ export type ClaimBookMutationVariables = Exact<{
 }>;
 
 
-export type ClaimBookMutation = { __typename?: 'Mutation', claimBook: { __typename?: 'Error', message: string } | { __typename?: 'Status', created_at: any, status: string } };
+export type ClaimBookMutation = { __typename?: 'Mutation', claimBook: { __typename?: 'Error', message: string } | { __typename?: 'Status', created_at: any, status: string, returnDate?: any | null } };
 
 export type CreateMessageForManagerMutationVariables = Exact<{
   person_id: Scalars['Int'];
@@ -631,7 +632,7 @@ export type ProlongTimeMutationVariables = Exact<{
 }>;
 
 
-export type ProlongTimeMutation = { __typename?: 'Mutation', prolongClaimPeriod: { __typename?: 'Error', message: string } | { __typename?: 'Status', created_at: any, status: string } };
+export type ProlongTimeMutation = { __typename?: 'Mutation', prolongClaimPeriod: { __typename?: 'Error', message: string } | { __typename?: 'Status', created_at: any, status: string, returnDate?: any | null } };
 
 export type RejectItemMutationVariables = Exact<{
   identifier: Scalars['String'];
@@ -700,7 +701,7 @@ export type GetAllDonatedMaterialsByPersonQueryVariables = Exact<{
 }>;
 
 
-export type GetAllDonatedMaterialsByPersonQuery = { __typename?: 'Query', getAllDonatedMaterialsByPerson?: Array<{ __typename?: 'Material', id: string, picture?: string | null, title: string, author: string, category: string, claimCount: number, currentStatus?: { __typename?: 'Status', id: string, created_at: any, status: string } | null } | null> | null };
+export type GetAllDonatedMaterialsByPersonQuery = { __typename?: 'Query', getAllDonatedMaterialsByPerson?: Array<{ __typename?: 'Material', id: string, picture?: string | null, title: string, author: string, category: string, claimCount: number, currentStatus?: { __typename?: 'Status', id: string, created_at: any, status: string, returnDate?: any | null } | null } | null> | null };
 
 export type GetAllLocationsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -714,7 +715,7 @@ export type GetAllMaterialsQueryVariables = Exact<{
 }>;
 
 
-export type GetAllMaterialsQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', author: string, category: string, created_at: any, id: string, id_type: string, identifier: string, description: string, is_donated: boolean, picture?: string | null, title: string, type: string, updated_at: any, claimCount: number, notifications: Array<{ __typename?: 'Notification', material_id?: number | null, person_id: number } | null>, currentStatus?: { __typename?: 'Status', status: string, person_id: number } | null } | null> };
+export type GetAllMaterialsQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', author: string, category: string, created_at: any, id: string, id_type: string, identifier: string, description: string, is_donated: boolean, picture?: string | null, title: string, type: string, updated_at: any, claimCount: number, notifications: Array<{ __typename?: 'Notification', material_id?: number | null, person_id: number } | null>, currentStatus?: { __typename?: 'Status', status: string, person_id: number, returnDate?: any | null } | null } | null> };
 
 export type GetAllMaterialsForDonateQueryVariables = Exact<{
   locations?: InputMaybe<Array<Scalars['Int']> | Scalars['Int']>;
@@ -723,7 +724,7 @@ export type GetAllMaterialsForDonateQueryVariables = Exact<{
 }>;
 
 
-export type GetAllMaterialsForDonateQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', id: string, title: string, claimCount: number, currentStatus?: { __typename?: 'Status', id: string, status: string, person: { __typename?: 'Person', id: string, username: string, avatar: string } } | null } | null> };
+export type GetAllMaterialsForDonateQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', id: string, title: string, claimCount: number, currentStatus?: { __typename?: 'Status', id: string, status: string, returnDate?: any | null, person: { __typename?: 'Person', id: string, username: string, avatar: string } } | null } | null> };
 
 export type GetAllMaterialsForManagerQueryVariables = Exact<{
   locations?: InputMaybe<Array<Scalars['Int']> | Scalars['Int']>;
@@ -732,7 +733,7 @@ export type GetAllMaterialsForManagerQueryVariables = Exact<{
 }>;
 
 
-export type GetAllMaterialsForManagerQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', id: string, title: string, category: string, picture?: string | null, claimCount: number, currentStatus?: { __typename?: 'Status', id: string, created_at: any, status: string, person: { __typename?: 'Person', id: string, username: string } } | null } | null> };
+export type GetAllMaterialsForManagerQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', id: string, title: string, category: string, picture?: string | null, claimCount: number, currentStatus?: { __typename?: 'Status', id: string, created_at: any, status: string, returnDate?: any | null, person: { __typename?: 'Person', id: string, username: string } } | null } | null> };
 
 export type GetAllMessagesQueryVariables = Exact<{
   location_id?: InputMaybe<Array<Scalars['Int']> | Scalars['Int']>;
@@ -747,35 +748,35 @@ export type GetAllPersonsQueryVariables = Exact<{
 }>;
 
 
-export type GetAllPersonsQuery = { __typename?: 'Query', getAllPersons: Array<{ __typename?: 'Person', id: string, username: string, avatar: string, statuses?: Array<{ __typename?: 'Status', id: string, material_id: number, created_at: any, status: string } | null> | null }> };
+export type GetAllPersonsQuery = { __typename?: 'Query', getAllPersons: Array<{ __typename?: 'Person', id: string, username: string, avatar: string, statuses?: Array<{ __typename?: 'Status', id: string, material_id: number, created_at: any, status: string, returnDate?: any | null } | null> | null }> };
 
 export type GetAllStatusesIsOverdueQueryVariables = Exact<{
   locations?: InputMaybe<Array<Scalars['Int']> | Scalars['Int']>;
 }>;
 
 
-export type GetAllStatusesIsOverdueQuery = { __typename?: 'Query', getAllStatusesIsOverdue: Array<{ __typename?: 'Status', id: string, created_at: any, material: { __typename?: 'Material', id: string, title: string }, person: { __typename?: 'Person', id: string, username: string, avatar: string } } | null> };
+export type GetAllStatusesIsOverdueQuery = { __typename?: 'Query', getAllStatusesIsOverdue: Array<{ __typename?: 'Status', id: string, created_at: any, returnDate?: any | null, material: { __typename?: 'Material', id: string, title: string }, person: { __typename?: 'Person', id: string, username: string, avatar: string } } | null> };
 
 export type GetAllTakenItemsQueryVariables = Exact<{
   person_id: Scalars['Int'];
 }>;
 
 
-export type GetAllTakenItemsQuery = { __typename?: 'Query', getAllTakenItems: Array<{ __typename?: 'Status', id: string, created_at: any, status: string, material: { __typename?: 'Material', id: string, picture?: string | null, title: string, author: string, category: string } } | null> };
+export type GetAllTakenItemsQuery = { __typename?: 'Query', getAllTakenItems: Array<{ __typename?: 'Status', id: string, created_at: any, status: string, returnDate?: any | null, material: { __typename?: 'Material', id: string, picture?: string | null, title: string, author: string, category: string } } | null> };
 
 export type GetMaterialByIdQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetMaterialByIdQuery = { __typename?: 'Query', getMaterialById: { __typename?: 'Material', id: string, identifier: string, picture?: string | null, title: string, author: string, category: string, created_at: any, updated_at: any, description: string, type: string, claimCount: number, currentStatus?: { __typename?: 'Status', id: string, person_id: number, status: string, created_at: any } | null, location: { __typename?: 'Location', id: string, location: string } } };
+export type GetMaterialByIdQuery = { __typename?: 'Query', getMaterialById: { __typename?: 'Material', id: string, identifier: string, picture?: string | null, title: string, author: string, category: string, created_at: any, updated_at: any, description: string, type: string, claimCount: number, currentStatus?: { __typename?: 'Status', id: string, person_id: number, status: string, created_at: any, returnDate?: any | null } | null, location: { __typename?: 'Location', id: string, location: string } } };
 
 export type GetItemsForClaimHistoryQueryVariables = Exact<{
   person_id: Scalars['Int'];
 }>;
 
 
-export type GetItemsForClaimHistoryQuery = { __typename?: 'Query', getItemsForClaimHistory: Array<{ __typename?: 'Status', id: string, status: string, created_at: any, material: { __typename?: 'Material', id: string, picture?: string | null, title: string, author: string, category: string } } | null> };
+export type GetItemsForClaimHistoryQuery = { __typename?: 'Query', getItemsForClaimHistory: Array<{ __typename?: 'Status', id: string, status: string, returnDate?: any | null, created_at: any, material: { __typename?: 'Material', id: string, picture?: string | null, title: string, author: string, category: string } } | null> };
 
 export type GetMaterialByIdentifierQueryVariables = Exact<{
   identifier: Scalars['String'];
@@ -804,7 +805,7 @@ export type GetOnePersonQueryVariables = Exact<{
 }>;
 
 
-export type GetOnePersonQuery = { __typename?: 'Query', getOnePerson: { __typename?: 'Person', id: string, username: string, email: string, type: string, position: string, avatar: string, statuses?: Array<{ __typename?: 'Status', id: string, material_id: number, status: string, created_at: any, material: { __typename?: 'Material', id: string, picture?: string | null, title: string, author: string, category: string } } | null> | null, states?: Array<{ __typename?: 'BlockedUsers', state: boolean, id: string, description?: string | null, created_at: any } | null> | null, messages?: Array<{ __typename?: 'Message', id: string, material_id?: number | null, title: string, message: string, created_at: any } | null> | null } };
+export type GetOnePersonQuery = { __typename?: 'Query', getOnePerson: { __typename?: 'Person', id: string, username: string, email: string, type: string, position: string, avatar: string, statuses?: Array<{ __typename?: 'Status', id: string, material_id: number, status: string, created_at: any, returnDate?: any | null, material: { __typename?: 'Material', id: string, picture?: string | null, title: string, author: string, category: string } } | null> | null, states?: Array<{ __typename?: 'BlockedUsers', state: boolean, id: string, description?: string | null, created_at: any } | null> | null, messages?: Array<{ __typename?: 'Message', id: string, material_id?: number | null, title: string, message: string, created_at: any } | null> | null } };
 
 export type GetReasonOfBlockQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -818,7 +819,7 @@ export type GetStatusesByMaterialQueryVariables = Exact<{
 }>;
 
 
-export type GetStatusesByMaterialQuery = { __typename?: 'Query', getStatusesByMaterial: Array<{ __typename?: 'Status', id: string, status: string, created_at: any, person: { __typename?: 'Person', id: string, avatar: string, username: string, statuses?: Array<{ __typename?: 'Status', material_id: number, status: string, created_at: any } | null> | null } } | null> };
+export type GetStatusesByMaterialQuery = { __typename?: 'Query', getStatusesByMaterial: Array<{ __typename?: 'Status', id: string, status: string, created_at: any, returnDate?: any | null, person: { __typename?: 'Person', id: string, avatar: string, username: string, statuses?: Array<{ __typename?: 'Status', material_id: number, status: string, created_at: any, returnDate?: any | null } | null> | null } } | null> };
 
 export type SearchOfMaterialsQueryVariables = Exact<{
   search?: InputMaybe<Scalars['String']>;
@@ -826,7 +827,7 @@ export type SearchOfMaterialsQueryVariables = Exact<{
 }>;
 
 
-export type SearchOfMaterialsQuery = { __typename?: 'Query', searchOfMaterials?: Array<{ __typename?: 'Material', title: string, created_at: any, picture?: string | null, author: string, category: string, id: string, claimCount: number, currentStatus?: { __typename?: 'Status', id: string, created_at: any, status: string, person: { __typename?: 'Person', id: string, username: string } } | null } | null> | null };
+export type SearchOfMaterialsQuery = { __typename?: 'Query', searchOfMaterials?: Array<{ __typename?: 'Material', title: string, created_at: any, picture?: string | null, author: string, category: string, id: string, claimCount: number, currentStatus?: { __typename?: 'Status', id: string, created_at: any, status: string, returnDate?: any | null, person: { __typename?: 'Person', id: string, username: string } } | null } | null> | null };
 
 
 export const AddPersonLocationDocument = gql`
@@ -904,6 +905,7 @@ export const ClaimBookDocument = gql`
     ... on Status {
       created_at
       status
+      returnDate
     }
     ... on Error {
       message
@@ -1136,6 +1138,7 @@ export const ProlongTimeDocument = gql`
     ... on Status {
       created_at
       status
+      returnDate
     }
     ... on Error {
       message
@@ -1458,6 +1461,7 @@ export const GetAllDonatedMaterialsByPersonDocument = gql`
       id
       created_at
       status
+      returnDate
     }
     claimCount
   }
@@ -1545,6 +1549,7 @@ export const GetAllMaterialsDocument = gql`
     currentStatus {
       status
       person_id
+      returnDate
     }
     title
     type
@@ -1591,6 +1596,7 @@ export const GetAllMaterialsForDonateDocument = gql`
     currentStatus {
       id
       status
+      returnDate
       person {
         id
         username
@@ -1642,6 +1648,7 @@ export const GetAllMaterialsForManagerDocument = gql`
       id
       created_at
       status
+      returnDate
       person {
         id
         username
@@ -1736,6 +1743,7 @@ export const GetAllPersonsDocument = gql`
       material_id
       created_at
       status
+      returnDate
     }
   }
 }
@@ -1774,6 +1782,7 @@ export const GetAllStatusesIsOverdueDocument = gql`
   getAllStatusesIsOverdue(locations: $locations) {
     id
     created_at
+    returnDate
     material {
       id
       title
@@ -1820,6 +1829,7 @@ export const GetAllTakenItemsDocument = gql`
     id
     created_at
     status
+    returnDate
     material {
       id
       picture
@@ -1876,6 +1886,7 @@ export const GetMaterialByIdDocument = gql`
       person_id
       status
       created_at
+      returnDate
     }
     location {
       id
@@ -1918,6 +1929,7 @@ export const GetItemsForClaimHistoryDocument = gql`
   getItemsForClaimHistory(person_id: $person_id) {
     id
     status
+    returnDate
     created_at
     material {
       id
@@ -2098,6 +2110,7 @@ export const GetOnePersonDocument = gql`
       material_id
       status
       created_at
+      returnDate
       material {
         id
         picture
@@ -2192,6 +2205,7 @@ export const GetStatusesByMaterialDocument = gql`
     id
     status
     created_at
+    returnDate
     person {
       id
       avatar
@@ -2200,6 +2214,7 @@ export const GetStatusesByMaterialDocument = gql`
         material_id
         status
         created_at
+        returnDate
       }
     }
   }
@@ -2247,6 +2262,7 @@ export const SearchOfMaterialsDocument = gql`
       id
       created_at
       status
+      returnDate
       person {
         id
         username

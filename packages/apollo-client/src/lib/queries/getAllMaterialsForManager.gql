@@ -8,6 +8,7 @@ query GetAllMaterialsForManager($locations: [Int!], $limit: Int, $offset: Int) {
       id
       created_at
       status
+      returnDate
       person {
         id
         username

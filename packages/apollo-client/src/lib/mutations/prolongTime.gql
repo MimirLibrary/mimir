@@ -5,6 +5,7 @@ mutation ProlongTime($person_id: Int!, $material_id: Int!) {
     ... on Status {
       created_at
       status
+      returnDate
     }
     ... on Error {
       message

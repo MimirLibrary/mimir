@@ -15,6 +15,7 @@ export interface IOverdueItem {
   __typename?: 'Status' | undefined;
   id: string;
   created_at: any;
+  returnDate?: string;
   material: IOverdueMaterial;
   person: IOverduePerson;
 }

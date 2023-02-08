@@ -4,7 +4,6 @@ import styled from '@emotion/styled';
 import { IClaimHistory } from '../../models/helperFunctions/claimHistory';
 import { StatusTypes } from '@mimir/global-types';
 import { colors, dimensions } from '@mimir/ui-kit';
-import { getDates } from '../../models/helperFunctions/converTime';
 import { t } from 'i18next';
 
 const ColumnWrapper = styled.div`
@@ -33,21 +32,15 @@ export const FieldsText = styled.p<IFieldsTextProps>`
   margin-bottom: ${dimensions.xs_2};
 `;
 
-export const countReturnDate = (created_at: Date) => {
-  const day = `${getDates(created_at).returnDate.getDate()}`.padStart(2, '0');
-  const month = `${getDates(created_at).returnDate.getMonth() + 1}`.padStart(
-    2,
-    '0'
-  );
+export const formatReturnDate = (returnDate: string) => {
+  const day = `${new Date(returnDate).getDate()}`.padStart(2, '0');
+  const month = `${new Date(returnDate).getMonth() + 1}`.padStart(2, '0');
   return `${t('UserCard.Table.ReturnTill')} ${day}.${month}`;
 };
 
-export const countReturnedDate = (created_at: Date) => {
-  const day = `${getDates(created_at).startDate.getDate()}`.padStart(2, '0');
-  const month = `${getDates(created_at).returnDate.getMonth() + 1}`.padStart(
-    2,
-    '0'
-  );
+export const formatReturnedDate = (createdAt: Date) => {
+  const day = `${new Date(createdAt).getDate()}`.padStart(2, '0');
+  const month = `${new Date(createdAt).getMonth() + 1}`.padStart(2, '0');
   return `${t('UserCard.Table.ReturnedAt')} ${day}.${month}`;
 };
 
@@ -74,9 +67,13 @@ export default function Item({ item }: Props) {
       </td>
       <td>
         {item.status !== StatusTypes.FREE ? (
-          <FieldsText>{countReturnDate(item.created_at)}</FieldsText>
+          <FieldsText>
+            {item.returnDate && formatReturnDate(item.returnDate)}
+          </FieldsText>
         ) : (
-          <FieldsText returned>{countReturnedDate(item.created_at)}</FieldsText>
+          <FieldsText returned>
+            {formatReturnedDate(item.created_at)}
+          </FieldsText>
         )}
       </td>
       <td>

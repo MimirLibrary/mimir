@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { IClaimHistory } from '../../models/helperFunctions/claimHistory';
 import { StatusTypes } from '@mimir/global-types';
 import { t } from 'i18next';
-import { countReturnDate, countReturnedDate, FieldsText } from './Item';
+import { formatReturnDate, formatReturnedDate, FieldsText } from './Item';
 import React, { FC } from 'react';
 import { colors } from '@mimir/ui-kit';
 
@@ -54,8 +54,8 @@ const MobileItem: FC<IProps> = ({ item }) => {
         <FieldsText>
           Deadline:{' '}
           {item.status !== StatusTypes.FREE
-            ? countReturnDate(item.created_at)
-            : countReturnedDate(item.created_at)}
+            ? item.returnDate && formatReturnDate(item.returnDate)
+            : formatReturnedDate(item.created_at)}
         </FieldsText>
         Status:{' '}
         {item.status === StatusTypes.FREE ? (
