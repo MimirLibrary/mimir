@@ -191,7 +191,9 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
         {userRole === RolesTypes.READER ? (
           <>
             <Suggestions>
-              <SuggestionText>You may also like</SuggestionText>
+              <SuggestionText>
+                {t('BookPreview.RecommendationsTitle')}
+              </SuggestionText>
               <ButtonGroup>
                 <ScrollButtonLeft />
                 <ScrollButtonRight />

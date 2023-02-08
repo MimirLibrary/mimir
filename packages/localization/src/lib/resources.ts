@@ -332,6 +332,9 @@ export const resources = {
         OverdueByStatusLabel: 'Overdue by',
         ClaimedByStatusLabel: 'Claimed by',
       },
+      BookPreview: {
+        RecommendationsTitle: 'You may also like',
+      },
     },
   },
   ru: {
@@ -665,6 +668,9 @@ export const resources = {
         State: 'Статус:',
         OverdueByStatusLabel: 'Просрочена',
         ClaimedByStatusLabel: 'Используется',
+      },
+      BookPreview: {
+        RecommendationsTitle: 'Вам может понравиться',
       },
     },
   },

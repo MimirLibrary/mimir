@@ -607,6 +607,7 @@ const BookInfo: FC<IBookInfoProps> = ({
             statusInfo?.status !== 'Pending' ? (
               statusInfo?.status === 'Free' ? (
                 <ReturnBookButtons
+                  currentStatus={statusInfo}
                   onClaim={showClaimModal}
                   onReturn={retrieveBook}
                   onProlong={prolongPeriod}
@@ -614,6 +615,7 @@ const BookInfo: FC<IBookInfoProps> = ({
               ) : statusInfo?.status !== 'Free' &&
                 statusInfo?.person_id === id ? (
                 <ReturnBookButtons
+                  currentStatus={statusInfo}
                   isClaimed
                   onClaim={showClaimModal}
                   onReturn={retrieveBook}

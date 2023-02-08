@@ -29,7 +29,7 @@ const SectionWrapper = styled.div`
   font-weight: 300;
   font-size: 1rem;
   line-height: 1.25rem;
-  color: #333333;
+  color: ${colors.main_black};
 `;
 
 const RestyledDropdown = styled(Dropdown)`
@@ -83,14 +83,14 @@ const Edit: FC<IProps> = ({
           {textarea ? (
             <Textarea
               value={value}
-              handler={handler}
+              onChange={handler}
               placeholder={placeholder}
             />
           ) : (
             <Input
               type={type ? type : 'text'}
               value={value}
-              handler={handler}
+              onChange={handler}
               placeholder={placeholder}
             />
           )}

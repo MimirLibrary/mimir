@@ -4,7 +4,7 @@ import { colors, dimensions } from '@mimir/ui-kit';
 export type BadgeType = 'success' | 'warning' | 'danger' | 'default';
 
 interface StatusBadgeProps {
-  type: 'success' | 'warning' | 'danger' | 'default';
+  type: BadgeType;
 }
 
 const badgeColors: Record<BadgeType, string> = {
