@@ -320,7 +320,7 @@ export const resources = {
             },
           },
           Claim: {
-            Title: 'You have successfully claim the book',
+            Title: 'You have successfully claimed the book',
             Description: "Enjoy reading and don't forget to return this by",
           },
           Extend: {
