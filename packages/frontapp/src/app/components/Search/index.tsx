@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, forwardRef } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions, fonts } from '@mimir/ui-kit';
 import { ReactComponent as SearchIcon } from '../../../assets/Navbar/Search.svg';
@@ -68,7 +68,7 @@ export const WrapperInput = styled.div<WrapperInputProps>`
     justify-content: flex-start;
     margin: 0;
     padding-left: ${dimensions.base};
-    font-size: ${dimensions.sm};
+    font-size: ${dimensions.base};
     line-height: ${dimensions.lg};
   }
 
@@ -88,30 +88,39 @@ interface ISearchParams {
   isFullWidth?: boolean;
 }
 
-const Search: FC<ISearchParams> = ({
-  handleChangeSearch,
-  redirectToSearchByClick,
-  redirectToSearchByKey,
-  placeholder,
-  search,
-  isFullWidth,
-}) => {
-  return (
-    <WrapperInput isFullWidth={isFullWidth} onKeyPress={redirectToSearchByKey}>
-      <StyledSearchIcon
-        fill={colors.dropdown_gray}
-        width="20"
-        height="20"
-        onClick={redirectToSearchByClick}
-      />
-      <InputSearch
-        type="text"
-        value={search}
-        onChange={handleChangeSearch}
-        placeholder={placeholder}
-      />
-    </WrapperInput>
-  );
-};
+const Search = forwardRef<HTMLInputElement, ISearchParams>(
+  (
+    {
+      handleChangeSearch,
+      redirectToSearchByClick,
+      redirectToSearchByKey,
+      placeholder,
+      search,
+      isFullWidth,
+    },
+    ref
+  ) => {
+    return (
+      <WrapperInput
+        isFullWidth={isFullWidth}
+        onKeyPress={redirectToSearchByKey}
+      >
+        <StyledSearchIcon
+          fill={colors.dropdown_gray}
+          width="20"
+          height="20"
+          onClick={redirectToSearchByClick}
+        />
+        <InputSearch
+          ref={ref}
+          type="text"
+          value={search}
+          onChange={handleChangeSearch}
+          placeholder={placeholder}
+        />
+      </WrapperInput>
+    );
+  }
+);
 
 export default Search;

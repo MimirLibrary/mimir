@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useAppDispatch } from '../../hooks/useTypedDispatch';
 import { useNavigate } from 'react-router-dom';
@@ -27,6 +27,7 @@ const SearchByUserName = () => {
     },
     skip: !debounceSearch,
   });
+  const searchRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (error) toast.error(error);
@@ -45,7 +46,8 @@ const SearchByUserName = () => {
   const redirectToSearchByKey = (e: React.KeyboardEvent<HTMLImageElement>) => {
     if (e.key === 'Enter') {
       navigate(RoutesTypes.READERS);
-      dispatch(setActiveTab(NavbarItems.SEARCH));
+      dispatch(setActiveTab(NavbarItems.READERS));
+      searchRef.current?.blur();
     }
   };
 
@@ -58,6 +60,7 @@ const SearchByUserName = () => {
 
   return (
     <Search
+      ref={searchRef}
       handleChangeSearch={handleChangeSearch}
       placeholder={t('Search.UsernamePlaceholder')}
       search={search}
