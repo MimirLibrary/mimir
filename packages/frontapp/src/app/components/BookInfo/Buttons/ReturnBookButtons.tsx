@@ -1,12 +1,15 @@
 import React, { FC } from 'react';
 import { ReactComponent as Claim } from '../../../../assets/claim.svg';
 import Button from '../../Button';
+import { StatusType } from '../index';
+import { t } from 'i18next';
 
 interface IControl {
   isClaimed?: boolean;
   onClaim: () => void;
   onReturn: () => void;
   onProlong: () => void;
+  currentStatus: StatusType;
 }
 
 export const ReturnBookButtons: FC<IControl> = ({
@@ -14,16 +17,27 @@ export const ReturnBookButtons: FC<IControl> = ({
   onClaim,
   onReturn,
   onProlong,
+  currentStatus,
 }) => {
-  if (!isClaimed)
+  if (!isClaimed) {
     return (
-      <Button value="Claim a book" onClick={onClaim} svgComponent={<Claim />} />
+      <Button
+        value={t('Buttons.Claim')}
+        onClick={onClaim}
+        svgComponent={<Claim />}
+      />
     );
-
-  return (
-    <>
-      <Button value="Return a book" onClick={onReturn} />
-      <Button value="Extend claim period" onClick={onProlong} transparent />
-    </>
-  );
+  } else {
+    return (
+      <>
+        <Button value={t('Buttons.Return')} onClick={onReturn} />
+        <Button
+          value={t('Buttons.Prolong')}
+          onClick={onProlong}
+          transparent
+          disabled={currentStatus.status === 'Prolong'}
+        />
+      </>
+    );
+  }
 };

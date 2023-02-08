@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import Button from '../../Button';
+import { t } from 'i18next';
 
 interface IEdit {
   onSave: () => void;
@@ -9,8 +10,8 @@ interface IEdit {
 export const EditButtons: FC<IEdit> = ({ onSave, onCancel }) => {
   return (
     <>
-      <Button value="Save changes" onClick={onSave} />
-      <Button value="Cancel changes" onClick={onCancel} transparent />
+      <Button value={t('Buttons.Save')} onClick={onSave} />
+      <Button value={t('Buttons.Cancel')} onClick={onCancel} transparent />
     </>
   );
 };

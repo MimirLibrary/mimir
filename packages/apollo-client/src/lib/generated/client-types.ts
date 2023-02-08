@@ -344,7 +344,6 @@ export type Person = {
   email: Scalars['String'];
   id: Scalars['ID'];
   location?: Maybe<Array<Location>>;
-  materials?: Maybe<Array<Maybe<Material>>>;
   messages?: Maybe<Array<Maybe<Message>>>;
   notifications?: Maybe<Array<Maybe<Notification>>>;
   permissions?: Maybe<Array<Maybe<Permissions>>>;

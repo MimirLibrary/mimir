@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { ReactComponent as EnableNotifySvg } from '../../../../assets/NoNotification.svg';
 import { ReactComponent as CancelNotifySvg } from '../../../../assets/CancelNotification.svg';
 import Button from '../../Button';
+import { t } from 'i18next';
 
 interface IControl {
   isUserSubscriber?: boolean;
@@ -16,13 +17,13 @@ export const NotifyMeButtons: FC<IControl> = ({
 }) => {
   return !isUserSubscriber ? (
     <Button
-      value="Notify when available"
+      value={t('Buttons.NotifyMe')}
       onClick={onSubscribe}
       svgComponent={<EnableNotifySvg />}
     />
   ) : (
     <Button
-      value="Cancel"
+      value={t('Buttons.Cancel')}
       onClick={onCancel}
       svgComponent={<CancelNotifySvg />}
       transparent

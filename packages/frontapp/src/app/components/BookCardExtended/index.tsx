@@ -9,7 +9,6 @@ import { OpenLink } from '../ManagerInfoCard';
 import { RoutesTypes } from '../../../utils/routes';
 import { t } from 'i18next';
 
-
 const Wrapper = styled.div`
   background: ${colors.bg_secondary};
   border-radius: ${dimensions.xs_1};

@@ -8,13 +8,14 @@ interface ICurrentStatus {
 }
 
 export const CurrentStatus: FC<ICurrentStatus> = ({ status }) => {
-  return status.status === 'Free' ? (
-    <StatusBadge type="success">{t('Statuses.Accepted')}</StatusBadge>
-  ) : status.status === 'Rejected' ? (
-    <StatusBadge type="danger">{t('Statuses.Rejected')}</StatusBadge>
-  ) : status.status === 'Pending' ? (
-    <StatusBadge type="warning">{status.status}</StatusBadge>
-  ) : (
-    <StatusBadge type="default">{status.status}</StatusBadge>
-  );
+  switch (status.status) {
+    case 'Free':
+      return <StatusBadge type="success">{t('Statuses.Accepted')}</StatusBadge>;
+    case 'Rejected':
+      return <StatusBadge type="danger">{t('Statuses.Rejected')}</StatusBadge>;
+    case 'Pending':
+      return <StatusBadge type="warning">{status.status}</StatusBadge>;
+    default:
+      return <StatusBadge type="default">{status.status}</StatusBadge>;
+  }
 };

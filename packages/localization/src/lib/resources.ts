@@ -312,6 +312,14 @@ export const resources = {
       Buttons: {
         Accept: 'Accept',
         Reject: 'Reject',
+        NotifyMe: 'Notify when available',
+        Cancel: 'Cancel',
+        Return: 'Return a book',
+        Prolong: 'Extend claim period',
+        Claim: 'Claim a book',
+        Save: 'Save changes',
+        Edit: 'Edit information',
+        Delete: 'Delete a book',
       },
       NotFound: {
         Title: `We couldn't find any {{searchEntity}} for this search`,
@@ -638,6 +646,14 @@ export const resources = {
       Buttons: {
         Accept: 'Принять',
         Reject: 'Отклонить',
+        NotifyMe: 'Уведомить, когда станет доступной',
+        Cancel: 'Отмена',
+        Return: 'Вернуть книгу',
+        Prolong: 'Продлить время чтения',
+        Claim: 'Взять книгу',
+        Save: 'Сохранить изменения',
+        Edit: 'Редактировать инофрмацию',
+        Delete: 'Удалить книгу',
       },
       NotFound: {
         Title: `Мы не смогли найти {{searchEntity}} по этому запросу`,
