@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { ReactComponent as Claim } from '../../../../assets/claim.svg';
 import Button from '../../Button';
 import { StatusType } from '../index';

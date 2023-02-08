@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { ReactComponent as EnableNotifySvg } from '../../../../assets/NoNotification.svg';
 import { ReactComponent as CancelNotifySvg } from '../../../../assets/CancelNotification.svg';
 import Button from '../../Button';

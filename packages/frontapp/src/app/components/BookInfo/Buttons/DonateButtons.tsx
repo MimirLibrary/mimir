@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import Button from '../../Button';
 import { t } from 'i18next';
 

@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import { FC, useMemo } from 'react';
 import { Topic } from '../BookInfo';
 import styled from '@emotion/styled';
 import { Input } from './Input';

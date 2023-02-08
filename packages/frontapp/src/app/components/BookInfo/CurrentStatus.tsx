@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { StatusType } from './index';
 import StatusBadge from '../StatusBadge';
 import { t } from 'i18next';

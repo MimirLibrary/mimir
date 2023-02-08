@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { ReactComponent as Edit } from '../../../../assets/Edit.svg';
 import { ReactComponent as Remove } from '../../../../assets/Remove.svg';
 import Button from '../../Button';
