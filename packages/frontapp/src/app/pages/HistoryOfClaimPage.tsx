@@ -27,9 +27,8 @@ export const List = styled.div`
   max-height: 650px;
   overflow-y: auto;
 
-  &::-webkit-scrollbar {
-    border-radius: 8px;
-    width: 8px;
+  ::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
   }
 
   @media (max-width: ${dimensions.tablet_width}) {
