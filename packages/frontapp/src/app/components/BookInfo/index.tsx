@@ -30,8 +30,7 @@ import { useAppSelector } from '../../hooks/useTypedSelector';
 import ErrorMessage from '../ErrorMessge';
 import AskManagerForm from '../AskManagerForm';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { IDropdownOption } from '../Dropdown';
-import { TUserLocation } from '../../store/slices/userSlice';
+import Dropdown, { IDropdownOption } from '../Dropdown';
 import Section from '../Section';
 import ExpandableText from '../ExpandableText';
 import { ReturnBookButtons } from './Buttons/ReturnBookButtons';
@@ -39,12 +38,13 @@ import { NotifyMeButtons } from './Buttons/NotifyMeButtons';
 import { EditButtons } from './Buttons/EditButtons';
 import { ControlButtons } from './Buttons/ControlButtons';
 import emptyCover from '../../../assets/MOC-data/EmptyCover.png';
-import Edit from '../Edit';
+import { Textarea } from '../Textarea';
 import { listOfGenres } from '../../../assets/SearchConsts';
 import { toast } from 'react-toastify';
 import AcceptRejectModals from '../AcceptRejectModals';
 import { DonateButtons } from './Buttons/DonateButtons';
 import { CurrentStatus } from './CurrentStatus';
+import Input from '../Input';
 
 export const BookHolder = styled.div`
   width: 100%;
@@ -142,6 +142,35 @@ const BookControls = styled.div`
 
   @media (max-width: ${dimensions.tablet_width}) {
     flex-direction: column;
+  }
+`;
+
+const RestyledDropdown = styled(Dropdown)`
+  width: 100%;
+`;
+
+const RestyledInput = styled(Input)`
+  margin: 0;
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    margin: 0;
+  }
+`;
+
+const InputWrapper = styled.div`
+  width: 100%;
+  border: 0.5px solid #bdbdbd;
+  color: ${colors.main_black};
+  border-radius: ${dimensions.xl_3};
+  padding: ${dimensions.xs_1};
+  background: ${colors.bg_secondary};
+
+  :hover {
+    border: 0.5px solid ${colors.accent_color};
+  }
+
+  :focus {
+    border: 0.5px solid ${colors.accent_color};
   }
 `;
 
@@ -321,6 +350,21 @@ const BookInfo: FC<IBookInfoProps> = ({
       ? infoOfProlong?.prolongClaimPeriod.message
       : null;
 
+  const { data: locations, error: errorLocations } = useGetAllLocationsQuery({
+    skip: userRole === RolesTypes.READER,
+  });
+
+  useEffect(() => {
+    if (errorLocations) {
+      toast.error(errorLocations.message);
+    }
+  }, [errorLocations]);
+
+  const locationsMap: IDropdownOption[] =
+    locations?.getAllLocations
+      .filter((value): value is Location => !!value)
+      .map((loc) => ({ id: loc.id, value: loc.location })) || [];
+
   const handleChangeDescription = (
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -339,9 +383,11 @@ const BookInfo: FC<IBookInfoProps> = ({
     setNewCategory(e.value);
   };
 
-  const handleChangeLocation = (e: TUserLocation) => {
-    const newLocation = { id: e.id, location: e.value };
-    setNewLocation(newLocation);
+  const handleChangeLocation = (e: IDropdownOption) => {
+    const id = locationsMap?.findIndex(
+      (item) => item.value === newLocation.location
+    );
+    setNewLocation({ id: id.toString(), location: e.value });
   };
 
   const handleChangeDeadline = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -507,21 +553,6 @@ const BookInfo: FC<IBookInfoProps> = ({
     setMethod('accept');
   };
 
-  const { data: locations, error: errorLocations } = useGetAllLocationsQuery({
-    skip: userRole === RolesTypes.READER,
-  });
-
-  useEffect(() => {
-    if (errorLocations) {
-      toast.error(errorLocations.message);
-    }
-  }, [errorLocations]);
-
-  const locationsMap: IDropdownOption[] =
-    locations?.getAllLocations
-      .filter((value): value is Location => !!value)
-      .map((loc) => ({ id: loc.id, value: loc.location })) || [];
-
   return (
     <>
       <BookWrapper>
@@ -531,40 +562,54 @@ const BookInfo: FC<IBookInfoProps> = ({
         <BookCredits>
           {editing ? (
             <>
-              <Edit
-                title={'Name:'}
-                handler={handleChangeTitle}
-                placeholder={'Enter title'}
-                value={newTitle}
-              />
-              <Edit
-                dropdown
-                title={'Genre:'}
-                dropdownOptions={listOfGenres}
-                placeholder={'Enter genre'}
-                handler={handleChangeCategory}
-                value={newCategory}
-              />
-              <Edit
-                title={'Author:'}
-                handler={handleChangeAuthor}
-                placeholder={'Enter author(s)'}
-                value={newAuthor}
-              />
-              <Edit
-                type="number"
-                title={'Deadline:'}
-                handler={handleChangeDeadline}
-                placeholder={'Enter deadline'}
-                value={newDeadline.toString()}
-              />
-              <Edit
-                dropdown
-                title={'Location:'}
-                dropdownOptions={locationsMap}
-                handler={handleChangeLocation}
-                value={newLocation.location}
-              />
+              <Section title={'Name: '}>
+                <InputWrapper>
+                  <RestyledInput
+                    value={newTitle}
+                    placeholder={'Enter title'}
+                    onChange={handleChangeTitle}
+                  />
+                </InputWrapper>
+              </Section>
+              <Section title={'Genre: '}>
+                <RestyledDropdown
+                  options={listOfGenres}
+                  initIndex={listOfGenres?.findIndex(
+                    (item) => item.value === newCategory
+                  )}
+                  onChange={handleChangeCategory}
+                  placeholder={'Enter genre'}
+                />
+              </Section>
+              <Section title={'Author: '}>
+                <InputWrapper>
+                  <RestyledInput
+                    value={newAuthor}
+                    placeholder={'Enter author(s)'}
+                    onChange={handleChangeAuthor}
+                  />
+                </InputWrapper>
+              </Section>
+              <Section title={'Deadline: '}>
+                <InputWrapper>
+                  <RestyledInput
+                    type="number"
+                    value={newDeadline}
+                    placeholder={'Enter deadline'}
+                    onChange={handleChangeDeadline}
+                  />
+                </InputWrapper>
+              </Section>
+              <Section title={'Location: '}>
+                <RestyledDropdown
+                  options={locationsMap}
+                  initIndex={locationsMap?.findIndex(
+                    (item) => item.value === newLocation.location
+                  )}
+                  onChange={handleChangeLocation}
+                  placeholder={'Enter location'}
+                />
+              </Section>
             </>
           ) : (
             <>
@@ -589,12 +634,14 @@ const BookInfo: FC<IBookInfoProps> = ({
         {description ? (
           <BookDescription>
             {editing ? (
-              <Edit
-                textarea
-                title={'Description:'}
-                handler={handleChangeDescription}
-                value={newDescription}
-              />
+              <Section title={'Description: '}>
+                <InputWrapper>
+                  <Textarea
+                    onChange={handleChangeDescription}
+                    value={newDescription}
+                  />
+                </InputWrapper>
+              </Section>
             ) : (
               <Section title={'Description:'}>
                 <ExpandableText>{description}</ExpandableText>
