@@ -17,8 +17,7 @@ import {
   useReturnBookMutation,
   useUpdateMaterialMutation,
 } from '@mimir/apollo-client';
-import { DateTime, RolesTypes, Notification } from '@mimir/global-types';
-import Button from '../Button';
+import { DateTime, Notification, RolesTypes } from '@mimir/global-types';
 import ClaimOperation from '../ClaimOperation';
 import Modal from '../Modal';
 import {
@@ -31,19 +30,9 @@ import { useAppSelector } from '../../hooks/useTypedSelector';
 import ErrorMessage from '../ErrorMessge';
 import AskManagerForm from '../AskManagerForm';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { RolesTypes } from '@mimir/global-types';
-import { IDropdownOption } from '../Dropdown';
-import { TUserLocation } from '../../store/slices/userSlice';
-import DescriptionBook from './DescriptionBook';
-import { useNavigate, useSearchParams } from 'react-router-dom';
 import Dropdown, { IDropdownOption } from '../Dropdown';
 import Section from '../Section';
 import ExpandableText from '../ExpandableText';
-import { useMediaQuery } from 'react-responsive';
-import { ReturnBookButtons } from './ReturnBookButtons';
-import { NotifyMeButtons } from './NotifyMeButtons';
-import { EditButtons } from './EditButtons';
-import { ControlButtons } from './ControlButtons';
 import { t } from 'i18next';
 import { ReturnBookButtons } from './Buttons/ReturnBookButtons';
 import { NotifyMeButtons } from './Buttons/NotifyMeButtons';
@@ -57,6 +46,7 @@ import AcceptRejectModals from '../AcceptRejectModals';
 import { DonateButtons } from './Buttons/DonateButtons';
 import { CurrentStatus } from './CurrentStatus';
 import Input from '../Input';
+import { RoutesTypes } from '../../../utils/routes';
 
 export const BookHolder = styled.div`
   width: 100%;
@@ -325,7 +315,6 @@ const BookInfo: FC<IBookInfoProps> = ({
   const [newAuthor, setNewAuthor] = useState(author);
   const [newTitle, setNewTitle] = useState(title);
   const [newDescription, setNewDescription] = useState(description || '');
-  const [deleteWarning, setDeleteWarning] = useState(false);
 
   const [isCurrentUserSubscribed, setIsCurrentUserSubscriber] = useState(false);
 
@@ -576,62 +565,70 @@ const BookInfo: FC<IBookInfoProps> = ({
         <BookCredits>
           {editing ? (
             <>
-              <Section title={'Name: '}>
+              <Section title={`${t('DonateItem.Inputs.Name.Title')}: `}>
                 <InputWrapper>
                   <RestyledInput
                     value={newTitle}
-                    placeholder={'Enter title'}
+                    placeholder={t('DonateItem.Inputs.Name.Placeholder')}
                     onChange={handleChangeTitle}
                   />
                 </InputWrapper>
               </Section>
-              <Section title={'Genre: '}>
+              <Section title={`${t('DonateItem.Inputs.Genre.Title')}: `}>
                 <RestyledDropdown
                   options={listOfGenres}
                   initIndex={listOfGenres?.findIndex(
                     (item) => item.value === newCategory
                   )}
                   onChange={handleChangeCategory}
-                  placeholder={'Enter genre'}
+                  placeholder={t('DonateItem.Inputs.Genre.Placeholder')}
                 />
               </Section>
-              <Section title={'Author: '}>
+              <Section title={`${t('DonateItem.Inputs.Author.Title')}: `}>
                 <InputWrapper>
                   <RestyledInput
                     value={newAuthor}
-                    placeholder={'Enter author(s)'}
+                    placeholder={t('DonateItem.Inputs.Author.Placeholder')}
                     onChange={handleChangeAuthor}
                   />
                 </InputWrapper>
               </Section>
-              <Section title={'Deadline: '}>
+              <Section title={`${t('DonateItem.Inputs.Deadline')}: `}>
                 <InputWrapper>
                   <RestyledInput
                     type="number"
                     value={newDeadline}
-                    placeholder={'Enter deadline'}
+                    placeholder={t('DonateItem.Inputs.Deadline')}
                     onChange={handleChangeDeadline}
                   />
                 </InputWrapper>
               </Section>
-              <Section title={'Location: '}>
+              <Section title={`${t('DonateItem.Inputs.Location.Title')}: `}>
                 <RestyledDropdown
                   options={locationsMap}
                   initIndex={locationsMap?.findIndex(
                     (item) => item.value === newLocation.location
                   )}
                   onChange={handleChangeLocation}
-                  placeholder={'Enter location'}
+                  placeholder={t('DonateItem.Inputs.Location.Placeholder')}
                 />
               </Section>
             </>
           ) : (
             <>
               <BookTitle>{title}</BookTitle>
-              <Section title={'Genre:'}>{category}</Section>
-              <Section title={'Author:'}>{author}</Section>
+              <Section title={`${t('DonateItem.Inputs.Genre.Title')}: `}>
+                <OpenLink
+                  to={`${RoutesTypes.CATEGORY}?categories=${category || ''}`}
+                >
+                  {category || 'Genres of book'}
+                </OpenLink>
+              </Section>
+              <Section title={`${t('DonateItem.Inputs.Author.Title')}: `}>
+                {author}
+              </Section>
               {isDonate ? (
-                <Section title={'Status:'}>
+                <Section title={`${t('DonateItem.Inputs.State')}: `}>
                   {statusInfo ? (
                     <CurrentStatus status={statusInfo} />
                   ) : (
@@ -639,9 +636,13 @@ const BookInfo: FC<IBookInfoProps> = ({
                   )}
                 </Section>
               ) : (
-                <Section title={'Deadline:'}>{newDeadline}</Section>
+                <Section title={`${t('DonateItem.Inputs.Deadline')}: `}>
+                  {newDeadline}
+                </Section>
               )}
-              <Section title={'Location:'}>{location.location}</Section>
+              <Section title={`${t('DonateItem.Inputs.Location.Title')}: `}>
+                {location.location}
+              </Section>
             </>
           )}
         </BookCredits>
