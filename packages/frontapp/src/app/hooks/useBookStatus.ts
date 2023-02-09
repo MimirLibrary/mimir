@@ -27,7 +27,7 @@ const useBookStatus = (
       2,
       '0'
     );
-    return `${t('Statuses.Busy')} : ${day}.${month}`;
+    return `${t('Statuses.Busy')} ${day}.${month}`;
   } else if (currentStatus === StatusTypes.OVERDUE) {
     return t('Statuses.Overdue');
   }
