@@ -25,11 +25,9 @@ export const List = styled.div`
   column-gap: ${dimensions.base_2};
   row-gap: ${dimensions.base};
   max-height: 650px;
-  overflow-y: auto;
 
-  &::-webkit-scrollbar {
-    border-radius: 8px;
-    width: 8px;
+  ::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
   }
 
   @media (max-width: ${dimensions.tablet_width}) {

@@ -158,17 +158,18 @@ exports[`render DescriptionBook component renders correctly with snapshots 1`] =
     <p
       class="emotion-4"
     >
-      Genre: 
+      : 
     </p>
     <a
       class="emotion-5"
+      href="/category?categories=Fantasy"
     >
       Fantasy
     </a>
     <p
       class="emotion-4"
     >
-      Author: 
+      : 
     </p>
     <p
       class="emotion-7"
@@ -178,7 +179,7 @@ exports[`render DescriptionBook component renders correctly with snapshots 1`] =
     <p
       class="emotion-4"
     >
-      State: 
+      : 
     </p>
     <div
       class="emotion-9"
@@ -198,7 +199,7 @@ exports[`render DescriptionBook component renders correctly with snapshots 1`] =
     <p
       class="emotion-4"
     >
-      Location: 
+      : 
     </p>
     <p
       class="emotion-7"

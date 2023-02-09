@@ -23,7 +23,7 @@ export class DigitalOceanService {
   createFile(file: IProps) {
     try {
       const fileExtension = file.originalname.split('.').pop();
-      const fileName = uuidv4() + '.' + fileExtension;
+      const fileName = 'test' + uuidv4() + '.' + fileExtension;
       return new Promise((resolve, reject) => {
         this.s3.putObject(
           {

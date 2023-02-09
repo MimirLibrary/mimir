@@ -6,10 +6,10 @@ import styled from '@emotion/styled';
 import { useAppSelector } from '../hooks/useTypedSelector';
 import { colors, dimensions } from '@mimir/ui-kit';
 import {
-  GetStatusesByMaterialQuery,
-  useGetAllMaterialsQuery,
   useGetMaterialByIdQuery,
+  useGetAllMaterialsQuery,
   useGetStatusesByMaterialLazyQuery,
+  GetStatusesByMaterialQuery,
 } from '@mimir/apollo-client';
 import { ReactComponent as ScrollButtonRight } from '../../assets/ArrowButtonRight.svg';
 import { ReactComponent as ScrollButtonLeft } from '../../assets/ArrowButtonLeft.svg';
@@ -129,7 +129,7 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
     [claimHistory, debounceSearch]
   );
 
-  const currentStatus = data?.getMaterialById.currentStatus;
+  const lastStatusAnotherPerson = data?.getMaterialById.currentStatus;
 
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -179,8 +179,8 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
             title={data?.getMaterialById.title}
             author={data?.getMaterialById.author}
             category={data?.getMaterialById.category}
-            statusInfo={currentStatus}
-            created_at={currentStatus?.created_at}
+            statusInfo={lastStatusAnotherPerson}
+            created_at={lastStatusAnotherPerson?.created_at}
             material_id={parseInt(data.getMaterialById.id)}
             description={data?.getMaterialById.description}
             updated_at={data?.getMaterialById?.updated_at}

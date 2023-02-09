@@ -1,5 +1,5 @@
 import { FC, useCallback, memo } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import BlockPage from '../../pages/BlockPage';
 import { RoutesTypes } from '../../../utils/routes';
 import SearchWrapper from '../SearchWrapper';
@@ -15,6 +15,7 @@ import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import Button from '../Button';
 import { useRoutes } from '../../hooks/useRoutes';
+import { ReactComponent as AddBookBluePlus } from '../../../assets/AddBookBluePlus.svg';
 
 const WrapperRoutes = styled.div`
   width: calc(100% - 22rem);
@@ -72,8 +73,13 @@ const MainComponent: FC<IPropsMainComponent> = ({ showSidebar }) => {
   } = useScanner();
   const { blocked, userRole } = useAppSelector((state) => state.user);
   const routes = useRoutes(userRole);
+  const navigate = useNavigate();
 
-  const handleOnClickButton = useCallback(() => {
+  const handleAddItem = useCallback(() => {
+    navigate(RoutesTypes.CREATE_NEW_ITEM);
+  }, []);
+
+  const handleClaimItem = useCallback(() => {
     setIsShowScanner(true);
   }, []);
 
@@ -93,12 +99,19 @@ const MainComponent: FC<IPropsMainComponent> = ({ showSidebar }) => {
         <Route path="*" element={<HomePage />} />
         <Route path="/block" element={<BlockPage />} />
       </Routes>
-      {userRole !== RolesTypes.MANAGER && (
+      {userRole !== RolesTypes.MANAGER ? (
         <StyledButton
           svgComponent={<QRCodeSvg />}
           value={t('Search.Scan')}
-          onClick={handleOnClickButton}
+          onClick={handleClaimItem}
           show={!(window.location.pathname === RoutesTypes.DONATE_TO_LIBRARY)}
+        />
+      ) : (
+        <StyledButton
+          svgComponent={<AddBookBluePlus />}
+          value={t('Search.Scan')}
+          onClick={handleAddItem}
+          show={!(window.location.pathname === RoutesTypes.CREATE_NEW_ITEM)}
         />
       )}
       {isShowScanner && (

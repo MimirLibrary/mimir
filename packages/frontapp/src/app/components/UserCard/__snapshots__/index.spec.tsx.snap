@@ -387,79 +387,6 @@ exports[`UserCard Component should match snapshot 1`] = `
   margin-left: 0.625rem;
 }
 
-.emotion-23 {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  cursor: pointer;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background-color: #FFFFFF;
-  border-radius: 1.875rem;
-  height: 3.125rem;
-  width: 100%;
-  border: 2px solid #1A1ED6;
-}
-
-.emotion-23:hover {
-  background-color: #FFFFFF;
-  border: 2px solid #1A1DB1;
-}
-
-.emotion-23:hover svg {
-  fill: #1A1DB1;
-}
-
-.emotion-23:hover span {
-  color: #1A1DB1;
-}
-
-.emotion-23:active {
-  background-color: #FFFFFF;
-  border: 2px solid #1A1DB1;
-}
-
-.emotion-23:active svg {
-  fill: #1A1DB1;
-}
-
-.emotion-23:active span {
-  color: #1A1DB1;
-}
-
-.emotion-23:disabled {
-  background: #BDBDBD;
-  cursor: default;
-}
-
-.emotion-23 svg {
-  fill: #1A1DB1;
-  height: auto;
-  max-width: 1.5rem;
-}
-
-.emotion-23 span {
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.25rem;
-  color: #1A1DB1;
-}
-
-.emotion-23:hover {
-  border-color: #1A1DB1;
-}
-
 <div
   class="emotion-0"
   data-testid="user-card"
@@ -577,15 +504,6 @@ exports[`UserCard Component should match snapshot 1`] = `
       </svg>
       <span>
         UserCard.BlockUser
-      </span>
-    </button>
-    <button
-      class="emotion-23"
-      type="button"
-      value="UserCard.MakeManager"
-    >
-      <span>
-        UserCard.MakeManager
       </span>
     </button>
   </div>

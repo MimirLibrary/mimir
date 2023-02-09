@@ -21,11 +21,11 @@ import Modal from '../Modal';
 import ErrorMessage from '../ErrorMessge';
 import React, { useEffect, useState } from 'react';
 import { InputDescription } from '../AskManagerForm';
-import { RolesTypes } from '@mimir/global-types';
+import { Permissions, RolesTypes } from '@mimir/global-types';
 import { toast } from 'react-toastify';
 import AnswerToUser from '../AnswerToUser';
-import { nanoid } from '@reduxjs/toolkit';
 import Loader, { WrapperLoader } from '../Loader';
+import { useAppSelector } from '../../hooks/useTypedSelector';
 
 const InlineWrapper = styled.div`
   display: flex;
@@ -183,6 +183,7 @@ const UserCard = () => {
   const [showBlockInput, setShowBlockInput] = useState<boolean>(false);
   const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
   const [value, setValue] = useState<string>('');
+  const currentUser = useAppSelector((state) => state.user);
   const messages = OnePerson?.getOnePerson.messages?.map((message) => {
     return {
       id: message?.id,
@@ -340,15 +341,19 @@ const UserCard = () => {
               svgComponent={<Block />}
             ></Button>
           )}
-          <StyledButton
-            value={
-              OnePerson?.getOnePerson.type === RolesTypes.READER
-                ? t('UserCard.MakeManager')
-                : t('UserCard.MakeReader')
-            }
-            transparent
-            onClick={handleChangePersonRoleClick}
-          />
+          {currentUser?.permissions?.includes(
+            Permissions.GRANT_REVOKE_MANAGER
+          ) && (
+            <StyledButton
+              value={
+                OnePerson?.getOnePerson.type === RolesTypes.READER
+                  ? t('UserCard.MakeManager')
+                  : t('UserCard.MakeReader')
+              }
+              transparent
+              onClick={handleChangePersonRoleClick}
+            />
+          )}
         </ButtonsWrapper>
       </CardWrapper>
       <Title>{t('UserCard.ClaimList')}</Title>
