@@ -15,6 +15,7 @@ export interface IBookCardProps {
   category?: string;
   id?: string;
   presentationMode?: boolean;
+  claimedUserId?: number;
 }
 
 const BookCardWrapper = styled.div<Pick<IBookCardProps, 'presentationMode'>>`
@@ -115,10 +116,10 @@ const BookCard: FC<IBookCardProps> = ({
   title = '',
   author = '',
   status,
-  category,
   date,
   id,
   presentationMode,
+  claimedUserId,
 }) => {
   const navigate = useNavigate();
   const handleItemRedirect = () => {
@@ -143,7 +144,7 @@ const BookCard: FC<IBookCardProps> = ({
         <DescriptionBook presentationMode={presentationMode}>
           {shortenText(author, 20)}
         </DescriptionBook>
-        <BookStatus status={status} date={date} />
+        <BookStatus status={status} date={date} claimedUserId={claimedUserId} />
       </DescriptionWrapper>
     </BookCardWrapper>
   );

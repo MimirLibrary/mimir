@@ -11,12 +11,25 @@ interface IBookStatusProps {
   status?: string | null;
   date: any;
   fontSize?: string;
+  claimedUserId?: number;
 }
 
-const BookStatus: FC<IBookStatusProps> = ({ status, date, fontSize }) => {
+const BookStatus: FC<IBookStatusProps> = ({
+  status,
+  date,
+  fontSize,
+  claimedUserId,
+}) => {
+  // todo: need to handle OwnClaimed status with `getStatus`
   const currentStatus = getStatus(status, date);
   const { pathname } = useLocation();
-  const bookStatus = useBookStatus(currentStatus, date, pathname);
+  // todo: consider moving out logic from useBookStatus
+  const bookStatus = useBookStatus(
+    currentStatus,
+    date,
+    pathname,
+    claimedUserId
+  );
 
   return (
     <StyledBookStatusWrapper status={currentStatus} data-testid="bookStatus">

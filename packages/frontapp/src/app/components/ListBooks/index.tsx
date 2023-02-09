@@ -2,6 +2,7 @@ import { FC } from 'react';
 import styled from '@emotion/styled';
 import { dimensions } from '@mimir/ui-kit';
 import BookCard from '../BookCard';
+import { useAppSelector } from '../../hooks/useTypedSelector';
 
 export const WrapperList = styled.section`
   display: grid;
@@ -33,6 +34,9 @@ interface IProps {
 }
 
 const ListBooks: FC<IProps> = ({ items }) => {
+  // Here we get the `id` from the store as the component is used only on the Home Page
+  // which is specific to the logged in user
+  const userId = useAppSelector((state) => state.user.id);
   return (
     <WrapperList>
       {items &&
@@ -46,6 +50,7 @@ const ListBooks: FC<IProps> = ({ items }) => {
             category={item?.material.category}
             date={item?.created_at}
             status={item?.status}
+            claimedUserId={userId}
           />
         ))}
     </WrapperList>

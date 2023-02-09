@@ -38,6 +38,7 @@ const HistoryOfDonatePage = () => {
                 category={item?.category}
                 date={item?.currentStatus?.created_at}
                 status={item?.currentStatus?.status || 'Pending'}
+                claimedUserId={item?.currentStatus?.person_id}
               />
             ))
             .reverse()}

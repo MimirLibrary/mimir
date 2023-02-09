@@ -18,7 +18,7 @@ export const colors = {
   black: '#000000',
   shadow: '0px 10px 70px rgba(26, 30, 214, 0.08)',
   bg_free: `rgba(45, 186, 22, 0.1)`,
-  bg_own_claim: `rgba(26, 30, 214, 0.1)`,
+  bg_busy: `rgba(26, 30, 214, 0.1)`,
   bg_error: `rgba(255, 55, 42, 0.1)`,
-  bg_busy: `rgba(255, 145, 15, 0.1)`,
+  bg_own_claim: `rgba(255, 145, 15, 0.1)`,
 };

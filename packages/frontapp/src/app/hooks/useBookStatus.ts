@@ -1,3 +1,4 @@
+import { useAppSelector } from './useTypedSelector';
 import { DateTime } from '@mimir/global-types';
 import { getDates } from '../models/helperFunctions/converTime';
 import { useTranslation } from 'react-i18next';
@@ -7,9 +8,11 @@ import { RoutesTypes } from '../../utils/routes';
 const useBookStatus = (
   currentStatus: string | null,
   created_at: DateTime,
-  pathname?: string
+  pathname?: string,
+  claimedUserId?: number
 ) => {
   const { t } = useTranslation();
+  const userId = useAppSelector((state) => state.user.id);
   switch (currentStatus) {
     case StatusTypes.FREE:
       if (
@@ -27,7 +30,9 @@ const useBookStatus = (
       const month = `${
         getDates(created_at).returnDate.getMonth() + 1
       }`.padStart(2, '0');
-      return `${t('Statuses.Busy')} ${day}.${month}`;
+      return `${
+        claimedUserId === userId ? t('Statuses.OwnClaimed') : t('Statuses.Busy')
+      } ${day}.${month}`;
     }
     case StatusTypes.OVERDUE:
       return t('Statuses.Overdue');
