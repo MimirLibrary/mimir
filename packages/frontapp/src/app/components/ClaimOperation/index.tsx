@@ -7,6 +7,7 @@ import useScanner from '../../hooks/useScanner';
 import Scanner from '../Scanner';
 import Input from '../Input';
 import InputMask from 'react-input-mask';
+import { t } from 'i18next';
 
 const Wrapper = styled.div`
   display: flex;
@@ -152,10 +153,8 @@ const ClaimOperation: FC<IProps> = ({
   return (
     <Wrapper>
       <WrapperClaimOperation>
-        <TitleOfClaim>Enter ISBN code</TitleOfClaim>
-        <Description>
-          Look at the back of the book for the code and write it in the box.
-        </Description>
+        <TitleOfClaim>{t('DonateItem.Instruction.Title')}</TitleOfClaim>
+        <Description>{t('DonateItem.Instruction.Description')}</Description>
         <Row>
           <WrapperInput>
             <InputMask
