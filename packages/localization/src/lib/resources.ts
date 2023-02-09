@@ -279,6 +279,12 @@ export const resources = {
             Title: 'Description',
             Placeholder: 'Enter book description',
           },
+          State: 'State',
+          Deadline: 'Deadline',
+        },
+        ExpandDescription: {
+          Show: 'see full description',
+          Hide: 'hide description',
         },
         Modal: {
           ISBNError: {
@@ -297,9 +303,46 @@ export const resources = {
             Message: 'The problem will be solved soon',
           },
         },
-        Button: {
+        Buttons: {
           AddItem: 'Add item to library',
           AskManager: 'Ask a manager',
+          Claim: 'Claim a book',
+          Return: 'Return a book',
+          Extend: 'Extend claim period',
+        },
+        Messages: {
+          Errors: {
+            Claim: 'Something goes wrong with your claiming',
+            Extend: 'Something goes wrong with your extending',
+            Return: 'Something goes wrong with your returning',
+            ReportToManager: {
+              Title: 'We reported the problem to the manager',
+              Description: 'The problem will be solved soon',
+            },
+            Delete: {
+              Title: 'Warning',
+              Desctription: `The book {{title}} is now in the possession of a person {{userName}}. Are you sure you want to delete the book {{title}} from the library permanently?`,
+            },
+          },
+          Claim: {
+            Title: 'You have successfully claimed the book',
+            Description: "Enjoy reading and don't forget to return this by",
+          },
+          Extend: {
+            Title: 'You have successfully extended claim period',
+            Description: "Enjoy reading and don't forget to return this by",
+          },
+          Return: 'You have successfully returned the book',
+          Delete: {
+            Title: 'Warning',
+            Desctription:
+              'Are you sure you want to delete the book {{title}} from the library permanently?',
+          },
+          Buttons: {
+            Delete: 'Yes, delete',
+            Cancel: 'Cancel',
+            Close: 'Close',
+          },
         },
       },
       ManagerDonateModal: {
@@ -610,6 +653,12 @@ export const resources = {
             Title: 'Описание',
             Placeholder: 'Введите описание книги',
           },
+          State: 'Статус',
+          Deadline: 'Срок возвращения',
+        },
+        ExpandDescription: {
+          Show: 'показать описание',
+          Hide: 'скрыть описание',
         },
         Modal: {
           ISBNError: {
@@ -628,9 +677,46 @@ export const resources = {
             Message: 'Проблема будет решена в ближайшее время',
           },
         },
-        Button: {
+        Buttons: {
           AddItem: 'Добавить в библиотеку',
           AskManager: 'Спросить у менеджера',
+          Claim: 'Забронировать книгу',
+          Return: 'Вернуть книгу',
+          Extend: 'Продлить период использования',
+        },
+        Messages: {
+          Errors: {
+            Claim: 'Что-то не так во время бронирования',
+            Extend: 'Что-то не так во время продления',
+            Return: 'Что-то не так во время возвращения',
+            ReportToManager: {
+              Title: 'Мы сообщили об ошибке менеджеру',
+              Description: 'Проблема будет решена в скором времени',
+            },
+            Delete: {
+              Title: 'Предупреждение',
+              Desctription: `Книга {{title}} сейчас находится у человека. Вы уверены, что хотите удалить книгу {{title}} из библиотеки навсегда?`,
+            },
+          },
+          Claim: {
+            Title: 'Вы успешно забронировали книгу',
+            Description: 'Наслаждайтесь чтением и не забудьте вернуть книгу к',
+          },
+          Extend: {
+            Title: 'Вы успешно продлили период использования книги',
+            Description: 'Наслаждайтесь чтением и не забудьте вернуть книгу к',
+          },
+          Return: 'Вы успешно вернули книгу',
+          Delete: {
+            Title: 'Предупреждение',
+            Desctription:
+              'Вы уверены, что хотите удалить книгу {{title}} из библиотеки навсегда?',
+          },
+          Buttons: {
+            Delete: 'Да, удалить',
+            Cancel: 'Выйти',
+            Close: 'Закрыть',
+          },
         },
       },
       ManagerDonateModal: {

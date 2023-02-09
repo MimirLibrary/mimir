@@ -14,6 +14,8 @@ import { INewData, Location, OpenLink, TitleHolder, Topic } from './index';
 import { toast } from 'react-toastify';
 import { useMediaQuery } from 'react-responsive';
 import Days from './Days';
+import { RoutesTypes } from '../../../utils/routes';
+import { t } from 'i18next';
 
 export const WrapperInfo = styled.div`
   display: flex;
@@ -207,7 +209,7 @@ const DescriptionBook: FC<IDescriptionBook> = ({
       <ShortDescription>
         {editing ? (
           <>
-            <TitleHolder>Name </TitleHolder>
+            <TitleHolder>{t('DonateItem.Inputs.Name.Title')}</TitleHolder>
             <WrapperInput isFullWidth={isPhone || isLaptop}>
               <StyledInput
                 type="text"
@@ -220,12 +222,14 @@ const DescriptionBook: FC<IDescriptionBook> = ({
         ) : (
           <TitleBook>{title || 'Book Title'}</TitleBook>
         )}
-        {!editing && <Topic>Genre: </Topic>}
+        {!editing && <Topic>{t('DonateItem.Inputs.Genre.Title')}: </Topic>}
         {userRole === RolesTypes.READER ? (
-          <OpenLink>{category || 'Genres of book'}</OpenLink>
+          <OpenLink to={`${RoutesTypes.CATEGORY}?categories=${category || ''}`}>
+            {category || 'Genres of book'}
+          </OpenLink>
         ) : editing ? (
           <WrapperDropDown>
-            <TitleHolder>Genre </TitleHolder>
+            <TitleHolder>{t('DonateItem.Inputs.Genre.Title')}</TitleHolder>
             <RestyledDropdown
               options={listOfGenres}
               initIndex={currentGenreIndex}
@@ -239,7 +243,7 @@ const DescriptionBook: FC<IDescriptionBook> = ({
         {editing ? (
           <>
             <br />
-            <TitleHolder>Author </TitleHolder>
+            <TitleHolder>{t('DonateItem.Inputs.Author.Title')}</TitleHolder>
             <WrapperInput isFullWidth={isPhone || isLaptop}>
               <StyledInput
                 type="text"
@@ -251,13 +255,13 @@ const DescriptionBook: FC<IDescriptionBook> = ({
           </>
         ) : (
           <>
-            <Topic>Author: </Topic>
+            <Topic>{t('DonateItem.Inputs.Author.Title')}: </Topic>
             <TopicDescription>{author || 'Author Name'}</TopicDescription>
           </>
         )}
         {userRole === RolesTypes.READER ? (
           <>
-            <Topic>State: </Topic>
+            <Topic>{t('DonateItem.Inputs.State')}: </Topic>
             <StyledStatus>
               <BookStatus
                 fontSize={dimensions.base}
@@ -269,7 +273,7 @@ const DescriptionBook: FC<IDescriptionBook> = ({
         ) : editing ? (
           <>
             <br />
-            <TitleHolder>Deadline </TitleHolder>
+            <TitleHolder>{t('DonateItem.Inputs.Deadline')} </TitleHolder>
             <DeadlineInputWrapper>
               <StyledInputDeadline
                 value={newDeadline}
@@ -283,7 +287,7 @@ const DescriptionBook: FC<IDescriptionBook> = ({
           </>
         ) : (
           <>
-            <Topic>Deadline: </Topic>
+            <Topic>{t('DonateItem.Inputs.Deadline')}: </Topic>
             <TopicDescription>
               {newDeadline + ' '}
               <Days number={newDeadline} />
@@ -293,7 +297,9 @@ const DescriptionBook: FC<IDescriptionBook> = ({
         <>
           {editing ? (
             <WrapperDropDown>
-              <TitleHolder>Location </TitleHolder>
+              <TitleHolder>
+                {t('DonateItem.Inputs.Location.Title')}{' '}
+              </TitleHolder>
               <RestyledDropdown
                 options={allLocations!.getAllLocations.map((loc) => ({
                   id: loc!.id,
@@ -307,7 +313,7 @@ const DescriptionBook: FC<IDescriptionBook> = ({
             </WrapperDropDown>
           ) : (
             <>
-              <Topic>Location: </Topic>
+              <Topic>{t('DonateItem.Inputs.Location.Title')}: </Topic>
               <TopicDescription>{location.location}</TopicDescription>
             </>
           )}

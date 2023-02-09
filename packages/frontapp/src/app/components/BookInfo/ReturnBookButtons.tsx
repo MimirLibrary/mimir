@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { StyledButton } from './index';
 import { ReactComponent as Claim } from '../../../assets/claim.svg';
+import { t } from 'i18next';
 
 interface IControl {
   isClaimed?: boolean;
@@ -18,7 +19,7 @@ export const ReturnBookButtons: FC<IControl> = ({
   if (!isClaimed)
     return (
       <StyledButton
-        value="Claim a book"
+        value={t('DonateItem.Buttons.Claim')}
         onClick={onClaim}
         svgComponent={<Claim />}
       />
@@ -26,9 +27,9 @@ export const ReturnBookButtons: FC<IControl> = ({
 
   return (
     <>
-      <StyledButton value="Return a book" onClick={onReturn} />
+      <StyledButton value={t('DonateItem.Buttons.Return')} onClick={onReturn} />
       <StyledButton
-        value="Extend claim period"
+        value={t('DonateItem.Buttons.Extend')}
         onClick={onProlong}
         transparent
       />
