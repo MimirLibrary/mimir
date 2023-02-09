@@ -22,5 +22,6 @@ query GetMaterialById($id: ID!) {
       location
     }
     claimCount
+    claimDuration
   }
 }

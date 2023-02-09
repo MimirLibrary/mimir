@@ -64,6 +64,7 @@ export interface UpdateMaterialInput {
     category?: Nullable<string>;
     updated_at: DateTime;
     description?: Nullable<string>;
+    claimDuration: number;
 }
 
 export interface SearchOneMaterial {
@@ -220,6 +221,7 @@ export interface Material {
     is_donated: boolean;
     currentStatus?: Nullable<Status>;
     claimCount: number;
+    claimDuration: number;
 }
 
 export interface ResponseMetadata {

@@ -180,6 +180,7 @@ export interface IBookInfoProps {
   returnDate?: string;
   type: string;
   location: Location;
+  claimDuration: number;
 }
 
 const BookInfo: FC<IBookInfoProps> = ({
@@ -196,6 +197,7 @@ const BookInfo: FC<IBookInfoProps> = ({
   material_id,
   type,
   location,
+  claimDuration,
 }) => {
   const { id, userRole } = useAppSelector((state) => state.user);
 
@@ -233,7 +235,7 @@ const BookInfo: FC<IBookInfoProps> = ({
   const [isReturnError, setIsReturnError] = useState<boolean>(false);
   const [newCategory, setNewCategory] = useState(category);
   const [newLocation, setNewLocation] = useState<Location>(location);
-  const [newDeadline, setNewDeadline] = useState(30);
+  const [newClaimDuration, setNewClaimDuration] = useState(claimDuration);
   const [newDescriptionData, setNewDescriptionData] = useState<INewData>({
     newAuthor: author,
     newTitle: title,
@@ -312,10 +314,11 @@ const BookInfo: FC<IBookInfoProps> = ({
     setNewLocation(newLocation);
   };
 
-  const handleChangeDeadline = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewDeadline(Number(e.target.value));
-    Number(e.target.value) > 31 && setNewDeadline(31);
-    Number(e.target.value) <= 0 && setNewDeadline(1);
+  const handleClaimDurationChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const newDuration = Number(e.target.value);
+    setNewClaimDuration(newDuration < 1 ? 1 : newDuration);
   };
 
   const claim = async () => {
@@ -365,6 +368,7 @@ const BookInfo: FC<IBookInfoProps> = ({
         category: newCategory,
         description: newDescription,
         updated_at: new Date(),
+        claimDuration: newClaimDuration,
       },
     });
     setEditing(false);
@@ -478,9 +482,9 @@ const BookInfo: FC<IBookInfoProps> = ({
             location={location}
             src={src}
             status={statusInfo?.status}
-            newDeadline={newDeadline}
+            claimDuration={newClaimDuration}
             newTitleAndAuthor={newDescriptionData}
-            handleChangeDeadline={handleChangeDeadline}
+            handleChangeDeadline={handleClaimDurationChange}
             handleChangeLocation={handleChangeLocation}
             handleChangeAuthorAndTitle={handleChangeNewDescriptionData}
             handleChangeNewGenre={handleChangeCategory}

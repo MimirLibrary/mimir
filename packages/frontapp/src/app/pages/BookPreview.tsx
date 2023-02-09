@@ -186,6 +186,7 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
             updated_at={data?.getMaterialById?.updated_at}
             type={data?.getMaterialById?.type}
             location={data?.getMaterialById.location}
+            claimDuration={data?.getMaterialById.claimDuration}
           />
         )
       ) : (
@@ -205,6 +206,7 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
               updated_at={data?.getMaterialById?.updated_at}
               type={data?.getMaterialById?.type}
               location={data.getMaterialById.location}
+              claimDuration={data.getMaterialById.claimDuration}
             />
           )}
           {userRole === RolesTypes.READER ? (

@@ -6,17 +6,12 @@ import { Connection, EntityManager } from 'typeorm';
 import { ErrorBook } from '../../errors';
 import { normalizeIdentifier } from '@mimir/helper-functions';
 import { config } from '../../config';
-import { ConfigService } from '@nestjs/config';
 import { setTimeToProlong } from '../../utils/helpersFunctions/setTimeToProlong';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
 @Injectable()
 export class ItemService {
-  private get periodOfKeeping(): number {
-    return +this.config.get<number>('common.periodOfKeeping');
-  }
-
-  constructor(private connection: Connection, private config: ConfigService) {}
+  constructor(private connection: Connection) {}
 
   async claim(claimBookInput: BookInput): Promise<Status> {
     return this.connection.transaction(async (manager) => {
@@ -36,7 +31,7 @@ export class ItemService {
           status: StatusTypes.BUSY,
           material_id: material.id,
           person_id,
-          returnDate: () => `NOW() + INTERVAL '${this.periodOfKeeping} days'`,
+          returnDate: () => `NOW() + INTERVAL '${material.claimDuration} days'`,
         },
         manager
       );

@@ -8,6 +8,7 @@ mutation UpdateMaterial(
   $category: String
   $updated_at: DateTime!
   $description: String
+  $claimDuration: Int!
 ) {
   updateMaterial(
     input: {
@@ -20,6 +21,7 @@ mutation UpdateMaterial(
       category: $category
       updated_at: $updated_at
       description: $description
+      claimDuration: $claimDuration
     }
   ) {
     identifier
@@ -31,5 +33,6 @@ mutation UpdateMaterial(
     category
     updated_at
     description
+    claimDuration
   }
 }
