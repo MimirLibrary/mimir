@@ -10,28 +10,34 @@ const useBookStatus = (
   pathname?: string
 ) => {
   const { t } = useTranslation();
-  if (currentStatus === StatusTypes.FREE) {
-    if (
-      pathname === RoutesTypes.HISTORY_OF_CLAIM ||
-      pathname === RoutesTypes.HISTORY_OF_DONATE
-    )
-      return t(`Statuses.${currentStatus + pathname}`);
+  switch (currentStatus) {
+    case StatusTypes.FREE:
+      if (
+        pathname === RoutesTypes.HISTORY_OF_CLAIM ||
+        pathname === RoutesTypes.HISTORY_OF_DONATE
+      )
+        return t(`Statuses.${currentStatus + pathname}`);
 
-    return t('Statuses.Free');
-  } else if (
-    currentStatus === StatusTypes.BUSY ||
-    currentStatus === StatusTypes.PROLONG
-  ) {
-    const day = `${getDates(created_at).returnDate.getDate()}`.padStart(2, '0');
-    const month = `${getDates(created_at).returnDate.getMonth() + 1}`.padStart(
-      2,
-      '0'
-    );
-    return `${t('Statuses.Busy')} ${day}.${month}`;
-  } else if (currentStatus === StatusTypes.OVERDUE) {
-    return t('Statuses.Overdue');
+      return t('Statuses.Free');
+    case StatusTypes.BUSY || StatusTypes.PROLONG: {
+      const day = `${getDates(created_at).returnDate.getDate()}`.padStart(
+        2,
+        '0'
+      );
+      const month = `${
+        getDates(created_at).returnDate.getMonth() + 1
+      }`.padStart(2, '0');
+      return `${t('Statuses.Busy')} ${day}.${month}`;
+    }
+    case StatusTypes.OVERDUE:
+      return t('Statuses.Overdue');
+    case StatusTypes.PENDING:
+      return t('Statuses.Pending');
+    case StatusTypes.REJECTED:
+      return t('Statuses.Rejected');
+    default:
+      return '';
   }
-  return '';
 };
 
 export default useBookStatus;
