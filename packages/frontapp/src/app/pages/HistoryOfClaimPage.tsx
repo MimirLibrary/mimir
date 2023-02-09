@@ -25,7 +25,6 @@ export const List = styled.div`
   column-gap: ${dimensions.base_2};
   row-gap: ${dimensions.base};
   max-height: 650px;
-  overflow-y: auto;
 
   ::-webkit-scrollbar {
     display: none; /* Safari and Chrome */
