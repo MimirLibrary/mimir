@@ -35,7 +35,6 @@ const MaterialSearch: FC<IProps> = ({ setActive }) => {
   const allAvailability = useMaterialFilter(availableMaterial, 'availability');
   const allSortBy = {
     'By date added': undefined,
-    'By date of writing': undefined,
   };
 
   const initAttributes = [
