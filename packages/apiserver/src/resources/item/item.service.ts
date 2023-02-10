@@ -83,7 +83,7 @@ export class ItemService {
       }
 
       if (material.currentStatus.status !== StatusTypes.PENDING) {
-        throw new ErrorBook(`This book can't be rejected. Ask the manager!`);
+        throw new ErrorBook(`This book can't be rejected.`);
       }
 
       return this.insertStatus(
