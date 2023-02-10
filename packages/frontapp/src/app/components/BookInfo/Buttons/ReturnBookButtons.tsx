@@ -3,6 +3,7 @@ import { ReactComponent as Claim } from '../../../../assets/claim.svg';
 import Button from '../../Button';
 import { StatusType } from '../index';
 import { t } from 'i18next';
+import { StatusTypes } from '@mimir/global-types';
 
 interface IControl {
   isClaimed?: boolean;
@@ -35,7 +36,7 @@ export const ReturnBookButtons: FC<IControl> = ({
           value={t('Buttons.Prolong')}
           onClick={onProlong}
           transparent
-          disabled={currentStatus.status === 'Prolong'}
+          disabled={currentStatus.status === StatusTypes.PROLONG}
         />
       </>
     );

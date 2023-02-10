@@ -17,7 +17,12 @@ import {
   useReturnBookMutation,
   useUpdateMaterialMutation,
 } from '@mimir/apollo-client';
-import { DateTime, Notification, RolesTypes } from '@mimir/global-types';
+import {
+  DateTime,
+  Notification,
+  RolesTypes,
+  StatusTypes,
+} from '@mimir/global-types';
 import ClaimOperation from '../ClaimOperation';
 import Modal from '../Modal';
 import {
@@ -666,15 +671,15 @@ const BookInfo: FC<IBookInfoProps> = ({
         ) : null}
         <BookControls>
           {userRole === RolesTypes.READER ? (
-            statusInfo?.status !== 'Pending' ? (
-              statusInfo?.status === 'Free' ? (
+            statusInfo?.status !== StatusTypes.PENDING ? (
+              statusInfo?.status === StatusTypes.FREE ? (
                 <ReturnBookButtons
                   currentStatus={statusInfo}
                   onClaim={showClaimModal}
                   onReturn={retrieveBook}
                   onProlong={prolongPeriod}
                 />
-              ) : statusInfo?.status !== 'Free' &&
+              ) : statusInfo?.status !== StatusTypes.FREE &&
                 statusInfo?.person_id === id ? (
                 <ReturnBookButtons
                   currentStatus={statusInfo}
@@ -693,9 +698,9 @@ const BookInfo: FC<IBookInfoProps> = ({
             ) : null
           ) : editing ? (
             <EditButtons onSave={editInformation} onCancel={discardChanges} />
-          ) : isDonate && statusInfo?.status === 'Pending' ? (
+          ) : isDonate && statusInfo?.status === StatusTypes.PENDING ? (
             <DonateButtons onAccept={onClickAccept} onReject={onClickReject} />
-          ) : isDonate && statusInfo?.status !== 'Pending' ? null : (
+          ) : isDonate && statusInfo?.status !== StatusTypes.PENDING ? null : (
             <ControlButtons onEdit={handleEditBtn} onDelete={handleDeleteBtn} />
           )}
         </BookControls>
