@@ -35,6 +35,6 @@ export class GrantGuard implements CanActivate {
     if (permissions && grants.every((grant) => permissions.includes(grant)))
       return true;
 
-    throw new UnauthorizedException('A person is not found');
+    throw new UnauthorizedException('Access denied');
   }
 }

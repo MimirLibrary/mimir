@@ -13,6 +13,7 @@ import {
   GetMaterialFromMetadataDocument,
   GetMaterialFromMetadataQuery,
 } from '@mimir/apollo-client';
+import { t } from 'i18next';
 
 const Wrapper = styled.section`
   width: 100%;
@@ -172,10 +173,8 @@ const DonateViaISBN: FC<IPropsViaISBN> = ({
   return (
     <>
       <Wrapper>
-        <Title>ISBN code</Title>
-        <SubTitle>
-          Look at the back of the book for the code and write it in the box.
-        </SubTitle>
+        <Title>{t('DonateItem.Instruction.Title')}</Title>
+        <SubTitle>{t('DonateItem.Instruction.Description')}</SubTitle>
         <form onSubmit={handleSubmit}>
           <ISBNWrapper>
             <WrapperInputStyled>

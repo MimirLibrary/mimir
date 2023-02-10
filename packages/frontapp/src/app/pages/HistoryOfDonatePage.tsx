@@ -7,7 +7,6 @@ import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '../hooks/useTypedSelector';
 import { useGetAllDonatedMaterialsByPersonQuery } from '@mimir/apollo-client';
 import { toast } from 'react-toastify';
-import { IMaterial } from '../types';
 
 const HistoryOfDonatePage = () => {
   const { t } = useTranslation();

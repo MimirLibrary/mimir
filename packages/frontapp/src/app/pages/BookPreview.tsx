@@ -192,7 +192,6 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
         <>
           {data?.getMaterialById && (
             <BookInfo
-              person_id={id}
               identifier={data.getMaterialById.identifier}
               src={data?.getMaterialById.picture}
               title={data?.getMaterialById.title}
