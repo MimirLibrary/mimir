@@ -1,5 +1,6 @@
 import { t } from 'i18next';
 import { StatusTypes } from '@mimir/global-types';
+import { OWNCLAIMED_STATUS } from '../../const/statuses';
 
 export const periodOfKeeping = Number(
   process.env['NX_PERIOD_OF_KEEPING'] || 30
@@ -22,10 +23,18 @@ export const getDates = (date: Date) => {
 export const isOverdue = (date: Date) =>
   getDates(date).currentDate >= getDates(date).returnDate;
 
-export const getStatus = (status: string | undefined | null, date: any) => {
+export const getStatus = (
+  status: string | undefined | null,
+  date: any,
+  isClaimedByCurrentUser?: boolean
+) => {
   if (!status) return null;
-  if (status === StatusTypes.BUSY)
-    return !isOverdue(date) ? StatusTypes.BUSY : StatusTypes.OVERDUE;
+  if (status === StatusTypes.BUSY) {
+    if (isOverdue(date)) {
+      return StatusTypes.OVERDUE;
+    }
+    return isClaimedByCurrentUser ? OWNCLAIMED_STATUS : StatusTypes.BUSY;
+  }
   return status;
 };
 

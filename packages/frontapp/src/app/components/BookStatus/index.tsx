@@ -6,6 +6,7 @@ import {
 } from '../../globalUI/Status';
 import { useLocation } from 'react-router-dom';
 import useBookStatus from '../../hooks/useBookStatus';
+import { useAppSelector } from '../../hooks/useTypedSelector';
 
 interface IBookStatusProps {
   status?: string | null;
@@ -20,10 +21,10 @@ const BookStatus: FC<IBookStatusProps> = ({
   fontSize,
   claimedUserId,
 }) => {
-  // todo: need to handle OwnClaimed status with `getStatus`
-  const currentStatus = getStatus(status, date);
+  const userId = useAppSelector((state) => state.user.id);
+  const isClaimedByCurrentUser = claimedUserId === userId;
+  const currentStatus = getStatus(status, date, isClaimedByCurrentUser);
   const { pathname } = useLocation();
-  // todo: consider moving out logic from useBookStatus
   const bookStatus = useBookStatus(
     currentStatus,
     date,
