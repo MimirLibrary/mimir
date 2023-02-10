@@ -1,3 +1,4 @@
+import { OWNCLAIMED_STATUS } from './../const/statuses';
 import { useAppSelector } from './useTypedSelector';
 import { DateTime } from '@mimir/global-types';
 import { getDates } from '../models/helperFunctions/converTime';
@@ -23,6 +24,7 @@ const useBookStatus = (
 
       return t('Statuses.Free');
     case StatusTypes.PROLONG:
+    case OWNCLAIMED_STATUS:
     case StatusTypes.BUSY: {
       const day = `${getDates(created_at).returnDate.getDate()}`.padStart(
         2,
