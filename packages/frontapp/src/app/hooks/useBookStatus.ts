@@ -19,7 +19,8 @@ const useBookStatus = (
         return t(`Statuses.${currentStatus + pathname}`);
 
       return t('Statuses.Free');
-    case StatusTypes.BUSY || StatusTypes.PROLONG: {
+    case StatusTypes.PROLONG:
+    case StatusTypes.BUSY: {
       const day = `${getDates(created_at).returnDate.getDate()}`.padStart(
         2,
         '0'

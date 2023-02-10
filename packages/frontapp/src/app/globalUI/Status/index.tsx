@@ -29,9 +29,7 @@ export const StyledBookStatusWrapper = styled.div<IStyledBookStatusProps>`
     }
   }};
   border-radius: ${dimensions.xs_2};
-  @media (max-width: ${dimensions.phone_width}) {
-    width: fit-content;
-  }
+  width: fit-content;
 `;
 
 export const StyledBookStatus = styled.p<IStyledBookStatusProps>`
