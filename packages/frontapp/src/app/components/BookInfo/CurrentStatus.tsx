@@ -14,8 +14,12 @@ export const CurrentStatus: FC<ICurrentStatus> = ({ status }) => {
     case 'Rejected':
       return <StatusBadge type="danger">{t('Statuses.Rejected')}</StatusBadge>;
     case 'Pending':
-      return <StatusBadge type="warning">{status.status}</StatusBadge>;
+      return <StatusBadge type="warning">{t('Statuses.Pending')}</StatusBadge>;
     default:
-      return <StatusBadge type="default">{status.status}</StatusBadge>;
+      return (
+        <StatusBadge type="default">
+          {t(`Statuses.${status.status}`)}
+        </StatusBadge>
+      );
   }
 };
