@@ -12,7 +12,6 @@ export const getDates = (date: Date) => {
   const returnDate = new Date(
     startDate.setDate(startDate.getDate() + periodOfKeeping)
   );
-  console.log();
   return {
     currentDate,
     startDate,

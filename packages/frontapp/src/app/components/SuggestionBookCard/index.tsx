@@ -67,6 +67,7 @@ const SuggestionBookCard: FC<IProps> = ({
   category,
   date,
   id,
+  claimedUserId,
 }) => {
   const navigate = useNavigate();
   const handleItemRedirect = () => {
@@ -80,7 +81,7 @@ const SuggestionBookCard: FC<IProps> = ({
       <DescriptionWrapper>
         <TitleBook>{title}</TitleBook>
         <DescriptionBook>{category + ' / ' + author}</DescriptionBook>
-        <BookStatus status={status} date={date} />
+        <BookStatus status={status} date={date} claimedUserId={claimedUserId} />
       </DescriptionWrapper>
     </BookCardWrapper>
   );
