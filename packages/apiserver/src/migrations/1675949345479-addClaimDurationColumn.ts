@@ -7,7 +7,7 @@ export class addClaimDurationColumn1675949345479 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `AlTER TABLE "material" ADD COLUMN "${COLUMN_NAME}" INTEGER NOT NULL DEFAULT 30 CHECK ("${COLUMN_NAME}" >= 1)`
+      `AlTER TABLE "material" ADD COLUMN "${COLUMN_NAME}" INTEGER NOT NULL DEFAULT 30 CHECK ("${COLUMN_NAME}" >= 0)`
     );
     await queryRunner.query(
       `AlTER TABLE "material" ALTER COLUMN "${COLUMN_NAME}" DROP DEFAULT`

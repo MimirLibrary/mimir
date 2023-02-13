@@ -318,7 +318,7 @@ const BookInfo: FC<IBookInfoProps> = ({
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const newDuration = Number(e.target.value);
-    setNewClaimDuration(newDuration < 1 ? 1 : newDuration);
+    setNewClaimDuration(newDuration < 0 ? 0 : newDuration);
   };
 
   const claim = async () => {

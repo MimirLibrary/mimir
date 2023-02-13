@@ -36,7 +36,10 @@ export class ItemService {
           status: StatusTypes.BUSY,
           material_id: material.id,
           person_id,
-          returnDate: () => `NOW() + INTERVAL '${material.claimDuration} days'`,
+          returnDate: () =>
+            `NOW() + INTERVAL '${
+              material.claimDuration || this.periodOfKeeping
+            } days'`,
         },
         manager
       );
