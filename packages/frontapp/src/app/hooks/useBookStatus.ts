@@ -1,14 +1,12 @@
 import { OWNCLAIMED_STATUS } from './../const/statuses';
 import { useAppSelector } from './useTypedSelector';
-import { DateTime } from '@mimir/global-types';
-import { getDates } from '../models/helperFunctions/converTime';
 import { useTranslation } from 'react-i18next';
 import { StatusTypes } from '@mimir/global-types';
 import { RoutesTypes } from '../../utils/routes';
 
 const useBookStatus = (
   currentStatus: string | null,
-  created_at: DateTime,
+  returnDate?: string,
   pathname?: string,
   claimedUserId?: number
 ) => {
@@ -26,13 +24,8 @@ const useBookStatus = (
     case StatusTypes.PROLONG:
     case OWNCLAIMED_STATUS:
     case StatusTypes.BUSY: {
-      const day = `${getDates(created_at).returnDate.getDate()}`.padStart(
-        2,
-        '0'
-      );
-      const month = `${
-        getDates(created_at).returnDate.getMonth() + 1
-      }`.padStart(2, '0');
+      const day = `${new Date(returnDate!).getDate()}`.padStart(2, '0');
+      const month = `${new Date(returnDate!).getMonth() + 1}`.padStart(2, '0');
       return `${
         claimedUserId === userId ? t('Statuses.OwnClaimed') : t('Statuses.Busy')
       } ${day}.${month}`;

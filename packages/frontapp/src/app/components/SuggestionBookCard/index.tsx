@@ -65,7 +65,7 @@ const SuggestionBookCard: FC<IProps> = ({
   author = '',
   status,
   category,
-  date,
+  returnDate,
   id,
   claimedUserId,
 }) => {
@@ -81,7 +81,11 @@ const SuggestionBookCard: FC<IProps> = ({
       <DescriptionWrapper>
         <TitleBook>{title}</TitleBook>
         <DescriptionBook>{category + ' / ' + author}</DescriptionBook>
-        <BookStatus status={status} date={date} claimedUserId={claimedUserId} />
+        <BookStatus
+          status={status}
+          returnDate={returnDate}
+          claimedUserId={claimedUserId}
+        />
       </DescriptionWrapper>
     </BookCardWrapper>
   );

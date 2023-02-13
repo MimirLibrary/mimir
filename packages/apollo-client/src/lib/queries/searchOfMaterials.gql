@@ -11,6 +11,7 @@ query SearchOfMaterials($search: String, $locations: [Int!]) {
       id
       created_at
       status
+      returnDate
       person {
         id
         username

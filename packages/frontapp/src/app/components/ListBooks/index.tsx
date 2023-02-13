@@ -26,6 +26,7 @@ export interface IListBooks {
   __typename?: 'Status' | undefined;
   status: string;
   created_at: any;
+  returnDate?: string;
   material: IMaterial;
 }
 
@@ -48,7 +49,7 @@ const ListBooks: FC<IProps> = ({ items }) => {
             title={item?.material.title}
             author={item?.material.author}
             category={item?.material.category}
-            date={item?.created_at}
+            returnDate={item?.returnDate}
             status={item?.status}
             claimedUserId={userId}
           />

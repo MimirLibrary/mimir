@@ -3,6 +3,7 @@ query GetStatusesByMaterial($material_id: ID!) {
     id
     status
     created_at
+    returnDate
     person {
       id
       avatar
@@ -11,6 +12,7 @@ query GetStatusesByMaterial($material_id: ID!) {
         material_id
         status
         created_at
+        returnDate
       }
     }
   }

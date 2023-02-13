@@ -3,13 +3,12 @@ import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import bookImage from '../../../assets/MOC-data/BookImage.png';
 import { useNavigate } from 'react-router-dom';
-import { DateTime } from '@mimir/global-types';
 import BookStatus from '../BookStatus';
 import { shortenText } from '../../../helpers/common';
 export interface IBookCardProps {
   src?: string | null;
   title?: string;
-  date?: DateTime;
+  returnDate?: string;
   status?: string | null;
   author?: string;
   category?: string;
@@ -116,7 +115,7 @@ const BookCard: FC<IBookCardProps> = ({
   title = '',
   author = '',
   status,
-  date,
+  returnDate,
   id,
   presentationMode,
   claimedUserId,
@@ -144,7 +143,11 @@ const BookCard: FC<IBookCardProps> = ({
         <DescriptionBook presentationMode={presentationMode}>
           {shortenText(author, 20)}
         </DescriptionBook>
-        <BookStatus status={status} date={date} claimedUserId={claimedUserId} />
+        <BookStatus
+          status={status}
+          returnDate={returnDate}
+          claimedUserId={claimedUserId}
+        />
       </DescriptionWrapper>
     </BookCardWrapper>
   );

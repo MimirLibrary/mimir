@@ -26,7 +26,10 @@ export class StatusResolver {
   @Query(() => [Status])
   @UseGuards(AuthGuard)
   async getStatusesByMaterial(@Args('material_id') id: string) {
-    return Status.find({ where: { material_id: id } });
+    return Status.find({
+      where: { material_id: id },
+      order: { created_at: 'ASC' },
+    });
   }
 
   @ResolveField(() => Person)

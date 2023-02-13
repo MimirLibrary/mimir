@@ -15,11 +15,11 @@ export const StyledBookStatusWrapper = styled.div<IStyledBookStatusProps>`
       case StatusTypes.FREE:
         return colors.bg_free;
       case OWNCLAIMED_STATUS:
-        return colors.bg_busy;
-      case StatusTypes.PROLONG:
-        return colors.bg_busy;
-      case StatusTypes.BUSY:
         return colors.bg_own_claim;
+      case StatusTypes.PROLONG:
+        return colors.bg_own_claim;
+      case StatusTypes.BUSY:
+        return colors.bg_busy;
       case StatusTypes.OVERDUE:
         return colors.bg_error;
       case StatusTypes.REJECTED:

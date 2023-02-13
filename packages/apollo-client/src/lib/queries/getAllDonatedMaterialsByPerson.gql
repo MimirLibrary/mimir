@@ -10,6 +10,7 @@ query GetAllDonatedMaterialsByPerson($id: ID!) {
       created_at
       person_id
       status
+      returnDate
     }
     claimCount
   }

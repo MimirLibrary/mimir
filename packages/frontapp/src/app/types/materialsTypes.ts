@@ -7,6 +7,7 @@ export interface IStatus {
   status: string;
   person_id?: number;
   person?: IPerson;
+  returnDate?: string;
 }
 
 export interface IMaterial {

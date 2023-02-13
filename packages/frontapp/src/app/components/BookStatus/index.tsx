@@ -10,24 +10,24 @@ import { useAppSelector } from '../../hooks/useTypedSelector';
 
 interface IBookStatusProps {
   status?: string | null;
-  date: any;
+  returnDate?: string;
   fontSize?: string;
   claimedUserId?: number;
 }
 
 const BookStatus: FC<IBookStatusProps> = ({
   status,
-  date,
+  returnDate,
   fontSize,
   claimedUserId,
 }) => {
   const userId = useAppSelector((state) => state.user.id);
   const isClaimedByCurrentUser = claimedUserId === userId;
-  const currentStatus = getStatus(status, date, isClaimedByCurrentUser);
+  const currentStatus = getStatus(status, returnDate, isClaimedByCurrentUser);
   const { pathname } = useLocation();
   const bookStatus = useBookStatus(
     currentStatus,
-    date,
+    returnDate,
     pathname,
     claimedUserId
   );

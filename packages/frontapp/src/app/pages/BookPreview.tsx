@@ -25,7 +25,7 @@ import { useDebounce } from '../hooks/useDebounce';
 import Table from '../globalUI/Table';
 import SingleUser from '../components/UserList/SingleUser';
 import { IClaimHistory } from '../models/helperFunctions/claimHistory';
-import { getDates, isOverdue } from '../models/helperFunctions/converTime';
+import { isOverdue } from '../models/helperFunctions/converTime';
 import { locationIds } from '../store/slices/userSlice';
 import { toast } from 'react-toastify';
 import Loader, { WrapperLoader } from '../components/Loader';
@@ -137,12 +137,9 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
     setSearch(e.target.value);
   };
 
-  const countReturnDate = (created_at: Date) => {
-    const day = `${getDates(created_at).returnDate.getDate()}`.padStart(2, '0');
-    const month = `${getDates(created_at).returnDate.getMonth() + 1}`.padStart(
-      2,
-      '0'
-    );
+  const formatReturnDate = (returnDate: string) => {
+    const day = `${new Date(returnDate).getDate()}`.padStart(2, '0');
+    const month = `${new Date(returnDate).getMonth() + 1}`.padStart(2, '0');
     return `${t('UserCard.Table.ReturnTill')} ${day}.${month}`;
   };
 
@@ -183,6 +180,7 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
             category={data?.getMaterialById.category}
             statusInfo={lastStatusAnotherPerson}
             created_at={lastStatusAnotherPerson?.created_at}
+            returnDate={lastStatusAnotherPerson?.returnDate}
             material_id={parseInt(data.getMaterialById.id)}
             description={data?.getMaterialById.description}
             updated_at={data?.getMaterialById?.updated_at}
@@ -201,6 +199,7 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
               category={data?.getMaterialById.category}
               statusInfo={lastStatusAnotherPerson}
               created_at={lastStatusAnotherPerson?.created_at}
+              returnDate={lastStatusAnotherPerson?.returnDate}
               material_id={parseInt(data.getMaterialById.id)}
               description={data?.getMaterialById.description}
               updated_at={data?.getMaterialById?.updated_at}
@@ -251,14 +250,15 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
                             isUnderlined={isMobile}
                           />
                           <FieldsText>
-                            {countReturnDate(item.created_at)}
+                            {item.returnDate &&
+                              formatReturnDate(item.returnDate)}
                           </FieldsText>
                           {item.status === StatusTypes.FREE ? (
                             <FieldsText returned>
                               {t('UserCard.Table.State') + ': '}
                               {t('UserCard.Table.Returned')}
                             </FieldsText>
-                          ) : isOverdue(item.created_at) ? (
+                          ) : isOverdue(item.returnDate) ? (
                             <FieldsText overdue>
                               {t('UserCard.Table.State') + ': '}
                               {t('UserCard.Table.Overdue')}

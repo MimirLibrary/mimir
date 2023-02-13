@@ -151,6 +151,7 @@ interface IDescriptionBook {
   author: string;
   status: string | undefined;
   date: Date;
+  returnDate?: string;
   location: Location;
   newTitleAndAuthor: INewData;
   newDeadline: number;
@@ -167,6 +168,7 @@ const DescriptionBook: FC<IDescriptionBook> = ({
   location,
   category,
   date,
+  returnDate,
   status,
   title,
   author,
@@ -268,7 +270,7 @@ const DescriptionBook: FC<IDescriptionBook> = ({
               <BookStatus
                 fontSize={dimensions.base}
                 status={status}
-                date={date}
+                returnDate={returnDate}
                 claimedUserId={claimedUserId}
               />
             </StyledStatus>

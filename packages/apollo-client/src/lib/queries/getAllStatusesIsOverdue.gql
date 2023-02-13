@@ -2,6 +2,7 @@ query GetAllStatusesIsOverdue($locations: [Int!]) {
   getAllStatusesIsOverdue(locations: $locations) {
     id
     created_at
+    returnDate
     material {
       id
       title

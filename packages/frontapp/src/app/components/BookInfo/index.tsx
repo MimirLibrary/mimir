@@ -9,11 +9,7 @@ import { DateTime } from '@mimir/global-types';
 import Button from '../Button';
 import ClaimOperation from '../ClaimOperation';
 import Modal from '../Modal';
-import {
-  getDates,
-  getStatus,
-  periodOfKeeping,
-} from '../../models/helperFunctions/converTime';
+import { getStatus } from '../../models/helperFunctions/converTime';
 import SuccessMessage from '../SuccessMessage';
 import {
   GetAllTakenItemsDocument,
@@ -181,6 +177,7 @@ export interface IBookInfoProps {
   material_id: number;
   created_at: DateTime;
   updated_at: DateTime;
+  returnDate?: string;
   type: string;
   location: Location;
 }
@@ -195,6 +192,7 @@ const BookInfo: FC<IBookInfoProps> = ({
   identifier,
   created_at,
   updated_at,
+  returnDate,
   material_id,
   type,
   location,
@@ -235,7 +233,7 @@ const BookInfo: FC<IBookInfoProps> = ({
   const [isReturnError, setIsReturnError] = useState<boolean>(false);
   const [newCategory, setNewCategory] = useState(category);
   const [newLocation, setNewLocation] = useState<Location>(location);
-  const [newDeadline, setNewDeadline] = useState(periodOfKeeping);
+  const [newDeadline, setNewDeadline] = useState(30);
   const [newDescriptionData, setNewDescriptionData] = useState<INewData>({
     newAuthor: author,
     newTitle: title,
@@ -268,14 +266,22 @@ const BookInfo: FC<IBookInfoProps> = ({
   const [updateMaterial] = useUpdateMaterialMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
-  const currentStatus = getStatus(statusInfo?.status, created_at);
+  const currentStatus = getStatus(statusInfo?.status, returnDate);
 
   const dateConditionOfClaiming =
     data?.claimBook.__typename === 'Status' ? data.claimBook.created_at : null;
 
+  const returnDateConditionOfClaiming =
+    data?.claimBook.__typename === 'Status' ? data.claimBook.returnDate : null;
+
   const dateConditionOfExtending =
     infoOfProlong?.prolongClaimPeriod.__typename === 'Status'
       ? infoOfProlong?.prolongClaimPeriod.created_at
+      : null;
+
+  const returnDateConditionOfExtending =
+    infoOfProlong?.prolongClaimPeriod.__typename === 'Status'
+      ? infoOfProlong?.prolongClaimPeriod.returnDate
       : null;
 
   const errorConditionOfClaiming =
@@ -358,7 +364,7 @@ const BookInfo: FC<IBookInfoProps> = ({
         author: newDescriptionData.newAuthor,
         category: newCategory,
         description: newDescription,
-        updated_at: getDates(updated_at).currentDate,
+        updated_at: new Date(),
       },
     });
     setEditing(false);
@@ -467,6 +473,7 @@ const BookInfo: FC<IBookInfoProps> = ({
             author={author}
             category={category}
             date={created_at}
+            returnDate={returnDate}
             editing={editing}
             location={location}
             src={src}
@@ -582,6 +589,7 @@ const BookInfo: FC<IBookInfoProps> = ({
           title={t('DonateItem.Messages.Claim.Title')}
           description={t('DonateItem.Messages.Claim.Description')}
           created_at={dateConditionOfClaiming}
+          returnDate={returnDateConditionOfClaiming}
         />
       </Modal>
       <Modal
@@ -606,6 +614,7 @@ const BookInfo: FC<IBookInfoProps> = ({
         <SuccessMessage
           setActive={setIsSuccessExtend}
           created_at={dateConditionOfExtending}
+          returnDate={returnDateConditionOfExtending}
           title={t('DonateItem.Messages.Extend.Title')}
           description={t('DonateItem.Messages.Extend.Description')}
         />

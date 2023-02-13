@@ -6,6 +6,7 @@ type Status {
   created_at: DateTime!
   material: Material!
   person: Person!
+  returnDate: DateTime
 }
 
 input CreateStatusInput {
