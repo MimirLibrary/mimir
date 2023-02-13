@@ -6,12 +6,17 @@ import { Connection, EntityManager } from 'typeorm';
 import { ErrorBook } from '../../errors';
 import { normalizeIdentifier } from '@mimir/helper-functions';
 import { config } from '../../config';
+import { ConfigService } from '@nestjs/config';
 import { setTimeToProlong } from '../../utils/helpersFunctions/setTimeToProlong';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
 @Injectable()
 export class ItemService {
-  constructor(private connection: Connection) {}
+  private get periodOfKeeping(): number {
+    return +this.config.get<number>('common.periodOfKeeping');
+  }
+
+  constructor(private connection: Connection, private config: ConfigService) {}
 
   async claim(claimBookInput: BookInput): Promise<Status> {
     return this.connection.transaction(async (manager) => {
