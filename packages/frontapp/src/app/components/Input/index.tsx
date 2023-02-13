@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { colors, dimensions, fonts } from '@mimir/ui-kit';
-import React, { FC, forwardRef } from 'react';
+import { FC } from 'react';
 
 interface IProps {
   value?: string | number;
@@ -38,34 +38,28 @@ const StyledInput = styled.input`
   }
 `;
 
-const Input = forwardRef<HTMLInputElement, IProps>(
-  (
-    {
-      value,
-      onChange,
-      type,
-      placeholder,
-      className,
-      required,
-      minLength,
-      maxLength,
-    },
-    ref
-  ) => {
-    return (
-      <StyledInput
-        ref={ref}
-        className={className}
-        value={value}
-        onChange={onChange}
-        type={type}
-        placeholder={placeholder}
-        required={required}
-        minLength={minLength}
-        maxLength={maxLength}
-      />
-    );
-  }
-);
+const Input: FC<IProps> = ({
+  value,
+  onChange,
+  type,
+  placeholder,
+  className,
+  required,
+  minLength,
+  maxLength,
+}) => {
+  return (
+    <StyledInput
+      className={className}
+      value={value}
+      onChange={onChange}
+      type={type}
+      placeholder={placeholder}
+      required={required}
+      minLength={minLength}
+      maxLength={maxLength}
+    />
+  );
+};
 
 export default Input;
