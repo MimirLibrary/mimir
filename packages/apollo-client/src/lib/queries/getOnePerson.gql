@@ -11,6 +11,7 @@ query GetOnePerson($id: ID!) {
       material_id
       status
       created_at
+      returnDate
       material {
         id
         picture

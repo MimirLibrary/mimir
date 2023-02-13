@@ -65,7 +65,7 @@ const SuggestionBookCard: FC<IProps> = ({
   author = '',
   status,
   category,
-  date,
+  returnDate,
   id,
 }) => {
   const navigate = useNavigate();
@@ -80,7 +80,7 @@ const SuggestionBookCard: FC<IProps> = ({
       <DescriptionWrapper>
         <TitleBook>{title}</TitleBook>
         <DescriptionBook>{category + ' / ' + author}</DescriptionBook>
-        <BookStatus status={status} date={date} />
+        <BookStatus status={status} returnDate={returnDate} />
       </DescriptionWrapper>
     </BookCardWrapper>
   );

@@ -16,6 +16,7 @@ query GetAllMaterials($locations: [Int!], $limit: Int, $offset: Int) {
     currentStatus {
       status
       person_id
+      returnDate
     }
     title
     type

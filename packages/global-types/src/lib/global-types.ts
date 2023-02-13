@@ -312,6 +312,7 @@ export interface Status {
     created_at: DateTime;
     material: Material;
     person: Person;
+    returnDate?: Nullable<DateTime>;
 }
 
 export interface Error {

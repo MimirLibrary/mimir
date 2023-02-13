@@ -2,6 +2,7 @@ query GetItemsForClaimHistory($person_id: Int!) {
   getItemsForClaimHistory(person_id: $person_id) {
     id
     status
+    returnDate
     created_at
     material {
       id

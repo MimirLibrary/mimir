@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import successImg from '../../../assets/Success.svg';
 import Button from '../Button';
-import { getDates, parseDate } from '../../models/helperFunctions/converTime';
+import { parseDate } from '../../models/helperFunctions/converTime';
 
 const Wrapper = styled.div`
   display: flex;
@@ -48,7 +48,8 @@ const WrapperImg = styled.div`
 interface IPropsSuccessClaim {
   setActive: React.Dispatch<React.SetStateAction<boolean>>;
   title: string;
-  created_at?: Date;
+  created_at?: string;
+  returnDate?: string;
   description?: string;
   onCloseContentDonate?: () => void;
 }
@@ -57,6 +58,7 @@ const SuccessMessage: FC<IPropsSuccessClaim> = ({
   setActive,
   title,
   created_at,
+  returnDate,
   description,
   onCloseContentDonate,
 }) => {
@@ -67,8 +69,9 @@ const SuccessMessage: FC<IPropsSuccessClaim> = ({
     }
   };
 
-  const { returnDate } = getDates(created_at!);
-  const trueFormatReturnDate = parseDate(returnDate);
+  const trueFormatReturnDate = returnDate
+    ? parseDate(new Date(returnDate))
+    : '';
 
   return (
     <Wrapper>

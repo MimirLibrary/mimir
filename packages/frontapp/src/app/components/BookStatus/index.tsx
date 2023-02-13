@@ -9,14 +9,14 @@ import useBookStatus from '../../hooks/useBookStatus';
 
 interface IBookStatusProps {
   status?: string | null;
-  date: any;
+  returnDate?: string;
   fontSize?: string;
 }
 
-const BookStatus: FC<IBookStatusProps> = ({ status, date, fontSize }) => {
-  const currentStatus = getStatus(status, date);
+const BookStatus: FC<IBookStatusProps> = ({ status, returnDate, fontSize }) => {
+  const currentStatus = getStatus(status, returnDate);
   const { pathname } = useLocation();
-  const bookStatus = useBookStatus(currentStatus, date, pathname);
+  const bookStatus = useBookStatus(currentStatus, returnDate, pathname);
 
   return (
     <StyledBookStatusWrapper status={currentStatus} data-testid="bookStatus">

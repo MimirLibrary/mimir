@@ -1,30 +1,19 @@
 import { t } from 'i18next';
 import { StatusTypes } from '@mimir/global-types';
 
-export const periodOfKeeping = Number(
-  process.env['NX_PERIOD_OF_KEEPING'] || 30
-);
+export const isOverdue = (returnDate?: string) =>
+  returnDate && new Date().getTime() >= new Date(returnDate).getTime();
 
-export const getDates = (date: Date) => {
-  const currentDate = new Date();
-  const startDate = new Date(date);
-  const returnDate = new Date(
-    startDate.setDate(startDate.getDate() + periodOfKeeping)
-  );
-  return {
-    currentDate,
-    startDate,
-    returnDate,
-  };
-};
-
-export const isOverdue = (date: Date) =>
-  getDates(date).currentDate >= getDates(date).returnDate;
-
-export const getStatus = (status: string | undefined | null, date: any) => {
-  if (!status) return null;
-  if (status === StatusTypes.BUSY)
-    return !isOverdue(date) ? StatusTypes.BUSY : StatusTypes.OVERDUE;
+export const getStatus = (
+  status: string | undefined | null,
+  returnDate?: string
+) => {
+  if (!status) {
+    return null;
+  }
+  if (status === StatusTypes.BUSY) {
+    return !isOverdue(returnDate) ? StatusTypes.BUSY : StatusTypes.OVERDUE;
+  }
   return status;
 };
 
@@ -95,7 +84,10 @@ export const specialParseDate = (date: Date) => {
   return returnDate;
 };
 
-export const parseDate = (date: Date) => {
+export const parseDate = (date?: Date) => {
+  if (!date) {
+    return '';
+  }
   const dateYear = date.getFullYear();
   let dateMonth: number | string = date.getMonth() + 1;
   let dateDay: number | string = date.getDate();
@@ -111,8 +103,11 @@ export const parseDate = (date: Date) => {
   return `${dateMonth}.${dateDay}.${dateYear}`;
 };
 
-export const isOverdueToday = (date: Date): boolean => {
-  const overdueDay = getDates(date).returnDate.getTime();
+export const isOverdueToday = (returnDate?: string): boolean => {
+  if (!returnDate) {
+    return false;
+  }
+  const overdueDay = new Date(returnDate).getTime();
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.getMonth() + 1;
@@ -127,10 +122,12 @@ export const isOverdueToday = (date: Date): boolean => {
   return false;
 };
 
-export const getDateOfEarlier = (date: Date): string | null => {
-  if (!isOverdue(date)) return null;
+export const getDateOfEarlier = (returnDate?: string): string | null => {
+  if (!returnDate || !isOverdue(returnDate)) {
+    return null;
+  }
   const oneDay = 1000 * 60 * 60 * 24;
-  const overdueDate = getDates(date).returnDate.getTime();
+  const overdueDate = new Date(returnDate).getTime();
   const currentDate = Date.now();
   const difference = currentDate - overdueDate;
   const pastDay = Math.floor(difference / oneDay);

@@ -111,7 +111,7 @@ const BookList: FC<IBookList> = ({ allData, searchParams }) => {
               title={material.title}
               author={material.author}
               category={material.category}
-              date={material.created_at}
+              returnDate={material?.currentStatus?.returnDate}
               status={material.currentStatus?.status}
             />
           ))

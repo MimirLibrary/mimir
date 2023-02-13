@@ -3,6 +3,10 @@ import { BookInput, ProlongTimeInput } from '@mimir/global-types';
 import { ItemService } from './item.service';
 import { Status } from '../statuses/status.entity';
 
+class ItemError {
+  constructor(public message: string) {}
+}
+
 @Resolver('BookUnionResult')
 export class ItemResolver {
   constructor(private itemService: ItemService) {}
@@ -19,8 +23,15 @@ export class ItemResolver {
   }
 
   @Mutation(() => Status)
-  async claimBook(@Args('input') claimBookInput: BookInput) {
-    return this.itemService.claim(claimBookInput);
+  async claimBook(
+    @Args('input') claimBookInput: BookInput
+  ): Promise<Status | ItemError> {
+    try {
+      return await this.itemService.claim(claimBookInput);
+    } catch (e) {
+      console.log(e);
+      return new ItemError(e.message);
+    }
   }
 
   @Query(() => [Status])
@@ -34,17 +45,38 @@ export class ItemResolver {
   }
 
   @Mutation(() => Status)
-  async prolongClaimPeriod(@Args('input') prolongInput: ProlongTimeInput) {
-    return this.itemService.prolong(prolongInput);
+  async prolongClaimPeriod(
+    @Args('input') prolongInput: ProlongTimeInput
+  ): Promise<Status | ItemError> {
+    try {
+      return await this.itemService.prolong(prolongInput);
+    } catch (e) {
+      console.log(e);
+      return new ItemError(e.message);
+    }
   }
 
   @Mutation(() => Status)
-  async returnItem(@Args('input') returnBookInput: BookInput) {
-    return this.itemService.return(returnBookInput);
+  async returnItem(
+    @Args('input') returnBookInput: BookInput
+  ): Promise<Status | ItemError> {
+    try {
+      return await this.itemService.putOnShelf(returnBookInput);
+    } catch (e) {
+      console.log(e);
+      return new ItemError(e.message);
+    }
   }
 
   @Mutation(() => Status)
-  async rejectItem(@Args('input') returnBookInput: BookInput) {
-    return this.itemService.reject(returnBookInput);
+  async rejectItem(
+    @Args('input') rejectBookInput: BookInput
+  ): Promise<Status | ItemError> {
+    try {
+      return await this.itemService.reject(rejectBookInput);
+    } catch (e) {
+      console.log(e);
+      return new ItemError(e.message);
+    }
   }
 }

@@ -3,6 +3,7 @@ query GetAllTakenItems($person_id: Int!) {
     id
     created_at
     status
+    returnDate
     material {
       id
       picture

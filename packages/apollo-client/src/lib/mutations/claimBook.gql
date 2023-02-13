@@ -3,6 +3,7 @@ mutation ClaimBook($identifier: String!, $person_id: Int!) {
     ... on Status {
       created_at
       status
+      returnDate
     }
     ... on Error {
       message

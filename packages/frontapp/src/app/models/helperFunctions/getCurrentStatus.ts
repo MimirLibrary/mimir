@@ -15,7 +15,7 @@ export function getCurrentStatus(
     case StatusTypes.FREE:
       return 'on the shelf';
     case StatusTypes.BUSY || StatusTypes.PROLONG: {
-      if (isOverdue(currentStatus.created_at)) {
+      if (isOverdue(currentStatus.returnDate)) {
         return {
           type: StatusTypes.OVERDUE,
           body: currentStatus?.person!.username,

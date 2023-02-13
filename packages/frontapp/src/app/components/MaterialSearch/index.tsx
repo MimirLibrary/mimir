@@ -83,7 +83,7 @@ const MaterialSearch: FC<IProps> = ({ setActive }) => {
     const available = data?.getAllMaterials.filter((material) => {
       const currentStatus = getStatus(
         material?.currentStatus?.status,
-        material?.created_at
+        material?.currentStatus?.returnDate
       );
       return currentStatus !== 'Rejected' && currentStatus !== 'Pending';
     });

@@ -42,4 +42,7 @@ export class Status extends BaseEntity {
 
   @Column({ name: 'last_reminder_time' })
   lastReminderTime: Date;
+
+  @Column({ name: 'return_date', nullable: true })
+  returnDate: Date;
 }

@@ -8,6 +8,7 @@ query GetAllPersons($username: String, $locations: [Int!]) {
       material_id
       created_at
       status
+      returnDate
     }
   }
 }

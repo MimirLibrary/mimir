@@ -36,7 +36,7 @@ const HistoryOfDonatePage = () => {
                 title={item?.title}
                 author={item?.author}
                 category={item?.category}
-                date={item?.currentStatus?.created_at}
+                returnDate={item?.currentStatus?.returnDate}
                 status={item?.currentStatus?.status || 'Pending'}
               />
             ))
