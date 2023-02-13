@@ -321,7 +321,7 @@ export const resources = {
             },
             Delete: {
               Title: 'Warning',
-              Desctription: `The book {{title}} is now in the possession of a person {{userName}}. Are you sure you want to delete the book {{title}} from the library permanently?`,
+              Desctription: `The book {{title}} is now in the possession of a person. Are you sure you want to delete the book {{title}} from the library permanently?`,
             },
           },
           Claim: {
