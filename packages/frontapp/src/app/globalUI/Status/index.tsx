@@ -8,10 +8,28 @@ interface IStyledBookStatusProps {
 }
 
 export const StyledBookStatusWrapper = styled.div<IStyledBookStatusProps>`
-  @media (max-width: ${dimensions.phone_width}) {
-    width: fit-content;
-    border-radius: 4px;
-  }
+  padding: ${dimensions.xs_2};
+  background: ${(props) => {
+    switch (props.status) {
+      case StatusTypes.FREE:
+        return colors.bg_free;
+      // todo: add separation between own claimed books and others busy (bg_busy)
+      case StatusTypes.BUSY:
+        return colors.bg_own_claim;
+      case StatusTypes.PROLONG:
+        return colors.bg_own_claim;
+      case StatusTypes.OVERDUE:
+        return colors.bg_error;
+      case StatusTypes.REJECTED:
+        return colors.bg_error;
+      case StatusTypes.PENDING:
+        return colors.bg_own_claim;
+      default:
+        return '';
+    }
+  }};
+  border-radius: ${dimensions.xs_2};
+  width: fit-content;
 `;
 
 export const StyledBookStatus = styled.p<IStyledBookStatusProps>`
@@ -22,6 +40,7 @@ export const StyledBookStatus = styled.p<IStyledBookStatusProps>`
     switch (props.status) {
       case StatusTypes.FREE:
         return colors.free_book;
+      // todo: add separation between own claimed books and others busy
       case StatusTypes.BUSY:
         return colors.accent_color;
       case StatusTypes.PROLONG:
