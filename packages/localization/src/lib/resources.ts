@@ -321,7 +321,7 @@ export const resources = {
             },
             Delete: {
               Title: 'Warning',
-              Desctription: `The book {{title}} is now in the possession of a person {{userName}}. Are you sure you want to delete the book {{title}} from the library permanently?`,
+              Description: `The book {{title}} is now in the possession of a person. Are you sure you want to delete the book {{title}} from the library permanently?`,
             },
           },
           Claim: {
@@ -335,7 +335,7 @@ export const resources = {
           Return: 'You have successfully returned the book',
           Delete: {
             Title: 'Warning',
-            Desctription:
+            Description:
               'Are you sure you want to delete the book {{title}} from the library permanently?',
           },
           Buttons: {
@@ -695,7 +695,7 @@ export const resources = {
             },
             Delete: {
               Title: 'Предупреждение',
-              Desctription: `Книга {{title}} сейчас находится у человека. Вы уверены, что хотите удалить книгу {{title}} из библиотеки навсегда?`,
+              Description: `Книга {{title}} сейчас находится у человека. Вы уверены, что хотите удалить книгу {{title}} из библиотеки навсегда?`,
             },
           },
           Claim: {
@@ -709,7 +709,7 @@ export const resources = {
           Return: 'Вы успешно вернули книгу',
           Delete: {
             Title: 'Предупреждение',
-            Desctription:
+            Description:
               'Вы уверены, что хотите удалить книгу {{title}} из библиотеки навсегда?',
           },
           Buttons: {

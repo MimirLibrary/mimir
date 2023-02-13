@@ -661,7 +661,7 @@ const BookInfo: FC<IBookInfoProps> = ({
         <Modal active={deleteWarning} setActive={setDeleteWarning}>
           <ErrorMessage
             title={t('DonateItem.Messages.Delete.Title')}
-            message={t('DonateItem.Messages.Delete.Desctription', title)}
+            message={t('DonateItem.Messages.Delete.Desctription', { title })}
             setActive={setDeleteWarning}
             titleCancel={t('DonateItem.Messages.Buttons.Cancel')}
             titleOption={t('DonateItem.Messages.Buttons.Delete')}
@@ -673,7 +673,9 @@ const BookInfo: FC<IBookInfoProps> = ({
         <Modal active={deleteWarning} setActive={setDeleteWarning}>
           <ErrorMessage
             title={t('DonateItem.Messages.Delete.Title')}
-            message={t('DonateItem.Messages.Errors.Delete.Desctription', title)}
+            message={t('DonateItem.Messages.Errors.Delete.Desctription', {
+              title,
+            })}
             setActive={setDeleteWarning}
             titleCancel={t('DonateItem.Messages.Buttons.Cancel')}
             titleOption={t('DonateItem.Messages.Buttons.Delete')}
