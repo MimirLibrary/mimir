@@ -9,16 +9,11 @@ import {
   useCreateSimpleNotificationMutation,
 } from '@mimir/apollo-client';
 import { toast } from 'react-toastify';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 interface IAnswer {
   active: boolean;
 }
-
-const Wrapper = styled.div`
-  //width: 100%;
-  //max-width: 40.625rem;
-`;
 
 const Title = styled.h1`
   font-weight: bold;
@@ -107,7 +102,6 @@ const ButtonWrapperStyled = styled(ButtonWrapper)`
 interface IAnswerToUser {
   id?: string | null | undefined;
   person_id: string | null | undefined;
-  answers: Array<string>;
   close: () => void;
   //added flag to create simple notification with just person_id
   // (matched with `createSimpleNotification` resolver)
@@ -120,11 +114,12 @@ interface IAnswerState {
 
 const AnswerToUser: FC<IAnswerToUser> = ({
   id,
-  answers,
   close,
   person_id,
   isSimpleNotification,
 }) => {
+  const { t } = useTranslation();
+
   const [currentAnswer, setCurrentAnswer] = useState<IAnswerState | null>(null);
   const [message, setMessage] = useState('');
   const [createAnswerNotification, { error: answerNotificationError }] =
@@ -136,6 +131,12 @@ const AnswerToUser: FC<IAnswerToUser> = ({
     useCreateSimpleNotificationMutation({
       refetchQueries: [GetAllMessagesDocument],
     });
+
+  const READY_MADE_ANSWERS = [
+    t('UserCard.NotificationAnswers.MissedDate'),
+    t('UserCard.NotificationAnswers.AcceptedDonation'),
+    t('UserCard.NotificationAnswers.Banned'),
+  ];
 
   useEffect(() => {
     if (answerNotificationError || simpleNotificationError)
@@ -200,7 +201,7 @@ const AnswerToUser: FC<IAnswerToUser> = ({
   };
 
   return (
-    <Wrapper>
+    <>
       <Title>
         {isSimpleNotification
           ? t('AnswerModal.TitleReply')
@@ -208,20 +209,19 @@ const AnswerToUser: FC<IAnswerToUser> = ({
       </Title>
       <TitleList>{t('AnswerModal.SubTitle')}</TitleList>
       <WrapperListAnswers>
-        {answers &&
-          answers.map((answer, index) => (
-            <Answer
-              active={index === currentAnswer?.index}
-              key={index}
-              onClick={() => handleAnswers({ index, answer })}
-            >
-              {answer}
-            </Answer>
-          ))}
+        {READY_MADE_ANSWERS.map((answer, index) => (
+          <Answer
+            active={index === currentAnswer?.index}
+            key={index}
+            onClick={() => handleAnswers({ index, answer })}
+          >
+            {answer}
+          </Answer>
+        ))}
       </WrapperListAnswers>
       <TitleList>{t('AnswerModal.DescMessage')}</TitleList>
       <TextField
-        placeholder="Enter your message"
+        placeholder={t('UserCard.MessagePlaceholder')}
         value={message}
         onChange={handleChangeMessage}
         onClick={handleClickTextArea}
@@ -239,7 +239,7 @@ const AnswerToUser: FC<IAnswerToUser> = ({
           disabled={!(currentAnswer || message)}
         />
       </ButtonWrapperStyled>
-    </Wrapper>
+    </>
   );
 };
 

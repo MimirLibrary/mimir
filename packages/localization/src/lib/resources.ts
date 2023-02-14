@@ -125,6 +125,7 @@ export const resources = {
         Earlier: 'Earlier',
         BlockUser: 'Block user',
         UnblockUser: 'Unblock user',
+        MessagePlaceholder: 'Enter your message',
         CreateNotification: 'Create notification',
         NotificationAnswers: {
           MissedDate:
@@ -501,6 +502,7 @@ export const resources = {
         BlockUser: 'Заблокировать',
         UnblockUser: 'Разблокировать',
         CreateNotification: 'Создать уведомление',
+        MessagePlaceholder: 'Введите ваше сообщение',
         NotificationAnswers: {
           MissedDate:
             'Вы пропустили срок сдачи книги. Верните его как можно скорее или свяжитесь с менеджером.',
