@@ -7,7 +7,6 @@ import ItemsNotFound from '../ItemsNotFound';
 import styled from '@emotion/styled';
 import { dimensions } from '@mimir/ui-kit';
 import { t } from 'i18next';
-import { StatusTypes } from '@mimir/global-types';
 
 const Header = styled.h2`
   font-size: ${dimensions.xl_2};
@@ -113,6 +112,7 @@ const BookList: FC<IBookList> = ({ allData, searchParams }) => {
               category={material.category}
               returnDate={material?.currentStatus?.returnDate}
               status={material.currentStatus?.status}
+              claimedUserId={material?.currentStatus?.person_id}
             />
           ))
         ) : (

@@ -155,6 +155,7 @@ interface IDescriptionBook {
   location: Location;
   newTitleAndAuthor: INewData;
   newDeadline: number;
+  claimedUserId?: number;
   handleChangeDeadline: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleChangeLocation: (option: TUserLocation) => void;
   handleChangeAuthorAndTitle: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -173,6 +174,7 @@ const DescriptionBook: FC<IDescriptionBook> = ({
   author,
   newTitleAndAuthor,
   newDeadline,
+  claimedUserId,
   handleChangeLocation,
   handleChangeNewGenre,
   handleChangeDeadline,
@@ -269,6 +271,7 @@ const DescriptionBook: FC<IDescriptionBook> = ({
                 fontSize={dimensions.base}
                 status={status}
                 returnDate={returnDate}
+                claimedUserId={claimedUserId}
               />
             </StyledStatus>
           </>

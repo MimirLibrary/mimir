@@ -56,6 +56,7 @@ const SearchSuggestions: FC<IPropsSearchSuggestions> = ({
             category={material?.category}
             author={material?.author}
             removeSuggestionSearchWindow={removeSuggestionSearchWindow}
+            claimedUserId={Number(material?.currentStatus?.person?.id)}
           />
         ))}
       </WrapperList>

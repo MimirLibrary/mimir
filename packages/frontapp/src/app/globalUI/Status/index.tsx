@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { StatusTypes } from '@mimir/global-types';
+import { OWNCLAIMED_STATUS } from '../../const/statuses';
 
 interface IStyledBookStatusProps {
   status: string | null;
@@ -13,11 +14,12 @@ export const StyledBookStatusWrapper = styled.div<IStyledBookStatusProps>`
     switch (props.status) {
       case StatusTypes.FREE:
         return colors.bg_free;
-      // todo: add separation between own claimed books and others busy (bg_busy)
-      case StatusTypes.BUSY:
+      case OWNCLAIMED_STATUS:
         return colors.bg_own_claim;
       case StatusTypes.PROLONG:
         return colors.bg_own_claim;
+      case StatusTypes.BUSY:
+        return colors.bg_busy;
       case StatusTypes.OVERDUE:
         return colors.bg_error;
       case StatusTypes.REJECTED:
@@ -40,11 +42,12 @@ export const StyledBookStatus = styled.p<IStyledBookStatusProps>`
     switch (props.status) {
       case StatusTypes.FREE:
         return colors.free_book;
-      // todo: add separation between own claimed books and others busy
-      case StatusTypes.BUSY:
+      case OWNCLAIMED_STATUS:
         return colors.accent_color;
       case StatusTypes.PROLONG:
         return colors.accent_color;
+      case StatusTypes.BUSY:
+        return colors.warning_yellow;
       case StatusTypes.OVERDUE:
         return colors.problem_red;
       case StatusTypes.REJECTED:

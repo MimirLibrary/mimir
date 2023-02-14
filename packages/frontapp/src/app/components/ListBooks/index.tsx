@@ -2,6 +2,7 @@ import { FC } from 'react';
 import styled from '@emotion/styled';
 import { dimensions } from '@mimir/ui-kit';
 import BookCard from '../BookCard';
+import { useAppSelector } from '../../hooks/useTypedSelector';
 
 export const WrapperList = styled.section`
   display: grid;
@@ -30,10 +31,11 @@ export interface IListBooks {
 }
 
 interface IProps {
+  userId?: number;
   items: Array<IListBooks | null>;
 }
 
-const ListBooks: FC<IProps> = ({ items }) => {
+const ListBooks: FC<IProps> = ({ userId, items }) => {
   return (
     <WrapperList>
       {items &&
@@ -47,6 +49,7 @@ const ListBooks: FC<IProps> = ({ items }) => {
             category={item?.material.category}
             returnDate={item?.returnDate}
             status={item?.status}
+            claimedUserId={userId}
           />
         ))}
     </WrapperList>

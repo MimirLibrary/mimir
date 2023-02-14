@@ -480,6 +480,7 @@ const BookInfo: FC<IBookInfoProps> = ({
             status={statusInfo?.status}
             newDeadline={newDeadline}
             newTitleAndAuthor={newDescriptionData}
+            claimedUserId={statusInfo?.person_id}
             handleChangeDeadline={handleChangeDeadline}
             handleChangeLocation={handleChangeLocation}
             handleChangeAuthorAndTitle={handleChangeNewDescriptionData}

@@ -67,6 +67,7 @@ const HistoryOfClaimPage = () => {
                 category={item?.material.category}
                 returnDate={item?.returnDate}
                 status={item?.status}
+                claimedUserId={id}
               />
             ))
             .reverse()}
