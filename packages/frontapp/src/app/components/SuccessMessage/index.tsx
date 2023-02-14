@@ -1,9 +1,11 @@
 import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
-import successImg from '../../../assets/Success.svg';
+import successClaim from '../../../assets/SuccessClaim.png';
+import successOperation from '../../../assets/SuccessOperation.png';
 import Button from '../Button';
 import { parseDate } from '../../models/helperFunctions/converTime';
+import { UserOperationType } from '../../types/operationType';
 
 const Wrapper = styled.div`
   display: flex;
@@ -41,26 +43,37 @@ const Description = styled.p`
   }
 `;
 
-const WrapperImg = styled.div`
+const ReturnDate = styled.div`
+  width: fit-content;
+  padding: ${dimensions.xs_2};
   margin-bottom: ${dimensions.base_2};
+  background: ${colors.bg_own_claim};
+  color: ${colors.accent_color};
+  border-radius: ${dimensions.xs_2};
+  font-size: ${dimensions.xl_2};
+  font-weight: 600;
+`;
+
+const WrapperImg = styled.div`
+  margin-bottom: ${dimensions.xs_2};
 `;
 
 interface IPropsSuccessClaim {
   setActive: React.Dispatch<React.SetStateAction<boolean>>;
   title: string;
-  created_at?: string;
   returnDate?: string;
   description?: string;
   onCloseContentDonate?: () => void;
+  operation?: UserOperationType;
 }
 
 const SuccessMessage: FC<IPropsSuccessClaim> = ({
   setActive,
   title,
-  created_at,
   returnDate,
   description,
   onCloseContentDonate,
+  operation,
 }) => {
   const closeModal = () => {
     setActive(false);
@@ -68,6 +81,8 @@ const SuccessMessage: FC<IPropsSuccessClaim> = ({
       onCloseContentDonate();
     }
   };
+
+  const isOperationClaim = operation === UserOperationType.CLAIM;
 
   const trueFormatReturnDate = returnDate
     ? parseDate(new Date(returnDate))
@@ -77,15 +92,14 @@ const SuccessMessage: FC<IPropsSuccessClaim> = ({
     <Wrapper>
       <WrapperSuccessClaim>
         <TitleOfClaim>{title}</TitleOfClaim>
-        {description && (
-          <Description>
-            {description}
-            {created_at && <span> {trueFormatReturnDate}!</span>}
-          </Description>
-        )}
+        {description && <Description>{description}</Description>}
         <WrapperImg>
-          <img src={successImg} alt="success claim" />
+          <img
+            src={isOperationClaim ? successClaim : successOperation}
+            alt="success claim"
+          />
         </WrapperImg>
+        {returnDate && <ReturnDate> {trueFormatReturnDate}</ReturnDate>}
         <Button value="Finish" onClick={closeModal} />
       </WrapperSuccessClaim>
     </Wrapper>
