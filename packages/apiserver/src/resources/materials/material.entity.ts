@@ -62,6 +62,9 @@ export class Material extends BaseEntity {
   @Column({ name: 'current_status_id', nullable: true })
   currentStatusId: number;
 
+  @Column({ name: 'claim_duration', nullable: false })
+  claimDuration: number;
+
   @OneToMany(() => Status, (status) => status.material)
   status!: Status[];
 

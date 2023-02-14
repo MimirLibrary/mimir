@@ -147,6 +147,7 @@ export type Material = {
   author: Scalars['String'];
   category: Scalars['String'];
   claimCount: Scalars['Int'];
+  claimDuration: Scalars['Int'];
   created_at: Scalars['DateTime'];
   currentStatus?: Maybe<Status>;
   description: Scalars['String'];
@@ -535,6 +536,7 @@ export type Status = {
 export type UpdateMaterialInput = {
   author?: InputMaybe<Scalars['String']>;
   category?: InputMaybe<Scalars['String']>;
+  claimDuration: Scalars['Int'];
   description?: InputMaybe<Scalars['String']>;
   id_type?: InputMaybe<Scalars['String']>;
   identifier?: InputMaybe<Scalars['String']>;
@@ -684,10 +686,11 @@ export type UpdateMaterialMutationVariables = Exact<{
   category?: InputMaybe<Scalars['String']>;
   updated_at: Scalars['DateTime'];
   description?: InputMaybe<Scalars['String']>;
+  claimDuration: Scalars['Int'];
 }>;
 
 
-export type UpdateMaterialMutation = { __typename?: 'Mutation', updateMaterial: { __typename?: 'Material', identifier: string, id_type: string, type: string, location_id: number, title: string, author: string, category: string, updated_at: any, description: string } };
+export type UpdateMaterialMutation = { __typename?: 'Mutation', updateMaterial: { __typename?: 'Material', identifier: string, id_type: string, type: string, location_id: number, title: string, author: string, category: string, updated_at: any, description: string, claimDuration: number } };
 
 export type CreateAnswerNotificationMutationVariables = Exact<{
   input: CreateAnswerNotification;
@@ -769,7 +772,7 @@ export type GetMaterialByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetMaterialByIdQuery = { __typename?: 'Query', getMaterialById: { __typename?: 'Material', id: string, identifier: string, picture?: string | null, title: string, author: string, category: string, created_at: any, updated_at: any, description: string, type: string, claimCount: number, currentStatus?: { __typename?: 'Status', id: string, person_id: number, status: string, created_at: any, returnDate?: any | null } | null, location: { __typename?: 'Location', id: string, location: string } } };
+export type GetMaterialByIdQuery = { __typename?: 'Query', getMaterialById: { __typename?: 'Material', id: string, identifier: string, picture?: string | null, title: string, author: string, category: string, created_at: any, updated_at: any, description: string, type: string, claimCount: number, claimDuration: number, currentStatus?: { __typename?: 'Status', id: string, person_id: number, status: string, created_at: any, returnDate?: any | null } | null, location: { __typename?: 'Location', id: string, location: string } } };
 
 export type GetItemsForClaimHistoryQueryVariables = Exact<{
   person_id: Scalars['Int'];
@@ -1365,9 +1368,9 @@ export type ReturnBookMutationHookResult = ReturnType<typeof useReturnBookMutati
 export type ReturnBookMutationResult = Apollo.MutationResult<ReturnBookMutation>;
 export type ReturnBookMutationOptions = Apollo.BaseMutationOptions<ReturnBookMutation, ReturnBookMutationVariables>;
 export const UpdateMaterialDocument = gql`
-    mutation UpdateMaterial($identifier: String!, $id_type: String, $type: String, $location_id: Int, $title: String, $author: String, $category: String, $updated_at: DateTime!, $description: String) {
+    mutation UpdateMaterial($identifier: String!, $id_type: String, $type: String, $location_id: Int, $title: String, $author: String, $category: String, $updated_at: DateTime!, $description: String, $claimDuration: Int!) {
   updateMaterial(
-    input: {identifier: $identifier, id_type: $id_type, type: $type, location_id: $location_id, title: $title, author: $author, category: $category, updated_at: $updated_at, description: $description}
+    input: {identifier: $identifier, id_type: $id_type, type: $type, location_id: $location_id, title: $title, author: $author, category: $category, updated_at: $updated_at, description: $description, claimDuration: $claimDuration}
   ) {
     identifier
     id_type
@@ -1378,6 +1381,7 @@ export const UpdateMaterialDocument = gql`
     category
     updated_at
     description
+    claimDuration
   }
 }
     `;
@@ -1405,6 +1409,7 @@ export type UpdateMaterialMutationFn = Apollo.MutationFunction<UpdateMaterialMut
  *      category: // value for 'category'
  *      updated_at: // value for 'updated_at'
  *      description: // value for 'description'
+ *      claimDuration: // value for 'claimDuration'
  *   },
  * });
  */
@@ -1894,6 +1899,7 @@ export const GetMaterialByIdDocument = gql`
       location
     }
     claimCount
+    claimDuration
   }
 }
     `;

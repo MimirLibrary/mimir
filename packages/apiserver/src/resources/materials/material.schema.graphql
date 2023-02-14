@@ -18,6 +18,7 @@ type Material {
   is_donated: Boolean!
   currentStatus: Status
   claimCount: Int!
+  claimDuration: Int!
 }
 
 input CreateMaterialInput {
@@ -49,6 +50,7 @@ input UpdateMaterialInput {
   category: String
   updated_at: DateTime!
   description: String
+  claimDuration: Int!
 }
 
 input SearchOneMaterial {

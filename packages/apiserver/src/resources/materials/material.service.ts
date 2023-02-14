@@ -12,10 +12,15 @@ import { ErrorBook } from '../../errors';
 import { GraphQLError } from 'graphql';
 import axios from 'axios';
 import { normalizeIdentifier } from '@mimir/helper-functions';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class MaterialService {
-  constructor(private connection: Connection) {}
+  private get periodOfKeeping(): number {
+    return +this.config.get('common.periodOfKeeping');
+  }
+
+  constructor(private connection: Connection, private config: ConfigService) {}
 
   async search(
     searchInput: SearchInput,
@@ -78,6 +83,7 @@ export class MaterialService {
         identifier: updateIdentifier,
         is_donated: donateBookInput.role === RolesTypes.READER,
         picture: donateBookInput.picture,
+        claimDuration: this.periodOfKeeping,
       });
       const savedMaterial = await materialRepository.save(newMaterial);
       await statusRepository.save({

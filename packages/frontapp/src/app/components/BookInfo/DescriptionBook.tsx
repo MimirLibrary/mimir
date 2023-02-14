@@ -154,7 +154,7 @@ interface IDescriptionBook {
   returnDate?: string;
   location: Location;
   newTitleAndAuthor: INewData;
-  newDeadline: number;
+  claimDuration: number;
   claimedUserId?: number;
   handleChangeDeadline: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleChangeLocation: (option: TUserLocation) => void;
@@ -173,7 +173,7 @@ const DescriptionBook: FC<IDescriptionBook> = ({
   title,
   author,
   newTitleAndAuthor,
-  newDeadline,
+  claimDuration,
   claimedUserId,
   handleChangeLocation,
   handleChangeNewGenre,
@@ -281,21 +281,21 @@ const DescriptionBook: FC<IDescriptionBook> = ({
             <TitleHolder>{t('DonateItem.Inputs.Deadline')} </TitleHolder>
             <DeadlineInputWrapper>
               <StyledInputDeadline
-                value={newDeadline}
+                value={claimDuration}
                 type="number"
                 onChange={handleChangeDeadline}
                 min="1"
                 max="31"
               />
-              <Days number={newDeadline} />
+              <Days number={claimDuration} />
             </DeadlineInputWrapper>
           </>
         ) : (
           <>
             <Topic>{t('DonateItem.Inputs.Deadline')}: </Topic>
             <TopicDescription>
-              {newDeadline + ' '}
-              <Days number={newDeadline} />
+              {claimDuration + ' '}
+              <Days number={claimDuration} />
             </TopicDescription>
           </>
         )}
