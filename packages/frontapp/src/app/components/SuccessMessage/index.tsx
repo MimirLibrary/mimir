@@ -50,7 +50,7 @@ const ReturnDate = styled.div`
   background: ${colors.bg_own_claim};
   color: ${colors.accent_color};
   border-radius: ${dimensions.xs_2};
-  font-size: ${dimensions.xl_2};
+  font-size: ${dimensions.xl};
   font-weight: 600;
 `;
 
@@ -82,7 +82,9 @@ const SuccessMessage: FC<IPropsSuccessClaim> = ({
     }
   };
 
-  const isOperationClaim = operation === UserOperationType.CLAIM;
+  const isOperationClaimOrProlong =
+    operation === UserOperationType.CLAIM ||
+    operation === UserOperationType.PROLONG;
 
   const trueFormatReturnDate = returnDate
     ? parseDate(new Date(returnDate))
@@ -95,7 +97,7 @@ const SuccessMessage: FC<IPropsSuccessClaim> = ({
         {description && <Description>{description}</Description>}
         <WrapperImg>
           <img
-            src={isOperationClaim ? successClaim : successOperation}
+            src={isOperationClaimOrProlong ? successClaim : successOperation}
             alt="success claim"
           />
         </WrapperImg>
