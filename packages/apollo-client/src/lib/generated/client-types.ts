@@ -194,6 +194,7 @@ export type Meta = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  acceptItem: BookUnionResult;
   addPersonLocation: Person;
   changePersonRole: Person;
   claimBook: BookUnionResult;
@@ -215,6 +216,11 @@ export type Mutation = {
   removePersonLocation: Person;
   returnItem: BookUnionResult;
   updateMaterial: Material;
+};
+
+
+export type MutationAcceptItemArgs = {
+  input?: InputMaybe<BookInput>;
 };
 
 
@@ -552,6 +558,14 @@ export type UpdatePersonLocationInput = {
   person_id: Scalars['Int'];
 };
 
+export type AcceptBookMutationVariables = Exact<{
+  identifier: Scalars['String'];
+  person_id: Scalars['Int'];
+}>;
+
+
+export type AcceptBookMutation = { __typename?: 'Mutation', acceptItem: { __typename?: 'Error', message: string } | { __typename?: 'Status', created_at: any, status: string } };
+
 export type AddPersonLocationMutationVariables = Exact<{
   location_id: Scalars['Int'];
   person_id: Scalars['Int'];
@@ -833,6 +847,46 @@ export type SearchOfMaterialsQueryVariables = Exact<{
 export type SearchOfMaterialsQuery = { __typename?: 'Query', searchOfMaterials?: Array<{ __typename?: 'Material', title: string, created_at: any, picture?: string | null, author: string, category: string, id: string, claimCount: number, currentStatus?: { __typename?: 'Status', id: string, created_at: any, status: string, returnDate?: any | null, person: { __typename?: 'Person', id: string, username: string } } | null } | null> | null };
 
 
+export const AcceptBookDocument = gql`
+    mutation AcceptBook($identifier: String!, $person_id: Int!) {
+  acceptItem(input: {identifier: $identifier, person_id: $person_id}) {
+    ... on Status {
+      created_at
+      status
+    }
+    ... on Error {
+      message
+    }
+  }
+}
+    `;
+export type AcceptBookMutationFn = Apollo.MutationFunction<AcceptBookMutation, AcceptBookMutationVariables>;
+
+/**
+ * __useAcceptBookMutation__
+ *
+ * To run a mutation, you first call `useAcceptBookMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAcceptBookMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [acceptBookMutation, { data, loading, error }] = useAcceptBookMutation({
+ *   variables: {
+ *      identifier: // value for 'identifier'
+ *      person_id: // value for 'person_id'
+ *   },
+ * });
+ */
+export function useAcceptBookMutation(baseOptions?: Apollo.MutationHookOptions<AcceptBookMutation, AcceptBookMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AcceptBookMutation, AcceptBookMutationVariables>(AcceptBookDocument, options);
+      }
+export type AcceptBookMutationHookResult = ReturnType<typeof useAcceptBookMutation>;
+export type AcceptBookMutationResult = Apollo.MutationResult<AcceptBookMutation>;
+export type AcceptBookMutationOptions = Apollo.BaseMutationOptions<AcceptBookMutation, AcceptBookMutationVariables>;
 export const AddPersonLocationDocument = gql`
     mutation addPersonLocation($location_id: Int!, $person_id: Int!) {
   addPersonLocation(input: {location_id: $location_id, person_id: $person_id}) {

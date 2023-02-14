@@ -1,6 +1,10 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Notification } from './notification.entity';
-import { BadRequestException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  UseGuards,
+} from '@nestjs/common';
 import {
   CreateAnswerNotification,
   CreateNotificationInput,
@@ -9,15 +13,26 @@ import {
 } from '@mimir/global-types';
 import { GraphQLError } from 'graphql';
 import { Message } from '../messages/message.entity';
+import { Role } from '../../auth/role.enum';
+import { CurrentUser } from '../../auth/current-user';
+import { Person } from '../persons/person.entity';
+import { ManagerGuard } from '../../auth/manager.guard';
 
 @Resolver('Notification')
 export class NotificationResolver {
   @Query(() => [Notification])
-  async getNotificationsByPerson(@Args('person_id') id: string) {
+  async getNotificationsByPerson(
+    @Args('person_id') id: string,
+    @CurrentUser() currentUser: Person
+  ) {
+    if (currentUser.type !== Role.Manager && +id !== +currentUser.id) {
+      return new ForbiddenException();
+    }
     return await Notification.find({ where: { person_id: id } });
   }
 
   @Query(() => [Notification])
+  @UseGuards(ManagerGuard)
   async getNotificationsByMaterial(@Args('material_id') id: string) {
     return await Notification.find({ where: { material_id: id } });
   }
@@ -69,10 +84,14 @@ export class NotificationResolver {
 
   @Mutation(() => Notification)
   async removeNotification(
-    @Args('input') removeNotificationInput: RemoveNotificationInput
+    @Args('input') removeNotificationInput: RemoveNotificationInput,
+    @CurrentUser() currentUser: Person
   ) {
     try {
       const { material_id, person_id } = removeNotificationInput;
+      if (currentUser.type !== Role.Manager && +person_id !== +currentUser.id) {
+        return new ForbiddenException();
+      }
       const notification = await Notification.findOneOrFail({
         where: { material_id, person_id },
       });

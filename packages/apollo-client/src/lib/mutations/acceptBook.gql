@@ -1,0 +1,11 @@
+mutation AcceptBook($identifier: String!, $person_id: Int!) {
+  acceptItem(input: { identifier: $identifier, person_id: $person_id }) {
+    ... on Status {
+      created_at
+      status
+    }
+    ... on Error {
+      message
+    }
+  }
+}
