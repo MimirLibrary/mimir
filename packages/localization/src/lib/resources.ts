@@ -125,6 +125,7 @@ export const resources = {
         Earlier: 'Earlier',
         BlockUser: 'Block user',
         UnblockUser: 'Unblock user',
+        MessagePlaceholder: 'Enter your message',
         CreateNotification: 'Create notification',
         NotificationAnswers: {
           MissedDate:
@@ -190,8 +191,9 @@ export const resources = {
         'Free/history-of-claim': 'Returned',
         'Free/history-of-donate': 'Received',
         Free: 'On the shelf',
-        Busy: 'Return till: ',
+        OwnClaimed: 'Return till: ',
         Prolong: 'Return till: ',
+        Busy: 'Busy until: ',
         Pending: 'Pending',
         Rejected: 'Rejected',
         Claimed: 'Claimed',
@@ -321,7 +323,7 @@ export const resources = {
             },
             Delete: {
               Title: 'Warning',
-              Desctription: `The book {{title}} is now in the possession of a person {{userName}}. Are you sure you want to delete the book {{title}} from the library permanently?`,
+              Description: `The book {{title}} is now in the possession of a person. Are you sure you want to delete the book {{title}} from the library permanently?`,
             },
           },
           Claim: {
@@ -335,7 +337,7 @@ export const resources = {
           Return: 'You have successfully returned the book',
           Delete: {
             Title: 'Warning',
-            Desctription:
+            Description:
               'Are you sure you want to delete the book {{title}} from the library permanently?',
           },
           Buttons: {
@@ -501,6 +503,7 @@ export const resources = {
         BlockUser: 'Заблокировать',
         UnblockUser: 'Разблокировать',
         CreateNotification: 'Создать уведомление',
+        MessagePlaceholder: 'Введите ваше сообщение',
         NotificationAnswers: {
           MissedDate:
             'Вы пропустили срок сдачи книги. Верните его как можно скорее или свяжитесь с менеджером.',
@@ -564,8 +567,9 @@ export const resources = {
         'Free/history-of-claim': 'Возвращено',
         'Free/history-of-donate': 'Принято',
         Free: 'На полке',
-        Busy: 'Вернуть до: ',
+        OwnClaimed: 'Вернуть до: ',
         Prolong: 'Вернуть до: ',
+        Busy: 'Занято до: ',
         Pending: 'В ожидании менеджера',
         Rejected: 'Отклонено',
         Claimed: 'Используется',
@@ -695,7 +699,7 @@ export const resources = {
             },
             Delete: {
               Title: 'Предупреждение',
-              Desctription: `Книга {{title}} сейчас находится у человека. Вы уверены, что хотите удалить книгу {{title}} из библиотеки навсегда?`,
+              Description: `Книга {{title}} сейчас находится у человека. Вы уверены, что хотите удалить книгу {{title}} из библиотеки навсегда?`,
             },
           },
           Claim: {
@@ -709,7 +713,7 @@ export const resources = {
           Return: 'Вы успешно вернули книгу',
           Delete: {
             Title: 'Предупреждение',
-            Desctription:
+            Description:
               'Вы уверены, что хотите удалить книгу {{title}} из библиотеки навсегда?',
           },
           Buttons: {

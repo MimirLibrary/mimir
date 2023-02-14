@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions, fonts } from '@mimir/ui-kit';
 import { ReactComponent as SearchIcon } from '../../../assets/Navbar/Search.svg';
@@ -68,7 +68,7 @@ export const WrapperInput = styled.div<WrapperInputProps>`
     justify-content: flex-start;
     margin: 0;
     padding-left: ${dimensions.base};
-    font-size: ${dimensions.sm};
+    font-size: ${dimensions.base};
     line-height: ${dimensions.lg};
   }
 

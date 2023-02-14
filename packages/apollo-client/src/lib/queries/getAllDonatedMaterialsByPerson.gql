@@ -8,6 +8,7 @@ query GetAllDonatedMaterialsByPerson($id: ID!) {
     currentStatus {
       id
       created_at
+      person_id
       status
       returnDate
     }

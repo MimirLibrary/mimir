@@ -704,7 +704,7 @@ export type GetAllDonatedMaterialsByPersonQueryVariables = Exact<{
 }>;
 
 
-export type GetAllDonatedMaterialsByPersonQuery = { __typename?: 'Query', getAllDonatedMaterialsByPerson?: Array<{ __typename?: 'Material', id: string, picture?: string | null, title: string, author: string, category: string, claimCount: number, currentStatus?: { __typename?: 'Status', id: string, created_at: any, status: string, returnDate?: any | null } | null } | null> | null };
+export type GetAllDonatedMaterialsByPersonQuery = { __typename?: 'Query', getAllDonatedMaterialsByPerson?: Array<{ __typename?: 'Material', id: string, picture?: string | null, title: string, author: string, category: string, claimCount: number, currentStatus?: { __typename?: 'Status', id: string, created_at: any, person_id: number, status: string, returnDate?: any | null } | null } | null> | null };
 
 export type GetAllLocationsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1465,6 +1465,7 @@ export const GetAllDonatedMaterialsByPersonDocument = gql`
     currentStatus {
       id
       created_at
+      person_id
       status
       returnDate
     }

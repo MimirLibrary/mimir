@@ -1,18 +1,23 @@
 import { t } from 'i18next';
 import { StatusTypes } from '@mimir/global-types';
+import { OWNCLAIMED_STATUS } from '../../const/statuses';
 
 export const isOverdue = (returnDate?: string) =>
   returnDate && new Date().getTime() >= new Date(returnDate).getTime();
 
 export const getStatus = (
   status: string | undefined | null,
-  returnDate?: string
+  returnDate?: string,
+  isClaimedByCurrentUser?: boolean
 ) => {
   if (!status) {
     return null;
   }
   if (status === StatusTypes.BUSY) {
-    return !isOverdue(returnDate) ? StatusTypes.BUSY : StatusTypes.OVERDUE;
+    if (isOverdue(returnDate)) {
+      return StatusTypes.OVERDUE;
+    }
+    return isClaimedByCurrentUser ? OWNCLAIMED_STATUS : StatusTypes.BUSY;
   }
   return status;
 };

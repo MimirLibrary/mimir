@@ -81,6 +81,7 @@ const InputStyledMask = styled(InputMask)`
   color: ${colors.main_black};
   font-family: ${fonts.primary}, sans-serif;
   margin-right: 0.12rem;
+  font-size: ${dimensions.base};
   @media (max-width: ${dimensions.tablet_width}) {
     width: 100%;
   }

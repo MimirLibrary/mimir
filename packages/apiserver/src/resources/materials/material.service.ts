@@ -146,4 +146,16 @@ export class MaterialService {
       throw new GraphQLError(e.message);
     }
   }
+
+  public async deleteMaterial(identifier: string): Promise<Material> {
+    return this.connection.transaction(async (manager) => {
+      const material: Material = await manager.findOne(Material, {
+        where: { identifier },
+      });
+      await manager.update(Material, material.id, { currentStatusId: null });
+      await manager.delete(Status, { material_id: material.id });
+      await manager.remove(Material, material);
+      return material;
+    });
+  }
 }

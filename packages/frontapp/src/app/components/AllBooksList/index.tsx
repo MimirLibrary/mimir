@@ -39,6 +39,7 @@ const AllBooksList: FC<IAllBooksListProps> = ({ items, sortingCategory }) => {
                 category={item?.category}
                 returnDate={item?.currentStatus?.returnDate}
                 status={item?.currentStatus?.status}
+                claimedUserId={item?.currentStatus?.person_id}
                 presentationMode
               />
             )

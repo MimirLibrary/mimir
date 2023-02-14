@@ -105,17 +105,8 @@ export class MaterialResolver {
   async removeMaterial(
     @Args('input') removeMaterialInput: RemoveMaterialInput
   ) {
-    try {
-      const identifier = removeMaterialInput.identifier;
-      const material = await Material.findOne({
-        where: { identifier },
-      });
-      await Status.delete({ material_id: material.id });
-      await Material.remove({ ...material } as Material);
-      return material;
-    } catch (e) {
-      throw new BadRequestException();
-    }
+    const identifier = removeMaterialInput.identifier;
+    return await this.materialService.deleteMaterial(identifier);
   }
 
   @Mutation(() => Material)

@@ -4,7 +4,7 @@ import { ManagerCardTypes } from './managerCardTypes';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { t } from 'i18next';
 import { RoutesTypes } from '../../../utils/routes';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IField, IOverdueItem } from '../../types';
 import { IMaterialDonate } from '../../types/donateList';
 import overdue_placeholder from '../../../assets/overdue_placeholder.png';
@@ -105,7 +105,7 @@ export const OpenLink = styled(Link)`
   text-decoration: underline;
 `;
 
-export const FieldWrapper = styled.div`
+const FieldWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -118,10 +118,23 @@ export const FieldWrapper = styled.div`
   background: ${colors.bg_fields};
   border-radius: ${dimensions.xs_1};
   margin-top: ${dimensions.xs_2};
+
   :first-of-type {
     margin-top: 0;
   }
 `;
+
+const ItemFieldWrapper = styled(FieldWrapper)`
+  cursor: pointer;
+  transition: all 0.3s linear;
+
+  :hover {
+    opacity: 0.8;
+    box-shadow: 0 6px 14px -6px rgba(24, 39, 75, 0.08),
+      0px 10px 32px -4px rgba(24, 39, 75, 0.08);
+  }
+`;
+
 export const InlineWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -258,11 +271,12 @@ const AddWrapper = styled.div`
   }
 `;
 
-const answers = [
-  'You have missed the due date for your book. Return it as soon as possible or contact the manager in room 35',
-  'We have accepted your donation to the library! Thank you!',
-  "If you don't check out all expired items in the library within a week, you will be banned from the app",
-];
+const NotificationsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${dimensions.base};
+  width: 100%;
+`;
 
 const ManagerInfoCard: FC<IManagerInfoCard> = ({
   type,
@@ -281,6 +295,10 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
     },
     [dataOfMessage]
   );
+  const navigate = useNavigate();
+  const navigateToItemPage = (id?: string) => {
+    navigate(`${RoutesTypes.BOOK_PREVIEW}/${id}`);
+  };
   const {
     isShowScanner,
     setIsShowScanner,
@@ -321,20 +339,24 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
           ) : (
             <WrapperList>
               {fieldsOverdue?.slice(0, 3).map((field) => (
-                <FieldWrapper key={field?.id}>
+                <ItemFieldWrapper
+                  onClick={() => navigateToItemPage(field?.id)}
+                  key={field?.id}
+                >
                   <FieldTitle>{field?.material.title}</FieldTitle>
                   <InlineWrapper>
                     <FieldDescription>
                       {t(`ManagerInfoCard.FieldDescription.${type}`)}
                     </FieldDescription>
                     <FieldOpenLink
+                      onClick={(e) => e.stopPropagation()}
                       secondary="true"
                       to={`${RoutesTypes.READERS}/${field?.person.id}`}
                     >
                       {field?.person.username}
                     </FieldOpenLink>
                   </InlineWrapper>
-                </FieldWrapper>
+                </ItemFieldWrapper>
               ))}
             </WrapperList>
           )}
@@ -383,20 +405,24 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
           ) : (
             <WrapperList data-testid="items-list">
               {fieldsDonate?.slice(0, 3).map((field) => (
-                <FieldWrapper key={field?.id}>
+                <ItemFieldWrapper
+                  onClick={() => navigateToItemPage(field?.id)}
+                  key={field?.id}
+                >
                   <FieldTitle>{field?.title}</FieldTitle>
                   <InlineWrapper>
                     <FieldDescription>
                       {t(`ManagerInfoCard.FieldDescription.${type}`)}
                     </FieldDescription>
                     <FieldOpenLink
+                      onClick={(e) => e.stopPropagation()}
                       secondary="true"
                       to={`${RoutesTypes.READERS}/${field?.currentStatus?.person.id}`}
                     >
                       {field?.currentStatus?.person.username}
                     </FieldOpenLink>
                   </InlineWrapper>
-                </FieldWrapper>
+                </ItemFieldWrapper>
               ))}
             </WrapperList>
           )}
@@ -448,33 +474,35 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
               </TitleEmpty>
             </WrapperForEmptyBlock>
           ) : (
-            fieldsNotification?.slice(0, 3).map((field) => (
-              <FieldWrapper key={field.id} data-testid="newNotif">
-                <>
-                  <FieldTitle>{field.title}</FieldTitle>
-                  <InlineWrapper>
-                    <InlineFieldDescription>
-                      {field.message}
-                    </InlineFieldDescription>
-                    <ButtonAnswer
-                      onClick={() =>
-                        handleAnswerModal({
-                          id: field.id,
-                          person_id: field.person.id,
-                        })
-                      }
+            <NotificationsWrapper>
+              {fieldsNotification?.slice(0, 3).map((field) => (
+                <FieldWrapper key={field.id} data-testid="newNotif">
+                  <>
+                    <FieldTitle>{field.title}</FieldTitle>
+                    <InlineWrapper>
+                      <InlineFieldDescription>
+                        {field.message}
+                      </InlineFieldDescription>
+                      <ButtonAnswer
+                        onClick={() =>
+                          handleAnswerModal({
+                            id: field.id,
+                            person_id: field.person.id,
+                          })
+                        }
+                      >
+                        {t('ManagerInfoCard.Link.Answer')}
+                      </ButtonAnswer>
+                    </InlineWrapper>
+                    <FieldOpenLink
+                      to={`${RoutesTypes.READERS}/${field.person.id}`}
                     >
-                      {t('ManagerInfoCard.Link.Answer')}
-                    </ButtonAnswer>
-                  </InlineWrapper>
-                  <FieldOpenLink
-                    to={`${RoutesTypes.READERS}/${field.person.id}`}
-                  >
-                    {field.person.username}
-                  </FieldOpenLink>
-                </>
-              </FieldWrapper>
-            ))
+                      {field.person.username}
+                    </FieldOpenLink>
+                  </>
+                </FieldWrapper>
+              ))}
+            </NotificationsWrapper>
           )}
           <WrapperFooter>
             <InlineWrapper>
@@ -510,7 +538,6 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
           <AnswerToUser
             id={dataOfMessage?.id}
             person_id={dataOfMessage?.person_id}
-            answers={answers}
             close={handleClose}
           />
         )}
