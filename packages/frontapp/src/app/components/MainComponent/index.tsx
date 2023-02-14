@@ -16,6 +16,10 @@ import { colors, dimensions } from '@mimir/ui-kit';
 import Button from '../Button';
 import { useRoutes } from '../../hooks/useRoutes';
 import { ReactComponent as AddBookBluePlus } from '../../../assets/AddBookBluePlus.svg';
+import { useMediaQuery } from 'react-responsive';
+import { useDispatch } from 'react-redux';
+import { setActiveTab } from '../../store/slices/tabsSlice';
+import { NavbarItems } from 'packages/frontapp/src/utils/NavbarItems';
 
 const WrapperRoutes = styled.div`
   width: calc(100% - 22rem);
@@ -74,9 +78,12 @@ const MainComponent: FC<IPropsMainComponent> = ({ showSidebar }) => {
   const { blocked, userRole } = useAppSelector((state) => state.user);
   const routes = useRoutes(userRole);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const isLaptopOrWider = useMediaQuery({ maxWidth: dimensions.laptop_width });
 
   const handleAddItem = useCallback(() => {
     navigate(RoutesTypes.CREATE_NEW_ITEM);
+    dispatch(setActiveTab(NavbarItems.CREATE_NEW_ITEM));
   }, []);
 
   const handleClaimItem = useCallback(() => {
@@ -106,14 +113,14 @@ const MainComponent: FC<IPropsMainComponent> = ({ showSidebar }) => {
           onClick={handleClaimItem}
           show={!(window.location.pathname === RoutesTypes.DONATE_TO_LIBRARY)}
         />
-      ) : (
+      ) : isLaptopOrWider ? (
         <StyledButton
           svgComponent={<AddBookBluePlus />}
           value={t('Search.Scan')}
           onClick={handleAddItem}
           show={!(window.location.pathname === RoutesTypes.CREATE_NEW_ITEM)}
         />
-      )}
+      ) : null}
       {isShowScanner && (
         <Scanner
           onDetected={handleOnDetectedScannerRoute}
