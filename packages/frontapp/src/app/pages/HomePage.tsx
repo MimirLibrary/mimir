@@ -172,7 +172,7 @@ const HomePage: FC = () => {
                 <TextArticle>Don't forget to pass</TextArticle>
                 <TextBase>List of items you have taken and due dates</TextBase>
               </Wrapper>
-              <ListBooks items={data?.getAllTakenItems} />
+              <ListBooks userId={id} items={data?.getAllTakenItems} />
             </>
           ) : (
             <EmptyListItems />

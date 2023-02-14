@@ -31,13 +31,11 @@ export interface IListBooks {
 }
 
 interface IProps {
+  userId?: number;
   items: Array<IListBooks | null>;
 }
 
-const ListBooks: FC<IProps> = ({ items }) => {
-  // Here we get the `id` from the store as the component is used only on the Home Page
-  // which is specific to the logged in user
-  const userId = useAppSelector((state) => state.user.id);
+const ListBooks: FC<IProps> = ({ userId, items }) => {
   return (
     <WrapperList>
       {items &&
