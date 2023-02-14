@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { t } from 'i18next';
 import {
   parseTodayDate,
@@ -113,12 +113,6 @@ interface IDataOfMessage {
   id: string | undefined;
   person_id: string | undefined;
 }
-
-const answers = [
-  'You have missed the due date for your book. Return it as soon as possible or contact the manager in room 35',
-  'We have accepted your donation to the library! Thank you!',
-  "If you don't check out all expired items in the library within a week, you will be banned from the app",
-];
 
 const Notifications: FC<INotifications> = ({
   notifications,
@@ -269,7 +263,6 @@ const Notifications: FC<INotifications> = ({
           <AnswerToUser
             id={dataOfMessage?.id}
             person_id={dataOfMessage?.person_id}
-            answers={answers}
             close={handleClose}
           />
         )}

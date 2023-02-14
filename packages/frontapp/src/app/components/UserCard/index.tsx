@@ -9,7 +9,6 @@ import {
   useGetOnePersonQuery,
 } from '@mimir/apollo-client';
 import { mockData } from '../UserList/mockData';
-import { t } from 'i18next';
 import { IClaimHistory } from '../../models/helperFunctions/claimHistory';
 import ClaimHistory from '../ClaimHistory';
 import Button from '../Button';
@@ -26,6 +25,7 @@ import { toast } from 'react-toastify';
 import AnswerToUser from '../AnswerToUser';
 import Loader, { WrapperLoader } from '../Loader';
 import { useAppSelector } from '../../hooks/useTypedSelector';
+import { useTranslation } from 'react-i18next';
 
 const InlineWrapper = styled.div`
   display: flex;
@@ -279,13 +279,9 @@ const UserCard = () => {
     if (error) toast.error(error.message);
   }, [error]);
 
-  const READY_MADE_ANSWERS = [
-    t('UserCard.NotificationAnswers.MissedDate'),
-    t('UserCard.NotificationAnswers.AcceptedDonation'),
-    t('UserCard.NotificationAnswers.Banned'),
-  ];
-
   const state = OnePerson?.getOnePerson.states?.slice().pop()?.state;
+
+  const { t } = useTranslation();
 
   if (loading)
     return (
@@ -371,7 +367,6 @@ const UserCard = () => {
       >
         <AnswerToUser
           close={() => setIsNotificationModalOpen(false)}
-          answers={READY_MADE_ANSWERS}
           person_id={OnePerson?.getOnePerson.id}
           isSimpleNotification={true}
         />
@@ -441,7 +436,7 @@ const UserCard = () => {
 
           <Description bold>{t('Block.FullOther')}</Description>
           <InputDescription
-            placeholder={'Enter your message'}
+            placeholder={t('UserCard.MessagePlaceholder')}
             disabled={checkedButton !== 3}
             value={value}
             onChange={handleChangeValue}
