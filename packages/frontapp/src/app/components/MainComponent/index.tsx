@@ -19,7 +19,7 @@ import { ReactComponent as AddBookBluePlus } from '../../../assets/AddBookBluePl
 import { useMediaQuery } from 'react-responsive';
 import { useDispatch } from 'react-redux';
 import { setActiveTab } from '../../store/slices/tabsSlice';
-import { NavbarItems } from 'packages/frontapp/src/utils/NavbarItems';
+import { NavbarItems } from '../../../utils/NavbarItems';
 
 const WrapperRoutes = styled.div`
   width: calc(100% - 22rem);
