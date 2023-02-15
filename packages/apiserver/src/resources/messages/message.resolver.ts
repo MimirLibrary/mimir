@@ -14,7 +14,7 @@ import { In } from 'typeorm';
 import { UseGuards } from '@nestjs/common';
 import { ManagerGuard } from '../../auth/manager.guard';
 import { CurrentUser } from '../../auth/current-user';
-import { checkIsResourceOwnerOrManager } from '../../auth/auth-util';
+import { checkIsManagerOrMatchingId } from '../../auth/auth-util';
 
 @Resolver('Message')
 export class MessageResolver {
@@ -23,7 +23,7 @@ export class MessageResolver {
     @Args('person_id') id: string,
     @CurrentUser() currentUser: Person
   ) {
-    checkIsResourceOwnerOrManager(currentUser, +id);
+    checkIsManagerOrMatchingId(currentUser, +id);
     return Message.find({ where: { person_id: id } });
   }
 

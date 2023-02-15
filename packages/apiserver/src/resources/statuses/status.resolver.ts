@@ -13,7 +13,7 @@ import { Person } from '../persons/person.entity';
 import { StatusService } from './status.service';
 import { Material } from '../materials/material.entity';
 import { CurrentUser } from '../../auth/current-user';
-import { checkIsResourceOwnerOrManager } from '../../auth/auth-util';
+import { checkIsManagerOrMatchingId } from '../../auth/auth-util';
 
 @Resolver('Status')
 export class StatusResolver {
@@ -23,7 +23,7 @@ export class StatusResolver {
     @Args('person_id') id: string,
     @CurrentUser() currentUser: Person
   ) {
-    checkIsResourceOwnerOrManager(currentUser, +id);
+    checkIsManagerOrMatchingId(currentUser, +id);
     return Status.find({ where: { person_id: id } });
   }
 

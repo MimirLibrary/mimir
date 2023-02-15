@@ -6,7 +6,7 @@ import { SkipBlock } from './skipBlock.decorator';
 import { ManagerGuard } from '../../auth/manager.guard';
 import { CurrentUser } from '../../auth/current-user';
 import { Person } from '../persons/person.entity';
-import { checkIsResourceOwnerOrManager } from '../../auth/auth-util';
+import { checkIsManagerOrMatchingId } from '../../auth/auth-util';
 
 @Resolver()
 export class BlockedUsersResolver {
@@ -15,7 +15,7 @@ export class BlockedUsersResolver {
     @Args('person_id') id: string,
     @CurrentUser() currentUser: Person
   ) {
-    checkIsResourceOwnerOrManager(currentUser, +id);
+    checkIsManagerOrMatchingId(currentUser, +id);
     return await BlockedUsers.find({ where: { person_id: id } });
   }
 
@@ -25,7 +25,7 @@ export class BlockedUsersResolver {
     @Args('person_id') id: string,
     @CurrentUser() currentUser: Person
   ) {
-    checkIsResourceOwnerOrManager(currentUser, +id);
+    checkIsManagerOrMatchingId(currentUser, +id);
     return await BlockedUsers.findOne({
       where: { person_id: id },
       order: { id: 'DESC' },

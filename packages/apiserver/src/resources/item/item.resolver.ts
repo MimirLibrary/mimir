@@ -6,7 +6,7 @@ import { UseGuards } from '@nestjs/common';
 import { ManagerGuard } from '../../auth/manager.guard';
 import { CurrentUser } from '../../auth/current-user';
 import { Person } from '../persons/person.entity';
-import { checkIsResourceOwnerOrManager } from '../../auth/auth-util';
+import { checkIsManagerOrMatchingId } from '../../auth/auth-util';
 
 class ItemError {
   constructor(public message: string) {}
@@ -44,7 +44,7 @@ export class ItemResolver {
     @Args('person_id') person_id: number,
     @CurrentUser() currentUser: Person
   ) {
-    checkIsResourceOwnerOrManager(currentUser, +person_id);
+    checkIsManagerOrMatchingId(currentUser, +person_id);
     return this.itemService.getAllTakenItems(person_id);
   }
 
@@ -53,7 +53,7 @@ export class ItemResolver {
     @Args('person_id') person_id: number,
     @CurrentUser() currentUser: Person
   ) {
-    checkIsResourceOwnerOrManager(currentUser, +person_id);
+    checkIsManagerOrMatchingId(currentUser, +person_id);
     return this.itemService.getItemsForClaimHistory(person_id);
   }
 
@@ -63,7 +63,7 @@ export class ItemResolver {
     @CurrentUser() currentUser: Person
   ): Promise<Status | ItemError> {
     try {
-      checkIsResourceOwnerOrManager(currentUser, +prolongInput.person_id);
+      checkIsManagerOrMatchingId(currentUser, +prolongInput.person_id);
       return await this.itemService.prolong(prolongInput);
     } catch (e) {
       console.log(e);
@@ -77,7 +77,7 @@ export class ItemResolver {
     @CurrentUser() currentUser: Person
   ): Promise<Status | ItemError> {
     try {
-      checkIsResourceOwnerOrManager(currentUser, +returnBookInput.person_id);
+      checkIsManagerOrMatchingId(currentUser, +returnBookInput.person_id);
       return await this.itemService.return(returnBookInput);
     } catch (e) {
       console.log(e);

@@ -27,7 +27,7 @@ import { PersonService } from './person.service';
 import { Grants } from '../../permission/grant.decorator';
 import { ManagerGuard } from '../../auth/manager.guard';
 import { CurrentUser } from '../../auth/current-user';
-import { checkIsResourceOwnerOrManager } from '../../auth/auth-util';
+import { checkIsManagerOrMatchingId } from '../../auth/auth-util';
 
 @Resolver('Person')
 export class PersonResolver {
@@ -47,7 +47,7 @@ export class PersonResolver {
     @Args('id') id: number | string,
     @CurrentUser() currentUser: Person
   ) {
-    checkIsResourceOwnerOrManager(currentUser, +id);
+    checkIsManagerOrMatchingId(currentUser, +id);
     return Person.findOne(id);
   }
 
@@ -74,7 +74,7 @@ export class PersonResolver {
   ) {
     try {
       const { location_id, person_id } = updatePersonLocationInput;
-      checkIsResourceOwnerOrManager(currentUser, +person_id);
+      checkIsManagerOrMatchingId(currentUser, +person_id);
       const person = await Person.findOne(person_id, {
         relations: ['location'],
       });
@@ -97,7 +97,7 @@ export class PersonResolver {
   ) {
     try {
       const { location_id, person_id } = updatePersonLocationInput;
-      checkIsResourceOwnerOrManager(currentUser, +person_id);
+      checkIsManagerOrMatchingId(currentUser, +person_id);
       const person = await Person.findOne(person_id, {
         relations: ['location'],
       });

@@ -12,7 +12,7 @@ import { Message } from '../messages/message.entity';
 import { CurrentUser } from '../../auth/current-user';
 import { Person } from '../persons/person.entity';
 import { ManagerGuard } from '../../auth/manager.guard';
-import { checkIsResourceOwner } from '../../auth/auth-util';
+import { checkIsMatchingId } from '../../auth/auth-util';
 
 @Resolver('Notification')
 export class NotificationResolver {
@@ -21,7 +21,7 @@ export class NotificationResolver {
     @Args('person_id') id: string,
     @CurrentUser() currentUser: Person
   ) {
-    checkIsResourceOwner(currentUser, +id);
+    checkIsMatchingId(currentUser, +id);
     return await Notification.find({ where: { person_id: id } });
   }
 
@@ -39,7 +39,7 @@ export class NotificationResolver {
   ) {
     try {
       const { material_id, person_id } = createNotificationInput;
-      checkIsResourceOwner(currentUser, +person_id);
+      checkIsMatchingId(currentUser, +person_id);
       const isAlreadyExist = await Notification.findOne({
         where: { material_id, person_id },
       });
@@ -86,7 +86,7 @@ export class NotificationResolver {
   ) {
     try {
       const { material_id, person_id } = removeNotificationInput;
-      checkIsResourceOwner(currentUser, +person_id);
+      checkIsMatchingId(currentUser, +person_id);
       const notification = await Notification.findOneOrFail({
         where: { material_id, person_id },
       });

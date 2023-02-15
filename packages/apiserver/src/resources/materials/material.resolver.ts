@@ -29,7 +29,7 @@ import { Person } from '../persons/person.entity';
 import * as DataLoader from 'dataloader';
 import dataLoaders from '../../data-loaders';
 import { ManagerGuard } from '../../auth/manager.guard';
-import { checkIsResourceOwnerOrManager } from '../../auth/auth-util';
+import { checkIsManagerOrMatchingId } from '../../auth/auth-util';
 
 @Resolver('Material')
 export class MaterialResolver {
@@ -87,7 +87,7 @@ export class MaterialResolver {
     @Args('id') id: number | string,
     @CurrentUser() currentUser: Person
   ) {
-    checkIsResourceOwnerOrManager(currentUser, +id);
+    checkIsManagerOrMatchingId(currentUser, +id);
     return this.materialService.getAllDonatedMaterialsByPerson(id);
   }
 
