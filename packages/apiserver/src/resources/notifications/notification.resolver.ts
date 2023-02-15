@@ -1,22 +1,18 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Notification } from './notification.entity';
-import {
-  BadRequestException,
-  ForbiddenException,
-  UseGuards,
-} from '@nestjs/common';
+import { BadRequestException, UseGuards } from '@nestjs/common';
 import {
   CreateAnswerNotification,
   CreateNotificationInput,
   CreateSimpleNotification,
   RemoveNotificationInput,
-  RolesTypes,
 } from '@mimir/global-types';
 import { GraphQLError } from 'graphql';
 import { Message } from '../messages/message.entity';
 import { CurrentUser } from '../../auth/current-user';
 import { Person } from '../persons/person.entity';
 import { ManagerGuard } from '../../auth/manager.guard';
+import { checkIsResourceOwnerOrManager } from '../../auth/auth-util';
 
 @Resolver('Notification')
 export class NotificationResolver {
@@ -25,9 +21,7 @@ export class NotificationResolver {
     @Args('person_id') id: string,
     @CurrentUser() currentUser: Person
   ) {
-    if (currentUser.type !== RolesTypes.MANAGER && +id !== +currentUser.id) {
-      return new ForbiddenException();
-    }
+    checkIsResourceOwnerOrManager(currentUser, +id);
     return await Notification.find({ where: { person_id: id } });
   }
 
@@ -89,12 +83,7 @@ export class NotificationResolver {
   ) {
     try {
       const { material_id, person_id } = removeNotificationInput;
-      if (
-        currentUser.type !== RolesTypes.MANAGER &&
-        +person_id !== +currentUser.id
-      ) {
-        return new ForbiddenException();
-      }
+      checkIsResourceOwnerOrManager(currentUser, +person_id);
       const notification = await Notification.findOneOrFail({
         where: { material_id, person_id },
       });

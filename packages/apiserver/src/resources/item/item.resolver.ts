@@ -1,11 +1,12 @@
 import { Args, Mutation, Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { BookInput, ProlongTimeInput, RolesTypes } from '@mimir/global-types';
+import { BookInput, ProlongTimeInput } from '@mimir/global-types';
 import { ItemService } from './item.service';
 import { Status } from '../statuses/status.entity';
-import { ForbiddenException, UseGuards } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import { ManagerGuard } from '../../auth/manager.guard';
 import { CurrentUser } from '../../auth/current-user';
 import { Person } from '../persons/person.entity';
+import { checkIsResourceOwnerOrManager } from '../../auth/auth-util';
 
 class ItemError {
   constructor(public message: string) {}
@@ -43,12 +44,7 @@ export class ItemResolver {
     @Args('person_id') person_id: number,
     @CurrentUser() currentUser: Person
   ) {
-    if (
-      currentUser.type !== RolesTypes.MANAGER &&
-      +person_id !== +currentUser.id
-    ) {
-      throw new ForbiddenException();
-    }
+    checkIsResourceOwnerOrManager(currentUser, +person_id);
     return this.itemService.getAllTakenItems(person_id);
   }
 
@@ -57,12 +53,7 @@ export class ItemResolver {
     @Args('person_id') person_id: number,
     @CurrentUser() currentUser: Person
   ) {
-    if (
-      currentUser.type !== RolesTypes.MANAGER &&
-      +person_id !== +currentUser.id
-    ) {
-      throw new ForbiddenException();
-    }
+    checkIsResourceOwnerOrManager(currentUser, +person_id);
     return this.itemService.getItemsForClaimHistory(person_id);
   }
 
@@ -72,12 +63,7 @@ export class ItemResolver {
     @CurrentUser() currentUser: Person
   ): Promise<Status | ItemError> {
     try {
-      if (
-        currentUser.type !== RolesTypes.MANAGER &&
-        +prolongInput.person_id !== +currentUser.id
-      ) {
-        throw new ForbiddenException();
-      }
+      checkIsResourceOwnerOrManager(currentUser, +prolongInput.person_id);
       return await this.itemService.prolong(prolongInput);
     } catch (e) {
       console.log(e);
@@ -91,12 +77,7 @@ export class ItemResolver {
     @CurrentUser() currentUser: Person
   ): Promise<Status | ItemError> {
     try {
-      if (
-        currentUser.type !== RolesTypes.MANAGER &&
-        +returnBookInput.person_id !== +currentUser.id
-      ) {
-        throw new ForbiddenException();
-      }
+      checkIsResourceOwnerOrManager(currentUser, +returnBookInput.person_id);
       return await this.itemService.return(returnBookInput);
     } catch (e) {
       console.log(e);

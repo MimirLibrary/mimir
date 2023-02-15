@@ -20,11 +20,7 @@ import {
 } from '@mimir/global-types';
 import { Notification } from '../notifications/notification.entity';
 import { MaterialService } from './material.service';
-import {
-  BadRequestException,
-  ForbiddenException,
-  UseGuards,
-} from '@nestjs/common';
+import { BadRequestException, UseGuards } from '@nestjs/common';
 import { Message } from '../messages/message.entity';
 import { GraphQLError } from 'graphql';
 import { normalizeIdentifier } from '@mimir/helper-functions';
@@ -33,6 +29,7 @@ import { Person } from '../persons/person.entity';
 import * as DataLoader from 'dataloader';
 import dataLoaders from '../../data-loaders';
 import { ManagerGuard } from '../../auth/manager.guard';
+import { checkIsResourceOwnerOrManager } from '../../auth/auth-util';
 
 @Resolver('Material')
 export class MaterialResolver {
@@ -90,9 +87,7 @@ export class MaterialResolver {
     @Args('id') id: number | string,
     @CurrentUser() currentUser: Person
   ) {
-    if (currentUser.type !== RolesTypes.MANAGER && +id !== +currentUser.id) {
-      return new ForbiddenException();
-    }
+    checkIsResourceOwnerOrManager(currentUser, +id);
     return this.materialService.getAllDonatedMaterialsByPerson(id);
   }
 
