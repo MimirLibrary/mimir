@@ -5,12 +5,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { BlockedUsers } from './blocked-users.entity';
-import { CreateStateInput } from '@mimir/global-types';
+import { CreateStateInput, RolesTypes } from '@mimir/global-types';
 import { SkipBlock } from './skipBlock.decorator';
 import { ManagerGuard } from '../../auth/manager.guard';
 import { CurrentUser } from '../../auth/current-user';
 import { Person } from '../persons/person.entity';
-import { Role } from '../../auth/role.enum';
 
 @Resolver()
 export class BlockedUsersResolver {
@@ -19,7 +18,7 @@ export class BlockedUsersResolver {
     @Args('person_id') id: string,
     @CurrentUser() currentUser: Person
   ) {
-    if (currentUser.type !== Role.Manager && +id !== +currentUser.id) {
+    if (currentUser.type !== RolesTypes.MANAGER && +id !== +currentUser.id) {
       throw new ForbiddenException();
     }
     return await BlockedUsers.find({ where: { person_id: id } });
@@ -31,7 +30,7 @@ export class BlockedUsersResolver {
     @Args('person_id') id: string,
     @CurrentUser() currentUser: Person
   ) {
-    if (currentUser.type !== Role.Manager && +id !== +currentUser.id) {
+    if (currentUser.type !== RolesTypes.MANAGER && +id !== +currentUser.id) {
       throw new ForbiddenException();
     }
     return await BlockedUsers.findOne({

@@ -7,16 +7,11 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { Status } from './status.entity';
-import {
-  BadRequestException,
-  ForbiddenException,
-  UseGuards,
-} from '@nestjs/common';
-import { CreateStatusInput } from '@mimir/global-types';
+import { BadRequestException, ForbiddenException } from '@nestjs/common';
+import { CreateStatusInput, RolesTypes } from '@mimir/global-types';
 import { Person } from '../persons/person.entity';
 import { StatusService } from './status.service';
 import { Material } from '../materials/material.entity';
-import { Role } from '../../auth/role.enum';
 import { CurrentUser } from '../../auth/current-user';
 
 @Resolver('Status')
@@ -27,7 +22,7 @@ export class StatusResolver {
     @Args('person_id') id: string,
     @CurrentUser() currentUser: Person
   ) {
-    if (currentUser.type !== Role.Manager && +id !== +currentUser.id) {
+    if (currentUser.type !== RolesTypes.MANAGER && +id !== +currentUser.id) {
       return new ForbiddenException();
     }
     return Status.find({ where: { person_id: id } });

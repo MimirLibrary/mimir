@@ -32,7 +32,6 @@ import { CurrentUser } from '../../auth/current-user';
 import { Person } from '../persons/person.entity';
 import * as DataLoader from 'dataloader';
 import dataLoaders from '../../data-loaders';
-import { Role } from '../../auth/role.enum';
 import { ManagerGuard } from '../../auth/manager.guard';
 
 @Resolver('Material')
@@ -91,7 +90,7 @@ export class MaterialResolver {
     @Args('id') id: number | string,
     @CurrentUser() currentUser: Person
   ) {
-    if (currentUser.type !== Role.Manager && +id !== +currentUser.id) {
+    if (currentUser.type !== RolesTypes.MANAGER && +id !== +currentUser.id) {
       return new ForbiddenException();
     }
     return this.materialService.getAllDonatedMaterialsByPerson(id);

@@ -10,10 +10,10 @@ import {
   CreateNotificationInput,
   CreateSimpleNotification,
   RemoveNotificationInput,
+  RolesTypes,
 } from '@mimir/global-types';
 import { GraphQLError } from 'graphql';
 import { Message } from '../messages/message.entity';
-import { Role } from '../../auth/role.enum';
 import { CurrentUser } from '../../auth/current-user';
 import { Person } from '../persons/person.entity';
 import { ManagerGuard } from '../../auth/manager.guard';
@@ -25,7 +25,7 @@ export class NotificationResolver {
     @Args('person_id') id: string,
     @CurrentUser() currentUser: Person
   ) {
-    if (currentUser.type !== Role.Manager && +id !== +currentUser.id) {
+    if (currentUser.type !== RolesTypes.MANAGER && +id !== +currentUser.id) {
       return new ForbiddenException();
     }
     return await Notification.find({ where: { person_id: id } });
@@ -89,7 +89,10 @@ export class NotificationResolver {
   ) {
     try {
       const { material_id, person_id } = removeNotificationInput;
-      if (currentUser.type !== Role.Manager && +person_id !== +currentUser.id) {
+      if (
+        currentUser.type !== RolesTypes.MANAGER &&
+        +person_id !== +currentUser.id
+      ) {
         return new ForbiddenException();
       }
       const notification = await Notification.findOneOrFail({

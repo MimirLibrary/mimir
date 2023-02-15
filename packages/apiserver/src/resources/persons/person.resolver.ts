@@ -20,6 +20,7 @@ import { Location } from '../locations/location.entity';
 import {
   CreatePersonInput,
   Permissions,
+  RolesTypes,
   UpdatePersonLocationInput,
 } from '@mimir/global-types';
 import { Message } from '../messages/message.entity';
@@ -28,7 +29,6 @@ import { PersonService } from './person.service';
 import { Grants } from '../../permission/grant.decorator';
 import { ManagerGuard } from '../../auth/manager.guard';
 import { CurrentUser } from '../../auth/current-user';
-import { Role } from '../../auth/role.enum';
 
 @Resolver('Person')
 export class PersonResolver {
@@ -48,7 +48,7 @@ export class PersonResolver {
     @Args('id') id: number | string,
     @CurrentUser() currentUser: Person
   ) {
-    if (currentUser.type !== Role.Manager && +id !== +currentUser.id) {
+    if (currentUser.type !== RolesTypes.MANAGER && +id !== +currentUser.id) {
       return new ForbiddenException();
     }
     return Person.findOne(id);
@@ -77,7 +77,10 @@ export class PersonResolver {
   ) {
     try {
       const { location_id, person_id } = updatePersonLocationInput;
-      if (currentUser.type !== Role.Manager && +person_id !== +currentUser.id) {
+      if (
+        currentUser.type !== RolesTypes.MANAGER &&
+        +person_id !== +currentUser.id
+      ) {
         return new ForbiddenException();
       }
       const person = await Person.findOne(person_id, {
@@ -102,7 +105,10 @@ export class PersonResolver {
   ) {
     try {
       const { location_id, person_id } = updatePersonLocationInput;
-      if (currentUser.type !== Role.Manager && +person_id !== +currentUser.id) {
+      if (
+        currentUser.type !== RolesTypes.MANAGER &&
+        +person_id !== +currentUser.id
+      ) {
         return new ForbiddenException();
       }
       const person = await Person.findOne(person_id, {

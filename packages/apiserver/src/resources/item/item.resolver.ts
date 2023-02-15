@@ -1,10 +1,9 @@
 import { Args, Mutation, Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { BookInput, ProlongTimeInput } from '@mimir/global-types';
+import { BookInput, ProlongTimeInput, RolesTypes } from '@mimir/global-types';
 import { ItemService } from './item.service';
 import { Status } from '../statuses/status.entity';
 import { ForbiddenException, UseGuards } from '@nestjs/common';
 import { ManagerGuard } from '../../auth/manager.guard';
-import { Role } from '../../auth/role.enum';
 import { CurrentUser } from '../../auth/current-user';
 import { Person } from '../persons/person.entity';
 
@@ -44,7 +43,10 @@ export class ItemResolver {
     @Args('person_id') person_id: number,
     @CurrentUser() currentUser: Person
   ) {
-    if (currentUser.type !== Role.Manager && +person_id !== +currentUser.id) {
+    if (
+      currentUser.type !== RolesTypes.MANAGER &&
+      +person_id !== +currentUser.id
+    ) {
       throw new ForbiddenException();
     }
     return this.itemService.getAllTakenItems(person_id);
@@ -55,7 +57,10 @@ export class ItemResolver {
     @Args('person_id') person_id: number,
     @CurrentUser() currentUser: Person
   ) {
-    if (currentUser.type !== Role.Manager && +person_id !== +currentUser.id) {
+    if (
+      currentUser.type !== RolesTypes.MANAGER &&
+      +person_id !== +currentUser.id
+    ) {
       throw new ForbiddenException();
     }
     return this.itemService.getItemsForClaimHistory(person_id);
@@ -68,7 +73,7 @@ export class ItemResolver {
   ): Promise<Status | ItemError> {
     try {
       if (
-        currentUser.type !== Role.Manager &&
+        currentUser.type !== RolesTypes.MANAGER &&
         +prolongInput.person_id !== +currentUser.id
       ) {
         throw new ForbiddenException();
@@ -87,7 +92,7 @@ export class ItemResolver {
   ): Promise<Status | ItemError> {
     try {
       if (
-        currentUser.type !== Role.Manager &&
+        currentUser.type !== RolesTypes.MANAGER &&
         +returnBookInput.person_id !== +currentUser.id
       ) {
         throw new ForbiddenException();

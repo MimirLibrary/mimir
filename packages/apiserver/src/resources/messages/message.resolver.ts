@@ -7,13 +7,12 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { Message } from './message.entity';
-import { CreateMessageInput } from '@mimir/global-types';
+import { CreateMessageInput, RolesTypes } from '@mimir/global-types';
 import { Person } from '../persons/person.entity';
 import { GraphQLError } from 'graphql';
 import { In } from 'typeorm';
 import { ForbiddenException, UseGuards } from '@nestjs/common';
 import { ManagerGuard } from '../../auth/manager.guard';
-import { Role } from '../../auth/role.enum';
 import { CurrentUser } from '../../auth/current-user';
 
 @Resolver('Message')
@@ -23,7 +22,7 @@ export class MessageResolver {
     @Args('person_id') id: string,
     @CurrentUser() currentUser: Person
   ) {
-    if (currentUser.type !== Role.Manager && +id !== +currentUser.id) {
+    if (currentUser.type !== RolesTypes.MANAGER && +id !== +currentUser.id) {
       return new ForbiddenException();
     }
     return Message.find({ where: { person_id: id } });

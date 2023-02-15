@@ -1,8 +1,8 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { Person } from '../resources/persons/person.entity';
-import { Role } from './role.enum';
 import { getUserSubFromToken } from './token-util';
+import { RolesTypes } from '@mimir/global-types';
 
 @Injectable()
 export class ManagerGuard implements CanActivate {
@@ -20,6 +20,6 @@ export class ManagerGuard implements CanActivate {
       },
     });
     req.currentUser = authPerson;
-    return authPerson?.type === Role.Manager;
+    return authPerson?.type === RolesTypes.MANAGER;
   }
 }
