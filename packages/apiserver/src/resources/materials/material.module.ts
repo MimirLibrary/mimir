@@ -5,6 +5,7 @@ import { MaterialResolver } from './material.resolver';
 import { MaterialService } from './material.service';
 import { FileService } from '../../file/file.service';
 import { MetadataMaterialResolver } from './metadata-material.resolver';
+import { MaterialsLoaderFactoryService } from './materials-loader-factory.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Material])],
@@ -13,6 +14,8 @@ import { MetadataMaterialResolver } from './metadata-material.resolver';
     MaterialService,
     FileService,
     MetadataMaterialResolver,
+    MaterialsLoaderFactoryService,
   ],
+  exports: [MaterialsLoaderFactoryService],
 })
 export class MaterialModule {}

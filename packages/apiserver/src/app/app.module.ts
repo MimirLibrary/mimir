@@ -11,18 +11,14 @@ import { NotificationModule } from '../resources/notifications/notification.modu
 import { LocationModule } from '../resources/locations/location.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ItemModule } from '../resources/item/item.module';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { join, resolve } from 'path';
+import { ApolloDriverConfig } from '@nestjs/apollo';
+import { resolve } from 'path';
 import { AppResolver } from './app.resolver';
 import { Person } from '../resources/persons/person.entity';
 import { Material } from '../resources/materials/material.entity';
 import { Status } from '../resources/statuses/status.entity';
 import { Notification } from '../resources/notifications/notification.entity';
 import { Location } from '../resources/locations/location.entity';
-import {
-  resolvers as scalarResolvers,
-  typeDefs as scalarTypeDefs,
-} from 'graphql-scalars';
 import { MessageModule } from '../resources/messages/message.module';
 import { Message } from '../resources/messages/message.entity';
 import { FileModule } from '../file/file.module';
@@ -40,8 +36,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { SchedulerService } from '../scheduler';
 import { ReminderModule } from '../reminder';
 import { StatusSubscriber } from '../resources/statuses/status.subscriber';
-import createStatusesLoader from '../resources/statuses/statuses.loader';
-import dataLoaders from '../data-loaders';
+import graphqlConfig from '../graphql-config';
 
 @Module({
   imports: [
@@ -76,25 +71,7 @@ import dataLoaders from '../data-loaders';
     LocationModule,
     AuthModule,
     FileModule,
-    GraphQLModule.forRootAsync<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      useFactory: () => {
-        return {
-          typePaths: [`${__dirname}/**/*.graphql`],
-          typeDefs: [...scalarTypeDefs],
-          resolvers: [scalarResolvers],
-          definitions: {
-            path: join(
-              process.cwd(),
-              './packages/global-types/src/lib/global-types.ts'
-            ),
-          },
-          context: () => ({
-            [dataLoaders.statusesLoader]: createStatusesLoader(),
-          }),
-        };
-      },
-    }),
+    GraphQLModule.forRootAsync<ApolloDriverConfig>(graphqlConfig),
     ServeStaticModule.forRoot({
       rootPath: resolve(process.cwd(), 'storage'),
     }),

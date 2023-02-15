@@ -1,18 +1,10 @@
-import {
-  Args,
-  Mutation,
-  Parent,
-  Query,
-  ResolveField,
-  Resolver,
-} from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   BadRequestException,
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { Location } from './location.entity';
-import { Person } from '../persons/person.entity';
 import { CreateLocationInput, RemoveLocationInput } from '@mimir/global-types';
 import { allowUnauthorizedRequest } from '../../auth/allowUnauthorizedRequest.decorator';
 import { SkipBlock } from '../blocked-users/skipBlock.decorator';
@@ -64,11 +56,5 @@ export class LocationResolver {
     } catch (e) {
       return new BadRequestException();
     }
-  }
-
-  @ResolveField(() => [Person])
-  async persons(@Parent() person: Person) {
-    const { id } = person;
-    return Person.find({ where: { person_id: id } });
   }
 }
