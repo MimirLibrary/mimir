@@ -12,7 +12,7 @@ import { Message } from '../messages/message.entity';
 import { CurrentUser } from '../../auth/current-user';
 import { Person } from '../persons/person.entity';
 import { ManagerGuard } from '../../auth/manager.guard';
-import { checkIsResourceOwnerOrManager } from '../../auth/auth-util';
+import { checkIsResourceOwner } from '../../auth/auth-util';
 
 @Resolver('Notification')
 export class NotificationResolver {
@@ -21,7 +21,7 @@ export class NotificationResolver {
     @Args('person_id') id: string,
     @CurrentUser() currentUser: Person
   ) {
-    checkIsResourceOwnerOrManager(currentUser, +id);
+    checkIsResourceOwner(currentUser, +id);
     return await Notification.find({ where: { person_id: id } });
   }
 
@@ -34,10 +34,12 @@ export class NotificationResolver {
   //TODO: combine 3 endpoints for creating a notification into single one
   @Mutation(() => Notification)
   async createNotification(
-    @Args('input') createNotificationInput: CreateNotificationInput
+    @Args('input') createNotificationInput: CreateNotificationInput,
+    @CurrentUser() currentUser: Person
   ) {
     try {
       const { material_id, person_id } = createNotificationInput;
+      checkIsResourceOwner(currentUser, +person_id);
       const isAlreadyExist = await Notification.findOne({
         where: { material_id, person_id },
       });
@@ -51,6 +53,7 @@ export class NotificationResolver {
   }
 
   @Mutation(() => Notification)
+  @UseGuards(ManagerGuard)
   async createAnswerNotification(
     @Args('input') createAnswerNotification: CreateAnswerNotification
   ) {
@@ -83,7 +86,7 @@ export class NotificationResolver {
   ) {
     try {
       const { material_id, person_id } = removeNotificationInput;
-      checkIsResourceOwnerOrManager(currentUser, +person_id);
+      checkIsResourceOwner(currentUser, +person_id);
       const notification = await Notification.findOneOrFail({
         where: { material_id, person_id },
       });
