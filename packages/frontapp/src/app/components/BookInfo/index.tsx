@@ -40,6 +40,7 @@ import { NotifyMeButtons } from './NotifyMeButtons';
 import { EditButtons } from './EditButtons';
 import { ControlButtons } from './ControlButtons';
 import { t } from 'i18next';
+import { UserOperationType } from '../../types/operationType';
 
 export const BookHolder = styled.div`
   width: 100%;
@@ -592,8 +593,8 @@ const BookInfo: FC<IBookInfoProps> = ({
           setActive={setIsShowSuccessClaim}
           title={t('DonateItem.Messages.Claim.Title')}
           description={t('DonateItem.Messages.Claim.Description')}
-          created_at={dateConditionOfClaiming}
           returnDate={returnDateConditionOfClaiming}
+          operation={UserOperationType.CLAIM}
         />
       </Modal>
       <Modal
@@ -612,15 +613,16 @@ const BookInfo: FC<IBookInfoProps> = ({
         <SuccessMessage
           setActive={setIsSuccessReturn}
           title={t('DonateItem.Messages.Return')}
+          operation={UserOperationType.RETURN}
         />
       </Modal>
       <Modal active={isShowSuccessExtend} setActive={setIsSuccessExtend}>
         <SuccessMessage
           setActive={setIsSuccessExtend}
-          created_at={dateConditionOfExtending}
           returnDate={returnDateConditionOfExtending}
           title={t('DonateItem.Messages.Extend.Title')}
           description={t('DonateItem.Messages.Extend.Description')}
+          operation={UserOperationType.PROLONG}
         />
       </Modal>
       <Modal

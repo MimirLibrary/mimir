@@ -19,6 +19,7 @@ import { api } from '../../axios-api/api';
 import { listOfGenres } from '../../../assets/SearchConsts';
 import { TUserLocation } from '../../store/slices/userSlice';
 import { t } from 'i18next';
+import { UserOperationType } from '../../types/operationType';
 
 const WrapperDonate = styled.section`
   margin-top: ${dimensions.xl_2};
@@ -571,6 +572,7 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
           title={t('DonateItem.Modal.DonateSuccess.Title')}
           description={t('DonateItem.Modal.DonateSuccess.Message')}
           onCloseContentDonate={onHideContent}
+          operation={UserOperationType.DONATE}
         />
       </Modal>
       <Modal active={isAskManager} setActive={setIsAskManager}>
