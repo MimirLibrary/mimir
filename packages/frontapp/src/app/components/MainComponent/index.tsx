@@ -79,7 +79,7 @@ const MainComponent: FC<IPropsMainComponent> = ({ showSidebar }) => {
   const routes = useRoutes(userRole);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isLaptopOrWider = useMediaQuery({ maxWidth: dimensions.laptop_width });
+  const isLaptop = useMediaQuery({ maxWidth: dimensions.laptop_width });
 
   const handleAddItem = useCallback(() => {
     navigate(RoutesTypes.CREATE_NEW_ITEM);
@@ -113,7 +113,7 @@ const MainComponent: FC<IPropsMainComponent> = ({ showSidebar }) => {
           onClick={handleClaimItem}
           show={!(window.location.pathname === RoutesTypes.DONATE_TO_LIBRARY)}
         />
-      ) : isLaptopOrWider ? (
+      ) : isLaptop ? (
         <StyledButton
           svgComponent={<AddBookBluePlus />}
           value={t('Search.Scan')}

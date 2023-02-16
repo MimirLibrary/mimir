@@ -3,6 +3,7 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 import { colors, dimensions } from '@mimir/ui-kit';
 import {
   GetAllMaterialsForManagerDocument,
+  GetItemsForClaimHistoryDocument,
   Status,
 } from '@mimir/apollo-client';
 import { DateTime } from '@mimir/global-types';
@@ -255,7 +256,11 @@ const BookInfo: FC<IBookInfoProps> = ({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
   const [returnBook] = useReturnBookMutation({
-    refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
+    refetchQueries: [
+      GetMaterialByIdDocument,
+      GetAllTakenItemsDocument,
+      GetItemsForClaimHistoryDocument,
+    ],
   });
   const [prolongTime, { data: infoOfProlong }] = useProlongTimeMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
