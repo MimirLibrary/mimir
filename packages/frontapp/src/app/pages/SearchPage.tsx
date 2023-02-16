@@ -20,6 +20,46 @@ import Modal from '../components/Modal';
 import CategorySearch from '../components/CategorySearch';
 import Loader, { WrapperLoader } from '../components/Loader';
 import { t } from 'i18next';
+import { css } from '@emotion/react';
+
+const StyledSliderButtonActive = css`
+  cursor: pointer;
+  :hover {
+    path {
+      fill: white;
+    }
+    circle {
+      fill: ${colors.accent_color};
+    }
+  }
+
+  circle,
+  path {
+    transition: all 0.3s linear;
+  }
+`;
+
+const StyledSliderButtonDisabled = css`
+  cursor: pointer;
+
+  circle,
+  path {
+    fill: gray;
+  }
+`;
+
+export const TestRight = styled(ScrollButtonRight)<{ isDisabled?: boolean }>`
+  pointer-events: ${({ isDisabled }) => (isDisabled ? 'none' : 'auto')};
+
+  ${({ isDisabled }) =>
+    isDisabled ? StyledSliderButtonDisabled : StyledSliderButtonActive}
+`;
+export const TestLeft = styled(ScrollButtonLeft)<{ isDisabled?: boolean }>`
+  pointer-events: ${({ isDisabled }) => (isDisabled ? 'none' : 'auto')};
+  ${({ isDisabled }) =>
+    isDisabled ? StyledSliderButtonDisabled : StyledSliderButtonActive}
+`;
+
 const ContentWrapper = styled.div`
   margin: 3rem 0 ${dimensions.xl_6};
 `;
@@ -28,6 +68,7 @@ const TopicNameWrapper = styled.div`
   margin-bottom: ${dimensions.xl_2};
   display: flex;
   justify-content: space-between;
+  position: relative;
 
   @media (max-width: ${dimensions.phone_width}) {
     display: block;
@@ -139,8 +180,8 @@ const SearchPage = () => {
                   </SeeAllButton>
                 </TextWrapper>
                 <ButtonGroup>
-                  <ScrollButtonLeft />
-                  <ScrollButtonRight />
+                  <TestLeft />
+                  <TestRight isDisabled />
                 </ButtonGroup>
               </TopicNameWrapper>
               <AllBooksList

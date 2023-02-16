@@ -2,7 +2,9 @@ import React, { FC } from 'react';
 import BookCard from '../BookCard';
 import styled from '@emotion/styled';
 import { dimensions } from '@mimir/ui-kit';
+import { SwiperSlide } from 'swiper/react';
 import { GetAllMaterialsQuery } from '@mimir/apollo-client';
+
 const WrapperList = styled.section`
   display: flex;
   gap: ${dimensions.base_2};
@@ -22,14 +24,20 @@ const WrapperList = styled.section`
 interface IAllBooksListProps {
   items: GetAllMaterialsQuery['getAllMaterials'] | undefined;
   sortingCategory: string | undefined;
+  forSlider?: boolean;
 }
-const AllBooksList: FC<IAllBooksListProps> = ({ items, sortingCategory }) => {
+const AllBooksList: FC<IAllBooksListProps> = ({
+  items,
+  sortingCategory,
+  forSlider,
+}) => {
   return (
     <WrapperList>
       {items &&
         items.map(
           (item) =>
-            item?.category === sortingCategory && (
+            item?.category === sortingCategory &&
+            (!forSlider ? (
               <BookCard
                 key={item?.id}
                 id={item?.id}
@@ -42,10 +50,25 @@ const AllBooksList: FC<IAllBooksListProps> = ({ items, sortingCategory }) => {
                 claimedUserId={item?.currentStatus?.person_id}
                 presentationMode
               />
-            )
+            ) : (
+              <SwiperSlide key={item?.id}>
+                <BookCard
+                  id={item?.id}
+                  src={item?.picture}
+                  title={item?.title}
+                  author={item?.author}
+                  category={item?.category}
+                  returnDate={item?.currentStatus?.returnDate}
+                  status={item?.currentStatus?.status}
+                  claimedUserId={item?.currentStatus?.person_id}
+                  presentationMode
+                />
+              </SwiperSlide>
+            ))
         )}
     </WrapperList>
   );
 };
+AllBooksList.displayName = 'SwiperSlide';
 
 export default AllBooksList;

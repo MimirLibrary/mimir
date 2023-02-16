@@ -30,10 +30,15 @@ import { locationIds } from '../store/slices/userSlice';
 import { toast } from 'react-toastify';
 import Loader, { WrapperLoader } from '../components/Loader';
 import { useMediaQuery } from 'react-responsive';
+import { TestLeft, TestRight } from './SearchPage';
+import CarouselWrapper from '../components/CarouselWrapper';
 
 export const ButtonGroup = styled.div`
   display: flex;
   gap: ${dimensions.base};
+  position: absolute;
+  right: 0;
+  top: -0.5rem;
   @media (max-width: ${dimensions.phone_width}) {
     display: none;
   }
@@ -42,6 +47,7 @@ export const ButtonGroup = styled.div`
 const Suggestions = styled.div`
   margin: ${dimensions.base_2} 0;
   display: flex;
+  position: relative;
 `;
 
 const SuggestionText = styled.h3`
@@ -210,19 +216,29 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
             />
           )}
           {userRole === RolesTypes.READER ? (
-            <>
-              <Suggestions>
-                <SuggestionText>You may also like</SuggestionText>
-                <ButtonGroup>
-                  <ScrollButtonLeft />
-                  <ScrollButtonRight />
-                </ButtonGroup>
-              </Suggestions>
-              <AllBooksList
-                sortingCategory={data?.getMaterialById.category}
-                items={getAllMaterials?.getAllMaterials}
-              />
-            </>
+            isMobile ? (
+              <>
+                <Suggestions>
+                  <SuggestionText>You may also like</SuggestionText>
+                  <ButtonGroup>
+                    <TestLeft />
+                    <TestRight />
+                  </ButtonGroup>
+                </Suggestions>
+                <AllBooksList
+                  sortingCategory={data?.getMaterialById.category}
+                  items={getAllMaterials?.getAllMaterials}
+                />
+              </>
+            ) : (
+              <CarouselWrapper>
+                <AllBooksList
+                  sortingCategory={data?.getMaterialById.category}
+                  items={getAllMaterials?.getAllMaterials}
+                  forSlider
+                />
+              </CarouselWrapper>
+            )
           ) : (
             <ClaimHistoryWrapper>
               <TextArticle>{t('BookClaimHistory.Title')}</TextArticle>
