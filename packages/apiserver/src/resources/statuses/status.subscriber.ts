@@ -4,9 +4,13 @@ import {
   EntitySubscriberInterface,
   EventSubscriber,
   InsertEvent,
+  IsNull,
+  Not,
+  UpdateResult,
 } from 'typeorm';
 import { StatusTypes } from '@mimir/global-types';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
+import { EntityManager } from 'typeorm/entity-manager/EntityManager';
 
 @EventSubscriber()
 export class StatusSubscriber implements EntitySubscriberInterface<Status> {
@@ -15,19 +19,41 @@ export class StatusSubscriber implements EntitySubscriberInterface<Status> {
   }
 
   async afterInsert(event: InsertEvent<Status>): Promise<void> {
-    const status = event.entity;
+    const { entity, manager } = event;
+    await this.updateMaterial(manager, entity);
+    await this.setPreviousStatusEffectiveTo(manager, entity);
+  }
+
+  private updateMaterial(
+    entityManager: EntityManager,
+    newStatus: Status
+  ): Promise<UpdateResult> {
     const update: QueryDeepPartialEntity<Material> = {
-      currentStatusId: status.id,
+      currentStatusId: newStatus.id,
     };
-    if (status.status === StatusTypes.BUSY) {
+    if (newStatus.status === StatusTypes.BUSY) {
       update.claimCount = () => 'claim_count + 1';
     }
-    await event.manager
-      .getRepository(Material)
-      .createQueryBuilder()
+    return entityManager
+      .createQueryBuilder(Material, 'material')
       .update()
-      .where({ id: status.material_id })
+      .where({ id: newStatus.material_id })
       .set(update)
       .execute();
+  }
+
+  private setPreviousStatusEffectiveTo(
+    entityManager: EntityManager,
+    newStatus: Status
+  ): Promise<UpdateResult> {
+    return entityManager.update(
+      Status,
+      {
+        material_id: newStatus.material_id,
+        effectiveTo: IsNull(),
+        id: Not(newStatus.id),
+      },
+      { effectiveTo: newStatus.created_at }
+    );
   }
 }
