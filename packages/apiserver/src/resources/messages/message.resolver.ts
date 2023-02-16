@@ -11,15 +11,24 @@ import { CreateMessageInput } from '@mimir/global-types';
 import { Person } from '../persons/person.entity';
 import { GraphQLError } from 'graphql';
 import { In } from 'typeorm';
+import { UseGuards } from '@nestjs/common';
+import { ManagerGuard } from '../../auth/manager.guard';
+import { CurrentUser } from '../../auth/current-user';
+import { checkIsManagerOrMatchingId } from '../../auth/auth-util';
 
 @Resolver('Message')
 export class MessageResolver {
   @Query(() => [Message])
-  async getMessagesByPerson(@Args('person_id') id: string) {
+  async getMessagesByPerson(
+    @Args('person_id') id: string,
+    @CurrentUser() currentUser: Person
+  ) {
+    checkIsManagerOrMatchingId(currentUser, +id);
     return Message.find({ where: { person_id: id } });
   }
 
   @Query(() => [Message])
+  @UseGuards(ManagerGuard)
   async getAllMessages(@Args('location_id') location_id: Array<number>) {
     return Message.find({ where: { location_id: In(location_id) } });
   }

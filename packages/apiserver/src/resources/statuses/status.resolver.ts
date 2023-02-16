@@ -7,24 +7,27 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { Status } from './status.entity';
-import { BadRequestException, UseGuards } from '@nestjs/common';
+import { BadRequestException } from '@nestjs/common';
 import { CreateStatusInput } from '@mimir/global-types';
-import { AuthGuard } from '../../auth/auth.guard';
 import { Person } from '../persons/person.entity';
 import { StatusService } from './status.service';
 import { Material } from '../materials/material.entity';
+import { CurrentUser } from '../../auth/current-user';
+import { checkIsManagerOrMatchingId } from '../../auth/auth-util';
 
 @Resolver('Status')
 export class StatusResolver {
   constructor(private readonly statusService: StatusService) {}
   @Query(() => [Status])
-  @UseGuards(AuthGuard)
-  async getStatusesByPerson(@Args('person_id') id: string) {
+  async getStatusesByPerson(
+    @Args('person_id') id: string,
+    @CurrentUser() currentUser: Person
+  ) {
+    checkIsManagerOrMatchingId(currentUser, +id);
     return Status.find({ where: { person_id: id } });
   }
 
   @Query(() => [Status])
-  @UseGuards(AuthGuard)
   async getStatusesByMaterial(@Args('material_id') id: string) {
     return Status.find({
       where: { material_id: id },
@@ -44,7 +47,6 @@ export class StatusResolver {
   }
 
   @Mutation(() => Status)
-  @UseGuards(AuthGuard)
   async createStatus(@Args('input') createStatusInput: CreateStatusInput) {
     try {
       const status = await Status.create(createStatusInput);

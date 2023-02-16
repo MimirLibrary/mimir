@@ -6,7 +6,12 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { BadRequestException, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  NotFoundException,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import { Person } from './person.entity';
 import { Status } from '../statuses/status.entity';
 import { Notification } from '../notifications/notification.entity';
@@ -20,12 +25,16 @@ import { Message } from '../messages/message.entity';
 import { BlockedUsers } from '../blocked-users/blocked-users.entity';
 import { PersonService } from './person.service';
 import { Grants } from '../../permission/grant.decorator';
+import { ManagerGuard } from '../../auth/manager.guard';
+import { CurrentUser } from '../../auth/current-user';
+import { checkIsManagerOrMatchingId } from '../../auth/auth-util';
 
 @Resolver('Person')
 export class PersonResolver {
   constructor(private personService: PersonService) {}
 
   @Query(() => [Person])
+  @UseGuards(ManagerGuard)
   async getAllPersons(
     @Args('username') username: string,
     @Args('locations') locations: Array<number>
@@ -34,7 +43,11 @@ export class PersonResolver {
   }
 
   @Query(() => Person)
-  async getOnePerson(@Args('id') id: number | string) {
+  async getOnePerson(
+    @Args('id') id: number | string,
+    @CurrentUser() currentUser: Person
+  ) {
+    checkIsManagerOrMatchingId(currentUser, +id);
     return Person.findOne(id);
   }
 
@@ -56,10 +69,12 @@ export class PersonResolver {
 
   @Mutation(() => Person)
   async addPersonLocation(
-    @Args('input') updatePersonLocationInput: UpdatePersonLocationInput
+    @Args('input') updatePersonLocationInput: UpdatePersonLocationInput,
+    @CurrentUser() currentUser: Person
   ) {
     try {
       const { location_id, person_id } = updatePersonLocationInput;
+      checkIsManagerOrMatchingId(currentUser, +person_id);
       const person = await Person.findOne(person_id, {
         relations: ['location'],
       });
@@ -77,10 +92,12 @@ export class PersonResolver {
 
   @Mutation(() => Person)
   async removePersonLocation(
-    @Args('input') updatePersonLocationInput: UpdatePersonLocationInput
+    @Args('input') updatePersonLocationInput: UpdatePersonLocationInput,
+    @CurrentUser() currentUser: Person
   ) {
     try {
       const { location_id, person_id } = updatePersonLocationInput;
+      checkIsManagerOrMatchingId(currentUser, +person_id);
       const person = await Person.findOne(person_id, {
         relations: ['location'],
       });
@@ -103,7 +120,7 @@ export class PersonResolver {
     try {
       const person = await Person.findOne(person_id);
       if (!person) {
-        return new UnauthorizedException("A person didn't found");
+        return new NotFoundException("The person wasn't found");
       }
       person.type = type;
       await person.save();

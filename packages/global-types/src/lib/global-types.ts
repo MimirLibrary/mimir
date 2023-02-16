@@ -174,6 +174,7 @@ export interface IMutation {
     createState(input: CreateStateInput): Nullable<BlockedUsers> | Promise<Nullable<BlockedUsers>>;
     claimBook(input?: Nullable<BookInput>): BookUnionResult | Promise<BookUnionResult>;
     returnItem(input?: Nullable<BookInput>): BookUnionResult | Promise<BookUnionResult>;
+    acceptItem(input?: Nullable<BookInput>): BookUnionResult | Promise<BookUnionResult>;
     rejectItem(input?: Nullable<BookInput>): BookUnionResult | Promise<BookUnionResult>;
     prolongClaimPeriod(input?: Nullable<ProlongTimeInput>): BookUnionResult | Promise<BookUnionResult>;
     createLocation(input: CreateLocationInput): Nullable<Location> | Promise<Nullable<Location>>;

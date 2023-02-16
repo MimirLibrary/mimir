@@ -20,7 +20,7 @@ import {
 } from '@mimir/global-types';
 import { Notification } from '../notifications/notification.entity';
 import { MaterialService } from './material.service';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, UseGuards } from '@nestjs/common';
 import { Message } from '../messages/message.entity';
 import { GraphQLError } from 'graphql';
 import { normalizeIdentifier } from '@mimir/helper-functions';
@@ -28,6 +28,8 @@ import { CurrentUser } from '../../auth/current-user';
 import { Person } from '../persons/person.entity';
 import * as DataLoader from 'dataloader';
 import dataLoaders from '../../data-loaders';
+import { ManagerGuard } from '../../auth/manager.guard';
+import { checkIsManagerOrMatchingId } from '../../auth/auth-util';
 
 @Resolver('Material')
 export class MaterialResolver {
@@ -81,7 +83,11 @@ export class MaterialResolver {
   }
 
   @Query(() => [Material])
-  async getAllDonatedMaterialsByPerson(@Args('id') id: number | string) {
+  async getAllDonatedMaterialsByPerson(
+    @Args('id') id: number | string,
+    @CurrentUser() currentUser: Person
+  ) {
+    checkIsManagerOrMatchingId(currentUser, +id);
     return this.materialService.getAllDonatedMaterialsByPerson(id);
   }
 
@@ -102,6 +108,7 @@ export class MaterialResolver {
   }
 
   @Mutation(() => Material)
+  @UseGuards(ManagerGuard)
   async removeMaterial(
     @Args('input') removeMaterialInput: RemoveMaterialInput
   ) {
@@ -110,6 +117,7 @@ export class MaterialResolver {
   }
 
   @Mutation(() => Material)
+  @UseGuards(ManagerGuard)
   async updateMaterial(
     @Args('input') updateMaterialInput: UpdateMaterialInput
   ) {

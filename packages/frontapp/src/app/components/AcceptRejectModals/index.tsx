@@ -5,9 +5,9 @@ import ErrorMessage from '../ErrorMessge';
 import {
   GetMaterialByIdDocument,
   GetAllTakenItemsDocument,
-  useReturnBookMutation,
   useRejectItemMutation,
   GetAllMaterialsDocument,
+  useAcceptBookMutation,
 } from '@mimir/apollo-client';
 import { toast } from 'react-toastify';
 import { IStatus } from '../../types';
@@ -28,12 +28,12 @@ const AcceptRejectModals: FC<IDonateProps> = ({
   identifier,
   method,
 }) => {
-  const [returnBook, { error: returnError }] = useReturnBookMutation({
+  const [acceptBookData, { error: returnError }] = useAcceptBookMutation({
     refetchQueries: [GetMaterialByIdDocument, GetAllTakenItemsDocument],
   });
 
   const acceptBook = async () => {
-    await returnBook({
+    await acceptBookData({
       variables: {
         person_id: statusInfo!.person_id!,
         identifier,

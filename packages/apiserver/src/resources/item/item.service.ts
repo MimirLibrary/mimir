@@ -21,7 +21,10 @@ export class ItemService {
   async claim(claimBookInput: BookInput): Promise<Status> {
     return this.connection.transaction(async (manager) => {
       const { identifier, person_id } = claimBookInput;
-      const material = await this.getMaterialByIdentifier(identifier, manager);
+      const material = await this.getMaterialAndCurrentStatusByIdentifier(
+        identifier,
+        manager
+      );
 
       if (!material) {
         throw new ErrorBook('This item is not registered in the library');
@@ -46,10 +49,40 @@ export class ItemService {
     });
   }
 
-  async putOnShelf(returnBookInput: BookInput): Promise<Status> {
+  async accept(returnBookInput: BookInput): Promise<Status> {
     return this.connection.transaction(async (manager) => {
       const { identifier, person_id } = returnBookInput;
-      const material = await this.getMaterialByIdentifier(identifier, manager);
+      const material = await this.getMaterialAndCurrentStatusByIdentifier(
+        identifier,
+        manager
+      );
+
+      if (!material) {
+        throw new ErrorBook('This item is not registered in the library');
+      }
+
+      if (material.currentStatus.status !== StatusTypes.PENDING) {
+        throw new ErrorBook(`This book can't be accepted`);
+      }
+
+      return this.insertStatus(
+        {
+          status: StatusTypes.FREE,
+          material_id: material.id,
+          person_id,
+        },
+        manager
+      );
+    });
+  }
+
+  async return(returnBookInput: BookInput): Promise<Status> {
+    return this.connection.transaction(async (manager) => {
+      const { identifier, person_id } = returnBookInput;
+      const material = await this.getMaterialAndCurrentStatusByIdentifier(
+        identifier,
+        manager
+      );
 
       if (!material) {
         throw new ErrorBook('This item is not registered in the library');
@@ -57,14 +90,10 @@ export class ItemService {
 
       if (
         material.currentStatus.status !== StatusTypes.BUSY &&
-        material.currentStatus.status !== StatusTypes.PROLONG &&
-        material.currentStatus.status !== StatusTypes.PENDING
+        material.currentStatus.status !== StatusTypes.PROLONG
       ) {
-        throw new ErrorBook(
-          `This book can't be put on shelf. Ask the manager!`
-        );
+        throw new ErrorBook(`This book can't be returned. Ask the manager!`);
       }
-
       return this.insertStatus(
         {
           status: StatusTypes.FREE,
@@ -79,7 +108,10 @@ export class ItemService {
   async reject(rejectBookInput: BookInput): Promise<Status> {
     return this.connection.transaction(async (manager) => {
       const { identifier, person_id } = rejectBookInput;
-      const material = await this.getMaterialByIdentifier(identifier, manager);
+      const material = await this.getMaterialAndCurrentStatusByIdentifier(
+        identifier,
+        manager
+      );
 
       if (!material) {
         throw new ErrorBook('This item is not registered in the library');
@@ -170,7 +202,7 @@ export class ItemService {
     });
   }
 
-  private async getMaterialByIdentifier(
+  private async getMaterialAndCurrentStatusByIdentifier(
     identifier: string,
     manager: EntityManager
   ): Promise<Material> {

@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Notification } from './notification.entity';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, UseGuards } from '@nestjs/common';
 import {
   CreateAnswerNotification,
   CreateNotificationInput,
@@ -9,15 +9,24 @@ import {
 } from '@mimir/global-types';
 import { GraphQLError } from 'graphql';
 import { Message } from '../messages/message.entity';
+import { CurrentUser } from '../../auth/current-user';
+import { Person } from '../persons/person.entity';
+import { ManagerGuard } from '../../auth/manager.guard';
+import { checkIsMatchingId } from '../../auth/auth-util';
 
 @Resolver('Notification')
 export class NotificationResolver {
   @Query(() => [Notification])
-  async getNotificationsByPerson(@Args('person_id') id: string) {
+  async getNotificationsByPerson(
+    @Args('person_id') id: string,
+    @CurrentUser() currentUser: Person
+  ) {
+    checkIsMatchingId(currentUser, +id);
     return await Notification.find({ where: { person_id: id } });
   }
 
   @Query(() => [Notification])
+  @UseGuards(ManagerGuard)
   async getNotificationsByMaterial(@Args('material_id') id: string) {
     return await Notification.find({ where: { material_id: id } });
   }
@@ -25,10 +34,12 @@ export class NotificationResolver {
   //TODO: combine 3 endpoints for creating a notification into single one
   @Mutation(() => Notification)
   async createNotification(
-    @Args('input') createNotificationInput: CreateNotificationInput
+    @Args('input') createNotificationInput: CreateNotificationInput,
+    @CurrentUser() currentUser: Person
   ) {
     try {
       const { material_id, person_id } = createNotificationInput;
+      checkIsMatchingId(currentUser, +person_id);
       const isAlreadyExist = await Notification.findOne({
         where: { material_id, person_id },
       });
@@ -42,6 +53,7 @@ export class NotificationResolver {
   }
 
   @Mutation(() => Notification)
+  @UseGuards(ManagerGuard)
   async createAnswerNotification(
     @Args('input') createAnswerNotification: CreateAnswerNotification
   ) {
@@ -69,10 +81,12 @@ export class NotificationResolver {
 
   @Mutation(() => Notification)
   async removeNotification(
-    @Args('input') removeNotificationInput: RemoveNotificationInput
+    @Args('input') removeNotificationInput: RemoveNotificationInput,
+    @CurrentUser() currentUser: Person
   ) {
     try {
       const { material_id, person_id } = removeNotificationInput;
+      checkIsMatchingId(currentUser, +person_id);
       const notification = await Notification.findOneOrFail({
         where: { material_id, person_id },
       });

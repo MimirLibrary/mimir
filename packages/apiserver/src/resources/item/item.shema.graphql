@@ -16,6 +16,7 @@ extend type Query {
 extend type Mutation {
   claimBook(input: BookInput): BookUnionResult!
   returnItem(input: BookInput): BookUnionResult!
+  acceptItem(input: BookInput): BookUnionResult!
   rejectItem(input: BookInput): BookUnionResult!
   prolongClaimPeriod(input: ProlongTimeInput): BookUnionResult!
 }
