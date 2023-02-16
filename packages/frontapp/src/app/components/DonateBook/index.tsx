@@ -4,6 +4,8 @@ import { toast } from 'react-toastify';
 import Dropdown, { IDropdownOption } from '../Dropdown';
 import { colors, dimensions } from '@mimir/ui-kit';
 import {
+  GetAllDonatedMaterialsByPersonDocument,
+  GetAllMaterialsDocument,
   GetMaterialFromMetadataQuery,
   useDonateBookMutation,
 } from '@mimir/apollo-client';
@@ -317,7 +319,12 @@ const DonateBook: FC<IPropsDonateBook> = ({ data, onHideContent }) => {
     title: '',
   });
 
-  const [donateBook, { error, data: donateData }] = useDonateBookMutation();
+  const [donateBook, { error, data: donateData }] = useDonateBookMutation({
+    refetchQueries: [
+      GetAllDonatedMaterialsByPersonDocument,
+      GetAllMaterialsDocument,
+    ],
+  });
 
   const isInvalid =
     !dataOfBook.author ||
