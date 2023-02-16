@@ -7,10 +7,15 @@ import 'swiper/css';
 import SliderButtons from './SliderButtons';
 
 const HeaderWrapper = styled.header`
+  width: 100%;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   position: absolute;
-  right: 0;
-  top: -0.5rem;
+  left: 0;
+  top: 2rem;
+  z-index: 2;
+  padding: 0 ${dimensions.base};
 `;
 
 const CustomSwiper = styled(Swiper)`
@@ -19,17 +24,21 @@ const CustomSwiper = styled(Swiper)`
   width: 100%;
   position: relative;
 
+  .swiper-wrapper {
+    margin-top: 6rem;
+  }
+
   .swiper-slide {
     width: auto;
   }
 `;
 
 interface ICarouselWrapperProps {
-  header?: ReactNode;
-  slides?: ReactNode;
+  header?: any;
+  slides?: any;
 }
 
-const CarouselWrapper: FC<ICarouselWrapperProps> = ({ children }) => {
+const CarouselWrapper: FC<ICarouselWrapperProps> = ({ header, slides }) => {
   return (
     <CustomSwiper
       // autoHeight={true}
@@ -38,18 +47,23 @@ const CarouselWrapper: FC<ICarouselWrapperProps> = ({ children }) => {
       breakpoints={{
         // when window width is >= 0px
         0: {
-          slidesPerView: 2,
-          spaceBetween: 20,
+          slidesPerView: 3,
         },
         // when window width is >= 640px
-        640: {
-          slidesPerView: 3,
-          spaceBetween: 30,
+        480: {
+          slidesPerView: 4,
+        },
+        1024: {
+          slidesPerView: 4,
+        },
+        1440: {
+          slidesPerView: 5,
         },
       }}
     >
-      <SliderButtons />
-      {children}
+      <HeaderWrapper>{header}</HeaderWrapper>
+      {/* <SliderButtons /> */}
+      {slides}
     </CustomSwiper>
   );
 };

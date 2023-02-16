@@ -32,21 +32,19 @@ import Loader, { WrapperLoader } from '../components/Loader';
 import { useMediaQuery } from 'react-responsive';
 import { TestLeft, TestRight } from './SearchPage';
 import CarouselWrapper from '../components/CarouselWrapper';
+import SliderButtons from '../components/CarouselWrapper/SliderButtons';
 
 export const ButtonGroup = styled.div`
   display: flex;
   gap: ${dimensions.base};
-  position: absolute;
-  right: 0;
-  top: -0.5rem;
-  z-index: 2;
+
   @media (max-width: ${dimensions.phone_width}) {
     display: none;
   }
 `;
 
 const Suggestions = styled.div`
-  margin: ${dimensions.base_2} 0;
+  /* margin: ${dimensions.base_2} 0; */
   display: flex;
   position: relative;
 `;
@@ -232,13 +230,21 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
                 />
               </>
             ) : (
-              <CarouselWrapper>
-                <AllBooksList
-                  sortingCategory={data?.getMaterialById.category}
-                  items={getAllMaterials?.getAllMaterials}
-                  forSlider
-                />
-              </CarouselWrapper>
+              <CarouselWrapper
+                header={
+                  <>
+                    <SuggestionText>You may also like</SuggestionText>
+                    <SliderButtons />
+                  </>
+                }
+                slides={
+                  <AllBooksList
+                    sortingCategory={data?.getMaterialById.category}
+                    items={getAllMaterials?.getAllMaterials}
+                    forSlider
+                  />
+                }
+              />
             )
           ) : (
             <ClaimHistoryWrapper>
