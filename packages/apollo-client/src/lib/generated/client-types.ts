@@ -215,6 +215,7 @@ export type Mutation = {
   removePersonLocation: Person;
   returnItem: BookUnionResult;
   updateMaterial: Material;
+  updatePerson: Person;
 };
 
 
@@ -328,8 +329,15 @@ export type MutationUpdateMaterialArgs = {
   input: UpdateMaterialInput;
 };
 
+
+export type MutationUpdatePersonArgs = {
+  input: UpdatePersonInput;
+  personId: Scalars['Int'];
+};
+
 export type Notification = {
   __typename?: 'Notification';
+  checked: Scalars['Boolean'];
   created_at: Scalars['DateTime'];
   id: Scalars['ID'];
   material?: Maybe<Material>;
@@ -349,6 +357,7 @@ export type Person = {
   created_at: Scalars['DateTime'];
   email: Scalars['String'];
   id: Scalars['ID'];
+  lastSeenNotificationDate?: Maybe<Scalars['DateTime']>;
   location?: Maybe<Array<Location>>;
   messages?: Maybe<Array<Maybe<Message>>>;
   notifications?: Maybe<Array<Maybe<Notification>>>;
@@ -552,6 +561,10 @@ export type UpdateMaterialInput = {
   updated_at: Scalars['DateTime'];
 };
 
+export type UpdatePersonInput = {
+  lastSeenNotificationDate?: InputMaybe<Scalars['DateTime']>;
+};
+
 export type UpdatePersonLocationInput = {
   location_id: Scalars['Int'];
   person_id: Scalars['Int'];
@@ -705,6 +718,14 @@ export type UpdateMaterialMutationVariables = Exact<{
 
 export type UpdateMaterialMutation = { __typename?: 'Mutation', updateMaterial: { __typename?: 'Material', identifier: string, id_type: string, type: string, location_id: number, title: string, author: string, category: string, updated_at: any, description: string, claimDuration: number } };
 
+export type UpdatePersonMutationVariables = Exact<{
+  personId: Scalars['Int'];
+  input: UpdatePersonInput;
+}>;
+
+
+export type UpdatePersonMutation = { __typename?: 'Mutation', updatePerson: { __typename?: 'Person', id: string, lastSeenNotificationDate?: any | null } };
+
 export type CreateAnswerNotificationMutationVariables = Exact<{
   input: CreateAnswerNotification;
 }>;
@@ -814,7 +835,7 @@ export type GetNotificationsByPersonQueryVariables = Exact<{
 }>;
 
 
-export type GetNotificationsByPersonQuery = { __typename?: 'Query', getNotificationsByPerson: Array<{ __typename?: 'Notification', id: string, message?: string | null, material_id?: number | null, person_id: number, created_at: any } | null> };
+export type GetNotificationsByPersonQuery = { __typename?: 'Query', getNotificationsByPerson: Array<{ __typename?: 'Notification', id: string, message?: string | null, material_id?: number | null, person_id: number, created_at: any, checked: boolean } | null> };
 
 export type GetOnePersonQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -1473,6 +1494,41 @@ export function useUpdateMaterialMutation(baseOptions?: Apollo.MutationHookOptio
 export type UpdateMaterialMutationHookResult = ReturnType<typeof useUpdateMaterialMutation>;
 export type UpdateMaterialMutationResult = Apollo.MutationResult<UpdateMaterialMutation>;
 export type UpdateMaterialMutationOptions = Apollo.BaseMutationOptions<UpdateMaterialMutation, UpdateMaterialMutationVariables>;
+export const UpdatePersonDocument = gql`
+    mutation UpdatePerson($personId: Int!, $input: UpdatePersonInput!) {
+  updatePerson(personId: $personId, input: $input) {
+    id
+    lastSeenNotificationDate
+  }
+}
+    `;
+export type UpdatePersonMutationFn = Apollo.MutationFunction<UpdatePersonMutation, UpdatePersonMutationVariables>;
+
+/**
+ * __useUpdatePersonMutation__
+ *
+ * To run a mutation, you first call `useUpdatePersonMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePersonMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePersonMutation, { data, loading, error }] = useUpdatePersonMutation({
+ *   variables: {
+ *      personId: // value for 'personId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdatePersonMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePersonMutation, UpdatePersonMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdatePersonMutation, UpdatePersonMutationVariables>(UpdatePersonDocument, options);
+      }
+export type UpdatePersonMutationHookResult = ReturnType<typeof useUpdatePersonMutation>;
+export type UpdatePersonMutationResult = Apollo.MutationResult<UpdatePersonMutation>;
+export type UpdatePersonMutationOptions = Apollo.BaseMutationOptions<UpdatePersonMutation, UpdatePersonMutationVariables>;
 export const CreateAnswerNotificationDocument = gql`
     mutation createAnswerNotification($input: CreateAnswerNotification!) {
   createAnswerNotification(input: $input) {
@@ -2125,6 +2181,7 @@ export const GetNotificationsByPersonDocument = gql`
     material_id
     person_id
     created_at
+    checked
   }
 }
     `;

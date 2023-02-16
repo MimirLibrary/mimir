@@ -5,5 +5,6 @@ query GetNotificationsByPerson($person_id: Int!) {
     material_id
     person_id
     created_at
+    checked
   }
 }

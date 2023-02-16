@@ -1,0 +1,6 @@
+mutation UpdatePerson($personId: Int!, $input: UpdatePersonInput!) {
+  updatePerson(personId: $personId, input: $input) {
+    id
+    lastSeenNotificationDate
+  }
+}

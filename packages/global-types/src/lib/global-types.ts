@@ -127,6 +127,10 @@ export interface CreatePersonInput {
     type: string;
 }
 
+export interface UpdatePersonInput {
+    lastSeenNotificationDate?: Nullable<DateTime>;
+}
+
 export interface UpdatePersonLocationInput {
     person_id: number;
     location_id: number;
@@ -189,6 +193,7 @@ export interface IMutation {
     createAnswerNotification(input: CreateAnswerNotification): Notification | Promise<Notification>;
     createSimpleNotification(input?: Nullable<CreateSimpleNotification>): Notification | Promise<Notification>;
     createPerson(input: CreatePersonInput): Person | Promise<Person>;
+    updatePerson(personId: number, input: UpdatePersonInput): Person | Promise<Person>;
     addPersonLocation(input: UpdatePersonLocationInput): Person | Promise<Person>;
     removePersonLocation(input: UpdatePersonLocationInput): Person | Promise<Person>;
     changePersonRole(person_id: number, type: string): Person | Promise<Person>;
@@ -287,6 +292,7 @@ export interface Notification {
     person: Person;
     material?: Nullable<Material>;
     message?: Nullable<string>;
+    checked: boolean;
 }
 
 export interface Person {
@@ -304,6 +310,7 @@ export interface Person {
     location?: Nullable<Location[]>;
     messages?: Nullable<Nullable<Message>[]>;
     states?: Nullable<Nullable<BlockedUsers>[]>;
+    lastSeenNotificationDate?: Nullable<DateTime>;
 }
 
 export interface Status {

@@ -91,8 +91,9 @@ const Sidebar: FC<IProps> = ({ isSidebarActive, hideSidebar }) => {
       <StyledSidebar isSidebarActive={isSidebarActive} ref={ref}>
         <Header
           hasNewNotifications={
-            !!getNotificationsByPersonData?.getNotificationsByPerson.length ||
-            !!allMessagesData?.getAllMessages?.length
+            !!getNotificationsByPersonData?.getNotificationsByPerson?.some(
+              (notification) => !notification?.checked
+            ) || !!allMessagesData?.getAllMessages?.length
           }
           hideSidebar={hideSidebar}
         />

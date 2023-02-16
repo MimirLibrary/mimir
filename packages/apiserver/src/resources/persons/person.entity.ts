@@ -40,6 +40,9 @@ export class Person extends BaseEntity {
   @Column({ nullable: true })
   permissions: string;
 
+  @Column({ name: 'last_seen_notification_date', nullable: true })
+  lastSeenNotificationDate: Date;
+
   @CreateDateColumn()
   created_at!: Date;
 

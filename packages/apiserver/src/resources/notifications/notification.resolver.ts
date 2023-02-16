@@ -1,4 +1,12 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Context,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { Notification } from './notification.entity';
 import { BadRequestException, UseGuards } from '@nestjs/common';
 import {
@@ -9,8 +17,10 @@ import {
 } from '@mimir/global-types';
 import { GraphQLError } from 'graphql';
 import { Message } from '../messages/message.entity';
-import { CurrentUser } from '../../auth/current-user';
 import { Person } from '../persons/person.entity';
+import * as DataLoader from 'dataloader';
+import DataLoaderType from '../../data-loader-type';
+import { CurrentUser } from '../../auth/current-user';
 import { ManagerGuard } from '../../auth/manager.guard';
 import { checkIsMatchingId } from '../../auth/auth-util';
 
@@ -95,5 +105,19 @@ export class NotificationResolver {
     } catch (e) {
       throw new BadRequestException();
     }
+  }
+
+  @ResolveField(() => Boolean)
+  async checked(
+    @Parent() notification: Notification,
+    @Context(DataLoaderType.personsLoader)
+    personsLoader: DataLoader<number, Person>
+  ) {
+    const person = await personsLoader.load(notification.person_id);
+    return (
+      !!person.lastSeenNotificationDate &&
+      person.lastSeenNotificationDate.getTime() >=
+        notification.created_at.getTime()
+    );
   }
 }
