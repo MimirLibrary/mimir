@@ -31,13 +31,12 @@ const AllBooksList: FC<IAllBooksListProps> = ({
   sortingCategory,
   forSlider,
 }) => {
-  return (
+  return !forSlider ? (
     <WrapperList>
       {items &&
         items.map(
           (item) =>
-            item?.category === sortingCategory &&
-            (!forSlider ? (
+            item?.category === sortingCategory && (
               <BookCard
                 key={item?.id}
                 id={item?.id}
@@ -50,7 +49,15 @@ const AllBooksList: FC<IAllBooksListProps> = ({
                 claimedUserId={item?.currentStatus?.person_id}
                 presentationMode
               />
-            ) : (
+            )
+        )}
+    </WrapperList>
+  ) : (
+    <>
+      {items &&
+        items.map(
+          (item) =>
+            item?.category === sortingCategory && (
               <SwiperSlide key={item?.id}>
                 <BookCard
                   id={item?.id}
@@ -64,9 +71,9 @@ const AllBooksList: FC<IAllBooksListProps> = ({
                   presentationMode
                 />
               </SwiperSlide>
-            ))
+            )
         )}
-    </WrapperList>
+    </>
   );
 };
 AllBooksList.displayName = 'SwiperSlide';

@@ -55,18 +55,18 @@ const SliderButtons = () => {
     swiper.on('slideChange', (swipe) => {
       // no `slides` in swipe
       console.log(swipe);
-      // setSlideConfig({ isBeginning: swipe.isBeginning, isEnd: swipe.isEnd });
+      setSlideConfig({ isBeginning: swipe.isBeginning, isEnd: swipe.isEnd });
     });
   }, [swiper]);
   return (
     <ButtonGroup>
       <TestLeft
         onClick={() => swiper.slidePrev()}
-        // isDisabled={slideConfig.isBeginning}
+        isDisabled={slideConfig.isBeginning}
       />
       <TestRight
         onClick={() => swiper.slideNext()}
-        // isDisabled={slideConfig.isEnd}
+        isDisabled={slideConfig.isEnd}
       />
     </ButtonGroup>
   );

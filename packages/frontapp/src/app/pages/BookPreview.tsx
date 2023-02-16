@@ -39,6 +39,7 @@ export const ButtonGroup = styled.div`
   position: absolute;
   right: 0;
   top: -0.5rem;
+  z-index: 2;
   @media (max-width: ${dimensions.phone_width}) {
     display: none;
   }
