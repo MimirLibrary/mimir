@@ -7,11 +7,12 @@ import { IsNull } from 'typeorm';
 export class StatusService {
   constructor() {}
 
-  public allOverdueStatuses(locations: Array<number>): Promise<Status[]> {
+  public getCurrentOverdueAndProlongStatuses(
+    locations: Array<number>
+  ): Promise<Status[]> {
     return Status.createQueryBuilder('status')
       .innerJoinAndSelect('status.material', 'material')
       .innerJoinAndSelect('status.person', 'person')
-      .where('status.returnDate < NOW()')
       .andWhere({ effectiveTo: IsNull() })
       .andWhere('person.type = :type', { type: RolesTypes.READER })
       .andWhere('material.location_id IN (:...locations)', { locations })
