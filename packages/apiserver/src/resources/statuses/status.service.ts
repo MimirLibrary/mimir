@@ -7,7 +7,7 @@ import { IsNull } from 'typeorm';
 export class StatusService {
   constructor() {}
 
-  public getCurrentOverdueAndProlongStatuses(
+  public getCurrentBusyAndProlongStatuses(
     locations: Array<number>
   ): Promise<Status[]> {
     return Status.createQueryBuilder('status')
