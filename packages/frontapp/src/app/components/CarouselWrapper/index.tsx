@@ -26,7 +26,7 @@ const CustomSwiper = styled(Swiper)`
   }
 `;
 
-interface ICarouselWrapperProps {
+export interface ICarouselWrapperProps {
   slidesListLengt?: number;
   header?: ReactNode;
   slides?: ReactNode;
