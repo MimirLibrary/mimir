@@ -139,7 +139,6 @@ export type Location = {
   id: Scalars['ID'];
   location: Scalars['String'];
   materials?: Maybe<Array<Maybe<Material>>>;
-  persons?: Maybe<Array<Maybe<Person>>>;
 };
 
 export type Material = {

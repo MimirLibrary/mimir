@@ -198,7 +198,6 @@ export interface IMutation {
 export interface Location {
     id: string;
     location: string;
-    persons?: Nullable<Nullable<Person>[]>;
     materials?: Nullable<Nullable<Material>[]>;
 }
 
