@@ -45,4 +45,7 @@ export class Status extends BaseEntity {
 
   @Column({ name: 'return_date', nullable: true })
   returnDate: Date;
+
+  @Column({ name: 'effective_to', nullable: true })
+  effectiveTo: Date;
 }
