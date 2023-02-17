@@ -194,7 +194,6 @@ const BookInfo: FC<IBookInfoProps> = ({
   category,
   identifier,
   created_at,
-  updated_at,
   returnDate,
   material_id,
   type,
@@ -276,16 +275,8 @@ const BookInfo: FC<IBookInfoProps> = ({
   });
   const currentStatus = getStatus(statusInfo?.status, returnDate);
 
-  const dateConditionOfClaiming =
-    data?.claimBook.__typename === 'Status' ? data.claimBook.created_at : null;
-
   const returnDateConditionOfClaiming =
     data?.claimBook.__typename === 'Status' ? data.claimBook.returnDate : null;
-
-  const dateConditionOfExtending =
-    infoOfProlong?.prolongClaimPeriod.__typename === 'Status'
-      ? infoOfProlong?.prolongClaimPeriod.created_at
-      : null;
 
   const returnDateConditionOfExtending =
     infoOfProlong?.prolongClaimPeriod.__typename === 'Status'
@@ -673,7 +664,7 @@ const BookInfo: FC<IBookInfoProps> = ({
         <Modal active={deleteWarning} setActive={setDeleteWarning}>
           <ErrorMessage
             title={t('DonateItem.Messages.Delete.Title')}
-            message={t('DonateItem.Messages.Delete.Desctription', { title })}
+            message={t('DonateItem.Messages.Delete.Description', { title })}
             setActive={setDeleteWarning}
             titleCancel={t('DonateItem.Messages.Buttons.Cancel')}
             titleOption={t('DonateItem.Messages.Buttons.Delete')}
@@ -685,7 +676,7 @@ const BookInfo: FC<IBookInfoProps> = ({
         <Modal active={deleteWarning} setActive={setDeleteWarning}>
           <ErrorMessage
             title={t('DonateItem.Messages.Delete.Title')}
-            message={t('DonateItem.Messages.Errors.Delete.Desctription', {
+            message={t('DonateItem.Messages.Errors.Delete.Description', {
               title,
             })}
             setActive={setDeleteWarning}

@@ -1,11 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { ReactComponent as ScrollButtonRight } from '../../../assets/ArrowButtonRight.svg';
 import { ReactComponent as ScrollButtonLeft } from '../../../assets/ArrowButtonLeft.svg';
-import { ButtonGroup } from '../../pages/BookPreview';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-import { colors } from '@mimir/ui-kit';
+import { colors, dimensions } from '@mimir/ui-kit';
 import { useSwiper } from 'swiper/react';
+
+const ButtonGroup = styled.div`
+  display: flex;
+  gap: ${dimensions.base};
+
+  @media (max-width: ${dimensions.tablet_width}) {
+    display: none;
+  }
+`;
 
 const StyledSliderButtonActive = css`
   cursor: pointer;
@@ -27,44 +35,56 @@ const StyledSliderButtonActive = css`
 const StyledSliderButtonDisabled = css`
   cursor: pointer;
 
-  circle,
+  circle {
+    fill: ${colors.bg_gray};
+  }
   path {
-    fill: gray;
+    fill: ${colors.main_gray};
   }
 `;
 
-export const TestRight = styled(ScrollButtonRight)<{ isDisabled?: boolean }>`
+export const ButtonNext = styled(ScrollButtonRight)<{ isDisabled?: boolean }>`
   pointer-events: ${({ isDisabled }) => (isDisabled ? 'none' : 'auto')};
 
   ${({ isDisabled }) =>
     isDisabled ? StyledSliderButtonDisabled : StyledSliderButtonActive}
 `;
-export const TestLeft = styled(ScrollButtonLeft)<{ isDisabled?: boolean }>`
+export const ButtonPrev = styled(ScrollButtonLeft)<{ isDisabled?: boolean }>`
   pointer-events: ${({ isDisabled }) => (isDisabled ? 'none' : 'auto')};
   ${({ isDisabled }) =>
     isDisabled ? StyledSliderButtonDisabled : StyledSliderButtonActive}
 `;
 
-const SliderButtons = () => {
+interface ISliderButtonsProps {
+  isButtonNextDisabled?: boolean;
+}
+
+const SliderButtons: FC<ISliderButtonsProps> = ({ isButtonNextDisabled }) => {
   const [slideConfig, setSlideConfig] = useState({
     isBeginning: true,
-    isEnd: false,
+    isEnd: isButtonNextDisabled,
   });
+  // the hook is not reactive
   const swiper = useSwiper();
+
   useEffect(() => {
     swiper.on('slideChange', (swipe) => {
-      // no `slides` in swipe
-      console.log(swipe);
       setSlideConfig({ isBeginning: swipe.isBeginning, isEnd: swipe.isEnd });
     });
   }, [swiper]);
+  useEffect(() => {
+    isButtonNextDisabled && setSlideConfig({ ...slideConfig, isEnd: true });
+  }, [isButtonNextDisabled]);
+
   return (
     <ButtonGroup>
-      <TestLeft
+      <ButtonPrev
+        role="button"
         onClick={() => swiper.slidePrev()}
         isDisabled={slideConfig.isBeginning}
       />
-      <TestRight
+      <ButtonNext
+        role="button"
         onClick={() => swiper.slideNext()}
         isDisabled={slideConfig.isEnd}
       />

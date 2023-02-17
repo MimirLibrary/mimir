@@ -1,10 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
-import { ButtonGroup } from './BookPreview';
 import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
-import { ReactComponent as ScrollButtonRight } from '../../assets/ArrowButtonRight.svg';
-import { ReactComponent as ScrollButtonLeft } from '../../assets/ArrowButtonLeft.svg';
 import CategoriesList from '../components/CategoriesList';
 import AllBooksList from '../components/AllBooksList';
 import { useAppSelector } from '../hooks/useTypedSelector';
@@ -20,45 +17,8 @@ import Modal from '../components/Modal';
 import CategorySearch from '../components/CategorySearch';
 import Loader, { WrapperLoader } from '../components/Loader';
 import { t } from 'i18next';
-import { css } from '@emotion/react';
-
-const StyledSliderButtonActive = css`
-  cursor: pointer;
-  :hover {
-    path {
-      fill: white;
-    }
-    circle {
-      fill: ${colors.accent_color};
-    }
-  }
-
-  circle,
-  path {
-    transition: all 0.3s linear;
-  }
-`;
-
-const StyledSliderButtonDisabled = css`
-  cursor: pointer;
-
-  circle,
-  path {
-    fill: gray;
-  }
-`;
-
-export const TestRight = styled(ScrollButtonRight)<{ isDisabled?: boolean }>`
-  pointer-events: ${({ isDisabled }) => (isDisabled ? 'none' : 'auto')};
-
-  ${({ isDisabled }) =>
-    isDisabled ? StyledSliderButtonDisabled : StyledSliderButtonActive}
-`;
-export const TestLeft = styled(ScrollButtonLeft)<{ isDisabled?: boolean }>`
-  pointer-events: ${({ isDisabled }) => (isDisabled ? 'none' : 'auto')};
-  ${({ isDisabled }) =>
-    isDisabled ? StyledSliderButtonDisabled : StyledSliderButtonActive}
-`;
+import { useMediaQuery } from 'react-responsive';
+import CarouselWrapper from '../components/CarouselWrapper';
 
 const ContentWrapper = styled.div`
   margin: 3rem 0 ${dimensions.xl_6};
@@ -123,6 +83,7 @@ const SearchPage = () => {
     variables: { locations },
     fetchPolicy: 'no-cache',
   });
+  const isTablet = useMediaQuery({ maxWidth: dimensions.tablet_width });
   useEffect(() => {
     const available = data?.getAllMaterials.filter((material: any) => {
       const currentStatus = getStatus(
@@ -141,6 +102,10 @@ const SearchPage = () => {
       pathname: RoutesTypes.CATEGORY,
       search: `?categories=${category}`,
     });
+  };
+
+  const getSortedByCategoryList = (category: string) => {
+    return availableMaterial.filter((item: any) => item.category === category);
   };
 
   useEffect(() => {
@@ -170,7 +135,7 @@ const SearchPage = () => {
       <CategoriesList allCategories={allCategories} />
       {allCategories &&
         Object.keys(allCategories).map((category) => {
-          return (
+          return isTablet ? (
             <ContentWrapper key={category}>
               <TopicNameWrapper>
                 <TextWrapper>
@@ -179,16 +144,28 @@ const SearchPage = () => {
                     {t('SearchFiltersForm.UsersFilter.All')}
                   </SeeAllButton>
                 </TextWrapper>
-                <ButtonGroup>
-                  <TestLeft />
-                  <TestRight isDisabled />
-                </ButtonGroup>
               </TopicNameWrapper>
-              <AllBooksList
-                sortingCategory={category}
-                items={availableMaterial}
-              />
+              <AllBooksList items={getSortedByCategoryList(category)} />
             </ContentWrapper>
+          ) : (
+            <CarouselWrapper
+              key={category}
+              slidesListLengt={getSortedByCategoryList(category).length}
+              header={
+                <TextWrapper>
+                  <Topics>{category}</Topics>
+                  <SeeAllButton onClick={() => navigateToCategory(category)}>
+                    {t('SearchFiltersForm.UsersFilter.All')}
+                  </SeeAllButton>
+                </TextWrapper>
+              }
+              slides={
+                <AllBooksList
+                  items={getSortedByCategoryList(category)}
+                  forSlider
+                />
+              }
+            />
           );
         })}
       <Modal active={isModalActive} setActive={setIsModalActive}>

@@ -2,21 +2,14 @@ import styled from '@emotion/styled';
 import { dimensions } from '@mimir/ui-kit';
 import { FC, ReactNode } from 'react';
 import { Swiper } from 'swiper/react';
+import ControlPanel from './ControlPanel';
+import SliderButtons from './SliderButtons';
+import { useMediaQuery } from 'react-responsive';
 
 import 'swiper/css';
-import SliderButtons from './SliderButtons';
 
-const HeaderWrapper = styled.header`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: absolute;
-  left: 0;
-  top: 2rem;
-  z-index: 2;
-  padding: 0 ${dimensions.base};
-`;
+const DESKTOP_SLIDES_PER_VIEW = 5;
+const LAPTOP_SLIDES_PER_VIEW = 4;
 
 const CustomSwiper = styled(Swiper)`
   height: fit-content;
@@ -34,35 +27,46 @@ const CustomSwiper = styled(Swiper)`
 `;
 
 interface ICarouselWrapperProps {
-  header?: any;
-  slides?: any;
+  slidesListLengt?: number;
+  header?: ReactNode;
+  slides?: ReactNode;
 }
 
-const CarouselWrapper: FC<ICarouselWrapperProps> = ({ header, slides }) => {
+const CarouselWrapper: FC<ICarouselWrapperProps> = ({
+  slidesListLengt = 0,
+  header,
+  slides,
+}) => {
+  const isTabletOrWider = useMediaQuery({ minWidth: dimensions.tablet_width });
+  const isLaptopOrWider = useMediaQuery({
+    minWidth: dimensions.wide_laptop_width,
+  });
+
+  const isButtonNextDisabled = isLaptopOrWider
+    ? slidesListLengt <= DESKTOP_SLIDES_PER_VIEW
+    : isTabletOrWider
+    ? slidesListLengt <= LAPTOP_SLIDES_PER_VIEW
+    : false;
+
   return (
     <CustomSwiper
-      // autoHeight={true}
-      // observer={true}
-      // observeParents={true}
+      // if width >= tablet_width
       breakpoints={{
-        // when window width is >= 0px
-        0: {
-          slidesPerView: 3,
+        768: {
+          slidesPerView: LAPTOP_SLIDES_PER_VIEW,
         },
-        // when window width is >= 640px
-        480: {
-          slidesPerView: 4,
-        },
-        1024: {
-          slidesPerView: 4,
-        },
+        // if width >= wide_laptop_width
         1440: {
-          slidesPerView: 5,
+          slidesPerView: DESKTOP_SLIDES_PER_VIEW,
         },
       }}
     >
-      <HeaderWrapper>{header}</HeaderWrapper>
-      {/* <SliderButtons /> */}
+      <ControlPanel
+        title={header}
+        controlButtons={
+          <SliderButtons isButtonNextDisabled={isButtonNextDisabled} />
+        }
+      />
       {slides}
     </CustomSwiper>
   );
