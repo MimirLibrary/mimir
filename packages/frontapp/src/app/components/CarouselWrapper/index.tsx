@@ -49,14 +49,14 @@ const CarouselWrapper: FC<ICarouselWrapperProps> = ({
     }
   }, [containerRef.current]);
 
-  const shouldShowControls = slidesPerView >= slidesListLength;
+  const shouldShowControls = slidesPerView <= slidesListLength;
 
   return (
     <SwiperWrapper ref={containerRef}>
       <CustomSwiper slidesPerView={slidesPerView} spaceBetween={SLIDE_GAP}>
         <ControlPanel
           title={header}
-          controlButtons={shouldShowControls ?? <SliderButtons />}
+          controlButtons={shouldShowControls && <SliderButtons />}
         />
         {slides}
       </CustomSwiper>
