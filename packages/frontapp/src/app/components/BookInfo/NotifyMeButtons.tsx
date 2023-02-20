@@ -1,7 +1,8 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { StyledButton } from './index';
 import { ReactComponent as EnableNotifySvg } from '../../../assets/NoNotification.svg';
 import { ReactComponent as CancelNotifySvg } from '../../../assets/CancelNotification.svg';
+import { t } from 'i18next';
 
 interface IControl {
   onSubscribe: () => void;
@@ -12,12 +13,12 @@ export const NotifyMeButtons: FC<IControl> = ({ onSubscribe, onCancel }) => {
   return (
     <>
       <StyledButton
-        value="Notify when available"
+        value={t('DonateItem.Buttons.Notify')}
         onClick={onSubscribe}
         svgComponent={<EnableNotifySvg />}
       />
       <StyledButton
-        value="Cancel"
+        value={t('Cancel')}
         onClick={onCancel}
         svgComponent={<CancelNotifySvg />}
         transparent
