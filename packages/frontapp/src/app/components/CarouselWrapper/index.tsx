@@ -17,7 +17,10 @@ const CustomSwiper = styled(Swiper)`
   }
 
   .swiper-slide {
+    display: flex;
     width: auto;
+    min-height: 100%;
+    height: auto;
   }
 `;
 
@@ -49,7 +52,7 @@ const CarouselWrapper: FC<ICarouselWrapperProps> = ({
     }
   }, [containerRef.current]);
 
-  const shouldShowControls = slidesPerView <= slidesListLength;
+  const shouldShowControls = slidesPerView < slidesListLength;
 
   return (
     <SwiperWrapper ref={containerRef}>
