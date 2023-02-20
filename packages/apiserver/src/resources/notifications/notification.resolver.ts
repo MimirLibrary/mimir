@@ -19,10 +19,10 @@ import { GraphQLError } from 'graphql';
 import { Message } from '../messages/message.entity';
 import { Person } from '../persons/person.entity';
 import * as DataLoader from 'dataloader';
-import DataLoaderType from '../../data-loader-type';
 import { CurrentUser } from '../../auth/current-user';
 import { ManagerGuard } from '../../auth/manager.guard';
 import { checkIsMatchingId } from '../../auth/auth-util';
+import DataLoaders from '../../data-loaders';
 
 @Resolver('Notification')
 export class NotificationResolver {
@@ -110,7 +110,7 @@ export class NotificationResolver {
   @ResolveField(() => Boolean)
   async checked(
     @Parent() notification: Notification,
-    @Context(DataLoaderType.personsLoader)
+    @Context(DataLoaders.personsLoader)
     personsLoader: DataLoader<number, Person>
   ) {
     const person = await personsLoader.load(notification.person_id);
