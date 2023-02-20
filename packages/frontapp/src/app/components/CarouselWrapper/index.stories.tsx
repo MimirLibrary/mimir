@@ -21,7 +21,7 @@ const Card = styled.div`
 const Template: Story<ICarouselWrapperProps> = (args) => (
   <CarouselWrapper
     {...args}
-    slidesListLengt={slides.length}
+    slidesListLength={slides.length}
     slides={SlidesList}
   />
 );

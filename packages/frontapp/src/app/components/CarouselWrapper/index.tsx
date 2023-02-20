@@ -27,13 +27,13 @@ const CustomSwiper = styled(Swiper)`
 `;
 
 export interface ICarouselWrapperProps {
-  slidesListLengt?: number;
+  slidesListLength?: number;
   header?: ReactNode;
   slides?: ReactNode;
 }
 
 const CarouselWrapper: FC<ICarouselWrapperProps> = ({
-  slidesListLengt = 0,
+  slidesListLength = 0,
   header,
   slides,
 }) => {
@@ -43,9 +43,9 @@ const CarouselWrapper: FC<ICarouselWrapperProps> = ({
   });
 
   const isButtonNextDisabled = isLaptopOrWider
-    ? slidesListLengt <= DESKTOP_SLIDES_PER_VIEW
+    ? slidesListLength <= DESKTOP_SLIDES_PER_VIEW
     : isTabletOrWider
-    ? slidesListLengt <= LAPTOP_SLIDES_PER_VIEW
+    ? slidesListLength <= LAPTOP_SLIDES_PER_VIEW
     : false;
 
   return (

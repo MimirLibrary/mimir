@@ -150,7 +150,7 @@ const SearchPage = () => {
           ) : (
             <CarouselWrapper
               key={category}
-              slidesListLengt={getSortedByCategoryList(category).length}
+              slidesListLength={getSortedByCategoryList(category).length}
               header={
                 <TextWrapper>
                   <Topics>{category}</Topics>

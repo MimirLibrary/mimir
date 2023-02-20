@@ -216,7 +216,7 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
               </>
             ) : (
               <CarouselWrapper
-                slidesListLengt={sortedByCategoryList?.length}
+                slidesListLength={sortedByCategoryList?.length}
                 header={
                   <SuggestionText>{t('BookPreviewMessage')}</SuggestionText>
                 }
