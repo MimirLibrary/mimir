@@ -27,7 +27,7 @@ import { normalizeIdentifier } from '@mimir/helper-functions';
 import { CurrentUser } from '../../auth/current-user';
 import { Person } from '../persons/person.entity';
 import * as DataLoader from 'dataloader';
-import dataLoaders from '../../data-loaders';
+import DataLoaders from '../../data-loaders';
 import { ManagerGuard } from '../../auth/manager.guard';
 import { checkIsManagerOrMatchingId } from '../../auth/auth-util';
 
@@ -137,30 +137,39 @@ export class MaterialResolver {
   }
 
   @ResolveField(() => [Status])
-  async statuses(@Parent() material: Material) {
+  async statuses(
+    @Parent() material: Material,
+    @Context(DataLoaders.materialsStatusesLoader)
+    materialsStatusesLoader: DataLoader<number, Status[]>
+  ) {
     const { id } = material;
-    return Status.find({
-      where: { material_id: id },
-      order: { id: 'ASC' },
-    });
+    return materialsStatusesLoader.load(id);
   }
 
   @ResolveField(() => [Notification])
-  async notifications(@Parent() material: Material) {
+  async notifications(
+    @Parent() material: Material,
+    @Context(DataLoaders.materialsNotificationsLoader)
+    materialNotificationsLoader: DataLoader<number, Notification[]>
+  ) {
     const { id } = material;
-    return Notification.find({ where: { material_id: id } });
+    return materialNotificationsLoader.load(id);
   }
 
   @ResolveField(() => [Message])
-  async messages(@Parent() material: Material) {
+  async messages(
+    @Parent() material: Material,
+    @Context(DataLoaders.materialsMessagesLoader)
+    materialsMessagesLoader: DataLoader<number, Message[]>
+  ) {
     const { id } = material;
-    return Message.find({ where: { material_id: id } });
+    return materialsMessagesLoader.load(id);
   }
 
   @ResolveField(() => Status)
   async currentStatus(
     @Parent() material: Material,
-    @Context(dataLoaders.statusesLoader)
+    @Context(DataLoaders.statusesLoader)
     statusesLoader: DataLoader<number, Status>
   ): Promise<Status> {
     if (!material?.currentStatusId) {

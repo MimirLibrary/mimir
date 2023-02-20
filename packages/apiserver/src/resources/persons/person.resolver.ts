@@ -1,5 +1,6 @@
 import {
   Args,
+  Context,
   Mutation,
   Parent,
   Query,
@@ -25,6 +26,8 @@ import { Message } from '../messages/message.entity';
 import { BlockedUsers } from '../blocked-users/blocked-users.entity';
 import { PersonService } from './person.service';
 import { Grants } from '../../permission/grant.decorator';
+import * as DataLoader from 'dataloader';
+import DataLoaders from '../../data-loaders';
 import { ManagerGuard } from '../../auth/manager.guard';
 import { CurrentUser } from '../../auth/current-user';
 import { checkIsManagerOrMatchingId } from '../../auth/auth-util';
@@ -131,27 +134,43 @@ export class PersonResolver {
   }
 
   @ResolveField(() => [Status])
-  async statuses(@Parent() person: Person) {
+  async statuses(
+    @Parent() person: Person,
+    @Context(DataLoaders.personsStatusesLoader)
+    personsStatusesLoader: DataLoader<number, [Status]>
+  ) {
     const { id } = person;
-    return Status.find({ where: { person_id: id } });
+    return personsStatusesLoader.load(id);
   }
 
   @ResolveField(() => [Notification])
-  async notifications(@Parent() person: Person) {
+  async notifications(
+    @Parent() person: Person,
+    @Context(DataLoaders.personsNotificationsLoader)
+    personsNotificationsLoader: DataLoader<number, [Notification]>
+  ) {
     const { id } = person;
-    return Notification.find({ where: { person_id: id } });
+    return personsNotificationsLoader.load(id);
   }
 
   @ResolveField(() => [Message])
-  async messages(@Parent() person: Person) {
+  async messages(
+    @Parent() person: Person,
+    @Context(DataLoaders.personsMessagesLoader)
+    personsMessagesLoader: DataLoader<number, [Message]>
+  ) {
     const { id } = person;
-    return Message.find({ where: { person_id: id } });
+    return personsMessagesLoader.load(id);
   }
 
   @ResolveField(() => [BlockedUsers])
-  async states(@Parent() person: Person) {
+  async states(
+    @Parent() person: Person,
+    @Context(DataLoaders.blockedUsersLoader)
+    blockedUsersLoader: DataLoader<number, [BlockedUsers]>
+  ) {
     const { id } = person;
-    return BlockedUsers.find({ where: { person_id: id } });
+    return blockedUsersLoader.load(id);
   }
 
   @ResolveField(() => [Permissions])

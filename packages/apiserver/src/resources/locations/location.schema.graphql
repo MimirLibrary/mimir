@@ -1,7 +1,6 @@
 type Location {
   id: ID!
   location: String!
-  persons: [Person]
   materials: [Material]
 }
 

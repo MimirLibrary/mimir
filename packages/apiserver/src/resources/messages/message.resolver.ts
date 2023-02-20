@@ -1,5 +1,6 @@
 import {
   Args,
+  Context,
   Mutation,
   Parent,
   Query,
@@ -11,6 +12,8 @@ import { CreateMessageInput } from '@mimir/global-types';
 import { Person } from '../persons/person.entity';
 import { GraphQLError } from 'graphql';
 import { In } from 'typeorm';
+import * as DataLoader from 'dataloader';
+import DataLoaders from '../../data-loaders';
 import { UseGuards } from '@nestjs/common';
 import { ManagerGuard } from '../../auth/manager.guard';
 import { CurrentUser } from '../../auth/current-user';
@@ -33,12 +36,6 @@ export class MessageResolver {
     return Message.find({ where: { location_id: In(location_id) } });
   }
 
-  @ResolveField(() => Person)
-  async person(@Parent() message: Message) {
-    const { person_id } = message;
-    return Person.findOne({ where: { id: person_id } });
-  }
-
   @Mutation(() => Message)
   async createMessageForManager(
     @Args('input') createMessageInput: CreateMessageInput
@@ -49,5 +46,15 @@ export class MessageResolver {
     } catch (e) {
       throw new GraphQLError(e.message);
     }
+  }
+
+  @ResolveField(() => Person)
+  async person(
+    @Parent() message: Message,
+    @Context(DataLoaders.personsLoader)
+    personsLoader: DataLoader<number, Person>
+  ) {
+    const { person_id } = message;
+    return personsLoader.load(person_id);
   }
 }

@@ -1,5 +1,6 @@
 import {
   Args,
+  Context,
   Mutation,
   Parent,
   Query,
@@ -12,6 +13,8 @@ import { CreateStatusInput } from '@mimir/global-types';
 import { Person } from '../persons/person.entity';
 import { StatusService } from './status.service';
 import { Material } from '../materials/material.entity';
+import * as DataLoader from 'dataloader';
+import DataLoaders from '../../data-loaders';
 import { CurrentUser } from '../../auth/current-user';
 import { checkIsManagerOrMatchingId } from '../../auth/auth-util';
 
@@ -35,12 +38,6 @@ export class StatusResolver {
     });
   }
 
-  @ResolveField(() => Person)
-  async person(@Parent() status: Status) {
-    const { person_id } = status;
-    return Person.findOne(person_id);
-  }
-
   @Query(() => [Status])
   async getAllStatusesIsOverdue(@Args('locations') locations: Array<number>) {
     return this.statusService.getCurrentBusyAndProlongStatuses(locations);
@@ -56,9 +53,24 @@ export class StatusResolver {
       throw new BadRequestException();
     }
   }
+
+  @ResolveField(() => Person)
+  async person(
+    @Parent() status: Status,
+    @Context(DataLoaders.personsLoader)
+    personsLoader: DataLoader<number, Person>
+  ) {
+    const { person_id } = status;
+    return personsLoader.load(person_id);
+  }
+
   @ResolveField(() => Material)
-  async material(@Parent() statuses: Status) {
+  async material(
+    @Parent() statuses: Status,
+    @Context(DataLoaders.materialsLoader)
+    materialsLoader: DataLoader<number, Material>
+  ) {
     const { material_id } = statuses;
-    return Material.findOne({ where: { id: material_id } });
+    return materialsLoader.load(material_id);
   }
 }
