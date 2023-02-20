@@ -21,4 +21,5 @@ export const colors = {
   bg_own_claim: `rgba(26, 30, 214, 0.1)`,
   bg_error: `rgba(255, 55, 42, 0.1)`,
   bg_busy: `rgba(255, 145, 15, 0.1)`,
+  bg_gray: `#F2F2F2`,
 };
