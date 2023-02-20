@@ -1,4 +1,6 @@
-export const groupByKey = <T>(items: T[], key: string): Record<number, T[]> => {
+export type GroupRecord<T> = Record<number, T[]>;
+
+export const groupByKey = <T>(items: T[], key: string): GroupRecord<T> => {
   if (!items?.length) {
     return {};
   }

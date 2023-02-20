@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import * as DataLoader from 'dataloader';
 import { BlockedUsers } from './blocked-users.entity';
 import { In } from 'typeorm';
-import { groupByKey } from '../../utils/helpersFunctions/groupByKey';
+import {
+  groupByKey,
+  GroupRecord,
+} from '../../utils/helpersFunctions/groupByKey';
 
 @Injectable()
 export class BlockedUsersLoaderFactoryService {
@@ -10,7 +13,7 @@ export class BlockedUsersLoaderFactoryService {
     return new DataLoader<number, BlockedUsers[]>(async (ids: number[]) => {
       const users = await BlockedUsers.find({ where: { person_id: In(ids) } });
 
-      const usersMap: Record<number, BlockedUsers[]> = groupByKey(
+      const usersMap: GroupRecord<BlockedUsers> = groupByKey(
         users,
         'person_id'
       );

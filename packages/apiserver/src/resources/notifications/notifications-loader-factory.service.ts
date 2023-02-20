@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import * as DataLoader from 'dataloader';
 import { In } from 'typeorm';
-import { groupByKey } from '../../utils/helpersFunctions/groupByKey';
+import {
+  groupByKey,
+  GroupRecord,
+} from '../../utils/helpersFunctions/groupByKey';
 import { Notification } from './notification.entity';
 
 @Injectable()
@@ -16,7 +19,7 @@ export class NotificationsLoaderFactoryService {
           where: { material_id: In(materialIds) },
         });
 
-        const notificationsMap: Record<number, Notification[]> = groupByKey(
+        const notificationsMap: GroupRecord<Notification> = groupByKey(
           notifications,
           'material_id'
         );
@@ -36,7 +39,7 @@ export class NotificationsLoaderFactoryService {
           where: { person_id: In(personIds) },
         });
 
-        const notificationsMap: Record<number, Notification[]> = groupByKey(
+        const notificationsMap: GroupRecord<Notification> = groupByKey(
           notifications,
           'person_id'
         );
