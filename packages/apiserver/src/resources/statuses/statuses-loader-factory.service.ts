@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import * as DataLoader from 'dataloader';
-import { getIdMap } from '../../utils/helpersFunctions/getIdMap';
+import { getIdMap, IdRecord } from '../../utils/helpersFunctions/getIdMap';
 import { Status } from './status.entity';
 import { In } from 'typeorm';
-import { groupByKey } from '../../utils/helpersFunctions/groupByKey';
+import {
+  groupByKey,
+  GroupRecord,
+} from '../../utils/helpersFunctions/groupByKey';
 
 @Injectable()
 export class StatusesLoaderFactoryService {
@@ -11,7 +14,7 @@ export class StatusesLoaderFactoryService {
     return new DataLoader<number, Status>(async (ids: number[]) => {
       const statuses = await Status.findByIds(ids);
 
-      const statusesMap: Record<number, Status> = getIdMap(statuses);
+      const statusesMap: IdRecord<Status> = getIdMap(statuses);
 
       return ids.map((id) => statusesMap[id]);
     });
@@ -24,7 +27,7 @@ export class StatusesLoaderFactoryService {
         order: { id: 'ASC' },
       });
 
-      const statusesMap: Record<number, Status[]> = groupByKey(
+      const statusesMap: GroupRecord<Status> = groupByKey(
         statuses,
         'material_id'
       );
@@ -39,7 +42,7 @@ export class StatusesLoaderFactoryService {
         where: { person_id: In(personIds) },
       });
 
-      const statusesMap: Record<number, Status[]> = groupByKey(
+      const statusesMap: GroupRecord<Status> = groupByKey(
         statuses,
         'person_id'
       );

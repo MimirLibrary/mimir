@@ -13,7 +13,7 @@ import { Person } from '../persons/person.entity';
 import { GraphQLError } from 'graphql';
 import { In } from 'typeorm';
 import * as DataLoader from 'dataloader';
-import DataLoaderType from '../../data-loader-type';
+import DataLoaders from '../../data-loaders';
 import { UseGuards } from '@nestjs/common';
 import { ManagerGuard } from '../../auth/manager.guard';
 import { CurrentUser } from '../../auth/current-user';
@@ -51,7 +51,7 @@ export class MessageResolver {
   @ResolveField(() => Person)
   async person(
     @Parent() message: Message,
-    @Context(DataLoaderType.personsLoader)
+    @Context(DataLoaders.personsLoader)
     personsLoader: DataLoader<number, Person>
   ) {
     const { person_id } = message;

@@ -28,7 +28,7 @@ import { BlockedUsers } from '../blocked-users/blocked-users.entity';
 import { PersonService } from './person.service';
 import { Grants } from '../../permission/grant.decorator';
 import * as DataLoader from 'dataloader';
-import DataLoaderType from '../../data-loader-type';
+import DataLoaders from '../../data-loaders';
 import { ManagerGuard } from '../../auth/manager.guard';
 import { CurrentUser } from '../../auth/current-user';
 import {
@@ -155,7 +155,7 @@ export class PersonResolver {
   @ResolveField(() => [Status])
   async statuses(
     @Parent() person: Person,
-    @Context(DataLoaderType.personsStatusesLoader)
+    @Context(DataLoaders.personsStatusesLoader)
     personsStatusesLoader: DataLoader<number, [Status]>
   ) {
     const { id } = person;
@@ -165,7 +165,7 @@ export class PersonResolver {
   @ResolveField(() => [Notification])
   async notifications(
     @Parent() person: Person,
-    @Context(DataLoaderType.personsNotificationsLoader)
+    @Context(DataLoaders.personsNotificationsLoader)
     personsNotificationsLoader: DataLoader<number, [Notification]>
   ) {
     const { id } = person;
@@ -175,7 +175,7 @@ export class PersonResolver {
   @ResolveField(() => [Message])
   async messages(
     @Parent() person: Person,
-    @Context(DataLoaderType.personsMessagesLoader)
+    @Context(DataLoaders.personsMessagesLoader)
     personsMessagesLoader: DataLoader<number, [Message]>
   ) {
     const { id } = person;
@@ -185,7 +185,7 @@ export class PersonResolver {
   @ResolveField(() => [BlockedUsers])
   async states(
     @Parent() person: Person,
-    @Context(DataLoaderType.blockedUsersLoader)
+    @Context(DataLoaders.blockedUsersLoader)
     blockedUsersLoader: DataLoader<number, [BlockedUsers]>
   ) {
     const { id } = person;

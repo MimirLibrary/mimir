@@ -14,7 +14,7 @@ import { Person } from '../persons/person.entity';
 import { StatusService } from './status.service';
 import { Material } from '../materials/material.entity';
 import * as DataLoader from 'dataloader';
-import DataLoaderType from '../../data-loader-type';
+import DataLoaders from '../../data-loaders';
 import { CurrentUser } from '../../auth/current-user';
 import { checkIsManagerOrMatchingId } from '../../auth/auth-util';
 
@@ -57,7 +57,7 @@ export class StatusResolver {
   @ResolveField(() => Person)
   async person(
     @Parent() status: Status,
-    @Context(DataLoaderType.personsLoader)
+    @Context(DataLoaders.personsLoader)
     personsLoader: DataLoader<number, Person>
   ) {
     const { person_id } = status;
@@ -67,7 +67,7 @@ export class StatusResolver {
   @ResolveField(() => Material)
   async material(
     @Parent() statuses: Status,
-    @Context(DataLoaderType.materialsLoader)
+    @Context(DataLoaders.materialsLoader)
     materialsLoader: DataLoader<number, Material>
   ) {
     const { material_id } = statuses;

@@ -1,4 +1,4 @@
-const DataLoaderType = {
+const DataLoaders = {
   statusesLoader: 'statusesLoader',
   materialsStatusesLoader: 'materialsStatusesLoader',
   materialsNotificationsLoader: 'materialsNotificationsLoader',
@@ -11,4 +11,4 @@ const DataLoaderType = {
   materialsLoader: 'materialsLoader',
 } as const;
 
-export default DataLoaderType;
+export default DataLoaders;

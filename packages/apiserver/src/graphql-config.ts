@@ -10,7 +10,7 @@ import {
   typeDefs as scalarTypeDefs,
 } from 'graphql-scalars';
 import { join } from 'path';
-import DataLoaderType from './data-loader-type';
+import DataLoaders from './data-loaders';
 import { BlockedUsersModule } from './resources/blocked-users/blocked-users.module';
 import { MaterialModule } from './resources/materials/material.module';
 import { MessageModule } from './resources/messages/message.module';
@@ -55,25 +55,25 @@ export default {
         ),
       },
       context: () => ({
-        [DataLoaderType.statusesLoader]:
+        [DataLoaders.statusesLoader]:
           statusLoaderFactoryService.createStatusesLoader(),
-        [DataLoaderType.materialsStatusesLoader]:
+        [DataLoaders.materialsStatusesLoader]:
           statusLoaderFactoryService.createMaterialsStatusesLoader(),
-        [DataLoaderType.materialsNotificationsLoader]:
+        [DataLoaders.materialsNotificationsLoader]:
           notificationLoaderFactoryService.createMaterialsNotificationsLoader(),
-        [DataLoaderType.materialsMessagesLoader]:
+        [DataLoaders.materialsMessagesLoader]:
           messageLoaderFactoryService.createMaterialsMessagesLoader(),
-        [DataLoaderType.personsLoader]:
+        [DataLoaders.personsLoader]:
           personLoaderFactoryService.createPersonsLoader(),
-        [DataLoaderType.personsStatusesLoader]:
+        [DataLoaders.personsStatusesLoader]:
           statusLoaderFactoryService.createPersonsStatusesLoader(),
-        [DataLoaderType.personsNotificationsLoader]:
+        [DataLoaders.personsNotificationsLoader]:
           notificationLoaderFactoryService.createPersonsNotificationsLoader(),
-        [DataLoaderType.personsMessagesLoader]:
+        [DataLoaders.personsMessagesLoader]:
           messageLoaderFactoryService.createPersonsMessagesLoader(),
-        [DataLoaderType.blockedUsersLoader]:
+        [DataLoaders.blockedUsersLoader]:
           blockedUsersLoaderFactoryService.createBlockedUsersLoader(),
-        [DataLoaderType.materialsLoader]:
+        [DataLoaders.materialsLoader]:
           materialsLoaderFactoryService.createMaterialsLoader(),
       }),
     };

@@ -27,7 +27,7 @@ import { normalizeIdentifier } from '@mimir/helper-functions';
 import { CurrentUser } from '../../auth/current-user';
 import { Person } from '../persons/person.entity';
 import * as DataLoader from 'dataloader';
-import DataLoaderType from '../../data-loader-type';
+import DataLoaders from '../../data-loaders';
 import { ManagerGuard } from '../../auth/manager.guard';
 import { checkIsManagerOrMatchingId } from '../../auth/auth-util';
 
@@ -139,7 +139,7 @@ export class MaterialResolver {
   @ResolveField(() => [Status])
   async statuses(
     @Parent() material: Material,
-    @Context(DataLoaderType.materialsStatusesLoader)
+    @Context(DataLoaders.materialsStatusesLoader)
     materialsStatusesLoader: DataLoader<number, Status[]>
   ) {
     const { id } = material;
@@ -149,7 +149,7 @@ export class MaterialResolver {
   @ResolveField(() => [Notification])
   async notifications(
     @Parent() material: Material,
-    @Context(DataLoaderType.materialsNotificationsLoader)
+    @Context(DataLoaders.materialsNotificationsLoader)
     materialNotificationsLoader: DataLoader<number, Notification[]>
   ) {
     const { id } = material;
@@ -159,7 +159,7 @@ export class MaterialResolver {
   @ResolveField(() => [Message])
   async messages(
     @Parent() material: Material,
-    @Context(DataLoaderType.materialsMessagesLoader)
+    @Context(DataLoaders.materialsMessagesLoader)
     materialsMessagesLoader: DataLoader<number, Message[]>
   ) {
     const { id } = material;
@@ -169,7 +169,7 @@ export class MaterialResolver {
   @ResolveField(() => Status)
   async currentStatus(
     @Parent() material: Material,
-    @Context(DataLoaderType.statusesLoader)
+    @Context(DataLoaders.statusesLoader)
     statusesLoader: DataLoader<number, Status>
   ): Promise<Status> {
     if (!material?.currentStatusId) {
