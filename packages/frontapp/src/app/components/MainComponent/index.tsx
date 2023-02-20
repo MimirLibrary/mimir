@@ -49,6 +49,7 @@ const StyledButton = styled(Button)<IStyledButton>`
   position: absolute;
   top: ${dimensions.base_2};
   right: ${dimensions.base_2};
+  z-index: 2;
 
   @media (max-width: ${dimensions.laptop_width}) {
     position: fixed;

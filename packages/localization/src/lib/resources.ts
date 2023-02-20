@@ -374,6 +374,7 @@ export const resources = {
         OverdueByStatusLabel: 'Overdue by',
         ClaimedByStatusLabel: 'Claimed by',
       },
+      BookPreviewMessage: 'You may also like',
     },
   },
   ru: {
@@ -749,6 +750,7 @@ export const resources = {
         OverdueByStatusLabel: 'Просрочена',
         ClaimedByStatusLabel: 'Используется',
       },
+      BookPreviewMessage: 'Вам также может понравиться',
     },
   },
 };

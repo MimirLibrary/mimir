@@ -12,8 +12,6 @@ import {
   useGetStatusesByMaterialLazyQuery,
   GetStatusesByMaterialQuery,
 } from '@mimir/apollo-client';
-import { ReactComponent as ScrollButtonRight } from '../../assets/ArrowButtonRight.svg';
-import { ReactComponent as ScrollButtonLeft } from '../../assets/ArrowButtonLeft.svg';
 import DonateInfo from '../components/DonateInfo';
 import BackButton from '../components/BackButton';
 import { RolesTypes, StatusTypes } from '@mimir/global-types';
@@ -30,18 +28,12 @@ import { locationIds } from '../store/slices/userSlice';
 import { toast } from 'react-toastify';
 import Loader, { WrapperLoader } from '../components/Loader';
 import { useMediaQuery } from 'react-responsive';
-
-export const ButtonGroup = styled.div`
-  display: flex;
-  gap: ${dimensions.base};
-  @media (max-width: ${dimensions.phone_width}) {
-    display: none;
-  }
-`;
+import CarouselWrapper from '../components/CarouselWrapper';
 
 const Suggestions = styled.div`
   margin: ${dimensions.base_2} 0;
   display: flex;
+  position: relative;
 `;
 
 const SuggestionText = styled.h3`
@@ -102,6 +94,7 @@ const columnTitles = ['User', 'Deadline', 'State'];
 
 const BookPreview = ({ donate }: BookPreviewProps) => {
   const isMobile = useMediaQuery({ maxWidth: dimensions.phone_width });
+  const isTablet = useMediaQuery({ maxWidth: dimensions.tablet_width });
   const { item_id } = useParams();
   const [search, setSearch] = useState<string>('');
   const [claimHistory, setClaimHistory] =
@@ -142,6 +135,10 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
     const month = `${new Date(returnDate).getMonth() + 1}`.padStart(2, '0');
     return `${t('UserCard.Table.ReturnTill')} ${day}.${month}`;
   };
+
+  const sortedByCategoryList = getAllMaterials?.getAllMaterials?.filter(
+    (item) => item?.category === data?.getMaterialById.category
+  );
 
   useEffect(() => {
     getStatusesByMaterial({
@@ -210,19 +207,22 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
             />
           )}
           {userRole === RolesTypes.READER ? (
-            <>
-              <Suggestions>
-                <SuggestionText>You may also like</SuggestionText>
-                <ButtonGroup>
-                  <ScrollButtonLeft />
-                  <ScrollButtonRight />
-                </ButtonGroup>
-              </Suggestions>
-              <AllBooksList
-                sortingCategory={data?.getMaterialById.category}
-                items={getAllMaterials?.getAllMaterials}
+            isTablet ? (
+              <>
+                <Suggestions>
+                  <SuggestionText>{t('BookPreviewMessage')}</SuggestionText>
+                </Suggestions>
+                <AllBooksList items={sortedByCategoryList} />
+              </>
+            ) : (
+              <CarouselWrapper
+                slidesListLength={sortedByCategoryList?.length}
+                header={
+                  <SuggestionText>{t('BookPreviewMessage')}</SuggestionText>
+                }
+                slides={<AllBooksList items={sortedByCategoryList} forSlider />}
               />
-            </>
+            )
           ) : (
             <ClaimHistoryWrapper>
               <TextArticle>{t('BookClaimHistory.Title')}</TextArticle>
