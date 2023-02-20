@@ -55,14 +55,10 @@ export const ButtonPrev = styled(ScrollButtonLeft)<{ isDisabled?: boolean }>`
     isDisabled ? StyledSliderButtonDisabled : StyledSliderButtonActive}
 `;
 
-interface ISliderButtonsProps {
-  isButtonNextDisabled?: boolean;
-}
-
-const SliderButtons: FC<ISliderButtonsProps> = ({ isButtonNextDisabled }) => {
+const SliderButtons = () => {
   const [slideConfig, setSlideConfig] = useState({
     isBeginning: true,
-    isEnd: isButtonNextDisabled,
+    isEnd: false,
   });
   // the hook is not reactive
   const swiper = useSwiper();
@@ -72,9 +68,6 @@ const SliderButtons: FC<ISliderButtonsProps> = ({ isButtonNextDisabled }) => {
       setSlideConfig({ isBeginning: swipe.isBeginning, isEnd: swipe.isEnd });
     });
   }, [swiper]);
-  useEffect(() => {
-    isButtonNextDisabled && setSlideConfig({ ...slideConfig, isEnd: true });
-  }, [isButtonNextDisabled]);
 
   return (
     <ButtonGroup>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
