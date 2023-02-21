@@ -119,7 +119,10 @@ const BookCardExtended: FC<IPropsBookCardExtended> = ({ item }) => {
 
   return (
     item && (
-      <Wrapper to={`/item/${item?.id}`} data-testid="book-card-extended">
+      <Wrapper
+        to={`${RoutesTypes.BOOK_PREVIEW}/${item?.id}`}
+        data-testid="book-card-extended"
+      >
         <WrapperImg>
           <img src={item?.picture || src} alt="book-img" />
         </WrapperImg>

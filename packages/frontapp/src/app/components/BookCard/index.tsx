@@ -5,6 +5,7 @@ import bookImage from '../../../assets/MOC-data/BookImage.png';
 import BookStatus from '../BookStatus';
 import { shortenText } from '../../../helpers/common';
 import { Link } from 'react-router-dom';
+import { RoutesTypes } from 'packages/frontapp/src/utils/routes';
 export interface IBookCardProps {
   src?: string | null;
   title?: string;
@@ -125,7 +126,7 @@ const BookCard: FC<IBookCardProps> = ({
     <BookCardWrapper
       presentationMode={presentationMode}
       data-testid="bookCard"
-      to={`/item/${id}`}
+      to={`${RoutesTypes.BOOK_PREVIEW}/${id}`}
     >
       <BookImage
         presentationMode={presentationMode}
