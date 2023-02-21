@@ -16,6 +16,8 @@ exports[`render BookCardExtended correctly render with status is free 1`] = `
   flex: 1;
   min-width: 300px;
   cursor: pointer;
+  -webkit-text-decoration: none;
+  text-decoration: none;
 }
 
 .emotion-0:hover {
@@ -102,9 +104,10 @@ exports[`render BookCardExtended correctly render with status is free 1`] = `
   line-height: 1rem;
 }
 
-<div
+<a
   class="emotion-0"
   data-testid="book-card-extended"
+  href="/item/1"
 >
   <div
     class="emotion-1"
@@ -148,5 +151,5 @@ exports[`render BookCardExtended correctly render with status is free 1`] = `
       BookCardExtended.ClaimCount
     </p>
   </div>
-</div>
+</a>
 `;
