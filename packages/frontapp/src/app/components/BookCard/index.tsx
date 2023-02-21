@@ -5,7 +5,7 @@ import bookImage from '../../../assets/MOC-data/BookImage.png';
 import BookStatus from '../BookStatus';
 import { shortenText } from '../../../helpers/common';
 import { Link } from 'react-router-dom';
-import { RoutesTypes } from 'packages/frontapp/src/utils/routes';
+import { RoutesTypes } from '../../../utils/routes';
 export interface IBookCardProps {
   src?: string | null;
   title?: string;
