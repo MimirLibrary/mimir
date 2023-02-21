@@ -6,6 +6,7 @@ type Notification {
   person: Person!
   material: Material
   message: String
+  checked: Boolean!
 }
 
 input CreateAnswerNotification {

@@ -13,12 +13,17 @@ type Person {
   location: [Location!]
   messages: [Message]
   states: [BlockedUsers]
+  lastSeenNotificationDate: DateTime
 }
 
 input CreatePersonInput {
   smg_id: String!
   location_id: Int!
   type: String!
+}
+
+input UpdatePersonInput {
+  lastSeenNotificationDate: DateTime
 }
 
 input UpdatePersonLocationInput {
@@ -33,6 +38,7 @@ extend type Query {
 
 extend type Mutation {
   createPerson(input: CreatePersonInput!): Person!
+  updatePerson(personId: Int!, input: UpdatePersonInput!): Person!
   addPersonLocation(input: UpdatePersonLocationInput!): Person!
   removePersonLocation(input: UpdatePersonLocationInput!): Person!
   changePersonRole(person_id: Int!, type: String!): Person!

@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { t } from 'i18next';
 import {
   parseTodayDate,
@@ -14,6 +14,10 @@ import AnswerToUser from '../AnswerToUser';
 import Modal from '../Modal';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import { RolesTypes } from '@mimir/global-types';
+import {
+  GetNotificationsByPersonDocument,
+  useUpdatePersonMutation,
+} from '@mimir/apollo-client';
 
 export interface IOneNotification {
   id: string | undefined;
@@ -114,11 +118,32 @@ interface IDataOfMessage {
   person_id: string | undefined;
 }
 
+const getLatestNotification = (
+  notifications: IOneNotification[]
+): IOneNotification =>
+  notifications.reduce((a, b) => (a.created_at > b.created_at ? a : b));
+
 const Notifications: FC<INotifications> = ({
   notifications,
   showUserLink = false,
 }) => {
-  const { userRole } = useAppSelector((state) => state.user);
+  const { userRole, id: personId } = useAppSelector((state) => state.user);
+  const [updatePerson] = useUpdatePersonMutation({
+    refetchQueries: [GetNotificationsByPersonDocument],
+  });
+  useEffect(() => {
+    if (notifications?.length) {
+      updatePerson({
+        variables: {
+          personId,
+          input: {
+            lastSeenNotificationDate:
+              getLatestNotification(notifications).created_at,
+          },
+        },
+      });
+    }
+  }, [notifications, personId]);
   const [isAnswerModal, setIsAnswerModal] = useState<boolean>(false);
   const [dataOfMessage, setDataOfMessage] = useState<IDataOfMessage | null>(
     null

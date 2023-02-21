@@ -20,6 +20,7 @@ import { Location } from '../locations/location.entity';
 import {
   CreatePersonInput,
   Permissions,
+  UpdatePersonInput,
   UpdatePersonLocationInput,
 } from '@mimir/global-types';
 import { Message } from '../messages/message.entity';
@@ -30,7 +31,10 @@ import * as DataLoader from 'dataloader';
 import DataLoaders from '../../data-loaders';
 import { ManagerGuard } from '../../auth/manager.guard';
 import { CurrentUser } from '../../auth/current-user';
-import { checkIsManagerOrMatchingId } from '../../auth/auth-util';
+import {
+  checkIsManagerOrMatchingId,
+  checkIsMatchingId,
+} from '../../auth/auth-util';
 
 @Resolver('Person')
 export class PersonResolver {
@@ -68,6 +72,21 @@ export class PersonResolver {
     } catch (e) {
       return new BadRequestException();
     }
+  }
+
+  @Mutation(() => Person)
+  async updatePerson(
+    @Args('personId') personId: number,
+    @Args('input') updatePersonInput: UpdatePersonInput,
+    @CurrentUser() currentUser: Person
+  ): Promise<Person> {
+    checkIsMatchingId(currentUser, +personId);
+    const person = await Person.findOne(personId);
+    if (updatePersonInput.lastSeenNotificationDate) {
+      person.lastSeenNotificationDate =
+        updatePersonInput.lastSeenNotificationDate;
+    }
+    return Person.save(person);
   }
 
   @Mutation(() => Person)
