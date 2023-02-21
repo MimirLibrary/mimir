@@ -88,6 +88,10 @@ export const StyledButton = styled(Button)`
     min-width: 278px;
     max-width: 100%;
   }
+
+  @media (max-width: ${dimensions.phone_width}) {
+    min-width: 100%;
+  }
 `;
 
 export const TitleHolder = styled.p`

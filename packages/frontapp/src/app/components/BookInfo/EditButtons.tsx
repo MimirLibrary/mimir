@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import { t } from 'i18next';
+import { FC } from 'react';
 import { StyledButton } from './index';
 
 interface IEdit {
@@ -9,8 +10,12 @@ interface IEdit {
 export const EditButtons: FC<IEdit> = ({ onSave, onCancel }) => {
   return (
     <>
-      <StyledButton value="Save changes" onClick={onSave} />
-      <StyledButton value="Cancel changes" onClick={onCancel} transparent />
+      <StyledButton value={t('DonateItem.Buttons.Save')} onClick={onSave} />
+      <StyledButton
+        value={t('DonateItem.Buttons.Cancel')}
+        onClick={onCancel}
+        transparent
+      />
     </>
   );
 };

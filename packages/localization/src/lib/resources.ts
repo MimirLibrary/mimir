@@ -311,6 +311,11 @@ export const resources = {
           Claim: 'Claim a book',
           Return: 'Return a book',
           Extend: 'Extend claim period',
+          Notify: 'Notify when available',
+          Save: 'Save changes',
+          Cancel: 'Cancel changes',
+          Edit: 'Edit information',
+          Delete: 'Delete item',
         },
         Messages: {
           Errors: {
@@ -688,6 +693,11 @@ export const resources = {
           Claim: 'Забронировать книгу',
           Return: 'Вернуть книгу',
           Extend: 'Продлить период использования',
+          Notify: 'Сообщить, когда доступно',
+          Save: 'Сохранить изменения',
+          Cancel: 'Отменить изменения',
+          Edit: 'Редактировать',
+          Delete: 'Удалить предмет',
         },
         Messages: {
           Errors: {
