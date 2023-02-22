@@ -114,7 +114,7 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
     });
   const { data: getAllMaterials, error: getAllMaterialsError } =
     useGetAllMaterialsQuery({
-      variables: { locations },
+      variables: { input: { locations } },
     });
   const filteredHistory = useMemo(
     () =>

@@ -25,7 +25,7 @@ const CategorySearch: FC<IProps> = ({ setActive }) => {
     GetAllMaterialsQuery['getAllMaterials']
   >([]);
   const { data, error } = useGetAllMaterialsQuery({
-    variables: { locations },
+    variables: { input: { locations } },
     fetchPolicy: 'no-cache',
   });
 

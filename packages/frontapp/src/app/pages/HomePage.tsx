@@ -104,7 +104,7 @@ const HomePage: FC = () => {
     loading: materialsLoading,
     error: errorMaterials,
   } = useGetAllMaterialsForDonateQuery({
-    variables: { locations },
+    variables: { input: { locations } },
     fetchPolicy: 'no-cache',
   });
 

@@ -1,5 +1,17 @@
-query SearchOfMaterials($search: String, $locations: [Int!]) {
-  searchOfMaterials(input: { search: $search, locations: $locations }) {
+query SearchOfMaterials(
+  $input: SearchInput
+  $limit: Int
+  $offset: Int
+  $sortBy: String
+  $sortDir: SortDir
+) {
+  getAllMaterials(
+    input: $input
+    limit: $limit
+    offset: $offset
+    sortBy: $sortBy
+    sortDir: $sortDir
+  ) {
     title
     created_at
     picture

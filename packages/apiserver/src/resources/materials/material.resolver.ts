@@ -16,6 +16,7 @@ import {
   RolesTypes,
   SearchInput,
   SearchOneMaterial,
+  SortDir,
   UpdateMaterialInput,
 } from '@mimir/global-types';
 import { Notification } from '../notifications/notification.entity';
@@ -37,11 +38,21 @@ export class MaterialResolver {
 
   @Query(() => [Material])
   async getAllMaterials(
-    @Args('locations') locations: Array<number>,
+    @Args('input') searchInput: SearchInput,
+    @Args('sortBy') sortBy: string,
+    @Args('sortDir') sortDir: SortDir,
     @Args('limit') limit: number,
-    @Args('offset') offset: number
+    @Args('offset') offset: number,
+    @CurrentUser() user: Person
   ) {
-    return this.materialService.allMaterials(locations, limit, offset);
+    return this.materialService.search(
+      searchInput,
+      sortBy,
+      sortDir,
+      limit,
+      offset,
+      user.type === RolesTypes.MANAGER
+    );
   }
 
   @Query(() => Material)
@@ -69,17 +80,6 @@ export class MaterialResolver {
     } catch (e) {
       throw new GraphQLError(e.message);
     }
-  }
-
-  @Query(() => [Material])
-  async searchOfMaterials(
-    @Args('input') searchInput: SearchInput,
-    @CurrentUser() user: Person
-  ) {
-    return this.materialService.search(
-      searchInput,
-      user.type === RolesTypes.MANAGER
-    );
   }
 
   @Query(() => [Material])

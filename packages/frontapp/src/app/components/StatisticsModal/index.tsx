@@ -130,7 +130,7 @@ const LegendColor = styled.div`
 const StatisticsModal: FC<StatisticsModal> = ({ isActive, setIsActive }) => {
   const locations = useAppSelector(locationIds);
   const { data, error } = useGetAllMaterialsForManagerQuery({
-    variables: { locations },
+    variables: { input: { locations } },
     fetchPolicy: 'no-cache',
   });
   const bookItems = data?.getAllMaterials!.map((material) => {

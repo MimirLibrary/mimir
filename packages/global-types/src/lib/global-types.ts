@@ -7,6 +7,11 @@
 
 /* tslint:disable */
 /* eslint-disable */
+export enum SortDir {
+    ASC = "ASC",
+    DESC = "DESC"
+}
+
 export enum Permissions {
     GRANT_REVOKE_MANAGER = "GRANT_REVOKE_MANAGER"
 }
@@ -88,8 +93,19 @@ export interface DonateBookInput {
 }
 
 export interface SearchInput {
-    search?: Nullable<string>;
     locations?: Nullable<number[]>;
+    excludeLocations?: Nullable<number[]>;
+    search?: Nullable<string>;
+    overdue?: Nullable<boolean>;
+    accepted?: Nullable<boolean>;
+    categories?: Nullable<string[]>;
+    excludeCategories?: Nullable<string[]>;
+    authors?: Nullable<string[]>;
+    excludeAuthors?: Nullable<string[]>;
+    statuses?: Nullable<string[]>;
+    excludeStatuses?: Nullable<string[]>;
+    types?: Nullable<string[]>;
+    excludeTypes?: Nullable<string[]>;
 }
 
 export interface CreateMessageInput {
@@ -156,9 +172,8 @@ export interface IQuery {
     getAllTakenItems(person_id: number): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getItemsForClaimHistory(person_id: number): Nullable<Status>[] | Promise<Nullable<Status>[]>;
     getAllLocations(): Nullable<Location>[] | Promise<Nullable<Location>[]>;
-    getAllMaterials(locations?: Nullable<number[]>, limit?: Nullable<number>, offset?: Nullable<number>): Nullable<Material>[] | Promise<Nullable<Material>[]>;
+    getAllMaterials(input?: Nullable<SearchInput>, limit?: Nullable<number>, offset?: Nullable<number>, sortBy?: Nullable<string>, sortDir?: Nullable<SortDir>): Nullable<Material>[] | Promise<Nullable<Material>[]>;
     getMaterialById(id: string): Material | Promise<Material>;
-    searchOfMaterials(input: SearchInput): Nullable<Nullable<Material>[]> | Promise<Nullable<Nullable<Material>[]>>;
     getMaterialByIdentifier(input: SearchOneMaterial): Material | Promise<Material>;
     getMaterialByIdentifierFromMetadata(identifier: string): Nullable<IMetaOfMaterial> | Promise<Nullable<IMetaOfMaterial>>;
     getAllDonatedMaterialsByPerson(id: string): Nullable<Nullable<Material>[]> | Promise<Nullable<Nullable<Material>[]>>;
