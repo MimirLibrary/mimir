@@ -1,24 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { Material } from '../resources/materials/material.entity';
-import { Like } from 'typeorm';
 import { DigitalOceanService } from '@mimir/api-util';
 import * as process from 'process';
 import { DataTransferOut } from './data-transfer';
-import { FileService } from '../file/file.service';
+import axios from 'axios';
 
 @Injectable()
 export class DataTransferService {
-  constructor(
-    private digitalOceanService: DigitalOceanService,
-    private fileService: FileService
-  ) {}
+  constructor(private digitalOceanService: DigitalOceanService) {}
 
   async move(): Promise<DataTransferOut> {
-    const materials: Material[] = await Material.find({
-      where: {
-        picture: Like(`${process.env['NX_API_ROOT_URL']}%`),
-      },
-    });
+    const materials: Material[] = await Material.createQueryBuilder()
+      .where(`picture IS NOT NULL`)
+      .andWhere(`picture NOT LIKE '${process.env['NX_API_SPACES']}%'`)
+      .getMany();
 
     let successes = 0;
     let errors = 0;
@@ -38,9 +33,16 @@ export class DataTransferService {
   }
 
   private async transferFile(material: Material): Promise<void> {
-    const file = this.fileService.readFile(material.picture);
-    const url = (await this.digitalOceanService.createFile(file)) as string;
-    await Material.update(material.id, { picture: url });
-    this.fileService.removeFile(material.picture);
+    const picture = await axios.get(material.picture, {
+      responseType: 'arraybuffer',
+    });
+    const url = await this.digitalOceanService.createFile({
+      originalname: material.picture,
+      buffer: picture.data,
+    });
+    await Material.update(material.id, {
+      originalPicture: material.picture,
+      picture: url as string,
+    });
   }
 }
