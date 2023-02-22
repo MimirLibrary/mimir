@@ -38,6 +38,9 @@ export class Material extends BaseEntity {
   @Column({ nullable: true })
   picture: string;
 
+  @Column({ name: 'original_picture', nullable: true })
+  originalPicture: string;
+
   @Column()
   title!: string;
 
