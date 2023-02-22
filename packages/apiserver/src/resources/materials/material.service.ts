@@ -32,7 +32,11 @@ export class MaterialService {
     offset: number,
     selectHidden = false
   ): Promise<Material[]> {
-    const query = this.buildSearchQuery(searchInput, selectHidden);
+    const query = this.buildSearchQuery(searchInput);
+
+    if (!selectHidden) {
+      this.addExcludeHiddenStatusesCondition(query);
+    }
 
     query.addOrderBy(sortBy ? `material.${sortBy}` : 'title', sortDir || 'ASC');
     if (limit != undefined) {
@@ -128,165 +132,69 @@ export class MaterialService {
   }
 
   private buildSearchQuery(
-    searchInput: SearchInput,
-    selectHidden: boolean
+    searchInput: SearchInput
   ): SelectQueryBuilder<Material> {
     const queryBuilder = Material.createQueryBuilder('material').innerJoin(
       'status',
       'currentStatus',
       'material.current_status_id = currentStatus.id'
     );
-    let isFirstWhere = true;
-    if (
-      this.addHiddenStatusesCondition(queryBuilder, selectHidden, isFirstWhere)
-    ) {
-      isFirstWhere = false;
-    }
     if (!searchInput) {
       return queryBuilder;
     }
-
-    if (
-      this.addLocationsCondition(
-        queryBuilder,
-        searchInput.locations,
-        isFirstWhere
-      )
-    ) {
-      isFirstWhere = false;
-    }
-    if (
-      this.addExcludeLocationsCondition(
-        queryBuilder,
-        searchInput.excludeLocations,
-        isFirstWhere
-      )
-    ) {
-      isFirstWhere = false;
-    }
-    if (
-      this.addSearchCondition(queryBuilder, searchInput.search, isFirstWhere)
-    ) {
-      isFirstWhere = false;
-    }
-    if (
-      this.addStatusesCondition(
-        queryBuilder,
-        searchInput.statuses,
-        isFirstWhere
-      )
-    ) {
-      isFirstWhere = false;
-    }
-    if (
-      this.addExcludeStatusesCondition(
-        queryBuilder,
-        searchInput.excludeStatuses,
-        isFirstWhere
-      )
-    ) {
-      isFirstWhere = false;
-    }
-    if (
-      this.addOverdueCondition(queryBuilder, searchInput.overdue, isFirstWhere)
-    ) {
-      isFirstWhere = false;
-    }
-    if (
-      this.addAcceptedCondition(
-        queryBuilder,
-        searchInput.accepted,
-        isFirstWhere
-      )
-    ) {
-      isFirstWhere = false;
-    }
-    if (
-      this.addAuthorsCondition(queryBuilder, searchInput.authors, isFirstWhere)
-    ) {
-      isFirstWhere = false;
-    }
-    if (
-      this.addExcludeAuthorsCondition(
-        queryBuilder,
-        searchInput.excludeAuthors,
-        isFirstWhere
-      )
-    ) {
-      isFirstWhere = false;
-    }
-    if (this.addTypesCondition(queryBuilder, searchInput.types, isFirstWhere)) {
-      isFirstWhere = false;
-    }
-    if (
-      this.addExcludeTypesCondition(
-        queryBuilder,
-        searchInput.excludeTypes,
-        isFirstWhere
-      )
-    ) {
-      isFirstWhere = false;
-    }
-    if (
-      this.addCategoriesCondition(
-        queryBuilder,
-        searchInput.categories,
-        isFirstWhere
-      )
-    ) {
-      isFirstWhere = false;
-    }
-    if (
-      this.addExcludeCategoriesCondition(
-        queryBuilder,
-        searchInput.excludeCategories,
-        isFirstWhere
-      )
-    ) {
-      isFirstWhere = false;
-    }
+    this.addLocationsCondition(queryBuilder, searchInput.locations);
+    this.addExcludeLocationsCondition(
+      queryBuilder,
+      searchInput.excludeLocations
+    );
+    this.addSearchCondition(queryBuilder, searchInput.search);
+    this.addStatusesCondition(queryBuilder, searchInput.statuses);
+    this.addExcludeStatusesCondition(queryBuilder, searchInput.excludeStatuses);
+    this.addOverdueCondition(queryBuilder, searchInput.overdue);
+    this.addAcceptedCondition(queryBuilder, searchInput.accepted);
+    this.addAuthorsCondition(queryBuilder, searchInput.authors);
+    this.addExcludeAuthorsCondition(queryBuilder, searchInput.excludeAuthors);
+    this.addTypesCondition(queryBuilder, searchInput.types);
+    this.addExcludeTypesCondition(queryBuilder, searchInput.excludeTypes);
+    this.addCategoriesCondition(queryBuilder, searchInput.categories);
+    this.addExcludeCategoriesCondition(
+      queryBuilder,
+      searchInput.excludeCategories
+    );
     return queryBuilder;
   }
 
   private addLocationsCondition(
     queryBuilder: SelectQueryBuilder<Material>,
-    locations: number[],
-    isFirstWhere: boolean
-  ): boolean {
+    locations: number[]
+  ): void {
     if (locations?.length) {
-      queryBuilder[isFirstWhere ? 'where' : 'andWhere'](
-        'material.location_id IN (:...locations)',
-        { locations }
-      );
-      return true;
+      queryBuilder.andWhere('material.location_id IN (:...locations)', {
+        locations,
+      });
     }
-    return false;
   }
 
   private addExcludeLocationsCondition(
     queryBuilder: SelectQueryBuilder<Material>,
-    excludeLocations: number[],
-    isFirstWhere: boolean
-  ): boolean {
+    excludeLocations: number[]
+  ): void {
     if (excludeLocations?.length) {
-      queryBuilder[isFirstWhere ? 'where' : 'andWhere'](
+      queryBuilder.andWhere(
         'material.location_id NOT IN (:...excludeLocations)',
         {
           excludeLocations,
         }
       );
-      return true;
     }
-    return false;
   }
 
   private addSearchCondition(
     queryBuilder: SelectQueryBuilder<Material>,
-    search: string,
-    isFirstWhere: boolean
-  ): boolean {
+    search: string | undefined
+  ): void {
     if (search) {
-      queryBuilder[isFirstWhere ? 'where' : 'andWhere'](
+      queryBuilder.andWhere(
         `${
           search
             ? '(material.title ILIKE :text OR material.author ILIKE :text)'
@@ -294,194 +202,137 @@ export class MaterialService {
         }`,
         { text: `%${search}%` }
       );
-      return true;
     }
-    return false;
   }
 
   private addStatusesCondition(
     queryBuilder: SelectQueryBuilder<Material>,
-    statuses: string[],
-    isFirstWhere: boolean
-  ): boolean {
+    statuses: string[]
+  ): void {
     if (statuses?.length) {
-      queryBuilder[isFirstWhere ? 'where' : 'andWhere'](
-        'currentStatus.status IN (:...statuses)',
-        {
-          statuses,
-        }
-      );
-      return true;
+      queryBuilder.andWhere('currentStatus.status IN (:...statuses)', {
+        statuses,
+      });
     }
-    return false;
   }
 
   private addExcludeStatusesCondition(
     queryBuilder: SelectQueryBuilder<Material>,
-    excludeStatuses: string[],
-    isFirstWhere: boolean
-  ): boolean {
+    excludeStatuses: string[]
+  ): void {
     if (excludeStatuses?.length) {
-      queryBuilder[isFirstWhere ? 'where' : 'andWhere'](
+      queryBuilder.andWhere(
         'currentStatus.status NOT IN (:...excludeStatuses)',
         {
           excludeStatuses,
         }
       );
-      return true;
     }
-    return false;
   }
 
   private addOverdueCondition(
     queryBuilder: SelectQueryBuilder<Material>,
-    overdue: boolean,
-    isFirstWhere: boolean
-  ): boolean {
+    overdue: boolean | undefined
+  ): void {
     if (overdue === true || overdue === false) {
-      queryBuilder[isFirstWhere ? 'where' : 'andWhere'](
+      queryBuilder.andWhere(
         overdue
           ? `currentStatus.returnDate < NOW()`
           : `(currentStatus.returnDate IS NULL OR currentStatus.returnDate > NOW())`
       );
-      return true;
     }
-    return false;
   }
 
   private addAcceptedCondition(
     queryBuilder: SelectQueryBuilder<Material>,
-    accepted: boolean,
-    isFirstWhere: boolean
-  ): boolean {
+    accepted: boolean | undefined
+  ): void {
     if (accepted === true || accepted === false) {
-      queryBuilder[isFirstWhere ? 'where' : 'andWhere'](
+      queryBuilder.andWhere(
         `currentStatus.status ${
           accepted ? 'NOT' : ''
         } IN (:...notAcceptedStatuses)`,
         { notAcceptedStatuses: [StatusTypes.PENDING, StatusTypes.REJECTED] }
       );
-      return true;
     }
-    return false;
   }
 
   private addAuthorsCondition(
     queryBuilder: SelectQueryBuilder<Material>,
-    authors: string[],
-    isFirstWhere: boolean
-  ): boolean {
+    authors: string[]
+  ): void {
     if (authors?.length) {
-      queryBuilder[isFirstWhere ? 'where' : 'andWhere'](
-        `material.author IN (:...authors)`,
-        {
-          authors,
-        }
-      );
-      return true;
+      queryBuilder.andWhere(`material.author IN (:...authors)`, {
+        authors,
+      });
     }
-    return false;
   }
 
   private addExcludeAuthorsCondition(
     queryBuilder: SelectQueryBuilder<Material>,
-    excludeAuthors: string[],
-    isFirstWhere: boolean
-  ): boolean {
+    excludeAuthors: string[]
+  ): void {
     if (excludeAuthors?.length) {
-      queryBuilder[isFirstWhere ? 'where' : 'andWhere'](
-        `material.author NOT IN (:...excludeAuthors)`,
-        {
-          excludeAuthors,
-        }
-      );
-      return true;
+      queryBuilder.andWhere(`material.author NOT IN (:...excludeAuthors)`, {
+        excludeAuthors,
+      });
     }
-    return false;
   }
 
   private addTypesCondition(
     queryBuilder: SelectQueryBuilder<Material>,
-    types: string[],
-    isFirstWhere: boolean
-  ): boolean {
+    types: string[]
+  ): void {
     if (types?.length) {
-      queryBuilder[isFirstWhere ? 'where' : 'andWhere'](
-        `material.type IN (:...types)`,
-        {
-          types,
-        }
-      );
-      return true;
+      queryBuilder.andWhere(`material.type IN (:...types)`, {
+        types,
+      });
     }
-    return false;
   }
 
   private addExcludeTypesCondition(
     queryBuilder: SelectQueryBuilder<Material>,
-    excludeTypes: string[],
-    isFirstWhere: boolean
-  ): boolean {
+    excludeTypes: string[]
+  ): void {
     if (excludeTypes?.length) {
-      queryBuilder[isFirstWhere ? 'where' : 'andWhere'](
-        `material.type NOT IN (:...excludeTypes)`,
-        {
-          excludeTypes,
-        }
-      );
-      return true;
+      queryBuilder.andWhere(`material.type NOT IN (:...excludeTypes)`, {
+        excludeTypes,
+      });
     }
-    return false;
   }
 
   private addCategoriesCondition(
     queryBuilder: SelectQueryBuilder<Material>,
-    categories: string[],
-    isFirstWhere: boolean
-  ): boolean {
+    categories: string[]
+  ): void {
     if (categories?.length) {
-      queryBuilder[isFirstWhere ? 'where' : 'andWhere'](
-        `material.category IN (:...categories)`,
-        { categories }
-      );
-      return true;
+      queryBuilder.andWhere(`material.category IN (:...categories)`, {
+        categories,
+      });
     }
-    return false;
   }
 
   private addExcludeCategoriesCondition(
     queryBuilder: SelectQueryBuilder<Material>,
-    excludeCategories: string[],
-    isFirstWhere: boolean
-  ): boolean {
+    excludeCategories: string[]
+  ): void {
     if (excludeCategories?.length) {
-      queryBuilder[isFirstWhere ? 'where' : 'andWhere'](
+      queryBuilder.andWhere(
         `material.category NOT IN (:...excludeCategories)`,
         { excludeCategories }
       );
-      return true;
     }
-    return false;
   }
 
-  private addHiddenStatusesCondition(
-    queryBuilder: SelectQueryBuilder<Material>,
-    selectHidden: boolean,
-    isFirstWhere: boolean
-  ): boolean {
-    if (!selectHidden) {
-      queryBuilder[isFirstWhere ? 'where' : 'andWhere'](
-        'currentStatus.status NOT IN (:...hiddenStatuses)',
-        {
-          hiddenStatuses: [
-            StatusTypes.PENDING,
-            StatusTypes.REJECTED,
-            StatusTypes.SUSPEND,
-          ],
-        }
-      );
-      return true;
-    }
-    return false;
+  private addExcludeHiddenStatusesCondition(
+    queryBuilder: SelectQueryBuilder<Material>
+  ): void {
+    queryBuilder.andWhere('currentStatus.status NOT IN (:...hiddenStatuses)', {
+      hiddenStatuses: [
+        StatusTypes.PENDING,
+        StatusTypes.REJECTED,
+        StatusTypes.SUSPEND,
+      ],
+    });
   }
 }
