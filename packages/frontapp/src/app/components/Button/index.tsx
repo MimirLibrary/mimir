@@ -20,6 +20,7 @@ const ButtonContainer = styled.button<IButtonProps>`
   display: flex;
   justify-content: center;
   align-items: center;
+  color: #fff;
   background-color: ${({ transparent, warning }) =>
     transparent
       ? colors.bg_secondary
