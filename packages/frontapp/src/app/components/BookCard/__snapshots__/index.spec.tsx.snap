@@ -19,6 +19,8 @@ exports[`BookCard Component renders correctly, with snapshots 1`] = `
   cursor: pointer;
   -webkit-transition: box-shadow 0.3s;
   transition: box-shadow 0.3s;
+  -webkit-text-decoration: none;
+  text-decoration: none;
 }
 
 .emotion-0:hover {
@@ -144,9 +146,10 @@ exports[`BookCard Component renders correctly, with snapshots 1`] = `
   }
 }
 
-<div
+<a
   class="emotion-0"
   data-testid="bookCard"
+  href="/item/31"
 >
   <img
     class="emotion-1"
@@ -178,5 +181,5 @@ exports[`BookCard Component renders correctly, with snapshots 1`] = `
       </p>
     </div>
   </div>
-</div>
+</a>
 `;

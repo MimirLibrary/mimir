@@ -1,15 +1,15 @@
-import React, { FC, useMemo } from 'react';
+import { FC, useMemo } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import src from '../../../assets/MOC-data/BookImage.png';
 import { getCurrentStatus } from '../../models/helperFunctions/getCurrentStatus';
 import { IMaterial } from '../../types';
-import { useNavigate } from 'react-router-dom';
 import { OpenLink } from '../ManagerInfoCard';
 import { RoutesTypes } from '../../../utils/routes';
 import { t } from 'i18next';
+import { Link } from 'react-router-dom';
 
-const Wrapper = styled.div`
+const Wrapper = styled(Link)`
   background: ${colors.bg_secondary};
   border-radius: ${dimensions.xs_1};
   transition: box-shadow 0.3s;
@@ -18,6 +18,7 @@ const Wrapper = styled.div`
   flex: 1;
   min-width: 300px;
   cursor: pointer;
+  text-decoration: none;
 
   :hover {
     box-shadow: 0 6px 14px -6px rgba(24, 39, 75, 0.08),
@@ -110,20 +111,18 @@ interface IPropsBookCardExtended {
 }
 
 const BookCardExtended: FC<IPropsBookCardExtended> = ({ item }) => {
-  const navigate = useNavigate();
   const currenStatusElement = item?.currentStatus;
   const currentStatus = useMemo(
     () => getCurrentStatus(currenStatusElement),
     [currenStatusElement]
   );
 
-  const handleItemRedirect = () => {
-    navigate(`/item/${item?.id}`);
-  };
-
   return (
     item && (
-      <Wrapper onClick={handleItemRedirect} data-testid="book-card-extended">
+      <Wrapper
+        to={`${RoutesTypes.BOOK_PREVIEW}/${item?.id}`}
+        data-testid="book-card-extended"
+      >
         <WrapperImg>
           <img src={item?.picture || src} alt="book-img" />
         </WrapperImg>

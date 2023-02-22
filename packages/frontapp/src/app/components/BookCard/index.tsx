@@ -2,9 +2,10 @@ import { FC } from 'react';
 import styled from '@emotion/styled';
 import { colors, dimensions } from '@mimir/ui-kit';
 import bookImage from '../../../assets/MOC-data/BookImage.png';
-import { useNavigate } from 'react-router-dom';
 import BookStatus from '../BookStatus';
 import { shortenText } from '../../../helpers/common';
+import { Link } from 'react-router-dom';
+import { RoutesTypes } from '../../../utils/routes';
 export interface IBookCardProps {
   src?: string | null;
   title?: string;
@@ -17,7 +18,7 @@ export interface IBookCardProps {
   claimedUserId?: number;
 }
 
-const BookCardWrapper = styled.div<Pick<IBookCardProps, 'presentationMode'>>`
+const BookCardWrapper = styled(Link)<Pick<IBookCardProps, 'presentationMode'>>`
   flex-shrink: 0;
   width: 12rem;
   background-color: ${colors.bg_secondary};
@@ -27,6 +28,7 @@ const BookCardWrapper = styled.div<Pick<IBookCardProps, 'presentationMode'>>`
   flex-direction: column;
   cursor: pointer;
   transition: box-shadow 0.3s;
+  text-decoration: none;
 
   :hover {
     box-shadow: 0 6px 14px -6px rgba(24, 39, 75, 0.08),
@@ -120,16 +122,11 @@ const BookCard: FC<IBookCardProps> = ({
   presentationMode,
   claimedUserId,
 }) => {
-  const navigate = useNavigate();
-  const handleItemRedirect = () => {
-    navigate(`/item/${id}`);
-  };
-
   return (
     <BookCardWrapper
       presentationMode={presentationMode}
-      onClick={handleItemRedirect}
       data-testid="bookCard"
+      to={`${RoutesTypes.BOOK_PREVIEW}/${id}`}
     >
       <BookImage
         presentationMode={presentationMode}

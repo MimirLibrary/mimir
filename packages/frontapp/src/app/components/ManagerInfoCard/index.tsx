@@ -4,7 +4,7 @@ import { ManagerCardTypes } from './managerCardTypes';
 import { colors, dimensions } from '@mimir/ui-kit';
 import { t } from 'i18next';
 import { RoutesTypes } from '../../../utils/routes';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { IField, IOverdueItem } from '../../types';
 import { IMaterialDonate } from '../../types/donateList';
 import overdue_placeholder from '../../../assets/overdue_placeholder.png';
@@ -15,6 +15,7 @@ import AnswerToUser from '../AnswerToUser';
 import { ReactComponent as AddBookBluePlus } from '../../../assets/AddBookBluePlus.svg';
 import useScanner from '../../hooks/useScanner';
 import Scanner from '../Scanner';
+import { css } from '@emotion/react';
 interface IManagerInfoCard {
   type: ManagerCardTypes;
   fieldsOverdue?: Array<IOverdueItem | null>;
@@ -105,7 +106,7 @@ export const OpenLink = styled(Link)`
   text-decoration: underline;
 `;
 
-const FieldWrapper = styled.div`
+const FieldStyles = css`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -124,7 +125,13 @@ const FieldWrapper = styled.div`
   }
 `;
 
-const ItemFieldWrapper = styled(FieldWrapper)`
+const FieldWrapper = styled.div`
+  ${FieldStyles}
+`;
+
+const ItemFieldWrapper = styled(Link)`
+  ${FieldStyles}
+  text-decoration: none;
   cursor: pointer;
   transition: all 0.3s linear;
 
@@ -295,10 +302,6 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
     },
     [dataOfMessage]
   );
-  const navigate = useNavigate();
-  const navigateToItemPage = (id?: string) => {
-    navigate(`${RoutesTypes.BOOK_PREVIEW}/${id}`);
-  };
   const {
     isShowScanner,
     setIsShowScanner,
@@ -340,7 +343,7 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
             <WrapperList>
               {fieldsOverdue?.slice(0, 3).map((field) => (
                 <ItemFieldWrapper
-                  onClick={() => navigateToItemPage(field?.id)}
+                  to={`${RoutesTypes.BOOK_PREVIEW}/${field?.id}`}
                   key={field?.id}
                 >
                   <FieldTitle>{field?.material.title}</FieldTitle>
@@ -406,7 +409,7 @@ const ManagerInfoCard: FC<IManagerInfoCard> = ({
             <WrapperList data-testid="items-list">
               {fieldsDonate?.slice(0, 3).map((field) => (
                 <ItemFieldWrapper
-                  onClick={() => navigateToItemPage(field?.id)}
+                  to={`${RoutesTypes.BOOK_PREVIEW}/${field?.id}`}
                   key={field?.id}
                 >
                   <FieldTitle>{field?.title}</FieldTitle>
