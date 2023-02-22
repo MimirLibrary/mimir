@@ -5,7 +5,7 @@ import SearchSuggestions from './index';
 import { SearchOfMaterialsQuery } from '@mimir/apollo-client';
 import '@testing-library/jest-dom';
 
-const mockListOfMaterials: SearchOfMaterialsQuery['searchOfMaterials'] = [
+const mockListOfMaterials: SearchOfMaterialsQuery['getAllMaterials'] = [
   {
     __typename: 'Material',
     id: '1',
@@ -55,7 +55,7 @@ describe('SearchSuggestionsComponent', () => {
   it('render when data is null', () => {
     render(
       <SearchSuggestions
-        materials={null}
+        materials={[]}
         removeSuggestionSearchWindow={() => {}}
       />
     );

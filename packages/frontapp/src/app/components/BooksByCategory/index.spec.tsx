@@ -33,11 +33,10 @@ const mockMaterial = [
 ];
 
 const params = ['searchParams'];
-const searchParams = new URLSearchParams(params[0]);
 
 describe('BooksByCategory', () => {
   it(' bookList should render correctly', () => {
-    render(<BookList allData={mockMaterial} searchParams={searchParams} />);
+    render(<BookList materials={mockMaterial} filters={params} />);
     expect(screen.getByTestId('bookList')).toBeInTheDocument();
   });
 
