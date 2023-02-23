@@ -5,7 +5,6 @@ import { useGetAllMaterialsQuery } from '@mimir/apollo-client';
 import CategoriesList from '../components/CategoriesList';
 import AllBooksList from '../components/AllBooksList';
 import { useAppSelector } from '../hooks/useTypedSelector';
-import { getStatus } from '../models/helperFunctions/converTime';
 import ErrorType500 from '../components/ErrorType500';
 import useMaterialFilter from '../hooks/useMaterialFilter';
 import { locationIds } from '../store/slices/userSlice';
@@ -19,6 +18,8 @@ import Loader, { WrapperLoader } from '../components/Loader';
 import { t } from 'i18next';
 import { useMediaQuery } from 'react-responsive';
 import CarouselWrapper from '../components/CarouselWrapper';
+
+import { StatusTypes } from '@mimir/global-types';
 
 const ContentWrapper = styled.div`
   margin: 3rem 0 ${dimensions.xl_6};
@@ -76,26 +77,23 @@ const Topics = styled.h5`
 
 const SearchPage = () => {
   const locations = useAppSelector(locationIds);
-  const [availableMaterial, setAvailableMaterial] = useState<any>([]);
   const [isModalActive, setIsModalActive] = useState(false);
   const navigate = useNavigate();
   const { data, loading, error } = useGetAllMaterialsQuery({
-    variables: { locations },
+    variables: {
+      input: {
+        locations,
+        excludeStatuses: [StatusTypes.REJECTED, StatusTypes.PENDING],
+      },
+    },
     fetchPolicy: 'no-cache',
   });
   const isTablet = useMediaQuery({ maxWidth: dimensions.tablet_width });
-  useEffect(() => {
-    const available = data?.getAllMaterials.filter((material: any) => {
-      const currentStatus = getStatus(
-        material?.currentStatus?.status,
-        material?.returnDate
-      );
-      return currentStatus !== 'Rejected' && currentStatus !== 'Pending';
-    });
-    setAvailableMaterial(available);
-  }, [data]);
 
-  const allCategories = useMaterialFilter(availableMaterial, 'category');
+  const allCategories = useMaterialFilter(
+    data?.getAllMaterials || [],
+    'category'
+  );
 
   const navigateToCategory = (category: string) => {
     navigate({
@@ -105,7 +103,11 @@ const SearchPage = () => {
   };
 
   const getSortedByCategoryList = (category: string) => {
-    return availableMaterial.filter((item: any) => item.category === category);
+    return (
+      data?.getAllMaterials?.filter(
+        (item: any) => item.category === category
+      ) || []
+    );
   };
 
   useEffect(() => {

@@ -28,7 +28,7 @@ const WrapperList = styled.div`
 `;
 
 export interface IPropsSearchSuggestions {
-  materials: SearchOfMaterialsQuery['searchOfMaterials'];
+  materials?: SearchOfMaterialsQuery['getAllMaterials'];
   removeSuggestionSearchWindow: () => void;
 }
 

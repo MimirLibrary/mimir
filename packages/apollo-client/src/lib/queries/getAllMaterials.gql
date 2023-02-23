@@ -1,5 +1,17 @@
-query GetAllMaterials($locations: [Int!], $limit: Int, $offset: Int) {
-  getAllMaterials(locations: $locations, limit: $limit, offset: $offset) {
+query GetAllMaterials(
+  $input: SearchInput
+  $limit: Int
+  $offset: Int
+  $sortBy: String
+  $sortDir: SortDir
+) {
+  getAllMaterials(
+    input: $input
+    limit: $limit
+    offset: $offset
+    sortBy: $sortBy
+    sortDir: $sortDir
+  ) {
     author
     category
     created_at

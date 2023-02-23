@@ -402,7 +402,6 @@ export type Query = {
   getReasonOfBlock?: Maybe<BlockedUsers>;
   getStatusesByMaterial: Array<Maybe<Status>>;
   getStatusesByPerson: Array<Maybe<Status>>;
-  searchOfMaterials?: Maybe<Array<Maybe<Material>>>;
   welcome: Scalars['String'];
 };
 
@@ -413,9 +412,11 @@ export type QueryGetAllDonatedMaterialsByPersonArgs = {
 
 
 export type QueryGetAllMaterialsArgs = {
+  input?: InputMaybe<SearchInput>;
   limit?: InputMaybe<Scalars['Int']>;
-  locations?: InputMaybe<Array<Scalars['Int']>>;
   offset?: InputMaybe<Scalars['Int']>;
+  sortBy?: InputMaybe<Scalars['String']>;
+  sortDir?: InputMaybe<SortDir>;
 };
 
 
@@ -499,11 +500,6 @@ export type QueryGetStatusesByPersonArgs = {
   person_id: Scalars['ID'];
 };
 
-
-export type QuerySearchOfMaterialsArgs = {
-  input: SearchInput;
-};
-
 export type RemoveLocationInput = {
   location_id: Scalars['Int'];
 };
@@ -526,14 +522,30 @@ export type ResponseMetadata = {
 };
 
 export type SearchInput = {
+  accepted?: InputMaybe<Scalars['Boolean']>;
+  authors?: InputMaybe<Array<Scalars['String']>>;
+  categories?: InputMaybe<Array<Scalars['String']>>;
+  excludeAuthors?: InputMaybe<Array<Scalars['String']>>;
+  excludeCategories?: InputMaybe<Array<Scalars['String']>>;
+  excludeLocations?: InputMaybe<Array<Scalars['Int']>>;
+  excludeStatuses?: InputMaybe<Array<Scalars['String']>>;
+  excludeTypes?: InputMaybe<Array<Scalars['String']>>;
   locations?: InputMaybe<Array<Scalars['Int']>>;
+  overdue?: InputMaybe<Scalars['Boolean']>;
   search?: InputMaybe<Scalars['String']>;
+  statuses?: InputMaybe<Array<Scalars['String']>>;
+  types?: InputMaybe<Array<Scalars['String']>>;
 };
 
 export type SearchOneMaterial = {
   identifier: Scalars['String'];
   locations?: InputMaybe<Array<Scalars['Int']>>;
 };
+
+export enum SortDir {
+  Asc = 'ASC',
+  Desc = 'DESC'
+}
 
 export type Status = {
   __typename?: 'Status';
@@ -746,27 +758,33 @@ export type GetAllLocationsQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetAllLocationsQuery = { __typename?: 'Query', getAllLocations: Array<{ __typename?: 'Location', id: string, location: string } | null> };
 
 export type GetAllMaterialsQueryVariables = Exact<{
-  locations?: InputMaybe<Array<Scalars['Int']> | Scalars['Int']>;
+  input?: InputMaybe<SearchInput>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
+  sortBy?: InputMaybe<Scalars['String']>;
+  sortDir?: InputMaybe<SortDir>;
 }>;
 
 
 export type GetAllMaterialsQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', author: string, category: string, created_at: any, id: string, id_type: string, identifier: string, description: string, is_donated: boolean, picture?: string | null, title: string, type: string, updated_at: any, claimCount: number, notifications: Array<{ __typename?: 'Notification', material_id?: number | null, person_id: number } | null>, currentStatus?: { __typename?: 'Status', status: string, person_id: number, returnDate?: any | null } | null } | null> };
 
 export type GetAllMaterialsForDonateQueryVariables = Exact<{
-  locations?: InputMaybe<Array<Scalars['Int']> | Scalars['Int']>;
+  input?: InputMaybe<SearchInput>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
+  sortBy?: InputMaybe<Scalars['String']>;
+  sortDir?: InputMaybe<SortDir>;
 }>;
 
 
 export type GetAllMaterialsForDonateQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', id: string, title: string, claimCount: number, currentStatus?: { __typename?: 'Status', id: string, status: string, returnDate?: any | null, person: { __typename?: 'Person', id: string, username: string, avatar: string } } | null } | null> };
 
 export type GetAllMaterialsForManagerQueryVariables = Exact<{
-  locations?: InputMaybe<Array<Scalars['Int']> | Scalars['Int']>;
+  input?: InputMaybe<SearchInput>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
+  sortBy?: InputMaybe<Scalars['String']>;
+  sortDir?: InputMaybe<SortDir>;
 }>;
 
 
@@ -859,12 +877,15 @@ export type GetStatusesByMaterialQueryVariables = Exact<{
 export type GetStatusesByMaterialQuery = { __typename?: 'Query', getStatusesByMaterial: Array<{ __typename?: 'Status', id: string, status: string, created_at: any, returnDate?: any | null, person: { __typename?: 'Person', id: string, avatar: string, username: string, statuses?: Array<{ __typename?: 'Status', material_id: number, status: string, created_at: any, returnDate?: any | null } | null> | null } } | null> };
 
 export type SearchOfMaterialsQueryVariables = Exact<{
-  search?: InputMaybe<Scalars['String']>;
-  locations?: InputMaybe<Array<Scalars['Int']> | Scalars['Int']>;
+  input?: InputMaybe<SearchInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  sortBy?: InputMaybe<Scalars['String']>;
+  sortDir?: InputMaybe<SortDir>;
 }>;
 
 
-export type SearchOfMaterialsQuery = { __typename?: 'Query', searchOfMaterials?: Array<{ __typename?: 'Material', title: string, created_at: any, picture?: string | null, author: string, category: string, id: string, claimCount: number, currentStatus?: { __typename?: 'Status', id: string, created_at: any, status: string, returnDate?: any | null, person: { __typename?: 'Person', id: string, username: string } } | null } | null> | null };
+export type SearchOfMaterialsQuery = { __typename?: 'Query', getAllMaterials: Array<{ __typename?: 'Material', title: string, created_at: any, picture?: string | null, author: string, category: string, id: string, claimCount: number, currentStatus?: { __typename?: 'Status', id: string, created_at: any, status: string, returnDate?: any | null, person: { __typename?: 'Person', id: string, username: string } } | null } | null> };
 
 
 export const AcceptBookDocument = gql`
@@ -1646,8 +1667,14 @@ export type GetAllLocationsQueryHookResult = ReturnType<typeof useGetAllLocation
 export type GetAllLocationsLazyQueryHookResult = ReturnType<typeof useGetAllLocationsLazyQuery>;
 export type GetAllLocationsQueryResult = Apollo.QueryResult<GetAllLocationsQuery, GetAllLocationsQueryVariables>;
 export const GetAllMaterialsDocument = gql`
-    query GetAllMaterials($locations: [Int!], $limit: Int, $offset: Int) {
-  getAllMaterials(locations: $locations, limit: $limit, offset: $offset) {
+    query GetAllMaterials($input: SearchInput, $limit: Int, $offset: Int, $sortBy: String, $sortDir: SortDir) {
+  getAllMaterials(
+    input: $input
+    limit: $limit
+    offset: $offset
+    sortBy: $sortBy
+    sortDir: $sortDir
+  ) {
     author
     category
     created_at
@@ -1686,9 +1713,11 @@ export const GetAllMaterialsDocument = gql`
  * @example
  * const { data, loading, error } = useGetAllMaterialsQuery({
  *   variables: {
- *      locations: // value for 'locations'
+ *      input: // value for 'input'
  *      limit: // value for 'limit'
  *      offset: // value for 'offset'
+ *      sortBy: // value for 'sortBy'
+ *      sortDir: // value for 'sortDir'
  *   },
  * });
  */
@@ -1704,8 +1733,14 @@ export type GetAllMaterialsQueryHookResult = ReturnType<typeof useGetAllMaterial
 export type GetAllMaterialsLazyQueryHookResult = ReturnType<typeof useGetAllMaterialsLazyQuery>;
 export type GetAllMaterialsQueryResult = Apollo.QueryResult<GetAllMaterialsQuery, GetAllMaterialsQueryVariables>;
 export const GetAllMaterialsForDonateDocument = gql`
-    query GetAllMaterialsForDonate($locations: [Int!], $limit: Int, $offset: Int) {
-  getAllMaterials(locations: $locations, limit: $limit, offset: $offset) {
+    query GetAllMaterialsForDonate($input: SearchInput, $limit: Int, $offset: Int, $sortBy: String, $sortDir: SortDir) {
+  getAllMaterials(
+    input: $input
+    limit: $limit
+    offset: $offset
+    sortBy: $sortBy
+    sortDir: $sortDir
+  ) {
     id
     title
     currentStatus {
@@ -1735,9 +1770,11 @@ export const GetAllMaterialsForDonateDocument = gql`
  * @example
  * const { data, loading, error } = useGetAllMaterialsForDonateQuery({
  *   variables: {
- *      locations: // value for 'locations'
+ *      input: // value for 'input'
  *      limit: // value for 'limit'
  *      offset: // value for 'offset'
+ *      sortBy: // value for 'sortBy'
+ *      sortDir: // value for 'sortDir'
  *   },
  * });
  */
@@ -1753,8 +1790,14 @@ export type GetAllMaterialsForDonateQueryHookResult = ReturnType<typeof useGetAl
 export type GetAllMaterialsForDonateLazyQueryHookResult = ReturnType<typeof useGetAllMaterialsForDonateLazyQuery>;
 export type GetAllMaterialsForDonateQueryResult = Apollo.QueryResult<GetAllMaterialsForDonateQuery, GetAllMaterialsForDonateQueryVariables>;
 export const GetAllMaterialsForManagerDocument = gql`
-    query GetAllMaterialsForManager($locations: [Int!], $limit: Int, $offset: Int) {
-  getAllMaterials(locations: $locations, limit: $limit, offset: $offset) {
+    query GetAllMaterialsForManager($input: SearchInput, $limit: Int, $offset: Int, $sortBy: String, $sortDir: SortDir) {
+  getAllMaterials(
+    input: $input
+    limit: $limit
+    offset: $offset
+    sortBy: $sortBy
+    sortDir: $sortDir
+  ) {
     id
     title
     category
@@ -1786,9 +1829,11 @@ export const GetAllMaterialsForManagerDocument = gql`
  * @example
  * const { data, loading, error } = useGetAllMaterialsForManagerQuery({
  *   variables: {
- *      locations: // value for 'locations'
+ *      input: // value for 'input'
  *      limit: // value for 'limit'
  *      offset: // value for 'offset'
+ *      sortBy: // value for 'sortBy'
+ *      sortDir: // value for 'sortDir'
  *   },
  * });
  */
@@ -2366,8 +2411,14 @@ export type GetStatusesByMaterialQueryHookResult = ReturnType<typeof useGetStatu
 export type GetStatusesByMaterialLazyQueryHookResult = ReturnType<typeof useGetStatusesByMaterialLazyQuery>;
 export type GetStatusesByMaterialQueryResult = Apollo.QueryResult<GetStatusesByMaterialQuery, GetStatusesByMaterialQueryVariables>;
 export const SearchOfMaterialsDocument = gql`
-    query SearchOfMaterials($search: String, $locations: [Int!]) {
-  searchOfMaterials(input: {search: $search, locations: $locations}) {
+    query SearchOfMaterials($input: SearchInput, $limit: Int, $offset: Int, $sortBy: String, $sortDir: SortDir) {
+  getAllMaterials(
+    input: $input
+    limit: $limit
+    offset: $offset
+    sortBy: $sortBy
+    sortDir: $sortDir
+  ) {
     title
     created_at
     picture
@@ -2401,8 +2452,11 @@ export const SearchOfMaterialsDocument = gql`
  * @example
  * const { data, loading, error } = useSearchOfMaterialsQuery({
  *   variables: {
- *      search: // value for 'search'
- *      locations: // value for 'locations'
+ *      input: // value for 'input'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *      sortBy: // value for 'sortBy'
+ *      sortDir: // value for 'sortDir'
  *   },
  * });
  */

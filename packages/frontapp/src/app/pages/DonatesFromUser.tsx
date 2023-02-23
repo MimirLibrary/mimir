@@ -9,7 +9,7 @@ import DonatesFromUserContent from '../components/DonatesFromUserContent/Donates
 const DonatesFromUser = () => {
   const locations = useAppSelector(locationIds);
   const { data, error } = useGetAllMaterialsQuery({
-    variables: { locations },
+    variables: { input: { locations } },
     fetchPolicy: 'no-cache',
   });
   const [search, setSearch] = useState<string>('');

@@ -74,8 +74,19 @@ input DonateBookInput {
 }
 
 input SearchInput {
-  search: String
   locations: [Int!]
+  excludeLocations: [Int!]
+  search: String
+  overdue: Boolean
+  accepted: Boolean
+  categories: [String!]
+  excludeCategories: [String!]
+  authors: [String!]
+  excludeAuthors: [String!]
+  statuses: [String!]
+  excludeStatuses: [String!]
+  types: [String!]
+  excludeTypes: [String!]
 }
 
 type ResponseMetadata {
@@ -121,10 +132,20 @@ type IMetaOfMaterial {
   material: IMaterialMeta
 }
 
+enum SortDir {
+  ASC
+  DESC
+}
+
 extend type Query {
-  getAllMaterials(locations: [Int!], limit: Int, offset: Int): [Material]!
+  getAllMaterials(
+    input: SearchInput
+    limit: Int
+    offset: Int
+    sortBy: String
+    sortDir: SortDir
+  ): [Material]!
   getMaterialById(id: ID!): Material!
-  searchOfMaterials(input: SearchInput!): [Material]
   getMaterialByIdentifier(input: SearchOneMaterial!): Material!
   getMaterialByIdentifierFromMetadata(identifier: String!): IMetaOfMaterial
   getAllDonatedMaterialsByPerson(id: ID!): [Material]

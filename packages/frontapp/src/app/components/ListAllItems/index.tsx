@@ -40,7 +40,7 @@ const ListAllItems = () => {
   const { searchMaterials } = useAppSelector((state) => state.materials);
 
   const { data, loading, error } = useGetAllMaterialsForManagerQuery({
-    variables: { locations },
+    variables: { input: { locations } },
     fetchPolicy: 'no-cache',
   });
 

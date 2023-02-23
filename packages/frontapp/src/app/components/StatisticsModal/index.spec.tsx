@@ -9,7 +9,7 @@ import { nextTick } from '../../../helpers/tests/nextTick';
 const materialsMock = {
   request: {
     query: GetAllMaterialsForManagerDocument,
-    variables: { locations: [] },
+    variables: { input: { locations: [] } },
   },
   result: {
     data: {

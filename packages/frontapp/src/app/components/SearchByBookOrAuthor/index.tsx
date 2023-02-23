@@ -28,7 +28,7 @@ const SearchByBookOrAuthor: FC<{ path: string }> = ({ path }) => {
   const navigate = useNavigate();
 
   const { data, error } = useSearchOfMaterialsQuery({
-    variables: { search: debounceSearch, locations },
+    variables: { input: { search: debounceSearch, locations } },
     skip: !debounceSearch,
   });
 
@@ -38,12 +38,12 @@ const SearchByBookOrAuthor: FC<{ path: string }> = ({ path }) => {
 
   useEffect(() => {
     if (data) {
-      dispatch(setSearchMaterials(data?.searchOfMaterials));
+      dispatch(setSearchMaterials(data?.getAllMaterials));
     }
   }, [data]);
 
   useEffect(() => {
-    setIsShowListSuggestions(!!(search && data?.searchOfMaterials?.length));
+    setIsShowListSuggestions(!!(search && data?.getAllMaterials?.length));
   }, [debounceSearch, data]);
 
   const removeSuggestionSearchWindow = useCallback(() => {
@@ -80,7 +80,7 @@ const SearchByBookOrAuthor: FC<{ path: string }> = ({ path }) => {
       />
       {isShowListSuggestions && (
         <SearchSuggestions
-          materials={data?.searchOfMaterials}
+          materials={data?.getAllMaterials}
           removeSuggestionSearchWindow={removeSuggestionSearchWindow}
         />
       )}

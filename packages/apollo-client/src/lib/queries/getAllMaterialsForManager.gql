@@ -1,5 +1,17 @@
-query GetAllMaterialsForManager($locations: [Int!], $limit: Int, $offset: Int) {
-  getAllMaterials(locations: $locations, limit: $limit, offset: $offset) {
+query GetAllMaterialsForManager(
+  $input: SearchInput
+  $limit: Int
+  $offset: Int
+  $sortBy: String
+  $sortDir: SortDir
+) {
+  getAllMaterials(
+    input: $input
+    limit: $limit
+    offset: $offset
+    sortBy: $sortBy
+    sortDir: $sortDir
+  ) {
     id
     title
     category
