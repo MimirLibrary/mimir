@@ -41,7 +41,7 @@ export class ChitaiGorodService {
     const img = await this.digitalOceanService.createFile({
       originalname: `https://img-gorod.ru${result.image_url}`,
       buffer: pic.data,
-      mimetype: pic.headers['content-type'],
+      mimetype: pic?.headers?.['content-type'],
     });
     if (!result) return null;
     const material: Prisma.MaterialCreateInput = {
