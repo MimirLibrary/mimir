@@ -39,6 +39,7 @@ export class DataTransferService {
     const url = await this.digitalOceanService.createFile({
       originalname: material.picture,
       buffer: picture.data,
+      mimetype: picture.headers['content-type'],
     });
     await Material.update(material.id, {
       originalPicture: material.picture,
