@@ -45,6 +45,7 @@ export class AbeBooksService {
     const img = await this.digitalOceanService.createFile({
       originalname: url.imageUrl,
       buffer: pic.data,
+      mimetype: pic.headers['content-type'],
     });
     const material: Prisma.MaterialCreateInput = {
       title: title,
