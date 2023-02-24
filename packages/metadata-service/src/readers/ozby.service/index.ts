@@ -120,6 +120,7 @@ export class OzbyService {
     const img = await this.digitalOceanService.createFile({
       originalname: $('.b-product-photo__picture-self img').first().attr('src'),
       buffer: pic.data,
+      mimetype: pic.headers['content-type'],
     });
     const year = Number(items.year);
     delete items.year;

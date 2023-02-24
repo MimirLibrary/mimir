@@ -1,10 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
 import { v4 as uuidv4 } from 'uuid';
+import { ContentType } from 'aws-sdk/clients/s3';
 
 type IProps = {
   originalname: string;
   buffer: Buffer;
+  mimetype: ContentType;
 };
 
 @Injectable()
@@ -31,6 +33,7 @@ export class DigitalOceanService {
             Key: fileName,
             Body: file.buffer,
             ACL: 'public-read',
+            ContentType: file.mimetype,
           },
           (error: AWS.AWSError) => {
             if (!error) {

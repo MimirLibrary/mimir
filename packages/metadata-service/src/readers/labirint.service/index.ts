@@ -39,6 +39,7 @@ export class LabirintService {
     const img = await this.digitalOceanService.createFile({
       originalname: $('.book-img-cover').attr('src'),
       buffer: pic.data,
+      mimetype: pic.headers['content-type'],
     });
     const title = $('#product-title').find('h1').text().split(': ')[1];
     const author = $('.authors').first().text().split(': ')[1].split(',');
