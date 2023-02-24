@@ -33,7 +33,10 @@ const useBookStatus = (
     case StatusTypes.OVERDUE:
       return t('Statuses.Overdue');
     case StatusTypes.PENDING:
-      return t('Statuses.Pending');
+      if (pathname === RoutesTypes.HISTORY_OF_DONATE) {
+        return t(`Statuses.${currentStatus + pathname}`);
+      }
+      return t('Statuses.Free');
     case StatusTypes.REJECTED:
       return t('Statuses.Rejected');
     default:

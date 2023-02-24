@@ -258,7 +258,7 @@ const BookPreview = ({ donate }: BookPreviewProps) => {
                           {item.status === StatusTypes.FREE ? (
                             <FieldsText returned>
                               {t('UserCard.Table.State') + ': '}
-                              {t('UserCard.Table.Returned')}
+                              {t('UserCard.Table.OnShelf')}
                             </FieldsText>
                           ) : isOverdue(item.returnDate) ? (
                             <FieldsText overdue>
