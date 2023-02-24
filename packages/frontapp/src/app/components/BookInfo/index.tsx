@@ -3,40 +3,37 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 import { colors, dimensions } from '@mimir/ui-kit';
 import {
   GetAllMaterialsForManagerDocument,
+  GetAllTakenItemsDocument,
   GetItemsForClaimHistoryDocument,
+  GetMaterialByIdDocument,
+  GetNotificationsByPersonDocument,
   Status,
+  useClaimBookMutation,
+  useCreateNotificationMutation,
+  useGetNotificationsByPersonQuery,
+  useProlongTimeMutation,
+  useRemoveMaterialMutation,
+  useRemoveNotificationMutation,
+  useReturnBookMutation,
+  useUpdateMaterialMutation,
 } from '@mimir/apollo-client';
-import { DateTime } from '@mimir/global-types';
+import { DateTime, RolesTypes, StatusTypes } from '@mimir/global-types';
 import Button from '../Button';
 import ClaimOperation from '../ClaimOperation';
 import Modal from '../Modal';
 import { getStatus } from '../../models/helperFunctions/converTime';
 import SuccessMessage from '../SuccessMessage';
-import {
-  GetAllTakenItemsDocument,
-  GetMaterialByIdDocument,
-  GetNotificationsByPersonDocument,
-  useClaimBookMutation,
-  useProlongTimeMutation,
-  useReturnBookMutation,
-  useRemoveMaterialMutation,
-  useUpdateMaterialMutation,
-  useGetNotificationsByPersonQuery,
-  useCreateNotificationMutation,
-  useRemoveNotificationMutation,
-} from '@mimir/apollo-client';
 import { useAppSelector } from '../../hooks/useTypedSelector';
 import ErrorMessage from '../ErrorMessge';
 import AskManagerForm from '../AskManagerForm';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { RolesTypes } from '@mimir/global-types';
 import { IDropdownOption } from '../Dropdown';
 import { TUserLocation } from '../../store/slices/userSlice';
 import DescriptionBook from './DescriptionBook';
 import Section from '../Section';
 import ExpandableText from '../ExpandableText';
 import { useMediaQuery } from 'react-responsive';
-import { ReturnBookButtons } from './ReturnBookButtons';
+import { ClaimOrReturnBookButtons } from './ReturnBookButtons';
 import { NotifyMeButtons } from './NotifyMeButtons';
 import { EditButtons } from './EditButtons';
 import { ControlButtons } from './ControlButtons';
@@ -189,6 +186,76 @@ export interface IBookInfoProps {
   claimDuration: number;
 }
 
+interface ButtonsProps {
+  editing: boolean;
+  isCurrentUserSubscribed: boolean;
+  userId: number;
+  userRole: RolesTypes;
+  statusInfo?: StatusType | null;
+  showClaimModal: () => void;
+  retrieveBook: () => void;
+  prolongPeriod: () => void;
+  handleEnableNotifyButton: () => void;
+  handleCancelNotifyButton: () => void;
+  editInformation: () => void;
+  discardChanges: () => void;
+  handleEditBtn: () => void;
+  handleDeleteBtn: () => void;
+}
+
+const Buttons: FC<ButtonsProps> = ({
+  editing,
+  isCurrentUserSubscribed,
+  userRole,
+  userId,
+  statusInfo,
+  showClaimModal,
+  retrieveBook,
+  prolongPeriod,
+  handleEnableNotifyButton,
+  handleCancelNotifyButton,
+  editInformation,
+  discardChanges,
+  handleEditBtn,
+  handleDeleteBtn,
+}) => {
+  if (userRole === RolesTypes.MANAGER) {
+    return editing ? (
+      <EditButtons onSave={editInformation} onCancel={discardChanges} />
+    ) : (
+      <ControlButtons onEdit={handleEditBtn} onDelete={handleDeleteBtn} />
+    );
+  }
+  if (statusInfo?.status === StatusTypes.PENDING) {
+    return null;
+  }
+  if (statusInfo?.status === StatusTypes.FREE) {
+    return (
+      <ClaimOrReturnBookButtons
+        currentStatus={statusInfo.status as StatusTypes}
+        onClaim={showClaimModal}
+        onReturn={retrieveBook}
+        onProlong={prolongPeriod}
+      />
+    );
+  }
+  return statusInfo?.person_id === userId ? (
+    <ClaimOrReturnBookButtons
+      currentStatus={statusInfo.status as StatusTypes}
+      isClaimed
+      onClaim={showClaimModal}
+      onReturn={retrieveBook}
+      onProlong={prolongPeriod}
+    />
+  ) : (
+    <NotifyMeButtons
+      isUserSubscriber={isCurrentUserSubscribed}
+      onSubscribe={handleEnableNotifyButton}
+      onCancel={handleCancelNotifyButton}
+    />
+  );
+};
+
 const BookInfo: FC<IBookInfoProps> = ({
   src = '',
   title = '',
@@ -204,12 +271,12 @@ const BookInfo: FC<IBookInfoProps> = ({
   location,
   claimDuration,
 }) => {
-  const { id, userRole } = useAppSelector((state) => state.user);
+  const { id: userId, userRole } = useAppSelector((state) => state.user);
 
   const { data: getNotificationsByPersonData } =
     useGetNotificationsByPersonQuery({
       variables: {
-        person_id: id,
+        person_id: userId,
       },
     });
 
@@ -248,6 +315,7 @@ const BookInfo: FC<IBookInfoProps> = ({
 
   const [newDescription, setNewDescription] = useState(description || '');
   const [deleteWarning, setDeleteWarning] = useState(false);
+  const [isCurrentUserSubscribed, setIsCurrentUserSubscribed] = useState(false);
 
   const handleChangeDescription = (
     e: React.ChangeEvent<HTMLTextAreaElement>
@@ -325,7 +393,7 @@ const BookInfo: FC<IBookInfoProps> = ({
   const claim = async () => {
     await claimBook({
       variables: {
-        person_id: id,
+        person_id: userId,
         identifier: valueIsISBN,
       },
     });
@@ -336,7 +404,7 @@ const BookInfo: FC<IBookInfoProps> = ({
   const retrieveBook = async () => {
     const output = await returnBook({
       variables: {
-        person_id: id,
+        person_id: userId,
         identifier,
       },
     });
@@ -352,7 +420,7 @@ const BookInfo: FC<IBookInfoProps> = ({
   const prolongPeriod = async () => {
     await prolongTime({
       variables: {
-        person_id: id,
+        person_id: userId,
         material_id,
       },
     });
@@ -423,16 +491,15 @@ const BookInfo: FC<IBookInfoProps> = ({
   }, [data]);
 
   useEffect(() => {
-    if (!getNotificationsByPersonData) return;
-
-    if (
-      getNotificationsByPersonData.getNotificationsByPerson.find(
-        (notification) => notification?.person_id === id
-      )
-    ) {
-      //TODO: consider removing this local book claiming if no material_id provided
+    if (!getNotificationsByPersonData || !material_id) {
+      return;
     }
-  }, [getNotificationsByPersonData]);
+    setIsCurrentUserSubscribed(
+      !!getNotificationsByPersonData.getNotificationsByPerson.find(
+        (item) => item?.material_id === material_id
+      )
+    );
+  }, [userId, material_id, getNotificationsByPersonData]);
 
   const showAskManagerModal = () => {
     setIsShowErrorMessageOfClaiming(false);
@@ -452,7 +519,7 @@ const BookInfo: FC<IBookInfoProps> = ({
       variables: {
         input: {
           material_id,
-          person_id: id,
+          person_id: userId,
         },
       },
     });
@@ -463,12 +530,11 @@ const BookInfo: FC<IBookInfoProps> = ({
       variables: {
         input: {
           material_id,
-          person_id: id,
+          person_id: userId,
         },
       },
     });
   };
-
   return (
     <>
       <BookHolder>
@@ -493,38 +559,22 @@ const BookInfo: FC<IBookInfoProps> = ({
           />
           {isLaptop ? null : (
             <WrapperButtons>
-              {userRole === RolesTypes.READER ? (
-                statusInfo?.status === 'Free' ? (
-                  <ReturnBookButtons
-                    onClaim={showClaimModal}
-                    onReturn={retrieveBook}
-                    onProlong={prolongPeriod}
-                  />
-                ) : statusInfo?.status !== 'Free' &&
-                  statusInfo?.person_id === id ? (
-                  <ReturnBookButtons
-                    isClaimed
-                    onClaim={showClaimModal}
-                    onReturn={retrieveBook}
-                    onProlong={prolongPeriod}
-                  />
-                ) : (
-                  <NotifyMeButtons
-                    onSubscribe={handleEnableNotifyButton}
-                    onCancel={handleCancelNotifyButton}
-                  />
-                )
-              ) : editing ? (
-                <EditButtons
-                  onSave={editInformation}
-                  onCancel={discardChanges}
-                />
-              ) : (
-                <ControlButtons
-                  onEdit={handleEditBtn}
-                  onDelete={handleDeleteBtn}
-                />
-              )}
+              <Buttons
+                editing={editing}
+                isCurrentUserSubscribed={isCurrentUserSubscribed}
+                userRole={userRole}
+                userId={userId}
+                statusInfo={statusInfo}
+                showClaimModal={showClaimModal}
+                retrieveBook={retrieveBook}
+                prolongPeriod={prolongPeriod}
+                handleEnableNotifyButton={handleEnableNotifyButton}
+                handleCancelNotifyButton={handleCancelNotifyButton}
+                editInformation={editInformation}
+                discardChanges={discardChanges}
+                handleEditBtn={handleEditBtn}
+                handleDeleteBtn={handleDeleteBtn}
+              />
             </WrapperButtons>
           )}
         </ShortDescriptionWrapper>
@@ -548,35 +598,22 @@ const BookInfo: FC<IBookInfoProps> = ({
         ) : null}
         {!isLaptop ? null : (
           <WrapperButtons>
-            {userRole === RolesTypes.READER ? (
-              statusInfo?.status === 'Free' ? (
-                <ReturnBookButtons
-                  onClaim={showClaimModal}
-                  onReturn={retrieveBook}
-                  onProlong={prolongPeriod}
-                />
-              ) : statusInfo?.status !== 'Free' &&
-                statusInfo?.person_id === id ? (
-                <ReturnBookButtons
-                  isClaimed
-                  onClaim={showClaimModal}
-                  onReturn={retrieveBook}
-                  onProlong={prolongPeriod}
-                />
-              ) : (
-                <NotifyMeButtons
-                  onSubscribe={handleEnableNotifyButton}
-                  onCancel={handleCancelNotifyButton}
-                />
-              )
-            ) : editing ? (
-              <EditButtons onSave={editInformation} onCancel={discardChanges} />
-            ) : (
-              <ControlButtons
-                onEdit={handleEditBtn}
-                onDelete={handleDeleteBtn}
-              />
-            )}
+            <Buttons
+              editing={editing}
+              isCurrentUserSubscribed={isCurrentUserSubscribed}
+              userRole={userRole}
+              userId={userId}
+              statusInfo={statusInfo}
+              showClaimModal={showClaimModal}
+              retrieveBook={retrieveBook}
+              prolongPeriod={prolongPeriod}
+              handleEnableNotifyButton={handleEnableNotifyButton}
+              handleCancelNotifyButton={handleCancelNotifyButton}
+              editInformation={editInformation}
+              discardChanges={discardChanges}
+              handleEditBtn={handleEditBtn}
+              handleDeleteBtn={handleDeleteBtn}
+            />
           </WrapperButtons>
         )}
       </BookHolder>

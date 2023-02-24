@@ -5,24 +5,28 @@ import { ReactComponent as CancelNotifySvg } from '../../../assets/CancelNotific
 import { t } from 'i18next';
 
 interface IControl {
+  isUserSubscriber: boolean;
   onSubscribe: () => void;
   onCancel: () => void;
 }
 
-export const NotifyMeButtons: FC<IControl> = ({ onSubscribe, onCancel }) => {
-  return (
-    <>
-      <StyledButton
-        value={t('DonateItem.Buttons.Notify')}
-        onClick={onSubscribe}
-        svgComponent={<EnableNotifySvg />}
-      />
-      <StyledButton
-        value={t('Cancel')}
-        onClick={onCancel}
-        svgComponent={<CancelNotifySvg />}
-        transparent
-      />
-    </>
+export const NotifyMeButtons: FC<IControl> = ({
+  onSubscribe,
+  onCancel,
+  isUserSubscriber,
+}) => {
+  return !isUserSubscriber ? (
+    <StyledButton
+      value={t('DonateItem.Buttons.Notify')}
+      onClick={onSubscribe}
+      svgComponent={<EnableNotifySvg />}
+    />
+  ) : (
+    <StyledButton
+      value={t('Cancel')}
+      onClick={onCancel}
+      svgComponent={<CancelNotifySvg />}
+      transparent
+    />
   );
 };
