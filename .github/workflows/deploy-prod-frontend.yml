@@ -1,0 +1,43 @@
+name: Deploy prod frontend
+on:
+  workflow_dispatch
+
+env:
+  NX_BRANCH: main
+  NX_RUN_GROUP: ${{ github.run_id }}
+
+jobs:
+  build_test_and_deploy:
+    runs-on: ubuntu-latest
+    environment: Production
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+      - name: Restore NX Cache
+        id: nx-cache
+        uses: actions/cache@v3
+        env:
+          cache-name: nx-cache
+        with:
+          path: node_modules/.cache/nx
+          key: permanent
+      - run: npm ci
+      - name: Create env file
+        run: echo "${{ secrets.ENV_FILE }}" > .env
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          name: id_rsa
+          known_hosts: ${{ vars.KNOWN_HOSTS }}
+          if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
+      - run: npx env-cmd -f .env npx nx run frontapp:lint
+      - run: npx env-cmd -f .env npx nx run frontapp:build
+      - run: npx env-cmd -f .env npx nx run frontapp:test
+      - run: npx env-cmd -f .env npx nx run frontapp:deploy:production
